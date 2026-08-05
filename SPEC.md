@@ -1,16 +1,22 @@
-# Hyperlex Technical Specification v1.5
+# Hyperlex Technical Specification v1.6
 
 ## Public API
 
 ### ingest_signal(query: str, source: str = "mock") -> str
-Returns raw observed signal text.
+### fetch_ingest(query: str, source: str = "mock", structured: bool = True) -> dict
 
-Supported sources:
+`ingest_signal` returns raw text (backward compatible).
+
+`fetch_ingest` returns structured data with extracted terms and metadata.
+
+Supported sources (expanded v1.6):
 - "mock"
-- "real" (Action Network glossary)
+- "real" / "glossary" / "web" (Action Network)
 - "reddit"
-- "x_search" (stub)
-- "firecrawl" (stub)
+- "urban" (Urban Dictionary)
+- "wikipedia"
+- "x_search", "firecrawl" (stubs)
+- "combined" (multi-source)
 
 ### detect_memetic_patterns(query: str = ..., ingest_source: str = "mock") -> dict
 Returns full analysis dict.
@@ -31,7 +37,17 @@ Returns:
 ### emit_receipt(result: dict, out_dir: str | None = None) -> Path
 Writes timestamped receipt with integrity hash.
 
-## Output Schema (detect_memetic_patterns)
+## Schemas
+
+See the canonical schemas in the `schemas/` directory at repo root:
+
+- `schemas/ingest.v1.schema.json`
+- `schemas/result.v1.schema.json`
+- `schemas/receipt.v1.schema.json`
+
+Full details in `schemas/README.md`.
+
+## Output Schema (detect_memetic_patterns) (deprecated - use root schemas)
 
 ```json
 {

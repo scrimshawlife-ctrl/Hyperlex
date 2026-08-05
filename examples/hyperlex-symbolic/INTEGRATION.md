@@ -63,3 +63,15 @@ print(schemas.validate_ingest(data))
 ```
 
 All changes mirrored to `examples/hyperlex-symbolic/` in the specs repo.
+
+## Root Schemas (exported)
+
+As of v1.6, the canonical schemas have been exported to the repo root:
+
+- schemas/ingest.v1.schema.json
+- schemas/result.v1.schema.json  
+- schemas/receipt.v1.schema.json
+
+See schemas/README.md for details.
+
+The previous `schemas-expanded/` copy is historical.

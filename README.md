@@ -6,7 +6,7 @@
   <strong>Standalone, real-data, provenance-first engine for slang, hyperstition, and symbolic signal analysis</strong>
 </p>
 
-Version **1.5.0** · Skill name: `hyperlex` · Python ≥ 3.10 · License: MIT
+Version **1.6.0** · Skill name: `hyperlex` · Python ≥ 3.10 · License: MIT
 
 ---
 
@@ -45,7 +45,7 @@ This repository is the **authoritative specs and design surface**, modeled direc
 - `docs/` — Release notes, security, semver, etc.
 - `references/` — Chaos magic, Numogram, agent posture, arXiv
 - `examples/` — Memetic forager skeleton (Orchestra style)
-- `schemas/` — JSON schemas for receipts
+- `schemas/` — JSON schemas (ingest.v1, result.v1, receipt.v1) — see `schemas/README.md`
 
 ## Integration with Abraxas-Orchestra
 
@@ -55,21 +55,26 @@ Future: Use Orchestra to give Hyperlex modules dual mechanical + symbolic names 
 
 See `references/` and `examples/memetic-forager-skeleton/`.
 
+
+
+## Schemas & Expanded Ingest (v1.6)
+
+Schemas live at the root:
+
+- `schemas/ingest.v1.schema.json`
+- `schemas/result.v1.schema.json`
+- `schemas/receipt.v1.schema.json`
+
+The ingest layer has been expanded with additional real sources (`urban`, `wikipedia`, `combined`) and a structured `fetch_ingest()` API.
+
+See:
+- `schemas/README.md`
+- `examples/hyperlex-symbolic/INTEGRATION.md`
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) and the Orchestra model of spec-first development.
 
 ## License
 
-MIT (see LICENSE).## Symbolic Architecture (Numogram + Chaos Magic)
-
-Fresh symbolic structure for the Hyperlex skill, scaffolded via Abraxas Orchestra:
-
-- `examples/hyperlex-symbolic/` contains:
-  - Curated dual-named SKELETON.md and correspondence table
-  - Architecture diagrams (HTML + Mermaid + JSON)
-  - Analysis output from the actual `/home/scrimshawlife/hyperlex` package
-
-See `examples/hyperlex-symbolic/SKELETON.md` and `numogram-chaos-correspondence.json`.
-
-This is the living symbolic architecture reference.
+MIT (see LICENSE).
