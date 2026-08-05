@@ -26,6 +26,7 @@ Lineage · hyperstition · receipts · settled Brier · Phase 5 research
 <div class="hlx-splash-cta" markdown>
 
 [Enter telemetry →](telemetry.md){ .md-button .md-button--primary }
+[Atomic terms demo](demos/atomic-terms.md){ .md-button }
 [Run history](archive/index.md){ .md-button }
 [Status](status.md){ .md-button }
 

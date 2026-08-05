@@ -64,6 +64,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] **5.2** Open research export templates (`export_research_packet`)
 - [x] **5.3** Risk tiers → scan schedules / operator alerts (advisory Hermes cron envelopes)
 - [x] **5.3** Operator loop docs + simplified ingest routes / command map (`run`, `commands`, `pending`)
+- [x] **5.3** Atomic multi-term seeds (`split_seed_terms`, Phase 5 multi-term, Pages demos)
 - [ ] **5.3** ANN backend option if corpus grows past linear scan (**deferred** until corpus pain)
 
 ## Milestones
@@ -71,7 +72,8 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - v0.3.0: Phase 5.0 research simulation track
 - v0.3.6: calibrate + scenario library + research export
 - v0.3.7: risk-tier → scan/cron schedule coupling
-- **v0.3.8: operator loop + ingest route simplification** (current)
+- v0.3.8: operator loop + ingest route simplification
+- **v0.3.9: atomic multi-term seeds + Pages demos** (current)
 - v0.3.x: Phylogeny libraries + vector hybrid lineage + research export polish
 - v1.0: Stable skill contract + long-horizon archive + optional research contribs
 
@@ -84,3 +86,4 @@ See SPEC.md and DESIGN.md for detailed requirements per phase.
 - v0.3.5: Hybrid lineage re-rank + domain phylogeny packs
 - v0.3.7: Risk-tier → scan/cron schedule (advisory; post-scan advisory on scan)
 - v0.3.8: Operator loop docs; `--route` ingest; `run` / `commands` / `pending`
+- v0.3.9: Atomic multi-term seeds; Pages demos; scan packs atomic

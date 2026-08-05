@@ -43,7 +43,9 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Transmission calibrate** | Ready (advisory β/γ from settled pairs) |
 | **Scenario library + export** | Ready (`compare` / `export`) |
 | **Risk → scan/cron schedule** | Ready (`risk-schedule`; advisory only) |
-| **Ingest routes + `run`/`commands`/`pending`** | Ready (v0.3.9) |
+| **Ingest routes + `run`/`commands`/`pending`** | Ready (v0.3.8+) |
+| **Atomic multi-term seeds** | Ready (v0.3.9 · `terms-split` / multi Phase 5) |
+| **Pages demos (atomic terms)** | Ready (`docs/demos/atomic-terms.md`) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
@@ -51,10 +53,11 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 
 ```text
 commands                              # simplified map
-run "<query>" --route offline         # one-shot daily path
+run "<atom>" --route offline          # one lexicon atom per run
   → pending → settle → score-series   # calibration (Brier only here)
-  → scan / risk-schedule              # cron advisory
-  → simulate / archive-export / vector-*   # research & pages (optional)
+  → scan / risk-schedule              # cron advisory (atomic query pack)
+  → terms-split / simulate multi-term # bags expand automatically
+  → archive-export / vector-*         # research & pages (optional)
 ```
 
 ## Data dirs
@@ -70,11 +73,12 @@ data/backfill/2026/          # curated YTD term packs (repo)
 
 ## Recommended next (ops, not greenfield)
 
-See [docs/operator-loop.md](docs/operator-loop.md):
+See [docs/operator-loop.md](docs/operator-loop.md) · [docs/demos/atomic-terms.md](docs/demos/atomic-terms.md):
 
-1. `run "<query>" --route offline` (or MODERATE cron)
+1. `bash examples/ops/burn-in.sh` (atomic offline runs)
 2. `pending` → `settle` → `score-series`
-3. Defer ANN until vector corpus is large; no more Phase 5 modes by default
+3. Register MODERATE cron from `risk-schedule` when ready
+4. Defer ANN until vector corpus is large
 
 ## Phase 5.3+ (deferred)
 
