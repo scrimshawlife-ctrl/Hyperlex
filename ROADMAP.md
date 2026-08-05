@@ -64,5 +64,10 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 See SPEC.md and DESIGN.md for detailed requirements per phase.
 
 ## Recent Documentation Additions (2026-08-05)
-- `docs/slang-lineages.md` — methodology for historical families and emergent branches
-- `examples/slang-families/` — Mermaid diagrams for betting-sharp family, kinship-address lineage, and the Hyperlex emergence process itself
+- `docs/slang-lineages.md` — expanded methodology (mutation operators, documentation template, live-feed process, receipt attachment sketch)
+- `examples/slang-families/` — Mermaid diagrams:
+  - betting-sharp family + chronological timeline
+  - kinship-address lineage
+  - crypto-degen family (HODL / diamond hands / ape / rekt)
+  - brainrot-aura family (mid / cooked / aura / brainrot)
+  - Hyperlex emergence process
