@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.2.11  
+**Version:** 0.2.12  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`
 
@@ -17,7 +17,9 @@ python3 scripts/release_preflight.py
 |------|--------|
 | Skill contract + install | Ready |
 | Mock offline analyze | Ready |
-| Lineage (8 families) | Ready |
+| Lineage (8 families + 2026 YTD leaves) | Ready |
+| YTD backfill packs (`data/backfill/2026/`) | Ready |
+| Lineage backpropagation (non-mutating) | Ready |
 | Typology + community drivers | Ready |
 | Virality prediction (SPECULATIVE) | Ready |
 | Receipts + ledger + ledger-stats/diff | Ready |
@@ -39,6 +41,7 @@ analyze --receipt --forecasts --append-log
   → settle (operator)
   → score-series / feedback
   → ledger-stats
+  → lineage-backfill --list / lineage-backprop --from-golden
 ```
 
 ## Data dirs
@@ -48,6 +51,7 @@ analyze --receipt --forecasts --append-log
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
+data/backfill/2026/          # curated YTD term packs (repo)
 ```
 
 ## Not in scope (Phase 5+)

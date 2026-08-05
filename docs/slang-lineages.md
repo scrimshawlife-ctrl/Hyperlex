@@ -1,7 +1,7 @@
 # Slang Lineages & Emergent Branches
 
 **Status**: Active documentation surface  
-**Version**: expanded 2026-08-05 (schema + matcher + confidence scoring + HTML + additional families)  
+**Version**: expanded 2026-08-05 (schema + matcher + confidence scoring + HTML + additional families + YTD backfill/backprop)  
 **Purpose**: Provide canonical visual and structural documentation for historical families of slang words and the processes by which new branches emerge. This layer supports Hyperlex analysis outputs, Abraxas Slang Module family-tree sections, and Orchestra symbolic mapping.
 
 ## Why Lineages Matter
@@ -134,6 +134,33 @@ confidence = min(0.98, max(0.0, raw))
 **Threshold**: `LINEAGE_CONFIDENCE_THRESHOLD = 0.42`. Matches below this are discarded so weak single short-term hits do not attach a lineage.
 
 The full breakdown is returned under `score_breakdown` for auditability and future calibration.
+
+## YTD backfill + lineage backpropagation
+
+Hyperlex can **backfill** curated slang terms for prior months of the year and **backpropagate** lineage labels onto historical receipts **without rewriting integrity**.
+
+| Piece | Location | Role |
+|-------|----------|------|
+| Monthly packs | `data/backfill/2026/YYYY-MM.json` | Curated term seeds (OBSERVED / INFERRED / SPECULATIVE) |
+| Loader / merge | `hyperlex.analysis.backfill` | Inventory + in-memory registry overlay |
+| Rematch report | `hyperlex.analysis.backprop` | Re-run `match_lineage` on goldens/archive/local receipts |
+| CLI | `lineage-backfill`, `lineage-backprop` | Operator surface |
+
+```bash
+python3 scripts/hyperlex.py lineage-backfill --list --through 2026-08
+python3 scripts/hyperlex.py lineage-backprop --from-golden --out out/backprop/report.json
+```
+
+**Integrity rules**
+
+1. Historical receipt JSON and `provenance.integrity` are never rewritten by backprop.
+2. Report schema: `hyperlex.lineage_backprop.v1` (change classes: `unchanged`, `gained`, `lost`, `reclassified`, `confidence_shift`).
+3. Brier remains null until settlement — backfill does not invent scores.
+4. Optional: re-run `archive-export` for a new sanitized Pages snapshot after reviewing the report.
+
+`match_lineage(text, registry=...)` accepts an overlay so backprop can use merged packs without permanently mutating the process-global `LINEAGE_REGISTRY`. Base registry still includes the main 2026 leaves so live analyze benefits immediately.
+
+See `data/backfill/2026/README.md` for pack schema and month notes.
 
 ## Example Families Documented
 

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.12 — YTD 2026 slang backfill + lineage backpropagation (2026-08-05)
+
+- Curated monthly packs: `data/backfill/2026/` (Jan–Aug) with OBSERVED/INFERRED terms.
+- `hyperlex.analysis.backfill` — load, inventory, merge packs into registry overlay.
+- `hyperlex.analysis.backprop` — non-mutating rematch of historical receipts; reclassification report only.
+- CLI: `lineage-backfill`, `lineage-backprop` (scripts + package entry).
+- `LINEAGE_REGISTRY` expanded with 2026 brainrot/AI leaves (`rizz`, `locked in`, `crash out`, `vibe coding`, …).
+- `match_lineage(..., registry=)` accepts overlay for backprop without global mutation.
+- Integrity rule: never rewrite historical receipt hashes; Brier still null until settlement.
+- Docs: `data/backfill/2026/README.md`; slang-lineages backfill section.
+
 ## 0.2.11 — GitHub Pages enabled + long-term analysis archive (2026-08-05)
 
 - GitHub Pages enabled (Actions build) → https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/

@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.12
+- YTD 2026 slang backfill packs + non-mutating lineage backpropagation.
+
 ## 0.2.11
 - Pages enabled; long-term analysis archive export.
 

@@ -742,6 +742,81 @@ def cmd_archive_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_lineage_backfill(args: argparse.Namespace) -> int:
+    """List / inventory / merge YTD slang backfill packs (non-mutating receipts)."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.analysis.backfill import apply_backfill, inventory_backfill, list_backfill_packs
+
+    root = Path(args.root) if args.root else (ROOT / "data" / "backfill")
+    year = int(args.year)
+    through = args.through or None
+
+    if args.list or args.inventory:
+        inv = inventory_backfill(year, root=root, through=through)
+        # drop full term dump unless --verbose
+        if not args.verbose:
+            inv = {k: v for k, v in inv.items() if k != "terms"}
+            inv["terms_omitted"] = True
+            inv["hint"] = "pass --verbose to include full term list"
+        _emit({"ok": True, "command": "lineage-backfill", "mode": "inventory", **inv})
+        return 0
+
+    report = apply_backfill(year, through=through, root=root)
+    # default: strip full merged_registry from CLI noise
+    if not args.verbose:
+        report = {k: v for k, v in report.items() if k != "merged_registry"}
+        report["merged_registry_omitted"] = True
+    if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
+        report["written"] = args.out
+    _emit({"ok": True, "command": "lineage-backfill", "mode": "apply", **report})
+    return 0
+
+
+def cmd_lineage_backprop(args: argparse.Namespace) -> int:
+    """Non-mutating lineage rematch of historical receipts (backpropagation report)."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.analysis.backprop import backpropagate_lineage
+
+    receipt_dirs: List[str] = []
+    if args.receipt_dir:
+        receipt_dirs.append(args.receipt_dir)
+
+    report = backpropagate_lineage(
+        year=int(args.year),
+        through=args.through or None,
+        backfill_root=Path(args.root) if args.root else (ROOT / "data" / "backfill"),
+        from_golden=bool(args.from_golden),
+        from_archive=bool(args.from_archive),
+        receipt_dirs=receipt_dirs or None,
+        inputs=list(args.input or []) or None,
+        repo_root=ROOT,
+        include_home=bool(args.include_home),
+        use_backfill=not bool(args.no_backfill),
+    )
+    # compact CLI: omit full rows unless verbose
+    out_obj = dict(report)
+    if not args.verbose:
+        out_obj.pop("rows", None)
+        out_obj["rows_omitted"] = True
+        out_obj["hint"] = "pass --verbose for per-receipt rows; --out always writes full report"
+    if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
+        out_obj["written"] = args.out
+    _emit({"ok": True, "command": "lineage-backprop", **out_obj})
+    return 0
+
+
 def cmd_ledger_stats(args: argparse.Namespace) -> int:
     pkg, err = _import_hyperlex()
     if pkg is None:
@@ -1263,6 +1338,36 @@ def _build_parser() -> argparse.ArgumentParser:
     ar_parser.add_argument("--no-ledger-index", action="store_true", default=False)
     ar_parser.add_argument("--snapshot-id", default="")
     ar_parser.set_defaults(func=cmd_archive_export)
+
+    lbf = subparsers.add_parser(
+        "lineage-backfill",
+        help="Load YTD slang backfill packs; inventory or merge into registry overlay",
+    )
+    lbf.add_argument("--year", type=int, default=2026)
+    lbf.add_argument("--through", default="", help="Cap packs at YYYY-MM (e.g. 2026-08)")
+    lbf.add_argument("--root", default="", help="data/backfill root (default: repo data/backfill)")
+    lbf.add_argument("--list", action="store_true", default=False, help="List packs / inventory")
+    lbf.add_argument("--inventory", action="store_true", default=False, help="Alias for --list")
+    lbf.add_argument("--verbose", action="store_true", default=False, help="Include full term list / registry")
+    lbf.add_argument("--out", default="", help="Write apply report JSON")
+    lbf.set_defaults(func=cmd_lineage_backfill)
+
+    lbp = subparsers.add_parser(
+        "lineage-backprop",
+        help="Non-mutating lineage rematch of historical receipts (backpropagation report)",
+    )
+    lbp.add_argument("--year", type=int, default=2026)
+    lbp.add_argument("--through", default="", help="Cap backfill packs at YYYY-MM")
+    lbp.add_argument("--root", default="", help="data/backfill root")
+    lbp.add_argument("--from-golden", action="store_true", default=False)
+    lbp.add_argument("--from-archive", action="store_true", default=False)
+    lbp.add_argument("--include-home", action="store_true", default=False)
+    lbp.add_argument("--receipt-dir", default="")
+    lbp.add_argument("--input", action="append", default=[], help="Receipt JSON (repeatable)")
+    lbp.add_argument("--no-backfill", action="store_true", default=False, help="Use base registry only")
+    lbp.add_argument("--verbose", action="store_true", default=False)
+    lbp.add_argument("--out", default="", help="Write full backprop report JSON")
+    lbp.set_defaults(func=cmd_lineage_backprop)
 
     vrl_parser = subparsers.add_parser("verify-receipt-ledger", help="Verify receipt ledger hash chain")
     vrl_parser.add_argument("--ledger", default="")

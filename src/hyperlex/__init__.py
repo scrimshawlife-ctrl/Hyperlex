@@ -35,6 +35,8 @@ from .analysis import (
     match_lineage,
     compute_lineage_confidence,
 )
+from .analysis.backfill import apply_backfill, inventory_backfill, list_backfill_packs
+from .analysis.backprop import backpropagate_lineage
 from .synthesis import mock_integrate_with_external_signal
 from .receipt import (
     emit_receipt,
@@ -114,6 +116,10 @@ API_EXTENDED = (
     "write_diagram_bundle",
     "predict_virality",
     "export_analysis_archive",
+    "apply_backfill",
+    "inventory_backfill",
+    "list_backfill_packs",
+    "backpropagate_lineage",
 )
 
 __all__ = [
@@ -144,6 +150,10 @@ __all__ = [
     "write_diagram_bundle",
     "diagrams",
     "export_analysis_archive",
+    "apply_backfill",
+    "inventory_backfill",
+    "list_backfill_packs",
+    "backpropagate_lineage",
     "API_EXTENDED",
 ]
 

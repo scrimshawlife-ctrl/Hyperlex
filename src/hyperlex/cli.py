@@ -159,6 +159,53 @@ def cmd_scan(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_lineage_backfill(args: argparse.Namespace) -> int:
+    from hyperlex.analysis.backfill import apply_backfill, inventory_backfill
+
+    root = Path(args.root) if args.root else None
+    year = int(args.year)
+    through = args.through or None
+    if args.list:
+        inv = inventory_backfill(year, root=root, through=through)
+        if not args.verbose:
+            inv = {k: v for k, v in inv.items() if k != "terms"}
+        _emit({"ok": True, "command": "lineage-backfill", "mode": "inventory", **inv})
+        return 0
+    report = apply_backfill(year, through=through, root=root)
+    if not args.verbose:
+        report = {k: v for k, v in report.items() if k != "merged_registry"}
+    if args.out:
+        Path(args.out).write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
+        report["written"] = args.out
+    _emit({"ok": True, "command": "lineage-backfill", "mode": "apply", **report})
+    return 0
+
+
+def cmd_lineage_backprop(args: argparse.Namespace) -> int:
+    from hyperlex.analysis.backprop import backpropagate_lineage
+
+    report = backpropagate_lineage(
+        year=int(args.year),
+        through=args.through or None,
+        backfill_root=Path(args.root) if args.root else None,
+        from_golden=bool(args.from_golden),
+        from_archive=bool(args.from_archive),
+        receipt_dirs=[args.receipt_dir] if args.receipt_dir else None,
+        inputs=list(args.input or []) or None,
+        include_home=bool(args.include_home),
+        use_backfill=not bool(args.no_backfill),
+    )
+    out_obj = dict(report)
+    if not args.verbose:
+        out_obj.pop("rows", None)
+    if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
+        out_obj["written"] = args.out
+    _emit({"ok": True, "command": "lineage-backprop", **out_obj})
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="hyperlex", description="Hyperlex memetic emergence engine")
     sub = p.add_subparsers(dest="command", required=True)
@@ -207,6 +254,29 @@ def build_parser() -> argparse.ArgumentParser:
     sc.add_argument("--receipt", action="store_true")
     sc.add_argument("--forecasts", action="store_true")
     sc.set_defaults(func=cmd_scan)
+
+    lbf = sub.add_parser("lineage-backfill", help="YTD slang backfill packs")
+    lbf.add_argument("--year", type=int, default=2026)
+    lbf.add_argument("--through", default="")
+    lbf.add_argument("--root", default="")
+    lbf.add_argument("--list", action="store_true")
+    lbf.add_argument("--verbose", action="store_true")
+    lbf.add_argument("--out", default="")
+    lbf.set_defaults(func=cmd_lineage_backfill)
+
+    lbp = sub.add_parser("lineage-backprop", help="Non-mutating lineage rematch")
+    lbp.add_argument("--year", type=int, default=2026)
+    lbp.add_argument("--through", default="")
+    lbp.add_argument("--root", default="")
+    lbp.add_argument("--from-golden", action="store_true")
+    lbp.add_argument("--from-archive", action="store_true")
+    lbp.add_argument("--include-home", action="store_true")
+    lbp.add_argument("--receipt-dir", default="")
+    lbp.add_argument("--input", action="append", default=[])
+    lbp.add_argument("--no-backfill", action="store_true")
+    lbp.add_argument("--verbose", action="store_true")
+    lbp.add_argument("--out", default="")
+    lbp.set_defaults(func=cmd_lineage_backprop)
 
     return p
 

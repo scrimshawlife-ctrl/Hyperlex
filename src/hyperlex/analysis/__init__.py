@@ -37,17 +37,29 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
     },
     {
         "family_id": "ai-native",
-        "terms": ["hallucinate", "slop", "clanker", "agentic", "glazing", "skill issue", "token", "context window"],
+        "terms": [
+            "hallucinate", "slop", "clanker", "agentic", "glazing", "skill issue",
+            "token", "context window", "vibe coding",
+        ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/ai-native-family.mmd",
         "payload_note": "machine language as culture; quality judgment + hostility + agency framing",
     },
     {
         "family_id": "brainrot-aura",
-        "terms": ["brainrot", "brain rot", "aura", "aura farming", "mid", "cooked", "let him cook"],
+        "terms": [
+            # core (pre-2026 trunk)
+            "brainrot", "brain rot", "aura", "aura farming", "mid", "cooked", "let him cook",
+            # 2026 YTD leaves (see data/backfill/2026/)
+            "rizz", "skibidi", "gyatt", "sigma", "delulu", "no cap", "locked in", "crash out",
+            "mewing", "looksmaxxing", "mog", "mogging", "ate", "left no crumbs", "it's giving",
+            "npc", "main character", "main character energy", "fanum tax", "ohio",
+            "bussin", "slay", "six seven", "67", "edging", "gooning",
+            "vibe check", "negative aura", "aura points", "yap", "yapping", "chat is this real",
+        ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
-        "payload_note": "content-degradation + status radiation; self-aware consumption",
+        "payload_note": "content-degradation + status radiation; self-aware consumption; 2026 Gen Alpha carryover",
     },
     {
         "family_id": "kinship-address",
@@ -67,7 +79,7 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
         "family_id": "gaming-meta",
         "terms": [
             "nerf", "buff", "meta", "sweaty", "noob", "gg", "ez", "ratio",
-            "touch grass", "skill issue", "diff", "int", "feed", "smurf",
+            "touch grass", "skill issue", "diff", "int", "feed", "smurf", "sus",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
@@ -150,20 +162,28 @@ def match_lineage(
     text: str,
     terms: Optional[List[str]] = None,
     min_confidence: float = LINEAGE_CONFIDENCE_THRESHOLD,
+    registry: Optional[List[Dict[str, Any]]] = None,
 ) -> Optional[Dict[str, Any]]:
+    """Match text to a lineage family.
+
+    ``registry`` optionally overrides ``LINEAGE_REGISTRY`` (e.g. backfill merge).
+    Historical receipts are never mutated by this function.
+    """
     corpus = (text or "").lower()
     if terms:
         corpus = corpus + " " + " ".join(t.lower() for t in terms)
 
     best: Optional[Dict[str, Any]] = None
     best_score = 0.0
+    entries = registry if registry is not None else LINEAGE_REGISTRY
 
-    for entry in LINEAGE_REGISTRY:
-        hits = _find_hits(corpus, entry["terms"])
+    for entry in entries:
+        family_terms = list(entry.get("terms") or [])
+        hits = _find_hits(corpus, family_terms)
         if not hits:
             continue
 
-        score, breakdown = compute_lineage_confidence(hits, entry["terms"], corpus)
+        score, breakdown = compute_lineage_confidence(hits, family_terms, corpus)
         if score < min_confidence:
             continue
 
@@ -200,7 +220,10 @@ def detect_neologisms(text: str) -> List[Dict[str, Any]]:
     # multi-word tactical / identity phrases
     multi = re.findall(
         r"\b((?:sharp money|diamond hands|paper hands|false nine|low block|"
-        r"aura farming|skill issue|context window|organic velocity|line movement))\b",
+        r"aura farming|skill issue|context window|organic velocity|line movement|"
+        r"locked in|crash out|left no crumbs|main character energy|fanum tax|"
+        r"six seven|vibe check|vibe coding|aura points|negative aura|chat is this real|"
+        r"it's giving|no cap|looksmaxxing|touch grass|quiet quitting|act your wage))\b",
         corpus,
     )
     for phrase in multi:
@@ -213,6 +236,20 @@ def detect_neologisms(text: str) -> List[Dict[str, Any]]:
             "confidence": 0.78,
             "provenance": "INFERRED",
         })
+
+    # known single-token 2026 / slang stems (word-boundary)
+    for tok in (
+        "rizz", "skibidi", "gyatt", "sigma", "delulu", "mewing", "mog", "mogging",
+        "bussin", "gooning", "yap", "yapping", "npc", "slay", "ohio", "edging",
+    ):
+        if re.search(rf"\b{re.escape(tok)}\b", corpus) and tok not in seen:
+            seen.add(tok)
+            results.append({
+                "term": tok,
+                "formation": "platform_compression",
+                "confidence": 0.72,
+                "provenance": "INFERRED",
+            })
 
     # single-token morphological / slang stems
     candidates = re.findall(
