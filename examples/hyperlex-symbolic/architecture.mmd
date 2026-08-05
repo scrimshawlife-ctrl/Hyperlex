@@ -3,14 +3,21 @@
 
 ```mermaid
 flowchart LR
-  src_hyperlex["hyperlex<br/>src.hyperlex"]
-  src_hyperlex___main__["init<br/>zone_1"]
-  src_hyperlex_engine["completion<br/>zone_9"]
-  tests_test_hyperlex["test_hyperlex<br/>tests.test_hyperlex"]
-  src_hyperlex --> src_hyperlex_engine
-  src_hyperlex___main__ --> src_hyperlex_engine
+  potential["potential<br/>zone_0"]
+  init["init<br/>zone_1"]
+  structure["structure<br/>zone_4"]
+  threshold["threshold<br/>zone_5"]
+  feedback["feedback<br/>zone_6"]
+  completion["completion<br/>zone_9"]
+  potential --> init
+  init --> structure
+  structure --> threshold
+  threshold --> feedback
+  feedback --> completion
 ```
 
 <!-- flows
-  import-topology: observed import topology :: src.hyperlex → src.hyperlex.__main__ → src.hyperlex.engine → tests.test_hyperlex
+  primary: numogram primary path :: potential → init → structure → threshold → feedback → completion
+  core: numogram core collapse :: init → threshold → completion
+  overlay-chaos-magic: overlay · chaos-magic :: potential → init → structure → threshold → feedback → completion
 -->

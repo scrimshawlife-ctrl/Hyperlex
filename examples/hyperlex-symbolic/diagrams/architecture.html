@@ -63,131 +63,73 @@ const GRAPH = {
   "secondary_overlay": "chaos-magic",
   "nodes": [
     {
-      "id": "potential",
-      "mechanical": "potential",
-      "symbolic": "zone_0",
-      "label": "potential \u00b7 zone_0",
-      "note": "Void / pure potential",
+      "id": "src.hyperlex",
+      "mechanical": "hyperlex",
+      "symbolic": "src.hyperlex",
+      "label": "hyperlex \u00b7 src.hyperlex",
+      "note": "src/hyperlex/__init__.py",
       "order": 0,
-      "overlay": "overlay:chaos-magic/chaos_shift (Paradigm engine / framework select)"
+      "provenance": "OBSERVED"
     },
     {
-      "id": "init",
+      "id": "src.hyperlex.__main__",
       "mechanical": "init",
       "symbolic": "zone_1",
       "label": "init \u00b7 zone_1",
       "note": "First differentiation",
       "order": 1,
-      "overlay": "overlay:chaos-magic/sigil_glyph (Compressed intent token)"
+      "provenance": "OBSERVED"
     },
     {
-      "id": "structure",
-      "mechanical": "structure",
-      "symbolic": "zone_4",
-      "label": "structure \u00b7 zone_4",
-      "note": "Stable order",
-      "order": 2,
-      "overlay": "overlay:chaos-magic/banishing_clear (Session / context banishing)"
-    },
-    {
-      "id": "threshold",
-      "mechanical": "threshold",
-      "symbolic": "zone_5",
-      "label": "threshold \u00b7 zone_5",
-      "note": "Tipping / intensive peak",
-      "order": 3,
-      "overlay": "overlay:chaos-magic/results_metric (Results eval gate)"
-    },
-    {
-      "id": "feedback",
-      "mechanical": "feedback",
-      "symbolic": "zone_6",
-      "label": "feedback \u00b7 zone_6",
-      "note": "Resonance / amplify",
-      "order": 4,
-      "overlay": "overlay:chaos-magic/alphabet_desire (Project-local symbolic encoding)"
-    },
-    {
-      "id": "completion",
+      "id": "src.hyperlex.engine",
       "mechanical": "completion",
       "symbolic": "zone_9",
       "label": "completion \u00b7 zone_9",
       "note": "Return / final intensity",
-      "order": 5,
-      "overlay": "overlay:chaos-magic/\u2014"
+      "order": 2,
+      "provenance": "OBSERVED"
+    },
+    {
+      "id": "tests.test_hyperlex",
+      "mechanical": "test_hyperlex",
+      "symbolic": "tests.test_hyperlex",
+      "label": "test_hyperlex \u00b7 tests.test_hyperlex",
+      "note": "tests/test_hyperlex.py",
+      "order": 3,
+      "provenance": "OBSERVED"
     }
   ],
   "edges": [
     {
-      "id": "e-potential-init",
-      "from": "potential",
-      "to": "init",
-      "kind": "sequence"
+      "id": "e-0-src.hyperlex-src.hyperlex.engine",
+      "from": "src.hyperlex",
+      "to": "src.hyperlex.engine",
+      "kind": "import"
     },
     {
-      "id": "e-init-structure",
-      "from": "init",
-      "to": "structure",
-      "kind": "sequence"
-    },
-    {
-      "id": "e-structure-threshold",
-      "from": "structure",
-      "to": "threshold",
-      "kind": "sequence"
-    },
-    {
-      "id": "e-threshold-feedback",
-      "from": "threshold",
-      "to": "feedback",
-      "kind": "sequence"
-    },
-    {
-      "id": "e-feedback-completion",
-      "from": "feedback",
-      "to": "completion",
-      "kind": "sequence"
+      "id": "e-2-src.hyperlex.__main__-src.hyperlex.engine",
+      "from": "src.hyperlex.__main__",
+      "to": "src.hyperlex.engine",
+      "kind": "import"
     }
   ],
   "flows": [
     {
-      "id": "primary",
-      "name": "numogram primary path",
+      "id": "import-topology",
+      "name": "observed import topology",
       "steps": [
-        "potential",
-        "init",
-        "structure",
-        "threshold",
-        "feedback",
-        "completion"
-      ]
-    },
-    {
-      "id": "core",
-      "name": "numogram core collapse",
-      "steps": [
-        "init",
-        "threshold",
-        "completion"
-      ]
-    },
-    {
-      "id": "overlay-chaos-magic",
-      "name": "overlay \u00b7 chaos-magic",
-      "steps": [
-        "potential",
-        "init",
-        "structure",
-        "threshold",
-        "feedback",
-        "completion"
+        "src.hyperlex",
+        "src.hyperlex.__main__",
+        "src.hyperlex.engine",
+        "tests.test_hyperlex"
       ]
     }
   ],
   "provenance": {
     "operator": "orchestra-cli",
-    "timestamp": "2026-08-05T06:10:06Z",
-    "skill_version": "0.4.0"
+    "timestamp": "2026-08-05T06:11:35Z",
+    "skill_version": "0.4.0",
+    "kind": "OBSERVED"
   }
 };
 const svg = document.getElementById('svg');
