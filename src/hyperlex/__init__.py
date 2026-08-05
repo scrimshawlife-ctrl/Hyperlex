@@ -5,6 +5,7 @@ Symbolic architecture (numogram + chaos-magic):
 - analysis (zone_of_emergence)
 - synthesis (current_of_transmission)
 - receipt (archive_of_becoming)
+- calibration (forecast → settlement → Brier)
 
 Schemas available in .schemas
 """
@@ -20,7 +21,6 @@ def _read_version() -> str:
 
 PKG_VERSION = _read_version()
 
-# Re-exports
 from .intake import ingest_signal, fetch_ingest
 from .analysis import (
     humanize_slang_output,
@@ -30,22 +30,38 @@ from .analysis import (
     memetics_protocol_check,
     simulate_hyperstition_loop,
     detect_memetic_patterns,
+    match_lineage,
+    compute_lineage_confidence,
 )
 from .synthesis import mock_integrate_with_external_signal
 from .receipt import emit_receipt
-
-# Schema access
 from . import schemas
+from . import calibration
+from .calibration import (
+    extract_forecasts,
+    settle,
+    score_pair,
+    score_series,
+    NOT_COMPUTABLE,
+)
 
 __all__ = [
     "ingest_signal",
     "fetch_ingest",
     "detect_memetic_patterns",
+    "match_lineage",
+    "compute_lineage_confidence",
     "mock_integrate_with_external_signal",
     "emit_receipt",
     "humanize_slang_output",
     "compute_virality_score",
     "simulate_hyperstition_loop",
+    "extract_forecasts",
+    "settle",
+    "score_pair",
+    "score_series",
+    "NOT_COMPUTABLE",
+    "calibration",
     "schemas",
     "PKG_VERSION",
 ]
