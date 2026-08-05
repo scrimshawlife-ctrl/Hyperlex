@@ -1,0 +1,29 @@
+{
+  "schema": "hyperlex.domain_phylogeny.v1",
+  "domain_id": "ai-native",
+  "label": "AI-native / model-culture phylogeny",
+  "provenance_default": "INFERRED",
+  "families": ["ai-native", "gaming-meta", "brainrot-aura"],
+  "roots": [
+    {"id": "ml-lab", "label": "ML lab jargon", "era": "2010s"},
+    {"id": "llm-chat", "label": "LLM chat vernacular", "era": "2022+"},
+    {"id": "gaming-meta", "label": "Competitive game meta", "era": "2010s"}
+  ],
+  "trunks": [
+    {"id": "quality-judgment", "label": "Quality judgment (slop/hallucinate)", "family_id": "ai-native"},
+    {"id": "agency", "label": "Agency framing (agentic)", "family_id": "ai-native"},
+    {"id": "skill-status", "label": "Skill status (skill issue)", "family_id": "gaming-meta"}
+  ],
+  "leaves": [
+    {"term": "slop", "family_id": "ai-native"},
+    {"term": "clanker", "family_id": "ai-native"},
+    {"term": "vibe coding", "family_id": "ai-native"},
+    {"term": "context window", "family_id": "ai-native"},
+    {"term": "glazing", "family_id": "ai-native"},
+    {"term": "skill issue", "family_id": "gaming-meta"}
+  ],
+  "cross_edges": [
+    {"from": "skill-status", "to": "agency", "operator": "cross_family_borrowing"},
+    {"from": "quality-judgment", "to": "brainrot-aura", "operator": "irony_inversion", "note": "slop ↔ brainrot"}
+  ]
+}

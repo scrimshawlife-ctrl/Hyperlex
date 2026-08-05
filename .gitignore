@@ -34,6 +34,7 @@ build/
 !docs/archive/**/*.json
 !docs/archive/**/*.jsonl
 !data/backfill/**/*.json
+!data/phylogeny/**/*.json
 
 # Temp / build output
 tmp/

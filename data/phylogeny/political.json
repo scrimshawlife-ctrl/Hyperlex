@@ -1,0 +1,26 @@
+{
+  "schema": "hyperlex.domain_phylogeny.v1",
+  "domain_id": "political",
+  "label": "Political-status / tribal judgment phylogeny",
+  "provenance_default": "INFERRED",
+  "families": ["political-status", "brainrot-aura", "kinship-address"],
+  "roots": [
+    {"id": "forum-culture", "label": "Imageboard / forum culture", "era": "2000s"},
+    {"id": "pill-discourse", "label": "Pill discourse", "era": "2010s"}
+  ],
+  "trunks": [
+    {"id": "tribal-judgment", "label": "Tribal judgment (based/cope)", "family_id": "political-status"},
+    {"id": "status-radiation", "label": "Status radiation (aura/mid)", "family_id": "brainrot-aura"}
+  ],
+  "leaves": [
+    {"term": "based", "family_id": "political-status"},
+    {"term": "cope", "family_id": "political-status"},
+    {"term": "seethe", "family_id": "political-status"},
+    {"term": "redpilled", "family_id": "political-status"},
+    {"term": "mid", "family_id": "brainrot-aura"},
+    {"term": "aura", "family_id": "brainrot-aura"}
+  ],
+  "cross_edges": [
+    {"from": "tribal-judgment", "to": "status-radiation", "operator": "irony_inversion"}
+  ]
+}

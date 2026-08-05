@@ -1,0 +1,26 @@
+{
+  "schema": "hyperlex.domain_phylogeny.v1",
+  "domain_id": "regional",
+  "label": "Regional / platform-accelerated address phylogeny",
+  "provenance_default": "INFERRED",
+  "families": ["kinship-address", "brainrot-aura", "gaming-meta"],
+  "roots": [
+    {"id": "aave-kinship", "label": "AAVE + fictive kinship", "era": "long-span"},
+    {"id": "platform-accel", "label": "Platform acceleration (TikTok/X)", "era": "2018+"}
+  ],
+  "trunks": [
+    {"id": "fictive-kin", "label": "Fictive kinship address", "family_id": "kinship-address"},
+    {"id": "gen-alpha", "label": "Gen Alpha compression", "family_id": "brainrot-aura"}
+  ],
+  "leaves": [
+    {"term": "unc", "family_id": "kinship-address"},
+    {"term": "twin", "family_id": "kinship-address"},
+    {"term": "bro", "family_id": "kinship-address"},
+    {"term": "rizz", "family_id": "brainrot-aura"},
+    {"term": "skibidi", "family_id": "brainrot-aura"},
+    {"term": "locked in", "family_id": "brainrot-aura"}
+  ],
+  "cross_edges": [
+    {"from": "platform-accel", "to": "gen-alpha", "operator": "platform_compression"}
+  ]
+}

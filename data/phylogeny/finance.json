@@ -1,0 +1,27 @@
+{
+  "schema": "hyperlex.domain_phylogeny.v1",
+  "domain_id": "finance",
+  "label": "Finance / markets slang phylogeny",
+  "provenance_default": "INFERRED",
+  "families": ["betting-sharp", "crypto-degen", "workplace-corp"],
+  "roots": [
+    {"id": "bookie-cant", "label": "Bookie / racetrack cant", "era": "pre-internet"},
+    {"id": "wall-street", "label": "Street + desk jargon", "era": "1980s-2000s"},
+    {"id": "crypto-forum", "label": "Crypto forum compression", "era": "2013+"}
+  ],
+  "trunks": [
+    {"id": "line-physics", "label": "Line physics (sharp/steam)", "family_id": "betting-sharp"},
+    {"id": "risk-identity", "label": "Risk-as-identity (degen/hodl)", "family_id": "crypto-degen"}
+  ],
+  "leaves": [
+    {"term": "CLV", "family_id": "betting-sharp", "note": "closing line value"},
+    {"term": "steam", "family_id": "betting-sharp"},
+    {"term": "sharp", "family_id": "betting-sharp"},
+    {"term": "degen", "family_id": "crypto-degen"},
+    {"term": "ngmi", "family_id": "crypto-degen"},
+    {"term": "rug", "family_id": "crypto-degen"}
+  ],
+  "cross_edges": [
+    {"from": "risk-identity", "to": "line-physics", "operator": "cross_family_borrowing", "note": "degen → sports betting"}
+  ]
+}
