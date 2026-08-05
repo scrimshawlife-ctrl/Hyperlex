@@ -19,7 +19,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [ ] Glossary expansion (multiple sources)
 - [ ] Persistent cache + rate limiting
 - [ ] Enhanced provenance (source fingerprints, timestamps)
-- [ ] Receipt ledger (append-only, hash-chained)
+- [x] Receipt ledger (append-only, hash-chained) — `~/.hyperlex/receipt_ledger.jsonl`
 
 ### Phase 2 — Advanced Analysis & Calibration
 - [ ] Integration with real historical calibration data (settled series)
@@ -41,7 +41,8 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Advisory mean-shift recalibration diagnostic (`mean_shift_from_series`)
 
 ### Phase 3 — Hermes / Symbolic Integration
-- [ ] Native integration points for Hermes Agent
+- [x] Hermes skill packaging (`SKILL.md`, `install.sh` → `~/.hermes/skills/hyperlex`)
+- [x] Native skill install path + post-install check/smoke
 - [ ] Rune / signal relay compatibility
 - [ ] Hyperstition loop feedback into forecasting systems
 - [ ] Market-signal and forecast pipeline connectors (generic)

@@ -34,7 +34,7 @@ def test_cli_check_ok() -> None:
     assert result.returncode == 0
     body = _load_json(result.stdout)
     assert body["ok"] is True
-    assert body["version"] == "0.1.1"
+    assert body["version"] == "0.1.2"
     checks = {entry["name"]: entry["ok"] for entry in body["checks"]}
     assert checks["version_file"]
     assert checks["schema_ingest"]
@@ -86,14 +86,20 @@ def test_analyze_and_validate_schema() -> None:
     body = _load_json(result.stdout)
     payload = body["result"]
     assert body["ok"] is True
-    assert payload["provenance"]["version"] == "0.1.1"
+    assert payload["provenance"]["version"] == "0.1.2"
     assert "schema_validation" in payload
     assert payload["schema_validation"]["valid"]
 
 
 def test_receipt_verify_cycle(tmp_path: Path) -> None:
     result = detect_memetic_patterns(query="sharp money revenge", ingest_source="mock", validate=True)
-    receipt_path = emit_receipt(result, out_dir=tmp_path / "receipts", validate=True)
+    receipt_path = emit_receipt(
+        result,
+        out_dir=tmp_path / "receipts",
+        validate=True,
+        append_ledger=True,
+        ledger_path=tmp_path / "receipt_ledger.jsonl",
+    )
 
     validate_cmd = _run_cli("validate", str(receipt_path))
     assert validate_cmd.returncode == 0

@@ -1,5 +1,5 @@
 name: hyperlex
-version: 0.1.1
+version: 0.1.2
 display_name: Hyperlex
 kind: hermes-openclaw-skill
 description: >
@@ -53,6 +53,9 @@ commands:
   - settle
   - score-series
   - verify-score-log
+  - emit-receipt
+  - list-receipts
+  - verify-receipt-ledger
   - validate
   - verify-receipt
   - smoke
@@ -66,6 +69,9 @@ intents:
   - settle
   - score-series
   - verify-score-log
+  - emit-receipt
+  - list-receipts
+  - verify-receipt-ledger
   - validate
   - verify-receipt
   - smoke

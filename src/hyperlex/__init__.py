@@ -34,7 +34,13 @@ from .analysis import (
     compute_lineage_confidence,
 )
 from .synthesis import mock_integrate_with_external_signal
-from .receipt import emit_receipt
+from .receipt import (
+    emit_receipt,
+    verify_receipt,
+    default_ledger_path,
+    list_receipts,
+    verify_ledger_chain,
+)
 from . import schemas
 from . import calibration
 from .calibration import (
@@ -57,6 +63,10 @@ __all__ = [
     "compute_lineage_confidence",
     "mock_integrate_with_external_signal",
     "emit_receipt",
+    "verify_receipt",
+    "default_ledger_path",
+    "list_receipts",
+    "verify_ledger_chain",
     "humanize_slang_output",
     "compute_virality_score",
     "simulate_hyperstition_loop",

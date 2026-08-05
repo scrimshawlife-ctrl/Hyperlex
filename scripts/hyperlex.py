@@ -243,12 +243,31 @@ def cmd_analyze(args: argparse.Namespace) -> int:
 
     forecasts = None
     log_records = None
+    receipt_path = None
+    if getattr(args, "receipt", False):
+        out_dir = Path(args.receipt_dir) if getattr(args, "receipt_dir", "") else None
+        ledger = None
+        if getattr(args, "ledger", ""):
+            ledger = Path(args.ledger)
+        receipt_path = pkg.emit_receipt(
+            result,
+            out_dir=out_dir,
+            validate=bool(args.validate),
+            append_ledger=not getattr(args, "no_ledger", False),
+            ledger_path=ledger,
+        )
+        # reload so result carries receipt block for forecast anchoring
+        try:
+            result = json.loads(Path(receipt_path).read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
     if getattr(args, "forecasts", False):
         receipt_ref = None
         if isinstance(result.get("receipt"), dict):
             receipt_ref = {
                 "integrity": result["receipt"].get("integrity"),
-                "path": None,
+                "path": str(receipt_path) if receipt_path else None,
             }
         forecasts = pkg.extract_forecasts(result, receipt_ref=receipt_ref)
         if getattr(args, "append_log", False) and forecasts:
@@ -263,6 +282,8 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         out.write_text(json.dumps(result, sort_keys=True, indent=2), encoding="utf-8")
 
     payload_out: Dict[str, Any] = {"ok": True, "command": "analyze", "result": result}
+    if receipt_path is not None:
+        payload_out["receipt"] = str(receipt_path)
     if forecasts is not None:
         payload_out["forecasts"] = forecasts
         payload_out["n_forecasts"] = len(forecasts)
@@ -271,6 +292,79 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         payload_out["logged"] = len(log_records)
     _emit(payload_out)
     return 0
+
+
+def cmd_emit_receipt(args: argparse.Namespace) -> int:
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    payload, load_error = _get_input_payload(args.input)
+    if load_error:
+        _emit({"ok": False, "error": load_error})
+        return 2
+    if payload is None:
+        _emit({"ok": False, "error": "input required"})
+        return 2
+
+    # strip existing receipt block so integrity is recomputed over analysis body
+    body = {k: v for k, v in payload.items() if k != "receipt"}
+    out_dir = Path(args.out_dir) if args.out_dir else None
+    ledger = Path(args.ledger) if args.ledger else None
+    path = pkg.emit_receipt(
+        body,
+        out_dir=out_dir,
+        validate=bool(args.validate),
+        append_ledger=not args.no_ledger,
+        ledger_path=ledger,
+    )
+    _emit({
+        "ok": True,
+        "command": "emit-receipt",
+        "receipt": str(path),
+        "ledger_path": str(ledger or pkg.default_ledger_path()),
+    })
+    return 0
+
+
+def cmd_list_receipts(args: argparse.Namespace) -> int:
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    ledger = Path(args.ledger) if args.ledger else pkg.default_ledger_path()
+    entries = pkg.list_receipts(
+        path=ledger,
+        limit=int(args.limit),
+        lineage_family=args.lineage_family or None,
+    )
+    _emit({
+        "ok": True,
+        "command": "list-receipts",
+        "ledger_path": str(ledger),
+        "n": len(entries),
+        "receipts": entries,
+    })
+    return 0
+
+
+def cmd_verify_receipt_ledger(args: argparse.Namespace) -> int:
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    ledger = Path(args.ledger) if args.ledger else pkg.default_ledger_path()
+    chain = pkg.verify_ledger_chain(ledger)
+    _emit({
+        "ok": bool(chain.get("ok")),
+        "command": "verify-receipt-ledger",
+        "ledger_path": str(ledger),
+        "chain": chain,
+    })
+    return 0 if chain.get("ok") else 2
 
 
 def cmd_extract_forecasts(args: argparse.Namespace) -> int:
@@ -580,8 +674,30 @@ def _build_parser() -> argparse.ArgumentParser:
     analyze_parser.add_argument("--append-log", action="store_true", default=False, help="Append forecasts to score log")
     analyze_parser.add_argument("--log", default="", help="Score log path (default ~/.hyperlex/score_log.jsonl)")
     analyze_parser.add_argument("--repo-log", action="store_true", default=False, help="Use out/calibration/score_log.jsonl")
+    analyze_parser.add_argument("--receipt", action="store_true", default=False, help="Emit receipt + append receipt ledger")
+    analyze_parser.add_argument("--receipt-dir", default="", help="Directory for receipt JSON files")
+    analyze_parser.add_argument("--ledger", default="", help="Receipt ledger path (default ~/.hyperlex/receipt_ledger.jsonl)")
+    analyze_parser.add_argument("--no-ledger", action="store_true", default=False, help="Skip receipt ledger append")
     analyze_parser.add_argument("--out")
     analyze_parser.set_defaults(func=cmd_analyze)
+
+    emit_parser = subparsers.add_parser("emit-receipt", help="Emit receipt from analysis result JSON")
+    emit_parser.add_argument("--input", required=True)
+    emit_parser.add_argument("--out-dir", default="", help="Receipt directory (default ~/.hyperlex/receipts)")
+    emit_parser.add_argument("--ledger", default="")
+    emit_parser.add_argument("--no-ledger", action="store_true", default=False)
+    emit_parser.add_argument("--validate", action="store_true", default=False)
+    emit_parser.set_defaults(func=cmd_emit_receipt)
+
+    list_parser = subparsers.add_parser("list-receipts", help="List receipt ledger index entries")
+    list_parser.add_argument("--ledger", default="")
+    list_parser.add_argument("--limit", type=int, default=50)
+    list_parser.add_argument("--lineage-family", default="")
+    list_parser.set_defaults(func=cmd_list_receipts)
+
+    vrl_parser = subparsers.add_parser("verify-receipt-ledger", help="Verify receipt ledger hash chain")
+    vrl_parser.add_argument("--ledger", default="")
+    vrl_parser.set_defaults(func=cmd_verify_receipt_ledger)
 
     ef_parser = subparsers.add_parser("extract-forecasts", help="Extract forecasts from analysis result JSON")
     ef_parser.add_argument("--input", required=True, help="Analysis result or receipt JSON")

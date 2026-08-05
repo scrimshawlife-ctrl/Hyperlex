@@ -6,7 +6,7 @@
 
 **Hyperlex** is a standalone Hermes skill for memetic emergence analysis.
 
-Version **0.1.1** · Skill name: `hyperlex` · Python ≥ 3.10 · License: MIT
+Version **0.1.2** · Skill name: `hyperlex` · Python ≥ 3.10 · License: MIT
 
 ## What this skill does
 

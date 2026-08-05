@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 — Receipt ledger (2026-08-05)
+
+- Append-only hash-chained receipt ledger (`~/.hyperlex/receipt_ledger.jsonl`).
+- `emit_receipt(..., append_ledger=True)` indexes each receipt (integrity, lineage, path).
+- CLI: `emit-receipt`, `list-receipts`, `verify-receipt-ledger`; `analyze --receipt`.
+- Hermes skill packaging already on `main` (v0.1.1); this continues the archive path.
+
 ## 0.1.1 — Hermes skill packaging (2026-08-05)
 
 - Full Hermes skill contract in `SKILL.md` (frontmatter, triggers, procedure, authority).
