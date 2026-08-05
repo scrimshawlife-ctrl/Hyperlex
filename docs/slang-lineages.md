@@ -1,7 +1,7 @@
 # Slang Lineages & Emergent Branches
 
 **Status**: Active documentation surface  
-**Version**: expanded 2026-08-05  
+**Version**: expanded 2026-08-05 (schema + matcher + HTML + additional families)  
 **Purpose**: Provide canonical visual and structural documentation for historical families of slang words and the processes by which new branches emerge. This layer supports Hyperlex analysis outputs, Abraxas Slang Module family-tree sections, and Orchestra symbolic mapping.
 
 ## Why Lineages Matter
@@ -39,13 +39,14 @@ These are the primary ways new branches form. Document them explicitly when reco
 4. **Emergent monitoring** — live signals from X, Reddit, Urban Dictionary, domain glossaries, and Hyperlex ingest feed candidate new leaves.
 5. **Visual encoding** — Mermaid diagrams stored under `examples/slang-families/`.
 6. **Provenance tagging** — every claim about a root or branch should be OBSERVED / INFERRED / SPECULATIVE where possible.
+7. **Registry + matcher** — add the family to `LINEAGE_REGISTRY` in `src/hyperlex/analysis/__init__.py` so `match_lineage()` can attach it at runtime.
 
 ### Documentation Template (copy for new families)
 
 ```markdown
 ## Family: [Name]
 
-**Domain**: [betting | crypto | kinship | internet-compression | ...]
+**Domain**: [betting | crypto | kinship | internet-compression | ai-native | political-status | ...]
 **Core payload**: [one-sentence identity / emotional / routing function]
 **Root (OBSERVED)**: [earliest form + source + era]
 **Trunk**: [stable core terms]
@@ -67,12 +68,13 @@ These are the primary ways new branches form. Document them explicitly when reco
 
 ## Integration Points
 
-- **Analysis module** (`zone_of_emergence`): lineage metadata can be attached to `analysis.neologisms` and `analysis.semantic_variation`.
-- **Receipts**: provenance may include `lineage_refs` pointing to documented families.
+- **Analysis module** (`zone_of_emergence`): `match_lineage()` runs inside `detect_memetic_patterns` and attaches a `lineage` object under `analysis` when a match is found.
+- **Schema**: `schemas/lineage.v1.schema.json` defines the attachment shape.
+- **Receipts**: provenance can later include `lineage_refs` pointing to documented families.
 - **Abraxas Slang Emulation**: the mandatory `SLANG FAMILY TREE` section in SIGNAL REPORTs is the live counterpart of these static diagrams.
 - **Orchestra**: diagrams carry the `orchestra-diagram.v1` header pattern already used in `examples/hyperlex-symbolic/`.
 
-### Example Receipt Attachment (future schema sketch)
+### Live Lineage Attachment (current)
 
 ```json
 "analysis": {
@@ -80,10 +82,12 @@ These are the primary ways new branches form. Document them explicitly when reco
   "semantic_variation": {...},
   "lineage": {
     "family_id": "betting-sharp",
-    "matched_terms": ["steam", "sharp money revenge"],
-    "branch_operator": "sense_extension + hyperstition",
-    "confidence": 0.81,
-    "diagram_ref": "examples/slang-families/betting-sharp-family.mmd"
+    "matched_terms": ["steam", "sharp"],
+    "branch_operator": "sense_extension",
+    "confidence": 0.72,
+    "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
+    "payload_note": "professional edge vs public money; line-physics signaling",
+    "provenance": "INFERRED"
   }
 }
 ```
@@ -92,32 +96,36 @@ These are the primary ways new branches form. Document them explicitly when reco
 
 See `examples/slang-families/`:
 
-- `betting-sharp-family.mmd` — sharp/steam/square cluster and modern tactical extensions.
+- `betting-sharp-family.mmd` + `sharp-family-timeline.mmd` — sharp/steam/square cluster and chronological drift.
 - `kinship-address.mmd` — bro/sis/twin/unc lineage and platform acceleration.
 - `crypto-degen-family.mmd` — HODL → diamond hands → ape/rekt/degen cluster.
-- `brainrot-aura-family.mmd` — content-degradation + status-signaling lineage (mid/cooked/aura/brainrot).
-- `sharp-family-timeline.mmd` — chronological drift view of the betting-sharp family.
+- `brainrot-aura-family.mmd` — content-degradation + status-signaling (mid/cooked/aura/brainrot).
+- `ai-native-family.mmd` — hallucinate → slop → clanker / agentic.
+- `political-status-family.mmd` — based / redpilled / cope tribal-judgment lineage.
 - `emergence-process.mmd` — abstract Hyperlex process that generates new branches.
+
+HTML renderers: `render-betting-sharp.html`, `render-ai-native.html`, `render-emergence.html`.
 
 ## Live Feed Process
 
 1. Hyperlex (or Abraxas Slang Module) detects candidate terms via ingest + neologism pipeline.
-2. Analyst or automated rule matches against existing family IDs.
-3. If no match and confidence is high, a new provisional leaf or family is proposed.
-4. Documentation is updated (diagram + markdown entry) only after human review of provenance.
-5. Future automated path: receipt histories → candidate diagram diffs → human approval gate.
+2. `match_lineage()` scores against the static registry (seeded from the families above).
+3. Highest-confidence match is attached under `analysis.lineage`.
+4. If no match and confidence would be high for a novel cluster, a provisional leaf or family is proposed for human documentation.
+5. Documentation is updated (diagram + markdown entry + registry entry) only after human review of provenance.
+6. Future path: receipt histories → candidate diagram diffs → human approval gate.
 
 ## Future Work
 
-- Schema field `lineage` under `analysis` (v0.2+).
+- Full schema validation of `analysis.lineage` inside `validate_result`.
 - Automated diagram generation / diffing from receipt histories.
-- Cross-domain family libraries (finance, AI-native, political, regional, sports beyond betting).
+- Expanded cross-domain libraries (regional, sports beyond betting, finance subtypes).
 - Brier-calibrated forecasts of branch survivability.
-- HTML interactive renderers matching the Orchestra diagram style.
+- Richer interactive Orchestra-style HTML (node tooltips, flow highlighting).
 
 ## References
 
 - Green’s Dictionary of Slang (historical backbone)
 - arXiv papers listed in `references/arxiv_papers.md` (semantic variation, cultural transmission, memetics, hyperstition)
 - Hyperlex DESIGN principles (especially Real Over Synthetic, Provenance, ArXiv-Grounded, Lineage as First-Class Structure)
-- Domain primary sources: BitcoinTalk archives, WallStreetBets, early gaming forums, Action Network glossary, Urban Dictionary attestations
+- Domain primary sources: BitcoinTalk archives, WallStreetBets, early gaming forums, Action Network glossary, Urban Dictionary attestations, Simon Willison / mainstream coverage of “slop” (2024)
