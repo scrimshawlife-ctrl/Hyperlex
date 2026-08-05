@@ -11,7 +11,7 @@
 
 | | |
 |--|--|
-| **Version** | **0.3.4** |
+| **Version** | **0.3.5** |
 | **Posture** | Hermes skill · Python package repo (≥3.10) · MIT |
 | **Phases** | **0–4 complete** · **5.0** research simulation live |
 | **Pages** | Static history of runs (not live operator DB) |

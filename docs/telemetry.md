@@ -5,7 +5,7 @@ This is not a live metrics dashboard; it is the **publish-safe command surface**
 Primary store remains local (`~/.hyperlex/`).
 
 <div class="hlx-status" markdown>
-<span><span class="hlx-dot"></span><strong>v0.3.4</strong></span>
+<span><span class="hlx-dot"></span><strong>v0.3.5</strong></span>
 <span>Hermes skill · Python package repo</span>
 <span>Phases 0–4 complete · Phase 5.0</span>
 <span>Pages = static run history</span>

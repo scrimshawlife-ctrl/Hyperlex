@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.5 — Hybrid lineage re-rank + domain phylogeny packs (2026-08-05)
+
+- `match_lineage` hybrid: lexical confidence + capped vector family boost
+- Domain packs under `data/phylogeny/` (finance, ai-native, political, regional)
+- `build_domain_phylogeny` / `list_domain_packs`; CLI `simulate --mode phylogeny --domain …`
+
 ## 0.3.4 — Vector neighbors on analyze + receipt auto-index (2026-08-05)
 
 - `detect_memetic_patterns` attaches `analysis.vector_neighbors` when local DB present (`HYPERLEX_VECTOR=auto|1`)
@@ -205,3 +211,4 @@
 - Golden tests: lineage confidence formula, score_pair, score_series empty→NOT_COMPUTABLE, log roundtrip, CLI settle path.
 - Result schema: `provenance.brier` may be `null`; analysis may include `lineage`.
 - CLI import hardening: package `src/` always shadows `scripts/hyperlex.py` on `sys.path`.
+

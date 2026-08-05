@@ -1,15 +1,33 @@
 """Lightweight phylogenetic scaffold for slang families.
 
 Builds nodes/edges from LINEAGE_REGISTRY + optional backfill first_seen months.
+Domain packs under ``data/phylogeny/*.json`` overlay multi-family sketches.
+
 Not a full linguistic phylogeny — a research-facing tree for diagrams and export.
 """
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from ..analysis import LINEAGE_REGISTRY
 from ..analysis.backfill import default_backfill_root, inventory_backfill
+
+
+def default_phylogeny_root(repo_root: Optional[Path | str] = None) -> Path:
+    if repo_root is not None:
+        return Path(repo_root) / "data" / "phylogeny"
+    here = Path(__file__).resolve()
+    candidates = [
+        here.parents[3] / "data" / "phylogeny",
+        Path.cwd() / "data" / "phylogeny",
+    ]
+    for c in candidates:
+        if c.is_dir():
+            return c
+    return candidates[0]
 
 
 def list_phylogeny_families(
@@ -17,6 +35,96 @@ def list_phylogeny_families(
 ) -> List[str]:
     reg = list(registry) if registry is not None else LINEAGE_REGISTRY
     return [str(e.get("family_id")) for e in reg if e.get("family_id")]
+
+
+def list_domain_packs(*, root: Optional[Path | str] = None) -> List[Dict[str, Any]]:
+    base = Path(root) if root else default_phylogeny_root()
+    if not base.is_dir():
+        return []
+    out: List[Dict[str, Any]] = []
+    for p in sorted(base.glob("*.json")):
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not isinstance(data, dict):
+            continue
+        out.append({
+            "domain_id": data.get("domain_id") or p.stem,
+            "label": data.get("label"),
+            "n_families": len(data.get("families") or []),
+            "n_leaves": len(data.get("leaves") or []),
+            "path": str(p),
+        })
+    return out
+
+
+def load_domain_pack(domain_id: str, *, root: Optional[Path | str] = None) -> Optional[Dict[str, Any]]:
+    base = Path(root) if root else default_phylogeny_root()
+    path = base / f"{domain_id}.json"
+    if not path.is_file():
+        # allow label match
+        for p in base.glob("*.json"):
+            try:
+                data = json.loads(p.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            if str(data.get("domain_id") or p.stem) == domain_id:
+                data["source_path"] = str(p)
+                return data
+        return None
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data["source_path"] = str(path)
+    return data
+
+
+def build_domain_phylogeny(
+    domain_id: str,
+    *,
+    root: Optional[Path | str] = None,
+    include_family_trees: bool = True,
+) -> Dict[str, Any]:
+    """Merge a domain pack with per-family scaffolds."""
+    pack = load_domain_pack(domain_id, root=root)
+    if not pack:
+        return {
+            "schema": "hyperlex.domain_phylogeny.v1",
+            "ok": False,
+            "domain_id": domain_id,
+            "error": "unknown_domain",
+            "available": [p["domain_id"] for p in list_domain_packs(root=root)],
+            "provenance": "INFERRED",
+            "brier": None,
+        }
+
+    family_trees = []
+    if include_family_trees:
+        for fam in pack.get("families") or []:
+            tree = build_family_phylogeny(str(fam))
+            if tree.get("ok"):
+                family_trees.append({
+                    "family_id": fam,
+                    "n_nodes": tree.get("n_nodes"),
+                    "n_edges": tree.get("n_edges"),
+                    "n_terms": tree.get("n_terms"),
+                })
+
+    return {
+        "schema": "hyperlex.domain_phylogeny.v1",
+        "ok": True,
+        "domain_id": pack.get("domain_id") or domain_id,
+        "label": pack.get("label"),
+        "families": pack.get("families") or [],
+        "roots": pack.get("roots") or [],
+        "trunks": pack.get("trunks") or [],
+        "leaves": pack.get("leaves") or [],
+        "cross_edges": pack.get("cross_edges") or [],
+        "family_trees": family_trees,
+        "source_path": pack.get("source_path"),
+        "provenance": pack.get("provenance_default") or "INFERRED",
+        "brier": None,
+        "note": "Domain overlay + family scaffolds; not a full linguistic phylogeny.",
+    }
 
 
 def build_family_phylogeny(

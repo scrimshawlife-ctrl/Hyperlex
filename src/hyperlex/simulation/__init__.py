@@ -13,7 +13,12 @@ Submodules:
 from .transmission import simulate_cultural_transmission
 from .agents import run_multi_agent_memetics, AGENT_ROLES
 from .risk import forecast_hyperstition_risk, risk_from_analysis
-from .phylogeny import build_family_phylogeny, list_phylogeny_families
+from .phylogeny import (
+    build_domain_phylogeny,
+    build_family_phylogeny,
+    list_domain_packs,
+    list_phylogeny_families,
+)
 from .scenario import run_phase5_scenario
 
 __all__ = [
@@ -24,5 +29,7 @@ __all__ = [
     "risk_from_analysis",
     "build_family_phylogeny",
     "list_phylogeny_families",
+    "build_domain_phylogeny",
+    "list_domain_packs",
     "run_phase5_scenario",
 ]

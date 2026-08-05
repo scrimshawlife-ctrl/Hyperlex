@@ -1,6 +1,6 @@
 # Vector DB (local)
 
-**Status:** v0.3.4  
+**Status:** v0.3.5  
 **Path:** `~/.hyperlex/vector.db` (override: `HYPERLEX_VECTOR_DB`)  
 **Backend:** SQLite + float32 embedding blobs (stdlib only)
 
@@ -63,6 +63,21 @@ from hyperlex import vector_seed_all, vector_search, VectorStore, default_vector
 report = vector_seed_all(through="2026-08", include_home=True)
 hits = vector_search("rizz aura", kind="term", top_k=5)
 ```
+
+## Hybrid lineage re-rank (0.3.5)
+
+When the vector DB is present (`HYPERLEX_VECTOR=auto|1`), `match_lineage` combines:
+
+```text
+hybrid_confidence = min(0.98, lexical_confidence + vector_boost)
+```
+
+- `vector_boost` is a **capped** family mass from term neighbors (max +0.12)
+- Near-miss lexical candidates can be rescued if hybrid clears the threshold
+- Result may include `lineage.hybrid` with boosts + flip diagnostics
+- Still **INFERRED**, still **not Brier**
+
+Disable: `HYPERLEX_VECTOR=0` or `match_lineage(..., use_vector=False)`.
 
 ## Hard rules
 

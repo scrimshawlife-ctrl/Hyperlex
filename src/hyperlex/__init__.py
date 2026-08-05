@@ -93,6 +93,8 @@ from .simulation import (
     risk_from_analysis,
     build_family_phylogeny,
     list_phylogeny_families,
+    build_domain_phylogeny,
+    list_domain_packs,
     run_phase5_scenario,
 )
 from . import vectordb
@@ -149,6 +151,8 @@ API_EXTENDED = (
     "risk_from_analysis",
     "build_family_phylogeny",
     "list_phylogeny_families",
+    "build_domain_phylogeny",
+    "list_domain_packs",
     "run_phase5_scenario",
     "vector_seed_all",
     "vector_search",
@@ -196,6 +200,8 @@ __all__ = [
     "risk_from_analysis",
     "build_family_phylogeny",
     "list_phylogeny_families",
+    "build_domain_phylogeny",
+    "list_domain_packs",
     "run_phase5_scenario",
     "simulation",
     "vector_seed_all",

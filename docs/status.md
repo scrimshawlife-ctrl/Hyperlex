@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.4  
+**Version:** 0.3.5  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0 · Pages static run history · Hallmark desk UI
@@ -38,6 +38,8 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Phase 5 hyperstition risk** | Ready |
 | **Phase 5 phylogeny scaffold** | Ready |
 | **Local vector DB** (`~/.hyperlex/vector.db`) | Ready |
+| **Hybrid lineage re-rank** | Ready (lexical + vector boost) |
+| **Domain phylogeny packs** | Ready (`data/phylogeny/`) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
@@ -67,5 +69,5 @@ data/backfill/2026/          # curated YTD term packs (repo)
 
 ## Phase 5.1+ (next)
 
-Domain phylogeny libraries, sim parameter calibration against settled series,
-comparative multi-agent runs over archive snapshots, research export templates.
+Transmission calibration vs settled series, multi-agent scenario library,
+research export templates, optional ANN backend if corpus grows.

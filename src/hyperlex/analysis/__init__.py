@@ -158,24 +158,85 @@ def compute_lineage_confidence(
     return confidence, breakdown
 
 
+def _vector_family_boosts(
+    query_text: str,
+    *,
+    top_k: int = 8,
+    min_score: float = 0.12,
+) -> Tuple[Dict[str, float], List[Dict[str, Any]]]:
+    """
+    Aggregate cosine neighbor mass by family_id from local vector DB.
+
+    Fail-open: empty boosts if DB missing or disabled.
+    """
+    import os
+    from pathlib import Path as _Path
+
+    vflag = str(os.environ.get("HYPERLEX_VECTOR", "auto")).strip().lower()
+    if vflag in {"0", "false", "off", "no"}:
+        return {}, []
+    try:
+        from ..vectordb import default_vector_db_path, vector_search
+
+        vpath = default_vector_db_path()
+        want = vflag in {"1", "true", "yes", "on"} or (
+            vflag in {"", "auto"} and _Path(vpath).is_file() and _Path(vpath).stat().st_size > 0
+        )
+        if not want:
+            return {}, []
+        vs = vector_search(query_text, kind="term", top_k=top_k, min_score=min_score)
+        if not vs.get("ok"):
+            return {}, []
+        hits = list(vs.get("hits") or [])
+        boosts: Dict[str, float] = {}
+        for h in hits:
+            fam = h.get("family_id")
+            if not fam:
+                continue
+            # weight by cosine score, diminishing by rank
+            sc = float(h.get("score") or 0.0)
+            boosts[str(fam)] = boosts.get(str(fam), 0.0) + sc
+        # normalize boost mass into [0, VECTOR_BOOST_CAP]
+        if boosts:
+            mx = max(boosts.values()) or 1.0
+            for k in list(boosts.keys()):
+                # scale so strongest family gets up to VECTOR_BOOST_CAP
+                boosts[k] = VECTOR_BOOST_CAP * (boosts[k] / mx)
+        return boosts, hits
+    except Exception:
+        return {}, []
+
+
+# Max confidence points added from vector evidence (hybrid re-rank)
+VECTOR_BOOST_CAP = 0.12
+# Candidates within this gap of lexical best may be flipped by vector
+VECTOR_FLIP_MARGIN = 0.08
+
+
 def match_lineage(
     text: str,
     terms: Optional[List[str]] = None,
     min_confidence: float = LINEAGE_CONFIDENCE_THRESHOLD,
     registry: Optional[List[Dict[str, Any]]] = None,
+    *,
+    use_vector: Optional[bool] = None,
 ) -> Optional[Dict[str, Any]]:
     """Match text to a lineage family.
 
     ``registry`` optionally overrides ``LINEAGE_REGISTRY`` (e.g. backfill merge).
-    Historical receipts are never mutated by this function.
+    When a local vector DB is available (or HYPERLEX_VECTOR=1), applies a hybrid
+    re-rank: lexical confidence + small family boost from term neighbors.
+
+    Historical receipts are never mutated by this function. Not Brier.
     """
+    import os
+
     corpus = (text or "").lower()
     if terms:
         corpus = corpus + " " + " ".join(t.lower() for t in terms)
 
-    best: Optional[Dict[str, Any]] = None
-    best_score = 0.0
     entries = registry if registry is not None else LINEAGE_REGISTRY
+    candidates: List[Dict[str, Any]] = []
 
     for entry in entries:
         family_terms = list(entry.get("terms") or [])
@@ -184,23 +245,94 @@ def match_lineage(
             continue
 
         score, breakdown = compute_lineage_confidence(hits, family_terms, corpus)
-        if score < min_confidence:
+        # keep near-misses for hybrid (slightly below threshold)
+        if score < min_confidence - 0.06:
             continue
 
-        if score > best_score:
-            best_score = score
-            best = {
-                "family_id": entry["family_id"],
-                "matched_terms": hits,
-                "branch_operator": entry.get("branch_operator", "unknown"),
-                "confidence": round(score, 3),
-                "diagram_ref": entry.get("diagram_ref"),
-                "payload_note": entry.get("payload_note"),
-                "provenance": "INFERRED",
-                "score_breakdown": breakdown,
-            }
+        candidates.append({
+            "family_id": entry["family_id"],
+            "matched_terms": hits,
+            "branch_operator": entry.get("branch_operator", "unknown"),
+            "lexical_confidence": round(score, 3),
+            "diagram_ref": entry.get("diagram_ref"),
+            "payload_note": entry.get("payload_note"),
+            "score_breakdown": breakdown,
+            "entry": entry,
+        })
 
-    return best
+    if not candidates:
+        return None
+
+    vflag = str(os.environ.get("HYPERLEX_VECTOR", "auto")).strip().lower()
+    if use_vector is None:
+        use_vector = vflag not in {"0", "false", "off", "no"}
+
+    vector_boosts: Dict[str, float] = {}
+    vector_hits: List[Dict[str, Any]] = []
+    hybrid_applied = False
+    if use_vector:
+        q = corpus.strip()
+        vector_boosts, vector_hits = _vector_family_boosts(q)
+        hybrid_applied = bool(vector_boosts)
+
+    for c in candidates:
+        boost = float(vector_boosts.get(c["family_id"], 0.0)) if hybrid_applied else 0.0
+        hybrid = min(0.98, float(c["lexical_confidence"]) + boost)
+        c["vector_boost"] = round(boost, 4)
+        c["hybrid_confidence"] = round(hybrid, 3)
+        # eligibility: hybrid must clear threshold (lexical near-miss can be rescued)
+        c["eligible"] = hybrid >= min_confidence
+
+    eligible = [c for c in candidates if c["eligible"]]
+    if not eligible:
+        return None
+
+    # rank by hybrid, then lexical
+    eligible.sort(
+        key=lambda c: (c["hybrid_confidence"], c["lexical_confidence"]),
+        reverse=True,
+    )
+    best_c = eligible[0]
+    lexical_best = max(candidates, key=lambda c: c["lexical_confidence"])
+    flipped = (
+        hybrid_applied
+        and best_c["family_id"] != lexical_best["family_id"]
+        and (best_c["hybrid_confidence"] - lexical_best["lexical_confidence"]) >= -VECTOR_FLIP_MARGIN
+    )
+
+    result = {
+        "family_id": best_c["family_id"],
+        "matched_terms": best_c["matched_terms"],
+        "branch_operator": best_c["branch_operator"],
+        "confidence": best_c["hybrid_confidence"],
+        "diagram_ref": best_c["diagram_ref"],
+        "payload_note": best_c["payload_note"],
+        "provenance": "INFERRED",
+        "score_breakdown": {
+            **best_c["score_breakdown"],
+            "lexical_confidence": best_c["lexical_confidence"],
+            "vector_boost": best_c["vector_boost"],
+            "hybrid_confidence": best_c["hybrid_confidence"],
+            "hybrid_applied": hybrid_applied,
+            "vector_flipped": bool(flipped),
+        },
+    }
+    if hybrid_applied:
+        result["hybrid"] = {
+            "schema": "hyperlex.lineage_hybrid.v1",
+            "lexical_family": lexical_best["family_id"],
+            "lexical_confidence": lexical_best["lexical_confidence"],
+            "vector_boosts": {k: round(v, 4) for k, v in sorted(vector_boosts.items(), key=lambda kv: -kv[1])[:6]},
+            "vector_top_hits": [
+                {"text": h.get("text"), "family_id": h.get("family_id"), "score": h.get("score")}
+                for h in vector_hits[:5]
+            ],
+            "selected_family": best_c["family_id"],
+            "flipped": bool(flipped),
+            "brier": None,
+            "note": "Hybrid = lexical confidence + capped vector family boost; not Brier.",
+        }
+    return result
 
 
 def humanize_slang_output(text: str) -> str:

@@ -12,8 +12,10 @@ and lightweight phylogenies.
 | Multi-agent memetic roles | Ready (`simulate --mode agents`) |
 | Hyperstition risk forecasting | Ready (`simulate --mode risk`) |
 | Phylogeny scaffold | Ready (`simulate --mode phylogeny`) |
+| Domain phylogeny packs | Ready (`data/phylogeny/` · `--domain finance|ai-native|political|regional`) |
+| Hybrid lineage re-rank | Ready (lexical + vector boost) |
 | Composed scenario | Ready (`simulate --mode scenario`) |
-| Full real-world phylogeny libraries | Ongoing (scaffold only) |
+| Transmission calibration vs settled series | Ongoing |
 | Open research publications | Ongoing (export + docs; external writeups separate) |
 
 ## Non-goals

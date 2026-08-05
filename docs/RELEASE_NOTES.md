@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.3.5
+- Hybrid lineage re-rank (lexical + vector); domain phylogeny packs.
+
+## 0.3.4
+- Vector neighbors on analyze; receipts auto-index into local vector DB.
+
 ## 0.3.3
 - Local SQLite vector DB (`vector-seed` / `vector-search`) for terms + receipts.
 

@@ -949,8 +949,10 @@ def cmd_simulate(args: argparse.Namespace) -> int:
         return 2
 
     from hyperlex.simulation import (
+        build_domain_phylogeny,
         build_family_phylogeny,
         forecast_hyperstition_risk,
+        list_domain_packs,
         run_multi_agent_memetics,
         run_phase5_scenario,
         simulate_cultural_transmission,
@@ -1001,8 +1003,13 @@ def cmd_simulate(args: argparse.Namespace) -> int:
                 lineage_family=args.family or None,
             )
     elif mode == "phylogeny":
-        fam = args.family or "brainrot-aura"
-        out = build_family_phylogeny(fam)
+        if args.list_domains:
+            out = {"schema": "hyperlex.domain_phylogeny_index.v1", "domains": list_domain_packs()}
+        elif args.domain:
+            out = build_domain_phylogeny(args.domain)
+        else:
+            fam = args.family or "brainrot-aura"
+            out = build_family_phylogeny(fam)
     else:
         out = run_phase5_scenario(
             term,
@@ -1683,7 +1690,17 @@ def _build_parser() -> argparse.ArgumentParser:
         choices=["scenario", "transmission", "agents", "risk", "phylogeny"],
     )
     sim_parser.add_argument("--family", default="", help="lineage family_id")
-    sim_parser.add_argument("--domain", default="general", help="markets|ai|politics|general")
+    sim_parser.add_argument(
+        "--domain",
+        default="general",
+        help="risk domain (markets|ai|politics|general) or phylogeny pack id (finance|ai-native|political|regional)",
+    )
+    sim_parser.add_argument(
+        "--list-domains",
+        action="store_true",
+        default=False,
+        help="With --mode phylogeny: list data/phylogeny packs",
+    )
     sim_parser.add_argument("--stage", default="", help="EMERGENT|ACTUALIZING for risk mode")
     sim_parser.add_argument("--virality", type=float, default=0.5)
     sim_parser.add_argument("--memetic", type=float, default=0.5)
