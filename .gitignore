@@ -17,8 +17,11 @@ build/
 .vscode/
 .idea/
 
-# Receipts (local)
-receipts/
+# Local operator receipts at repo root (not Pages archive snapshots)
+/receipts/
+# Allow publish-safe receipt summaries under docs archive
+!docs/archive/**/receipts/
+!docs/archive/**/receipts/**
 
 # Generated / local JSON artifacts (schemas and examples stay tracked)
 *.json

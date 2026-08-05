@@ -1,0 +1,25 @@
+{
+  "brier": null,
+  "canonical_hash": "2b10c51f487dcd5f",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "NOT_COMPUTABLE",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "48d6b080d68f",
+  "is_memetic": false,
+  "lineage_confidence": null,
+  "lineage_family": null,
+  "matched_terms": [],
+  "n_neologisms": 0,
+  "observed_preview": "Mock channel note on \"the weather is mild with clouds\". Quiet discourse sample.",
+  "query": "the weather is mild with clouds",
+  "source_fingerprint_id": "38b2dab69ec0446efe6acfc6",
+  "timestamp": "2026-08-05T17:37:07.437000+00:00",
+  "typology": "one_off",
+  "version": "0.2.5",
+  "virality_hybrid": 0.443,
+  "virality_predicted": 0.37
+}
