@@ -24,6 +24,7 @@ receipts/
 !src/hyperlex/schemas/**/*.json
 !**/schema.json
 !hyperlex.manifest.yaml
+!skills.sh.json
 
 # Temp
 tmp/
