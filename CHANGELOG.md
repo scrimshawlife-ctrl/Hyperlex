@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 — Relay, provenance, glossary/X, PyPI (2026-08-05)
+## 0.2.0 — Relay, provenance, glossary/X, local package (2026-08-05)
 
 - Rune/signal relay: `hyperlex.relay` + CLI `relay` + `schemas/rune_envelope.v1.schema.json`
 - Enhanced provenance fingerprints on ingest + analysis (`source_fingerprint`, content_hash, locator)
