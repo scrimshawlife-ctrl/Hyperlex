@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.3.6
+- Transmission calibrate, multi-agent scenario library, research export.
+
 ## 0.3.5
 - Hybrid lineage re-rank (lexical + vector); domain phylogeny packs.
 

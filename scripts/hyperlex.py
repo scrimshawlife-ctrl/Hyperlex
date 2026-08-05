@@ -951,9 +951,14 @@ def cmd_simulate(args: argparse.Namespace) -> int:
     from hyperlex.simulation import (
         build_domain_phylogeny,
         build_family_phylogeny,
+        calibrate_transmission_params,
+        compare_scenarios,
+        export_research_packet,
         forecast_hyperstition_risk,
         list_domain_packs,
+        list_scenario_presets,
         run_multi_agent_memetics,
+        run_named_scenario,
         run_phase5_scenario,
         simulate_cultural_transmission,
     )
@@ -1005,11 +1010,36 @@ def cmd_simulate(args: argparse.Namespace) -> int:
     elif mode == "phylogeny":
         if args.list_domains:
             out = {"schema": "hyperlex.domain_phylogeny_index.v1", "domains": list_domain_packs()}
-        elif args.domain:
+        elif args.domain and args.domain not in {"general", "markets", "ai", "politics"}:
             out = build_domain_phylogeny(args.domain)
         else:
             fam = args.family or "brainrot-aura"
             out = build_family_phylogeny(fam)
+    elif mode == "calibrate":
+        golden = Path(args.golden) if args.golden else (ROOT / "examples" / "calibration" / "settled_series.v1.json")
+        out = calibrate_transmission_params(
+            golden_path=golden if golden.is_file() else None,
+            signal_key_contains=args.signal_key or None,
+        )
+    elif mode == "compare":
+        if args.list_scenarios:
+            out = {"schema": "hyperlex.scenario_library_index.v1", "scenarios": list_scenario_presets()}
+        elif args.scenario:
+            out = run_named_scenario(args.scenario, term, lineage_family=args.family or None)
+            # drop full agent dump
+            if isinstance(out.get("full"), dict):
+                out = {k: v for k, v in out.items() if k != "full"}
+        else:
+            out = compare_scenarios(term, lineage_family=args.family or None)
+    elif mode == "export":
+        # load payload from --input or run a compare packet
+        if args.input:
+            raw = json.loads(Path(args.input).read_text(encoding="utf-8"))
+            payload = raw.get("scenario") if isinstance(raw.get("scenario"), dict) else raw
+        else:
+            payload = compare_scenarios(term, lineage_family=args.family or None)
+        dest = Path(args.export_dir) if args.export_dir else (ROOT / "out" / "research")
+        out = export_research_packet(payload, out_dir=dest, title=args.export_title or "hyperlex-research")
     else:
         out = run_phase5_scenario(
             term,
@@ -1687,7 +1717,7 @@ def _build_parser() -> argparse.ArgumentParser:
     sim_parser.add_argument(
         "--mode",
         default="scenario",
-        choices=["scenario", "transmission", "agents", "risk", "phylogeny"],
+        choices=["scenario", "transmission", "agents", "risk", "phylogeny", "calibrate", "compare", "export"],
     )
     sim_parser.add_argument("--family", default="", help="lineage family_id")
     sim_parser.add_argument(
@@ -1701,6 +1731,13 @@ def _build_parser() -> argparse.ArgumentParser:
         default=False,
         help="With --mode phylogeny: list data/phylogeny packs",
     )
+    sim_parser.add_argument("--list-scenarios", action="store_true", default=False)
+    sim_parser.add_argument("--scenario", default="", help="Named multi-agent scenario id")
+    sim_parser.add_argument("--golden", default="", help="Settled series JSON for calibrate")
+    sim_parser.add_argument("--signal-key", default="", help="Filter pairs for calibrate")
+    sim_parser.add_argument("--export-dir", default="", help="Research export directory")
+    sim_parser.add_argument("--export-title", default="")
+    sim_parser.add_argument("--input", default="", help="JSON payload for export mode")
     sim_parser.add_argument("--stage", default="", help="EMERGENT|ACTUALIZING for risk mode")
     sim_parser.add_argument("--virality", type=float, default=0.5)
     sim_parser.add_argument("--memetic", type=float, default=0.5)

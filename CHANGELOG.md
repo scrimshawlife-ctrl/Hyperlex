@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.6 — Transmission calibration, scenario library, research export (2026-08-05)
+
+- `calibrate_transmission_params` grid-search β/γ against settled pairs (SPECULATIVE)
+- Multi-agent scenario library + `compare_scenarios` presets
+- `export_research_packet` paper-ready JSON/Markdown
+- CLI: `simulate --mode calibrate|compare|export`
+
 ## 0.3.5 — Hybrid lineage re-rank + domain phylogeny packs (2026-08-05)
 
 - `match_lineage` hybrid: lexical confidence + capped vector family boost

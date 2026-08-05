@@ -58,17 +58,17 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] **5.0** Local SQLite vector DB (`hyperlex.vectordb`, `vector-seed` / `vector-search`)
 - [x] **5.0** Analyze attaches `vector_neighbors` when DB present; receipts auto-index (fail-open)
 - [x] **5.1** Domain-specific phylogeny packs (`data/phylogeny/`: finance, ai-native, political, regional)
-- [ ] **5.1** Transmission parameter calibration against settled series (still no invented Brier)
+- [x] **5.1** Transmission parameter calibration against settled series (still no invented Brier)
 - [x] **5.1** Vector hybrid re-rank for lineage matcher (`match_lineage` + local vector DB)
-- [ ] **5.2** Multi-agent scenario library + comparative runs over archive snapshots
-- [ ] **5.2** Open research export templates (paper-ready figures from diagrams + sim summaries)
+- [x] **5.2** Multi-agent scenario library + comparative runs (`compare_scenarios`)
+- [x] **5.2** Open research export templates (`export_research_packet`)
 - [ ] **5.3** Optional coupling of risk tiers → scan schedules / operator alerts (Hermes cron)
 - [ ] **5.3** ANN backend option if corpus grows past linear scan
 
 ## Milestones
 - v0.2.x: Phases 0–4 complete (Hermes skill production track)
 - v0.3.0: Phase 5.0 research simulation track
-- **v0.3.5: hybrid lineage + domain phylogeny packs** (current)
+- **v0.3.6: calibrate + scenario library + research export** (current)
 - v0.3.x: Phylogeny libraries + vector hybrid lineage + research export polish
 - v1.0: Stable skill contract + long-horizon archive + optional research contribs
 

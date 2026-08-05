@@ -20,6 +20,14 @@ from .phylogeny import (
     list_phylogeny_families,
 )
 from .scenario import run_phase5_scenario
+from .calibrate import calibrate_transmission_params, load_calibration_pairs
+from .library import (
+    SCENARIO_LIBRARY,
+    compare_scenarios,
+    list_scenario_presets,
+    run_named_scenario,
+)
+from .research_export import export_research_packet
 
 __all__ = [
     "simulate_cultural_transmission",
@@ -32,4 +40,11 @@ __all__ = [
     "build_domain_phylogeny",
     "list_domain_packs",
     "run_phase5_scenario",
+    "calibrate_transmission_params",
+    "load_calibration_pairs",
+    "SCENARIO_LIBRARY",
+    "compare_scenarios",
+    "list_scenario_presets",
+    "run_named_scenario",
+    "export_research_packet",
 ]

@@ -14,8 +14,10 @@ and lightweight phylogenies.
 | Phylogeny scaffold | Ready (`simulate --mode phylogeny`) |
 | Domain phylogeny packs | Ready (`data/phylogeny/` · `--domain finance|ai-native|political|regional`) |
 | Hybrid lineage re-rank | Ready (lexical + vector boost) |
+| Scenario library / compare | Ready (`simulate --mode compare`) |
+| Research export | Ready (`simulate --mode export`) |
 | Composed scenario | Ready (`simulate --mode scenario`) |
-| Transmission calibration vs settled series | Ongoing |
+| Transmission calibration vs settled series | Ready (`simulate --mode calibrate`) |
 | Open research publications | Ongoing (export + docs; external writeups separate) |
 
 ## Non-goals

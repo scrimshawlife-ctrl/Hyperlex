@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.5  
+**Version:** 0.3.6  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0 · Pages static run history · Hallmark desk UI
@@ -40,6 +40,8 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Local vector DB** (`~/.hyperlex/vector.db`) | Ready |
 | **Hybrid lineage re-rank** | Ready (lexical + vector boost) |
 | **Domain phylogeny packs** | Ready (`data/phylogeny/`) |
+| **Transmission calibrate** | Ready (advisory β/γ from settled pairs) |
+| **Scenario library + export** | Ready (`compare` / `export`) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
