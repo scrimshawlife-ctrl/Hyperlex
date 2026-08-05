@@ -41,6 +41,9 @@ Install supports `--dry-run` and copies the skill to
 - [SPEC.md](./SPEC.md) — API and runtime contract
 - [ARCHITECTURE.md](./ARCHITECTURE.md)
 - [ROADMAP.md](./ROADMAP.md)
+- [DESIGN.md](./DESIGN.md)
+- [docs/slang-lineages.md](./docs/slang-lineages.md) — historical families of slang + emergent branches
+- [examples/slang-families/](./examples/slang-families/) — Mermaid family trees and process diagrams
 - [schemas/](./schemas/) — canonical schemas (`ingest`, `result`, `receipt`)
 
 ## Schemas & ingest
