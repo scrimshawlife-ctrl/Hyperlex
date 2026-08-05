@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.3 — Local SQLite vector DB (2026-08-05)
+
+- `hyperlex.vectordb`: SQLite store at `~/.hyperlex/vector.db`
+- Default offline hash embeddings (`hyperlex.hash_ngram_v1.d256`); optional openai_compatible
+- Seed from LINEAGE_REGISTRY + `data/backfill/2026` + receipts
+- CLI: `vector-seed`, `vector-search`, `vector-stats`
+- Docs: `docs/modules/vectordb.md`
+
 ## 0.3.2 — Hallmark redesign: Pages workbench identity (2026-08-05)
 
 - Custom docs identity: IBM Plex + phosphor-teal tokens (`docs/stylesheets/extra.css`)

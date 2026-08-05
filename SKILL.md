@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.3.2
+version: 0.3.3
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
@@ -132,6 +132,8 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scen
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --from-analyze --term "sharp steam revenge" --domain markets
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" archive-export --include-golden --history
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" archive-catalog
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" vector-seed --include-golden --through 2026-08
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" vector-search "sigma rizz locked in" --kind term
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" --source mock --receipt --forecasts
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
 ```

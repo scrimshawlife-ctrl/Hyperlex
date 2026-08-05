@@ -158,6 +158,7 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
         "src/hyperlex/diagrams/from_receipts.py",
         "src/hyperlex/llm/governed.py",
         "src/hyperlex/simulation/__init__.py",
+        "src/hyperlex/vectordb/__init__.py",
         "src/hyperlex/analysis/backfill.py",
         "src/hyperlex/analysis/backprop.py",
         "data/backfill/2026/README.md",
@@ -265,6 +266,26 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
             )
         except Exception as exc:
             checks.append(_check(False, "phase5_simulate", "", f"phase5 failed: {exc}"))
+        try:
+            from hyperlex.vectordb import VectorStore, seed_from_registry, vector_search
+            import tempfile
+            from pathlib import Path as _P
+
+            tdb = _P(tempfile.mkdtemp()) / "doctor_vector.db"
+            with VectorStore(tdb) as store:
+                seed_from_registry(store)
+                n = store.count("term")
+            hits = vector_search("rizz locked in", path=tdb, kind="term", top_k=3)
+            checks.append(
+                _check(
+                    n >= 8 and hits.get("ok") and hits.get("brier") is None,
+                    "vector_db",
+                    f"vector db ok n_terms={n} hits={hits.get('n_hits')}",
+                    "vector db seed/search failed",
+                )
+            )
+        except Exception as exc:
+            checks.append(_check(False, "vector_db", "", f"vector db failed: {exc}"))
 
     packs = list((ROOT / "data" / "backfill" / "2026").glob("2026-*.json")) if (ROOT / "data" / "backfill" / "2026").is_dir() else []
     checks.append(
@@ -815,6 +836,72 @@ def cmd_archive_catalog(args: argparse.Namespace) -> int:
         "catalog": str(root / "catalog.json"),
         "index": str(root / "index.md"),
     })
+    return 0
+
+
+def cmd_vector_seed(args: argparse.Namespace) -> int:
+    """Seed local SQLite vector DB from registry, backfill, and/or receipts."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.vectordb import seed_all
+
+    receipt_dirs = []
+    if args.receipt_dir:
+        receipt_dirs.append(args.receipt_dir)
+    if args.include_golden:
+        receipt_dirs.append(str(ROOT / "examples" / "receipts" / "golden"))
+
+    report = seed_all(
+        path=Path(args.db) if args.db else None,
+        year=int(args.year),
+        through=args.through or "2026-08",
+        backfill_root=Path(args.root) if args.root else (ROOT / "data" / "backfill"),
+        receipt_dirs=receipt_dirs or None,
+        include_home=bool(args.include_home),
+        include_registry=not bool(args.no_registry),
+        include_backfill=not bool(args.no_backfill),
+        include_receipts=not bool(args.no_receipts),
+    )
+    _emit({"ok": True, "command": "vector-seed", **report})
+    return 0
+
+
+def cmd_vector_search(args: argparse.Namespace) -> int:
+    """Cosine search over local vector DB."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.vectordb import vector_search
+
+    out = vector_search(
+        args.query,
+        path=Path(args.db) if args.db else None,
+        kind=args.kind or None,
+        family_id=args.family or None,
+        top_k=int(args.top_k),
+        min_score=float(args.min_score),
+    )
+    _emit({"ok": bool(out.get("ok")), "command": "vector-search", **out})
+    return 0 if out.get("ok") else 2
+
+
+def cmd_vector_stats(args: argparse.Namespace) -> int:
+    """Stats for local vector DB."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.vectordb import VectorStore
+
+    with VectorStore(Path(args.db) if args.db else None) as store:
+        stats = store.stats()
+    _emit({"ok": True, "command": "vector-stats", **stats})
     return 0
 
 
@@ -1540,6 +1627,36 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     ac_parser.add_argument("--archive-root", default="")
     ac_parser.set_defaults(func=cmd_archive_catalog)
+
+    vs = subparsers.add_parser(
+        "vector-seed",
+        help="Seed local SQLite vector DB (registry + backfill + receipts)",
+    )
+    vs.add_argument("--db", default="", help="Default: ~/.hyperlex/vector.db")
+    vs.add_argument("--year", type=int, default=2026)
+    vs.add_argument("--through", default="2026-08")
+    vs.add_argument("--root", default="", help="data/backfill root")
+    vs.add_argument("--receipt-dir", default="")
+    vs.add_argument("--include-golden", action="store_true", default=False)
+    vs.add_argument("--include-home", dest="include_home", action="store_true", default=True)
+    vs.add_argument("--no-home", dest="include_home", action="store_false")
+    vs.add_argument("--no-registry", action="store_true", default=False)
+    vs.add_argument("--no-backfill", action="store_true", default=False)
+    vs.add_argument("--no-receipts", action="store_true", default=False)
+    vs.set_defaults(func=cmd_vector_seed)
+
+    vq = subparsers.add_parser("vector-search", help="Cosine search over local vector DB")
+    vq.add_argument("query", help="Query text")
+    vq.add_argument("--db", default="")
+    vq.add_argument("--kind", default="", help="term | receipt")
+    vq.add_argument("--family", default="")
+    vq.add_argument("--top-k", type=int, default=10)
+    vq.add_argument("--min-score", type=float, default=0.15)
+    vq.set_defaults(func=cmd_vector_search)
+
+    vst = subparsers.add_parser("vector-stats", help="Local vector DB stats")
+    vst.add_argument("--db", default="")
+    vst.set_defaults(func=cmd_vector_stats)
 
     lbf = subparsers.add_parser(
         "lineage-backfill",

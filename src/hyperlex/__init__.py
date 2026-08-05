@@ -95,6 +95,13 @@ from .simulation import (
     list_phylogeny_families,
     run_phase5_scenario,
 )
+from . import vectordb
+from .vectordb import (
+    seed_all as vector_seed_all,
+    vector_search,
+    VectorStore,
+    default_vector_db_path,
+)
 
 # Stable public API (v0.2 freeze) — see docs/api-v1.md
 API_V1 = (
@@ -143,6 +150,10 @@ API_EXTENDED = (
     "build_family_phylogeny",
     "list_phylogeny_families",
     "run_phase5_scenario",
+    "vector_seed_all",
+    "vector_search",
+    "VectorStore",
+    "default_vector_db_path",
 )
 
 __all__ = [
@@ -187,6 +198,11 @@ __all__ = [
     "list_phylogeny_families",
     "run_phase5_scenario",
     "simulation",
+    "vector_seed_all",
+    "vector_search",
+    "VectorStore",
+    "default_vector_db_path",
+    "vectordb",
     "API_EXTENDED",
 ]
 

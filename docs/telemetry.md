@@ -5,7 +5,7 @@ This is not a live metrics dashboard; it is the **publish-safe command surface**
 Primary store remains local (`~/.hyperlex/`).
 
 <div class="hlx-status" markdown>
-<span><span class="hlx-dot"></span><strong>v0.3.2</strong></span>
+<span><span class="hlx-dot"></span><strong>v0.3.3</strong></span>
 <span>Hermes skill · Python package repo</span>
 <span>Phases 0–4 complete · Phase 5.0</span>
 <span>Pages = static run history</span>
@@ -61,6 +61,19 @@ Open analysis never invents Brier. Phase 5 stays SPECULATIVE.
     ---
 
     [Skill status →](status.md)
+
+-   :material-vector-polyline: **Vector DB**
+
+    Local SQLite embeddings for terms + receipts (`~/.hyperlex/vector.db`).
+
+    ---
+
+    ```bash
+    python3 scripts/hyperlex.py vector-seed --include-golden --through 2026-08
+    python3 scripts/hyperlex.py vector-search "rizz locked in" --kind term
+    ```
+
+    [Vector DB docs](modules/vectordb.md)
 
 </div>
 

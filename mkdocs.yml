@@ -75,6 +75,8 @@ nav:
   - Phase 5:
       - Overview: phase5.md
       - Simulation modules: modules/simulation.md
+  - Data:
+      - Vector DB: modules/vectordb.md
   - Ops:
       - Cron scan: cron-live-emergence.md
       - Diagrams: diagrams.md
@@ -92,4 +94,4 @@ exclude_docs: |
   README.md
 
 extra:
-  version: 0.3.2
+  version: 0.3.3

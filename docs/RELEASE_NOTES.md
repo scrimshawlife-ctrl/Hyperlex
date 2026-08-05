@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.3.3
+- Local SQLite vector DB (`vector-seed` / `vector-search`) for terms + receipts.
+
 ## 0.3.2
 - Hallmark redesign of Pages: workbench home, teal identity, run-history cards.
 

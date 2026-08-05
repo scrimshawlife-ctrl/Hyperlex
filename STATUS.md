@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.2  
+**Version:** 0.3.3  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0 · Pages static run history · Hallmark desk UI
@@ -37,6 +37,7 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Phase 5 multi-agent memetics** | Ready |
 | **Phase 5 hyperstition risk** | Ready |
 | **Phase 5 phylogeny scaffold** | Ready |
+| **Local vector DB** (`~/.hyperlex/vector.db`) | Ready |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
@@ -50,6 +51,7 @@ analyze --receipt --forecasts --append-log
   → lineage-backfill --list / lineage-backprop --from-golden
   → simulate --from-analyze --domain markets|ai|politics   # Phase 5
   → archive-export --history   # append sanitized run to Pages history
+  → vector-seed / vector-search   # local vector DB
 ```
 
 ## Data dirs
@@ -59,6 +61,7 @@ analyze --receipt --forecasts --append-log
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
+~/.hyperlex/vector.db            # local SQLite vector store
 data/backfill/2026/          # curated YTD term packs (repo)
 ```
 
