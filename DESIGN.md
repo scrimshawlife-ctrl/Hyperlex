@@ -52,3 +52,6 @@ Hyperlex has no hard dependency on Hollersports, Abraxas, or any specific domain
 
 ## 10. Evolution via Receipts
 Future improvements are validated by comparing receipt lineages and Brier evolution.
+
+## 11. Lineage as First-Class Structure
+Slang is documented and analyzed as historical families with emergent branches rather than flat term lists. Visual diagrams (Mermaid family trees, emergence process flows) live under `examples/slang-families/` and are described in `docs/slang-lineages.md`. Neologism detection, semantic variation, and hyperstition modules are the operational engines that attach new leaves to existing families or seed new ones. Future schema versions will carry explicit `lineage` references so that every receipt can point back to its documented family structure.
