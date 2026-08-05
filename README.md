@@ -59,17 +59,13 @@ See `references/` and `examples/memetic-forager-skeleton/`.
 
 ## Schemas & Expanded Ingest (v1.6)
 
-Schemas live at the root:
+Schemas are exported to the repository root:
 
 - `schemas/ingest.v1.schema.json`
 - `schemas/result.v1.schema.json`
 - `schemas/receipt.v1.schema.json`
 
-The ingest layer has been expanded with additional real sources (`urban`, `wikipedia`, `combined`) and a structured `fetch_ingest()` API.
-
-See:
-- `schemas/README.md`
-- `examples/hyperlex-symbolic/INTEGRATION.md`
+See `schemas/README.md` for usage and the expanded ingest sources (urban, wikipedia, combined + structured API).
 
 ## Contributing
 
