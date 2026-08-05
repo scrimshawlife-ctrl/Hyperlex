@@ -1,20 +1,21 @@
 # Operator loop (recommended)
 
-After Phase 5.0–5.3 research tooling, the highest-leverage path is **not** more
-simulation surface. It is a short **burn-in** that produces settled Brier from
-real operator work.
+**Goal:** settle a few real forecasts and get honest Brier — not more simulators.
 
-## Posture (current recommendation)
+The backend is **automatic**. One command runs ingest through results. Settlement
+is the only step that stays human.
+
+## Posture
 
 | Do | Defer |
 |----|--------|
-| Register one MODERATE cron (mock / offline) | ANN vector backend |
-| `run` + `pending` + `settle` + `score-series` | More Phase 5 modes |
-| Use `scan_risk_advisory` as a signal | Auto-mutating Hermes cron |
-| Bump tier only after evidence | Public PyPI / Abraxas hard import |
+| `pipeline` / `ingest` / `run` for full results | Manual analyze→receipt chaining |
+| Atomic seeds (or bags that auto-expand) | Blended multi-term seeds |
+| `pending` → `settle` → `score-series` | Invented Brier |
+| MODERATE offline cron when ready | Auto-mutating Hermes cron |
+| | ANN until corpus is large |
 
-ANN is optional until the local vector corpus is large enough that linear cosine
-hurts. Doctor-scale (~hundreds of terms) does not need it.
+See [commands.md](commands.md) · [demos/atomic-terms.md](demos/atomic-terms.md).
 
 ## Daily path (simplified) — automatic backend
 

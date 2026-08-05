@@ -5,7 +5,7 @@
     "top_risk_tier": "LOW"
   },
   "brier": null,
-  "created_at": "2026-08-05T21:57:51.561648+00:00",
+  "created_at": "2026-08-05T22:26:47.959171+00:00",
   "domain": "markets",
   "multi_term": true,
   "n_terms": 3,

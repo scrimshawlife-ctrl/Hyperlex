@@ -1,20 +1,34 @@
 # Phase 5 run — `backfill-phase5-rizz-2026`
 
 **Kind:** `phase5_scenario` · SPECULATIVE research snapshot for Pages.
-**Multi-term:** each lexicon atom simulated separately (not one blended seed).
+**Multi-term:** each lexicon atom is a separate scenario — not one blended seed.
 
 | Field | Value |
 |-------|-------|
-| Terms (atomic) | `sigma · rizz · locked in` |
+| Terms (atomic) | `sigma` · `rizz` · `locked in` |
 | Domain | `ai` |
-| Family | `None` |
-| Risk tier | `LOW` |
-| Risk score | `None` |
-| Transmission peak | `None` |
-| Agent adoption | `None` |
+| Family | `—` |
+| Aggregate risk tier | `LOW` |
+| Risk score | `—` |
 | Brier | `null` (never invented) |
 
-- [`index.json`](./index.json)
-- [`phase5.json`](./phase5.json) — compact scenario
 
-[← Run history](../../index.md)
+### Per-term results (separate)
+
+The free-text input may look like one phrase, but each **atom** is simulated alone.
+
+| Atom | Risk tier | Risk score | Transmission peak | Brier |
+|------|-----------|------------|-------------------|-------|
+| `sigma` | `LOW` | `0.331` | `0.85` | `null` |
+| `rizz` | `LOW` | `0.331` | `0.85` | `null` |
+| `locked in` | `LOW` | `0.331` | `0.85` | `null` |
+
+`original_seed` (input only): `sigma rizz locked in`
+
+
+### Files
+
+- [`index.json`](./index.json) — snapshot index
+- [`phase5.json`](./phase5.json) — compact scenario / multi-term summaries
+
+[← Run history](../../index.md) · [Atomic terms demo](../../../demos/atomic-terms.md) · [Operator loop](../../../operator-loop.md)

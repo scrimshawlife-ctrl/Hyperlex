@@ -1,12 +1,11 @@
-# Hyperlex as a Hermes skill (Python package repo)
+# Hyperlex as a Hermes skill
 
 ## Principle
 
 Hyperlex is a **Hermes skill** implemented as a **Python package repository**.
-Once installed, the skill tree is self-contained: analysis, receipts, forecasts,
-settlement, Brier scoring, score logs, diagrams, HLX rune envelopes, YTD lineage
-backfill/backprop, and Phase 5 research simulation all run from the skill
-directory without Abraxas.
+Once installed, the skill tree is self-contained: automatic pipeline (ingest → results),
+receipts, forecasts, settlement, Brier scoring, lineage, Phase 5 research, and vector DB
+all run from the skill directory without Abraxas.
 
 Abraxas (or any other host) is an **optional consumer**. Relevant Abraxas wire
 shapes are pure Hyperlex modules under `hyperlex.compat.abraxas` — Hyperlex never
@@ -17,12 +16,12 @@ imports Abraxas.
 │  Hyperlex Hermes skill                       │
 │  SKILL.md · install.sh · scripts/hyperlex.py │
 │  src/hyperlex/ (package)                     │
+│  pipeline: ingest → full results             │
 │  compat.abraxas (wire shapes only)           │
 └──────────────────┬───────────────────────────┘
                    │ optional hand-off
                    ▼
          Hermes host / Abraxas / other
-         (may import hyperlex modules)
 ```
 
 ## Install
@@ -30,13 +29,39 @@ imports Abraxas.
 ```bash
 bash install.sh --dry-run
 bash install.sh
-# → ~/.hermes/skills/hyperlex
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" commands
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" run "rizz" --route offline
+export HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
+$HLX check && $HLX doctor && $HLX commands
 ```
+
+## Preferred path (automatic backend)
+
+See [operator-loop.md](operator-loop.md) and [commands.md](commands.md).
+
+```bash
+# One command → full results (receipt, forecasts, phase5 risk)
+$HLX pipeline "rizz" --route offline
+# aliases:
+$HLX run "rizz"
+$HLX ingest "rizz"              # full results; --raw-only = signal only
+
+# Multi-term input expands to separate atoms
+$HLX pipeline "sigma rizz locked in"
+# → sigma | rizz | locked in  (not one blended seed)
+
+# Only manual calibration step:
+$HLX pending
+$HLX settle --forecast-id <id> --decision TRUE
+$HLX score-series --mean-shift --verify-chain
+```
+
+```text
+pipeline / run / ingest
+  → analyze → receipt → forecasts → score log → phase5 risk
+  → pending → settle → score-series   # Brier only here
+```
+
+Routes: prefer `--route offline|live|glossary|social` over raw adapter names.
 
 ## Run modes
 
@@ -44,18 +69,31 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" run "rizz" --route offline
 |------|-----|
 | Hermes skill CLI | `python3 $HERMES_SKILL_DIR/scripts/hyperlex.py …` |
 | Package (dev) | `PYTHONPATH=src python -m hyperlex …` |
-| Library | `import hyperlex` from skill `src/` or editable install |
+| Library | `from hyperlex import run_pipeline` |
 | Cron | `examples/cron/live-emergence-scan.job.json` |
 
-## Preferred operator path
+## Library
 
-See [operator-loop.md](operator-loop.md) and [commands.md](commands.md).
+```python
+from hyperlex import run_pipeline
 
-```text
-run --route offline → pending → settle → score-series
+# Free-text bag is input only — expands to atoms
+packet = run_pipeline("sigma rizz locked in", route="offline")
+assert packet["atoms"] == ["sigma", "rizz", "locked in"]
+assert packet["n_atoms"] == 3
+assert packet["brier"] is None
+# packet["results"][i] is one full unit per atom
 ```
 
-Ingest: use `--route offline|live|glossary|social` (not raw adapter names).
+## Phase 5 (research)
+
+```bash
+$HLX simulate --term rizz --mode scenario --domain ai
+$HLX simulate --term "sigma rizz locked in" --domain ai   # multi-term expand
+```
+
+All Phase 5 output is **SPECULATIVE** with `brier: null`.  
+Demos: [demos/atomic-terms.md](demos/atomic-terms.md).
 
 ## Relevant Abraxas capabilities (as Hyperlex modules)
 
@@ -69,21 +107,13 @@ Ingest: use `--route offline|live|glossary|social` (not raw adapter names).
 
 **Not imported:** Abraxas runtime, YGGDRASIL, live Alembic runes, MCP, production execution.
 
-## Phase 5 (research)
-
-```bash
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --mode scenario --term "locked in" --domain ai
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --from-analyze --term "sharp steam" --domain markets
-```
-
-See [phase5.md](phase5.md). Simulation never invents Brier.
-
 ## Fail-closed rules (skill-wide)
 
-1. Open analysis: `provenance.brier is null`
+1. Open analysis / pipeline: `provenance.brier is null`
 2. Unsettled series: `NOT_COMPUTABLE`
 3. Operator review never includes `autonomous_reliability_mutation` or `execute_production`
-4. No network required for `source=mock`
+4. No network required for `route=offline` / `source=mock`
+5. Multi-term free text expands to atoms — never density-stacked as one primary seed by default
 
 ## Operator data locations
 
@@ -92,5 +122,6 @@ See [phase5.md](phase5.md). Simulation never invents Brier.
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
+~/.hyperlex/vector.db
 ~/.hyperlex/rate_limit.json
 ```

@@ -30,28 +30,45 @@ and lightweight phylogenies.
 
 ## Operator entry
 
+Prefer the **automatic pipeline** for day-to-day work (includes a Phase 5 risk digest per atom):
+
+```bash
+python3 scripts/hyperlex.py pipeline "rizz" --route offline
+python3 scripts/hyperlex.py pipeline "sigma rizz locked in" --route offline
+# → one result unit per atom (sigma | rizz | locked in)
+```
+
+Research-only Phase 5:
+
 ```bash
 # Single atomic term
 python3 scripts/hyperlex.py simulate --term rizz --domain ai --out out/phase5/rizz.json
 
-# Multi-term free text → auto-expands to separate scenarios (not one blended seed)
+# Multi-term free text → auto-expands (not one blended seed)
 python3 scripts/hyperlex.py terms-split "sigma rizz locked in"
 python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --domain ai
-# → schema hyperlex.phase5_multi_term.v1 with terms [sigma, rizz, locked in]
+# → schema hyperlex.phase5_multi_term.v1 · terms [sigma, rizz, locked in]
 
-# Force a single blended seed only if intentional
+# Force blend only if intentional
 python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --no-expand
 ```
 
 Details: [modules/simulation.md](modules/simulation.md).
 
-### Atomic terms
+### Atomic terms (how to read Pages)
+
+| Field on site | Meaning |
+|---------------|---------|
+| **atoms** / **Terms (atomic)** | Separate lexicon items simulated alone |
+| **original_seed** | Free-text you typed — input only |
+| **Per-term results** table | One row per atom (risk tier, etc.) |
+| **Brier null** | Correct — research never invents scores |
 
 Backfill packs store **one term per entry**. Phrases like `locked in` are one atom;
-`sigma` and `rizz` are separate. Concatenating them for a Phase 5 run was a demo
-mistake — the engine now expands by default.
+`sigma` and `rizz` are separate.
 
-**Expanded demos (Pages):** [demos/atomic-terms.md](demos/atomic-terms.md) · fixtures in `examples/demos/`.
+**Pages demos:** [demos/atomic-terms.md](demos/atomic-terms.md) ·  
+**Example snapshot:** [archive/runs/backfill-phase5-rizz-2026](archive/runs/backfill-phase5-rizz-2026/index.md)
 
 ## How it sits on the stack
 

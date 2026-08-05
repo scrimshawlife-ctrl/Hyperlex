@@ -7,17 +7,41 @@
 <span>Latest analysis: <code>backfill-ytd-2026-analysis</code></span>
 </div>
 
-Publish-safe history of Hyperlex runs. Not live operator state.
+Publish-safe history of Hyperlex runs. **Not** live operator state — that lives in `~/.hyperlex/`.
+
+**How to read these cards**
+
+| Kind | Meaning |
+|------|---------|
+| `analysis` | Receipt-backed analyze/pipeline snapshots |
+| `phase5_scenario` | Research sim (SPECULATIVE). **atoms** = separate lexicon terms (not one blended seed) |
+| risk tier | Advisory only — not market advice; not Brier |
+
 Machine index: [`catalog.json`](./catalog.json) ·
-[Latest analysis](./latest/index.md) (`backfill-ytd-2026-analysis`)
+[Latest analysis](./latest/index.md) (`backfill-ytd-2026-analysis`) ·
+[Atomic terms demo](../demos/atomic-terms.md) · [Operator loop](../operator-loop.md)
 
 ## Snapshots
 
 <div class="grid cards" markdown>
 
+-   :material-flask-outline: **[backfill-phase5-sharp-2026](./runs/backfill-phase5-sharp-2026/index.md)**
+
+    `phase5_scenario` · risk **LOW** · atoms `sharp` · `steam` · `revenge`
+
+    Atoms: sharp · steam · revenge
+
+    Families: —
+
+    ---
+
+    [Open snapshot →](./runs/backfill-phase5-sharp-2026/index.md)
+
 -   :material-flask-outline: **[backfill-phase5-ai-native-2026](./runs/backfill-phase5-ai-native-2026/index.md)**
 
-    `phase5_scenario` · risk **LOW**
+    `phase5_scenario` · risk **LOW** · atoms `agentic slop` · `skill issue`
+
+    Atoms: agentic slop · skill issue
 
     Families: —
 
@@ -27,7 +51,9 @@ Machine index: [`catalog.json`](./catalog.json) ·
 
 -   :material-flask-outline: **[phase5-rizz-ai-demo](./runs/phase5-rizz-ai-demo/index.md)**
 
-    `phase5_scenario` · risk **LOW**
+    `phase5_scenario` · risk **LOW** · atoms `sigma` · `rizz` · `locked in`
+
+    Atoms: sigma · rizz · locked in (separate scenarios)
 
     Families: —
 
@@ -35,19 +61,11 @@ Machine index: [`catalog.json`](./catalog.json) ·
 
     [Open snapshot →](./runs/phase5-rizz-ai-demo/index.md)
 
--   :material-flask-outline: **[backfill-phase5-sharp-2026](./runs/backfill-phase5-sharp-2026/index.md)**
-
-    `phase5_scenario` · risk **LOW**
-
-    Families: —
-
-    ---
-
-    [Open snapshot →](./runs/backfill-phase5-sharp-2026/index.md)
-
 -   :material-flask-outline: **[backfill-phase5-rizz-2026](./runs/backfill-phase5-rizz-2026/index.md)**
 
-    `phase5_scenario` · risk **LOW**
+    `phase5_scenario` · risk **LOW** · atoms `sigma` · `rizz` · `locked in`
+
+    Atoms: sigma · rizz · locked in (separate scenarios)
 
     Families: —
 
@@ -59,6 +77,8 @@ Machine index: [`catalog.json`](./catalog.json) ·
 
     `analysis` · 16 receipts
 
+    YTD 2026 backfill packs → mock analyze receipts for Pages
+
     Families: `ai-native`×3, `betting-sharp`×2, `brainrot-aura`×5, `crypto-degen`×1, `gaming-meta`×2
 
     ---
@@ -69,6 +89,8 @@ Machine index: [`catalog.json`](./catalog.json) ·
 
     `analysis` · 9 receipts
 
+    Hallmark redesign seed; multi-family stats
+
     Families: `(none)`×1, `ai-native`×1, `betting-sharp`×1, `brainrot-aura`×1, `crypto-degen`×1
 
     ---
@@ -78,6 +100,8 @@ Machine index: [`catalog.json`](./catalog.json) ·
 -   :material-file-document-outline: **[golden-seed-0.3.1](./runs/golden-seed-0.3.1/index.md)**
 
     `analysis` · 9 receipts
+
+    Golden corpus seed for Pages static history
 
     Families: `betting-sharp`×5
 

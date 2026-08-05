@@ -397,6 +397,9 @@ def rebuild_archive_catalog(
             continue
         snap = idx.get("snapshot_id") or d.name
         kind = idx.get("run_kind") or RUN_KIND_ANALYSIS
+        phase5 = idx.get("phase5") or {}
+        terms = idx.get("terms") or phase5.get("terms") or []
+        multi = bool(idx.get("multi_term") or phase5.get("multi_term"))
         entries.append({
             "snapshot_id": snap,
             "run_kind": kind,
@@ -406,8 +409,10 @@ def rebuild_archive_catalog(
             "families": (idx.get("stats") or {}).get("families") or {},
             "path": f"runs/{d.name}/",
             "site_path": f"runs/{d.name}/",
-            "risk_tier": idx.get("risk_tier") or (idx.get("phase5") or {}).get("risk_tier"),
-            "seed_term": idx.get("seed_term") or (idx.get("phase5") or {}).get("seed_term"),
+            "risk_tier": idx.get("risk_tier") or phase5.get("risk_tier"),
+            "seed_term": idx.get("seed_term") or phase5.get("seed_term"),
+            "terms": terms,
+            "multi_term": multi,
             "notes": idx.get("notes"),
         })
     # Newest first by created_at (ISO), not directory name
@@ -449,12 +454,19 @@ def rebuild_archive_catalog(
             meta_bits.append(f"{e['n_receipt_summaries']} receipts")
         if e.get("risk_tier"):
             meta_bits.append(f"risk **{e['risk_tier']}**")
-        if e.get("seed_term"):
+        terms = e.get("terms") or []
+        if e.get("multi_term") and terms:
+            terms_disp = " · ".join(f"`{t}`" for t in terms[:6])
+            meta_bits.append(f"atoms {terms_disp}")
+        elif e.get("seed_term"):
             meta_bits.append(f"term `{e['seed_term']}`")
         meta = " · ".join(meta_bits)
+        note_line = ""
+        if e.get("notes"):
+            note_line = f"\n\n    {e['notes']}"
         card_blocks.append(
             f"-   :{icon}: **[{e['snapshot_id']}]({link})**\n\n"
-            f"    {meta}\n\n"
+            f"    {meta}{note_line}\n\n"
             f"    Families: {top_fam}\n\n"
             f"    ---\n\n"
             f"    [Open snapshot →]({link})\n"
@@ -470,9 +482,19 @@ def rebuild_archive_catalog(
 {f"<span>Latest analysis: <code>{latest_snap}</code></span>" if latest_snap else ""}
 </div>
 
-Publish-safe history of Hyperlex runs. Not live operator state.
+Publish-safe history of Hyperlex runs. **Not** live operator state — that lives in `~/.hyperlex/`.
+
+**How to read these cards**
+
+| Kind | Meaning |
+|------|---------|
+| `analysis` | Receipt-backed analyze/pipeline snapshots |
+| `phase5_scenario` | Research sim (SPECULATIVE). **atoms** = separate lexicon terms (not one blended seed) |
+| risk tier | Advisory only — not market advice; not Brier |
+
 Machine index: [`catalog.json`](./catalog.json) ·
-[Latest analysis](./latest/index.md){f" (`{latest_snap}`)" if latest_snap else ""}
+[Latest analysis](./latest/index.md){f" (`{latest_snap}`)" if latest_snap else ""} ·
+[Atomic terms demo](../demos/atomic-terms.md) · [Operator loop](../operator-loop.md)
 
 ## Snapshots
 
@@ -558,8 +580,28 @@ def export_run_history(
                 "aggregate": phase5_scenario.get("aggregate"),
                 "note": phase5_scenario.get("note"),
             }
-            terms_disp = " · ".join(str(t) for t in (summary.get("terms") or []))
-            md_seed_row = f"| Terms (atomic) | `{terms_disp}` |"
+            terms_list = summary.get("terms") or []
+            terms_disp = " · ".join(f"`{t}`" for t in terms_list)
+            md_seed_row = f"| Terms (atomic) | {terms_disp} |"
+            # per-term table for usable Pages reading
+            per_rows = []
+            for row in (summary.get("per_term") or phase5_scenario.get("summaries") or []):
+                per_rows.append(
+                    f"| `{row.get('seed_term')}` | `{row.get('risk_tier')}` | "
+                    f"`{row.get('risk_score')}` | `{row.get('transmission_peak')}` | `null` |"
+                )
+            per_table = "\n".join(per_rows) if per_rows else "| — | — | — | — | `null` |"
+            multi_body = f"""
+### Per-term results (separate)
+
+The free-text input may look like one phrase, but each **atom** is simulated alone.
+
+| Atom | Risk tier | Risk score | Transmission peak | Brier |
+|------|-----------|------------|-------------------|-------|
+{per_table}
+
+`original_seed` (input only): `{phase5_scenario.get("original_seed")}`
+"""
         else:
             compact = {
                 "schema": phase5_scenario.get("schema") or "hyperlex.phase5_scenario.v1",
@@ -581,6 +623,7 @@ def export_run_history(
                 else None,
             }
             md_seed_row = f"| Seed term | `{summary.get('seed_term')}` |"
+            multi_body = ""
         (run_dir / "phase5.json").write_text(
             json.dumps(compact, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
@@ -608,23 +651,25 @@ def export_run_history(
         md = f"""# Phase 5 run — `{snap}`
 
 **Kind:** `phase5_scenario` · SPECULATIVE research snapshot for Pages.
-{"**Multi-term:** each lexicon atom simulated separately (not one blended seed)." if multi else ""}
+{"**Multi-term:** each lexicon atom is a separate scenario — not one blended seed." if multi else ""}
 
 | Field | Value |
 |-------|-------|
 {md_seed_row}
 | Domain | `{summary.get("domain")}` |
-| Family | `{summary.get("lineage_family")}` |
-| Risk tier | `{summary.get("risk_tier")}` |
-| Risk score | `{summary.get("risk_score")}` |
-| Transmission peak | `{summary.get("transmission_peak")}` |
-| Agent adoption | `{summary.get("agent_adoption_rate")}` |
+| Family | `{summary.get("lineage_family") or "—"}` |
+| Aggregate risk tier | `{summary.get("risk_tier") or "—"}` |
+| Risk score | `{summary.get("risk_score") if summary.get("risk_score") is not None else "—"}` |
 | Brier | `null` (never invented) |
 
-- [`index.json`](./index.json)
-- [`phase5.json`](./phase5.json) — compact scenario
+{multi_body}
 
-[← Run history](../../index.md)
+### Files
+
+- [`index.json`](./index.json) — snapshot index
+- [`phase5.json`](./phase5.json) — compact scenario / multi-term summaries
+
+[← Run history](../../index.md) · [Atomic terms demo](../../../demos/atomic-terms.md) · [Operator loop](../../../operator-loop.md)
 """
         (run_dir / "index.md").write_text(md, encoding="utf-8")
         (run_dir / "README.md").write_text(md, encoding="utf-8")

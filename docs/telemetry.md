@@ -1,131 +1,184 @@
 # Telemetry
 
-Operator desk for Hyperlex — readiness, run history, install, simulation, and docs map.
-This is not a live metrics dashboard; it is the **publish-safe command surface** on Pages.
-Primary store remains local (`~/.hyperlex/`).
+Operator desk on Pages — **publish-safe**, not a live dashboard.  
+Real state lives in `~/.hyperlex/` (receipts, score log, vector DB).
 
 <div class="hlx-status" markdown>
 <span><span class="hlx-dot"></span><strong>v0.4.0</strong></span>
-<span>Hermes skill · Python package repo</span>
-<span>Phases 0–4 complete · Phase 5.0</span>
-<span>Pages = static run history</span>
+<span>Hermes skill · auto pipeline</span>
+<span>Atomic multi-term · settled Brier only</span>
+<span>Pages = static history</span>
 </div>
 
 <p class="hlx-lead">
-Detect, score, and archive memetic signals — lineage, hyperstition, settled Brier only.
-Open analysis never invents Brier. Phase 5 stays SPECULATIVE.
+<strong>One command → full results.</strong> Ingest runs the backend automatically.
+Open analysis never invents Brier. Settlement is the only manual step.
 </p>
+
+## Start here (automatic backend)
+
+```bash
+export HERMES_SKILL_DIR="${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}"
+export HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
+
+# Install / health
+bash install.sh
+$HLX doctor
+
+# AUTO: ingest → analyze → receipt → forecasts → score log → Phase 5 risk
+$HLX pipeline "rizz" --route offline
+# same path:
+$HLX run "rizz"
+$HLX ingest "rizz"                 # --raw-only = signal only
+
+# Free-text bag → separate atoms (not one blended seed)
+$HLX pipeline "sigma rizz locked in"
+# → results for: sigma | rizz | locked in
+
+# Only manual step for real scores:
+$HLX pending
+$HLX settle --forecast-id <id> --decision TRUE
+$HLX score-series --mean-shift --verify-chain
+```
+
+Week-one script: `bash examples/ops/burn-in.sh`
 
 ## Desk
 
 <div class="grid cards" markdown>
 
--   :material-history: **Run history**
+-   :material-play-circle: **Pipeline (auto)**
 
-    Dated, sanitized snapshots on Pages. Not live operator state.
+    Ingest → analyze → receipt → forecasts → Phase 5 risk.  
+    Multi-term bags expand to atoms.
 
     ---
 
-    [Open catalog →](archive/index.md){ .md-button }
+    ```bash
+    $HLX pipeline "rizz" --route offline
+    $HLX pipeline "sigma rizz locked in"
+    ```
+
+    [Command map](commands.md) · [Operator loop](operator-loop.md)
+
+-   :material-vector-arrange-below: **Atomic terms**
+
+    `"sigma rizz locked in"` is **input text**, not one slang item.  
+    Engine splits to `sigma` · `rizz` · `locked in`.
+
+    ---
+
+    ```bash
+    $HLX terms-split "sigma rizz locked in"
+    ```
+
+    [Full demos →](demos/atomic-terms.md)  
+    [Example run](archive/runs/backfill-phase5-rizz-2026/index.md)
+
+-   :material-history: **Run history**
+
+    Sanitized snapshots on Pages. Not live operator state.
+
+    ---
+
+    [Catalog →](archive/index.md){ .md-button }  
     [Latest analysis](archive/latest/index.md)
 
 -   :material-download: **Install**
 
-    Hermes skill tree → `~/.hermes/skills/hyperlex`
+    Hermes skill → `~/.hermes/skills/hyperlex`
 
     ---
 
     ```bash
     bash install.sh
-    export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
-    python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
+    export HERMES_SKILL_DIR="$HOME/.hermes/skills/hyperlex"
+    $HLX doctor
     ```
 
--   :material-flask-outline: **Simulate (Phase 5)**
+-   :material-flask-outline: **Phase 5 (research)**
 
-    Transmission · multi-agent · hyperstition risk · phylogeny scaffold.
-    All SPECULATIVE · `brier: null`.
+    Transmission · multi-agent · risk · phylogeny.  
+    SPECULATIVE · `brier: null`. Prefer atomic seeds.
 
     ---
 
     ```bash
-    python3 scripts/hyperlex.py simulate --term rizz --mode scenario
-    # Multi-term expands: sigma | rizz | locked in
-    python3 scripts/hyperlex.py terms-split "sigma rizz locked in"
+    $HLX simulate --term rizz --mode scenario
+    $HLX simulate --term "sigma rizz locked in"   # expands
     ```
 
-    [Phase 5 docs](phase5.md)
-    [Atomic terms demo →](demos/atomic-terms.md)
+    [Phase 5](phase5.md) · [Simulation modules](modules/simulation.md)
 
--   :material-vector-arrange-below: **Atomic terms demo**
+-   :material-vector-polyline: **Vector DB**
 
-    Bags of slang expand into separate atoms. Phrases like `locked in` stay whole.
+    Local SQLite at `~/.hyperlex/vector.db` — **terms are atomic**.
 
     ---
 
     ```bash
-    python3 scripts/hyperlex.py terms-split "sigma rizz locked in"
-    python3 scripts/hyperlex.py simulate --term "agentic slop skill issue" --domain ai
+    $HLX vector-seed --include-golden --through 2026-08
+    $HLX vector-search "rizz" --kind term
+    $HLX vector-search "locked in" --kind term
     ```
 
-    [Full demos →](demos/atomic-terms.md)
-    [Run history multi-term](archive/runs/backfill-phase5-rizz-2026/index.md)
+    [Vector docs](modules/vectordb.md)
 
 -   :material-heart-pulse: **Status**
 
-    Ready surface, operator loop, data dirs.
+    Ready surface, data dirs, recommended next.
 
     ---
 
     [Skill status →](status.md)
 
--   :material-vector-polyline: **Vector DB**
-
-    Local SQLite embeddings for terms + receipts (`~/.hyperlex/vector.db`).
-
-    ---
-
-    ```bash
-    python3 scripts/hyperlex.py vector-seed --include-golden --through 2026-08
-    python3 scripts/hyperlex.py vector-search "rizz" --kind term
-    python3 scripts/hyperlex.py vector-search "locked in" --kind term
-    ```
-
-    [Vector DB docs](modules/vectordb.md)
-
 </div>
+
+## How to read Pages content
+
+| You see | Means |
+|---------|--------|
+| **atoms** `sigma` · `rizz` · `locked in` | Three separate scenarios (good) |
+| **term** `rizz` | Single-atom run |
+| **original_seed** | Free-text input only — not a blended lexicon item |
+| **risk tier** | Advisory Phase 5 signal — not Brier, not market advice |
+| **Brier `null`** | Correct until you settle forecasts |
+| **Families** on analysis cards | Lineage counts from receipt summaries |
 
 ## Rules (non-negotiable)
 
 !!! warning "Brier requires settlement"
-    Open analysis always has `provenance.brier = null`. Phase 5 keeps `brier: null`.
-    Numeric Brier only after operator settlement.
+    Pipeline / analyze / Phase 5 keep `brier: null`.  
+    Numeric Brier only after operator `settle` → `score-series`.
 
-Hosts may import Abraxas-shaped modules **from** Hyperlex (`hyperlex.compat.abraxas`). Hyperlex never imports Abraxas.
+!!! note "Primary store is local"
+    Pages never replaces `~/.hyperlex/`. Archive export is sanitized static history.
+
+Hosts may import Abraxas-shaped modules **from** Hyperlex. Hyperlex never imports Abraxas.
 
 ## Map
 
 | Need | Go |
 |------|-----|
+| Auto backend | [commands](commands.md) · [operator-loop](operator-loop.md) |
+| Multi-term demos | [demos/atomic-terms](demos/atomic-terms.md) |
 | Skill contract | [hermes-skill](hermes-skill.md) |
-| Frozen API | [api-v1](api-v1.md) |
 | Lineages | [slang-lineages](slang-lineages.md) |
 | Calibration | [brier-calibration](brier-calibration.md) |
-| Simulation | [phase5](phase5.md) · [modules/simulation](modules/simulation.md) |
-| Atomic multi-term demos | [demos/atomic-terms](demos/atomic-terms.md) |
-| Case study | [case-studies](case-studies.md) |
-| Roadmap | [ROADMAP](ROADMAP.md) |
-| Splash home | [Home](index.md) |
+| Simulation | [phase5](phase5.md) |
+| Cron / risk schedule | [cron-live-emergence](cron-live-emergence.md) |
+| Run history | [archive](archive/index.md) |
+| Splash | [Home](index.md) |
 
-## Append a run to Pages
+## Publish a snapshot to Pages
 
 ```bash
-python3 scripts/hyperlex.py archive-export --include-golden --history
-# or operator home:
-python3 scripts/hyperlex.py archive-export --include-home-receipts --history
-# Phase 5 digest:
-python3 scripts/hyperlex.py simulate --term rizz --out /tmp/p5.json
-python3 scripts/hyperlex.py archive-export --phase5 /tmp/p5.json --history
+# After local pipeline runs:
+$HLX archive-export --include-home-receipts --history
+
+# Phase 5 multi-term digest (atoms stay separate on the site):
+$HLX simulate --term "sigma rizz locked in" --out /tmp/p5.json
+$HLX archive-export --phase5 /tmp/p5.json --history --snapshot-id "phase5-atoms-$(date -u +%Y%m%d)"
 ```
 
 Commit `docs/archive/` and push — docs workflow rebuilds the site.
@@ -133,5 +186,5 @@ Commit `docs/archive/` and push — docs workflow rebuilds the site.
 Site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.github.io/Hyperlex/)
 
 <p class="hlx-posture">
-Hermes skill · Brier requires settlement · no Abraxas hard import · primary store ~/.hyperlex
+pipeline = auto results · Brier requires settlement · no Abraxas hard import · primary store ~/.hyperlex
 </p>

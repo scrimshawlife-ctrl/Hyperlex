@@ -20,15 +20,15 @@ hide:
 Memetic emergence engine · Hermes skill · v0.4.0
 </p>
 <p class="hlx-splash-line">
-Lineage · hyperstition · receipts · settled Brier · Phase 5 research
+pipeline = auto results · atomic terms · settled Brier only · Phase 5 research
 </p>
 
 <div class="hlx-splash-cta" markdown>
 
 [Enter telemetry →](telemetry.md){ .md-button .md-button--primary }
-[Atomic terms demo](demos/atomic-terms.md){ .md-button }
+[How to run](operator-loop.md){ .md-button }
+[Atomic terms](demos/atomic-terms.md){ .md-button }
 [Run history](archive/index.md){ .md-button }
-[Status](status.md){ .md-button }
 
 </div>
 

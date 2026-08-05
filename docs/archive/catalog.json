@@ -6,56 +6,79 @@
   "purpose": "static_history_of_runs",
   "runs": [
     {
-      "created_at": "2026-08-05T21:58:07.777631+00:00",
+      "created_at": "2026-08-05T22:27:00.368136+00:00",
       "families": {},
+      "multi_term": true,
       "n_ledger_rows": 0,
       "n_receipt_summaries": 0,
-      "notes": "Per-term Phase 5: agentic slop | skill issue",
-      "path": "runs/backfill-phase5-ai-native-2026/",
-      "risk_tier": "LOW",
-      "run_kind": "phase5_scenario",
-      "seed_term": null,
-      "site_path": "runs/backfill-phase5-ai-native-2026/",
-      "snapshot_id": "backfill-phase5-ai-native-2026"
-    },
-    {
-      "created_at": "2026-08-05T21:57:52.012352+00:00",
-      "families": {},
-      "n_ledger_rows": 0,
-      "n_receipt_summaries": 0,
-      "notes": "Per-term Phase 5: sigma | rizz | locked in",
-      "path": "runs/phase5-rizz-ai-demo/",
-      "risk_tier": "LOW",
-      "run_kind": "phase5_scenario",
-      "seed_term": null,
-      "site_path": "runs/phase5-rizz-ai-demo/",
-      "snapshot_id": "phase5-rizz-ai-demo"
-    },
-    {
-      "created_at": "2026-08-05T21:57:51.709295+00:00",
-      "families": {},
-      "n_ledger_rows": 0,
-      "n_receipt_summaries": 0,
-      "notes": "Per-term Phase 5: sharp | steam | revenge",
+      "notes": "Atoms: sharp \u00b7 steam \u00b7 revenge",
       "path": "runs/backfill-phase5-sharp-2026/",
       "risk_tier": "LOW",
       "run_kind": "phase5_scenario",
       "seed_term": null,
       "site_path": "runs/backfill-phase5-sharp-2026/",
-      "snapshot_id": "backfill-phase5-sharp-2026"
+      "snapshot_id": "backfill-phase5-sharp-2026",
+      "terms": [
+        "sharp",
+        "steam",
+        "revenge"
+      ]
     },
     {
-      "created_at": "2026-08-05T21:54:38.918539+00:00",
+      "created_at": "2026-08-05T22:27:00.220509+00:00",
       "families": {},
+      "multi_term": true,
       "n_ledger_rows": 0,
       "n_receipt_summaries": 0,
-      "notes": "Per-term Phase 5: sigma | rizz | locked in (atomic, not blended)",
+      "notes": "Atoms: agentic slop \u00b7 skill issue",
+      "path": "runs/backfill-phase5-ai-native-2026/",
+      "risk_tier": "LOW",
+      "run_kind": "phase5_scenario",
+      "seed_term": null,
+      "site_path": "runs/backfill-phase5-ai-native-2026/",
+      "snapshot_id": "backfill-phase5-ai-native-2026",
+      "terms": [
+        "agentic slop",
+        "skill issue"
+      ]
+    },
+    {
+      "created_at": "2026-08-05T22:27:00.073584+00:00",
+      "families": {},
+      "multi_term": true,
+      "n_ledger_rows": 0,
+      "n_receipt_summaries": 0,
+      "notes": "Atoms: sigma \u00b7 rizz \u00b7 locked in (separate scenarios)",
+      "path": "runs/phase5-rizz-ai-demo/",
+      "risk_tier": "LOW",
+      "run_kind": "phase5_scenario",
+      "seed_term": null,
+      "site_path": "runs/phase5-rizz-ai-demo/",
+      "snapshot_id": "phase5-rizz-ai-demo",
+      "terms": [
+        "sigma",
+        "rizz",
+        "locked in"
+      ]
+    },
+    {
+      "created_at": "2026-08-05T22:26:59.924949+00:00",
+      "families": {},
+      "multi_term": true,
+      "n_ledger_rows": 0,
+      "n_receipt_summaries": 0,
+      "notes": "Atoms: sigma \u00b7 rizz \u00b7 locked in (separate scenarios)",
       "path": "runs/backfill-phase5-rizz-2026/",
       "risk_tier": "LOW",
       "run_kind": "phase5_scenario",
       "seed_term": null,
       "site_path": "runs/backfill-phase5-rizz-2026/",
-      "snapshot_id": "backfill-phase5-rizz-2026"
+      "snapshot_id": "backfill-phase5-rizz-2026",
+      "terms": [
+        "sigma",
+        "rizz",
+        "locked in"
+      ]
     },
     {
       "created_at": "2026-08-05T20:36:36.979993+00:00",
@@ -69,6 +92,7 @@
         "political-status": 1,
         "workplace-corp": 1
       },
+      "multi_term": false,
       "n_ledger_rows": 0,
       "n_receipt_summaries": 16,
       "notes": "YTD 2026 backfill packs \u2192 mock analyze receipts for Pages",
@@ -77,7 +101,8 @@
       "run_kind": "analysis",
       "seed_term": null,
       "site_path": "runs/backfill-ytd-2026-analysis/",
-      "snapshot_id": "backfill-ytd-2026-analysis"
+      "snapshot_id": "backfill-ytd-2026-analysis",
+      "terms": []
     },
     {
       "created_at": "2026-08-05T19:31:45.295668+00:00",
@@ -92,6 +117,7 @@
         "political-status": 1,
         "workplace-corp": 1
       },
+      "multi_term": false,
       "n_ledger_rows": 5,
       "n_receipt_summaries": 9,
       "notes": "Hallmark redesign seed; multi-family stats",
@@ -100,13 +126,15 @@
       "run_kind": "analysis",
       "seed_term": null,
       "site_path": "runs/golden-seed-0.3.2/",
-      "snapshot_id": "golden-seed-0.3.2"
+      "snapshot_id": "golden-seed-0.3.2",
+      "terms": []
     },
     {
       "created_at": "2026-08-05T19:12:43.887823+00:00",
       "families": {
         "betting-sharp": 5
       },
+      "multi_term": false,
       "n_ledger_rows": 5,
       "n_receipt_summaries": 9,
       "notes": "Golden corpus seed for Pages static history",
@@ -115,10 +143,11 @@
       "run_kind": "analysis",
       "seed_term": null,
       "site_path": "runs/golden-seed-0.3.1/",
-      "snapshot_id": "golden-seed-0.3.1"
+      "snapshot_id": "golden-seed-0.3.1",
+      "terms": []
     }
   ],
   "schema": "hyperlex.archive_catalog.v1",
   "site_base": "https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/archive/",
-  "updated_at": "2026-08-05T21:58:07.778445+00:00"
+  "updated_at": "2026-08-05T22:27:00.527036+00:00"
 }

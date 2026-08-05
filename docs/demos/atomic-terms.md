@@ -1,19 +1,33 @@
 # Demo: atomic multi-term seeds
 
-Independent slang items must be **considered separately**. Multi-word phrases that are one item (`locked in`, `skill issue`, `agentic slop`) stay together.
+## The short version
+
+| You type | Engine does |
+|----------|-------------|
+| `pipeline "sigma rizz locked in"` | **Three** full result units: `sigma`, `rizz`, `locked in` |
+| `pipeline "locked in"` | **One** unit (true multi-word phrase) |
+| `pipeline "rizz"` | **One** unit |
+
+The spaces in `"sigma rizz locked in"` are **input text**, not a single slang entry.  
+Backfill packs already store those as separate rows — the pipeline matches that model.
 
 !!! tip "Rule of thumb"
-    If backfill stores three pack rows, Phase 5 should produce **three scenarios** — not one blended seed.
+    If the pack has three terms, you should get **three** scenarios — never one blended seed.
 
-## Why this matters
+## Why this shows up on Pages
 
-| Wrong | Right |
-|-------|--------|
-| One Phase 5 run for `"sigma rizz locked in"` | Three runs: `sigma` · `rizz` · `locked in` |
-| One lineage score density-stacking all hits | `per_term[]` lineage; primary = best single atom |
-| Scan queries that bag unrelated atoms | Atomic pack in `examples/cron/scan-queries.json` |
+Older demos used bags as if they were one seed. Snapshots are corrected:
 
-## Live demos (run offline)
+| Snapshot | Atoms (separate) |
+|----------|------------------|
+| [backfill-phase5-rizz-2026](../archive/runs/backfill-phase5-rizz-2026/index.md) | sigma · rizz · locked in |
+| [phase5-rizz-ai-demo](../archive/runs/phase5-rizz-ai-demo/index.md) | sigma · rizz · locked in |
+| [backfill-phase5-ai-native-2026](../archive/runs/backfill-phase5-ai-native-2026/index.md) | agentic slop · skill issue |
+| [backfill-phase5-sharp-2026](../archive/runs/backfill-phase5-sharp-2026/index.md) | sharp · steam · revenge |
+
+On a multi-term card you should see **atoms** listed, plus a per-term table inside the snapshot.
+
+## Live demos (offline)
 
 ```bash
 export HERMES_SKILL_DIR="${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}"
@@ -21,68 +35,65 @@ export HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
 export HYPERLEX_OFFLINE=1
 ```
 
-### Demo A — brainrot bag
+### A — Automatic pipeline (preferred)
+
+```bash
+# Full backend results for each atom
+$HLX pipeline "sigma rizz locked in" --route offline
+
+# Packet fields that matter:
+#   atoms: ["sigma","rizz","locked in"]
+#   results: [ {query, receipt, forecasts, phase5}, ... ]
+#   brier: null
+```
+
+Same automatic path: `run` and `ingest` (use `ingest --raw-only` only if you want the signal, no results).
+
+### B — Preview split only
 
 ```bash
 $HLX terms-split "sigma rizz locked in"
 # → terms: ["sigma", "rizz", "locked in"]
 
-$HLX simulate --term "sigma rizz locked in" --domain ai --no-phylogeny
-# → schema hyperlex.phase5_multi_term.v1
-# → one summary per atom
-
-# Prefer day-to-day atomic runs:
-$HLX run "sigma" --route offline
-$HLX run "rizz" --route offline
-$HLX run "locked in" --route offline
-```
-
-### Demo B — AI-native compound + phrase
-
-```bash
 $HLX terms-split "agentic slop skill issue"
 # → ["agentic slop", "skill issue"]   # compound phrase kept
 
-$HLX simulate --term "agentic slop skill issue" --domain ai --no-phylogeny
-```
-
-### Demo C — betting atoms
-
-```bash
-$HLX terms-split "sharp steam revenge"
-# → ["sharp", "steam", "revenge"]
-
-$HLX simulate --term "sharp steam revenge" --domain markets --no-phylogeny
-```
-
-### Demo D — discipline pair
-
-```bash
 $HLX terms-split "locked in crash out"
 # → ["locked in", "crash out"]
-
-$HLX analyze "locked in crash out" --route offline
-# analysis.seed_terms.terms · analysis.per_term · analysis.primary_term
 ```
 
-### Force blend (opt-in only)
+### C — Phase 5 research only
 
 ```bash
-$HLX simulate --term "sigma rizz locked in" --no-expand --domain ai
-# single hyperlex.phase5_scenario.v1 — use only if you mean it
+$HLX simulate --term "sigma rizz locked in" --domain ai
+# → schema hyperlex.phase5_multi_term.v1
+
+$HLX simulate --term rizz --domain ai
+# → single atomic scenario
+```
+
+### D — Force blend (avoid)
+
+```bash
+$HLX simulate --term "sigma rizz locked in" --no-expand
+# one scenario — only if you intentionally want a blended seed
 ```
 
 ## Expected shapes
 
-### `terms-split`
+### Pipeline multi-atom
 
 ```json
 {
-  "schema": "hyperlex.seed_terms.v1",
-  "original": "sigma rizz locked in",
-  "terms": ["sigma", "rizz", "locked in"],
-  "multi_term": true,
-  "method": "lexicon_longest_match"
+  "schema": "hyperlex.pipeline_result.v1",
+  "atoms": ["sigma", "rizz", "locked in"],
+  "n_atoms": 3,
+  "results": [
+    {"query": "sigma", "lineage_family": "…", "n_forecasts": 3, "brier": null},
+    {"query": "rizz", "lineage_family": "…", "n_forecasts": 3, "brier": null},
+    {"query": "locked in", "lineage_family": "…", "n_forecasts": 3, "brier": null}
+  ],
+  "brier": null
 }
 ```
 
@@ -93,51 +104,26 @@ $HLX simulate --term "sigma rizz locked in" --no-expand --domain ai
   "schema": "hyperlex.phase5_multi_term.v1",
   "original_seed": "sigma rizz locked in",
   "terms": ["sigma", "rizz", "locked in"],
-  "multi_term": true,
   "summaries": [
     {"seed_term": "sigma", "risk_tier": "…", "brier": null},
     {"seed_term": "rizz", "risk_tier": "…", "brier": null},
     {"seed_term": "locked in", "risk_tier": "…", "brier": null}
   ],
-  "brier": null,
-  "provenance": "SPECULATIVE"
+  "brier": null
 }
 ```
 
-### Analyze
-
-| Field | Meaning |
-|-------|---------|
-| `analysis.seed_terms` | Split packet |
-| `analysis.per_term[]` | Lineage per atom |
-| `analysis.primary_term` | Best single-atom pick |
-| `analysis.lineage` | Primary lineage (`multi_term_mode: true` when bag) |
-| `analysis.lineage_bag` | Optional density-stacked bag (not primary) |
-
-## Fixture files (repo)
-
-Checked into `examples/demos/`:
+## Repo fixtures
 
 | File | Purpose |
 |------|---------|
-| [terms-split-sigma-rizz-locked-in.json](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/examples/demos/terms-split-sigma-rizz-locked-in.json) | Split demo A |
-| [terms-split-agentic-slop-skill-issue.json](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/examples/demos/terms-split-agentic-slop-skill-issue.json) | Split demo B |
-| [terms-split-locked-in-crash-out.json](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/examples/demos/terms-split-locked-in-crash-out.json) | Split demo D |
-| [phase5-multi-sigma-rizz-locked-in.json](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/examples/demos/phase5-multi-sigma-rizz-locked-in.json) | Phase 5 multi summary |
-| [atomic-terms-demo-bundle.json](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/examples/demos/atomic-terms-demo-bundle.json) | All cases (tests load this) |
-
-## Pages archive demos
-
-Multi-term Phase 5 snapshots (already expanded):
-
-- [backfill-phase5-rizz-2026](../archive/runs/backfill-phase5-rizz-2026/index.md) — sigma · rizz · locked in  
-- [phase5-rizz-ai-demo](../archive/runs/phase5-rizz-ai-demo/index.md) — same atoms  
-- [backfill-phase5-ai-native-2026](../archive/runs/backfill-phase5-ai-native-2026/index.md) — agentic slop · skill issue  
-- [backfill-phase5-sharp-2026](../archive/runs/backfill-phase5-sharp-2026/index.md) — sharp · steam · revenge  
+| [`examples/demos/atomic-terms-demo-bundle.json`](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/examples/demos/atomic-terms-demo-bundle.json) | Full demo matrix (tests load this) |
+| [`examples/demos/terms-split-*.json`](https://github.com/scrimshawlife-ctrl/Hyperlex/tree/main/examples/demos) | Split outputs |
+| [`examples/demos/phase5-multi-sigma-rizz-locked-in.json`](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/examples/demos/phase5-multi-sigma-rizz-locked-in.json) | Phase 5 multi summary |
 
 ## Related
 
-- [Operator loop](../operator-loop.md)  
+- [Operator loop](../operator-loop.md) — day-to-day auto path  
+- [Commands](../commands.md) — `pipeline` / `ingest` / `run`  
 - [Phase 5](../phase5.md)  
-- [Commands](../commands.md)  
-- [Backfill packs](https://github.com/scrimshawlife-ctrl/Hyperlex/tree/main/data/backfill/2026)  
+- [Run history](../archive/index.md)  

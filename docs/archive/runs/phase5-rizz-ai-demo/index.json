@@ -1,14 +1,14 @@
 {
-  "created_at": "2026-08-05T21:57:52.012352+00:00",
+  "created_at": "2026-08-05T22:27:00.073584+00:00",
   "multi_term": true,
   "n_ledger_rows": 0,
   "n_receipt_summaries": 0,
-  "notes": "Per-term Phase 5: sigma | rizz | locked in",
+  "notes": "Atoms: sigma \u00b7 rizz \u00b7 locked in (separate scenarios)",
   "phase5": {
     "agent_adoption_rate": null,
     "brier": null,
     "cascade_success": null,
-    "created_at": "2026-08-05T21:57:51.862545+00:00",
+    "created_at": "2026-08-05T22:26:47.191221+00:00",
     "domain": "ai",
     "lineage_family": null,
     "multi_term": true,

@@ -5,7 +5,7 @@
     "top_risk_tier": "LOW"
   },
   "brier": null,
-  "created_at": "2026-08-05T21:53:53.917734+00:00",
+  "created_at": "2026-08-05T22:26:47.191221+00:00",
   "domain": "ai",
   "multi_term": true,
   "n_terms": 3,
