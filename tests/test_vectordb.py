@@ -47,6 +47,24 @@ def test_seed_and_search(tmp_path: Path):
     assert families  # non-empty
 
 
+def test_analyze_attaches_vector_neighbors(tmp_path: Path, monkeypatch):
+    from hyperlex import detect_memetic_patterns
+    from hyperlex.vectordb import VectorStore, seed_from_registry
+
+    db = tmp_path / "neighbors.db"
+    with VectorStore(db) as store:
+        seed_from_registry(store)
+    monkeypatch.setenv("HYPERLEX_VECTOR_DB", str(db))
+    monkeypatch.setenv("HYPERLEX_VECTOR", "1")
+    monkeypatch.setenv("HYPERLEX_OFFLINE", "1")
+    r = detect_memetic_patterns(query="rizz locked in sigma", ingest_source="mock")
+    assert r["provenance"]["brier"] is None
+    vn = (r.get("analysis") or {}).get("vector_neighbors")
+    assert isinstance(vn, dict)
+    assert vn.get("brier") is None
+    assert vn.get("hits")
+
+
 def test_cli_vector_seed_search(tmp_path: Path):
     db = tmp_path / "cli.db"
     env = {**dict(__import__("os").environ), "PYTHONPATH": str(ROOT / "src"), "HYPERLEX_OFFLINE": "1"}

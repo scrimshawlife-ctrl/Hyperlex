@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.4 — Vector neighbors on analyze + receipt auto-index (2026-08-05)
+
+- `detect_memetic_patterns` attaches `analysis.vector_neighbors` when local DB present (`HYPERLEX_VECTOR=auto|1`)
+- `emit_receipt` fail-open indexes into `~/.hyperlex/vector.db`
+- ROADMAP: vector DB marked complete; hybrid lineage re-rank listed under 5.1
+
 ## 0.3.3 — Local SQLite vector DB (2026-08-05)
 
 - `hyperlex.vectordb`: SQLite store at `~/.hyperlex/vector.db`

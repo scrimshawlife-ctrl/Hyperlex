@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.3  
+**Version:** 0.3.4  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0 · Pages static run history · Hallmark desk UI

@@ -17,7 +17,7 @@ hide:
 <p class="hlx-splash-brand">HYPERLEX</p>
 <p class="hlx-splash-tag">READ DEEPER. THINK WIDER.</p>
 <p class="hlx-splash-sub">
-Memetic emergence engine · Hermes skill · v0.3.3
+Memetic emergence engine · Hermes skill · v0.3.4
 </p>
 <p class="hlx-splash-line">
 Lineage · hyperstition · receipts · settled Brier · Phase 5 research

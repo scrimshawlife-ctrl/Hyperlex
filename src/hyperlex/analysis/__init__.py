@@ -676,6 +676,39 @@ def detect_memetic_patterns(
     if lineage:
         analysis["lineage"] = lineage
 
+    # Optional local vector-DB neighbors (fail-open; never invents Brier)
+    try:
+        import os
+        from pathlib import Path as _Path
+
+        from ..vectordb import default_vector_db_path, vector_search
+
+        vflag = str(os.environ.get("HYPERLEX_VECTOR", "auto")).strip().lower()
+        vpath = default_vector_db_path()
+        want = vflag in {"1", "true", "yes", "on"} or (
+            vflag in {"", "auto"} and vpath.is_file() and vpath.stat().st_size > 0
+        )
+        if want and vflag not in {"0", "false", "off", "no"}:
+            qtext = " ".join(
+                x for x in [query, observed, " ".join(neo_terms[:8])] if x
+            ).strip()
+            if qtext:
+                vs = vector_search(qtext, kind="term", top_k=5, min_score=0.12)
+                if vs.get("ok") and vs.get("hits"):
+                    analysis["vector_neighbors"] = {
+                        "schema": "hyperlex.vector_neighbors.v1",
+                        "model": vs.get("model"),
+                        "embed_provenance": vs.get("embed_provenance"),
+                        "hits": vs.get("hits")[:5],
+                        "n_hits": vs.get("n_hits"),
+                        "db_path": vs.get("db_path"),
+                        "provenance": "INFERRED",
+                        "brier": None,
+                        "note": "Cosine neighbors from local vector DB; not calibrated probabilities.",
+                    }
+    except Exception:
+        pass
+
     result = {
         "observed": observed,
         "inferred": inferred,

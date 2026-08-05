@@ -55,16 +55,21 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] **5.0** Phylogeny scaffold from registry + backfill timeline
 - [x] **5.0** Composed scenario runner + CLI `simulate`
 - [x] **5.0** Docs: `docs/phase5.md`, `docs/modules/simulation.md`
+- [x] **5.0** Local SQLite vector DB (`hyperlex.vectordb`, `vector-seed` / `vector-search`)
+- [x] **5.0** Analyze attaches `vector_neighbors` when DB present; receipts auto-index (fail-open)
 - [ ] **5.1** Domain-specific phylogeny libraries (finance, AI-native, political, regional packs)
 - [ ] **5.1** Transmission parameter calibration against settled series (still no invented Brier)
+- [ ] **5.1** Vector re-rank assist for lineage matcher (optional hybrid score)
 - [ ] **5.2** Multi-agent scenario library + comparative runs over archive snapshots
 - [ ] **5.2** Open research export templates (paper-ready figures from diagrams + sim summaries)
 - [ ] **5.3** Optional coupling of risk tiers → scan schedules / operator alerts (Hermes cron)
+- [ ] **5.3** ANN backend option if corpus grows past linear scan
 
 ## Milestones
 - v0.2.x: Phases 0–4 complete (Hermes skill production track)
-- **v0.3.0: Phase 5.0 research simulation track** (current)
-- v0.3.x: Phylogeny libraries + research export polish
+- v0.3.0: Phase 5.0 research simulation track
+- **v0.3.3+: local vector DB + Pages telemetry** (current)
+- v0.3.x: Phylogeny libraries + vector hybrid lineage + research export polish
 - v1.0: Stable skill contract + long-horizon archive + optional research contribs
 
 See SPEC.md and DESIGN.md for detailed requirements per phase.
@@ -72,3 +77,4 @@ See SPEC.md and DESIGN.md for detailed requirements per phase.
 ## Recent (2026-08-05)
 - v0.2.12: YTD backfill + lineage backprop
 - v0.3.0: Phase 5.0 simulation stack (transmission, agents, risk, phylogeny)
+- v0.3.3: Local SQLite vector DB; seed from registry/backfill/receipts

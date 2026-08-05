@@ -80,6 +80,24 @@ def emit_receipt(
             # fail-open on ledger only if integrity missing (should not happen)
             pass
 
+    # Fail-open: index receipt into local vector DB when present / enabled
+    try:
+        import os
+
+        vflag = str(os.environ.get("HYPERLEX_VECTOR", "auto")).strip().lower()
+        if vflag not in {"0", "false", "off", "no"}:
+            from ..vectordb import default_vector_db_path, seed_from_receipts
+
+            vpath = default_vector_db_path()
+            if vflag in {"1", "true", "yes", "on"} or vpath.is_file():
+                seed_from_receipts(
+                    receipt_dirs=[out],
+                    include_home=False,
+                    limit=50,
+                )
+    except Exception:
+        pass
+
     return path
 
 

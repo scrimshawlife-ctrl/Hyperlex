@@ -1,6 +1,6 @@
 # Vector DB (local)
 
-**Status:** v0.3.3  
+**Status:** v0.3.4  
 **Path:** `~/.hyperlex/vector.db` (override: `HYPERLEX_VECTOR_DB`)  
 **Backend:** SQLite + float32 embedding blobs (stdlib only)
 
