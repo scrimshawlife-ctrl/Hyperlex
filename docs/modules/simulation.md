@@ -60,6 +60,28 @@ python3 scripts/hyperlex.py simulate --term "sigma rizz" --mode scenario --domai
 python3 scripts/hyperlex.py simulate --from-analyze --term "agentic slop" --domain ai --verbose
 ```
 
+## Transmission calibrate (0.3.6)
+
+Advisory β/γ grid-search against settled pairs. **SPECULATIVE** — not Brier.
+
+```bash
+python3 scripts/hyperlex.py simulate --mode calibrate
+```
+
+## Scenario library + compare
+
+```bash
+python3 scripts/hyperlex.py simulate --mode compare --list-scenarios
+python3 scripts/hyperlex.py simulate --mode compare --term "rizz locked in"
+python3 scripts/hyperlex.py simulate --mode compare --scenario viral_cascade --term "rizz"
+```
+
+## Research export
+
+```bash
+python3 scripts/hyperlex.py simulate --mode export --term "rizz" --export-dir out/research
+```
+
 ## Integrity
 
 1. Simulation does **not** rewrite receipts or ledgers.
