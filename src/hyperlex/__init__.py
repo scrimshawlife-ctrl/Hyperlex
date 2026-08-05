@@ -67,11 +67,13 @@ from .calibration import (
 )
 from . import connectors
 from . import diagrams
+from . import archive
 from .diagrams import (
     diagram_from_ledger,
     diagram_from_receipt_files,
     write_diagram_bundle,
 )
+from .archive import export_analysis_archive
 from .connectors import (
     build_market_signal,
     build_forecast_pipeline,
@@ -111,6 +113,7 @@ API_EXTENDED = (
     "diagram_from_receipt_files",
     "write_diagram_bundle",
     "predict_virality",
+    "export_analysis_archive",
 )
 
 __all__ = [
@@ -133,12 +136,14 @@ __all__ = [
     "relay",
     "connectors",
     "compat",
+    "archive",
     "schemas",
     "API_V1",
     "diagram_from_ledger",
     "diagram_from_receipt_files",
     "write_diagram_bundle",
     "diagrams",
+    "export_analysis_archive",
     "API_EXTENDED",
 ]
 

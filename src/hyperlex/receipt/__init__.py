@@ -44,14 +44,16 @@ def emit_receipt(
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
 
-    ts = result.get("provenance", {}).get("timestamp", "now").replace(":", "").replace("-", "").split(".")[0][:15]
-    path = out / f"hyperlex_{ts}.json"
-
     canonical = _canonical_json(result)
+    integrity = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:12]
+    ts = result.get("provenance", {}).get("timestamp", "now").replace(":", "").replace("-", "").split(".")[0][:15]
+    # integrity suffix avoids collisions when multiple receipts share a second
+    path = out / f"hyperlex_{ts}_{integrity}.json"
+
     receipt = dict(result)
     receipt["receipt"] = {
         "path": str(path),
-        "integrity": hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:12],
+        "integrity": integrity,
     }
 
     if validate:

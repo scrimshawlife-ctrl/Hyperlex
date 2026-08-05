@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.11 — GitHub Pages enabled + long-term analysis archive (2026-08-05)
+
+- GitHub Pages enabled (Actions build) → https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
+- `archive-export` writes sanitized ingest/analysis snapshots under `docs/archive/`
+  for long-term review on the docs site (local ~/.hyperlex remains primary store).
+- Docs: `docs/archive/README.md`; MkDocs nav includes analysis archive.
+
 ## 0.2.10 — OpenAI-compatible LLM provider, ledger-stats, STATUS (2026-08-05)
 
 - Governed LLM: `HYPERLEX_LLM_PROVIDER=openai_compatible` (stdlib urllib; fail-closed offline).

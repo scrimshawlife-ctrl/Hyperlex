@@ -52,6 +52,7 @@ nav:
       - Semver: SEMVER.md
       - Release notes: RELEASE_NOTES.md
   - Case studies: case-studies.md
+  - Analysis archive: archive/latest/index.md
 
 plugins:
   - search
@@ -61,4 +62,4 @@ exclude_docs: |
   README.md
 
 extra:
-  version: 0.2.10
+  version: 0.2.11

@@ -28,6 +28,8 @@ receipts/
 !**/schema.json
 !hyperlex.manifest.yaml
 !skills.sh.json
+!docs/archive/**/*.json
+!docs/archive/**/*.jsonl
 
 # Temp / build output
 tmp/

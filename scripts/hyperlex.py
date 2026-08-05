@@ -712,6 +712,36 @@ def cmd_list_receipts(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_archive_export(args: argparse.Namespace) -> int:
+    """Export sanitized long-term analysis archive (for docs/Pages)."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.archive import export_analysis_archive
+
+    out_dir = Path(args.out_dir) if args.out_dir else (ROOT / "docs" / "archive" / "latest")
+    receipt_dirs: List[str] = []
+    if args.receipt_dir:
+        receipt_dirs.append(args.receipt_dir)
+    if args.include_home_receipts:
+        receipt_dirs.append(str(Path.home() / ".hyperlex" / "receipts"))
+    if args.include_golden:
+        receipt_dirs.append(str(ROOT / "examples" / "receipts" / "golden"))
+
+    ledger = Path(args.ledger) if args.ledger else None
+    result = export_analysis_archive(
+        out_dir=out_dir,
+        ledger_path=ledger,
+        receipt_dirs=receipt_dirs,
+        include_ledger_index=not args.no_ledger_index,
+        snapshot_id=args.snapshot_id or None,
+    )
+    _emit({"ok": True, "command": "archive-export", **result})
+    return 0
+
+
 def cmd_ledger_stats(args: argparse.Namespace) -> int:
     pkg, err = _import_hyperlex()
     if pkg is None:
@@ -1220,6 +1250,19 @@ def _build_parser() -> argparse.ArgumentParser:
     ls_parser.add_argument("--ledger", default="")
     ls_parser.add_argument("--limit", type=int, default=0, help="0 = all entries")
     ls_parser.set_defaults(func=cmd_ledger_stats)
+
+    ar_parser = subparsers.add_parser(
+        "archive-export",
+        help="Export sanitized analysis archive for long-term review / GitHub Pages",
+    )
+    ar_parser.add_argument("--out-dir", default="", help="Default: docs/archive/latest")
+    ar_parser.add_argument("--ledger", default="")
+    ar_parser.add_argument("--receipt-dir", default="", help="Directory of full receipt JSON files")
+    ar_parser.add_argument("--include-home-receipts", action="store_true", default=False)
+    ar_parser.add_argument("--include-golden", action="store_true", default=False)
+    ar_parser.add_argument("--no-ledger-index", action="store_true", default=False)
+    ar_parser.add_argument("--snapshot-id", default="")
+    ar_parser.set_defaults(func=cmd_archive_export)
 
     vrl_parser = subparsers.add_parser("verify-receipt-ledger", help="Verify receipt ledger hash chain")
     vrl_parser.add_argument("--ledger", default="")

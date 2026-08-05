@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.2.10  
+**Version:** 0.2.11  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`
 
@@ -25,7 +25,8 @@ python3 scripts/release_preflight.py
 | Rune relay + market connectors | Ready |
 | Diagrams from history | Ready |
 | Case study runner | Ready |
-| MkDocs + Pages workflow | Ready |
+| MkDocs + Pages (enabled) | Ready |
+| Long-term analysis archive | Ready (`archive-export` → docs/archive) |
 | Governed LLM (echo / openai_compatible) | Opt-in |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |

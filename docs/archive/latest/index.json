@@ -1,0 +1,331 @@
+{
+  "created_at": "2026-08-05T18:13:55.979876+00:00",
+  "n_ledger_rows": 5,
+  "n_receipt_summaries": 9,
+  "primary_store": "local ~/.hyperlex (not replaced by this archive)",
+  "publish_safe": true,
+  "purpose": "long_term_ingest_analysis",
+  "receipt_files": [
+    "receipts/88573ce1608b.json",
+    "receipts/13740d87af49.json",
+    "receipts/e8e43b010371.json",
+    "receipts/138a57d9b7d1.json",
+    "receipts/74d35f2b5769.json",
+    "receipts/885f482d77d8.json",
+    "receipts/48d6b080d68f.json",
+    "receipts/2a4fcf971e08.json",
+    "receipts/0fcc0f79803d.json"
+  ],
+  "schema": "hyperlex.analysis_archive.v1",
+  "snapshot_id": "golden-seed",
+  "stats": {
+    "chain_ok": true,
+    "families": {
+      "betting-sharp": 5
+    },
+    "hyperstition_stages": {
+      "ACTUALIZING": 5
+    },
+    "ingest_sources": {
+      "mock": 5
+    },
+    "mean_lineage_confidence": 0.98,
+    "n_entries": 5,
+    "n_with_lineage": 5
+  },
+  "summaries": [
+    {
+      "brier": null,
+      "canonical_hash": "a280a512dcd93fa2",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "INFERRED",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "EMERGENT",
+      "ingest_source": "mock",
+      "integrity": "88573ce1608b",
+      "is_memetic": true,
+      "lineage_confidence": 0.98,
+      "lineage_family": "ai-native",
+      "matched_terms": [
+        "hallucinate",
+        "slop",
+        "clanker",
+        "agentic",
+        "skill issue",
+        "context window"
+      ],
+      "n_neologisms": 2,
+      "observed_preview": "Mock memetic channel on \"agentic slop skill issue hallucinate\". agentic slop skill issue hallucinate clanker context window.",
+      "query": "agentic slop skill issue hallucinate",
+      "source_fingerprint_id": "13d8a337c417482296bfe2a9",
+      "timestamp": "2026-08-05T17:37:07.432681+00:00",
+      "typology": "platform_agency",
+      "version": "0.2.5",
+      "virality_hybrid": 0.472,
+      "virality_predicted": 0.587
+    },
+    {
+      "brier": null,
+      "canonical_hash": "7236c978f1d97656",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "INFERRED",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "ACTUALIZING",
+      "ingest_source": "mock",
+      "integrity": "13740d87af49",
+      "is_memetic": true,
+      "lineage_confidence": 0.98,
+      "lineage_family": "betting-sharp",
+      "matched_terms": [
+        "sharp",
+        "steam",
+        "square",
+        "wiseguy",
+        "hammer",
+        "revenge",
+        "low block"
+      ],
+      "n_neologisms": 2,
+      "observed_preview": "Mock memetic channel on \"sharp steam square revenge wiseguy hammer\": organic velocity, coordinated push. sharp steam square revenge wiseguy hammer low block.",
+      "query": "sharp steam square revenge wiseguy hammer",
+      "source_fingerprint_id": "401279ec3ee29601041b0f0f",
+      "timestamp": "2026-08-05T17:37:07.429935+00:00",
+      "typology": "tactical_edge",
+      "version": "0.2.5",
+      "virality_hybrid": 0.726,
+      "virality_predicted": 0.906
+    },
+    {
+      "brier": null,
+      "canonical_hash": "0f7645f6e31ce679",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "INFERRED",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "EMERGENT",
+      "ingest_source": "mock",
+      "integrity": "e8e43b010371",
+      "is_memetic": true,
+      "lineage_confidence": 0.98,
+      "lineage_family": "brainrot-aura",
+      "matched_terms": [
+        "brainrot",
+        "aura",
+        "aura farming",
+        "mid",
+        "cooked",
+        "let him cook"
+      ],
+      "n_neologisms": 2,
+      "observed_preview": "Mock memetic channel on \"brainrot aura farming mid cooked\". brainrot aura farming mid cooked let him cook.",
+      "query": "brainrot aura farming mid cooked",
+      "source_fingerprint_id": "85a42bb2a513b94785c6b791",
+      "timestamp": "2026-08-05T17:37:07.431841+00:00",
+      "typology": "status_radiation",
+      "version": "0.2.5",
+      "virality_hybrid": 0.472,
+      "virality_predicted": 0.587
+    },
+    {
+      "brier": null,
+      "canonical_hash": "a3d184572e0e78cd",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "INFERRED",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "EMERGENT",
+      "ingest_source": "mock",
+      "integrity": "138a57d9b7d1",
+      "is_memetic": true,
+      "lineage_confidence": 0.98,
+      "lineage_family": "crypto-degen",
+      "matched_terms": [
+        "hodl",
+        "diamond hands",
+        "rekt",
+        "degen",
+        "moon",
+        "bagholder"
+      ],
+      "n_neologisms": 2,
+      "observed_preview": "Mock memetic channel on \"hodl diamond hands rekt degen moon\": organic velocity. hodl diamond hands rekt degen moon bagholder.",
+      "query": "hodl diamond hands rekt degen moon",
+      "source_fingerprint_id": "bef36c861c4134fe423fadca",
+      "timestamp": "2026-08-05T17:37:07.430952+00:00",
+      "typology": "risk_identity",
+      "version": "0.2.5",
+      "virality_hybrid": 0.639,
+      "virality_predicted": 0.744
+    },
+    {
+      "brier": null,
+      "canonical_hash": "caf8c0692757fe62",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "INFERRED",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "EMERGENT",
+      "ingest_source": "mock",
+      "integrity": "74d35f2b5769",
+      "is_memetic": true,
+      "lineage_confidence": 0.98,
+      "lineage_family": "gaming-meta",
+      "matched_terms": [
+        "nerf",
+        "buff",
+        "meta",
+        "sweaty",
+        "noob",
+        "gg",
+        "ez",
+        "ratio",
+        "touch grass",
+        "skill issue",
+        "diff",
+        "smurf"
+      ],
+      "n_neologisms": 1,
+      "observed_preview": "Mock memetic channel on \"nerf buff meta sweaty smurf gg\". nerf buff meta sweaty noob gg ez ratio touch grass skill issue diff smurf.",
+      "query": "nerf buff meta sweaty smurf gg",
+      "source_fingerprint_id": "880f93c914b5e86d46ef4cfb",
+      "timestamp": "2026-08-05T17:37:07.435227+00:00",
+      "typology": "platform_agency",
+      "version": "0.2.5",
+      "virality_hybrid": 0.525,
+      "virality_predicted": 0.604
+    },
+    {
+      "brier": null,
+      "canonical_hash": "cf57bd4d8a7172e2",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "INFERRED",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "EMERGENT",
+      "ingest_source": "mock",
+      "integrity": "885f482d77d8",
+      "is_memetic": true,
+      "lineage_confidence": 0.98,
+      "lineage_family": "kinship-address",
+      "matched_terms": [
+        "bro",
+        "sis",
+        "twin",
+        "unc",
+        "cuz",
+        "family"
+      ],
+      "n_neologisms": 0,
+      "observed_preview": "Mock memetic channel on \"bro sis twin unc cuz family\". bro sis twin unc cuz family.",
+      "query": "bro sis twin unc cuz family",
+      "source_fingerprint_id": "51f79ec232267538d20d1e40",
+      "timestamp": "2026-08-05T17:37:07.433482+00:00",
+      "typology": "kinship_address",
+      "version": "0.2.5",
+      "virality_hybrid": 0.465,
+      "virality_predicted": 0.519
+    },
+    {
+      "brier": null,
+      "canonical_hash": "2b10c51f487dcd5f",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "NOT_COMPUTABLE",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "EMERGENT",
+      "ingest_source": "mock",
+      "integrity": "48d6b080d68f",
+      "is_memetic": false,
+      "lineage_confidence": null,
+      "lineage_family": null,
+      "matched_terms": [],
+      "n_neologisms": 0,
+      "observed_preview": "Mock channel note on \"the weather is mild with clouds\". Quiet discourse sample.",
+      "query": "the weather is mild with clouds",
+      "source_fingerprint_id": "38b2dab69ec0446efe6acfc6",
+      "timestamp": "2026-08-05T17:37:07.437000+00:00",
+      "typology": "one_off",
+      "version": "0.2.5",
+      "virality_hybrid": 0.443,
+      "virality_predicted": 0.37
+    },
+    {
+      "brier": null,
+      "canonical_hash": "452512b43da3c365",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "INFERRED",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "EMERGENT",
+      "ingest_source": "mock",
+      "integrity": "2a4fcf971e08",
+      "is_memetic": true,
+      "lineage_confidence": 0.98,
+      "lineage_family": "political-status",
+      "matched_terms": [
+        "based",
+        "redpilled",
+        "blackpilled",
+        "cope",
+        "seethe",
+        "dilate"
+      ],
+      "n_neologisms": 2,
+      "observed_preview": "Mock memetic channel on \"based redpilled cope seethe dilate\". based redpilled cope seethe dilate blackpilled.",
+      "query": "based redpilled cope seethe dilate",
+      "source_fingerprint_id": "28a2dafa3ab986b9d02c9fe4",
+      "timestamp": "2026-08-05T17:37:07.434375+00:00",
+      "typology": "irony_inversion",
+      "version": "0.2.5",
+      "virality_hybrid": 0.457,
+      "virality_predicted": 0.573
+    },
+    {
+      "brier": null,
+      "canonical_hash": "95f752b07504ad94",
+      "epistemic": {
+        "brier": "NOT_COMPUTABLE",
+        "lineage": "INFERRED",
+        "virality_prediction": "SPECULATIVE"
+      },
+      "hyperstition_stage": "EMERGENT",
+      "ingest_source": "mock",
+      "integrity": "0fcc0f79803d",
+      "is_memetic": true,
+      "lineage_confidence": 0.98,
+      "lineage_family": "workplace-corp",
+      "matched_terms": [
+        "quiet quitting",
+        "quiet firing",
+        "rto",
+        "return to office",
+        "layoffs",
+        "pip",
+        "synergy",
+        "circle back",
+        "bandwidth",
+        "low-hanging fruit",
+        "act your wage"
+      ],
+      "n_neologisms": 0,
+      "observed_preview": "Mock memetic channel on \"quiet quitting rto bandwidth act your wage\". quiet quitting quiet firing rto return to office layoffs pip synergy circle back bandwidth low-hanging fruit act your wage.",
+      "query": "quiet quitting rto bandwidth act your wage",
+      "source_fingerprint_id": "f81cdbba1c56ab451c213ec7",
+      "timestamp": "2026-08-05T17:37:07.436160+00:00",
+      "typology": "labor_identity",
+      "version": "0.2.5",
+      "virality_hybrid": 0.57,
+      "virality_predicted": 0.611
+    }
+  ]
+}

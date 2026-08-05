@@ -1,5 +1,5 @@
 name: hyperlex
-version: 0.2.10
+version: 0.2.11
 display_name: Hyperlex
 kind: hermes-openclaw-skill
 description: >
@@ -58,6 +58,7 @@ commands:
   - list-receipts
   - ledger-diff
   - ledger-stats
+  - archive-export
   - verify-receipt-ledger
   - validate
   - verify-receipt
@@ -82,6 +83,7 @@ intents:
   - list-receipts
   - ledger-diff
   - ledger-stats
+  - archive-export
   - verify-receipt-ledger
   - validate
   - verify-receipt

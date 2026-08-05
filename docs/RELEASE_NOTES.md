@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.11
+- Pages enabled; long-term analysis archive export.
+
 ## 0.2.10
 - openai_compatible LLM provider; ledger-stats; STATUS.md.
 

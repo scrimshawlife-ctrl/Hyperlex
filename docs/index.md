@@ -50,6 +50,16 @@ GitHub Pages deploys from `.github/workflows/docs.yml` on `main`
 Public URL (after Pages is enabled):  
 https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
 
+## Long-term analysis archive
+
+Sanitized ingest summaries can live on Pages for historical review:
+
+```bash
+python3 scripts/hyperlex.py archive-export --include-golden --out-dir docs/archive/latest
+```
+
+See [archive/latest](archive/latest/index.md). Primary store remains `~/.hyperlex/`.
+
 ## Skill health
 
 ```bash
