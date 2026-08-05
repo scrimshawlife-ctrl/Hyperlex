@@ -28,6 +28,9 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [ ] Community driver modeling (from arXiv semantic variation papers)
 - [ ] Virality prediction models
 - [ ] Memetic typology expansion
+- [x] Slang historical family documentation + emergent branch diagrams (Mermaid)
+- [ ] Schema support for lineage attachment on analysis results
+- [ ] Automated diagram generation from receipt histories
 
 ### Phase 3 — Hermes / Symbolic Integration
 - [ ] Native integration points for Hermes Agent
@@ -50,6 +53,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - Multi-agent memetic modeling
 - Hyperstition risk forecasting for real-world systems
 - Open research contributions back to memetics community
+- Full phylogenetic libraries across domains (finance, AI-native, political, regional)
 
 ## Milestones
 - v1.5: Current package + receipt system (done)
@@ -58,3 +62,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - v3.0: Public release + ecosystem
 
 See SPEC.md and DESIGN.md for detailed requirements per phase.
+
+## Recent Documentation Additions (2026-08-05)
+- `docs/slang-lineages.md` — methodology for historical families and emergent branches
+- `examples/slang-families/` — Mermaid diagrams for betting-sharp family, kinship-address lineage, and the Hyperlex emergence process itself
