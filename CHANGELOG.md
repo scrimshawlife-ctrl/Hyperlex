@@ -9,14 +9,17 @@
 - Added install script and initial command smoke/test surface.
 - Updated SKILL/README/SPEC/docs references to reflect implemented runtime surface.
 
-## Documentation (2026-08-05)
+## Documentation & Lineage (2026-08-05)
 
-- Added `docs/slang-lineages.md` — methodology for documenting historical families of slang and emergent branches.
-- Expanded the same document with mutation operators table, documentation template, live-feed process, and future receipt-attachment sketch.
-- Added `examples/slang-families/` with Mermaid diagrams:
-  - betting-sharp family tree + chronological timeline
-  - kinship-address lineage (bro/sis/twin/unc)
-  - crypto-degen family (HODL → diamond hands → ape/rekt/degen)
-  - brainrot-aura family (mid/cooked/aura/brainrot)
-  - Hyperlex emergence process flowchart
-- Updated DESIGN.md (principle 11) and ROADMAP.md (Phase 2 items) to treat lineage structure as first-class.
+- Added and expanded `docs/slang-lineages.md` (methodology, mutation operators, template, live-feed process).
+- Added `schemas/lineage.v1.schema.json` for analysis lineage attachments.
+- Implemented `match_lineage()` in `src/hyperlex/analysis` and wired it into `detect_memetic_patterns` so results carry `analysis.lineage` when a family matches.
+- Added `examples/slang-families/` with Mermaid diagrams and HTML renderers:
+  - betting-sharp family + timeline
+  - kinship-address
+  - crypto-degen (HODL → diamond hands → ape/rekt/degen)
+  - brainrot-aura (mid/cooked/aura/brainrot)
+  - ai-native (hallucinate → slop → clanker/agentic)
+  - political-status (based/redpilled/cope)
+  - emergence process
+- Updated DESIGN.md (principle 11), ROADMAP.md, schemas/README, and examples README.
