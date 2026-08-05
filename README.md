@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="assets/hyperlex-hero.jpg" alt="Hyperlex — Memetic Emergence Engine" width="720">
+  <img src="assets/hyperlex-imagine-hero.jpg" alt="Hyperlex — memetic emergence (Grok Imagine)" width="360">
+</p>
+<p align="center">
+  <sub>Visual identity · <a href="https://grok.com/imagine/post/0fef2df1-6bec-4b18-9ee6-823dd77ba9f6">Grok Imagine</a></sub>
 </p>
 
 # Hyperlex

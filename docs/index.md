@@ -1,5 +1,10 @@
 # Hyperlex
 
+<figure class="hlx-hero" markdown>
+![Hyperlex — memetic emergence (Grok Imagine)](assets/images/hyperlex-imagine-hero.jpg){ width="420" }
+<figcaption>Visual identity · <a href="https://grok.com/imagine/post/0fef2df1-6bec-4b18-9ee6-823dd77ba9f6">Grok Imagine</a></figcaption>
+</figure>
+
 <div class="hlx-status" markdown>
 <span><span class="hlx-dot"></span><strong>v0.3.2</strong></span>
 <span>Hermes skill · Python package repo</span>
