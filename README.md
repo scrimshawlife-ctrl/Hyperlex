@@ -125,6 +125,10 @@ python3 "$H" lineage-backprop --from-golden
 
 # Append sanitized run to Pages history
 python3 "$H" archive-export --include-golden --history
+
+# Local vector DB (seed + search)
+python3 "$H" vector-seed --include-golden --through 2026-08
+python3 "$H" vector-search "sigma rizz locked in" --kind term
 ```
 
 ### Local data dirs
@@ -134,6 +138,7 @@ python3 "$H" archive-export --include-golden --history
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
+~/.hyperlex/vector.db
 ```
 
 Repo packs: `data/backfill/2026/` (curated YTD slang).
