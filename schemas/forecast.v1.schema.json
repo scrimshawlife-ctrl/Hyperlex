@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/forecast.v1.schema.json",
+  "title": "Hyperlex Forecast v1",
+  "description": "Probabilistic forecast extracted from a Hyperlex analysis result. Brier scores are never attached here; they require a later settlement.",
+  "type": "object",
+  "required": ["forecast_id", "receipt_ref", "signal_key", "probability", "target_event", "target_schema", "created_at", "mapping_version"],
+  "properties": {
+    "forecast_id": { "type": "string", "minLength": 8 },
+    "receipt_ref": {
+      "type": "object",
+      "required": ["integrity"],
+      "properties": {
+        "path": { "type": "string" },
+        "integrity": { "type": "string" },
+        "canonical_hash": { "type": "string" }
+      }
+    },
+    "signal_key": {
+      "type": "string",
+      "enum": ["lineage.confidence", "virality.hybrid_score", "hyperstition.stage"]
+    },
+    "probability": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "target_event": { "type": "string" },
+    "target_schema": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "mapping_version": { "type": "string" },
+    "provenance": {
+      "type": "string",
+      "enum": ["OBSERVED", "INFERRED", "SPECULATIVE"],
+      "default": "INFERRED"
+    },
+    "context": {
+      "type": "object",
+      "description": "Optional signal-specific context (e.g. family_id, matched_terms)",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

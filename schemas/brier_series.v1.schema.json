@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/brier_series.v1.schema.json",
+  "title": "Hyperlex Brier Series v1",
+  "description": "Aggregate Brier metrics over settled forecast–outcome pairs. status=NOT_COMPUTABLE when no valid pairs exist.",
+  "type": "object",
+  "required": ["status", "n"],
+  "properties": {
+    "status": { "type": "string", "enum": ["SCORED", "NOT_COMPUTABLE"] },
+    "n": { "type": "integer", "minimum": 0 },
+    "series_brier": { "type": ["number", "string"] },
+    "brier_skill_score": { "type": ["number", "string"] },
+    "reference": { "type": "string", "enum": ["climatology", "persistence", "none"] },
+    "murphy": {
+      "type": "object",
+      "properties": {
+        "reliability": { "type": ["number", "string"] },
+        "resolution": { "type": ["number", "string"] },
+        "uncertainty": { "type": ["number", "string"] },
+        "brier_score": { "type": ["number", "string"] }
+      }
+    },
+    "yates": {
+      "type": "object",
+      "properties": {
+        "bias_squared": { "type": ["number", "string"] },
+        "excess_variance": { "type": ["number", "string"] },
+        "covariance_deficit": { "type": ["number", "string"] },
+        "brier_score": { "type": ["number", "string"] }
+      }
+    },
+    "cohort": {
+      "type": "object",
+      "description": "Optional filters that defined this series",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

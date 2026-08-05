@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/settlement.v1.schema.json",
+  "title": "Hyperlex Settlement v1",
+  "description": "Resolved outcome for a Hyperlex forecast. VOID and CONFLICT are not scored.",
+  "type": "object",
+  "required": ["settlement_id", "forecast_id", "outcome_value", "settlement_decision", "settled_at", "authority"],
+  "properties": {
+    "settlement_id": { "type": "string", "minLength": 8 },
+    "forecast_id": { "type": "string", "minLength": 8 },
+    "outcome_value": { "type": "number", "enum": [0.0, 1.0] },
+    "settlement_decision": {
+      "type": "string",
+      "enum": ["TRUE", "FALSE", "VOID", "CONFLICT"]
+    },
+    "settled_at": { "type": "string", "format": "date-time" },
+    "authority": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["operator", "automated_rule", "external_oracle"] },
+        "ref": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "evidence_ref": { "type": "string" }
+  },
+  "additionalProperties": false
+}
