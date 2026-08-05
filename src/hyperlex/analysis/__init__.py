@@ -1,13 +1,13 @@
 """analysis — zone_of_emergence (Numogram Zone 9 + 5-6 + sigil_glyph)
 
 Core memetic analysis: neologisms, variation, virality, memetics, hyperstition.
-Expanded ingest integration + schema support + lineage matching.
+Expanded ingest integration + schema support + lineage matching with confidence scoring.
 """
 import re
 import json
 import hashlib
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 
 from ..intake import ingest_signal, fetch_ingest
 from .. import PKG_VERSION
@@ -62,37 +62,144 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
     },
 ]
 
+# Minimum confidence required to attach a lineage (suppresses weak single short-term hits)
+LINEAGE_CONFIDENCE_THRESHOLD = 0.42
 
-def match_lineage(text: str, terms: Optional[List[str]] = None) -> Optional[Dict[str, Any]]:
+
+def _term_weight(term: str) -> float:
     """
-    Simple deterministic lineage matcher.
+    Specificity prior for a registry term.
 
-    Scans text (and optional explicit terms) against the static LINEAGE_REGISTRY.
-    Returns the highest-confidence matching family attachment or None.
+    Longer and multi-word terms are more distinctive and therefore
+    contribute more signal when they match.
+    """
+    t = term.strip().lower()
+    n_words = max(1, len(t.split()))
+    # base + word-count bonus + length bonus (capped)
+    weight = 0.22 + 0.14 * n_words + 0.025 * min(len(t), 24)
+    return min(0.75, weight)
+
+
+def _find_hits(corpus: str, family_terms: List[str]) -> List[str]:
+    """
+    Return the subset of family_terms that appear in corpus.
+
+    Multi-word terms are matched as substrings (they are already distinctive).
+    Single-word terms require word-boundary matches to avoid false positives
+    (e.g. "steam" inside "steamed" or "ape" inside "escape").
+    """
+    hits: List[str] = []
+    for term in family_terms:
+        t = term.lower()
+        if " " in t:
+            if t in corpus:
+                hits.append(term)
+        else:
+            # word-boundary match
+            if re.search(rf"\b{re.escape(t)}\b", corpus):
+                hits.append(term)
+    return hits
+
+
+def compute_lineage_confidence(
+    hits: List[str],
+    family_terms: List[str],
+    corpus: str,
+) -> Tuple[float, Dict[str, Any]]:
+    """
+    Deterministic, explainable confidence score for a lineage match.
+
+    Components
+    ----------
+    specificity : average term-weight of the hits (longer / multi-word > short common)
+    coverage    : fraction of the family's term list that matched
+    hit_bonus   : diminishing returns for additional distinct hits
+    density     : small bonus when multiple hits occur in a short corpus
+                  (co-occurrence is stronger evidence than scattered single hits)
+
+    Returns (confidence in [0, 0.98], breakdown dict).
+    """
+    if not hits:
+        return 0.0, {"n_hits": 0}
+
+    weights = [_term_weight(t) for t in hits]
+    specificity = sum(weights) / len(weights)
+
+    coverage = len(hits) / max(len(family_terms), 1)
+
+    # diminishing returns: 1st hit ~0.12, 2nd ~0.10, 3rd ~0.08 ... floor at ~0.04
+    hit_bonus = 0.0
+    for i in range(len(hits)):
+        hit_bonus += max(0.04, 0.12 - 0.02 * i)
+    hit_bonus = min(0.38, hit_bonus)
+
+    # co-occurrence density: multiple hits in compact text is stronger
+    density = 0.0
+    if len(hits) >= 2:
+        # shorter corpus with multiple hits → higher density signal
+        length_factor = max(0.0, 1.0 - (len(corpus) / 600.0))
+        density = min(0.18, 0.06 * (len(hits) - 1) * (0.5 + 0.5 * length_factor))
+
+    raw = 0.18 + specificity * 0.38 + coverage * 0.22 + hit_bonus + density
+    confidence = min(0.98, max(0.0, raw))
+
+    breakdown = {
+        "n_hits": len(hits),
+        "specificity": round(specificity, 3),
+        "coverage": round(coverage, 3),
+        "hit_bonus": round(hit_bonus, 3),
+        "density": round(density, 3),
+        "raw": round(raw, 3),
+        "term_weights": {t: round(_term_weight(t), 3) for t in hits},
+    }
+    return confidence, breakdown
+
+
+def match_lineage(
+    text: str,
+    terms: Optional[List[str]] = None,
+    min_confidence: float = LINEAGE_CONFIDENCE_THRESHOLD,
+) -> Optional[Dict[str, Any]]:
+    """
+    Deterministic lineage matcher with confidence scoring.
+
+    Scans text (and optional explicit terms from neologism detection)
+    against the static LINEAGE_REGISTRY. Returns the highest-confidence
+    matching family attachment, or None if no family clears the threshold.
+
+    Confidence is computed by `compute_lineage_confidence` and includes
+    a transparent score_breakdown for provenance.
     """
     corpus = (text or "").lower()
     if terms:
-        corpus += " " + " ".join(t.lower() for t in terms)
+        # explicit terms from the neologism pipeline are high-signal;
+        # append them so they participate in matching and density
+        corpus = corpus + " " + " ".join(t.lower() for t in terms)
 
-    best = None
+    best: Optional[Dict[str, Any]] = None
     best_score = 0.0
 
     for entry in LINEAGE_REGISTRY:
-        hits = [t for t in entry["terms"] if t in corpus]
+        hits = _find_hits(corpus, entry["terms"])
         if not hits:
             continue
-        # crude score: number of hits weighted by term length + base
-        score = min(1.0, 0.35 + 0.15 * len(hits) + 0.02 * sum(len(h) for h in hits))
+
+        score, breakdown = compute_lineage_confidence(hits, entry["terms"], corpus)
+
+        if score < min_confidence:
+            continue
+
         if score > best_score:
             best_score = score
             best = {
                 "family_id": entry["family_id"],
                 "matched_terms": hits,
                 "branch_operator": entry.get("branch_operator", "unknown"),
-                "confidence": round(score, 2),
+                "confidence": round(score, 3),
                 "diagram_ref": entry.get("diagram_ref"),
                 "payload_note": entry.get("payload_note"),
                 "provenance": "INFERRED",
+                "score_breakdown": breakdown,
             }
 
     return best
@@ -173,14 +280,21 @@ def detect_memetic_patterns(
     memetic = memetics_protocol_check(observed)
     hyper = simulate_hyperstition_loop(observed)
 
-    # Lineage attachment
+    # Lineage attachment with confidence scoring
     neo_terms = [n["term"] for n in neos]
     lineage = match_lineage(observed, terms=neo_terms)
 
-    inferred = f"Memetic spread accelerating. Neologisms: {len(neos)}. Memetic: {memetic['is_memetic']}. Variation: {variation['sense']}. Virality: {virality['hybrid_score']}."
+    inferred = (
+        f"Memetic spread accelerating. Neologisms: {len(neos)}. "
+        f"Memetic: {memetic['is_memetic']}. Variation: {variation['sense']}. "
+        f"Virality: {virality['hybrid_score']}."
+    )
     if lineage:
         inferred += f" Lineage: {lineage['family_id']} (conf={lineage['confidence']})."
-    speculative = f"{hyper['loop_stage']} hyperstition risk. {hyper['mechanism']}. Brier lift probable via cultural transmission."
+    speculative = (
+        f"{hyper['loop_stage']} hyperstition risk. {hyper['mechanism']}. "
+        f"Brier lift probable via cultural transmission."
+    )
 
     canonical = json.dumps(
         {"q": query, "obs": observed[:100], "neos": neo_terms},
@@ -216,7 +330,7 @@ def detect_memetic_patterns(
             "ingest_source": ingest_source
         },
         "analysis": analysis,
-        "notes": "Humanizer + arXiv-upgraded modules + lineage matcher applied. Real ingest wired (expanded). Feeds downstream signal and forecast pipelines.",
+        "notes": "Humanizer + arXiv-upgraded modules + lineage confidence scoring applied. Real ingest wired (expanded). Feeds downstream signal and forecast pipelines.",
         "recommendation": "Bind to COMMUNICATION_RELAY rune; integrate with market-signal for loop scoring; cron LIVE_EMERGENCE_SCAN."
     }
 
