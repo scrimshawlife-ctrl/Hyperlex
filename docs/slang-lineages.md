@@ -1,7 +1,7 @@
 # Slang Lineages & Emergent Branches
 
 **Status**: Active documentation surface  
-**Version**: expanded 2026-08-05 (schema + matcher + HTML + additional families)  
+**Version**: expanded 2026-08-05 (schema + matcher + confidence scoring + HTML + additional families)  
 **Purpose**: Provide canonical visual and structural documentation for historical families of slang words and the processes by which new branches emerge. This layer supports Hyperlex analysis outputs, Abraxas Slang Module family-tree sections, and Orchestra symbolic mapping.
 
 ## Why Lineages Matter
@@ -69,7 +69,7 @@ These are the primary ways new branches form. Document them explicitly when reco
 ## Integration Points
 
 - **Analysis module** (`zone_of_emergence`): `match_lineage()` runs inside `detect_memetic_patterns` and attaches a `lineage` object under `analysis` when a match is found.
-- **Schema**: `schemas/lineage.v1.schema.json` defines the attachment shape.
+- **Schema**: `schemas/lineage.v1.schema.json` defines the attachment shape (including optional `score_breakdown`).
 - **Receipts**: provenance can later include `lineage_refs` pointing to documented families.
 - **Abraxas Slang Emulation**: the mandatory `SLANG FAMILY TREE` section in SIGNAL REPORTs is the live counterpart of these static diagrams.
 - **Orchestra**: diagrams carry the `orchestra-diagram.v1` header pattern already used in `examples/hyperlex-symbolic/`.
@@ -87,10 +87,53 @@ These are the primary ways new branches form. Document them explicitly when reco
     "confidence": 0.72,
     "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
     "payload_note": "professional edge vs public money; line-physics signaling",
-    "provenance": "INFERRED"
+    "provenance": "INFERRED",
+    "score_breakdown": {
+      "n_hits": 2,
+      "specificity": 0.41,
+      "coverage": 0.22,
+      "hit_bonus": 0.22,
+      "density": 0.06,
+      "raw": 0.72,
+      "term_weights": {"steam": 0.37, "sharp": 0.37}
+    }
   }
 }
 ```
+
+## Confidence Scoring
+
+`compute_lineage_confidence(hits, family_terms, corpus)` produces a deterministic score in `[0, 0.98]`.
+
+**Components**
+
+| Component | What it measures | Role |
+|-----------|------------------|------|
+| **specificity** | Average term-weight of the hits | Longer and multi-word terms (e.g. “diamond hands”, “aura farming”) are more distinctive than short common ones (“ape”, “mid”, “bro”) |
+| **coverage** | `len(hits) / len(family_terms)` | Fraction of the family’s known vocabulary that appeared |
+| **hit_bonus** | Diminishing returns per additional distinct hit | 1st hit ≈ 0.12, 2nd ≈ 0.10, … floor ≈ 0.04; capped |
+| **density** | Co-occurrence of ≥2 hits in a compact corpus | Multiple related terms close together is stronger evidence than scattered single hits |
+
+**Term weight** (specificity prior):
+
+```
+weight = min(0.75, 0.22 + 0.14 * n_words + 0.025 * min(len(term), 24))
+```
+
+**Raw score**:
+
+```
+raw = 0.18 + specificity * 0.38 + coverage * 0.22 + hit_bonus + density
+confidence = min(0.98, max(0.0, raw))
+```
+
+**Matching rules**
+- Multi-word terms: substring match (already distinctive).
+- Single-word terms: word-boundary match (`\bterm\b`) to avoid false positives (“steam” inside “steamed”, “ape” inside “escape”).
+
+**Threshold**: `LINEAGE_CONFIDENCE_THRESHOLD = 0.42`. Matches below this are discarded so weak single short-term hits do not attach a lineage.
+
+The full breakdown is returned under `score_breakdown` for auditability and future calibration.
 
 ## Example Families Documented
 
@@ -109,8 +152,8 @@ HTML renderers: `render-betting-sharp.html`, `render-ai-native.html`, `render-em
 ## Live Feed Process
 
 1. Hyperlex (or Abraxas Slang Module) detects candidate terms via ingest + neologism pipeline.
-2. `match_lineage()` scores against the static registry (seeded from the families above).
-3. Highest-confidence match is attached under `analysis.lineage`.
+2. `match_lineage()` scores against the static registry (seeded from the families above) using the confidence formula above.
+3. Highest-confidence match that clears the threshold is attached under `analysis.lineage`.
 4. If no match and confidence would be high for a novel cluster, a provisional leaf or family is proposed for human documentation.
 5. Documentation is updated (diagram + markdown entry + registry entry) only after human review of provenance.
 6. Future path: receipt histories → candidate diagram diffs → human approval gate.
@@ -120,8 +163,9 @@ HTML renderers: `render-betting-sharp.html`, `render-ai-native.html`, `render-em
 - Full schema validation of `analysis.lineage` inside `validate_result`.
 - Automated diagram generation / diffing from receipt histories.
 - Expanded cross-domain libraries (regional, sports beyond betting, finance subtypes).
-- Brier-calibrated forecasts of branch survivability.
+- Brier-calibrated forecasts of branch survivability (using the confidence score as a prior).
 - Richer interactive Orchestra-style HTML (node tooltips, flow highlighting).
+- Learned term weights from historical receipt outcomes instead of the current heuristic.
 
 ## References
 
