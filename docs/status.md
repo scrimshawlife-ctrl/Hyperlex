@@ -1,9 +1,9 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.6  
+**Version:** 0.3.7  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
-**Track:** Phases 0–4 complete · Phase 5.0 · Pages static run history · Hallmark desk UI
+**Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Hallmark desk UI
 
 ## Health
 
@@ -42,6 +42,7 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Domain phylogeny packs** | Ready (`data/phylogeny/`) |
 | **Transmission calibrate** | Ready (advisory β/γ from settled pairs) |
 | **Scenario library + export** | Ready (`compare` / `export`) |
+| **Risk → scan/cron schedule** | Ready (`risk-schedule`; advisory only) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
@@ -54,6 +55,7 @@ analyze --receipt --forecasts --append-log
   → score-series / feedback
   → lineage-backfill --list / lineage-backprop --from-golden
   → simulate --from-analyze --domain markets|ai|politics   # Phase 5
+  → risk-schedule --tier ELEVATED --schedule-out /tmp/hlx-cron   # advisory cron
   → archive-export --history   # append sanitized run to Pages history
   → vector-seed / vector-search   # local vector DB
 ```
@@ -69,7 +71,6 @@ analyze --receipt --forecasts --append-log
 data/backfill/2026/          # curated YTD term packs (repo)
 ```
 
-## Phase 5.1+ (next)
+## Phase 5.3+ (next)
 
-Transmission calibration vs settled series, multi-agent scenario library,
-research export templates, optional ANN backend if corpus grows.
+Optional ANN backend if corpus grows past linear scan; further research polish.

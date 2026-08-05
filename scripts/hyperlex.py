@@ -949,6 +949,7 @@ def cmd_simulate(args: argparse.Namespace) -> int:
         return 2
 
     from hyperlex.simulation import (
+        TIER_POLICY,
         build_domain_phylogeny,
         build_family_phylogeny,
         calibrate_transmission_params,
@@ -957,10 +958,13 @@ def cmd_simulate(args: argparse.Namespace) -> int:
         forecast_hyperstition_risk,
         list_domain_packs,
         list_scenario_presets,
+        plan_scan_from_term,
+        plan_scan_from_tier,
         run_multi_agent_memetics,
         run_named_scenario,
         run_phase5_scenario,
         simulate_cultural_transmission,
+        write_scan_plan,
     )
 
     term = (args.term or args.query or "slang signal").strip()
@@ -1040,6 +1044,27 @@ def cmd_simulate(args: argparse.Namespace) -> int:
             payload = compare_scenarios(term, lineage_family=args.family or None)
         dest = Path(args.export_dir) if args.export_dir else (ROOT / "out" / "research")
         out = export_research_packet(payload, out_dir=dest, title=args.export_title or "hyperlex-research")
+    elif mode == "schedule":
+        # Risk-tier → advisory LIVE_EMERGENCE_SCAN / Hermes cron plan
+        if getattr(args, "list_tiers", False):
+            out = {
+                "schema": "hyperlex.tier_policy_index.v1",
+                "tiers": {k: {"cron": v["cron"], "interval_hours": v["interval_hours"], "max_queries": v["max_queries"]} for k, v in TIER_POLICY.items()},
+                "brier": None,
+                "provenance": "SPECULATIVE",
+            }
+        elif getattr(args, "tier", None):
+            out = plan_scan_from_tier(str(args.tier), job_name=getattr(args, "job_name", None) or None)
+        else:
+            out = plan_scan_from_term(
+                term,
+                domain=domain,
+                analysis_result=analysis,
+                use_phase5=not bool(getattr(args, "no_phase5", False)),
+            )
+        if getattr(args, "schedule_out", None):
+            written = write_scan_plan(out, out_dir=Path(args.schedule_out))
+            out = {**out, "written": written}
     else:
         out = run_phase5_scenario(
             term,
@@ -1552,7 +1577,7 @@ def cmd_scan(args: argparse.Namespace) -> int:
         except Exception as exc:
             errors.append({"query": q, "error": str(exc)})
 
-    summary = {
+    summary: Dict[str, Any] = {
         "ok": len(errors) == 0,
         "command": "scan",
         "rune": "LIVE_EMERGENCE_SCAN",
@@ -1567,6 +1592,19 @@ def cmd_scan(args: argparse.Namespace) -> int:
         "note": "Brier remains null until operator settlement",
     }
 
+    # Post-scan advisory: lineage coverage → recommended next scan cadence
+    try:
+        from hyperlex.simulation import aggregate_scan_risk
+
+        summary["scan_risk_advisory"] = aggregate_scan_risk(results)
+    except Exception as exc:  # fail-open — scan still succeeds
+        summary["scan_risk_advisory"] = {
+            "ok": False,
+            "error": str(exc),
+            "brier": None,
+            "provenance": "SPECULATIVE",
+        }
+
     if args.out:
         out = Path(args.out)
         out.parent.mkdir(parents=True, exist_ok=True)
@@ -1575,6 +1613,93 @@ def cmd_scan(args: argparse.Namespace) -> int:
 
     _emit(summary)
     return 0 if summary["ok"] else 1
+
+
+def cmd_risk_schedule(args: argparse.Namespace) -> int:
+    """Advisory risk-tier → LIVE_EMERGENCE_SCAN / Hermes cron plan."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.simulation import (
+        TIER_POLICY,
+        plan_scan_from_term,
+        plan_scan_from_tier,
+        write_scan_plan,
+    )
+
+    if args.list_tiers:
+        out = {
+            "ok": True,
+            "command": "risk-schedule",
+            "schema": "hyperlex.tier_policy_index.v1",
+            "tiers": {
+                k: {
+                    "cron": v["cron"],
+                    "interval_hours": v["interval_hours"],
+                    "max_queries": v["max_queries"],
+                    "source_recommend": v["source_recommend"],
+                    "operator_note": v["operator_note"],
+                }
+                for k, v in TIER_POLICY.items()
+            },
+            "brier": None,
+            "provenance": "SPECULATIVE",
+        }
+        _emit(out)
+        return 0
+
+    term = (args.term or args.query or "").strip()
+    analysis = None
+    if args.from_analyze and term:
+        analysis = pkg.detect_memetic_patterns(
+            query=term,
+            ingest_source=args.source or "mock",
+        )
+
+    if args.tier:
+        plan = plan_scan_from_tier(str(args.tier), job_name=args.job_name or None)
+    elif term:
+        plan = plan_scan_from_term(
+            term,
+            domain=args.domain or "general",
+            analysis_result=analysis,
+            use_phase5=not bool(args.no_phase5),
+        )
+    else:
+        _emit({
+            "ok": False,
+            "error": "pass --tier LOW|MODERATE|ELEVATED|CRITICAL, or --term / --query",
+            "brier": None,
+        })
+        return 2
+
+    payload: Dict[str, Any] = {
+        "ok": True,
+        "command": "risk-schedule",
+        "plan": plan,
+        "brier": None,
+        "note": "ADVISORY only — does not auto-register Hermes cron.",
+    }
+    if plan.get("brier") is not None:
+        payload["ok"] = False
+        payload["error"] = "schedule plan must keep brier null"
+        _emit(payload)
+        return 2
+
+    if args.schedule_out or args.out_dir:
+        dest = Path(args.schedule_out or args.out_dir)
+        written = write_scan_plan(plan, out_dir=dest)
+        payload["written"] = written
+
+    if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(json.dumps(plan, indent=2, sort_keys=True), encoding="utf-8")
+        payload["out"] = args.out
+
+    _emit(payload)
+    return 0
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -1717,7 +1842,17 @@ def _build_parser() -> argparse.ArgumentParser:
     sim_parser.add_argument(
         "--mode",
         default="scenario",
-        choices=["scenario", "transmission", "agents", "risk", "phylogeny", "calibrate", "compare", "export"],
+        choices=[
+            "scenario",
+            "transmission",
+            "agents",
+            "risk",
+            "phylogeny",
+            "calibrate",
+            "compare",
+            "export",
+            "schedule",
+        ],
     )
     sim_parser.add_argument("--family", default="", help="lineage family_id")
     sim_parser.add_argument(
@@ -1747,9 +1882,63 @@ def _build_parser() -> argparse.ArgumentParser:
     sim_parser.add_argument("--from-analyze", action="store_true", default=False, help="Seed from mock analyze")
     sim_parser.add_argument("--source", default="mock")
     sim_parser.add_argument("--no-phylogeny", action="store_true", default=False)
+    sim_parser.add_argument(
+        "--tier",
+        default="",
+        help="With --mode schedule: direct tier LOW|MODERATE|ELEVATED|CRITICAL",
+    )
+    sim_parser.add_argument(
+        "--list-tiers",
+        action="store_true",
+        default=False,
+        help="With --mode schedule: list TIER_POLICY",
+    )
+    sim_parser.add_argument(
+        "--schedule-out",
+        default="",
+        help="With --mode schedule: write job/queries/plan JSON to directory",
+    )
+    sim_parser.add_argument(
+        "--job-name",
+        default="",
+        help="With --mode schedule: override Hermes job name",
+    )
+    sim_parser.add_argument(
+        "--no-phase5",
+        action="store_true",
+        default=False,
+        help="With --mode schedule: skip full Phase 5 when deriving risk from term",
+    )
     sim_parser.add_argument("--verbose", action="store_true", default=False)
     sim_parser.add_argument("--out", default="")
     sim_parser.set_defaults(func=cmd_simulate)
+
+    rs_parser = subparsers.add_parser(
+        "risk-schedule",
+        help="Advisory risk-tier → LIVE_EMERGENCE_SCAN / Hermes cron plan (does not auto-register)",
+    )
+    rs_parser.add_argument("--term", default="", help="Seed term for Phase 5 risk → plan")
+    rs_parser.add_argument("--query", default="", help="Alias for --term")
+    rs_parser.add_argument(
+        "--tier",
+        default="",
+        choices=["", "LOW", "MODERATE", "ELEVATED", "CRITICAL", "low", "moderate", "elevated", "critical"],
+        help="Direct tier (skips simulation)",
+    )
+    rs_parser.add_argument("--list-tiers", action="store_true", default=False, help="List TIER_POLICY")
+    rs_parser.add_argument("--domain", default="general")
+    rs_parser.add_argument("--from-analyze", action="store_true", default=False)
+    rs_parser.add_argument("--source", default="mock")
+    rs_parser.add_argument("--no-phase5", action="store_true", default=False)
+    rs_parser.add_argument("--job-name", default="")
+    rs_parser.add_argument(
+        "--schedule-out",
+        default="",
+        help="Write job JSON + queries + plan under this directory",
+    )
+    rs_parser.add_argument("--out-dir", default="", help="Alias for --schedule-out")
+    rs_parser.add_argument("--out", default="", help="Write full plan JSON to path")
+    rs_parser.set_defaults(func=cmd_risk_schedule)
 
     lbp = subparsers.add_parser(
         "lineage-backprop",

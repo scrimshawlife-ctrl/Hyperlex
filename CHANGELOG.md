@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.7 — Risk-tier → scan/cron schedule coupling (2026-08-05)
+
+- `hyperlex.simulation.schedule`: `TIER_POLICY`, `plan_scan_from_risk/term/tier`, `write_scan_plan`, `aggregate_scan_risk`
+- CLI: `risk-schedule` + `simulate --mode schedule` (advisory Hermes job envelopes; no auto-register)
+- `scan` summaries include `scan_risk_advisory` (lineage coverage → next cadence)
+- Examples: `examples/cron/risk-tier-elevated.job.json`, `examples/cron/README.md`
+- Docs: cron-live-emergence, phase5, modules/simulation
+
 ## 0.3.6 — Transmission calibration, scenario library, research export (2026-08-05)
 
 - `calibrate_transmission_params` grid-search β/γ against settled pairs (SPECULATIVE)

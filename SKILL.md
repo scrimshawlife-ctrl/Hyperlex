@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.3.6
+version: 0.3.7
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
@@ -73,6 +73,7 @@ export HERMES_SKILL_DIR="${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}"
 - Match slang into historical **lineage families** with transparent confidence
 - **Backfill** YTD slang packs and **backpropagate** lineage onto historical receipts (non-mutating)
 - **Phase 5 simulate** cultural transmission, multi-agent memetics, hyperstition risk, phylogeny scaffold
+- **Risk-schedule** advisory LIVE_EMERGENCE_SCAN cadence from risk tiers (never auto-registers cron)
 - Emit integrity-hashed **receipts** for auditable runs
 - Extract **forecasts** from analysis (probabilities only — no fake Brier)
 - **Settle** forecasts as an operator and recompute Brier series from the score log
@@ -130,6 +131,9 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" lineage-backfill --list --throug
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" lineage-backprop --from-golden --out out/backprop/report.json
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scenario --domain ai
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --from-analyze --term "sharp steam revenge" --domain markets
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule --list-tiers
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule --tier ELEVATED --schedule-out /tmp/hlx-cron
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --mode schedule --term "agentic slop" --domain ai
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" archive-export --include-golden --history
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" archive-catalog
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" vector-seed --include-golden --through 2026-08

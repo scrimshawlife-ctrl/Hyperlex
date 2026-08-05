@@ -82,6 +82,22 @@ python3 scripts/hyperlex.py simulate --mode compare --scenario viral_cascade --t
 python3 scripts/hyperlex.py simulate --mode export --term "rizz" --export-dir out/research
 ```
 
+## Risk → scan schedule (0.3.7)
+
+Advisory mapping from hyperstition risk tier to LIVE_EMERGENCE_SCAN cadence and
+Hermes cron job envelopes. **Does not auto-register** cron jobs.
+
+```bash
+python3 scripts/hyperlex.py risk-schedule --list-tiers
+python3 scripts/hyperlex.py risk-schedule --tier ELEVATED --schedule-out /tmp/hlx-cron
+python3 scripts/hyperlex.py simulate --mode schedule --term "rizz locked in" --domain ai
+```
+
+API: `plan_scan_from_risk`, `plan_scan_from_term`, `plan_scan_from_tier`,
+`write_scan_plan`, `aggregate_scan_risk`, `TIER_POLICY`.
+
+Post-scan: `scan` attaches `scan_risk_advisory` from lineage coverage.
+
 ## Integrity
 
 1. Simulation does **not** rewrite receipts or ledgers.

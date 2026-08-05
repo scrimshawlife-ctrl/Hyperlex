@@ -11,9 +11,9 @@
 
 | | |
 |--|--|
-| **Version** | **0.3.6** |
+| **Version** | **0.3.7** |
 | **Posture** | Hermes skill · Python package repo (≥3.10) · MIT |
-| **Phases** | **0–4 complete** · **5.0** research simulation live |
+| **Phases** | **0–4 complete** · **5.0–5.3** research simulation live |
 | **Pages** | Static history of runs (not live operator DB) |
 | **PyPI** | Not planned (local / Hermes install only) |
 
@@ -45,7 +45,7 @@ ingest → analysis (lineage · typology · virality · hyperstition)
 | **Calibration** | Forecast extract → operator settle → Brier / BSS / Murphy / Yates (never invent scores) |
 | **Relay** | `RUNE.HLX.*` envelopes + market-signal / hyperstition-feedback connectors |
 | **Lineage ops** | YTD backfill packs + non-mutating lineage backpropagation |
-| **Phase 5** | Cultural transmission, multi-agent memetics, hyperstition risk tiers, phylogeny scaffold |
+| **Phase 5** | Cultural transmission, multi-agent memetics, hyperstition risk tiers, phylogeny scaffold, risk→cron schedule |
 | **Vector DB** | Local SQLite embeddings (`~/.hyperlex/vector.db`) for terms + receipts |
 | **Pages archive** | Publish-safe dated run history under `docs/archive/runs/` |
 

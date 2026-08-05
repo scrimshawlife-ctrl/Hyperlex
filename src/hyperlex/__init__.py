@@ -101,6 +101,12 @@ from .simulation import (
     list_scenario_presets,
     run_named_scenario,
     export_research_packet,
+    plan_scan_from_risk,
+    plan_scan_from_term,
+    plan_scan_from_tier,
+    write_scan_plan,
+    aggregate_scan_risk,
+    TIER_POLICY,
 )
 from . import vectordb
 from .vectordb import (
@@ -164,6 +170,12 @@ API_EXTENDED = (
     "list_scenario_presets",
     "run_named_scenario",
     "export_research_packet",
+    "plan_scan_from_risk",
+    "plan_scan_from_term",
+    "plan_scan_from_tier",
+    "write_scan_plan",
+    "aggregate_scan_risk",
+    "TIER_POLICY",
     "vector_seed_all",
     "vector_search",
     "VectorStore",

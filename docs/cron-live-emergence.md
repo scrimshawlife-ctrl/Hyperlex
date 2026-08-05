@@ -77,8 +77,45 @@ Replace `--source mock` with `combined` or `glossary` only when:
 
 Offline safety: `HYPERLEX_OFFLINE=1` forces non-network fallbacks.
 
+## Risk-tier → schedule coupling (advisory · v0.3.7)
+
+Maps hyperstition risk tiers to recommended scan cadence. **Does not** auto-mutate
+Hermes cron — operator reviews and registers.
+
+| Tier | Cron | Interval | max_queries | source | post-hooks |
+|------|------|----------|-------------|--------|------------|
+| LOW | `0 */12 * * *` | 12h | 3 | mock | — |
+| MODERATE | `0 */6 * * *` | 6h | 5 | mock | — |
+| ELEVATED | `0 */2 * * *` | 2h | 8 | combined | vector-seed + archive-export |
+| CRITICAL | `0 * * * *` | 1h | 12 | combined | vector-seed + archive-export |
+
+```bash
+# List policy
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule --list-tiers
+
+# Direct tier → write job envelope
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule \
+  --tier ELEVATED --schedule-out /tmp/hlx-cron
+
+# From seed term (Phase 5 risk)
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule \
+  --term "agentic slop skill issue" --domain ai --schedule-out /tmp/hlx-cron
+
+# Equivalent simulate mode
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --mode schedule --tier CRITICAL
+```
+
+Example envelopes: `examples/cron/risk-tier-elevated.job.json`,
+`examples/cron/live-emergence-scan.job.json` (MODERATE default).
+
+### Post-scan advisory
+
+Every `scan` summary includes `scan_risk_advisory` (lineage coverage → suggested next
+tier / cron). Re-run `risk-schedule` for full Phase 5 risk before changing live jobs.
+
 ## Fail-closed rules
 
 - Open analysis keeps `provenance.brier = null`
 - Empty score series → `NOT_COMPUTABLE`
 - Cron script should exit non-zero only on hard failures (import/path); soft source failures degrade
+- Risk→schedule plans keep `brier: null` and `state: proposed`

@@ -28,6 +28,15 @@ from .library import (
     run_named_scenario,
 )
 from .research_export import export_research_packet
+from .schedule import (
+    TIER_POLICY,
+    aggregate_scan_risk,
+    plan_scan_from_risk,
+    plan_scan_from_term,
+    plan_scan_from_tier,
+    policy_for_tier,
+    write_scan_plan,
+)
 
 __all__ = [
     "simulate_cultural_transmission",
@@ -47,4 +56,11 @@ __all__ = [
     "list_scenario_presets",
     "run_named_scenario",
     "export_research_packet",
+    "TIER_POLICY",
+    "aggregate_scan_risk",
+    "plan_scan_from_risk",
+    "plan_scan_from_term",
+    "plan_scan_from_tier",
+    "policy_for_tier",
+    "write_scan_plan",
 ]

@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.7
+- Risk-tier → scan/cron schedule coupling (`risk-schedule`, `simulate --mode schedule`).
+- Post-scan `scan_risk_advisory`; advisory job envelopes under `examples/cron/`.
+
 ## 0.3.6
 - Transmission calibrate, multi-agent scenario library, research export.
 

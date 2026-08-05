@@ -62,13 +62,14 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] **5.1** Vector hybrid re-rank for lineage matcher (`match_lineage` + local vector DB)
 - [x] **5.2** Multi-agent scenario library + comparative runs (`compare_scenarios`)
 - [x] **5.2** Open research export templates (`export_research_packet`)
-- [ ] **5.3** Optional coupling of risk tiers → scan schedules / operator alerts (Hermes cron)
+- [x] **5.3** Risk tiers → scan schedules / operator alerts (advisory Hermes cron envelopes)
 - [ ] **5.3** ANN backend option if corpus grows past linear scan
 
 ## Milestones
 - v0.2.x: Phases 0–4 complete (Hermes skill production track)
 - v0.3.0: Phase 5.0 research simulation track
-- **v0.3.6: calibrate + scenario library + research export** (current)
+- v0.3.6: calibrate + scenario library + research export
+- **v0.3.7: risk-tier → scan/cron schedule coupling** (current)
 - v0.3.x: Phylogeny libraries + vector hybrid lineage + research export polish
 - v1.0: Stable skill contract + long-horizon archive + optional research contribs
 
@@ -79,3 +80,4 @@ See SPEC.md and DESIGN.md for detailed requirements per phase.
 - v0.3.0: Phase 5.0 simulation stack (transmission, agents, risk, phylogeny)
 - v0.3.3: Local SQLite vector DB; seed from registry/backfill/receipts
 - v0.3.5: Hybrid lineage re-rank + domain phylogeny packs
+- v0.3.7: Risk-tier → scan/cron schedule (advisory; post-scan advisory on scan)

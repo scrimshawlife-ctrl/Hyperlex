@@ -18,6 +18,7 @@ and lightweight phylogenies.
 | Research export | Ready (`simulate --mode export`) |
 | Composed scenario | Ready (`simulate --mode scenario`) |
 | Transmission calibration vs settled series | Ready (`simulate --mode calibrate`) |
+| Risk-tier → scan/cron schedule | Ready (`risk-schedule` / `simulate --mode schedule`) |
 | Open research publications | Ongoing (export + docs; external writeups separate) |
 
 ## Non-goals
