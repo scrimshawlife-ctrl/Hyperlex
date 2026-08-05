@@ -11,6 +11,7 @@ Hyperlex is a **standalone app**. Relevant Abraxas wire shapes live in
 - [Slang Lineages](./slang-lineages.md)
 - [Cron / LIVE_EMERGENCE_SCAN](./cron-live-emergence.md)
 - [Connectors (market + hyperstition feedback)](./connectors.md)
+- [Diagrams from receipts](./diagrams.md)
 - [Modules / Ingest](./modules/ingest.md)
 
 ## Root specs

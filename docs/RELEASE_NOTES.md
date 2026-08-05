@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.3
+- Automated Mermaid diagrams from receipts/ledger (`diagram` CLI).
+
 ## 0.2.2
 - Docs refresh (ARCHITECTURE, README, QUICKSTART, connectors).
 - Market signal + forecast pipeline connectors (`hyperlex.connectors`).

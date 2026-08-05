@@ -31,7 +31,7 @@ Hyperlex modules under `hyperlex.compat.abraxas` (no Abraxas import).
 - [ ] Community driver modeling
 - [ ] Virality prediction models
 - [ ] Memetic typology expansion
-- [ ] Automated diagram generation from receipt histories
+- [x] Automated diagram generation from receipt histories (`hyperlex.diagrams`, CLI `diagram`)
 
 ## Phase 3 — Hermes / Host Integration
 - [x] Hermes skill packaging + install

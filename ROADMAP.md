@@ -35,7 +35,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Slang historical family documentation + emergent branch diagrams (Mermaid)
 - [x] Schema support for lineage attachment on analysis results (`lineage.v1.schema.json`)
 - [x] Deterministic lineage matcher with confidence scoring
-- [ ] Automated diagram generation from receipt histories
+- [x] Automated diagram generation from receipt histories (`hyperlex.diagrams`, CLI `diagram`)
 - [x] Operator settlement workflow + score log persistence (`settle_and_log`, `~/.hyperlex/score_log.jsonl`)
 - [x] CLI: `analyze --forecasts`, `extract-forecasts`, `settle`, `score-series`, `verify-score-log`
 - [x] Golden tests for lineage confidence, score_pair, score_series (empty → NOT_COMPUTABLE), score log

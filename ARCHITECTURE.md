@@ -32,6 +32,7 @@ src/hyperlex/
   calibration/      # forecast, settle, score, score_log, recalibrate
   relay/            # RUNE.HLX.* envelopes
   connectors/       # market-signal + forecast pipeline packets (generic)
+  diagrams/         # Mermaid from receipts / ledger
   compat/abraxas/   # BrierLedger/Score/operator review/claims/runes (no Abraxas import)
   provenance.py     # source fingerprints
   cli.py            # python -m hyperlex

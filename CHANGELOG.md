@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3 — Receipt history diagrams (2026-08-05)
+
+- `hyperlex.diagrams` — Mermaid lineage distribution, receipt timeline, family graph, per-receipt flow.
+- CLI `diagram --from-golden|--from-ledger|--input` writes `.mmd` + optional HTML.
+- Docs: `docs/diagrams.md`.
+
 ## 0.2.2 — Docs refresh, market connectors, hyperstition feedback (2026-08-05)
 
 - Full docs pass: ARCHITECTURE, README, QUICKSTART, RELEASE_NOTES, connectors.md.

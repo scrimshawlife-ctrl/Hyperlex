@@ -64,6 +64,12 @@ from .calibration import (
     NOT_COMPUTABLE,
 )
 from . import connectors
+from . import diagrams
+from .diagrams import (
+    diagram_from_ledger,
+    diagram_from_receipt_files,
+    write_diagram_bundle,
+)
 from .connectors import (
     build_market_signal,
     build_forecast_pipeline,
@@ -99,6 +105,9 @@ API_EXTENDED = (
     "build_market_signal",
     "build_forecast_pipeline",
     "hyperstition_feedback_from_series",
+    "diagram_from_ledger",
+    "diagram_from_receipt_files",
+    "write_diagram_bundle",
 )
 
 __all__ = [
@@ -121,6 +130,10 @@ __all__ = [
     "compat",
     "schemas",
     "API_V1",
+    "diagram_from_ledger",
+    "diagram_from_receipt_files",
+    "write_diagram_bundle",
+    "diagrams",
     "API_EXTENDED",
 ]
 

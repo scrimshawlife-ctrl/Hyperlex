@@ -219,6 +219,91 @@ def cmd_feedback(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_diagram(args: argparse.Namespace) -> int:
+    """Generate Mermaid diagrams from receipt ledger and/or receipt files."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.diagrams import (
+        diagram_from_ledger,
+        diagram_from_receipt_files,
+        write_diagram_bundle,
+        diagram_receipt_flow,
+    )
+    import glob as _glob
+
+    diagrams: Dict[str, str] = {}
+    sources: List[str] = []
+    paths: List[Path] = [Path(p) for p in (args.input or [])]
+    if args.from_golden:
+        golden = ROOT / "examples" / "receipts" / "golden"
+        paths.extend(sorted(golden.glob("*.json")))
+    if args.glob:
+        paths.extend(Path(g) for g in _glob.glob(args.glob))
+
+    use_ledger = bool(args.from_ledger)
+    if not use_ledger and not paths:
+        # default: golden corpus if present, else receipt ledger
+        golden = ROOT / "examples" / "receipts" / "golden"
+        if golden.is_dir() and any(golden.glob("*.json")):
+            paths.extend(sorted(golden.glob("*.json")))
+            sources.append("default:golden")
+        else:
+            use_ledger = True
+
+    if use_ledger:
+        ledger = Path(args.ledger) if args.ledger else pkg.default_ledger_path()
+        diagrams.update(
+            diagram_from_ledger(
+                ledger_path=ledger,
+                limit=int(args.limit),
+                lineage_family=args.lineage_family or None,
+            )
+        )
+        sources.append(f"ledger:{ledger}")
+
+    seen: set = set()
+    uniq: List[Path] = []
+    for p in paths:
+        if not p.exists() or p.suffix != ".json" or p.name == "MANIFEST.json":
+            continue
+        rp = str(p.resolve())
+        if rp in seen:
+            continue
+        seen.add(rp)
+        uniq.append(p)
+
+    if uniq:
+        diagrams.update(diagram_from_receipt_files(uniq))
+        sources.append(f"files:{len(uniq)}")
+
+    if not diagrams or all(k == "meta" for k in diagrams):
+        _emit({"ok": False, "error": "no diagrams; pass --from-ledger, --from-golden, --input, or --glob"})
+        return 2
+
+    written = {}
+    out_dir = args.out_dir or str(ROOT / "out" / "diagrams")
+    written = write_diagram_bundle(
+        diagrams,
+        out_dir,
+        html=not args.no_html,
+        prefix=args.prefix or "hyperlex",
+    )
+
+    _emit({
+        "ok": True,
+        "command": "diagram",
+        "sources": sources,
+        "n_diagrams": len([k for k in diagrams if k != "meta"]),
+        "out_dir": out_dir,
+        "files": written,
+        "kinds": [k for k in diagrams.keys() if k != "meta"],
+    })
+    return 0
+
+
 def cmd_relay(args: argparse.Namespace) -> int:
     pkg, err = _import_hyperlex()
     if pkg is None:
@@ -1034,6 +1119,19 @@ def _build_parser() -> argparse.ArgumentParser:
     fb_parser.add_argument("--log", default="")
     fb_parser.add_argument("--repo-log", action="store_true", default=False)
     fb_parser.set_defaults(func=cmd_feedback)
+
+    diag_parser = subparsers.add_parser("diagram", help="Generate Mermaid diagrams from receipts/ledger")
+    diag_parser.add_argument("--from-ledger", action="store_true", default=False, help="Use receipt ledger")
+    diag_parser.add_argument("--from-golden", action="store_true", default=False, help="Use examples/receipts/golden")
+    diag_parser.add_argument("--input", action="append", default=[], help="Receipt JSON (repeatable)")
+    diag_parser.add_argument("--glob", default="", help="Glob of receipt JSON files")
+    diag_parser.add_argument("--ledger", default="", help="Receipt ledger path")
+    diag_parser.add_argument("--lineage-family", default="")
+    diag_parser.add_argument("--limit", type=int, default=50)
+    diag_parser.add_argument("--out-dir", default="", help="Write .mmd/.html bundle here")
+    diag_parser.add_argument("--no-html", action="store_true", default=False)
+    diag_parser.add_argument("--prefix", default="hyperlex")
+    diag_parser.set_defaults(func=cmd_diagram)
 
     return parser
 
