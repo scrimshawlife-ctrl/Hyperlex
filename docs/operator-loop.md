@@ -16,7 +16,7 @@ real operator work.
 ANN is optional until the local vector corpus is large enough that linear cosine
 hurts. Doctor-scale (~hundreds of terms) does not need it.
 
-## Daily path (simplified)
+## Daily path (simplified) — automatic backend
 
 ```bash
 export HERMES_SKILL_DIR="${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}"
@@ -25,16 +25,18 @@ HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
 # See the map anytime
 $HLX commands
 
-# One-shot: ingest route → analyze → receipt → forecasts → score log
-$HLX run "rizz" --route offline
-$HLX run "locked in" --route offline
+# AUTO: ingest → analyze → receipt → forecasts → score log → Phase 5 risk
+# Same for: pipeline | run | ingest  (ingest --raw-only = signal only)
+$HLX pipeline "rizz" --route offline
+$HLX ingest "locked in"                 # full results by default
+$HLX pipeline "sigma rizz locked in"    # expands to 3 atom results automatically
 
 # Multi-query cron shape (atomic pack; offline-safe)
 $HLX scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" \
   --route offline --receipt --forecasts --append-log
 
 # When network is allowed
-$HLX run "agentic slop" --route live
+$HLX pipeline "agentic slop" --route live
 ```
 
 ### Ingest routing (prefer routes over adapter names)

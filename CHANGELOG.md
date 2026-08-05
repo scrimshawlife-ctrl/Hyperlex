@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — Automatic backend pipeline (2026-08-05)
+
+- `run_pipeline` / CLI `pipeline`: ingest → analyze → receipt → forecasts → score log → Phase 5 risk
+- `ingest` and `run` default to the full auto path (`ingest --raw-only` for signal-only)
+- Multi-term bags auto-expand to one full result unit per lexicon atom
+- Never auto-settles; `brier` always null until operator `settle`
+- Package API: `run_pipeline`, `run_one`
+
 ## 0.3.9 — Atomic multi-term seeds (2026-08-05)
 
 - `split_seed_terms`: longest-match lexicon split (`sigma rizz locked in` → sigma | rizz | locked in)

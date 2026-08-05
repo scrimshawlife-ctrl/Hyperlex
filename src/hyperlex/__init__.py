@@ -39,6 +39,7 @@ from .analysis import (
 from .analysis.backfill import apply_backfill, inventory_backfill, list_backfill_packs
 from .analysis.backprop import backpropagate_lineage
 from .analysis.terms import split_seed_terms, collect_lexicon, per_term_lineage
+from .pipeline import run_pipeline, run_one
 from .synthesis import mock_integrate_with_external_signal
 from .receipt import (
     emit_receipt,
@@ -182,6 +183,8 @@ API_EXTENDED = (
     "split_seed_terms",
     "collect_lexicon",
     "per_term_lineage",
+    "run_pipeline",
+    "run_one",
     "TIER_POLICY",
     "list_sources",
     "resolve_source",

@@ -60,7 +60,8 @@ def test_sources_command() -> None:
 
 
 def test_ingest_mock_structured() -> None:
-    result = _run_cli("ingest", "sharp money revenge", "--source", "mock", "--structured")
+    # raw-only keeps classic signal-only shape
+    result = _run_cli("ingest", "sharp money revenge", "--source", "mock", "--raw-only", "--structured")
     assert result.returncode == 0
     body = _load_json(result.stdout)
     assert body["ok"] is True
@@ -72,7 +73,7 @@ def test_ingest_mock_structured() -> None:
 
 def test_ingest_crawl4ai_fallback_is_safe() -> None:
     # HYPERLEX_OFFLINE=1 forces network sources → mock (fail-safe)
-    result = _run_cli("ingest", "sharp money revenge", "--source", "crawl4ai", "--structured")
+    result = _run_cli("ingest", "sharp money revenge", "--source", "crawl4ai", "--raw-only", "--structured")
     assert result.returncode == 0
     body = _load_json(result.stdout)
     payload = body["result"]

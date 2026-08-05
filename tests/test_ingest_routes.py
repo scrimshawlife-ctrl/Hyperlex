@@ -81,11 +81,12 @@ def test_cli_run_one_shot(tmp_path):
             sys.executable,
             str(ROOT / "scripts" / "hyperlex.py"),
             "run",
-            "sharp steam revenge",
+            "rizz",
             "--route",
             "offline",
             "--receipt-dir",
             str(tmp_path / "receipts"),
+            "--no-phase5",
         ],
         cwd=str(ROOT),
         capture_output=True,
@@ -95,9 +96,10 @@ def test_cli_run_one_shot(tmp_path):
     assert r.returncode == 0, r.stderr + r.stdout
     data = json.loads(r.stdout)
     assert data["command"] == "run"
-    assert data["source"] == "mock"
+    assert data["ok"] is True
     assert data.get("n_forecasts", 0) >= 1 or data.get("forecasts")
-    assert data["result"]["provenance"]["brier"] is None
+    # single-atom hoists result
+    assert (data.get("result") or {}).get("provenance", {}).get("brier") is None
 
     r3 = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "hyperlex.py"), "pending", "--log", str(tmp_path / "score_log.jsonl")],

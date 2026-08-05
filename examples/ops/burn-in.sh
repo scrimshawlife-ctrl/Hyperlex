@@ -22,12 +22,17 @@ echo "==> terms-split demo"
 $HLX terms-split "sigma rizz locked in" --no-lineage | python3 -c \
   "import sys,json; d=json.load(sys.stdin); print('atoms', d['split']['terms'])"
 
-# One lexicon atom per run (not bags)
-ATOMS=(rizz "locked in" "sharp money" "agentic slop" "skill issue")
+# Automatic backend: one pipeline call can expand multi-term bags
+echo "==> pipeline multi-term (auto expand → atoms → full results)"
+$HLX pipeline "sigma rizz locked in" --route offline --no-phase5 >/tmp/hlx-burn-multi.json
+python3 -c "import json;d=json.load(open('/tmp/hlx-burn-multi.json'));print('  atoms',d.get('atoms'),'n_forecasts',d.get('n_forecasts'),'brier',d.get('brier'))"
+
+# Single-atom automatic runs
+ATOMS=(rizz "locked in" "sharp money" "agentic slop")
 for term in "${ATOMS[@]}"; do
-  echo "==> run atom: $term"
-  $HLX run "$term" --route offline >/tmp/hlx-burn-last.json
-  python3 -c "import json;d=json.load(open('/tmp/hlx-burn-last.json'));a=d.get('result',{}).get('analysis',{});print('  primary',a.get('primary_term'),'family',(a.get('lineage') or {}).get('family_id'),'brier',d.get('result',{}).get('provenance',{}).get('brier'))"
+  echo "==> pipeline atom: $term"
+  $HLX pipeline "$term" --route offline >/tmp/hlx-burn-last.json
+  python3 -c "import json;d=json.load(open('/tmp/hlx-burn-last.json'));r=d.get('result') or {};a=r.get('analysis') or {};print('  family',(a.get('lineage') or {}).get('family_id'),'risk',(d.get('phase5') or {}).get('risk_tier'),'n_fc',d.get('n_forecasts'),'brier',d.get('brier'))"
 done
 
 echo "==> pending (open forecasts — settle manually)"

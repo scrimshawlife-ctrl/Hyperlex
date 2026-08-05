@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.9  
+**Version:** 0.4.0  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Hallmark desk UI
@@ -44,20 +44,19 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Scenario library + export** | Ready (`compare` / `export`) |
 | **Risk → scan/cron schedule** | Ready (`risk-schedule`; advisory only) |
 | **Ingest routes + `run`/`commands`/`pending`** | Ready (v0.3.8+) |
-| **Atomic multi-term seeds** | Ready (v0.3.9 · `terms-split` / multi Phase 5) |
+| **Atomic multi-term seeds** | Ready (v0.4.0 · `terms-split` / multi Phase 5) |
 | **Pages demos (atomic terms)** | Ready (`docs/demos/atomic-terms.md`) |
+| **Automatic pipeline** | Ready (v0.4.0 · `pipeline` / `run` / `ingest` → full results) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
 ## Operator loop
 
 ```text
-commands                              # simplified map
-run "<atom>" --route offline          # one lexicon atom per run
-  → pending → settle → score-series   # calibration (Brier only here)
-  → scan / risk-schedule              # cron advisory (atomic query pack)
-  → terms-split / simulate multi-term # bags expand automatically
-  → archive-export / vector-*         # research & pages (optional)
+pipeline "rizz" | ingest "rizz" | run "rizz"   # AUTO full results
+  → pending → settle → score-series            # only manual step (Brier)
+  → scan / risk-schedule                       # cron advisory
+  → archive-export / vector-*                  # optional
 ```
 
 ## Data dirs

@@ -73,7 +73,8 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - v0.3.6: calibrate + scenario library + research export
 - v0.3.7: risk-tier → scan/cron schedule coupling
 - v0.3.8: operator loop + ingest route simplification
-- **v0.3.9: atomic multi-term seeds + Pages demos** (current)
+- v0.3.9: atomic multi-term seeds + Pages demos
+- **v0.4.0: automatic backend pipeline (ingest → results)** (current)
 - v0.3.x: Phylogeny libraries + vector hybrid lineage + research export polish
 - v1.0: Stable skill contract + long-horizon archive + optional research contribs
 

@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.4.0
+- Automatic backend pipeline: `pipeline` / `run` / `ingest` → full results packet.
+- Ingest defaults to full results (`--raw-only` for signal-only).
+- Multi-term bags expand to one result unit per atom; never auto-settles.
+
 ## 0.3.9
 - Atomic multi-term seeds: `terms-split`, Phase 5 multi-term expand, per-term lineage.
 - Pages demos: `docs/demos/atomic-terms.md` + `examples/demos/` fixtures.

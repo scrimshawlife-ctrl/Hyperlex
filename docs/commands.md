@@ -7,16 +7,28 @@ or `python3 scripts/hyperlex.py -h`.
 HLX="python3 ${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}/scripts/hyperlex.py"
 ```
 
-## Daily ops
+## Daily ops (automatic backend)
 
 | Command | Purpose |
 |---------|---------|
-| `run "<atom>"` | One-shot per lexicon atom (prefer `rizz`, not bag strings) |
-| `run "<atom>" --route offline` | Safe burn-in (default route for `run`) |
-| `run "<atom>" --route live` | Network multi-source when allowed |
-| `terms-split "…"` | Preview multi-term expansion |
-| `scan --route offline --receipt --forecasts --append-log` | Multi-query LIVE_EMERGENCE_SCAN |
+| `pipeline "<q>"` | **AUTO:** ingest→analyze→receipt→forecasts→score log→phase5 risk |
+| `ingest "<q>"` | Same as pipeline by default (`--raw-only` = signal only) |
+| `run "<q>"` | Alias of pipeline |
+| `pipeline "sigma rizz locked in"` | Auto-expands to atoms; full results each |
+| `terms-split "…"` | Preview multi-term expansion only |
+| `scan --route offline …` | Multi-query LIVE_EMERGENCE_SCAN |
 | `risk-schedule --tier MODERATE --schedule-out DIR` | Advisory Hermes cron envelope |
+
+```text
+pipeline / run / ingest
+        │
+        ▼
+   resolve route → expand atoms → for each atom:
+        analyze → receipt → forecasts → score_log → phase5 risk
+        │
+        ▼
+   results packet (brier always null until settle)
+```
 
 ## Calibration
 

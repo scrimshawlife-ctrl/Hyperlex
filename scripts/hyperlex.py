@@ -561,6 +561,16 @@ def cmd_ingest(args: argparse.Namespace) -> int:
         _emit({"ok": False, "error": f"import failure: {err}"})
         return 2
 
+    # Default: full automatic backend (ingest → results). --raw-only for signal only.
+    if not bool(getattr(args, "raw_only", False)):
+        # Map ingest positional `query` onto pipeline query_pos
+        if not getattr(args, "query_pos", None):
+            args.query_pos = getattr(args, "query", None) or ""
+        args.command_label = "ingest"
+        if not getattr(args, "route", None):
+            args.route = "offline"  # auto backend defaults safe
+        return cmd_pipeline(args)
+
     result = _build_ingest_result(pkg, args)
     if args.out:
         out = Path(args.out)
@@ -569,6 +579,7 @@ def cmd_ingest(args: argparse.Namespace) -> int:
     _emit({
         "ok": True,
         "command": "ingest",
+        "mode": "raw_only",
         "source": result.get("source"),
         "route": (result.get("route") or {}).get("route") if isinstance(result.get("route"), dict) else None,
         "result": result,
@@ -701,18 +712,76 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_run(args: argparse.Namespace) -> int:
-    """One-shot operator path: ingest route → analyze → receipt → forecasts → score log."""
-    args.command_label = "run"
-    args.receipt = not bool(getattr(args, "no_receipt", False))
-    args.forecasts = not bool(getattr(args, "no_forecasts", False))
-    args.append_log = not bool(getattr(args, "no_append_log", False))
-    args.use_structured_ingest = True
-    q = (getattr(args, "query_pos", None) or getattr(args, "query", None) or "").strip()
-    if not q and not getattr(args, "input", None):
-        _emit({"ok": False, "error": "run requires a query (positional or --query)"})
+def cmd_pipeline(args: argparse.Namespace) -> int:
+    """Automatic backend: ingest → analyze → receipt → forecasts → results (no settle)."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
         return 2
-    return cmd_analyze(args)
+
+    from hyperlex.pipeline import run_pipeline
+
+    q = (getattr(args, "query_pos", None) or getattr(args, "query", None) or getattr(args, "term", None) or "").strip()
+    queries = None
+    if getattr(args, "queries", None):
+        queries = [p.strip() for p in str(args.queries).split(",") if p.strip()]
+    if not q and not queries:
+        _emit({"ok": False, "error": "pipeline requires a query (positional / --query) or --queries"})
+        return 2
+
+    log_path = _resolve_log_path(args) if getattr(args, "log", None) or getattr(args, "repo_log", False) else None
+    packet = run_pipeline(
+        q or (queries[0] if queries else ""),
+        route=getattr(args, "route", None) or "offline",
+        source=getattr(args, "source", None) or "mock",
+        expand_terms=not bool(getattr(args, "no_expand", False)),
+        receipt=not bool(getattr(args, "no_receipt", False)),
+        forecasts=not bool(getattr(args, "no_forecasts", False)),
+        append_log=not bool(getattr(args, "no_append_log", False)),
+        phase5=not bool(getattr(args, "no_phase5", False)),
+        domain=getattr(args, "domain", None) or "general",
+        log_path=log_path,
+        receipt_dir=getattr(args, "receipt_dir", None) or None,
+        validate=bool(getattr(args, "validate", False)),
+        queries=queries,
+    )
+    packet["command"] = getattr(args, "command_label", None) or "pipeline"
+    if getattr(args, "out", None):
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(json.dumps(packet, indent=2, sort_keys=True), encoding="utf-8")
+        packet["written"] = args.out
+    # compact multi-atom CLI unless verbose
+    if not getattr(args, "verbose", False) and int(packet.get("n_atoms") or 0) > 1:
+        compact = dict(packet)
+        slim = []
+        for u in compact.get("results") or []:
+            slim.append({
+                "query": u.get("query"),
+                "ok": u.get("ok"),
+                "primary_term": u.get("primary_term"),
+                "lineage_family": u.get("lineage_family"),
+                "risk_tier": u.get("risk_tier"),
+                "receipt": u.get("receipt"),
+                "n_forecasts": u.get("n_forecasts"),
+                "forecast_ids": u.get("forecast_ids"),
+                "phase5": u.get("phase5"),
+                "brier": None,
+                "error": u.get("error"),
+            })
+        compact["results"] = slim
+        compact["hint"] = "pass --verbose for full analysis bodies; --out always writes full JSON"
+        _emit(compact)
+    else:
+        _emit(packet)
+    return 0 if packet.get("ok") else 1
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    """Automatic backend (alias of pipeline): ingest → results."""
+    args.command_label = "run"
+    if not getattr(args, "route", None):
+        args.route = "offline"
+    return cmd_pipeline(args)
 
 
 def cmd_commands(_args: argparse.Namespace) -> int:
@@ -725,9 +794,10 @@ def cmd_commands(_args: argparse.Namespace) -> int:
             "Risk→cron is advisory only. Never invent Brier."
         ),
         "daily_ops": [
-            {"cmd": "run \"<query>\"", "why": "One-shot: analyze + receipt + forecasts + append score log"},
-            {"cmd": "run \"<query>\" --route offline", "why": "Safe burn-in (mock ingest)"},
-            {"cmd": "run \"<query>\" --route live", "why": "Network multi-source when allowed"},
+            {"cmd": "pipeline \"rizz\"", "why": "AUTO backend: ingest→analyze→receipt→forecasts→phase5 risk"},
+            {"cmd": "ingest \"rizz\"", "why": "Same as pipeline (default); use --raw-only for signal only"},
+            {"cmd": "run \"rizz\" --route offline", "why": "Alias of pipeline (safe burn-in)"},
+            {"cmd": "run \"sigma rizz locked in\"", "why": "Auto-expands to atoms; one full result each"},
             {"cmd": "scan --route offline --receipt --forecasts --append-log", "why": "Multi-query LIVE_EMERGENCE_SCAN"},
             {"cmd": "risk-schedule --tier MODERATE --schedule-out /tmp/hlx-cron", "why": "Advisory cron envelope"},
         ],
@@ -1927,36 +1997,80 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     commands_parser.set_defaults(func=cmd_commands)
 
+    def _add_pipeline_args(p: argparse.ArgumentParser, *, default_route: str = "offline") -> None:
+        p.add_argument("query_pos", nargs="?", default="", help="Query text (positional)")
+        p.add_argument("--query", default="", help="Query text (flag form)")
+        p.add_argument("--queries", default="", help="Comma-separated queries (each expands to atoms)")
+        p.add_argument("--term", default="", help="Alias for --query")
+        p.add_argument("--source", default="mock")
+        p.add_argument(
+            "--route",
+            default=default_route,
+            help="Operator route: offline|mock|default|live|glossary|social",
+        )
+        p.add_argument("--domain", default="general")
+        p.add_argument("--no-expand", action="store_true", default=False, help="Do not split multi-term bags")
+        p.add_argument("--no-receipt", action="store_true", default=False)
+        p.add_argument("--no-forecasts", action="store_true", default=False)
+        p.add_argument("--no-append-log", action="store_true", default=False)
+        p.add_argument("--no-phase5", action="store_true", default=False, help="Skip Phase 5 risk digest")
+        p.add_argument("--validate", action="store_true", default=False)
+        p.add_argument("--log", default="")
+        p.add_argument("--repo-log", action="store_true", default=False)
+        p.add_argument("--receipt-dir", default="")
+        p.add_argument("--verbose", action="store_true", default=False)
+        p.add_argument("--out", default="")
+
+    pipe_parser = subparsers.add_parser(
+        "pipeline",
+        help="AUTO backend: ingest → analyze → receipt → forecasts → phase5 risk (results packet)",
+    )
+    _add_pipeline_args(pipe_parser, default_route="offline")
+    pipe_parser.set_defaults(func=cmd_pipeline, command_label="pipeline")
+
     ingest_parser = subparsers.add_parser(
         "ingest",
-        help="Run ingest only (prefer --route offline|live over raw --source)",
+        help="AUTO backend by default (same as pipeline). Use --raw-only for signal-only ingest.",
     )
-    ingest_parser.add_argument("query")
-    ingest_parser.add_argument("--source", default="mock", help="Source or alias (real→glossary, x→x_search, …)")
+    ingest_parser.add_argument("query", nargs="?", default="", help="Query (positional)")
+    ingest_parser.add_argument("--source", default="mock", help="Source or alias")
     ingest_parser.add_argument(
         "--route",
         default="",
-        help="Operator route: offline|mock|default|live|glossary|social",
+        help="offline|live|… (default offline for auto pipeline; empty uses --source + HYPERLEX_OFFLINE)",
+    )
+    ingest_parser.add_argument("--queries", default="")
+    ingest_parser.add_argument("--domain", default="general")
+    ingest_parser.add_argument("--no-expand", action="store_true", default=False)
+    ingest_parser.add_argument("--no-receipt", action="store_true", default=False)
+    ingest_parser.add_argument("--no-forecasts", action="store_true", default=False)
+    ingest_parser.add_argument("--no-append-log", action="store_true", default=False)
+    ingest_parser.add_argument("--no-phase5", action="store_true", default=False)
+    ingest_parser.add_argument("--validate", action="store_true", default=False)
+    ingest_parser.add_argument("--log", default="")
+    ingest_parser.add_argument("--repo-log", action="store_true", default=False)
+    ingest_parser.add_argument("--receipt-dir", default="")
+    ingest_parser.add_argument("--verbose", action="store_true", default=False)
+    ingest_parser.add_argument(
+        "--raw-only",
+        action="store_true",
+        default=False,
+        help="Signal-only ingest (no analyze/receipt/forecasts)",
     )
     ingest_parser.add_argument(
         "--structured",
         action="store_true",
         default=True,
-        help="Structured fingerprint payload (default on)",
+        help="With --raw-only: structured fingerprint (default on)",
     )
-    ingest_parser.add_argument(
-        "--raw",
-        action="store_true",
-        default=False,
-        help="Legacy raw string-only shape",
-    )
+    ingest_parser.add_argument("--raw", action="store_true", default=False, help="Legacy raw string shape")
     ingest_parser.add_argument("--max-terms", type=int, default=8)
     ingest_parser.add_argument("--out", default="")
-    ingest_parser.set_defaults(func=cmd_ingest)
+    ingest_parser.set_defaults(func=cmd_ingest, command_label="ingest")
 
     analyze_parser = subparsers.add_parser(
         "analyze",
-        help="Run analysis (positional query ok; --route offline|live)",
+        help="Analysis only (no auto receipt). Prefer `pipeline` / `run` / `ingest` for full results.",
     )
     analyze_parser.add_argument("query_pos", nargs="?", default="", help="Query text (positional)")
     analyze_parser.add_argument("--query", default="", help="Query text (flag form)")
@@ -1988,28 +2102,10 @@ def _build_parser() -> argparse.ArgumentParser:
 
     run_parser = subparsers.add_parser(
         "run",
-        help="One-shot operator path: analyze + receipt + forecasts + score log",
+        help="AUTO backend (alias of pipeline): ingest → full results packet",
     )
-    run_parser.add_argument("query_pos", nargs="?", default="", help="Query text (positional)")
-    run_parser.add_argument("--query", default="", help="Query text (flag form)")
-    run_parser.add_argument("--source", default="mock")
-    run_parser.add_argument(
-        "--route",
-        default="offline",
-        help="Operator route (default offline for safe burn-in)",
-    )
-    run_parser.add_argument("--input", default="")
-    run_parser.add_argument("--validate", action="store_true", default=False)
-    run_parser.add_argument("--no-receipt", action="store_true", default=False)
-    run_parser.add_argument("--no-forecasts", action="store_true", default=False)
-    run_parser.add_argument("--no-append-log", action="store_true", default=False)
-    run_parser.add_argument("--log", default="")
-    run_parser.add_argument("--repo-log", action="store_true", default=False)
-    run_parser.add_argument("--receipt-dir", default="")
-    run_parser.add_argument("--ledger", default="")
-    run_parser.add_argument("--no-ledger", action="store_true", default=False)
-    run_parser.add_argument("--out", default="")
-    run_parser.set_defaults(func=cmd_run)
+    _add_pipeline_args(run_parser, default_route="offline")
+    run_parser.set_defaults(func=cmd_run, command_label="run")
 
     pending_parser = subparsers.add_parser(
         "pending",

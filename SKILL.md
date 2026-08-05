@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.3.9
+version: 0.4.0
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
@@ -110,8 +110,10 @@ HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
 
 $HLX commands                          # full simplified map (JSON)
 $HLX sources                           # sources + routes
-$HLX run "rizz" --route offline                 # one atom per run
-$HLX run "locked in" --route offline
+# AUTO backend — ingest → full results (receipt, forecasts, phase5 risk)
+$HLX pipeline "rizz" --route offline
+$HLX ingest "locked in"                # same as pipeline (use --raw-only for signal only)
+$HLX pipeline "sigma rizz locked in"   # expands to atoms automatically
 $HLX pending                           # open forecasts
 $HLX settle --forecast-id <id> --decision TRUE
 $HLX score-series --mean-shift --verify-chain
