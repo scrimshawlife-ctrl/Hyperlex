@@ -1,0 +1,47 @@
+{
+  "observed": "Real betting slang from glossary for 'sharp money revenge narrative hyperstition': ... Active community terms: chalk eaters, sharp money, vig, action.",
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: tactical/quant. Virality: 0.75.",
+  "speculative": "ACTUALIZING hyperstition risk. slang -> public pressure -> line movement -> confirmed.",
+  "provenance": {
+    "canonical_hash": "324222e0d2410c25",
+    "timestamp": "2026-08-05T06:02:00.510432+00:00",
+    "version": "1.5.0",
+    "brier": 0.89,
+    "hyperstition_risk": "ACTUALIZING",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "ingest_source": "real"
+  },
+  "analysis": {
+    "neologisms": [],
+    "semantic_variation": {
+      "sense": "tactical/quant",
+      "driver": "communicative_need + semantic_distinction",
+      "community": "sharp_money"
+    },
+    "virality": {
+      "hybrid_score": 0.75,
+      "velocity": 0.95,
+      "acceleration": 0.6
+    },
+    "memetics": {
+      "is_memetic": true,
+      "typology": "betting_tactical",
+      "score": 0.82
+    },
+    "hyperstition": {
+      "loop_stage": "ACTUALIZING",
+      "mechanism": "slang -> public pressure -> line movement -> confirmed"
+    }
+  },
+  "receipt": {
+    "path": "/home/scrimshawlife/.hyperlex/receipts/hyperlex_20260805T060200.json",
+    "integrity": "a1b2c3d4e5f6"
+  }
+}
