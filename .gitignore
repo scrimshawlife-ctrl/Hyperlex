@@ -30,6 +30,7 @@ receipts/
 !skills.sh.json
 !docs/archive/**/*.json
 !docs/archive/**/*.jsonl
+!data/backfill/**/*.json
 
 # Temp / build output
 tmp/

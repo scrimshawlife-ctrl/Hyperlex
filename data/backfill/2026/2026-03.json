@@ -1,0 +1,82 @@
+{
+  "schema": "hyperlex.backfill_pack.v1",
+  "year": 2026,
+  "month": 3,
+  "label": "2026-03",
+  "provenance_default": "INFERRED",
+  "notes": "March 2026 — NPC / main character duality; fanum tax residual; clanker hostility spikes in AI discourse.",
+  "terms": [
+    {
+      "term": "npc",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-03",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "cross_family_borrowing",
+      "notes": "non-player-character as social critique; gaming→status"
+    },
+    {
+      "term": "main character",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-03",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "self-as-protagonist framing"
+    },
+    {
+      "term": "main character energy",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-03",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "compound_phrase",
+      "notes": "status-radiation form of main character"
+    },
+    {
+      "term": "fanum tax",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-03",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "extra-grammatical",
+      "notes": "streamer in-joke for food theft; residual circulation"
+    },
+    {
+      "term": "ohio",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-03",
+      "prominence": "low",
+      "provenance": "INFERRED",
+      "branch_operator": "irony_inversion",
+      "notes": "absurdist chaos marker; declining but still present"
+    },
+    {
+      "term": "clanker",
+      "family_id": "ai-native",
+      "first_seen_month": "2026-03",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "anti-robot pejorative; base registry"
+    },
+    {
+      "term": "skill issue",
+      "family_id": "gaming-meta",
+      "first_seen_month": "2026-03",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "platform_compression",
+      "notes": "blame-the-player dismissal; also ai-native crossover"
+    },
+    {
+      "term": "touch grass",
+      "family_id": "gaming-meta",
+      "first_seen_month": "2026-03",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "go outside / offline; base registry"
+    }
+  ]
+}

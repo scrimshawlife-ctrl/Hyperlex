@@ -1,0 +1,91 @@
+{
+  "schema": "hyperlex.backfill_pack.v1",
+  "year": 2026,
+  "month": 2,
+  "label": "2026-02",
+  "provenance_default": "INFERRED",
+  "notes": "February 2026 — looksmax / mog cluster + mewing health-status crossover; AI glazing critique steady.",
+  "terms": [
+    {
+      "term": "mewing",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-02",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "jawline / looksmax ritual slang"
+    },
+    {
+      "term": "looksmaxxing",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-02",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "extra-grammatical",
+      "notes": "appearance optimization identity project"
+    },
+    {
+      "term": "mog",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-02",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "outshine / dominate on looks axis"
+    },
+    {
+      "term": "mogging",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-02",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "derivational",
+      "notes": "continuous aspect of mog"
+    },
+    {
+      "term": "ate",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-02",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "irony_inversion",
+      "notes": "performed excellently; often 'ate and left no crumbs'"
+    },
+    {
+      "term": "left no crumbs",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-02",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "compound_phrase",
+      "notes": "completeness intensifier after 'ate'"
+    },
+    {
+      "term": "glazing",
+      "family_id": "ai-native",
+      "first_seen_month": "2026-02",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "excessive praise; already in base registry"
+    },
+    {
+      "term": "it's giving",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-02",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "vibe attribution phrase"
+    },
+    {
+      "term": "act your wage",
+      "family_id": "workplace-corp",
+      "first_seen_month": "2026-02",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "labor-boundary slogan; base registry"
+    }
+  ]
+}

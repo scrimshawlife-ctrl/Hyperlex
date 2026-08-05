@@ -1,0 +1,82 @@
+{
+  "schema": "hyperlex.backfill_pack.v1",
+  "year": 2026,
+  "month": 4,
+  "label": "2026-04",
+  "provenance_default": "INFERRED",
+  "notes": "April 2026 — bussin/slay residual polish slang; agentic work discourse; quiet-quitting labor meme revival cycles.",
+  "terms": [
+    {
+      "term": "bussin",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-04",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "excellent (esp. food/vibe); mainstreamed"
+    },
+    {
+      "term": "slay",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-04",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "performative excellence praise"
+    },
+    {
+      "term": "sus",
+      "family_id": "gaming-meta",
+      "first_seen_month": "2026-04",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "suspicious; Among Us → general"
+    },
+    {
+      "term": "agentic",
+      "family_id": "ai-native",
+      "first_seen_month": "2026-04",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "AI agency framing; base registry"
+    },
+    {
+      "term": "slop",
+      "family_id": "ai-native",
+      "first_seen_month": "2026-04",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "low-quality AI content; base registry"
+    },
+    {
+      "term": "quiet quitting",
+      "family_id": "workplace-corp",
+      "first_seen_month": "2026-04",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "labor boundary; base registry"
+    },
+    {
+      "term": "rto",
+      "family_id": "workplace-corp",
+      "first_seen_month": "2026-04",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "platform_compression",
+      "notes": "return to office; base registry"
+    },
+    {
+      "term": "unc",
+      "family_id": "kinship-address",
+      "first_seen_month": "2026-04",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "uncle-as-address; generational tease + care"
+    }
+  ]
+}

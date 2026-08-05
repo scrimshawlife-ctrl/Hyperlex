@@ -1,0 +1,100 @@
+{
+  "schema": "hyperlex.backfill_pack.v1",
+  "year": 2026,
+  "month": 1,
+  "label": "2026-01",
+  "provenance_default": "INFERRED",
+  "notes": "January 2026 — carryover brainrot + rizz cluster still high-circulation; New Year locked-in / crash-out framing.",
+  "terms": [
+    {
+      "term": "rizz",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-01",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "charisma / social skill shorthand; TikTok Gen Alpha carryover"
+    },
+    {
+      "term": "skibidi",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-01",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "irony_inversion",
+      "notes": "content-degradation marker; meme-as-identity"
+    },
+    {
+      "term": "gyatt",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-01",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "exclamatory status/attraction token"
+    },
+    {
+      "term": "sigma",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-01",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "irony_inversion",
+      "notes": "lone-wolf status archetype; often ironic"
+    },
+    {
+      "term": "delulu",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-01",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "delusional optimism / fan-culture compression"
+    },
+    {
+      "term": "no cap",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-01",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "truth assertion; mainstreamed AAVE-derived"
+    },
+    {
+      "term": "locked in",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-01",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "hyperfocus / discipline status signal"
+    },
+    {
+      "term": "crash out",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-01",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "emotional rupture / public meltdown framing"
+    },
+    {
+      "term": "vibe coding",
+      "family_id": "ai-native",
+      "first_seen_month": "2026-01",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "cross_family_borrowing",
+      "notes": "LLM-assisted coding culture phrase"
+    },
+    {
+      "term": "context window",
+      "family_id": "ai-native",
+      "first_seen_month": "2026-01",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "already in base registry; pack for timeline"
+    }
+  ]
+}

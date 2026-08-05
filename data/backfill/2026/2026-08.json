@@ -1,0 +1,82 @@
+{
+  "schema": "hyperlex.backfill_pack.v1",
+  "year": 2026,
+  "month": 8,
+  "label": "2026-08",
+  "provenance_default": "INFERRED",
+  "notes": "August 2026 (current month cut) — consolidate YTD leaves; school-year brainrot refresh; agentic stack talk.",
+  "terms": [
+    {
+      "term": "aura",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-08",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "status radiation; base registry"
+    },
+    {
+      "term": "negative aura",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-08",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "compound_phrase",
+      "notes": "status-loss framing"
+    },
+    {
+      "term": "aura points",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-08",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "compound_phrase",
+      "notes": "quantized status radiation"
+    },
+    {
+      "term": "yap",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-08",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "talk too much; dismissive"
+    },
+    {
+      "term": "yapping",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-08",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "derivational",
+      "notes": "continuous yap"
+    },
+    {
+      "term": "chat is this real",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-08",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "compound_phrase",
+      "notes": "streamer→IRL disbelief frame"
+    },
+    {
+      "term": "token",
+      "family_id": "ai-native",
+      "first_seen_month": "2026-08",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "LLM unit / culture talk; base registry"
+    },
+    {
+      "term": "circle back",
+      "family_id": "workplace-corp",
+      "first_seen_month": "2026-08",
+      "prominence": "low",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "managerial cant; base registry"
+    }
+  ]
+}

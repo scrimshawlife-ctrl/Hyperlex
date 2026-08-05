@@ -1,0 +1,82 @@
+{
+  "schema": "hyperlex.backfill_pack.v1",
+  "year": 2026,
+  "month": 6,
+  "label": "2026-06",
+  "provenance_default": "INFERRED",
+  "notes": "June 2026 — summer locked-in discipline memes; ratio/diff gaming status; based political residual.",
+  "terms": [
+    {
+      "term": "cooked",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-06",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "ruined / in trouble; base registry"
+    },
+    {
+      "term": "let him cook",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-06",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "compound_phrase",
+      "notes": "let someone cook / perform; base registry"
+    },
+    {
+      "term": "mid",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-06",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "mediocre judgment; base registry"
+    },
+    {
+      "term": "ratio",
+      "family_id": "gaming-meta",
+      "first_seen_month": "2026-06",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "platform_compression",
+      "notes": "reply-outperform; base registry"
+    },
+    {
+      "term": "diff",
+      "family_id": "gaming-meta",
+      "first_seen_month": "2026-06",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "platform_compression",
+      "notes": "skill differential taunt; base registry"
+    },
+    {
+      "term": "based",
+      "family_id": "political-status",
+      "first_seen_month": "2026-06",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "tribal approval; base registry"
+    },
+    {
+      "term": "cope",
+      "family_id": "political-status",
+      "first_seen_month": "2026-06",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "cope framing; base registry"
+    },
+    {
+      "term": "twin",
+      "family_id": "kinship-address",
+      "first_seen_month": "2026-06",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "sense_extension",
+      "notes": "close-friend address; base registry"
+    }
+  ]
+}

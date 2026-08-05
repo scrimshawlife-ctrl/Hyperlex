@@ -1,0 +1,82 @@
+{
+  "schema": "hyperlex.backfill_pack.v1",
+  "year": 2026,
+  "month": 7,
+  "label": "2026-07",
+  "provenance_default": "INFERRED",
+  "notes": "July 2026 — midsummer crash-out discourse; vibe check residual; sharp-money sports language (stable).",
+  "terms": [
+    {
+      "term": "vibe check",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-07",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "compound_phrase",
+      "notes": "social calibration probe"
+    },
+    {
+      "term": "no thoughts just vibes",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-07",
+      "prominence": "low",
+      "provenance": "INFERRED",
+      "branch_operator": "compound_phrase",
+      "notes": "anti-analysis aesthetic"
+    },
+    {
+      "term": "hallucinate",
+      "family_id": "ai-native",
+      "first_seen_month": "2026-07",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "model confabulation; base registry"
+    },
+    {
+      "term": "steam",
+      "family_id": "betting-sharp",
+      "first_seen_month": "2026-07",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "coordinated sharp line pressure; base registry"
+    },
+    {
+      "term": "sharp",
+      "family_id": "betting-sharp",
+      "first_seen_month": "2026-07",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "professional bettor; base registry"
+    },
+    {
+      "term": "revenge",
+      "family_id": "betting-sharp",
+      "first_seen_month": "2026-07",
+      "prominence": "low",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "revenge bet framing; base registry"
+    },
+    {
+      "term": "smurf",
+      "family_id": "gaming-meta",
+      "first_seen_month": "2026-07",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "high-skill on low account; base registry"
+    },
+    {
+      "term": "bandwidth",
+      "family_id": "workplace-corp",
+      "first_seen_month": "2026-07",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "sense_extension",
+      "notes": "capacity metaphor; base registry"
+    }
+  ]
+}

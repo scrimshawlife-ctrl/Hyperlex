@@ -1,0 +1,82 @@
+{
+  "schema": "hyperlex.backfill_pack.v1",
+  "year": 2026,
+  "month": 5,
+  "label": "2026-05",
+  "provenance_default": "INFERRED",
+  "notes": "May 2026 — six seven / 67 meme wave; edging/gooning ironic overuse; crypto residual degen.",
+  "terms": [
+    {
+      "term": "six seven",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-05",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "absurdist numeric meme (67); school/TikTok wave"
+    },
+    {
+      "term": "67",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-05",
+      "prominence": "high",
+      "provenance": "INFERRED",
+      "branch_operator": "platform_compression",
+      "notes": "numeric form of six seven"
+    },
+    {
+      "term": "edging",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-05",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "irony_inversion",
+      "notes": "delay/withhold climax metaphor → general tease"
+    },
+    {
+      "term": "gooning",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-05",
+      "prominence": "medium",
+      "provenance": "INFERRED",
+      "branch_operator": "irony_inversion",
+      "notes": "obsessive trance state; meme overuse"
+    },
+    {
+      "term": "brainrot",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-05",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "irony_inversion",
+      "notes": "self-aware content degradation; base registry"
+    },
+    {
+      "term": "aura farming",
+      "family_id": "brainrot-aura",
+      "first_seen_month": "2026-05",
+      "prominence": "high",
+      "provenance": "OBSERVED",
+      "branch_operator": "compound_phrase",
+      "notes": "status radiation performance; base registry"
+    },
+    {
+      "term": "degen",
+      "family_id": "crypto-degen",
+      "first_seen_month": "2026-05",
+      "prominence": "medium",
+      "provenance": "OBSERVED",
+      "branch_operator": "cross_family_borrowing",
+      "notes": "risk-identity honorific; base registry"
+    },
+    {
+      "term": "ngmi",
+      "family_id": "crypto-degen",
+      "first_seen_month": "2026-05",
+      "prominence": "low",
+      "provenance": "OBSERVED",
+      "branch_operator": "platform_compression",
+      "notes": "not gonna make it; base registry"
+    }
+  ]
+}
