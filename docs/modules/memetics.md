@@ -13,6 +13,7 @@ All assignments are **INFERRED**.
 | `status_radiation` | aura, mid, cooked, based | brainrot-aura |
 | `irony_inversion` | brainrot, cope, seethe, redpill | political-status |
 | `kinship_address` | bro, sis, twin, unc, cuz | kinship-address |
+| `labor_identity` | quiet quitting, rto, bandwidth | workplace-corp |
 | `imitation_spread` | narrative, spread, organic velocity | (generic) |
 | `one_off` | no cues | — |
 

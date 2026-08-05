@@ -55,10 +55,10 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Golden receipt corpus (`examples/receipts/golden/`) + API v1 freeze
 - [x] Broader golden corpus + CI (kinship/political goldens; pytest+diagram in GHA)
 - [ ] Documentation site / MkDocs
-- [ ] Example notebooks and case studies
+- [x] Example case studies (`examples/case-studies/`, `scripts/run_case_study.py`)
 - [x] Public API v1 freeze (`docs/api-v1.md`, `hyperlex.API_V1`)
 - [ ] Optional LLM augmentation layer (governed)
-- [ ] Cross-domain expansion (beyond betting slang)
+- [x] Cross-domain lineages (gaming-meta, workplace-corp + goldens)
 
 ### Long-term (Phase 5+)
 - Cultural transmission simulation

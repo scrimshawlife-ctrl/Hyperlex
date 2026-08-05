@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.6 — Case study + cross-domain lineages (2026-08-05)
+
+- Case study: `examples/case-studies/e2e-mock-scan.md` + `scripts/run_case_study.py`.
+- New lineage families: `gaming-meta`, `workplace-corp` (registry, Mermaid, mock seeds, goldens).
+- Typology: `labor_identity`; gaming cues on `platform_agency`.
+
 ## 0.2.5 — Virality prediction v0, community drivers, richer neologisms (2026-08-05)
 
 - `predict_virality` → `analysis.virality.prediction` (SPECULATIVE; not Brier/calibration).

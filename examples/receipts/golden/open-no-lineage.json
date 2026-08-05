@@ -14,13 +14,38 @@
     },
     "neologisms": [],
     "semantic_variation": {
-      "community": "general_betting",
+      "community": "general",
       "driver": "communicative_need",
+      "drivers": [
+        "communicative_need"
+      ],
+      "lineage_family": null,
+      "provenance": "INFERRED",
       "sense": "general"
     },
     "virality": {
       "acceleration": 0.3,
       "hybrid_score": 0.443,
+      "prediction": {
+        "baseline_hybrid": 0.443,
+        "confidence": 0.35,
+        "delta_vs_baseline": -0.073,
+        "features_used": {
+          "acceleration": 0.3,
+          "hybrid_score": 0.443,
+          "hyperstition_stage": "EMERGENT",
+          "lineage_confidence": null,
+          "memetic_score": 0.31,
+          "n_neologisms": 0,
+          "velocity": 0.325
+        },
+        "horizon": "short",
+        "method": "feature_blend_v0",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+        "predicted_hybrid": 0.37,
+        "provenance": "SPECULATIVE"
+      },
+      "spread_cues": 0,
       "velocity": 0.325
     }
   },
@@ -36,7 +61,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:31:05.561681+00:00",
+      "fetched_at": "2026-08-05T17:37:07.436737+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -47,9 +72,9 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "0d9992cbd2cc7d777aab24594288ebb8cd95fd4ad86cb5bf71d00d73e356d5a7",
       "content_hash_short": "0d9992cbd2cc7d77",
-      "fetched_at": "2026-08-05T17:31:05.561681+00:00",
+      "fetched_at": "2026-08-05T17:37:07.436737+00:00",
       "fingerprint_id": "38b2dab69ec0446efe6acfc6",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "the weather is mild with clouds",
       "source": "mock",
       "source_locator": "hyperlex://mock"
@@ -78,21 +103,21 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "0d9992cbd2cc7d777aab24594288ebb8cd95fd4ad86cb5bf71d00d73e356d5a7",
       "content_hash_short": "0d9992cbd2cc7d77",
-      "fetched_at": "2026-08-05T17:31:05.561681+00:00",
+      "fetched_at": "2026-08-05T17:37:07.436737+00:00",
       "fingerprint_id": "38b2dab69ec0446efe6acfc6",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "the weather is mild with clouds",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:31:05.561860+00:00",
-    "version": "0.2.3"
+    "timestamp": "2026-08-05T17:37:07.437000+00:00",
+    "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "88c9634dbb5b",
+    "integrity": "48d6b080d68f",
     "path": "examples/receipts/golden/open-no-lineage.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
-  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.37 \u0394=-0.073. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
 }

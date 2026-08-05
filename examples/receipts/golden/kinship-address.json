@@ -59,17 +59,43 @@
     },
     "neologisms": [],
     "semantic_variation": {
-      "community": "general_betting",
-      "driver": "communicative_need",
-      "sense": "general"
+      "community": "fictive_kin",
+      "driver": "community_identity + communicative_need",
+      "drivers": [
+        "community_identity",
+        "communicative_need"
+      ],
+      "lineage_family": "kinship-address",
+      "provenance": "INFERRED",
+      "sense": "kinship-address"
     },
     "virality": {
       "acceleration": 0.3,
       "hybrid_score": 0.465,
+      "prediction": {
+        "baseline_hybrid": 0.465,
+        "confidence": 0.5,
+        "delta_vs_baseline": 0.054,
+        "features_used": {
+          "acceleration": 0.3,
+          "hybrid_score": 0.465,
+          "hyperstition_stage": "EMERGENT",
+          "lineage_confidence": 0.98,
+          "memetic_score": 0.93,
+          "n_neologisms": 0,
+          "velocity": 0.4
+        },
+        "horizon": "short",
+        "method": "feature_blend_v0",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+        "predicted_hybrid": 0.519,
+        "provenance": "SPECULATIVE"
+      },
+      "spread_cues": 0,
       "velocity": 0.4
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.465. Lineage: kinship-address (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: kinship-address. Virality: 0.465. Lineage: kinship-address (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -81,7 +107,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:31:05.560247+00:00",
+      "fetched_at": "2026-08-05T17:37:07.433229+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -92,9 +118,9 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "64f97a7017d34d5642b99bdbe3832e99cc6d0c1e69ae8b380c7f8a060e9e30d0",
       "content_hash_short": "64f97a7017d34d56",
-      "fetched_at": "2026-08-05T17:31:05.560247+00:00",
+      "fetched_at": "2026-08-05T17:37:07.433229+00:00",
       "fingerprint_id": "51f79ec232267538d20d1e40",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "bro sis twin unc cuz family",
       "source": "mock",
       "source_locator": "hyperlex://mock"
@@ -123,21 +149,21 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "64f97a7017d34d5642b99bdbe3832e99cc6d0c1e69ae8b380c7f8a060e9e30d0",
       "content_hash_short": "64f97a7017d34d56",
-      "fetched_at": "2026-08-05T17:31:05.560247+00:00",
+      "fetched_at": "2026-08-05T17:37:07.433229+00:00",
       "fingerprint_id": "51f79ec232267538d20d1e40",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "bro sis twin unc cuz family",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:31:05.560464+00:00",
-    "version": "0.2.3"
+    "timestamp": "2026-08-05T17:37:07.433482+00:00",
+    "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "5de16066cc0d",
+    "integrity": "885f482d77d8",
     "path": "examples/receipts/golden/kinship-address.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
-  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.519 \u0394=0.054. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
 }

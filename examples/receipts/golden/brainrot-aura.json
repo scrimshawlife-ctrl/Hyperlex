@@ -60,19 +60,58 @@
         "status_radiation": 1.1
       }
     },
-    "neologisms": [],
+    "neologisms": [
+      {
+        "confidence": 0.78,
+        "formation": "compound_phrase",
+        "provenance": "INFERRED",
+        "term": "aura farming"
+      },
+      {
+        "confidence": 0.7,
+        "formation": "derivational",
+        "provenance": "INFERRED",
+        "term": "brainrot"
+      }
+    ],
     "semantic_variation": {
-      "community": "general_betting",
-      "driver": "communicative_need",
-      "sense": "general"
+      "community": "status_publics",
+      "driver": "status_competition + community_identity",
+      "drivers": [
+        "status_competition",
+        "community_identity"
+      ],
+      "lineage_family": "brainrot-aura",
+      "provenance": "INFERRED",
+      "sense": "status/irony"
     },
     "virality": {
       "acceleration": 0.3,
       "hybrid_score": 0.472,
+      "prediction": {
+        "baseline_hybrid": 0.472,
+        "confidence": 0.6,
+        "delta_vs_baseline": 0.115,
+        "features_used": {
+          "acceleration": 0.3,
+          "hybrid_score": 0.472,
+          "hyperstition_stage": "EMERGENT",
+          "lineage_confidence": 0.98,
+          "memetic_score": 0.95,
+          "n_neologisms": 2,
+          "velocity": 0.425
+        },
+        "horizon": "short",
+        "method": "feature_blend_v0",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+        "predicted_hybrid": 0.587,
+        "provenance": "SPECULATIVE"
+      },
+      "spread_cues": 0,
       "velocity": 0.425
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.472. Lineage: brainrot-aura (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 2. Memetic: True. Variation: status/irony. Virality: 0.472. Lineage: brainrot-aura (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -84,7 +123,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
+      "fetched_at": "2026-08-05T17:37:07.431541+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -95,9 +134,9 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
       "content_hash_short": "391f6b43665c1b54",
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
+      "fetched_at": "2026-08-05T17:37:07.431541+00:00",
       "fingerprint_id": "85a42bb2a513b94785c6b791",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "brainrot aura farming mid cooked",
       "source": "mock",
       "source_locator": "hyperlex://mock"
@@ -117,7 +156,7 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "0d8a5dd6b68fbc16",
+    "canonical_hash": "0f7645f6e31ce679",
     "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
     "hyperstition_risk": "EMERGENT",
     "ingest_source": "mock",
@@ -126,21 +165,21 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
       "content_hash_short": "391f6b43665c1b54",
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
+      "fetched_at": "2026-08-05T17:37:07.431541+00:00",
       "fingerprint_id": "85a42bb2a513b94785c6b791",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "brainrot aura farming mid cooked",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:31:05.558961+00:00",
-    "version": "0.2.3"
+    "timestamp": "2026-08-05T17:37:07.431841+00:00",
+    "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "297201d68836",
+    "integrity": "e8e43b010371",
     "path": "examples/receipts/golden/brainrot-aura.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
-  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.587 \u0394=0.115. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
 }

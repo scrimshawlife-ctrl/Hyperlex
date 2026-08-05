@@ -7,32 +7,44 @@
     "lineage": {
       "branch_operator": "platform_compression",
       "confidence": 0.98,
-      "diagram_ref": "examples/slang-families/ai-native-family.mmd",
-      "family_id": "ai-native",
+      "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
+      "family_id": "gaming-meta",
       "matched_terms": [
-        "hallucinate",
-        "slop",
-        "clanker",
-        "agentic",
+        "nerf",
+        "buff",
+        "meta",
+        "sweaty",
+        "noob",
+        "gg",
+        "ez",
+        "ratio",
+        "touch grass",
         "skill issue",
-        "context window"
+        "diff",
+        "smurf"
       ],
-      "payload_note": "machine language as culture; quality judgment + hostility + agency framing",
+      "payload_note": "competitive balance + status in multiplayer; meta as living rule-set",
       "provenance": "INFERRED",
       "score_breakdown": {
-        "coverage": 0.75,
+        "coverage": 0.857,
         "density": 0.18,
         "hit_bonus": 0.38,
-        "n_hits": 6,
-        "raw": 1.137,
-        "specificity": 0.611,
+        "n_hits": 12,
+        "raw": 1.122,
+        "specificity": 0.508,
         "term_weights": {
-          "agentic": 0.535,
-          "clanker": 0.535,
-          "context window": 0.75,
-          "hallucinate": 0.635,
+          "buff": 0.46,
+          "diff": 0.46,
+          "ez": 0.41,
+          "gg": 0.41,
+          "meta": 0.46,
+          "nerf": 0.46,
+          "noob": 0.46,
+          "ratio": 0.485,
           "skill issue": 0.75,
-          "slop": 0.46
+          "smurf": 0.485,
+          "sweaty": 0.51,
+          "touch grass": 0.75
         }
       }
     },
@@ -41,13 +53,14 @@
       "provenance": "INFERRED",
       "rules_hit": {
         "platform_agency": [
-          "agentic",
-          "slop",
-          "hallucin",
-          "clanker",
-          "context window",
           "skill issue",
-          "lineage:ai-native"
+          "nerf",
+          "buff",
+          "meta",
+          "sweaty",
+          "smurf",
+          "diff",
+          "lineage:gaming-meta"
         ]
       },
       "score": 0.95,
@@ -63,53 +76,47 @@
         "formation": "compound_phrase",
         "provenance": "INFERRED",
         "term": "skill issue"
-      },
-      {
-        "confidence": 0.78,
-        "formation": "compound_phrase",
-        "provenance": "INFERRED",
-        "term": "context window"
       }
     ],
     "semantic_variation": {
-      "community": "ai_native",
-      "driver": "platform_compression + semantic_distinction + community_identity",
+      "community": "general",
+      "driver": "communicative_need + community_identity + platform_compression",
       "drivers": [
-        "platform_compression",
-        "semantic_distinction",
-        "community_identity"
+        "communicative_need",
+        "community_identity",
+        "platform_compression"
       ],
-      "lineage_family": "ai-native",
+      "lineage_family": "gaming-meta",
       "provenance": "INFERRED",
-      "sense": "machine-culture"
+      "sense": "general"
     },
     "virality": {
       "acceleration": 0.3,
-      "hybrid_score": 0.472,
+      "hybrid_score": 0.525,
       "prediction": {
-        "baseline_hybrid": 0.472,
-        "confidence": 0.6,
-        "delta_vs_baseline": 0.115,
+        "baseline_hybrid": 0.525,
+        "confidence": 0.55,
+        "delta_vs_baseline": 0.079,
         "features_used": {
           "acceleration": 0.3,
-          "hybrid_score": 0.472,
+          "hybrid_score": 0.525,
           "hyperstition_stage": "EMERGENT",
           "lineage_confidence": 0.98,
           "memetic_score": 0.95,
-          "n_neologisms": 2,
-          "velocity": 0.425
+          "n_neologisms": 1,
+          "velocity": 0.6
         },
         "horizon": "short",
         "method": "feature_blend_v0",
         "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
-        "predicted_hybrid": 0.587,
+        "predicted_hybrid": 0.604,
         "provenance": "SPECULATIVE"
       },
       "spread_cues": 0,
-      "velocity": 0.425
+      "velocity": 0.6
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 2. Memetic: True. Variation: machine-culture. Virality: 0.472. Lineage: ai-native (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 1. Memetic: True. Variation: general. Virality: 0.525. Lineage: gaming-meta (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -121,27 +128,27 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:37:07.432403+00:00",
+      "fetched_at": "2026-08-05T17:37:07.434944+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
     },
-    "query": "agentic slop skill issue hallucinate",
+    "query": "nerf buff meta sweaty smurf gg",
     "source": "mock",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "f5c4babeb4dfbf940bc15a6b11fe22b213bee58e047d63e1d4bd377205c8d5d3",
-      "content_hash_short": "f5c4babeb4dfbf94",
-      "fetched_at": "2026-08-05T17:37:07.432403+00:00",
-      "fingerprint_id": "13d8a337c417482296bfe2a9",
+      "content_hash": "32ca6a3fc6c2ec40b95934f8ce369814ea1c573d3777b1ad1c3cbf054b780cd9",
+      "content_hash_short": "32ca6a3fc6c2ec40",
+      "fetched_at": "2026-08-05T17:37:07.434944+00:00",
+      "fingerprint_id": "880f93c914b5e86d46ef4cfb",
       "package_version": "0.2.5",
-      "query": "agentic slop skill issue hallucinate",
+      "query": "nerf buff meta sweaty smurf gg",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     }
   },
   "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
-  "observed": "Mock memetic channel on \"agentic slop skill issue hallucinate\". agentic slop skill issue hallucinate clanker context window.",
+  "observed": "Mock memetic channel on \"nerf buff meta sweaty smurf gg\". nerf buff meta sweaty noob gg ez ratio touch grass skill issue diff smurf.",
   "provenance": {
     "adapter_version": "ingest-v1.7",
     "arxiv_concepts_applied": [
@@ -154,30 +161,30 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "a280a512dcd93fa2",
-    "content_hash": "f5c4babeb4dfbf940bc15a6b11fe22b213bee58e047d63e1d4bd377205c8d5d3",
+    "canonical_hash": "caf8c0692757fe62",
+    "content_hash": "32ca6a3fc6c2ec40b95934f8ce369814ea1c573d3777b1ad1c3cbf054b780cd9",
     "hyperstition_risk": "EMERGENT",
     "ingest_source": "mock",
     "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "f5c4babeb4dfbf940bc15a6b11fe22b213bee58e047d63e1d4bd377205c8d5d3",
-      "content_hash_short": "f5c4babeb4dfbf94",
-      "fetched_at": "2026-08-05T17:37:07.432403+00:00",
-      "fingerprint_id": "13d8a337c417482296bfe2a9",
+      "content_hash": "32ca6a3fc6c2ec40b95934f8ce369814ea1c573d3777b1ad1c3cbf054b780cd9",
+      "content_hash_short": "32ca6a3fc6c2ec40",
+      "fetched_at": "2026-08-05T17:37:07.434944+00:00",
+      "fingerprint_id": "880f93c914b5e86d46ef4cfb",
       "package_version": "0.2.5",
-      "query": "agentic slop skill issue hallucinate",
+      "query": "nerf buff meta sweaty smurf gg",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:37:07.432681+00:00",
+    "timestamp": "2026-08-05T17:37:07.435227+00:00",
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "88573ce1608b",
-    "path": "examples/receipts/golden/ai-native.json"
+    "integrity": "74d35f2b5769",
+    "path": "examples/receipts/golden/gaming-meta.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
-  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.587 \u0394=0.115. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.604 \u0394=0.079. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
 }

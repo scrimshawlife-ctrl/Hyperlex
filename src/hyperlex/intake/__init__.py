@@ -428,6 +428,17 @@ def ingest_signal(query: str, source: str = "mock") -> str:
                 f'Mock memetic channel on "{q}". '
                 "bro sis twin unc cuz family."
             )
+        elif any(k in ql for k in ("nerf", "buff", "meta", "sweaty", "noob", "gg", "gaming", "smurf")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "nerf buff meta sweaty noob gg ez ratio touch grass skill issue diff smurf."
+            )
+        elif any(k in ql for k in ("quiet quitting", "rto", "layoff", "bandwidth", "workplace", "corp", "act your wage")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "quiet quitting quiet firing rto return to office layoffs pip synergy "
+                "circle back bandwidth low-hanging fruit act your wage."
+            )
         return base
     elif source in ("real", "glossary", "web"):
         return _fetch_glossary_primary(query)

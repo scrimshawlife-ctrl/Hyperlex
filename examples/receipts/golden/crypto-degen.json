@@ -60,19 +60,58 @@
         "risk_identity": 1.15
       }
     },
-    "neologisms": [],
+    "neologisms": [
+      {
+        "confidence": 0.78,
+        "formation": "compound_phrase",
+        "provenance": "INFERRED",
+        "term": "diamond hands"
+      },
+      {
+        "confidence": 0.78,
+        "formation": "compound_phrase",
+        "provenance": "INFERRED",
+        "term": "organic velocity"
+      }
+    ],
     "semantic_variation": {
-      "community": "general_betting",
-      "driver": "communicative_need",
-      "sense": "general"
+      "community": "crypto_degen",
+      "driver": "community_identity + risk_signaling",
+      "drivers": [
+        "community_identity",
+        "risk_signaling"
+      ],
+      "lineage_family": "crypto-degen",
+      "provenance": "INFERRED",
+      "sense": "risk/conviction"
     },
     "virality": {
-      "acceleration": 0.6,
-      "hybrid_score": 0.607,
+      "acceleration": 0.68,
+      "hybrid_score": 0.639,
+      "prediction": {
+        "baseline_hybrid": 0.639,
+        "confidence": 0.6,
+        "delta_vs_baseline": 0.105,
+        "features_used": {
+          "acceleration": 0.68,
+          "hybrid_score": 0.639,
+          "hyperstition_stage": "EMERGENT",
+          "lineage_confidence": 0.98,
+          "memetic_score": 0.95,
+          "n_neologisms": 2,
+          "velocity": 0.475
+        },
+        "horizon": "short",
+        "method": "feature_blend_v0",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+        "predicted_hybrid": 0.744,
+        "provenance": "SPECULATIVE"
+      },
+      "spread_cues": 1,
       "velocity": 0.475
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.607. Lineage: crypto-degen (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 2. Memetic: True. Variation: risk/conviction. Virality: 0.639. Lineage: crypto-degen (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -84,7 +123,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:31:05.557135+00:00",
+      "fetched_at": "2026-08-05T17:37:07.430648+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -95,9 +134,9 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "fec422a8cb3950834da9db745bb6ae8242d2cf0d92fc0efc8ead526d291b320f",
       "content_hash_short": "fec422a8cb395083",
-      "fetched_at": "2026-08-05T17:31:05.557135+00:00",
+      "fetched_at": "2026-08-05T17:37:07.430648+00:00",
       "fingerprint_id": "bef36c861c4134fe423fadca",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "hodl diamond hands rekt degen moon",
       "source": "mock",
       "source_locator": "hyperlex://mock"
@@ -117,7 +156,7 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "6fae05ca1eeb1f69",
+    "canonical_hash": "a3d184572e0e78cd",
     "content_hash": "fec422a8cb3950834da9db745bb6ae8242d2cf0d92fc0efc8ead526d291b320f",
     "hyperstition_risk": "EMERGENT",
     "ingest_source": "mock",
@@ -126,21 +165,21 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "fec422a8cb3950834da9db745bb6ae8242d2cf0d92fc0efc8ead526d291b320f",
       "content_hash_short": "fec422a8cb395083",
-      "fetched_at": "2026-08-05T17:31:05.557135+00:00",
+      "fetched_at": "2026-08-05T17:37:07.430648+00:00",
       "fingerprint_id": "bef36c861c4134fe423fadca",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "hodl diamond hands rekt degen moon",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:31:05.557380+00:00",
-    "version": "0.2.3"
+    "timestamp": "2026-08-05T17:37:07.430952+00:00",
+    "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "701f86ddeab6",
+    "integrity": "138a57d9b7d1",
     "path": "examples/receipts/golden/crypto-degen.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
-  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.744 \u0394=0.105. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
 }

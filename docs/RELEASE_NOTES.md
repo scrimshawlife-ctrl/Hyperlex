@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.6
+- Case study runner; gaming-meta + workplace-corp lineages.
+
 ## 0.2.5
 - Virality prediction v0; community drivers; richer neologism rules.
 

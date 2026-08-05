@@ -63,6 +63,27 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
         "diagram_ref": "examples/slang-families/political-status-family.mmd",
         "payload_note": "tribal signaling + emotional routing; high mutation rate",
     },
+    {
+        "family_id": "gaming-meta",
+        "terms": [
+            "nerf", "buff", "meta", "sweaty", "noob", "gg", "ez", "ratio",
+            "touch grass", "skill issue", "diff", "int", "feed", "smurf",
+        ],
+        "branch_operator": "platform_compression",
+        "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
+        "payload_note": "competitive balance + status in multiplayer; meta as living rule-set",
+    },
+    {
+        "family_id": "workplace-corp",
+        "terms": [
+            "quiet quitting", "quiet firing", "rto", "return to office", "layoffs",
+            "pip", "synergy", "circle back", "bandwidth", "low-hanging fruit",
+            "act your wage",
+        ],
+        "branch_operator": "sense_extension",
+        "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",
+        "payload_note": "labor identity under corporate speech; resistance + managerial cant",
+    },
 ]
 
 LINEAGE_CONFIDENCE_THRESHOLD = 0.42
@@ -397,9 +418,21 @@ TYPOLOGY_RULES: List[Dict[str, Any]] = [
     },
     {
         "id": "platform_agency",
-        "cues": ["agentic", "slop", "hallucin", "clanker", "context window", "skill issue", "token", "glazing"],
+        "cues": [
+            "agentic", "slop", "hallucin", "clanker", "context window", "skill issue",
+            "token", "glazing", "nerf", "buff", "meta", "sweaty", "smurf", "diff",
+        ],
         "weight": 1.0,
-        "note": "machine language as culture / quality + agency framing",
+        "note": "machine language as culture / quality + agency framing / game-meta",
+    },
+    {
+        "id": "labor_identity",
+        "cues": [
+            "quiet quitting", "quiet firing", "rto", "return to office", "layoffs",
+            "bandwidth", "circle back", "act your wage", "synergy", "pip",
+        ],
+        "weight": 0.95,
+        "note": "workplace / corporate speech + labor resistance",
     },
     {
         "id": "status_radiation",
@@ -435,6 +468,8 @@ LINEAGE_TYPOLOGY = {
     "brainrot-aura": "status_radiation",
     "kinship-address": "kinship_address",
     "political-status": "irony_inversion",
+    "gaming-meta": "platform_agency",
+    "workplace-corp": "status_radiation",
 }
 
 

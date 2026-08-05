@@ -46,7 +46,7 @@ wire capabilities ship as Hyperlex modules under `hyperlex.compat.abraxas` (no A
 - [x] Golden receipt corpus (`examples/receipts/golden/`)
 - [ ] Expanded golden corpus + CI coverage
 - [ ] Documentation site / MkDocs
-- [ ] Example notebooks and case studies
+- [x] Example case studies (`examples/case-studies/`, `scripts/run_case_study.py`)
 - [ ] Optional governed LLM layer
 - [ ] Cross-domain expansion
 

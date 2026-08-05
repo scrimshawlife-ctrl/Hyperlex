@@ -1,0 +1,186 @@
+{
+  "analysis": {
+    "hyperstition": {
+      "loop_stage": "EMERGENT",
+      "mechanism": "narrative circulating but no market confirmation yet"
+    },
+    "lineage": {
+      "branch_operator": "sense_extension",
+      "confidence": 0.98,
+      "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",
+      "family_id": "workplace-corp",
+      "matched_terms": [
+        "quiet quitting",
+        "quiet firing",
+        "rto",
+        "return to office",
+        "layoffs",
+        "pip",
+        "synergy",
+        "circle back",
+        "bandwidth",
+        "low-hanging fruit",
+        "act your wage"
+      ],
+      "payload_note": "labor identity under corporate speech; resistance + managerial cant",
+      "provenance": "INFERRED",
+      "score_breakdown": {
+        "coverage": 1.0,
+        "density": 0.18,
+        "hit_bonus": 0.38,
+        "n_hits": 11,
+        "raw": 1.203,
+        "specificity": 0.639,
+        "term_weights": {
+          "act your wage": 0.75,
+          "bandwidth": 0.585,
+          "circle back": 0.75,
+          "layoffs": 0.535,
+          "low-hanging fruit": 0.75,
+          "pip": 0.435,
+          "quiet firing": 0.75,
+          "quiet quitting": 0.75,
+          "return to office": 0.75,
+          "rto": 0.435,
+          "synergy": 0.535
+        }
+      }
+    },
+    "memetics": {
+      "is_memetic": true,
+      "provenance": "INFERRED",
+      "rules_hit": {
+        "labor_identity": [
+          "quiet quitting",
+          "quiet firing",
+          "rto",
+          "return to office",
+          "layoffs",
+          "bandwidth",
+          "circle back",
+          "act your wage",
+          "synergy",
+          "pip"
+        ],
+        "status_radiation": [
+          "lineage:workplace-corp"
+        ]
+      },
+      "score": 0.88,
+      "typology": "labor_identity",
+      "typology_primary": "labor_identity",
+      "typology_scores": {
+        "labor_identity": 0.95,
+        "status_radiation": 0.15
+      }
+    },
+    "neologisms": [],
+    "semantic_variation": {
+      "community": "general",
+      "driver": "communicative_need + community_identity",
+      "drivers": [
+        "communicative_need",
+        "community_identity"
+      ],
+      "lineage_family": "workplace-corp",
+      "provenance": "INFERRED",
+      "sense": "general"
+    },
+    "virality": {
+      "acceleration": 0.3,
+      "hybrid_score": 0.57,
+      "prediction": {
+        "baseline_hybrid": 0.57,
+        "confidence": 0.5,
+        "delta_vs_baseline": 0.041,
+        "features_used": {
+          "acceleration": 0.3,
+          "hybrid_score": 0.57,
+          "hyperstition_stage": "EMERGENT",
+          "lineage_confidence": 0.98,
+          "memetic_score": 0.88,
+          "n_neologisms": 0,
+          "velocity": 0.75
+        },
+        "horizon": "short",
+        "method": "feature_blend_v0",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+        "predicted_hybrid": 0.611,
+        "provenance": "SPECULATIVE"
+      },
+      "spread_cues": 0,
+      "velocity": 0.75
+    }
+  },
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.57. Lineage: workplace-corp (conf=0.98).",
+  "ingest": {
+    "extracted_terms": [],
+    "metadata": {
+      "adapter": {},
+      "cache": {
+        "cache_dir": "/home/scrimshawlife/.hyperlex/cache",
+        "disk_entries": 0,
+        "memory_entries": 0,
+        "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
+      },
+      "cached": false,
+      "fetched_at": "2026-08-05T17:37:07.435851+00:00",
+      "live": false,
+      "source_locator": "hyperlex://mock",
+      "source_type": "synthetic_stub"
+    },
+    "query": "quiet quitting rto bandwidth act your wage",
+    "source": "mock",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "238014158d48e1c222dfd42ed7a00257beabf729d266507662fe341ee0439530",
+      "content_hash_short": "238014158d48e1c2",
+      "fetched_at": "2026-08-05T17:37:07.435851+00:00",
+      "fingerprint_id": "f81cdbba1c56ab451c213ec7",
+      "package_version": "0.2.5",
+      "query": "quiet quitting rto bandwidth act your wage",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    }
+  },
+  "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
+  "observed": "Mock memetic channel on \"quiet quitting rto bandwidth act your wage\". quiet quitting quiet firing rto return to office layoffs pip synergy circle back bandwidth low-hanging fruit act your wage.",
+  "provenance": {
+    "adapter_version": "ingest-v1.7",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "brier": null,
+    "brier_note": "brier_requires_settlement",
+    "canonical_hash": "95f752b07504ad94",
+    "content_hash": "238014158d48e1c222dfd42ed7a00257beabf729d266507662fe341ee0439530",
+    "hyperstition_risk": "EMERGENT",
+    "ingest_source": "mock",
+    "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "238014158d48e1c222dfd42ed7a00257beabf729d266507662fe341ee0439530",
+      "content_hash_short": "238014158d48e1c2",
+      "fetched_at": "2026-08-05T17:37:07.435851+00:00",
+      "fingerprint_id": "f81cdbba1c56ab451c213ec7",
+      "package_version": "0.2.5",
+      "query": "quiet quitting rto bandwidth act your wage",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    },
+    "source_locator": "hyperlex://mock",
+    "timestamp": "2026-08-05T17:37:07.436160+00:00",
+    "version": "0.2.5"
+  },
+  "receipt": {
+    "integrity": "0fcc0f79803d",
+    "path": "examples/receipts/golden/workplace-corp.json"
+  },
+  "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.611 \u0394=0.041. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+}

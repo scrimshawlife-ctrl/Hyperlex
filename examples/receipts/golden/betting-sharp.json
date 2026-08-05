@@ -64,19 +64,59 @@
         "tactical_edge": 1.15
       }
     },
-    "neologisms": [],
+    "neologisms": [
+      {
+        "confidence": 0.78,
+        "formation": "compound_phrase",
+        "provenance": "INFERRED",
+        "term": "organic velocity"
+      },
+      {
+        "confidence": 0.78,
+        "formation": "compound_phrase",
+        "provenance": "INFERRED",
+        "term": "low block"
+      }
+    ],
     "semantic_variation": {
-      "community": "general_betting",
-      "driver": "communicative_need",
-      "sense": "general"
+      "community": "sharp_money",
+      "driver": "communicative_need + semantic_distinction + community_identity",
+      "drivers": [
+        "communicative_need",
+        "semantic_distinction",
+        "community_identity"
+      ],
+      "lineage_family": "betting-sharp",
+      "provenance": "INFERRED",
+      "sense": "tactical/quant"
     },
     "virality": {
-      "acceleration": 0.6,
-      "hybrid_score": 0.63,
+      "acceleration": 0.84,
+      "hybrid_score": 0.726,
+      "prediction": {
+        "baseline_hybrid": 0.726,
+        "confidence": 0.7,
+        "delta_vs_baseline": 0.18,
+        "features_used": {
+          "acceleration": 0.84,
+          "hybrid_score": 0.726,
+          "hyperstition_stage": "ACTUALIZING",
+          "lineage_confidence": 0.98,
+          "memetic_score": 0.95,
+          "n_neologisms": 2,
+          "velocity": 0.55
+        },
+        "horizon": "short",
+        "method": "feature_blend_v0",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+        "predicted_hybrid": 0.906,
+        "provenance": "SPECULATIVE"
+      },
+      "spread_cues": 3,
       "velocity": 0.55
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.63. Lineage: betting-sharp (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 2. Memetic: True. Variation: tactical/quant. Virality: 0.726. Lineage: betting-sharp (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -88,7 +128,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:31:05.554903+00:00",
+      "fetched_at": "2026-08-05T17:37:07.428612+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -99,9 +139,9 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "7748069b2e43674f4f92c96d99a9e23da108b18766700248f658078918c119e2",
       "content_hash_short": "7748069b2e43674f",
-      "fetched_at": "2026-08-05T17:31:05.554903+00:00",
+      "fetched_at": "2026-08-05T17:37:07.428612+00:00",
       "fingerprint_id": "401279ec3ee29601041b0f0f",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "sharp steam square revenge wiseguy hammer",
       "source": "mock",
       "source_locator": "hyperlex://mock"
@@ -121,7 +161,7 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "025e65f28b9fdceb",
+    "canonical_hash": "7236c978f1d97656",
     "content_hash": "7748069b2e43674f4f92c96d99a9e23da108b18766700248f658078918c119e2",
     "hyperstition_risk": "ACTUALIZING",
     "ingest_source": "mock",
@@ -130,21 +170,21 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "7748069b2e43674f4f92c96d99a9e23da108b18766700248f658078918c119e2",
       "content_hash_short": "7748069b2e43674f",
-      "fetched_at": "2026-08-05T17:31:05.554903+00:00",
+      "fetched_at": "2026-08-05T17:37:07.428612+00:00",
       "fingerprint_id": "401279ec3ee29601041b0f0f",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "sharp steam square revenge wiseguy hammer",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:31:05.556477+00:00",
-    "version": "0.2.3"
+    "timestamp": "2026-08-05T17:37:07.429935+00:00",
+    "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "018674222eb8",
+    "integrity": "13740d87af49",
     "path": "examples/receipts/golden/betting-sharp.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
-  "speculative": "ACTUALIZING hyperstition risk. slang -> public pressure -> line movement -> confirmed. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+  "speculative": "ACTUALIZING hyperstition risk. slang -> public pressure -> line movement -> confirmed. Virality prediction (SPECULATIVE): 0.906 \u0394=0.18. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
 }

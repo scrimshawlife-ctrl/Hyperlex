@@ -20,6 +20,8 @@ These diagrams are intended for:
 | `brainrot-aura-family.mmd` | Content-degradation + status-signaling lineage (mid / cooked / aura / brainrot) |
 | `ai-native-family.mmd` | Hallucinate → slop → clanker / agentic cluster |
 | `political-status-family.mmd` | Based / redpilled / cope tribal-judgment lineage |
+| `gaming-meta-family.mmd` | Nerf / buff / meta / sweaty multiplayer status |
+| `workplace-corp-family.mmd` | Quiet quitting / RTO / bandwidth corporate labor speech |
 | `sharp-family-timeline.mmd` | Chronological drift view of the betting-sharp family |
 | `emergence-process.mmd` | Abstract process by which Hyperlex detects and archives new branches |
 

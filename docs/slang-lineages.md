@@ -173,3 +173,7 @@ HTML renderers: `render-betting-sharp.html`, `render-ai-native.html`, `render-em
 - arXiv papers listed in `references/arxiv_papers.md` (semantic variation, cultural transmission, memetics, hyperstition)
 - Hyperlex DESIGN principles (especially Real Over Synthetic, Provenance, ArXiv-Grounded, Lineage as First-Class Structure)
 - Domain primary sources: BitcoinTalk archives, WallStreetBets, early gaming forums, Action Network glossary, Urban Dictionary attestations, Simon Willison / mainstream coverage of “slop” (2024)
+
+## Registry families (matcher seed)
+
+betting-sharp · crypto-degen · ai-native · brainrot-aura · kinship-address · political-status · **gaming-meta** · **workplace-corp**

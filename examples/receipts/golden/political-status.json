@@ -60,19 +60,58 @@
         "status_radiation": 0.522
       }
     },
-    "neologisms": [],
+    "neologisms": [
+      {
+        "confidence": 0.7,
+        "formation": "derivational",
+        "provenance": "INFERRED",
+        "term": "redpilled"
+      },
+      {
+        "confidence": 0.7,
+        "formation": "derivational",
+        "provenance": "INFERRED",
+        "term": "blackpilled"
+      }
+    ],
     "semantic_variation": {
-      "community": "general_betting",
-      "driver": "communicative_need",
-      "sense": "general"
+      "community": "status_publics",
+      "driver": "status_competition + community_identity",
+      "drivers": [
+        "status_competition",
+        "community_identity"
+      ],
+      "lineage_family": "political-status",
+      "provenance": "INFERRED",
+      "sense": "status/irony"
     },
     "virality": {
       "acceleration": 0.3,
       "hybrid_score": 0.457,
+      "prediction": {
+        "baseline_hybrid": 0.457,
+        "confidence": 0.6,
+        "delta_vs_baseline": 0.116,
+        "features_used": {
+          "acceleration": 0.3,
+          "hybrid_score": 0.457,
+          "hyperstition_stage": "EMERGENT",
+          "lineage_confidence": 0.98,
+          "memetic_score": 0.95,
+          "n_neologisms": 2,
+          "velocity": 0.375
+        },
+        "horizon": "short",
+        "method": "feature_blend_v0",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+        "predicted_hybrid": 0.573,
+        "provenance": "SPECULATIVE"
+      },
+      "spread_cues": 0,
       "velocity": 0.375
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.457. Lineage: political-status (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 2. Memetic: True. Variation: status/irony. Virality: 0.457. Lineage: political-status (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -84,7 +123,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:31:05.560925+00:00",
+      "fetched_at": "2026-08-05T17:37:07.434109+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -95,9 +134,9 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "d45f7bcd7e4f3f63fb26d38e3e3abe3254a8e023a9e2c397f0f32c968dcfe2f9",
       "content_hash_short": "d45f7bcd7e4f3f63",
-      "fetched_at": "2026-08-05T17:31:05.560925+00:00",
+      "fetched_at": "2026-08-05T17:37:07.434109+00:00",
       "fingerprint_id": "28a2dafa3ab986b9d02c9fe4",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "based redpilled cope seethe dilate",
       "source": "mock",
       "source_locator": "hyperlex://mock"
@@ -117,7 +156,7 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "9bec7d9304da556f",
+    "canonical_hash": "452512b43da3c365",
     "content_hash": "d45f7bcd7e4f3f63fb26d38e3e3abe3254a8e023a9e2c397f0f32c968dcfe2f9",
     "hyperstition_risk": "EMERGENT",
     "ingest_source": "mock",
@@ -126,21 +165,21 @@
       "adapter_version": "ingest-v1.7",
       "content_hash": "d45f7bcd7e4f3f63fb26d38e3e3abe3254a8e023a9e2c397f0f32c968dcfe2f9",
       "content_hash_short": "d45f7bcd7e4f3f63",
-      "fetched_at": "2026-08-05T17:31:05.560925+00:00",
+      "fetched_at": "2026-08-05T17:37:07.434109+00:00",
       "fingerprint_id": "28a2dafa3ab986b9d02c9fe4",
-      "package_version": "0.2.3",
+      "package_version": "0.2.5",
       "query": "based redpilled cope seethe dilate",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:31:05.561166+00:00",
-    "version": "0.2.3"
+    "timestamp": "2026-08-05T17:37:07.434375+00:00",
+    "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "ba290573b781",
+    "integrity": "2a4fcf971e08",
     "path": "examples/receipts/golden/political-status.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
-  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.573 \u0394=0.116. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
 }
