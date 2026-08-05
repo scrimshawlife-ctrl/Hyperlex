@@ -58,15 +58,22 @@ GitHub Pages deploys from `.github/workflows/docs.yml` on `main`
 Public URL (after Pages is enabled):  
 https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
 
-## Long-term analysis archive
+## Static run history (GitHub Pages)
 
-Sanitized ingest summaries can live on Pages for historical review:
+Pages hosts a **publish-safe static history of runs** — not live operator state.
 
 ```bash
-python3 scripts/hyperlex.py archive-export --include-golden --out-dir docs/archive/latest
+# Append analysis snapshot → docs/archive/runs/<id>/ + latest/ + catalog
+python3 scripts/hyperlex.py archive-export --include-golden --history
+
+# Phase 5 scenario into history
+python3 scripts/hyperlex.py simulate --term rizz --out /tmp/p5.json
+python3 scripts/hyperlex.py archive-export --phase5 /tmp/p5.json --history
 ```
 
-See [archive/latest](archive/latest/index.md). Primary store remains `~/.hyperlex/`.
+Browse: [Run history catalog](archive/index.md) · [latest](archive/latest/index.md)  
+URL: https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/archive/  
+Primary store remains `~/.hyperlex/`.
 
 ## Skill health
 

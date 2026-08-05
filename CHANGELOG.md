@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 — Pages as static history of runs (2026-08-05)
+
+- `export_run_history` writes dated snapshots under `docs/archive/runs/<id>/`
+- Auto-refresh `docs/archive/latest/` + `catalog.json` + history `index.md`
+- CLI: `archive-export --history`, `--phase5`, `archive-catalog`
+- Phase 5 scenarios can be appended as publish-safe digests (not full agent dumps)
+- Docs/MkDocs: Run history catalog nav; Pages role clarified (static, not live store)
+
 ## 0.3.0 — Phase 5.0 research simulation track (2026-08-05)
 
 - **Phase 5.0** package `hyperlex.simulation`:

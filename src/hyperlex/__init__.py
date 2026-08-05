@@ -76,7 +76,11 @@ from .diagrams import (
     diagram_from_receipt_files,
     write_diagram_bundle,
 )
-from .archive import export_analysis_archive
+from .archive import (
+    export_analysis_archive,
+    export_run_history,
+    rebuild_archive_catalog,
+)
 from .connectors import (
     build_market_signal,
     build_forecast_pipeline,
@@ -126,6 +130,8 @@ API_EXTENDED = (
     "write_diagram_bundle",
     "predict_virality",
     "export_analysis_archive",
+    "export_run_history",
+    "rebuild_archive_catalog",
     "apply_backfill",
     "inventory_backfill",
     "list_backfill_packs",
@@ -167,6 +173,8 @@ __all__ = [
     "write_diagram_bundle",
     "diagrams",
     "export_analysis_archive",
+    "export_run_history",
+    "rebuild_archive_catalog",
     "apply_backfill",
     "inventory_backfill",
     "list_backfill_packs",

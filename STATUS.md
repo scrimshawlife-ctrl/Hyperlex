@@ -1,9 +1,9 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.0  
+**Version:** 0.3.1  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
-**Track:** Phases 0–4 complete · **Phase 5.0 research simulation** active
+**Track:** Phases 0–4 complete · Phase 5.0 · **Pages = static run history**
 
 ## Health
 
@@ -30,7 +30,8 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | Diagrams from history | Ready |
 | Case study runner | Ready |
 | MkDocs + Pages (enabled) | Ready |
-| Long-term analysis archive | Ready |
+| Pages static run history | Ready (`docs/archive/runs/` + catalog) |
+| Long-term analysis archive | Ready (`latest/` + dated runs) |
 | Governed LLM (echo / openai_compatible) | Opt-in |
 | **Phase 5 cultural transmission** | Ready |
 | **Phase 5 multi-agent memetics** | Ready |
@@ -48,6 +49,7 @@ analyze --receipt --forecasts --append-log
   → score-series / feedback
   → lineage-backfill --list / lineage-backprop --from-golden
   → simulate --from-analyze --domain markets|ai|politics   # Phase 5
+  → archive-export --history   # append sanitized run to Pages history
 ```
 
 ## Data dirs

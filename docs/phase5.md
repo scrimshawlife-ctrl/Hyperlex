@@ -42,3 +42,14 @@ intake → analysis (lineage, virality, hyperstition stage)
 ```
 
 Phase 5 outputs stay under **SPECULATIVE**. Open analysis still has `provenance.brier = null`.
+
+## Pages history
+
+Sanitized Phase 5 digests can be appended to the static run history:
+
+```bash
+python3 scripts/hyperlex.py simulate --term rizz --out /tmp/p5.json
+python3 scripts/hyperlex.py archive-export --phase5 /tmp/p5.json --history --snapshot-id "phase5-$(date -u +%Y%m%dT%H%M%SZ)"
+```
+
+See [Run history catalog](archive/index.md).

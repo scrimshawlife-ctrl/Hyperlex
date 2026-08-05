@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.3.0
+version: 0.3.1
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
@@ -130,6 +130,8 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" lineage-backfill --list --throug
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" lineage-backprop --from-golden --out out/backprop/report.json
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scenario --domain ai
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --from-analyze --term "sharp steam revenge" --domain markets
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" archive-export --include-golden --history
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" archive-catalog
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" --source mock --receipt --forecasts
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
 ```

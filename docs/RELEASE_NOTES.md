@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.3.1
+- GitHub Pages = static history of runs (`docs/archive/runs/` + catalog).
+
 ## 0.3.0
 - Phase 5.0: cultural transmission, multi-agent memetics, hyperstition risk, phylogeny scaffold, CLI `simulate`.
 

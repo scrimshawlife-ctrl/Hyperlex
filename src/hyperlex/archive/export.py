@@ -1,14 +1,27 @@
-"""Export sanitized long-term analysis archive from receipts + ledger."""
+"""Export sanitized long-term analysis archive from receipts + ledger.
+
+GitHub Pages hosts this as a **static history of runs**:
+  docs/archive/runs/<snapshot_id>/   — immutable dated snapshots
+  docs/archive/latest/               — copy of the most recent analysis export
+  docs/archive/index.md + catalog.json — browsable history catalog
+"""
 
 from __future__ import annotations
 
 import json
+import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
-from ..receipt.ledger import default_ledger_path, list_receipts, verify_ledger_chain
+from ..receipt.ledger import default_ledger_path, list_receipts
 from ..receipt.stats import ledger_stats
+
+ARCHIVE_SCHEMA = "hyperlex.analysis_archive.v1"
+CATALOG_SCHEMA = "hyperlex.archive_catalog.v1"
+RUN_KIND_ANALYSIS = "analysis"
+RUN_KIND_PHASE5 = "phase5_scenario"
+RUN_KIND_SCAN = "scan"
 
 
 def sanitize_receipt_summary(
@@ -59,6 +72,32 @@ def sanitize_receipt_summary(
     }
 
 
+def sanitize_phase5_summary(scenario: Dict[str, Any]) -> Dict[str, Any]:
+    """Publish-safe Phase 5 scenario digest (no full agent lists / long trajectories)."""
+    risk = scenario.get("hyperstition_risk") or {}
+    tsum = (scenario.get("transmission") or {}).get("summary") or {}
+    asum = (scenario.get("multi_agent") or {}).get("summary") or {}
+    phylo = scenario.get("phylogeny") or {}
+    return {
+        "schema": "hyperlex.phase5_run_summary.v1",
+        "seed_term": scenario.get("seed_term"),
+        "lineage_family": scenario.get("lineage_family"),
+        "domain": scenario.get("domain"),
+        "created_at": scenario.get("created_at"),
+        "risk_score": risk.get("risk_score"),
+        "risk_tier": risk.get("tier"),
+        "transmission_peak": tsum.get("peak_mean_adoption"),
+        "transmission_reach": tsum.get("final_reach_fraction"),
+        "agent_adoption_rate": asum.get("final_adoption_rate"),
+        "cascade_success": asum.get("cascade_success"),
+        "phylogeny_family": phylo.get("family_id") if phylo.get("ok") else None,
+        "phylogeny_n_nodes": phylo.get("n_nodes"),
+        "provenance": "SPECULATIVE",
+        "brier": None,
+        "publish_safe": True,
+    }
+
+
 def _load_receipt_files(paths: Sequence[Path]) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     for p in paths:
@@ -73,61 +112,26 @@ def _load_receipt_files(paths: Sequence[Path]) -> List[Dict[str, Any]]:
     return out
 
 
-def export_analysis_archive(
+def _write_analysis_bundle(
+    out: Path,
     *,
-    out_dir: Path | str,
-    ledger_path: Optional[Path | str] = None,
-    receipt_dirs: Optional[Sequence[Path | str]] = None,
-    receipt_files: Optional[Sequence[Path | str]] = None,
-    include_ledger_index: bool = True,
-    snapshot_id: Optional[str] = None,
+    snap: str,
+    summaries: List[Dict[str, Any]],
+    ledger_rows: List[Dict[str, Any]],
+    stats: Dict[str, Any],
+    run_kind: str = RUN_KIND_ANALYSIS,
+    notes: str = "",
 ) -> Dict[str, Any]:
-    """
-    Write a long-term analysis archive bundle.
-
-    Structure:
-      out_dir/
-        index.json          — snapshot metadata + stats
-        ledger_index.jsonl  — sanitized ledger rows (optional)
-        receipts/*.json     — per-receipt sanitized summaries
-        README.md           — human index for MkDocs / browsing
-    """
-    out = Path(out_dir)
     receipts_out = out / "receipts"
     receipts_out.mkdir(parents=True, exist_ok=True)
 
-    snap = snapshot_id or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    ledger = Path(ledger_path) if ledger_path else default_ledger_path()
+    # clear old receipts when refreshing a directory
+    for old in receipts_out.glob("*.json"):
+        try:
+            old.unlink()
+        except OSError:
+            pass
 
-    # Collect full receipts from dirs/files
-    files: List[Path] = []
-    for d in receipt_dirs or []:
-        dp = Path(d)
-        if dp.is_dir():
-            files.extend(sorted(dp.glob("*.json")))
-    for f in receipt_files or []:
-        files.append(Path(f))
-
-    full_receipts = _load_receipt_files(files)
-    summaries = [sanitize_receipt_summary(r) for r in full_receipts]
-
-    # Also pull ledger index (may cover more than on-disk files in out_dir)
-    ledger_rows = []
-    if include_ledger_index and ledger.exists():
-        for row in list_receipts(ledger, limit=0 if False else 10**9):
-            ledger_rows.append({
-                "integrity": row.get("integrity"),
-                "canonical_hash": row.get("canonical_hash"),
-                "timestamp": row.get("timestamp") or row.get("logged_at"),
-                "lineage_family": row.get("lineage_family"),
-                "lineage_confidence": row.get("lineage_confidence"),
-                "hyperstition_risk": row.get("hyperstition_risk"),
-                "ingest_source": row.get("ingest_source"),
-                "receipt_path": row.get("receipt_path"),
-                "observed_preview": (row.get("observed_preview") or "")[:240],
-            })
-
-    # Write per-receipt summaries
     written_receipts: List[str] = []
     for i, s in enumerate(summaries):
         integ = s.get("integrity") or f"anon_{i}"
@@ -139,28 +143,22 @@ def export_analysis_archive(
         written_receipts.append(f"receipts/{name}")
 
     if ledger_rows:
-        ledger_path_out = out / "ledger_index.jsonl"
-        with ledger_path_out.open("w", encoding="utf-8") as fh:
+        with (out / "ledger_index.jsonl").open("w", encoding="utf-8") as fh:
             for row in ledger_rows:
                 fh.write(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n")
 
-    stats = ledger_stats(ledger) if ledger.exists() else {
-        "n_entries": 0,
-        "families": {},
-        "chain_ok": None,
-        "note": "no local ledger",
-    }
-
     index = {
-        "schema": "hyperlex.analysis_archive.v1",
+        "schema": ARCHIVE_SCHEMA,
+        "run_kind": run_kind,
         "snapshot_id": snap,
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "purpose": "long_term_ingest_analysis",
+        "purpose": "static_run_history",
         "primary_store": "local ~/.hyperlex (not replaced by this archive)",
         "publish_safe": True,
         "n_receipt_summaries": len(summaries),
         "n_ledger_rows": len(ledger_rows),
         "receipt_files": written_receipts,
+        "notes": notes or None,
         "stats": {
             "n_entries": stats.get("n_entries"),
             "n_with_lineage": stats.get("n_with_lineage"),
@@ -174,19 +172,20 @@ def export_analysis_archive(
     }
     (out / "index.json").write_text(json.dumps(index, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
-    # Markdown for MkDocs / GitHub browsing
     fam_lines = "\n".join(
         f"| {k} | {v} |" for k, v in (stats.get("families") or {}).items()
     ) or "| — | 0 |"
-    md = f"""# Analysis archive — `{snap}`
+    md = f"""# Run snapshot — `{snap}`
 
-Sanitized export for **long-term ingest analysis**.  
-Primary durable store remains local (`~/.hyperlex/`). This bundle is publish-safe
-for the docs site / git history.
+**Kind:** `{run_kind}` · **Publish-safe static history** for GitHub Pages.
+
+Primary durable store remains local (`~/.hyperlex/`). This bundle is sanitized
+for the docs site / git history — not a replacement for the operator ledger.
 
 | Field | Value |
 |-------|-------|
 | Snapshot | `{snap}` |
+| Kind | `{run_kind}` |
 | Receipt summaries | {len(summaries)} |
 | Ledger rows | {len(ledger_rows)} |
 | Chain OK | {stats.get("chain_ok")} |
@@ -200,30 +199,379 @@ for the docs site / git history.
 ## Machine index
 
 - [`index.json`](./index.json) — full snapshot metadata + summaries
-- [`ledger_index.jsonl`](./ledger_index.jsonl) — append-friendly ledger extract (if present)
-- [`receipts/`](./receipts/) — per-receipt sanitized JSON
+- [`ledger_index.jsonl`](./ledger_index.jsonl) — ledger extract (if present)
+- `receipts/` — per-receipt sanitized JSON (JSON files; browse via index)
 
 ## Epistemic notes
 
 - Lineage matches are **INFERRED**
 - Virality predictions are **SPECULATIVE**
 - Open receipts keep `brier: null` (Brier requires settlement)
+- This Pages snapshot is a **static history of runs**, not live state
 
-Regenerate:
+Regenerate / append history:
 
 ```bash
-python3 scripts/hyperlex.py archive-export --out-dir docs/archive/latest
+python3 scripts/hyperlex.py archive-export --include-golden --history
 ```
+
+Back to [run history catalog](../../index.md).
 """
     (out / "README.md").write_text(md, encoding="utf-8")
-    # MkDocs prefers index.md for directories
     (out / "index.md").write_text(md, encoding="utf-8")
+    return index
+
+
+def export_analysis_archive(
+    *,
+    out_dir: Path | str,
+    ledger_path: Optional[Path | str] = None,
+    receipt_dirs: Optional[Sequence[Path | str]] = None,
+    receipt_files: Optional[Sequence[Path | str]] = None,
+    include_ledger_index: bool = True,
+    snapshot_id: Optional[str] = None,
+    notes: str = "",
+) -> Dict[str, Any]:
+    """
+    Write a long-term analysis archive bundle to ``out_dir``.
+
+    For dated history + catalog, prefer ``export_run_history`` or pass
+    ``history_root`` via the CLI ``--history`` flag.
+    """
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    snap = snapshot_id or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    ledger = Path(ledger_path) if ledger_path else default_ledger_path()
+
+    files: List[Path] = []
+    for d in receipt_dirs or []:
+        dp = Path(d)
+        if dp.is_dir():
+            files.extend(sorted(dp.glob("*.json")))
+    for f in receipt_files or []:
+        files.append(Path(f))
+
+    full_receipts = _load_receipt_files(files)
+    summaries = [sanitize_receipt_summary(r) for r in full_receipts]
+
+    ledger_rows: List[Dict[str, Any]] = []
+    if include_ledger_index and ledger.exists():
+        for row in list_receipts(ledger, limit=10**9):
+            ledger_rows.append({
+                "integrity": row.get("integrity"),
+                "canonical_hash": row.get("canonical_hash"),
+                "timestamp": row.get("timestamp") or row.get("logged_at"),
+                "lineage_family": row.get("lineage_family"),
+                "lineage_confidence": row.get("lineage_confidence"),
+                "hyperstition_risk": row.get("hyperstition_risk"),
+                "ingest_source": row.get("ingest_source"),
+                "receipt_path": row.get("receipt_path"),
+                "observed_preview": (row.get("observed_preview") or "")[:240],
+            })
+
+    stats = ledger_stats(ledger) if ledger.exists() else {
+        "n_entries": 0,
+        "families": {},
+        "chain_ok": None,
+        "note": "no local ledger",
+    }
+
+    _write_analysis_bundle(
+        out,
+        snap=snap,
+        summaries=summaries,
+        ledger_rows=ledger_rows,
+        stats=stats,
+        notes=notes,
+    )
 
     return {
         "ok": True,
         "snapshot_id": snap,
+        "run_kind": RUN_KIND_ANALYSIS,
         "out_dir": str(out),
         "n_receipt_summaries": len(summaries),
         "n_ledger_rows": len(ledger_rows),
         "index": str(out / "index.json"),
     }
+
+
+def default_archive_root(repo_root: Optional[Path | str] = None) -> Path:
+    if repo_root is not None:
+        return Path(repo_root) / "docs" / "archive"
+    # package → parents[3] may be repo when editable
+    here = Path(__file__).resolve()
+    candidates = [
+        here.parents[3] / "docs" / "archive",
+        Path.cwd() / "docs" / "archive",
+    ]
+    for c in candidates:
+        if c.parent.is_dir():
+            return c
+    return candidates[-1]
+
+
+def rebuild_archive_catalog(
+    archive_root: Path | str,
+    *,
+    site_base: str = "https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/archive/",
+) -> Dict[str, Any]:
+    """
+    Scan ``runs/`` (+ ``latest``) and write catalog.json + index.md for Pages.
+    """
+    root = Path(archive_root)
+    root.mkdir(parents=True, exist_ok=True)
+    runs_dir = root / "runs"
+    runs_dir.mkdir(parents=True, exist_ok=True)
+
+    entries: List[Dict[str, Any]] = []
+    for d in sorted(runs_dir.iterdir(), reverse=True):
+        if not d.is_dir():
+            continue
+        idx_path = d / "index.json"
+        if not idx_path.is_file():
+            continue
+        try:
+            idx = json.loads(idx_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        snap = idx.get("snapshot_id") or d.name
+        kind = idx.get("run_kind") or RUN_KIND_ANALYSIS
+        entries.append({
+            "snapshot_id": snap,
+            "run_kind": kind,
+            "created_at": idx.get("created_at"),
+            "n_receipt_summaries": idx.get("n_receipt_summaries"),
+            "n_ledger_rows": idx.get("n_ledger_rows"),
+            "families": (idx.get("stats") or {}).get("families") or {},
+            "path": f"runs/{d.name}/",
+            "site_path": f"runs/{d.name}/",
+            "risk_tier": idx.get("risk_tier") or (idx.get("phase5") or {}).get("risk_tier"),
+            "seed_term": idx.get("seed_term") or (idx.get("phase5") or {}).get("seed_term"),
+            "notes": idx.get("notes"),
+        })
+
+    # also record latest pointer
+    latest_idx = root / "latest" / "index.json"
+    latest_snap = None
+    if latest_idx.is_file():
+        try:
+            latest_snap = json.loads(latest_idx.read_text(encoding="utf-8")).get("snapshot_id")
+        except (OSError, json.JSONDecodeError):
+            latest_snap = None
+
+    catalog = {
+        "schema": CATALOG_SCHEMA,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "purpose": "static_history_of_runs",
+        "primary_store": "local ~/.hyperlex",
+        "publish_safe": True,
+        "site_base": site_base,
+        "n_runs": len(entries),
+        "latest_snapshot_id": latest_snap,
+        "runs": entries,
+    }
+    (root / "catalog.json").write_text(
+        json.dumps(catalog, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+    rows = []
+    for e in entries:
+        fam = e.get("families") or {}
+        top_fam = ", ".join(f"{k}:{v}" for k, v in list(fam.items())[:4]) or "—"
+        extra = ""
+        if e.get("risk_tier"):
+            extra = f" · risk `{e['risk_tier']}`"
+        if e.get("seed_term"):
+            extra += f" · term `{e['seed_term']}`"
+        # MkDocs prefers file links ending in index.md
+        link = f"./runs/{Path(e['path']).name}/index.md"
+        rows.append(
+            f"| [`{e['snapshot_id']}`]({link}) | `{e['run_kind']}` | "
+            f"{e.get('n_receipt_summaries') or '—'} | {top_fam}{extra} |"
+        )
+    table = "\n".join(rows) if rows else "| — | — | — | — |"
+
+    md = f"""# Run history (static · GitHub Pages)
+
+This directory is the **publish-safe static history of Hyperlex runs** hosted on
+[GitHub Pages]({site_base}).
+
+| | |
+|--|--|
+| Primary store | Local `~/.hyperlex/` (receipts, ledger, score log) |
+| Pages role | Sanitized snapshots for long-term browsing / git history |
+| Latest | [latest analysis](./latest/index.md){f" (`{latest_snap}`)" if latest_snap else ""} |
+| Machine catalog | [`catalog.json`](./catalog.json) |
+| Runs on record | **{len(entries)}** |
+
+## All snapshots
+
+| Snapshot | Kind | Receipts | Notes |
+|----------|------|--------:|-------|
+{table}
+
+## What is published
+
+- Sanitized receipt summaries (preview text only)
+- Lineage family + confidence, typology, virality metrics, hyperstition stage
+- Optional Phase 5 scenario digests (risk tier, transmission peak — SPECULATIVE)
+- Ledger index extracts (no secrets)
+
+## What is **not** published
+
+- Full raw network payloads / API keys
+- Operator score log settlements (keep local unless you deliberately export)
+- Anything that would invent Brier without settlement
+
+## Append a run
+
+```bash
+# Analysis snapshot → runs/<id>/ + latest/ + catalog
+python3 scripts/hyperlex.py archive-export --include-golden --history
+
+# From operator home
+python3 scripts/hyperlex.py archive-export --include-home-receipts --history \\
+  --snapshot-id "scan-$(date -u +%Y%m%dT%H%M%SZ)"
+
+# Phase 5 scenario into history
+python3 scripts/hyperlex.py simulate --term rizz --out /tmp/p5.json
+python3 scripts/hyperlex.py archive-export --phase5 /tmp/p5.json --history
+
+# Rebuild catalog only
+python3 scripts/hyperlex.py archive-catalog
+```
+
+Commit + push `docs/archive/` to refresh Pages (`.github/workflows/docs.yml`).
+"""
+    (root / "index.md").write_text(md, encoding="utf-8")
+    (root / "README.md").write_text(md, encoding="utf-8")
+    return catalog
+
+
+def _copy_tree(src: Path, dest: Path) -> None:
+    if dest.exists():
+        shutil.rmtree(dest)
+    shutil.copytree(src, dest)
+
+
+def export_run_history(
+    *,
+    archive_root: Path | str,
+    ledger_path: Optional[Path | str] = None,
+    receipt_dirs: Optional[Sequence[Path | str]] = None,
+    receipt_files: Optional[Sequence[Path | str]] = None,
+    include_ledger_index: bool = True,
+    snapshot_id: Optional[str] = None,
+    update_latest: bool = True,
+    notes: str = "",
+    phase5_scenario: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """
+    Write a dated run under ``archive_root/runs/<snapshot_id>/``, refresh catalog,
+    and optionally mirror to ``latest/`` (analysis runs only).
+    """
+    root = Path(archive_root)
+    snap = snapshot_id or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    # filesystem-safe
+    safe = "".join(c if c.isalnum() or c in "-_." else "-" for c in snap)
+    run_dir = root / "runs" / safe
+
+    if phase5_scenario is not None:
+        run_dir.mkdir(parents=True, exist_ok=True)
+        summary = sanitize_phase5_summary(phase5_scenario)
+        # keep compact scenario without full agent table
+        compact = {
+            "schema": phase5_scenario.get("schema") or "hyperlex.phase5_scenario.v1",
+            "seed_term": phase5_scenario.get("seed_term"),
+            "lineage_family": phase5_scenario.get("lineage_family"),
+            "domain": phase5_scenario.get("domain"),
+            "created_at": phase5_scenario.get("created_at"),
+            "brier": None,
+            "provenance": "SPECULATIVE",
+            "hyperstition_risk": phase5_scenario.get("hyperstition_risk"),
+            "transmission_summary": (phase5_scenario.get("transmission") or {}).get("summary"),
+            "multi_agent_summary": (phase5_scenario.get("multi_agent") or {}).get("summary"),
+            "phylogeny": {
+                "family_id": (phase5_scenario.get("phylogeny") or {}).get("family_id"),
+                "n_nodes": (phase5_scenario.get("phylogeny") or {}).get("n_nodes"),
+                "ok": (phase5_scenario.get("phylogeny") or {}).get("ok"),
+            }
+            if phase5_scenario.get("phylogeny")
+            else None,
+        }
+        (run_dir / "phase5.json").write_text(
+            json.dumps(compact, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        index = {
+            "schema": ARCHIVE_SCHEMA,
+            "run_kind": RUN_KIND_PHASE5,
+            "snapshot_id": snap,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "purpose": "static_run_history",
+            "publish_safe": True,
+            "primary_store": "local ~/.hyperlex (not replaced by this archive)",
+            "n_receipt_summaries": 0,
+            "n_ledger_rows": 0,
+            "seed_term": summary.get("seed_term"),
+            "risk_tier": summary.get("risk_tier"),
+            "phase5": summary,
+            "notes": notes or None,
+            "stats": {"families": {}, "chain_ok": None},
+        }
+        (run_dir / "index.json").write_text(
+            json.dumps(index, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        md = f"""# Phase 5 run — `{snap}`
+
+**Kind:** `phase5_scenario` · SPECULATIVE research snapshot for Pages.
+
+| Field | Value |
+|-------|-------|
+| Seed term | `{summary.get("seed_term")}` |
+| Domain | `{summary.get("domain")}` |
+| Family | `{summary.get("lineage_family")}` |
+| Risk tier | `{summary.get("risk_tier")}` |
+| Risk score | `{summary.get("risk_score")}` |
+| Transmission peak | `{summary.get("transmission_peak")}` |
+| Agent adoption | `{summary.get("agent_adoption_rate")}` |
+| Brier | `null` (never invented) |
+
+- [`index.json`](./index.json)
+- [`phase5.json`](./phase5.json) — compact scenario
+
+[← Run history](../../index.md)
+"""
+        (run_dir / "index.md").write_text(md, encoding="utf-8")
+        (run_dir / "README.md").write_text(md, encoding="utf-8")
+        catalog = rebuild_archive_catalog(root)
+        return {
+            "ok": True,
+            "snapshot_id": snap,
+            "run_kind": RUN_KIND_PHASE5,
+            "out_dir": str(run_dir),
+            "catalog_runs": catalog.get("n_runs"),
+            "latest_updated": False,
+            "index": str(run_dir / "index.json"),
+        }
+
+    # analysis path
+    result = export_analysis_archive(
+        out_dir=run_dir,
+        ledger_path=ledger_path,
+        receipt_dirs=receipt_dirs,
+        receipt_files=receipt_files,
+        include_ledger_index=include_ledger_index,
+        snapshot_id=snap,
+        notes=notes,
+    )
+    latest_updated = False
+    if update_latest:
+        _copy_tree(run_dir, root / "latest")
+        latest_updated = True
+    catalog = rebuild_archive_catalog(root)
+    result["catalog_runs"] = catalog.get("n_runs")
+    result["latest_updated"] = latest_updated
+    result["history_path"] = str(run_dir)
+    result["catalog"] = str(root / "catalog.json")
+    return result

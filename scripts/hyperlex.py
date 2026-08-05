@@ -743,15 +743,14 @@ def cmd_list_receipts(args: argparse.Namespace) -> int:
 
 
 def cmd_archive_export(args: argparse.Namespace) -> int:
-    """Export sanitized long-term analysis archive (for docs/Pages)."""
+    """Export sanitized long-term analysis archive (for docs/Pages static run history)."""
     pkg, err = _import_hyperlex()
     if pkg is None:
         _emit({"ok": False, "error": f"import failure: {err}"})
         return 2
 
-    from hyperlex.archive import export_analysis_archive
+    from hyperlex.archive import export_analysis_archive, export_run_history
 
-    out_dir = Path(args.out_dir) if args.out_dir else (ROOT / "docs" / "archive" / "latest")
     receipt_dirs: List[str] = []
     if args.receipt_dir:
         receipt_dirs.append(args.receipt_dir)
@@ -761,14 +760,61 @@ def cmd_archive_export(args: argparse.Namespace) -> int:
         receipt_dirs.append(str(ROOT / "examples" / "receipts" / "golden"))
 
     ledger = Path(args.ledger) if args.ledger else None
-    result = export_analysis_archive(
-        out_dir=out_dir,
-        ledger_path=ledger,
-        receipt_dirs=receipt_dirs,
-        include_ledger_index=not args.no_ledger_index,
-        snapshot_id=args.snapshot_id or None,
-    )
+    phase5 = None
+    if args.phase5:
+        raw = json.loads(Path(args.phase5).read_text(encoding="utf-8"))
+        # allow full CLI simulate wrapper or raw scenario
+        if isinstance(raw, dict) and "scenario" in raw and isinstance(raw["scenario"], dict):
+            phase5 = raw["scenario"]
+        else:
+            phase5 = raw
+
+    use_history = bool(args.history) or bool(args.phase5) or not args.out_dir
+    if use_history and not args.no_history:
+        archive_root = Path(args.archive_root) if args.archive_root else (ROOT / "docs" / "archive")
+        result = export_run_history(
+            archive_root=archive_root,
+            ledger_path=ledger,
+            receipt_dirs=receipt_dirs or None,
+            include_ledger_index=not args.no_ledger_index,
+            snapshot_id=args.snapshot_id or None,
+            update_latest=not bool(args.no_latest) and phase5 is None,
+            notes=args.notes or "",
+            phase5_scenario=phase5,
+        )
+    else:
+        out_dir = Path(args.out_dir) if args.out_dir else (ROOT / "docs" / "archive" / "latest")
+        result = export_analysis_archive(
+            out_dir=out_dir,
+            ledger_path=ledger,
+            receipt_dirs=receipt_dirs or None,
+            include_ledger_index=not args.no_ledger_index,
+            snapshot_id=args.snapshot_id or None,
+            notes=args.notes or "",
+        )
     _emit({"ok": True, "command": "archive-export", **result})
+    return 0
+
+
+def cmd_archive_catalog(args: argparse.Namespace) -> int:
+    """Rebuild docs/archive catalog index for Pages run history."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.archive import rebuild_archive_catalog
+
+    root = Path(args.archive_root) if args.archive_root else (ROOT / "docs" / "archive")
+    catalog = rebuild_archive_catalog(root)
+    _emit({
+        "ok": True,
+        "command": "archive-catalog",
+        "n_runs": catalog.get("n_runs"),
+        "latest_snapshot_id": catalog.get("latest_snapshot_id"),
+        "catalog": str(root / "catalog.json"),
+        "index": str(root / "index.md"),
+    })
     return 0
 
 
@@ -1471,16 +1517,29 @@ def _build_parser() -> argparse.ArgumentParser:
 
     ar_parser = subparsers.add_parser(
         "archive-export",
-        help="Export sanitized analysis archive for long-term review / GitHub Pages",
+        help="Export sanitized run snapshot for Pages static history (docs/archive/runs/)",
     )
-    ar_parser.add_argument("--out-dir", default="", help="Default: docs/archive/latest")
+    ar_parser.add_argument("--out-dir", default="", help="Single-dir export (disables history unless --history)")
+    ar_parser.add_argument("--archive-root", default="", help="Default: docs/archive")
+    ar_parser.add_argument("--history", action="store_true", default=False, help="Write runs/<id>/ + catalog (+ latest)")
+    ar_parser.add_argument("--no-history", action="store_true", default=False, help="Force single out-dir only")
+    ar_parser.add_argument("--no-latest", action="store_true", default=False, help="Do not refresh latest/")
     ar_parser.add_argument("--ledger", default="")
     ar_parser.add_argument("--receipt-dir", default="", help="Directory of full receipt JSON files")
     ar_parser.add_argument("--include-home-receipts", action="store_true", default=False)
     ar_parser.add_argument("--include-golden", action="store_true", default=False)
     ar_parser.add_argument("--no-ledger-index", action="store_true", default=False)
     ar_parser.add_argument("--snapshot-id", default="")
+    ar_parser.add_argument("--notes", default="", help="Free-text note stored on snapshot")
+    ar_parser.add_argument("--phase5", default="", help="Path to phase5 scenario JSON to archive")
     ar_parser.set_defaults(func=cmd_archive_export)
+
+    ac_parser = subparsers.add_parser(
+        "archive-catalog",
+        help="Rebuild docs/archive catalog + index for Pages run history",
+    )
+    ac_parser.add_argument("--archive-root", default="")
+    ac_parser.set_defaults(func=cmd_archive_catalog)
 
     lbf = subparsers.add_parser(
         "lineage-backfill",
