@@ -17,7 +17,7 @@
 | **Pages** | Static history of runs (not live operator DB) |
 | **PyPI** | Not planned (local / Hermes install only) |
 
-**Docs site:** https://scrimshawlife-ctrl.github.io/Hyperlex/  
+**Docs site:** https://scrimshawlife-ctrl.github.io/Hyperlex/ · splash home · [telemetry desk](https://scrimshawlife-ctrl.github.io/Hyperlex/telemetry/)  
 **Status snapshot:** [STATUS.md](./STATUS.md)
 
 ---

@@ -208,7 +208,7 @@
   margin-bottom: 1.25rem;
 }
 
-/* Grok Imagine hero */
+/* Grok Imagine hero (telemetry / smaller embeds) */
 .hlx-hero {
   margin: 0 0 1.5rem;
   max-width: 22rem;
@@ -236,6 +236,121 @@
 
 .hlx-hero figcaption a {
   color: var(--hlx-accent);
+}
+
+/* ── Splash home ───────────────────────────────────────── */
+.md-content:has(.hlx-splash) .md-content__inner > h1:first-child {
+  display: none;
+}
+
+.hlx-splash {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem 3rem;
+  min-height: calc(100vh - 8rem);
+  padding: 1.5rem 0 2.5rem;
+  box-sizing: border-box;
+}
+
+.hlx-splash-hero {
+  margin: 0;
+  flex: 0 1 18rem;
+  max-width: min(20rem, 88vw);
+}
+
+.hlx-splash-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--hlx-rule);
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 1px rgba(45, 212, 191, 0.08),
+    0 1rem 2.5rem rgba(0, 0, 0, 0.45);
+}
+
+.hlx-splash-copy {
+  flex: 1 1 16rem;
+  max-width: 28rem;
+  text-align: left;
+}
+
+.hlx-splash-brand {
+  margin: 0 0 0.35rem;
+  font-family: var(--hlx-font-display);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  color: var(--hlx-ink);
+}
+
+.hlx-splash-tag {
+  margin: 0 0 1rem;
+  font-family: var(--hlx-font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hlx-accent);
+}
+
+.hlx-splash-sub {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--hlx-ink-muted);
+}
+
+.hlx-splash-line {
+  margin: 0 0 1.5rem;
+  font-size: 0.85rem;
+  color: var(--hlx-ink-muted);
+  font-family: var(--hlx-font-mono);
+  line-height: 1.5;
+}
+
+.hlx-splash-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.hlx-splash-cta .md-button {
+  margin: 0;
+}
+
+.hlx-splash-credit {
+  margin: 0;
+  font-size: 0.7rem;
+  font-family: var(--hlx-font-mono);
+  color: var(--hlx-ink-muted);
+}
+
+.hlx-splash-credit a {
+  color: var(--hlx-accent);
+}
+
+@media screen and (max-width: 44.984375em) {
+  .hlx-splash {
+    flex-direction: column;
+    min-height: auto;
+    padding-top: 0.5rem;
+    text-align: center;
+  }
+
+  .hlx-splash-copy {
+    text-align: center;
+  }
+
+  .hlx-splash-cta {
+    justify-content: center;
+  }
+
+  .hlx-splash-hero {
+    max-width: min(16rem, 70vw);
+  }
 }
 
 .hlx-posture {

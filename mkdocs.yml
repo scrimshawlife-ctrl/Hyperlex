@@ -1,13 +1,13 @@
 site_name: Hyperlex
 site_description: Hermes skill for memetic emergence analysis (Python package repo)
-site_url: https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
-repo_url: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
-repo_name: Hyperlex-Hermes-Specs
+site_url: https://scrimshawlife-ctrl.github.io/Hyperlex/
+repo_url: https://github.com/scrimshawlife-ctrl/Hyperlex
+repo_name: Hyperlex
 edit_uri: edit/main/docs/
 
 theme:
   name: material
-  # Tall Imagine poster is page hero only (not a 24px chrome logo)
+  # Tall Imagine poster is splash hero only (not a 24px chrome logo)
   font:
     text: IBM Plex Sans
     code: IBM Plex Mono
@@ -50,7 +50,8 @@ markdown_extensions:
       permalink: true
 
 nav:
-  - Home: index.md
+  - Splash: index.md
+  - Telemetry: telemetry.md
   - Status: status.md
   - Run history:
       - Catalog: archive/index.md

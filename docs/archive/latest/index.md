@@ -29,7 +29,6 @@ for the docs site / git history — not a replacement for the operator ledger.
 ## Machine index
 
 - [`index.json`](./index.json) — full snapshot metadata + summaries
-- [`ledger_index.jsonl`](./ledger_index.jsonl) — ledger extract (if present)
 - `receipts/` — per-receipt sanitized JSON (JSON files; browse via index)
 
 ## Epistemic notes
