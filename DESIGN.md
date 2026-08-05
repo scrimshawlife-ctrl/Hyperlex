@@ -27,6 +27,7 @@ Public API is minimal and stable:
 - detect_memetic_patterns(...)
 - mock_integrate_with_external_signal(result)
 - emit_receipt(result)
+- extract_forecasts / settle / score_series (calibration)
 - Helper scorers
 
 ## 5. Modularity for Integration
@@ -43,7 +44,7 @@ Light post-processing to remove AI-isms while preserving sharp signal.
 The `emit_receipt` pattern ensures every serious run produces an auditable artifact. Receipts are the primary output for serious use.
 
 ## 8. Decoupling
-Hyperlex has no hard dependency on Hollersports, Abraxas, or any specific domain. Betting slang is the initial rich domain for validation.
+Hyperlex has no hard dependency on Hollersports, Abraxas, or any specific domain. Betting slang is the initial rich domain for validation. Calibration semantics are compatible with Abraxas Brier ledgers but do not import them.
 
 ## 9. Determinism + Graceful Degradation
 - Mock mode is fully deterministic
@@ -51,7 +52,10 @@ Hyperlex has no hard dependency on Hollersports, Abraxas, or any specific domain
 - Errors surface explicitly in output
 
 ## 10. Evolution via Receipts
-Future improvements are validated by comparing receipt lineages and Brier evolution.
+Future improvements are validated by comparing receipt lineages and Brier evolution over settled forecast series.
 
 ## 11. Lineage as First-Class Structure
-Slang is documented and analyzed as historical families with emergent branches rather than flat term lists. Visual diagrams (Mermaid family trees, emergence process flows) live under `examples/slang-families/` and are described in `docs/slang-lineages.md`. Neologism detection, semantic variation, and hyperstition modules are the operational engines that attach new leaves to existing families or seed new ones. Future schema versions will carry explicit `lineage` references so that every receipt can point back to its documented family structure.
+Slang is documented and analyzed as historical families with emergent branches rather than flat term lists. Visual diagrams live under `examples/slang-families/` and are described in `docs/slang-lineages.md`. Lineage confidence is the primary continuous signal eligible as a forecast probability.
+
+## 12. Brier Requires Settlement
+A Brier score is never emitted from an open analysis run. Analysis may emit forecast probabilities (via `extract_forecasts`). Only after a settlement records an outcome may `score_pair` / `score_series` compute atomic BS, series BS, BSS, Murphy, and Yates decompositions. Missing outcomes yield `NOT_COMPUTABLE`, never a fabricated float. See `docs/brier-calibration.md`.
