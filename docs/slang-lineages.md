@@ -160,7 +160,8 @@ python3 scripts/hyperlex.py lineage-backprop --from-golden --out out/backprop/re
 
 `match_lineage(text, registry=...)` accepts an overlay so backprop can use merged packs without permanently mutating the process-global `LINEAGE_REGISTRY`. Base registry still includes the main 2026 leaves so live analyze benefits immediately.
 
-See `data/backfill/2026/README.md` for pack schema and month notes.
+See `data/backfill/2026/README.md` for pack schema and month notes.  
+Visual timeline: `examples/slang-families/ytd-2026-timeline.mmd`.
 
 ## Example Families Documented
 

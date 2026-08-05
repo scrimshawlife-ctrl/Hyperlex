@@ -44,6 +44,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Golden tests for lineage confidence, score_pair, score_series (empty → NOT_COMPUTABLE), score log
 - [x] Optional Abraxas-compatible `BrierLedgerEntry.v1` export (no Abraxas import)
 - [x] Advisory mean-shift recalibration diagnostic (`mean_shift_from_series`)
+- [x] YTD slang backfill packs (`data/backfill/2026/`) + lineage backpropagation (non-mutating)
 
 ### Phase 3 — Hermes / Symbolic Integration
 - [x] Hermes skill packaging (`SKILL.md`, `install.sh` → `~/.hermes/skills/hyperlex`)

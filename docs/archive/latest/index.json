@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-08-05T18:13:55.979876+00:00",
+  "created_at": "2026-08-05T19:00:21.463355+00:00",
   "n_ledger_rows": 5,
   "n_receipt_summaries": 9,
   "primary_store": "local ~/.hyperlex (not replaced by this archive)",
@@ -17,7 +17,7 @@
     "receipts/0fcc0f79803d.json"
   ],
   "schema": "hyperlex.analysis_archive.v1",
-  "snapshot_id": "golden-seed",
+  "snapshot_id": "post-backfill-0.2.12",
   "stats": {
     "chain_ok": true,
     "families": {

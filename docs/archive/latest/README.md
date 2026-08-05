@@ -1,4 +1,4 @@
-# Analysis archive — `golden-seed`
+# Analysis archive — `post-backfill-0.2.12`
 
 Sanitized export for **long-term ingest analysis**.  
 Primary durable store remains local (`~/.hyperlex/`). This bundle is publish-safe
@@ -6,7 +6,7 @@ for the docs site / git history.
 
 | Field | Value |
 |-------|-------|
-| Snapshot | `golden-seed` |
+| Snapshot | `post-backfill-0.2.12` |
 | Receipt summaries | 9 |
 | Ledger rows | 5 |
 | Chain OK | True |
