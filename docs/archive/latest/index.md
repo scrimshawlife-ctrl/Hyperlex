@@ -1,4 +1,4 @@
-# Run snapshot — `golden-seed-0.3.1`
+# Run snapshot — `golden-seed-0.3.2`
 
 **Kind:** `analysis` · **Publish-safe static history** for GitHub Pages.
 
@@ -7,7 +7,7 @@ for the docs site / git history — not a replacement for the operator ledger.
 
 | Field | Value |
 |-------|-------|
-| Snapshot | `golden-seed-0.3.1` |
+| Snapshot | `golden-seed-0.3.2` |
 | Kind | `analysis` |
 | Receipt summaries | 9 |
 | Ledger rows | 5 |
@@ -17,7 +17,15 @@ for the docs site / git history — not a replacement for the operator ledger.
 
 | Family | Count |
 |--------|------:|
-| betting-sharp | 5 |
+| ai-native | 1 |
+| betting-sharp | 1 |
+| brainrot-aura | 1 |
+| crypto-degen | 1 |
+| gaming-meta | 1 |
+| kinship-address | 1 |
+| (none) | 1 |
+| political-status | 1 |
+| workplace-corp | 1 |
 
 ## Machine index
 

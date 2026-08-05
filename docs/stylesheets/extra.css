@@ -1,0 +1,218 @@
+/* Hallmark · macrostructure: Workbench · tone: technical · anchor hue: phosphor-teal
+ * theme: custom (vibe: "signal desk, ink, terminal restraint")
+ * paper: dark slate · display: IBM Plex Sans · mono: IBM Plex Mono
+ * redesign: home + archive catalog · MkDocs Material shell preserved
+ */
+
+:root {
+  --hlx-paper: #12151a;
+  --hlx-paper-2: #1a1f27;
+  --hlx-paper-3: #242b36;
+  --hlx-ink: #e8edf4;
+  --hlx-ink-muted: #9aa7b8;
+  --hlx-rule: #2e3746;
+  --hlx-accent: #2dd4bf; /* phosphor teal */
+  --hlx-accent-dim: #14b8a6;
+  --hlx-warn: #f0b429;
+  --hlx-font-display: "IBM Plex Sans", system-ui, sans-serif;
+  --hlx-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --hlx-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --hlx-space-xs: 0.25rem;
+  --hlx-space-sm: 0.5rem;
+  --hlx-space-md: 1rem;
+  --hlx-space-lg: 1.5rem;
+  --hlx-space-xl: 2.5rem;
+
+  /* Override Material primaries (kill deep-purple / pink demo) */
+  --md-primary-fg-color: #0f766e;
+  --md-primary-fg-color--light: #14b8a6;
+  --md-primary-fg-color--dark: #115e59;
+  --md-primary-bg-color: var(--hlx-ink);
+  --md-primary-bg-color--light: rgba(232, 237, 244, 0.7);
+  --md-accent-fg-color: var(--hlx-accent);
+  --md-accent-fg-color--transparent: rgba(45, 212, 191, 0.12);
+  --md-accent-bg-color: #0b1220;
+  --md-typeset-a-color: var(--hlx-accent);
+  --md-text-font-family: var(--hlx-font-body);
+  --md-code-font-family: var(--hlx-font-mono);
+}
+
+/* Stronger page titles — Material default is weight 300 + muted */
+.md-typeset h1 {
+  font-family: var(--hlx-font-display);
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: -0.02em;
+  color: var(--hlx-ink) !important;
+  margin-bottom: 0.6em;
+}
+
+.md-typeset h2 {
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: -0.015em;
+  color: var(--hlx-ink);
+}
+
+.md-typeset h3 {
+  font-weight: 600;
+  font-style: normal;
+}
+
+.md-typeset {
+  font-family: var(--hlx-font-body);
+  color: var(--hlx-ink);
+}
+
+.md-typeset code,
+.md-typeset pre,
+.md-typeset kbd {
+  font-family: var(--hlx-font-mono);
+}
+
+/* Header bar: ink desk, not purple demo */
+.md-header {
+  background-color: var(--hlx-paper-2);
+  border-bottom: 1px solid var(--hlx-rule);
+  box-shadow: none;
+}
+
+.md-header__topic,
+.md-header__button,
+.md-header__source {
+  color: var(--hlx-ink);
+}
+
+.md-tabs {
+  background-color: var(--hlx-paper-2);
+  border-bottom: 1px solid var(--hlx-rule);
+}
+
+/* Footer: one-line posture voice */
+.md-footer {
+  background-color: var(--hlx-paper);
+  border-top: 1px solid var(--hlx-rule);
+}
+
+.md-footer-meta {
+  background-color: var(--hlx-paper);
+}
+
+/* Workbench home: status strip + cards */
+.hlx-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin: 0 0 1.5rem;
+  border: 1px solid var(--hlx-rule);
+  border-left: 3px solid var(--hlx-accent);
+  background: var(--hlx-paper-2);
+  border-radius: 2px;
+  font-size: 0.85rem;
+}
+
+.hlx-status strong {
+  color: var(--hlx-accent);
+  font-weight: 600;
+  font-family: var(--hlx-font-mono);
+  font-size: 0.8rem;
+}
+
+.hlx-status span {
+  color: var(--hlx-ink-muted);
+}
+
+.hlx-status .hlx-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--hlx-accent);
+  display: inline-block;
+  margin-right: 0.35rem;
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.15);
+}
+
+/* Material cards: sharper edges, accent hover */
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid.cards > ol > li,
+.md-typeset .grid > .card {
+  border: 1px solid var(--hlx-rule);
+  border-radius: 2px;
+  background: var(--hlx-paper-2);
+  box-shadow: none;
+}
+
+.md-typeset .grid.cards > ul > li:hover,
+.md-typeset .grid.cards > ol > li:hover,
+.md-typeset .grid > .card:hover {
+  border-color: var(--hlx-accent-dim);
+  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.2);
+}
+
+.md-typeset .grid.cards > ul > li > hr,
+.md-typeset .grid.cards > ol > li > hr {
+  border-bottom-color: var(--hlx-rule);
+}
+
+/* Single strong callout style */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  border-color: var(--hlx-warn);
+}
+
+.md-typeset .admonition.warning > .admonition-title,
+.md-typeset details.warning > summary {
+  background-color: rgba(240, 180, 41, 0.08);
+}
+
+/* Tables denser, desk-like */
+.md-typeset table:not([class]) {
+  font-size: 0.72rem;
+  border-color: var(--hlx-rule);
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--hlx-paper-3);
+  color: var(--hlx-ink);
+}
+
+/* Code blocks sit on paper-2 */
+.md-typeset pre > code {
+  background-color: var(--hlx-paper-2);
+}
+
+/* Permalink less noisy on body */
+.md-typeset .headerlink {
+  opacity: 0.25;
+}
+
+.md-typeset .headerlink:hover {
+  opacity: 1;
+  color: var(--hlx-accent);
+}
+
+/* Nav active accent */
+.md-nav__link--active,
+.md-nav__item .md-nav__link--active {
+  color: var(--hlx-accent) !important;
+}
+
+/* Soft rule under lead on home */
+.hlx-lead {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--hlx-ink-muted);
+  max-width: 40rem;
+  margin-bottom: 1.25rem;
+}
+
+.hlx-posture {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hlx-rule);
+  font-size: 0.78rem;
+  color: var(--hlx-ink-muted);
+  font-family: var(--hlx-font-mono);
+}

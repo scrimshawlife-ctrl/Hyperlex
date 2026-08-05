@@ -1,0 +1,32 @@
+{
+  "brier": null,
+  "canonical_hash": "a3d184572e0e78cd",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "138a57d9b7d1",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "crypto-degen",
+  "matched_terms": [
+    "hodl",
+    "diamond hands",
+    "rekt",
+    "degen",
+    "moon",
+    "bagholder"
+  ],
+  "n_neologisms": 2,
+  "observed_preview": "Mock memetic channel on \"hodl diamond hands rekt degen moon\": organic velocity. hodl diamond hands rekt degen moon bagholder.",
+  "query": "hodl diamond hands rekt degen moon",
+  "source_fingerprint_id": "bef36c861c4134fe423fadca",
+  "timestamp": "2026-08-05T17:37:07.430952+00:00",
+  "typology": "risk_identity",
+  "version": "0.2.5",
+  "virality_hybrid": 0.639,
+  "virality_predicted": 0.744
+}

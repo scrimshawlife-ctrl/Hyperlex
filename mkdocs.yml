@@ -7,27 +7,53 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
+  font:
+    text: IBM Plex Sans
+    code: IBM Plex Mono
   palette:
     - scheme: slate
-      primary: deep purple
-      accent: pink
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
   features:
     - navigation.sections
     - navigation.expand
     - content.code.copy
     - search.suggest
+    - toc.follow
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
   - pymdownx.details
   - pymdownx.superfences
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - tables
   - toc:
       permalink: true
 
 nav:
   - Home: index.md
+  - Status: status.md
+  - Run history:
+      - Catalog: archive/index.md
+      - Latest analysis: archive/latest/index.md
   - Hermes skill: hermes-skill.md
   - API v1: api-v1.md
   - Architecture: architecture.md
@@ -55,9 +81,6 @@ nav:
       - Semver: SEMVER.md
       - Release notes: RELEASE_NOTES.md
   - Case studies: case-studies.md
-  - Run history (Pages):
-      - Catalog: archive/index.md
-      - Latest analysis: archive/latest/index.md
 
 plugins:
   - search
@@ -67,4 +90,4 @@ exclude_docs: |
   README.md
 
 extra:
-  version: 0.3.1
+  version: 0.3.2

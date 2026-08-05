@@ -1,84 +1,100 @@
 # Hyperlex
 
-**Hermes skill** for memetic emergence analysis — implemented as a Python package repository.  
-**v0.3.0** · Phases 0–4 complete · Phase 5.0 research simulation active.
+<div class="hlx-status" markdown>
+<span><span class="hlx-dot"></span><strong>v0.3.2</strong></span>
+<span>Hermes skill · Python package repo</span>
+<span>Phases 0–4 complete · Phase 5.0</span>
+<span>Pages = static run history</span>
+</div>
 
-```bash
-bash install.sh
-export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
-python3 "$HERMES_SKILL_DIR/scripts/run_case_study.py" --out-dir out/case-study
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scenario
-```
+<p class="hlx-lead">
+Detect, score, and archive memetic signals — lineage, hyperstition, settled Brier only.
+Primary store is local; this site is the publish-safe desk for docs and run history.
+</p>
 
-## What you get
+## Desk
 
-- Ingest (mock offline, live glossary/reddit/urban/wiki/X/crawl)
-- Lineage matching, typology, virality prediction (SPECULATIVE)
-- YTD slang backfill + non-mutating lineage backpropagation
-- Receipts + hash-chained ledger
-- Forecasts → operator settlement → Brier series (never invent scores)
-- RUNE.HLX.* envelopes + market-signal packets
-- Mermaid diagrams from receipt history
-- **Phase 5:** cultural transmission, multi-agent memetics, hyperstition risk, phylogeny scaffold
+<div class="grid cards" markdown>
 
-## Principles
+-   :material-history: **Run history**
+
+    Dated, sanitized snapshots on Pages. Not live operator state.
+
+    ---
+
+    [Open catalog →](archive/index.md){ .md-button }
+    [Latest analysis](archive/latest/index.md)
+
+-   :material-download: **Install**
+
+    Hermes skill tree → `~/.hermes/skills/hyperlex`
+
+    ---
+
+    ```bash
+    bash install.sh
+    export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
+    python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
+    ```
+
+-   :material-flask-outline: **Simulate (Phase 5)**
+
+    Transmission · multi-agent · hyperstition risk · phylogeny scaffold.
+    All SPECULATIVE · `brier: null`.
+
+    ---
+
+    ```bash
+    python3 scripts/hyperlex.py simulate --term rizz --mode scenario
+    ```
+
+    [Phase 5 docs](phase5.md)
+
+-   :material-heart-pulse: **Status**
+
+    Ready surface, operator loop, data dirs.
+
+    ---
+
+    [Skill status →](status.md)
+
+</div>
+
+## Rules (non-negotiable)
 
 !!! warning "Brier requires settlement"
-    Open analysis always has `provenance.brier = null`. Numeric Brier only after operator settlement.
-    Phase 5 simulation also keeps `brier: null` (SPECULATIVE research tooling).
+    Open analysis always has `provenance.brier = null`. Phase 5 keeps `brier: null`.
+    Numeric Brier only after operator settlement.
 
-!!! note "No Abraxas import"
-    Relevant Abraxas wire shapes live under `hyperlex.compat.abraxas`. Hosts import *from* Hyperlex.
+Hosts may import Abraxas-shaped modules **from** Hyperlex (`hyperlex.compat.abraxas`). Hyperlex never imports Abraxas.
 
-## Docs map
+## Map
 
-| Start here | Link |
-|------------|------|
-| Skill model | [hermes-skill.md](hermes-skill.md) |
-| Frozen API | [api-v1.md](api-v1.md) |
-| Phase 5 simulation | [phase5.md](phase5.md) · [modules/simulation.md](modules/simulation.md) |
-| Case study | [case-studies.md](case-studies.md) |
-| Calibration | [brier-calibration.md](brier-calibration.md) |
-| Slang lineages | [slang-lineages.md](slang-lineages.md) |
-| Skill status | see repo `STATUS.md` |
+| Need | Go |
+|------|-----|
+| Skill contract | [hermes-skill](hermes-skill.md) |
+| Frozen API | [api-v1](api-v1.md) |
+| Lineages | [slang-lineages](slang-lineages.md) |
+| Calibration | [brier-calibration](brier-calibration.md) |
+| Simulation | [phase5](phase5.md) · [modules/simulation](modules/simulation.md) |
+| Case study | [case-studies](case-studies.md) |
+| Roadmap | [ROADMAP](ROADMAP.md) |
 
-## Build this site
-
-```bash
-pip install -e ".[docs]"
-python3 scripts/sync_mkdocs_pages.py
-mkdocs serve   # http://127.0.0.1:8000
-mkdocs build --strict
-```
-
-GitHub Pages deploys from `.github/workflows/docs.yml` on `main`  
-(enable **Settings → Pages → Source: GitHub Actions** once).
-
-Public URL (after Pages is enabled):  
-https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
-
-## Static run history (GitHub Pages)
-
-Pages hosts a **publish-safe static history of runs** — not live operator state.
+## Append a run to Pages
 
 ```bash
-# Append analysis snapshot → docs/archive/runs/<id>/ + latest/ + catalog
 python3 scripts/hyperlex.py archive-export --include-golden --history
-
-# Phase 5 scenario into history
+# or operator home:
+python3 scripts/hyperlex.py archive-export --include-home-receipts --history
+# Phase 5 digest:
 python3 scripts/hyperlex.py simulate --term rizz --out /tmp/p5.json
 python3 scripts/hyperlex.py archive-export --phase5 /tmp/p5.json --history
 ```
 
-Browse: [Run history catalog](archive/index.md) · [latest](archive/latest/index.md)  
-URL: https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/archive/  
-Primary store remains `~/.hyperlex/`.
+Commit `docs/archive/` and push — [docs.yml](https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/actions) rebuilds the site.
 
-## Skill health
+Site: [scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs](https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/)
 
-```bash
-python3 scripts/hyperlex.py doctor
-python3 scripts/hyperlex.py ledger-stats
-python3 scripts/release_preflight.py
-```
+<p class="hlx-posture">
+Hermes skill · Brier requires settlement · no Abraxas hard import · primary store ~/.hyperlex
+</p>

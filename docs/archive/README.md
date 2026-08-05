@@ -1,52 +1,72 @@
-# Run history (static · GitHub Pages)
+# Run history
 
-This directory is the **publish-safe static history of Hyperlex runs** hosted on
-[GitHub Pages](https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/archive/).
+<div class="hlx-status" markdown>
+<span><span class="hlx-dot"></span><strong>3 runs</strong></span>
+<span>Static · publish-safe · GitHub Pages</span>
+<span>Primary store: <code>~/.hyperlex/</code></span>
+<span>Latest analysis: <code>golden-seed-0.3.2</code></span>
+</div>
 
-| | |
-|--|--|
-| Primary store | Local `~/.hyperlex/` (receipts, ledger, score log) |
-| Pages role | Sanitized snapshots for long-term browsing / git history |
-| Latest | [latest analysis](./latest/index.md) (`golden-seed-0.3.1`) |
-| Machine catalog | [`catalog.json`](./catalog.json) |
-| Runs on record | **2** |
+Publish-safe history of Hyperlex runs. Not live operator state.
+Machine index: [`catalog.json`](./catalog.json) ·
+[Latest analysis](./latest/index.md) (`golden-seed-0.3.2`)
 
-## All snapshots
+## Snapshots
 
-| Snapshot | Kind | Receipts | Notes |
-|----------|------|--------:|-------|
-| [`phase5-rizz-ai-demo`](./runs/phase5-rizz-ai-demo/index.md) | `phase5_scenario` | — | — · risk `MODERATE` · term `sigma rizz locked in` |
-| [`golden-seed-0.3.1`](./runs/golden-seed-0.3.1/index.md) | `analysis` | 9 | betting-sharp:5 |
+<div class="grid cards" markdown>
 
-## What is published
+-   :material-flask-outline: **[phase5-rizz-ai-demo](./runs/phase5-rizz-ai-demo/index.md)**
 
-- Sanitized receipt summaries (preview text only)
-- Lineage family + confidence, typology, virality metrics, hyperstition stage
-- Optional Phase 5 scenario digests (risk tier, transmission peak — SPECULATIVE)
-- Ledger index extracts (no secrets)
+    `phase5_scenario` · risk **MODERATE** · term `sigma rizz locked in`
 
-## What is **not** published
+    Families: —
 
-- Full raw network payloads / API keys
-- Operator score log settlements (keep local unless you deliberately export)
-- Anything that would invent Brier without settlement
+    ---
+
+    [Open snapshot →](./runs/phase5-rizz-ai-demo/index.md)
+
+-   :material-file-document-outline: **[golden-seed-0.3.2](./runs/golden-seed-0.3.2/index.md)**
+
+    `analysis` · 9 receipts
+
+    Families: `(none)`×1, `ai-native`×1, `betting-sharp`×1, `brainrot-aura`×1, `crypto-degen`×1
+
+    ---
+
+    [Open snapshot →](./runs/golden-seed-0.3.2/index.md)
+
+-   :material-file-document-outline: **[golden-seed-0.3.1](./runs/golden-seed-0.3.1/index.md)**
+
+    `analysis` · 9 receipts
+
+    Families: `betting-sharp`×5
+
+    ---
+
+    [Open snapshot →](./runs/golden-seed-0.3.1/index.md)
+
+</div>
+
+## Published vs not
+
+| On Pages | Stays local |
+|----------|-------------|
+| Sanitized receipt summaries | Full raw signals / API keys |
+| Lineage, typology, virality, stage | Score-log settlements (unless you export) |
+| Phase 5 digests (SPECULATIVE) | Invented Brier (never) |
 
 ## Append a run
 
 ```bash
-# Analysis snapshot → runs/<id>/ + latest/ + catalog
 python3 scripts/hyperlex.py archive-export --include-golden --history
-
-# From operator home
-python3 scripts/hyperlex.py archive-export --include-home-receipts --history \
-  --snapshot-id "scan-$(date -u +%Y%m%dT%H%M%SZ)"
-
-# Phase 5 scenario into history
+python3 scripts/hyperlex.py archive-export --include-home-receipts --history
 python3 scripts/hyperlex.py simulate --term rizz --out /tmp/p5.json
 python3 scripts/hyperlex.py archive-export --phase5 /tmp/p5.json --history
-
-# Rebuild catalog only
 python3 scripts/hyperlex.py archive-catalog
 ```
 
-Commit + push `docs/archive/` to refresh Pages (`.github/workflows/docs.yml`).
+Commit + push `docs/archive/` → Pages rebuild (`.github/workflows/docs.yml`).
+
+<p class="hlx-posture">
+Hermes skill · Brier requires settlement · no Abraxas hard import · primary store ~/.hyperlex
+</p>

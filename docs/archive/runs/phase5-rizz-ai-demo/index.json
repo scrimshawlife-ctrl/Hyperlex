@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-08-05T19:12:44.054132+00:00",
+  "created_at": "2026-08-05T19:31:45.433715+00:00",
   "n_ledger_rows": 0,
   "n_receipt_summaries": 0,
-  "notes": "Phase 5 demo scenario",
+  "notes": null,
   "phase5": {
     "agent_adoption_rate": 0.1,
     "brier": null,

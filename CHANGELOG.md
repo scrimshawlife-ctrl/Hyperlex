@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.2 — Hallmark redesign: Pages workbench identity (2026-08-05)
+
+- Custom docs identity: IBM Plex + phosphor-teal tokens (`docs/stylesheets/extra.css`)
+- Workbench home: status strip, desk cards (history / install / simulate / status)
+- STATUS published on site (`docs/status.md`); Run history elevated in nav
+- Archive family stats from receipt summaries (not ledger-only)
+- Catalog uses Material card grid for each run snapshot
+
 ## 0.3.1 — Pages as static history of runs (2026-08-05)
 
 - `export_run_history` writes dated snapshots under `docs/archive/runs/<id>/`

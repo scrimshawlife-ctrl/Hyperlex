@@ -14,6 +14,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from collections import Counter
+
 from ..receipt.ledger import default_ledger_path, list_receipts
 from ..receipt.stats import ledger_stats
 
@@ -147,6 +149,28 @@ def _write_analysis_bundle(
             for row in ledger_rows:
                 fh.write(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n")
 
+    # Family / stage counts from receipt *summaries* (not ledger-only — avoids
+    # misleading "betting-sharp:5" when goldens span 8 families).
+    fam_ctr: Counter = Counter()
+    stage_ctr: Counter = Counter()
+    src_ctr: Counter = Counter()
+    confs: List[float] = []
+    for s in summaries:
+        fam = s.get("lineage_family") or "(none)"
+        fam_ctr[str(fam)] += 1
+        st = s.get("hyperstition_stage")
+        if st:
+            stage_ctr[str(st)] += 1
+        src = s.get("ingest_source")
+        if src:
+            src_ctr[str(src)] += 1
+        lc = s.get("lineage_confidence")
+        if isinstance(lc, (int, float)):
+            confs.append(float(lc))
+    summary_families = dict(fam_ctr.most_common())
+    n_with_lineage = sum(v for k, v in summary_families.items() if k != "(none)")
+    mean_lc = round(sum(confs) / len(confs), 3) if confs else None
+
     index = {
         "schema": ARCHIVE_SCHEMA,
         "run_kind": run_kind,
@@ -160,20 +184,22 @@ def _write_analysis_bundle(
         "receipt_files": written_receipts,
         "notes": notes or None,
         "stats": {
-            "n_entries": stats.get("n_entries"),
-            "n_with_lineage": stats.get("n_with_lineage"),
-            "families": stats.get("families"),
-            "hyperstition_stages": stats.get("hyperstition_stages"),
-            "ingest_sources": stats.get("ingest_sources"),
-            "mean_lineage_confidence": stats.get("mean_lineage_confidence"),
+            "n_entries": len(summaries) if summaries else stats.get("n_entries"),
+            "n_with_lineage": n_with_lineage if summaries else stats.get("n_with_lineage"),
+            "families": summary_families if summaries else (stats.get("families") or {}),
+            "families_from_ledger": stats.get("families") or {},
+            "hyperstition_stages": dict(stage_ctr.most_common()) if stage_ctr else (stats.get("hyperstition_stages") or {}),
+            "ingest_sources": dict(src_ctr.most_common()) if src_ctr else (stats.get("ingest_sources") or {}),
+            "mean_lineage_confidence": mean_lc if mean_lc is not None else stats.get("mean_lineage_confidence"),
             "chain_ok": stats.get("chain_ok"),
         },
         "summaries": summaries,
     }
     (out / "index.json").write_text(json.dumps(index, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
+    display_fams = index["stats"]["families"] or {}
     fam_lines = "\n".join(
-        f"| {k} | {v} |" for k, v in (stats.get("families") or {}).items()
+        f"| {k} | {v} |" for k, v in display_fams.items()
     ) or "| — | 0 |"
     md = f"""# Run snapshot — `{snap}`
 
@@ -375,74 +401,73 @@ def rebuild_archive_catalog(
         json.dumps(catalog, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
 
-    rows = []
+    card_blocks: List[str] = []
     for e in entries:
         fam = e.get("families") or {}
-        top_fam = ", ".join(f"{k}:{v}" for k, v in list(fam.items())[:4]) or "—"
-        extra = ""
-        if e.get("risk_tier"):
-            extra = f" · risk `{e['risk_tier']}`"
-        if e.get("seed_term"):
-            extra += f" · term `{e['seed_term']}`"
-        # MkDocs prefers file links ending in index.md
+        top_fam = ", ".join(f"`{k}`×{v}" for k, v in list(fam.items())[:5]) or "—"
         link = f"./runs/{Path(e['path']).name}/index.md"
-        rows.append(
-            f"| [`{e['snapshot_id']}`]({link}) | `{e['run_kind']}` | "
-            f"{e.get('n_receipt_summaries') or '—'} | {top_fam}{extra} |"
+        kind = e.get("run_kind") or "analysis"
+        icon = "material-flask-outline" if kind == "phase5_scenario" else "material-file-document-outline"
+        meta_bits = [f"`{kind}`"]
+        if e.get("n_receipt_summaries"):
+            meta_bits.append(f"{e['n_receipt_summaries']} receipts")
+        if e.get("risk_tier"):
+            meta_bits.append(f"risk **{e['risk_tier']}**")
+        if e.get("seed_term"):
+            meta_bits.append(f"term `{e['seed_term']}`")
+        meta = " · ".join(meta_bits)
+        card_blocks.append(
+            f"-   :{icon}: **[{e['snapshot_id']}]({link})**\n\n"
+            f"    {meta}\n\n"
+            f"    Families: {top_fam}\n\n"
+            f"    ---\n\n"
+            f"    [Open snapshot →]({link})\n"
         )
-    table = "\n".join(rows) if rows else "| — | — | — | — |"
+    cards = "\n".join(card_blocks) if card_blocks else "- No runs yet.\n"
 
-    md = f"""# Run history (static · GitHub Pages)
+    md = f"""# Run history
 
-This directory is the **publish-safe static history of Hyperlex runs** hosted on
-[GitHub Pages]({site_base}).
+<div class="hlx-status" markdown>
+<span><span class="hlx-dot"></span><strong>{len(entries)} runs</strong></span>
+<span>Static · publish-safe · GitHub Pages</span>
+<span>Primary store: <code>~/.hyperlex/</code></span>
+{f"<span>Latest analysis: <code>{latest_snap}</code></span>" if latest_snap else ""}
+</div>
 
-| | |
-|--|--|
-| Primary store | Local `~/.hyperlex/` (receipts, ledger, score log) |
-| Pages role | Sanitized snapshots for long-term browsing / git history |
-| Latest | [latest analysis](./latest/index.md){f" (`{latest_snap}`)" if latest_snap else ""} |
-| Machine catalog | [`catalog.json`](./catalog.json) |
-| Runs on record | **{len(entries)}** |
+Publish-safe history of Hyperlex runs. Not live operator state.
+Machine index: [`catalog.json`](./catalog.json) ·
+[Latest analysis](./latest/index.md){f" (`{latest_snap}`)" if latest_snap else ""}
 
-## All snapshots
+## Snapshots
 
-| Snapshot | Kind | Receipts | Notes |
-|----------|------|--------:|-------|
-{table}
+<div class="grid cards" markdown>
 
-## What is published
+{cards}
+</div>
 
-- Sanitized receipt summaries (preview text only)
-- Lineage family + confidence, typology, virality metrics, hyperstition stage
-- Optional Phase 5 scenario digests (risk tier, transmission peak — SPECULATIVE)
-- Ledger index extracts (no secrets)
+## Published vs not
 
-## What is **not** published
-
-- Full raw network payloads / API keys
-- Operator score log settlements (keep local unless you deliberately export)
-- Anything that would invent Brier without settlement
+| On Pages | Stays local |
+|----------|-------------|
+| Sanitized receipt summaries | Full raw signals / API keys |
+| Lineage, typology, virality, stage | Score-log settlements (unless you export) |
+| Phase 5 digests (SPECULATIVE) | Invented Brier (never) |
 
 ## Append a run
 
 ```bash
-# Analysis snapshot → runs/<id>/ + latest/ + catalog
 python3 scripts/hyperlex.py archive-export --include-golden --history
-
-# From operator home
-python3 scripts/hyperlex.py archive-export --include-home-receipts --history \\
-  --snapshot-id "scan-$(date -u +%Y%m%dT%H%M%SZ)"
-
-# Phase 5 scenario into history
+python3 scripts/hyperlex.py archive-export --include-home-receipts --history
 python3 scripts/hyperlex.py simulate --term rizz --out /tmp/p5.json
 python3 scripts/hyperlex.py archive-export --phase5 /tmp/p5.json --history
-
-# Rebuild catalog only
 python3 scripts/hyperlex.py archive-catalog
 ```
 
-Commit + push `docs/archive/` to refresh Pages (`.github/workflows/docs.yml`).
+Commit + push `docs/archive/` → Pages rebuild (`.github/workflows/docs.yml`).
+
+<p class="hlx-posture">
+Hermes skill · Brier requires settlement · no Abraxas hard import · primary store ~/.hyperlex
+</p>
 """
     (root / "index.md").write_text(md, encoding="utf-8")
     (root / "README.md").write_text(md, encoding="utf-8")

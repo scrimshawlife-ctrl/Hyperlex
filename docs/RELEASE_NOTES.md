@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.3.2
+- Hallmark redesign of Pages: workbench home, teal identity, run-history cards.
+
 ## 0.3.1
 - GitHub Pages = static history of runs (`docs/archive/runs/` + catalog).
 

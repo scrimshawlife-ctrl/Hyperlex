@@ -7,7 +7,7 @@
 **Hermes skill** (Python package repo) for memetic emergence — slang, lineage, hyperstition, virality,
 receipts, settled Brier calibration, and HLX rune relay.
 
-Version **0.3.1** · Skill: `hyperlex` · Python ≥ 3.10 · License: MIT  
+Version **0.3.2** · Skill: `hyperlex` · Python ≥ 3.10 · License: MIT  
 **Not** an Abraxas dependency. Relevant Abraxas wire shapes ship as Hyperlex modules.  
 Phases **0–4** complete · Phase 5.0 · **GitHub Pages = static history of runs**.
 
