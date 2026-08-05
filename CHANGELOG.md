@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 — Relay, provenance, glossary/X, PyPI (2026-08-05)
+
+- Rune/signal relay: `hyperlex.relay` + CLI `relay` + `schemas/rune_envelope.v1.schema.json`
+- Enhanced provenance fingerprints on ingest + analysis (`source_fingerprint`, content_hash, locator)
+- Glossary expansion (`glossary_expanded`) multi-source pack; X ingest via bearer token / xurl / stub
+- Package CLI (`python -m hyperlex` / console script); PyPI build via `scripts/publish_pypi.sh`
+- Version 0.2.0
+
 ## 0.1.3 — Cache, golden series, LIVE_EMERGENCE_SCAN (2026-08-05)
 
 - Persistent ingest cache (`~/.hyperlex/cache/`) + per-source rate limiting.

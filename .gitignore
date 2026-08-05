@@ -9,6 +9,9 @@ __pycache__/
 .venv/
 .env
 .pytest_cache/
+dist/
+build/
+*.egg
 
 # IDE
 .vscode/

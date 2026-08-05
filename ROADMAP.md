@@ -14,11 +14,11 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - arXiv distillation applied
 
 ### Phase 1 — Robust Ingest & Provenance (Current Focus)
-- [ ] Reliable X/Twitter ingest (via xurl or API)
-- [ ] Firecrawl / web scraping for broader signals
-- [ ] Glossary expansion (multiple sources)
+- [x] X/Twitter ingest (API bearer / xurl / structured stub)
+- [x] Firecrawl / crawl4ai web scrape adapters (graceful fallback)
+- [x] Glossary expansion (`glossary_expanded` multi-source pack)
 - [x] Persistent cache + rate limiting (`~/.hyperlex/cache/`, rate_limit.json)
-- [ ] Enhanced provenance (source fingerprints, timestamps)
+- [x] Enhanced provenance fingerprints (`source_fingerprint`, content_hash, locator)
 - [x] Receipt ledger (append-only, hash-chained) — `~/.hyperlex/receipt_ledger.jsonl`
 
 ### Phase 2 — Advanced Analysis & Calibration
@@ -43,13 +43,13 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 ### Phase 3 — Hermes / Symbolic Integration
 - [x] Hermes skill packaging (`SKILL.md`, `install.sh` → `~/.hermes/skills/hyperlex`)
 - [x] Native skill install path + post-install check/smoke
-- [ ] Rune / signal relay compatibility
+- [x] Rune / signal relay (`hyperlex.relay`, RUNE.HLX.*)
 - [ ] Hyperstition loop feedback into forecasting systems
 - [ ] Market-signal and forecast pipeline connectors (generic)
 - [x] Cron / autonomous monitoring (`scan` + `examples/cron/live-emergence-scan.job.json`)
 
 ### Phase 4 — Production & Ecosystem
-- [ ] PyPI publication
+- [x] PyPI packaging + publish script (0.2.0; upload requires token)
 - [ ] Comprehensive test suite + golden receipts
 - [ ] Documentation site / MkDocs
 - [ ] Example notebooks and case studies

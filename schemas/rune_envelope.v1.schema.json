@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/rune_envelope.v1.schema.json",
+  "title": "Hyperlex Rune Envelope v1",
+  "description": "Abraxas/Hermes-compatible signal relay envelope. No hard Abraxas dependency.",
+  "type": "object",
+  "required": ["schema", "rune_id", "envelope_id", "payload", "created_at"],
+  "properties": {
+    "schema": { "type": "string", "const": "hyperlex.rune_envelope.v1" },
+    "relay_version": { "type": "string" },
+    "rune_id": {
+      "type": "string",
+      "enum": [
+        "RUNE.HLX.LIVE_EMERGENCE_SCAN",
+        "RUNE.HLX.COMMUNICATION_RELAY",
+        "RUNE.HLX.CALIBRATION_FORECAST",
+        "RUNE.HLX.CALIBRATION_SERIES"
+      ]
+    },
+    "envelope_id": { "type": "string" },
+    "role": { "type": "string" },
+    "description": { "type": "string" },
+    "created_at": { "type": "string" },
+    "authority": { "type": "string" },
+    "payload": { "type": "object", "additionalProperties": true },
+    "provenance": { "type": "object", "additionalProperties": true },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "statement": { "type": "string" },
+          "label": {
+            "type": "string",
+            "enum": ["OBSERVED", "INFERRED", "SPECULATIVE", "NOT_COMPUTABLE"]
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

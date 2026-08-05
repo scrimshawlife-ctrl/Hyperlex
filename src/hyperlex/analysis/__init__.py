@@ -14,6 +14,7 @@ from typing import Dict, Any, List, Optional, Tuple
 from ..intake import ingest_signal, fetch_ingest
 from .. import PKG_VERSION
 from ..schemas import validate_result
+from ..provenance import analysis_canonical_hash
 
 # ---------------------------------------------------------------------------
 # Lineage registry (static seed; expand via docs/examples/slang-families)
@@ -213,9 +214,15 @@ def detect_memetic_patterns(
         ingest_data = fetch_ingest(query, source=ingest_source)
         raw_signal = ingest_data.get("raw_signal", "")
         ingest_meta = ingest_data
+        source_fp = ingest_data.get("source_fingerprint") or (
+            (ingest_data.get("provenance") or {}).get("source_fingerprint")
+        )
     else:
-        raw_signal = ingest_signal(query, source=ingest_source)
-        ingest_meta = {"ingest_source": ingest_source}
+        # always fingerprint even non-structured path
+        ingest_data = fetch_ingest(query, source=ingest_source, structured=True)
+        raw_signal = ingest_data.get("raw_signal", "")
+        ingest_meta = ingest_data
+        source_fp = ingest_data.get("source_fingerprint")
 
     observed = humanize_slang_output(raw_signal[:280])
     neos = detect_neologisms(observed)
@@ -239,11 +246,13 @@ def detect_memetic_patterns(
         f"Brier requires settlement via hyperlex.calibration — not claimed on open forecasts."
     )
 
-    canonical = json.dumps(
-        {"q": query, "obs": observed[:100], "neos": neo_terms},
-        sort_keys=True, separators=(",", ":")
+    fp_id = (source_fp or {}).get("fingerprint_id")
+    h = analysis_canonical_hash(
+        query=query,
+        observed=observed,
+        neo_terms=neo_terms,
+        source_fingerprint_id=fp_id,
     )
-    h = hashlib.sha256(canonical.encode()).hexdigest()[:16]
 
     analysis: Dict[str, Any] = {
         "neologisms": neos,
@@ -271,15 +280,28 @@ def detect_memetic_patterns(
                 "neologism_pipeline", "semantic_variation", "virality_hybrid",
                 "memetics_protocol", "hyperstition_loop", "cultural_transmission"
             ],
-            "ingest_source": ingest_source
+            "ingest_source": ingest_source,
+            "source_fingerprint": source_fp,
+            "content_hash": (source_fp or {}).get("content_hash"),
+            "source_locator": (source_fp or {}).get("source_locator"),
+            "adapter_version": (source_fp or {}).get("adapter_version"),
         },
         "analysis": analysis,
         "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
-        "recommendation": "Bind to COMMUNICATION_RELAY rune; extract_forecasts for calibration pipeline; cron LIVE_EMERGENCE_SCAN."
+        "recommendation": (
+            "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; "
+            "extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN."
+        ),
     }
 
-    if use_structured_ingest:
-        result["ingest"] = ingest_meta
+    # always attach structured ingest meta for fingerprint audit trail
+    result["ingest"] = {
+        "query": ingest_meta.get("query", query),
+        "source": ingest_meta.get("source", ingest_source),
+        "extracted_terms": ingest_meta.get("extracted_terms"),
+        "metadata": ingest_meta.get("metadata"),
+        "source_fingerprint": source_fp,
+    }
 
     if validate:
         ok, msg = validate_result(result)

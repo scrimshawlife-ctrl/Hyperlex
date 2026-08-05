@@ -41,6 +41,9 @@ from .cache import (
     is_cached,
     cache_stats,
 )
+from .glossaries import fetch_glossary, fetch_glossary_expanded, list_glossaries
+from .x_search import fetch_x_search
+from ..provenance import source_fingerprint, merge_ingest_provenance
 
 
 def _offline_mode() -> bool:
@@ -318,9 +321,53 @@ def _fetch_crawl4ai_query(query: str) -> str:
         )
 
 
-def _fetch_x_stub(query: str) -> str:
-    # Enhanced stub ready for real x_search / xurl integration
-    return f"[X_SEARCH_WIRED_STUB] Recent velocity on '{query}': sharp money, revenge narratives, memetic spread in discourse."
+def _fetch_x(query: str) -> str:
+    key = _cache_key(query, "x_search")
+    cached = _get_cached(key, "x_search")
+    if cached:
+        return cached
+    _before_network("x_search")
+    signal, meta = fetch_x_search(query)
+    # stash locator in cache only as text; structured meta via fetch_ingest
+    _set_cached(key, signal, "x_search")
+    # attach last meta for structured path via module global
+    global _LAST_X_META
+    _LAST_X_META = meta
+    return signal
+
+
+_LAST_X_META: Dict[str, Any] = {}
+_LAST_GLOSSARY_META: Dict[str, Any] = {}
+
+
+def _fetch_glossary_primary(query: str) -> str:
+    key = _cache_key(query, "glossary")
+    cached = _get_cached(key, "glossary")
+    if cached:
+        return cached
+    _before_network("glossary")
+    signal, locator, gid = fetch_glossary(query, glossary_id="action_network")
+    global _LAST_GLOSSARY_META
+    _LAST_GLOSSARY_META = {"glossary_id": gid, "source_locator": locator, "mode": "single"}
+    _set_cached(key, signal, "glossary")
+    return signal
+
+
+def _fetch_glossary_expanded(query: str) -> str:
+    key = _cache_key(query, "glossary_expanded")
+    cached = _get_cached(key, "glossary_expanded")
+    if cached:
+        return cached
+    _before_network("glossary")
+    signal, components = fetch_glossary_expanded(query)
+    global _LAST_GLOSSARY_META
+    _LAST_GLOSSARY_META = {
+        "mode": "expanded",
+        "components": components,
+        "source_locator": "hyperlex://glossary/expanded",
+    }
+    _set_cached(key, signal, "glossary_expanded")
+    return signal
 
 
 def _fetch_firecrawl_via_crawl4ai(query: str) -> str:
@@ -329,18 +376,19 @@ def _fetch_firecrawl_via_crawl4ai(query: str) -> str:
 
 def ingest_signal(query: str, source: str = "mock") -> str:
     """
-    Real-signal ingestion (expanded v1.6).
+    Real-signal ingestion (expanded v1.7).
 
     Sources:
     - "mock": deterministic test signal
-    - "real", "glossary", "web": live Action Network glossary
+    - "real", "glossary", "web": Action Network primary glossary
+    - "glossary_expanded": multi-glossary pack (AN + wiki slang + urban)
     - "reddit": real Reddit search
     - "urban": Urban Dictionary
     - "wikipedia": Wikipedia summary for context
-    - "x_search": ready for hermes x_search
+    - "x_search": X/Twitter via API token, xurl, or structured stub
     - "firecrawl": Crawl4AI web crawl fallback
     - "crawl4ai": explicit Crawl4AI web crawl
-    - "combined": tries glossary → urban → reddit → wikipedia → crawl4ai
+    - "combined": tries glossary → urban → reddit → wikipedia → x_search → crawl4ai
     """
     source = source.lower().strip()
 
@@ -350,22 +398,24 @@ def ingest_signal(query: str, source: str = "mock") -> str:
             "— organic velocity in betting circles, minor coordinated push."
         )
     elif source in ("real", "glossary", "web"):
-        return _fetch_real_betting_glossary(query)
+        return _fetch_glossary_primary(query)
+    elif source in ("glossary_expanded", "glossaries"):
+        return _fetch_glossary_expanded(query)
     elif source == "reddit":
         return _fetch_reddit_slang(query)
     elif source == "urban":
         return _fetch_urban_dict(query)
     elif source == "wikipedia":
         return _fetch_wikipedia(query)
-    elif source == "x_search":
-        return _fetch_x_stub(query)
+    elif source in ("x_search", "x", "twitter"):
+        return _fetch_x(query)
     elif source == "firecrawl":
         return _fetch_firecrawl_via_crawl4ai(query)
     elif source == "crawl4ai":
         return _fetch_crawl4ai_query(query)
     elif source == "combined":
         parts = []
-        for s in ["glossary", "urban", "reddit", "wikipedia", "crawl4ai"]:
+        for s in ["glossary", "urban", "reddit", "wikipedia", "x_search", "crawl4ai"]:
             try:
                 parts.append(ingest_signal(query, source=s)[:220])
             except Exception:
@@ -374,6 +424,26 @@ def ingest_signal(query: str, source: str = "mock") -> str:
     else:
         return f"No signal available for source={source}"
 
+
+_SOURCE_LOCATORS = {
+    "mock": "hyperlex://mock",
+    "glossary": "https://www.actionnetwork.com/education/sports-betting-terms-glossary",
+    "real": "https://www.actionnetwork.com/education/sports-betting-terms-glossary",
+    "web": "https://www.actionnetwork.com/education/sports-betting-terms-glossary",
+    "glossary_expanded": "hyperlex://glossary/expanded",
+    "glossaries": "hyperlex://glossary/expanded",
+    "reddit": "https://old.reddit.com/search",
+    "urban": "https://api.urbandictionary.com/v0/define",
+    "wikipedia": "https://en.wikipedia.org/api/rest_v1/page/summary/",
+    "x_search": "hyperlex://x_search",
+    "x": "hyperlex://x_search",
+    "twitter": "hyperlex://x_search",
+    "firecrawl": "hyperlex://crawl4ai",
+    "crawl4ai": "hyperlex://crawl4ai",
+    "combined": "hyperlex://combined",
+}
+
+
 def fetch_ingest(
     query: str,
     source: str = "mock",
@@ -381,23 +451,56 @@ def fetch_ingest(
     max_terms: int = 8
 ) -> Dict[str, Any]:
     """
-    Structured ingest entry point.
-
-    Returns a dict with:
-      - query
-      - source
-      - raw_signal
-      - extracted_terms (heuristic)
-      - metadata
-      - timestamp
+    Structured ingest entry point with source fingerprints.
     """
+    source = source.lower().strip()
     key = _cache_key(query, source)
     was_cached = is_cached(key)
     raw = ingest_signal(query, source=source)
+    fetched_at = datetime.now(timezone.utc).isoformat()
+
+    locator = _SOURCE_LOCATORS.get(source, f"hyperlex://{source}")
+    adapter_meta: Dict[str, Any] = {}
+    if source in ("x_search", "x", "twitter") and _LAST_X_META:
+        adapter_meta = dict(_LAST_X_META)
+        locator = adapter_meta.get("source_locator") or locator
+    if source in ("glossary", "real", "web", "glossary_expanded", "glossaries") and _LAST_GLOSSARY_META:
+        adapter_meta = dict(_LAST_GLOSSARY_META)
+        locator = adapter_meta.get("source_locator") or locator
+
+    fp = source_fingerprint(
+        source=source,
+        query=query,
+        raw_signal=raw,
+        source_locator=locator,
+        fetched_at=fetched_at,
+    )
 
     # Heuristic term extraction
-    terms = re.findall(r'\b([a-z]{4,}(?:block|nine|sharp|holler|revenge|low|false|vig|action|chalk))\b', raw.lower())
-    terms = list(dict.fromkeys(terms))[:max_terms]  # dedup preserve order
+    terms = re.findall(
+        r"\b([a-z]{4,}(?:block|nine|sharp|holler|revenge|low|false|vig|action|chalk|steam|degen|aura|slop))\b",
+        raw.lower(),
+    )
+    terms = list(dict.fromkeys(terms))[:max_terms]
+
+    real_sources = {
+        "real", "glossary", "web", "glossary_expanded", "glossaries",
+        "urban", "reddit", "wikipedia", "firecrawl", "crawl4ai", "x_search", "x", "twitter",
+    }
+    live = bool(adapter_meta.get("live")) if adapter_meta else (source in real_sources and source != "mock")
+
+    try:
+        from .. import PKG_VERSION as _pkg_v
+    except Exception:
+        _pkg_v = "0.0.0"
+    provenance = merge_ingest_provenance(
+        {
+            "version": _pkg_v,
+            "ingest_source": source,
+            "fetched_at": fetched_at,
+        },
+        fp,
+    )
 
     return {
         "query": query,
@@ -405,13 +508,14 @@ def fetch_ingest(
         "raw_signal": raw,
         "extracted_terms": terms,
         "metadata": {
-            "source_type": "real" if source in ("real", "glossary", "urban", "reddit", "wikipedia", "firecrawl", "crawl4ai") else "synthetic_stub",
+            "source_type": "real" if source in real_sources else "synthetic_stub",
+            "live": live if source in ("x_search", "x", "twitter") else (source in real_sources and source != "mock"),
             "cached": was_cached,
-            "fetched_at": datetime.now(timezone.utc).isoformat(),
+            "fetched_at": fetched_at,
+            "source_locator": locator,
+            "adapter": adapter_meta,
             "cache": cache_stats(),
         },
-        "provenance": {
-            "version": "1.6.0",
-            "ingest_source": source,
-        }
+        "provenance": provenance,
+        "source_fingerprint": fp,
     }

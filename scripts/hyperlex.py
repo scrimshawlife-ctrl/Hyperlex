@@ -145,16 +145,60 @@ def cmd_sources(_args: argparse.Namespace) -> int:
         {"name": "mock", "kind": "deterministic", "real": False, "description": "No network, deterministic fixture output"},
         {"name": "real", "kind": "web", "real": True, "description": "Action Network betting glossary"},
         {"name": "glossary", "kind": "web", "real": True, "description": "Action Network glossary alias"},
+        {"name": "glossary_expanded", "kind": "web", "real": True, "description": "Multi-glossary pack (AN + wiki slang + urban)"},
         {"name": "web", "kind": "web", "real": True, "description": "Action Network glossary alias"},
         {"name": "reddit", "kind": "web", "real": True, "description": "Reddit keyword search"},
         {"name": "urban", "kind": "web", "real": True, "description": "Urban Dictionary public API"},
         {"name": "wikipedia", "kind": "web", "real": True, "description": "Wikipedia page summary"},
-        {"name": "x_search", "kind": "stub", "real": False, "description": "Placeholder X/Twitter adapter signal"},
+        {"name": "x_search", "kind": "social", "real": True, "description": "X/Twitter via API bearer, xurl CLI, or structured stub"},
         {"name": "firecrawl", "kind": "web", "real": True, "description": "Crawl4AI-backed web crawl signal"},
         {"name": "crawl4ai", "kind": "web", "real": True, "description": "Explicit Crawl4AI-backed web crawl signal"},
-        {"name": "combined", "kind": "composed", "real": True, "description": "Combined real adapters with graceful fallback"},
+        {"name": "combined", "kind": "composed", "real": True, "description": "glossary+urban+reddit+wiki+x+crawl4ai with graceful fallback"},
     ]
     _emit({"ok": True, "sources": sources})
+    return 0
+
+
+def cmd_relay(args: argparse.Namespace) -> int:
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    if args.list_runes:
+        _emit({"ok": True, "command": "relay", "runes": pkg.list_runes()})
+        return 0
+
+    payload, load_error = _get_input_payload(args.input)
+    if load_error:
+        _emit({"ok": False, "error": load_error})
+        return 2
+    if payload is None:
+        _emit({"ok": False, "error": "input required (analysis result JSON) unless --list-runes"})
+        return 2
+
+    result = payload.get("result") if isinstance(payload.get("result"), dict) and "analysis" not in payload else payload
+    envelopes = pkg.relay_from_result(
+        result,
+        include_signal=not args.no_signal,
+        include_scan=not args.no_scan,
+    )
+
+    if args.forecasts:
+        fcs = pkg.extract_forecasts(result)
+        envelopes.append(pkg.relay_forecasts(fcs))
+
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(envelopes, sort_keys=True, indent=2), encoding="utf-8")
+
+    _emit({
+        "ok": True,
+        "command": "relay",
+        "n_envelopes": len(envelopes),
+        "envelopes": envelopes,
+    })
     return 0
 
 
@@ -905,6 +949,15 @@ def _build_parser() -> argparse.ArgumentParser:
     scan_parser.add_argument("--out", default="", help="Write scan summary JSON")
     scan_parser.add_argument("--json", action="store_true", default=True, help="JSON output (default)")
     scan_parser.set_defaults(func=cmd_scan)
+
+    relay_parser = subparsers.add_parser("relay", help="Emit rune / signal-relay envelopes from analysis JSON")
+    relay_parser.add_argument("--input", default="", help="Analysis result JSON")
+    relay_parser.add_argument("--list-runes", action="store_true", default=False)
+    relay_parser.add_argument("--no-signal", action="store_true", default=False)
+    relay_parser.add_argument("--no-scan", action="store_true", default=False)
+    relay_parser.add_argument("--forecasts", action="store_true", default=False, help="Also emit forecast rune envelope")
+    relay_parser.add_argument("--out", default="")
+    relay_parser.set_defaults(func=cmd_relay)
 
     return parser
 
