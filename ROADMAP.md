@@ -22,16 +22,19 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [ ] Receipt ledger (append-only, hash-chained)
 
 ### Phase 2 — Advanced Analysis & Calibration
-- [ ] Integration with real historical calibration data
-- [ ] Brier score tracking across runs
+- [ ] Integration with real historical calibration data (settled series)
+- [x] Brier score calculation layer (atomic, series, BSS, Murphy, Yates)
+- [x] Forecast extraction + settlement models (`hyperlex.calibration`)
+- [x] Remove decorative `provenance.brier` from open analysis results
 - [ ] Improved neologism pipeline (LLM + rules hybrid)
 - [ ] Community driver modeling (from arXiv semantic variation papers)
 - [ ] Virality prediction models
 - [ ] Memetic typology expansion
 - [x] Slang historical family documentation + emergent branch diagrams (Mermaid)
 - [x] Schema support for lineage attachment on analysis results (`lineage.v1.schema.json`)
-- [x] Simple deterministic lineage matcher (`match_lineage`) wired into `detect_memetic_patterns`
+- [x] Deterministic lineage matcher with confidence scoring
 - [ ] Automated diagram generation from receipt histories
+- [ ] Operator settlement workflow + score log persistence
 
 ### Phase 3 — Hermes / Symbolic Integration
 - [ ] Native integration points for Hermes Agent
@@ -64,15 +67,9 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 
 See SPEC.md and DESIGN.md for detailed requirements per phase.
 
-## Recent Documentation & Code Additions (2026-08-05)
-- `docs/slang-lineages.md` — full methodology, mutation operators, template, live-feed process
-- `schemas/lineage.v1.schema.json` — attachment schema
-- `src/hyperlex/analysis` — `match_lineage()` + automatic attachment under `analysis.lineage`
-- `examples/slang-families/` — 8 diagrams + 3 HTML renderers covering:
-  - betting-sharp (+ timeline)
-  - kinship-address
-  - crypto-degen
-  - brainrot-aura
-  - ai-native
-  - political-status
-  - emergence process
+## Recent Additions (2026-08-05)
+- Lineage system (docs, diagrams, matcher, confidence scoring)
+- **Brier / calibration design** (`docs/brier-calibration.md`)
+- `src/hyperlex/calibration/` — extract_forecasts, settle, score_pair, score_series, Murphy/Yates/BSS
+- Schemas: `forecast.v1`, `settlement.v1`, `brier_series.v1`
+- DESIGN principle 12: Brier requires settlement
