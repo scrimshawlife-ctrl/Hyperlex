@@ -6,7 +6,7 @@ Hyperlex is a **pure function + side-effect minimal** engine.
 ```
 Input (query + ingest_source)
     ↓
-Ingest Layer (real / mock / reddit / x / firecrawl)
+    Ingest Layer (real / mock / reddit / x / firecrawl / crawl4ai)
     ↓
 Analysis Core (arXiv-grounded modules)
     ↓
@@ -23,7 +23,8 @@ Output (strict JSON) + optional side effects
 - `source="real"`: Action Network glossary scraper (live)
 - `source="reddit"`: Best-effort Reddit search
 - `source="mock"`: Deterministic fallback
-- Stubs: `x_search`, `firecrawl` (ready for real adapters)
+- `x_search`: placeholder
+- `firecrawl` and `crawl4ai`: Crawl4AI-backed web crawl adapters
 
 ### 2. Analysis Core
 - `detect_memetic_patterns`

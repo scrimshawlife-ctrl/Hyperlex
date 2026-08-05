@@ -8,11 +8,13 @@
 ## Current Sources
 - **real**: Scrapes Action Network betting terms glossary
 - **reddit**: Best-effort search (JSON fallback on blocks)
+- **firecrawl**: Crawl4AI-powered web crawl
+- **crawl4ai**: explicit alias to crawl-backed source
 - **mock**: Fully deterministic test data
 
 ## Planned
 - X/Twitter via xurl or official API (rate-limited)
-- Firecrawl for broader web signals
+- `x_search` remains a placeholder for direct social ingestion
 - Community glossaries and forums
 
 ## Requirements

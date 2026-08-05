@@ -1,0 +1,30 @@
+name: hyperlex
+description: "Standalone memetic emergence engine for slang detection, hyperstition tracking, and virality analysis"
+version: 0.1.0
+license: MIT
+entrypoint: scripts/hyperlex.py
+supports:
+  - python3
+  - linux
+  - darwin
+tags:
+  - memetics
+  - symbolic-analysis
+  - hermes-skill
+commands:
+  - check
+  - sources
+  - ingest
+  - analyze
+  - validate
+  - verify-receipt
+  - smoke
+metadata:
+  hermes:
+    skill_type: runtime
+    runtime: python
+    stdlib_first: true
+  optional_dependencies:
+    requests: false
+    jsonschema: false
+    crawl4ai: false

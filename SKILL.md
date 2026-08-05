@@ -1,7 +1,7 @@
 ---
 name: hyperlex
-description: "Standalone memetic emergence engine for slang detection, hyperstition tracking, virality scoring, and symbolic signal analysis. Wired real ingest + arXiv-grounded modules (neologism, semantic variation, memetics protocol, hyperstition loops). Produces strict provenance-rich JSON receipts. Use when designing or running memetic pattern detection, cultural signal foragers, hyperstition risk analysis, or integrating emerging slang/virality into Hermes/Abraxas forecasting and market-signal pipelines. Decoupled, pip-installable."
-version: 1.5.0
+version: 0.1.0
+description: "Standalone memetic emergence engine for slang detection, hyperstition tracking, and virality analysis. Real-ish ingest, bounded analysis, and receipt output."
 license: MIT
 metadata:
   openclaw:
@@ -13,48 +13,39 @@ metadata:
 
 # Hyperlex
 
-**Hermes + OpenClaw** memetic signal engine.
+Hermes + OpenClaw skill for memetic signal foraging.
 
-Hosts: **Hermes**, **OpenClaw**, standalone Python package.
+## Core Commands
 
-## Philosophy
-Hyperlex is the **memetic forager** — a governed, real-data-only engine that surfaces emerging slang, memetic patterns, and hyperstition loops from live cultural signals. It is designed to feed Abraxas-Orchestra, Hermes runes, and downstream symbolic forecasting systems.
-
-It draws on traditional correspondence systems (Chaos Magic for hyperstition, Numogram for emergence vectors, Peircean signs for signal typology) while remaining strictly evidence-bound.
-
-## Core Commands (Implementation)
+All commands are available from the installed skill directory:
 
 ```bash
-# From installed skill or repo root
-python -m hyperlex                    # full demo + receipt emission
-python scripts/hyperlex.py analyze    # (future) repo or signal analysis
-python scripts/hyperlex.py forager    # real ingest run
+python3 scripts/hyperlex.py check
+python3 scripts/hyperlex.py sources
+python3 scripts/hyperlex.py ingest "<query>" --source <mock|real|glossary|web|reddit|urban|wikipedia|combined|x_search|firecrawl|crawl4ai>
+python3 scripts/hyperlex.py analyze --query "<query>" [--source <source>] [--structured-ingest]
+python3 scripts/hyperlex.py analyze --input <ingest.json> [--validate]
+python3 scripts/hyperlex.py validate <artifact.json>
+python3 scripts/hyperlex.py verify-receipt <receipt.json>
+python3 scripts/hyperlex.py smoke
 ```
 
-## Public API (Package)
+## Public API (package)
+
 ```python
-import hyperlex
+from hyperlex import ingest_signal, fetch_ingest, detect_memetic_patterns
+from hyperlex import mock_integrate_with_external_signal, emit_receipt, schemas
 
-result = hyperlex.detect_memetic_patterns(ingest_source="real")
-signal = hyperlex.mock_integrate_with_external_signal(result)
-receipt_path = hyperlex.emit_receipt(result)
+result = detect_memetic_patterns(query="sharp money revenge", ingest_source="mock")
+signal = mock_integrate_with_external_signal(result)
+receipt_path = emit_receipt(result)
+ok, msg = schemas.validate_result(result)
 ```
 
-## Key Outputs
-- Strict JSON with `observed | inferred | speculative`
-- `provenance` block (canonical_hash, arxiv_concepts, brier, ingest_source)
-- `analysis` blocks: neologisms, semantic_variation, virality (hybrid), memetics, hyperstition
-- Receipt with integrity hash
+## Notes
 
-## Integration with Abraxas-Orchestra
-Hyperlex modules can be symbolically structured using Orchestra frameworks (e.g., Numogram loci for emergence stages, Enochian for signal transmission).
-
-See `docs/INTEGRATION_WITH_ORCHESTRA.md` (to be added) and references/.
-
-## Install (as Hermes skill)
-```bash
-# After cloning or via skill manager
-bash install.sh
-```
-
-See README.md and docs/ for full design surface.
+- `firecrawl` is backed by a Crawl4AI web crawler, and `crawl4ai` is an explicit
+  alias for the same adapter. `x_search` remains a placeholder for future direct
+  social ingestion.
+- Outputs are validated against JSON schemas under `schemas/`.
+- No required external services are required to run the baseline skill.

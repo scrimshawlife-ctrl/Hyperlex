@@ -1,102 +1,44 @@
-# Hyperlex Technical Specification v1.6
+# Hyperlex Technical Specification v0.1.0
 
-## Public API
+## Runtime API
 
-### ingest_signal(query: str, source: str = "mock") -> str
-### fetch_ingest(query: str, source: str = "mock", structured: bool = True) -> dict
+### Package
 
-`ingest_signal` returns raw text (backward compatible).
+- `ingest_signal(query: str, source: str = "mock") -> str`
+- `fetch_ingest(query: str, source: str = "mock", structured: bool = True, max_terms: int = 8) -> dict`
+- `detect_memetic_patterns(query: str = ..., ingest_source: str = "mock", use_structured_ingest: bool = False, validate: bool = False) -> dict`
+- `mock_integrate_with_external_signal(result: dict) -> dict`
+- `emit_receipt(result: dict, out_dir: str | Path | None = None, validate: bool = False) -> Path`
 
-`fetch_ingest` returns structured data with extracted terms and metadata.
+Supported sources:
+- `mock`, `real`, `glossary`, `web`, `reddit`, `urban`, `wikipedia`, `combined`, `x_search`, `firecrawl`, `crawl4ai`
 
-Supported sources (expanded v1.6):
-- "mock"
-- "real" / "glossary" / "web" (Action Network)
-- "reddit"
-- "urban" (Urban Dictionary)
-- "wikipedia"
-- "x_search", "firecrawl" (stubs)
-- "combined" (multi-source)
+### Command Surface
 
-### detect_memetic_patterns(query: str = ..., ingest_source: str = "mock") -> dict
-Returns full analysis dict.
+Executable entrypoint:
 
-### mock_integrate_with_external_signal(result: dict) -> dict
-Returns:
-```json
-{
-  "signal_id": "...",
-  "virality_boost": float,
-  "hyperstition_risk": "ACTUALIZING | DORMANT | ...",
-  "confidence": float,
-  "actionable": "MONITOR | ESCALATE | IGNORE",
-  ...
-}
+```bash
+python3 scripts/hyperlex.py check
+python3 scripts/hyperlex.py sources
+python3 scripts/hyperlex.py ingest <query> [--source ...] [--structured]
+python3 scripts/hyperlex.py analyze [--query ...] [--source ...] [--structured-ingest] [--validate]
+python3 scripts/hyperlex.py analyze --input <ingest.json>
+python3 scripts/hyperlex.py validate <artifact.json>
+python3 scripts/hyperlex.py verify-receipt <receipt.json>
 ```
 
-### emit_receipt(result: dict, out_dir: str | None = None) -> Path
-Writes timestamped receipt with integrity hash.
+## Output (canonical fields)
 
-## Schemas
+Result objects follow `schemas/result.v1.schema.json` and must include:
+- `observed`, `inferred`, `speculative`
+- `provenance` with at least `canonical_hash`, `timestamp`, `version`, `brier`, `hyperstition_risk`, `ingest_source`
+- `analysis` object
 
-See the canonical schemas in the `schemas/` directory at repo root:
+Receipts follow `schemas/receipt.v1.schema.json` and embed a `receipt` block
+containing `path` and `integrity`.
 
-- `schemas/ingest.v1.schema.json`
-- `schemas/result.v1.schema.json`
-- `schemas/receipt.v1.schema.json`
+## Error handling
 
-Full details in `schemas/README.md`.
-
-## Output Schema (detect_memetic_patterns) (deprecated - use root schemas)
-
-```json
-{
-  "observed": "string",
-  "inferred": "string",
-  "speculative": "string",
-  "provenance": {
-    "canonical_hash": "16-char hex",
-    "timestamp": "ISO8601",
-    "version": "1.5.0",
-    "brier": 0.89,
-    "hyperstition_risk": "ACTUALIZING",
-    "memclaw": "...",
-    "arxiv_concepts_applied": ["neologism_pipeline", ...],
-    "ingest_source": "real"
-  },
-  "analysis": {
-    "neologisms": [{ "term": "...", "confidence": 0.0 }],
-    "semantic_variation": { "sense": "...", "driver": "...", "community": "..." },
-    "virality": {
-      "hybrid_score": 0.0,
-      "velocity": 0.0,
-      "acceleration": 0.0
-    },
-    "memetics": {
-      "is_memetic": true,
-      "typology": "...",
-      "score": 0.0
-    },
-    "hyperstition": {
-      "loop_stage": "ACTUALIZING",
-      "mechanism": "..."
-    }
-  },
-  "notes": "...",
-  "recommendation": "...",
-  "receipt": { "path": "...", "integrity": "..." }
-}
-```
-
-## Receipt Requirements
-- Written to `~/.hyperlex/receipts/` by default (or provided out_dir)
-- Filename: `hyperlex_{timestamp}.json`
-- Must contain full result + receipt block
-
-## Versioning
-- Semantic versioning on package
-- Breaking changes require major version + SPEC update here
-
-## Error Handling
-- Real ingest failures → graceful fallback with provenance note
-- All errors visible in returned dict (no silent failures for public API)
+- Ingest failures must not crash the runtime.
+- Failures are exposed as explicit textual fallback content and optional schema metadata.
+- `scripts/hyperlex.py validate` and `verify-receipt` return non-zero exit code on invalid artifacts.
