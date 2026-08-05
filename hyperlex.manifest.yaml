@@ -1,5 +1,5 @@
 name: hyperlex
-version: 0.2.1
+version: 0.2.2
 display_name: Hyperlex
 kind: hermes-openclaw-skill
 description: >
@@ -61,6 +61,8 @@ commands:
   - smoke
   - scan
   - relay
+  - feedback
+  - signal
 
 intents:
   - check
@@ -79,6 +81,8 @@ intents:
   - smoke
   - scan
   - relay
+  - feedback
+  - signal
 
 schemas:
   - schemas/ingest.v1.schema.json

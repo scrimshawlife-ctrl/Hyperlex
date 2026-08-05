@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hyperlex"
-version = "0.2.1"
+version = "0.2.2"
 description = "Standalone memetic emergence engine for slang detection, hyperstition, virality, lineage, and settled Brier calibration."
 authors = [
     {name = "Applied Alchemy Labs", email = "scrimshawlife@gmail.com"}

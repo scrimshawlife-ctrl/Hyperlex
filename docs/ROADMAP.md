@@ -37,8 +37,8 @@ Hyperlex modules under `hyperlex.compat.abraxas` (no Abraxas import).
 - [x] Hermes skill packaging + install
 - [x] Rune / signal relay (`RUNE.HLX.*`)
 - [x] Cron / LIVE_EMERGENCE_SCAN
-- [ ] Hyperstition loop feedback into forecasting systems
-- [ ] Market-signal / forecast pipeline connectors (generic)
+- [x] Hyperstition loop feedback into forecasting systems
+- [x] Market-signal / forecast pipeline connectors (generic)
 
 ## Phase 4 — Production & Ecosystem
 - [x] Local/Hermes packaging — **no public PyPI publish planned**

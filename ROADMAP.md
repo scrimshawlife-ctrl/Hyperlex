@@ -46,8 +46,8 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Hermes skill packaging (`SKILL.md`, `install.sh` → `~/.hermes/skills/hyperlex`)
 - [x] Native skill install path + post-install check/smoke
 - [x] Rune / signal relay (`hyperlex.relay`, RUNE.HLX.*)
-- [ ] Hyperstition loop feedback into forecasting systems
-- [ ] Market-signal and forecast pipeline connectors (generic)
+- [x] Hyperstition loop feedback into forecasting systems (`connectors.hyperstition_feedback`)
+- [x] Market-signal and forecast pipeline connectors (`connectors.market_signal`)
 - [x] Cron / autonomous monitoring (`scan` + `examples/cron/live-emergence-scan.job.json`)
 
 ### Phase 4 — Production & Ecosystem

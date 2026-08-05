@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional
 
 from .mapping import (
     MAPPING_VERSION,
@@ -25,14 +25,18 @@ def extract_forecasts(
     *,
     receipt_ref: Optional[Dict[str, str]] = None,
     mapping_version: str = MAPPING_VERSION,
+    hyperstition_stage_map: Optional[Mapping[str, float]] = None,
 ) -> List[Dict[str, Any]]:
     """
     Pure extraction of forecast objects from an analysis result.
 
     Does not write files. Does not compute Brier scores.
+
+    hyperstition_stage_map: optional override for EMERGENT/ACTUALIZING → f
+    (from connectors.hyperstition_feedback; future forecasts only).
     """
-    if mapping_version != MAPPING_VERSION:
-        # only v1 defined; unknown versions yield no forecasts
+    # Allow v1 and explicit feedback-suffixed versions that still use v1 maps
+    if mapping_version != MAPPING_VERSION and not str(mapping_version).startswith(MAPPING_VERSION):
         return []
 
     analysis = result.get("analysis") or {}
@@ -85,8 +89,16 @@ def extract_forecasts(
             "context": ctx,
         })
 
-    # hyperstition.stage
-    mapped = map_hyperstition(analysis.get("hyperstition"))
+    # hyperstition.stage (optional feedback override map)
+    if hyperstition_stage_map is not None:
+        from ..connectors.hyperstition_feedback import map_hyperstition_with_override
+
+        mapped = map_hyperstition_with_override(
+            analysis.get("hyperstition"),
+            stage_map=hyperstition_stage_map,
+        )
+    else:
+        mapped = map_hyperstition(analysis.get("hyperstition"))
     if mapped:
         prob, ctx = mapped
         forecasts.append({

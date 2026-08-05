@@ -1,56 +1,59 @@
 # Hyperlex Quickstart
 
-## Install as Hermes skill
+Standalone app. Hermes skill install recommended.
+
+## Install
 
 ```bash
-git clone https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs.git
-cd Hyperlex-Hermes-Specs
-bash install.sh --dry-run
 bash install.sh
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
+H="$HERMES_SKILL_DIR/scripts/hyperlex.py"
+python3 "$H" check && python3 "$H" smoke
 ```
 
-## First run
+## Full operator loop
 
 ```bash
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" sources
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" analyze \
-  --query "sharp steam square revenge" \
-  --source mock \
-  --forecasts \
-  --validate
+# 1. Analyze + receipt + forecasts
+python3 "$H" analyze --query "sharp steam revenge" --source mock \
+  --forecasts --receipt --append-log --out /tmp/hlx.json
+
+# 2. Rune envelopes + market/forecast packets
+python3 "$H" relay --input /tmp/hlx.json --forecasts
+python3 "$H" signal --input /tmp/hlx.json
+
+# 3. Settle (operator)
+python3 "$H" settle --forecast-id <id> --decision TRUE \
+  --authority-note "review confirmed"
+
+# 4. Score series + optional hyperstition feedback
+python3 "$H" score-series --mean-shift --verify-chain
+python3 "$H" feedback --signal-key hyperstition.stage
+
+# 5. Cron scan
+python3 "$H" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" \
+  --source mock --receipt --forecasts --append-log
 ```
 
-## Operator settle path
+## Library
 
-```bash
-# Append forecasts to score log during analyze
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" analyze \
-  --query "sharp steam" --source mock \
-  --forecasts --append-log
+```python
+from hyperlex import (
+    detect_memetic_patterns, extract_forecasts, emit_receipt,
+    settle_and_log, recompute_series, build_market_signal,
+    hyperstition_feedback_from_series,
+)
+from hyperlex.compat.abraxas import to_brier_ledger_entry, list_hlx_runes
 
-# Settle one forecast (TRUE/FALSE)
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" settle \
-  --forecast-id <id> --decision TRUE \
-  --authority-note "operator review"
-
-# Recompute Brier series + chain verify
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" score-series \
-  --mean-shift --verify-chain
+result = detect_memetic_patterns("sharp steam", ingest_source="mock")
+assert result["provenance"]["brier"] is None
+emit_receipt(result)
+sig = build_market_signal(result)
 ```
 
-Score log: `~/.hyperlex/score_log.jsonl` (override with `HYPERLEX_SCORE_LOG` or `--log`).
+## Docs
 
-## Design laws
-
-1. **Real over synthetic** — mock is for tests only; mark it.
-2. **Provenance sacred** — receipts carry integrity hashes.
-3. **Brier requires settlement** — open analysis has `brier: null`.
-4. **Fail closed** — empty series → `NOT_COMPUTABLE`.
-
-## More
-
-- Full contract: `SKILL.md`
-- Calibration design: `docs/brier-calibration.md`
-- Lineages: `docs/slang-lineages.md`
+- [docs/api-v1.md](docs/api-v1.md) — frozen API
+- [docs/standalone-app.md](docs/standalone-app.md) — architecture posture
+- [docs/connectors.md](docs/connectors.md) — signal + feedback
+- [docs/brier-calibration.md](docs/brier-calibration.md)

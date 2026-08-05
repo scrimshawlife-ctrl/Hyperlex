@@ -1,76 +1,94 @@
 # Hyperlex Architecture
 
-## High-Level Overview
-Hyperlex is a **pure function + side-effect minimal** engine.
+**Version:** 0.2.x · **Mode:** standalone application
+
+Hyperlex is a pure-function-first memetic engine with optional append-only
+side effects (receipts, score log, receipt ledger). It does **not** import
+Abraxas. Relevant Abraxas wire shapes live under `hyperlex.compat.abraxas`.
+
+## Data flow
 
 ```
-Input (query + ingest_source)
-    ↓
-    Ingest Layer (real / mock / reddit / x / firecrawl / crawl4ai)
-    ↓
-Analysis Core (arXiv-grounded modules)
-    ↓
-Integration Layer (external signal)
-    ↓
-Receipt Emitter (provenance + integrity)
-    ↓
-Output (strict JSON) + optional side effects
+query + source
+    → intake (cache, rate limit, fingerprints)
+    → analysis (neologism, lineage, virality, memetics, hyperstition)
+    → optional: extract_forecasts (no Brier)
+    → optional: emit_receipt + receipt ledger
+    → optional: relay RUNE.HLX.* envelopes
+    → time / operator settlement
+    → score_pair / score_series (Brier only if settled)
+    → optional: market_signal / forecast_pipeline connectors
+    → optional: hyperstition feedback → future mapping advice
 ```
 
-## Core Modules
+## Package layout
 
-### 1. Ingest Layer (`ingest_signal`)
-- `source="real"`: Action Network glossary scraper (live)
-- `source="reddit"`: Best-effort Reddit search
-- `source="mock"`: Deterministic fallback
-- `x_search`: placeholder
-- `firecrawl` and `crawl4ai`: Crawl4AI-backed web crawl adapters
-
-### 2. Analysis Core
-- `detect_memetic_patterns`
-  - `detect_neologisms`
-  - `trace_semantic_variation`
-  - `compute_virality_score` (hybrid)
-  - `memetics_protocol_check`
-  - `simulate_hyperstition_loop`
-
-### 3. Integration Layer
-- `mock_integrate_with_external_signal`
-  - Extracts virality_boost, hyperstition_risk, confidence, actionable
-  - Designed to feed any downstream (market signals, forecasts, runes)
-
-### 4. Provenance & Receipts
-- Every run produces canonical hash
-- `emit_receipt()` writes timestamped, integrity-hashed JSON
-- Brier baseline carried in provenance
-
-## Data Flow (Strict)
-All public functions return or accept only:
-- Plain Python dicts / strings
-- No hidden state
-- Deterministic when possible
-
-## Package Structure (Implementation)
 ```
-hyperlex/
-├── __init__.py          # Public API
-├── engine.py            # Core logic + arXiv modules
-├── __main__.py          # CLI
-tests/
-out/                     # Local artifacts
+src/hyperlex/
+  intake/           # ingest adapters + cache + glossaries + x_search
+  analysis/         # memetic core + lineage matcher
+  synthesis/        # external signal stub
+  receipt/          # emit + hash-chained receipt ledger
+  calibration/      # forecast, settle, score, score_log, recalibrate
+  relay/            # RUNE.HLX.* envelopes
+  connectors/       # market-signal + forecast pipeline packets (generic)
+  compat/abraxas/   # BrierLedger/Score/operator review/claims/runes (no Abraxas import)
+  provenance.py     # source fingerprints
+  cli.py            # python -m hyperlex
+  schemas/          # package-local JSON schemas
 ```
 
-## Integration Points (Future)
-- Hermes skills / cron
-- Hollersports-style calibration (decoupled)
-- Generic market / narrative signal pipelines
-- Abraxas symbolic intelligence
+## Layers
+
+### 1. Intake
+| Source | Role |
+|--------|------|
+| `mock` | Deterministic, query-aware offline |
+| `glossary` / `real` / `web` | Action Network |
+| `glossary_expanded` | Multi-glossary pack |
+| `reddit`, `urban`, `wikipedia` | Live public APIs |
+| `x_search` | Bearer API → xurl → stub |
+| `crawl4ai` / `firecrawl` | Web crawl |
+| `combined` | Ordered multi-source merge |
+
+Disk cache: `~/.hyperlex/cache/` · Rate limits: `~/.hyperlex/rate_limit.json`
+
+### 2. Analysis
+- Neologisms, semantic variation, virality hybrid, memetics protocol, hyperstition stage
+- Lineage match + confidence (`≥ 0.42`) with transparent `score_breakdown`
+- Open results: `provenance.brier = null` always
+
+### 3. Calibration
+- Signal→f maps (lineage, virality, hyperstition stage)
+- Settlement → atomic/series Brier, Murphy, Ferro–Fricker, Yates, Vieira, Δf
+- Score log: `~/.hyperlex/score_log.jsonl`
+- Hyperstition feedback: advisory stage-map updates from settled series (future forecasts only)
+
+### 4. Receipts & ledgers
+- Receipt files: `~/.hyperlex/receipts/`
+- Receipt ledger: `~/.hyperlex/receipt_ledger.jsonl` (hash-chained index)
+
+### 5. Relay & connectors
+- `relay` → `RUNE.HLX.LIVE_EMERGENCE_SCAN`, `COMMUNICATION_RELAY`, `CALIBRATION_*`
+- `connectors.market_signal` → generic market/narrative signal packet
+- `connectors.forecast_pipeline` → handoff pack for external forecast systems
+
+### 6. Host compatibility (optional)
+Hosts import **from Hyperlex**:
+
+```python
+from hyperlex.compat.abraxas import (
+    to_brier_ledger_entry,
+    to_brier_score_packet,
+    to_operator_brier_review,
+    list_hlx_runes,
+)
+```
 
 ## Constraints
-- No synthetic data
-- Real ingest preferred
-- Append-only ledgers for serious use
-- Governed LLM use only (when added)
-- Python 3.10+
+- No fabricated Brier without settlement
+- Fail-closed `NOT_COMPUTABLE`
+- OBSERVED / INFERRED / SPECULATIVE discipline
+- Python ≥ 3.10, stdlib-first baseline
 
-See SPEC.md for exact interfaces and schemas.
+See [SPEC.md](./SPEC.md), [docs/api-v1.md](./docs/api-v1.md), [docs/standalone-app.md](./docs/standalone-app.md).

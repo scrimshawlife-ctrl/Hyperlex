@@ -63,6 +63,12 @@ from .calibration import (
     default_log_path,
     NOT_COMPUTABLE,
 )
+from . import connectors
+from .connectors import (
+    build_market_signal,
+    build_forecast_pipeline,
+    hyperstition_feedback_from_series,
+)
 
 # Stable public API (v0.2 freeze) — see docs/api-v1.md
 API_V1 = (
@@ -88,8 +94,16 @@ API_V1 = (
     "PKG_VERSION",
 )
 
+# Extended (0.2.2+) — stable additive surface, not removing API_V1
+API_EXTENDED = (
+    "build_market_signal",
+    "build_forecast_pipeline",
+    "hyperstition_feedback_from_series",
+)
+
 __all__ = [
     *API_V1,
+    *API_EXTENDED,
     "default_ledger_path",
     "list_receipts",
     "verify_ledger_chain",
@@ -103,9 +117,11 @@ __all__ = [
     "default_log_path",
     "calibration",
     "relay",
+    "connectors",
     "compat",
     "schemas",
     "API_V1",
+    "API_EXTENDED",
 ]
 
 __version__ = PKG_VERSION

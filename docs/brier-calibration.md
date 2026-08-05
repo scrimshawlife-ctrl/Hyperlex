@@ -1,7 +1,7 @@
 # Hyperlex Brier & Calibration Design
 
 **Status**: Design surface active (v1.1 diagnostics)  
-**Version target**: 0.2.0  
+**Version target**: 0.2.2  
 **Principle alignment**: Real Over Synthetic · Provenance Sacred · Evolution via Receipts · Determinism
 
 ## Intent
@@ -262,6 +262,10 @@ python3 scripts/hyperlex.py verify-score-log
 | Hermes / Orchestra | Forecasts and series scores are runnable signals for runes / cron |
 
 ---
+
+## Hyperstition feedback (v0.2.2)
+
+Settled `hyperstition.stage` series can advise an updated discrete stage→f map for **future** forecasts only (`hyperstition_feedback_from_series` / CLI `feedback`). Historical forecasts are never rewritten. See `docs/connectors.md`.
 
 ## Explicit Non-Goals (v1)
 

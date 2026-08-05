@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.2 — Docs refresh, market connectors, hyperstition feedback (2026-08-05)
+
+- Full docs pass: ARCHITECTURE, README, QUICKSTART, RELEASE_NOTES, connectors.md.
+- `hyperlex.connectors.market_signal` — market_signal.v1 + forecast_pipeline.v1 packets.
+- `hyperlex.connectors.hyperstition_feedback` — advisory stage→f map from settled series.
+- CLI: `signal`, `feedback`; `extract_forecasts(..., hyperstition_stage_map=...)`.
+- Roadmap: hyperstition feedback + market connectors marked done.
+
 ## 0.2.1 — Standalone app, API freeze, golden receipts, Abraxas modules (2026-08-05)
 
 - Docs synced: `docs/ROADMAP.md`, `docs/api-v1.md`, `docs/standalone-app.md`, SPEC/DESIGN.

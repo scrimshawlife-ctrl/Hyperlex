@@ -159,6 +159,66 @@ def cmd_sources(_args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_signal(args: argparse.Namespace) -> int:
+    """Emit generic market_signal + forecast_pipeline packets."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    payload, load_error = _get_input_payload(args.input)
+    if load_error:
+        _emit({"ok": False, "error": load_error})
+        return 2
+    if payload is None:
+        _emit({"ok": False, "error": "input required"})
+        return 2
+
+    result = payload.get("result") if isinstance(payload.get("result"), dict) and "analysis" not in payload else payload
+    from hyperlex.connectors import build_market_signal, build_forecast_pipeline
+
+    series = None
+    if args.with_series:
+        series = pkg.recompute_series(
+            path=_resolve_log_path(args) if hasattr(args, "log") else None,
+            signal_key=args.signal_key or None,
+        )
+
+    market = build_market_signal(result, domain=args.domain or "narrative")
+    pipeline = build_forecast_pipeline(result, market_signal=market, series=series)
+    out = {"ok": True, "command": "signal", "market_signal": market, "forecast_pipeline": pipeline}
+    if args.out:
+        Path(args.out).write_text(json.dumps(out, indent=2, sort_keys=True), encoding="utf-8")
+    _emit(out)
+    return 0
+
+
+def cmd_feedback(args: argparse.Namespace) -> int:
+    """Hyperstition (or series) feedback → advisory mapping for future forecasts."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.connectors import hyperstition_feedback_from_series
+
+    log_path = _resolve_log_path(args)
+    series = pkg.recompute_series(path=log_path, signal_key=args.signal_key or "hyperstition.stage")
+    feedback = hyperstition_feedback_from_series(series)
+    _emit({
+        "ok": True,
+        "command": "feedback",
+        "log_path": str(log_path),
+        "series": {
+            "status": series.get("status"),
+            "n": series.get("n"),
+            "series_brier": series.get("series_brier"),
+        },
+        "feedback": feedback,
+    })
+    return 0
+
+
 def cmd_relay(args: argparse.Namespace) -> int:
     pkg, err = _import_hyperlex()
     if pkg is None:
@@ -958,6 +1018,22 @@ def _build_parser() -> argparse.ArgumentParser:
     relay_parser.add_argument("--forecasts", action="store_true", default=False, help="Also emit forecast rune envelope")
     relay_parser.add_argument("--out", default="")
     relay_parser.set_defaults(func=cmd_relay)
+
+    sig_parser = subparsers.add_parser("signal", help="Build market_signal + forecast_pipeline packets")
+    sig_parser.add_argument("--input", required=True, help="Analysis result JSON")
+    sig_parser.add_argument("--domain", default="narrative")
+    sig_parser.add_argument("--with-series", action="store_true", default=False)
+    sig_parser.add_argument("--signal-key", default="")
+    sig_parser.add_argument("--log", default="")
+    sig_parser.add_argument("--repo-log", action="store_true", default=False)
+    sig_parser.add_argument("--out", default="")
+    sig_parser.set_defaults(func=cmd_signal)
+
+    fb_parser = subparsers.add_parser("feedback", help="Hyperstition/series feedback for future forecast maps")
+    fb_parser.add_argument("--signal-key", default="hyperstition.stage")
+    fb_parser.add_argument("--log", default="")
+    fb_parser.add_argument("--repo-log", action="store_true", default=False)
+    fb_parser.set_defaults(func=cmd_feedback)
 
     return parser
 
