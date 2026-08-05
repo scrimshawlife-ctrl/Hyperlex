@@ -171,27 +171,213 @@ def humanize_slang_output(text: str) -> str:
 
 
 def detect_neologisms(text: str) -> List[Dict[str, Any]]:
-    candidates = re.findall(r'\b([a-z]{4,}(?:block|nine|sharp|holler|revenge|low|false))\b', text.lower())
-    results = []
-    for c in set(candidates):
-        formation = "extra-grammatical" if any(x in c for x in ["block", "nine"]) else "grammatical"
-        score = 0.7 if len(c) > 6 else 0.4
-        results.append({"term": c, "formation": formation, "confidence": round(score, 2)})
+    """Rule-based neologism candidates (no LLM). Multi-word + formation tags."""
+    corpus = (text or "").lower()
+    results: List[Dict[str, Any]] = []
+    seen = set()
+
+    # multi-word tactical / identity phrases
+    multi = re.findall(
+        r"\b((?:sharp money|diamond hands|paper hands|false nine|low block|"
+        r"aura farming|skill issue|context window|organic velocity|line movement))\b",
+        corpus,
+    )
+    for phrase in multi:
+        if phrase in seen:
+            continue
+        seen.add(phrase)
+        results.append({
+            "term": phrase,
+            "formation": "compound_phrase",
+            "confidence": 0.78,
+            "provenance": "INFERRED",
+        })
+
+    # single-token morphological / slang stems
+    candidates = re.findall(
+        r"\b([a-z]{3,}(?:block|nine|sharp|holler|revenge|degen|slop|aura|pilled|rot))\b",
+        corpus,
+    )
+    for c in candidates:
+        if c in seen:
+            continue
+        seen.add(c)
+        if any(x in c for x in ("block", "nine")):
+            formation = "extra-grammatical"
+        elif c.endswith("pilled") or c.endswith("rot"):
+            formation = "derivational"
+        else:
+            formation = "grammatical"
+        score = 0.7 if len(c) > 6 else 0.45
+        results.append({
+            "term": c,
+            "formation": formation,
+            "confidence": round(score, 2),
+            "provenance": "INFERRED",
+        })
     return results
 
 
-def trace_semantic_variation(term: str, context: str) -> Dict[str, str]:
-    if "betting" in context.lower() or "sharp" in term:
-        return {"sense": "tactical/quant", "driver": "communicative_need + semantic_distinction", "community": "sharp_money"}
-    return {"sense": "general", "driver": "communicative_need", "community": "general_betting"}
+# Community drivers (arXiv semantic-variation inspired labels)
+COMMUNITY_DRIVERS = (
+    "communicative_need",
+    "semantic_distinction",
+    "community_identity",
+    "platform_compression",
+    "status_competition",
+    "risk_signaling",
+)
 
 
-def compute_virality_score(observed_text: str) -> Dict[str, float]:
+def trace_semantic_variation(
+    term: str,
+    context: str,
+    *,
+    lineage_family: Optional[str] = None,
+    typology: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Sense + driver tags for semantic variation.
+
+    Drivers are multi-label INFERRED cues, not exclusive.
+    """
+    ctx = (context or "").lower()
+    term_l = (term or "").lower()
+    drivers: List[str] = []
+
+    if any(k in ctx for k in ("sharp", "steam", "betting", "line", "clv")) or "sharp" in term_l:
+        sense = "tactical/quant"
+        community = "sharp_money"
+        drivers.extend(["communicative_need", "semantic_distinction"])
+    elif any(k in ctx for k in ("degen", "hodl", "rekt", "moon")):
+        sense = "risk/conviction"
+        community = "crypto_degen"
+        drivers.extend(["community_identity", "risk_signaling"])
+    elif any(k in ctx for k in ("agentic", "slop", "hallucin", "clanker", "token")):
+        sense = "machine-culture"
+        community = "ai_native"
+        drivers.extend(["platform_compression", "semantic_distinction"])
+    elif any(k in ctx for k in ("aura", "mid", "based", "brainrot")):
+        sense = "status/irony"
+        community = "status_publics"
+        drivers.extend(["status_competition", "community_identity"])
+    elif any(k in ctx for k in ("bro", "sis", "twin", "unc", "family")):
+        sense = "kinship-address"
+        community = "fictive_kin"
+        drivers.extend(["community_identity", "communicative_need"])
+    else:
+        sense = "general"
+        community = "general"
+        drivers.append("communicative_need")
+
+    # Lineage / typology soft tags
+    if lineage_family:
+        drivers.append("community_identity")
+    if typology in ("platform_agency",):
+        drivers.append("platform_compression")
+    if typology in ("risk_identity",):
+        drivers.append("risk_signaling")
+    if typology in ("status_radiation", "irony_inversion"):
+        drivers.append("status_competition")
+
+    # dedupe preserve order
+    seen_d = []
+    for d in drivers:
+        if d in COMMUNITY_DRIVERS and d not in seen_d:
+            seen_d.append(d)
+
+    return {
+        "sense": sense,
+        "driver": " + ".join(seen_d) if seen_d else "communicative_need",
+        "drivers": seen_d,
+        "community": community,
+        "lineage_family": lineage_family,
+        "provenance": "INFERRED",
+    }
+
+
+def compute_virality_score(observed_text: str) -> Dict[str, Any]:
+    """Descriptive hybrid virality features (not a future prediction)."""
     velocity = min(1.0, len(observed_text.split()) / 40.0)
     acceleration = 0.6 if "velocity" in observed_text.lower() or "narrative" in observed_text.lower() else 0.3
+    # keyword boosts for coordination / spread language
+    spread_cues = sum(
+        1 for k in ("spread", "steam", "coordinated", "organic", "everyone", "viral")
+        if k in observed_text.lower()
+    )
+    acceleration = min(1.0, acceleration + 0.08 * spread_cues)
     network_prior = 0.75
     hybrid = round((velocity * 0.3 + acceleration * 0.4 + network_prior * 0.3), 3)
-    return {"hybrid_score": hybrid, "velocity": round(velocity, 3), "acceleration": round(acceleration, 3)}
+    return {
+        "hybrid_score": hybrid,
+        "velocity": round(velocity, 3),
+        "acceleration": round(acceleration, 3),
+        "spread_cues": spread_cues,
+    }
+
+
+def predict_virality(
+    *,
+    hybrid_score: float,
+    velocity: float,
+    acceleration: float,
+    lineage_confidence: Optional[float] = None,
+    hyperstition_stage: Optional[str] = None,
+    memetic_score: Optional[float] = None,
+    n_neologisms: int = 0,
+    horizon: str = "short",
+) -> Dict[str, Any]:
+    """
+    Weak predictive estimate of near-term virality from current features.
+
+    Pure function. Does NOT emit Brier and is not a settled forecast.
+    Label: SPECULATIVE (forward-looking) with method transparency.
+    """
+    h = max(0.0, min(1.0, float(hybrid_score)))
+    v = max(0.0, min(1.0, float(velocity)))
+    a = max(0.0, min(1.0, float(acceleration)))
+    lc = float(lineage_confidence) if isinstance(lineage_confidence, (int, float)) else 0.0
+    ms = float(memetic_score) if isinstance(memetic_score, (int, float)) else 0.0
+    stage = str(hyperstition_stage or "").upper()
+    stage_boost = 0.12 if stage == "ACTUALIZING" else (0.04 if stage == "EMERGENT" else 0.0)
+    neo_boost = min(0.1, 0.03 * max(0, int(n_neologisms)))
+
+    # Weighted blend: descriptive hybrid dominates; lineage/memetic/stage nudge
+    predicted = (
+        h * 0.50
+        + v * 0.12
+        + a * 0.18
+        + min(1.0, lc) * 0.10
+        + min(1.0, ms) * 0.05
+        + stage_boost
+        + neo_boost
+    )
+    predicted = round(max(0.0, min(0.98, predicted)), 3)
+
+    # Confidence in the *prediction itself* (not outcome Brier)
+    conf = 0.35 + 0.15 * (1 if lc >= 0.42 else 0) + 0.1 * (1 if stage == "ACTUALIZING" else 0)
+    conf = round(min(0.75, conf + 0.05 * min(3, n_neologisms)), 3)
+
+    delta = round(predicted - h, 3)
+    return {
+        "predicted_hybrid": predicted,
+        "baseline_hybrid": h,
+        "delta_vs_baseline": delta,
+        "horizon": horizon,
+        "confidence": conf,
+        "method": "feature_blend_v0",
+        "features_used": {
+            "hybrid_score": h,
+            "velocity": v,
+            "acceleration": a,
+            "lineage_confidence": lc or None,
+            "memetic_score": ms or None,
+            "hyperstition_stage": stage or None,
+            "n_neologisms": n_neologisms,
+        },
+        "provenance": "SPECULATIVE",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+    }
 
 
 # Deterministic memetic typology rules (additive; primary = highest score).
@@ -336,7 +522,6 @@ def detect_memetic_patterns(
 
     observed = humanize_slang_output(raw_signal[:280])
     neos = detect_neologisms(observed)
-    variation = trace_semantic_variation("low block", observed)
     virality = compute_virality_score(observed)
     hyper = simulate_hyperstition_loop(observed)
 
@@ -346,6 +531,25 @@ def detect_memetic_patterns(
         observed,
         lineage_family=(lineage or {}).get("family_id"),
     )
+    variation = trace_semantic_variation(
+        neo_terms[0] if neo_terms else "term",
+        observed,
+        lineage_family=(lineage or {}).get("family_id"),
+        typology=memetic.get("typology_primary") or memetic.get("typology"),
+    )
+
+    # Weak forward estimate — analysis field only (not calibration forecast)
+    virality = dict(virality)
+    virality["prediction"] = predict_virality(
+        hybrid_score=float(virality.get("hybrid_score") or 0.0),
+        velocity=float(virality.get("velocity") or 0.0),
+        acceleration=float(virality.get("acceleration") or 0.0),
+        lineage_confidence=(lineage or {}).get("confidence"),
+        hyperstition_stage=hyper.get("loop_stage"),
+        memetic_score=memetic.get("score"),
+        n_neologisms=len(neos),
+        horizon="short",
+    )
 
     inferred = (
         f"Memetic spread accelerating. Neologisms: {len(neos)}. "
@@ -354,8 +558,11 @@ def detect_memetic_patterns(
     )
     if lineage:
         inferred += f" Lineage: {lineage['family_id']} (conf={lineage['confidence']})."
+    pred = virality.get("prediction") or {}
     speculative = (
         f"{hyper['loop_stage']} hyperstition risk. {hyper['mechanism']}. "
+        f"Virality prediction (SPECULATIVE): {pred.get('predicted_hybrid')} "
+        f"Δ={pred.get('delta_vs_baseline')}. "
         f"Brier requires settlement via hyperlex.calibration — not claimed on open forecasts."
     )
 

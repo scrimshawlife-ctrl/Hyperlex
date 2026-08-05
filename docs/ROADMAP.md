@@ -27,9 +27,9 @@ wire capabilities ship as Hyperlex modules under `hyperlex.compat.abraxas` (no A
 - [x] Lineage system (docs, diagrams, matcher, confidence)
 - [x] Operator settlement + score log
 - [x] Abraxas-compatible modules (`compat.abraxas`: ledger, score packet, review, runes)
-- [ ] Improved neologism pipeline (LLM + rules hybrid)
+- [x] Neologism rules expanded (compounds + formation); LLM hybrid still optional later
 - [ ] Community driver modeling
-- [ ] Virality prediction models
+- [x] Virality prediction v0 (`analysis.virality.prediction`, SPECULATIVE)
 - [x] Memetic typology expansion (rule table + lineage prior)
 - [x] Automated diagram generation from receipt histories (`hyperlex.diagrams`, CLI `diagram`)
 

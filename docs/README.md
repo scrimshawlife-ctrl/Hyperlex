@@ -14,6 +14,7 @@ Hyperlex is a **Hermes skill** (Python package repo). Relevant Abraxas wire shap
 - [Diagrams from receipts](./diagrams.md)
 - [Modules / Ingest](./modules/ingest.md)
 - [Modules / Memetics typology](./modules/memetics.md)
+- [Modules / Virality + drivers](./modules/virality.md)
 
 ## Root specs
 - [ROADMAP.md](../ROADMAP.md) (canonical) · [docs/ROADMAP.md](./ROADMAP.md) (synced)

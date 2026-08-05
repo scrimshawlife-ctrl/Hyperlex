@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.5 — Virality prediction v0, community drivers, richer neologisms (2026-08-05)
+
+- `predict_virality` → `analysis.virality.prediction` (SPECULATIVE; not Brier/calibration).
+- Semantic variation multi-label community drivers.
+- Neologism detector: compound phrases + formation tags.
+- Docs: `docs/modules/virality.md`.
+
 ## 0.2.4 — Hermes skill posture, CI, typology, goldens (2026-08-05)
 
 - Docs: Hyperlex is a **Hermes skill (Python package repo)** — not a separate product app.

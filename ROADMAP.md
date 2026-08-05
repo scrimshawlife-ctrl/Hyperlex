@@ -28,9 +28,9 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Brier score calculation layer (atomic, series, BSS, Murphy, Yates)
 - [x] Forecast extraction + settlement models (`hyperlex.calibration`)
 - [x] Remove decorative `provenance.brier` from open analysis results
-- [ ] Improved neologism pipeline (LLM + rules hybrid)
-- [ ] Community driver modeling (from arXiv semantic variation papers)
-- [ ] Virality prediction models
+- [x] Neologism rules expanded (compounds + formation); LLM hybrid still optional later
+- [x] Community driver modeling (multi-label drivers on semantic variation)
+- [x] Virality prediction v0 (`analysis.virality.prediction`, SPECULATIVE)
 - [x] Memetic typology expansion (rule table + lineage prior)
 - [x] Slang historical family documentation + emergent branch diagrams (Mermaid)
 - [x] Schema support for lineage attachment on analysis results (`lineage.v1.schema.json`)

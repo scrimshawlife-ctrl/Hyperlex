@@ -28,6 +28,7 @@ from .analysis import (
     detect_neologisms,
     trace_semantic_variation,
     compute_virality_score,
+    predict_virality,
     memetics_protocol_check,
     simulate_hyperstition_loop,
     detect_memetic_patterns,
@@ -108,6 +109,7 @@ API_EXTENDED = (
     "diagram_from_ledger",
     "diagram_from_receipt_files",
     "write_diagram_bundle",
+    "predict_virality",
 )
 
 __all__ = [
@@ -118,6 +120,7 @@ __all__ = [
     "verify_ledger_chain",
     "humanize_slang_output",
     "compute_virality_score",
+    "predict_virality",
     "simulate_hyperstition_loop",
     "detect_neologisms",
     "trace_semantic_variation",

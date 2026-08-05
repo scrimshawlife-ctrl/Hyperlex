@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.5
+- Virality prediction v0; community drivers; richer neologism rules.
+
 ## 0.2.4
 - Hermes skill posture docs; typology expansion; CI + golden corpus growth.
 
