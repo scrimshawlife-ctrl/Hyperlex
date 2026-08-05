@@ -37,10 +37,11 @@ src/hyperlex/          ← mechanical
 
 See SKELETON.md for full dual names and loci.
 
-## v1.6 Update — Expanded Ingest + Schemas
+## v0.1.0 Update — Runtime + Crawl4AI ingest
 
 ### Expanded Ingest (gate_of_intake)
-- New sources: `urban` (Urban Dictionary), `wikipedia`, `combined`
+- New sources: `urban` (Urban Dictionary), `wikipedia`, `combined`, `crawl4ai`, `firecrawl`
+- `x_search` remains a placeholder adapter for direct social feed integration.
 - `fetch_ingest(query, source=..., structured=True)` returns rich dict with extracted_terms + metadata
 - Simple TTL cache + better fallbacks
 - Backward compatible `ingest_signal(...)` still returns strings
@@ -50,7 +51,7 @@ See SKELETON.md for full dual names and loci.
 - `schemas/result.v1.schema.json`
 - `schemas/receipt.v1.schema.json`
 - Validation helpers in `hyperlex.schemas`
-- Optional `jsonschema` via `pip install -e ".[schema]"`
+- Optional extras: `pip install .[runtime]` for `requests`, `crawl4ai`, and optional schema/runtime validation helpers.
 - `detect_memetic_patterns(..., validate=True)` and `emit_receipt(..., validate=True)`
 
 ### Usage
@@ -66,7 +67,7 @@ All changes mirrored to `examples/hyperlex-symbolic/` in the specs repo.
 
 ## Root Schemas (exported)
 
-As of v1.6, the canonical schemas have been exported to the repo root:
+As of v0.1.0, the canonical schemas have been exported to the repo root:
 
 - schemas/ingest.v1.schema.json
 - schemas/result.v1.schema.json  
