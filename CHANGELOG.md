@@ -13,13 +13,13 @@
 
 - Added and expanded `docs/slang-lineages.md` (methodology, mutation operators, template, live-feed process).
 - Added `schemas/lineage.v1.schema.json` for analysis lineage attachments.
-- Implemented `match_lineage()` in `src/hyperlex/analysis` and wired it into `detect_memetic_patterns` so results carry `analysis.lineage` when a family matches.
-- Added `examples/slang-families/` with Mermaid diagrams and HTML renderers:
-  - betting-sharp family + timeline
-  - kinship-address
-  - crypto-degen (HODL → diamond hands → ape/rekt/degen)
-  - brainrot-aura (mid/cooked/aura/brainrot)
-  - ai-native (hallucinate → slop → clanker/agentic)
-  - political-status (based/redpilled/cope)
-  - emergence process
-- Updated DESIGN.md (principle 11), ROADMAP.md, schemas/README, and examples README.
+- Implemented `match_lineage()` with confidence scoring; wired into `detect_memetic_patterns`.
+- Added `examples/slang-families/` with Mermaid diagrams and HTML renderers.
+
+## Brier / Calibration (2026-08-05)
+
+- Design: `docs/brier-calibration.md` (forecast → settlement → atomic/series Brier, Murphy, Yates, BSS).
+- Module: `src/hyperlex/calibration/` (`extract_forecasts`, `settle`, `score_pair`, `score_series`).
+- Schemas: `forecast.v1`, `settlement.v1`, `brier_series.v1`.
+- Removed hardcoded `provenance.brier = 0.89`; open results set `brier: null` with `brier_requires_settlement`.
+- DESIGN principle 12: Brier requires settlement; fail-closed `NOT_COMPUTABLE` when outcomes missing.
