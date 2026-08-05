@@ -1,6 +1,6 @@
 # Hyperlex Brier & Calibration Design
 
-**Status**: Design surface active  
+**Status**: Design surface active (v1.1 diagnostics)  
 **Version target**: 0.2.0  
 **Principle alignment**: Real Over Synthetic · Provenance Sacred · Evolution via Receipts · Determinism
 
@@ -54,8 +54,11 @@ Atomic and series scores derived only from settled forecast–outcome pairs.
 | `atomic_score` | \((f - o)^2\) for one pair |
 | `series_brier` | Mean of atomic scores over a cohort |
 | `brier_skill_score` | \(1 - BS / BS_{ref}\) vs climatology or persistence |
-| `murphy` | `{reliability, resolution, uncertainty, brier_score}` |
-| `yates` | `{bias_squared, excess_variance, covariance_deficit, brier_score}` |
+| `murphy` | standard REL − RES + UNC |
+| `murphy_ferro` | Ferro–Fricker bias-corrected Murphy (prefer for small n) |
+| `yates` | classical bias² + excess variance + covariance deficit |
+| `yates_vieira` | non-negative rearrangement: variance mismatch + correlation deficit + bias² |
+| `discrimination` | Δf = mean(f\|o=1) − mean(f\|o=0) |
 | `n` | Number of scored pairs |
 | `status` | `SCORED` or `NOT_COMPUTABLE` |
 
@@ -112,14 +115,47 @@ UNC = ō * (1 - ō)                    # uncertainty (base-rate variance)
 
 Default bins: 10 equal-width on [0, 1).
 
-### Yates decomposition
+**Finite-sample bias:** standard REL is overestimated and UNC underestimated. Prefer Ferro–Fricker when n is small.
+
+### Ferro–Fricker bias-corrected Murphy (v1.1)
 
 ```
-bias²            = (mean(f) - mean(o))²
+UNC̃ = UNĈ + ȳ(1−ȳ)/(n−1)
+RES̃ = REŜ + ȳ(1−ȳ)/(n−1) − (1/n) Σ [n_k/(n_k−1)] ȳ_k(1−ȳ_k)
+REL̃ = REL̂ − (1/n) Σ [n_k/(n_k−1)] ȳ_k(1−ȳ_k)
+```
+
+Bins with `n_k < 2` skip the within-bin correction term. Components floored at 0. Exposed as `murphy_ferro` with `correction: "ferro_fricker"` and optional `uncorrected` snapshot.
+
+### Yates decomposition (classical)
+
+```
+bias²            = (mean(f) - mean(o))²     # calibration-in-the-large (Yates bias)
 excess_variance  = Var(f)
 covariance_deficit = Var(o) - 2*Cov(f, o)
 BS               = bias² + excess_variance + covariance_deficit
 ```
+
+**Operational note:** `bias_squared` is the primary signal for level recalibration of forecast mappings (e.g. shift mean lineage.confidence toward empirical confirmation rate).
+
+### Vieira non-negative Yates (v1.1)
+
+```
+BS = (σ_f − σ_o)² + 2(σ_f σ_o − Cov(f,o)) + (μ_f − μ_o)²
+     ─────────────   ─────────────────────   ─────────────
+     variance          correlation              bias²
+     mismatch          deficit
+```
+
+All three terms ≥ 0. Optimality conditions: match outcome variance, perfect positive correlation, no mean bias. Also reports `rho` when defined.
+
+### Discrimination slope Δf (v1.1)
+
+```
+Δf = mean(f | o=1) − mean(f | o=0)
+```
+
+Requires at least one positive and one negative outcome. Higher Δf = better separation. `NOT_COMPUTABLE` if either class is empty.
 
 ### Fail-closed
 
@@ -138,7 +174,7 @@ analyze → result (+ optional lineage)
 
 settle(forecast_id, outcome) → Settlement
        → score_pair(forecast, settlement) → atomic Brier record
-       → append to local score log / optional series recompute
+       → score_series(pairs) → BS, BSS, Murphy, Murphy-Ferro, Yates, Vieira, Δf
 ```
 
 Receipts remain the primary artifact. Forecasts are **derived views** of receipts, not a parallel truth.
@@ -152,22 +188,22 @@ src/hyperlex/
   calibration/
     __init__.py          # public API
     mapping.py           # signal → probability (versioned)
-    forecast.py          # extract_forecasts, Forecast model
-    settlement.py        # Settlement model, settle helpers
-    scoring.py           # atomic, series BS, BSS, Murphy, Yates
-    series.py            # cohort aggregation, NOT_COMPUTABLE guards
+    forecast.py          # extract_forecasts
+    settlement.py        # settle, is_scorable
+    scoring.py           # atomic, series, Murphy, Ferro, Yates, Vieira, Δf
 ```
 
-Public functions (minimal):
+Public functions:
 
 ```python
-extract_forecasts(result: dict, mapping_version: str = "v1") -> list[dict]
-settle(forecast: dict, outcome_value: float, decision: str, **meta) -> dict
-score_pair(forecast: dict, settlement: dict) -> dict
-score_series(pairs: list[tuple[dict, dict]], reference: str = "climatology") -> dict
+extract_forecasts(result, mapping_version="v1") -> list[dict]
+settle(forecast, outcome_value, settlement_decision, ...) -> dict
+score_pair(forecast, settlement) -> dict
+score_series(pairs, reference="climatology") -> dict
+murphy_decomposition_ferro(preds, targets) -> dict
+yates_vieira(preds, targets) -> dict
+discrimination_slope(preds, targets) -> dict
 ```
-
-All pure where possible. Side effects only when writing optional local score logs (mirroring receipt style).
 
 ---
 
@@ -198,6 +234,7 @@ All pure where possible. Side effects only when writing optional local score log
 - Online recalibration / Platt scaling of lineage confidence
 - Automatic settlement without authority marker
 - Treating hyperstition stage or virality as strongly calibrated probabilities without review
+- Yates continuity correction (chi-square) — not applicable to Brier path
 
 ---
 
@@ -208,11 +245,14 @@ All pure where possible. Side effects only when writing optional local score log
 3. Empty or invalid input yields `NOT_COMPUTABLE`, never a fabricated float.
 4. Forecast extraction is pure given a result + mapping version.
 5. Design and schemas are documented under `docs/` and `schemas/`.
+6. v1.1 diagnostics (`murphy_ferro`, `yates_vieira`, `discrimination`) appear on every `score_series` output.
 
 ---
 
 ## References
 
-- Brier (1950); Murphy (1973) decomposition; Yates decomposition
-- Abraxas-v2.0 `core/scoring/brier.py`, `core/intelligence/brier_variants.py` (compatible semantics)
-- Hyperlex DESIGN principles 1, 2, 7, 9, 10, 11
+- Brier (1950); Murphy (1973); Yates (1982) covariance decomposition
+- Ferro & Fricker (2012) — bias-corrected Murphy decomposition
+- Vieira (2026) arXiv:2603.05544 — non-negative Yates rearrangement
+- Abraxas-v2.0 `core/scoring/brier.py` (compatible classical Murphy/Yates)
+- Hyperlex DESIGN principles 1, 2, 7, 9, 10, 11, 12
