@@ -191,6 +191,9 @@ src/hyperlex/
     forecast.py          # extract_forecasts
     settlement.py        # settle, is_scorable
     scoring.py           # atomic, series, Murphy, Ferro, Yates, Vieira, Δf
+    score_log.py         # append-only hash-chained log + recompute_series
+    export.py            # Abraxas BrierLedgerEntry-compatible export (no import)
+    recalibrate.py       # advisory mean-shift (future forecasts only)
 ```
 
 Public functions:
@@ -200,9 +203,41 @@ extract_forecasts(result, mapping_version="v1") -> list[dict]
 settle(forecast, outcome_value, settlement_decision, ...) -> dict
 score_pair(forecast, settlement) -> dict
 score_series(pairs, reference="climatology") -> dict
+settle_and_log(forecast, outcome_value, settlement_decision, ..., path=...) -> dict
+recompute_series(path=None, signal_key=None) -> dict
+to_brier_ledger_entry(forecast, score, settlement=...) -> dict
+mean_shift_from_series(series) -> dict   # ADVISORY only
 murphy_decomposition_ferro(preds, targets) -> dict
 yates_vieira(preds, targets) -> dict
 discrimination_slope(preds, targets) -> dict
+```
+
+### Score log (operator path)
+
+Default path: `~/.hyperlex/score_log.jsonl`  
+Override: `HYPERLEX_SCORE_LOG` env, CLI `--log`, or `--repo-log` → `out/calibration/score_log.jsonl`
+
+Each line is a JSON record with `schema`, `event` (`forecast`|`settlement`|`score`),
+`prev_hash`, `record_hash`, `body`. Append-only; series scores are **recomputed** from
+the log via `recompute_series` / `score-series` CLI — never stored as sole truth.
+
+### CLI
+
+```bash
+# Analyze + extract forecasts + append to log
+python3 scripts/hyperlex.py analyze --query "sharp steam" --source mock \
+  --forecasts --append-log --log ~/.hyperlex/score_log.jsonl
+
+# Or extract from a saved result
+python3 scripts/hyperlex.py extract-forecasts --input out/result.json --append-log
+
+# Operator settles a forecast (TRUE/FALSE/VOID/CONFLICT)
+python3 scripts/hyperlex.py settle --forecast-id <id> --decision TRUE \
+  --authority-note "human review confirmed family" --export-ledger
+
+# Recompute series + optional mean-shift diagnostic + chain verify
+python3 scripts/hyperlex.py score-series --mean-shift --verify-chain
+python3 scripts/hyperlex.py verify-score-log
 ```
 
 ---

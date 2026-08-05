@@ -20,8 +20,12 @@ from typing import Any, Callable, Dict, Iterable, List, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = ROOT / "src"
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
+# Always put package src first so `import hyperlex` cannot resolve to
+# scripts/hyperlex.py when this file's directory is on sys.path.
+_src = str(SRC_DIR)
+if _src in sys.path:
+    sys.path.remove(_src)
+sys.path.insert(0, _src)
 
 
 def _read_version() -> str:
@@ -48,8 +52,18 @@ def _check(condition: bool, name: str, message_ok: str, message_fail: str) -> _C
 
 def _import_hyperlex():
     try:
-        import hyperlex
+        import importlib
 
+        # Drop a shadowed scripts/hyperlex module if present.
+        existing = sys.modules.get("hyperlex")
+        if existing is not None:
+            mod_file = getattr(existing, "__file__", "") or ""
+            if mod_file.endswith("scripts/hyperlex.py") or Path(mod_file).name == "hyperlex.py" and "scripts" in mod_file:
+                del sys.modules["hyperlex"]
+
+        hyperlex = importlib.import_module("hyperlex")
+        if not hasattr(hyperlex, "detect_memetic_patterns"):
+            return None, f"imported non-package hyperlex from {getattr(hyperlex, '__file__', '?')}"
         return hyperlex, None
     except Exception as exc:  # pragma: no cover - surfaced as check failure
         return None, str(exc)
@@ -63,11 +77,23 @@ def _load_manifest() -> Tuple[Dict[str, Any], bool, str]:
         # Keep parser lightweight to avoid hard dependency on PyYAML.
         try:
             import yaml  # type: ignore
-        except Exception:  # pragma: no cover
-            return {"raw": path.read_text(encoding="utf-8")}, True, "ok"
 
-        data = yaml.safe_load(path.read_text(encoding="utf-8"))
-        return (data or {}, bool(data), "ok")
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+            return (data or {}, bool(data), "ok")
+        except Exception:
+            # Minimal stdlib fallback for key: value lines (no nested structure).
+            data: Dict[str, Any] = {}
+            for line in path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line or line.startswith("#") or line.startswith("-"):
+                    continue
+                if ":" in line and not line.endswith(":"):
+                    key, _, val = line.partition(":")
+                    key = key.strip()
+                    val = val.strip().strip('"').strip("'")
+                    if key and key not in data and val:
+                        data[key] = val
+            return data, bool(data.get("name")), "ok (stdlib yaml fallback)"
     except Exception as exc:
         return {}, False, f"manifest parse failed: {exc}"
 
@@ -175,6 +201,19 @@ def _get_input_payload(path: str | None) -> Tuple[Dict[str, Any] | None, str | N
         return None, f"failed to load JSON input: {exc}"
 
 
+def _resolve_log_path(args: argparse.Namespace) -> Path:
+    """CLI log path: --log > HYPERLEX_SCORE_LOG > ~/.hyperlex/score_log.jsonl > repo out/."""
+    log_arg = getattr(args, "log", None) or ""
+    if log_arg:
+        return Path(log_arg).expanduser().resolve()
+    from hyperlex.calibration.score_log import default_log_path, repo_log_path
+
+    # Prefer env / home; if --repo-log, use out/calibration/
+    if getattr(args, "repo_log", False):
+        return repo_log_path(ROOT)
+    return default_log_path()
+
+
 def cmd_analyze(args: argparse.Namespace) -> int:
     pkg, err = _import_hyperlex()
     if pkg is None:
@@ -201,12 +240,251 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         use_structured_ingest=args.use_structured_ingest,
         validate=args.validate,
     )
+
+    forecasts = None
+    log_records = None
+    if getattr(args, "forecasts", False):
+        receipt_ref = None
+        if isinstance(result.get("receipt"), dict):
+            receipt_ref = {
+                "integrity": result["receipt"].get("integrity"),
+                "path": None,
+            }
+        forecasts = pkg.extract_forecasts(result, receipt_ref=receipt_ref)
+        if getattr(args, "append_log", False) and forecasts:
+            log_path = _resolve_log_path(args)
+            log_records = []
+            for fc in forecasts:
+                log_records.append(pkg.append_forecast(fc, path=log_path))
+
     if args.out:
         out = Path(args.out)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(result, sort_keys=True, indent=2), encoding="utf-8")
-    _emit({"ok": True, "command": "analyze", "result": result})
+
+    payload_out: Dict[str, Any] = {"ok": True, "command": "analyze", "result": result}
+    if forecasts is not None:
+        payload_out["forecasts"] = forecasts
+        payload_out["n_forecasts"] = len(forecasts)
+    if log_records is not None:
+        payload_out["log_path"] = str(_resolve_log_path(args))
+        payload_out["logged"] = len(log_records)
+    _emit(payload_out)
     return 0
+
+
+def cmd_extract_forecasts(args: argparse.Namespace) -> int:
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    payload, load_error = _get_input_payload(args.input)
+    if load_error:
+        _emit({"ok": False, "error": load_error})
+        return 2
+    if payload is None:
+        _emit({"ok": False, "error": "input required (analysis result or receipt JSON)"})
+        return 2
+
+    # Accept bare result or receipt-wrapped result
+    result = payload
+    receipt_ref = None
+    if "analysis" not in result and isinstance(result.get("result"), dict):
+        result = result["result"]
+    if isinstance(payload.get("receipt"), dict):
+        receipt_ref = {
+            "integrity": payload["receipt"].get("integrity"),
+            "path": str(args.input),
+        }
+    elif isinstance(result.get("receipt"), dict):
+        receipt_ref = {
+            "integrity": result["receipt"].get("integrity"),
+            "path": str(args.input),
+        }
+
+    forecasts = pkg.extract_forecasts(result, receipt_ref=receipt_ref)
+    log_path = None
+    logged = 0
+    if args.append_log:
+        log_path = _resolve_log_path(args)
+        for fc in forecasts:
+            pkg.append_forecast(fc, path=log_path)
+            logged += 1
+
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(forecasts, sort_keys=True, indent=2), encoding="utf-8")
+
+    _emit({
+        "ok": True,
+        "command": "extract-forecasts",
+        "n_forecasts": len(forecasts),
+        "forecasts": forecasts,
+        "log_path": str(log_path) if log_path else None,
+        "logged": logged,
+    })
+    return 0
+
+
+def _find_forecast_in_log(pkg, forecast_id: str, log_path: Path) -> Dict[str, Any] | None:
+    from hyperlex.calibration.score_log import index_forecasts, read_log
+
+    return index_forecasts(read_log(log_path)).get(forecast_id)
+
+
+def cmd_settle(args: argparse.Namespace) -> int:
+    """Operator settlement path: settle forecast → append score log → atomic score."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    forecast: Dict[str, Any] | None = None
+
+    if args.forecast_file:
+        payload, load_error = _get_input_payload(args.forecast_file)
+        if load_error:
+            _emit({"ok": False, "error": load_error})
+            return 2
+        if payload is None:
+            _emit({"ok": False, "error": "empty forecast file"})
+            return 2
+        # file may be a single forecast, a list, or {forecasts: [...]}
+        if "forecast_id" in payload and "probability" in payload:
+            forecast = payload
+        elif isinstance(payload.get("forecasts"), list):
+            wanted = args.forecast_id
+            for fc in payload["forecasts"]:
+                if not wanted or fc.get("forecast_id") == wanted:
+                    forecast = fc
+                    break
+        elif isinstance(payload, dict) and isinstance(payload.get("forecast"), dict):
+            forecast = payload["forecast"]
+
+    log_path = _resolve_log_path(args)
+
+    if forecast is None and args.forecast_id:
+        forecast = _find_forecast_in_log(pkg, args.forecast_id, log_path)
+
+    if forecast is None:
+        _emit({
+            "ok": False,
+            "error": "forecast not found; pass --forecast-file and/or --forecast-id present in score log",
+        })
+        return 2
+
+    if args.forecast_id and forecast.get("forecast_id") != args.forecast_id:
+        _emit({
+            "ok": False,
+            "error": f"forecast_id mismatch: file has {forecast.get('forecast_id')}, flag has {args.forecast_id}",
+        })
+        return 2
+
+    decision = args.decision.upper()
+    # Infer outcome from decision when not explicit
+    if args.outcome is not None:
+        outcome = float(args.outcome)
+    elif decision == "TRUE":
+        outcome = 1.0
+    elif decision == "FALSE":
+        outcome = 0.0
+    else:
+        # VOID / CONFLICT still need a placeholder 0.0; not scored
+        outcome = 0.0
+
+    try:
+        result = pkg.settle_and_log(
+            forecast,
+            outcome_value=outcome,
+            settlement_decision=decision,
+            authority_kind=args.authority_kind,
+            authority_ref=args.authority_ref or None,
+            authority_note=args.authority_note or None,
+            evidence_ref=args.evidence_ref or None,
+            path=log_path,
+        )
+    except ValueError as exc:
+        _emit({"ok": False, "error": str(exc)})
+        return 2
+
+    ledger = None
+    if args.export_ledger and result["score"].get("status") == "SCORED":
+        from hyperlex.calibration.export import to_brier_ledger_entry
+
+        ledger = to_brier_ledger_entry(
+            forecast,
+            result["score"],
+            settlement=result["settlement"],
+        )
+
+    _emit({
+        "ok": True,
+        "command": "settle",
+        "log_path": str(log_path),
+        "settlement": result["settlement"],
+        "score": result["score"],
+        "scorable": result["scorable"],
+        "ledger_entry": ledger,
+    })
+    return 0
+
+
+def cmd_score_series(args: argparse.Namespace) -> int:
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    log_path = _resolve_log_path(args)
+    series = pkg.recompute_series(
+        path=log_path,
+        signal_key=args.signal_key or None,
+        reference=args.reference,
+    )
+
+    mean_shift = None
+    if args.mean_shift:
+        from hyperlex.calibration.recalibrate import mean_shift_from_series
+
+        mean_shift = mean_shift_from_series(series)
+
+    chain = None
+    if args.verify_chain:
+        from hyperlex.calibration.score_log import verify_chain
+
+        chain = verify_chain(log_path)
+
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(series, sort_keys=True, indent=2), encoding="utf-8")
+
+    _emit({
+        "ok": True,
+        "command": "score-series",
+        "log_path": str(log_path),
+        "series": series,
+        "mean_shift": mean_shift,
+        "chain": chain,
+    })
+    # Fail-closed: NOT_COMPUTABLE is still a successful recompute (no pairs yet)
+    return 0
+
+
+def cmd_verify_score_log(args: argparse.Namespace) -> int:
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.calibration.score_log import verify_chain
+
+    log_path = _resolve_log_path(args)
+    chain = verify_chain(log_path)
+    _emit({"ok": bool(chain.get("ok")), "command": "verify-score-log", "log_path": str(log_path), "chain": chain})
+    return 0 if chain.get("ok") else 2
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
@@ -298,8 +576,49 @@ def _build_parser() -> argparse.ArgumentParser:
     analyze_parser.add_argument("--input", help="Optional ingest JSON payload")
     analyze_parser.add_argument("--structured-ingest", dest="use_structured_ingest", action="store_true", default=False)
     analyze_parser.add_argument("--validate", action="store_true", default=False)
+    analyze_parser.add_argument("--forecasts", action="store_true", default=False, help="Also extract calibration forecasts")
+    analyze_parser.add_argument("--append-log", action="store_true", default=False, help="Append forecasts to score log")
+    analyze_parser.add_argument("--log", default="", help="Score log path (default ~/.hyperlex/score_log.jsonl)")
+    analyze_parser.add_argument("--repo-log", action="store_true", default=False, help="Use out/calibration/score_log.jsonl")
     analyze_parser.add_argument("--out")
     analyze_parser.set_defaults(func=cmd_analyze)
+
+    ef_parser = subparsers.add_parser("extract-forecasts", help="Extract forecasts from analysis result JSON")
+    ef_parser.add_argument("--input", required=True, help="Analysis result or receipt JSON")
+    ef_parser.add_argument("--append-log", action="store_true", default=False)
+    ef_parser.add_argument("--log", default="")
+    ef_parser.add_argument("--repo-log", action="store_true", default=False)
+    ef_parser.add_argument("--out", default="")
+    ef_parser.set_defaults(func=cmd_extract_forecasts)
+
+    settle_parser = subparsers.add_parser("settle", help="Settle a forecast and append score log")
+    settle_parser.add_argument("--forecast-id", default="", help="Forecast id (from log or file)")
+    settle_parser.add_argument("--forecast-file", default="", help="JSON forecast object or {forecasts:[...]}")
+    settle_parser.add_argument("--decision", required=True, choices=["TRUE", "FALSE", "VOID", "CONFLICT", "true", "false", "void", "conflict"])
+    settle_parser.add_argument("--outcome", type=float, default=None, help="0.0 or 1.0 (default from decision)")
+    settle_parser.add_argument("--authority-kind", default="operator", choices=["operator", "automated_rule", "external_oracle"])
+    settle_parser.add_argument("--authority-ref", default="")
+    settle_parser.add_argument("--authority-note", default="")
+    settle_parser.add_argument("--evidence-ref", default="")
+    settle_parser.add_argument("--export-ledger", action="store_true", default=False, help="Emit Abraxas-compatible BrierLedgerEntry")
+    settle_parser.add_argument("--log", default="")
+    settle_parser.add_argument("--repo-log", action="store_true", default=False)
+    settle_parser.set_defaults(func=cmd_settle)
+
+    ss_parser = subparsers.add_parser("score-series", help="Recompute Brier series from score log")
+    ss_parser.add_argument("--signal-key", default="", help="Filter by signal_key")
+    ss_parser.add_argument("--reference", default="climatology", choices=["climatology", "persistence"])
+    ss_parser.add_argument("--mean-shift", action="store_true", default=False, help="Advisory mean-shift diagnostic")
+    ss_parser.add_argument("--verify-chain", action="store_true", default=False)
+    ss_parser.add_argument("--log", default="")
+    ss_parser.add_argument("--repo-log", action="store_true", default=False)
+    ss_parser.add_argument("--out", default="")
+    ss_parser.set_defaults(func=cmd_score_series)
+
+    vsl_parser = subparsers.add_parser("verify-score-log", help="Verify score log hash chain")
+    vsl_parser.add_argument("--log", default="")
+    vsl_parser.add_argument("--repo-log", action="store_true", default=False)
+    vsl_parser.set_defaults(func=cmd_verify_score_log)
 
     validate_parser = subparsers.add_parser("validate", help="Validate artifact against runtime schema")
     validate_parser.add_argument("path")

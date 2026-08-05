@@ -31,3 +31,15 @@
 - **Discrimination slope** (`discrimination.delta_f`): mean(f|o=1) − mean(f|o=0).
 - Classical Yates enriched with mean_forecast, mean_outcome, cov_fo, var_f, var_o.
 - Schema `brier_series.v1` extended; design doc updated.
+
+## Operator settlement path + score log (2026-08-05)
+
+- `calibration/score_log.py` — append-only, hash-chained JSONL (`forecast` / `settlement` / `score` events).
+  Default `~/.hyperlex/score_log.jsonl`; override via `HYPERLEX_SCORE_LOG`, `--log`, or `--repo-log`.
+- `settle_and_log` + `recompute_series` / `verify_chain`.
+- CLI: `analyze --forecasts [--append-log]`, `extract-forecasts`, `settle`, `score-series`, `verify-score-log`.
+- `export.to_brier_ledger_entry` — Abraxas `BrierLedgerEntry.v1`-compatible shape (no Abraxas import).
+- `recalibrate.mean_shift_from_series` — advisory only when Yates bias² elevated; does not rewrite history.
+- Golden tests: lineage confidence formula, score_pair, score_series empty→NOT_COMPUTABLE, log roundtrip, CLI settle path.
+- Result schema: `provenance.brier` may be `null`; analysis may include `lineage`.
+- CLI import hardening: package `src/` always shadows `scripts/hyperlex.py` on `sys.path`.

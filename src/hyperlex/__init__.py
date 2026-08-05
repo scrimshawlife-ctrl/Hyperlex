@@ -42,6 +42,10 @@ from .calibration import (
     settle,
     score_pair,
     score_series,
+    settle_and_log,
+    recompute_series,
+    append_forecast,
+    default_log_path,
     NOT_COMPUTABLE,
 )
 
@@ -60,6 +64,10 @@ __all__ = [
     "settle",
     "score_pair",
     "score_series",
+    "settle_and_log",
+    "recompute_series",
+    "append_forecast",
+    "default_log_path",
     "NOT_COMPUTABLE",
     "calibration",
     "schemas",

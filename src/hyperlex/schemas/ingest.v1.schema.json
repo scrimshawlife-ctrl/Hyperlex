@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/ingest.v1.schema.json",
+  "title": "Hyperlex Ingest v1",
+  "description": "Structured output from gate_of_intake (expanded ingest layer)",
+  "type": "object",
+  "required": ["query", "source", "raw_signal", "extracted_terms", "metadata", "provenance"],
+    "properties": {
+    "query": { "type": "string", "minLength": 1 },
+    "source": { "type": "string" },
+    "raw_signal": { "type": "string" },
+    "extracted_terms": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "requested_source": { "type": "string" },
+        "effective_source": { "type": "string" },
+        "acquisition_status": { "type": "string" },
+        "failure_reason": { "type": ["string", "null"] },
+        "evidence_class": { "type": "string" },
+        "eligible_for_observed": { "type": "boolean" },
+        "source_type": { "type": "string" },
+        "cached": { "type": "boolean" },
+        "fetched_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "evidence_id": { "type": "string" },
+          "requested_source": { "type": "string" },
+          "effective_source": { "type": "string" },
+          "acquisition_status": { "type": "string" },
+          "evidence_class": { "type": "string" },
+          "failure_reason": { "type": ["string", "null"] },
+          "eligible_for_observed": { "type": "boolean" },
+          "fetched_at": { "type": "string" },
+          "cached": { "type": "boolean" },
+          "content_hash": { "type": "string" },
+          "status_code": { "type": ["integer", "null"] },
+          "source_locator": { "type": ["string", "null"] },
+          "snippet": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" },
+        "ingest_source": { "type": "string" }
+      }
+    }
+  }
+}

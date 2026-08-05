@@ -34,7 +34,11 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Schema support for lineage attachment on analysis results (`lineage.v1.schema.json`)
 - [x] Deterministic lineage matcher with confidence scoring
 - [ ] Automated diagram generation from receipt histories
-- [ ] Operator settlement workflow + score log persistence
+- [x] Operator settlement workflow + score log persistence (`settle_and_log`, `~/.hyperlex/score_log.jsonl`)
+- [x] CLI: `analyze --forecasts`, `extract-forecasts`, `settle`, `score-series`, `verify-score-log`
+- [x] Golden tests for lineage confidence, score_pair, score_series (empty → NOT_COMPUTABLE), score log
+- [x] Optional Abraxas-compatible `BrierLedgerEntry.v1` export (no Abraxas import)
+- [x] Advisory mean-shift recalibration diagnostic (`mean_shift_from_series`)
 
 ### Phase 3 — Hermes / Symbolic Integration
 - [ ] Native integration points for Hermes Agent

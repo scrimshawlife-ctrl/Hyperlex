@@ -16,9 +16,16 @@ __pycache__/
 
 # Receipts (local)
 receipts/
+
+# Generated / local JSON artifacts (schemas and examples stay tracked)
 *.json
-!examples/*.json
+!examples/**/*.json
+!schemas/**/*.json
+!src/hyperlex/schemas/**/*.json
+!**/schema.json
+!hyperlex.manifest.yaml
 
 # Temp
 tmp/
 out/
+.venv/

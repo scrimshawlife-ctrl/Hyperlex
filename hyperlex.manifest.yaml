@@ -16,6 +16,10 @@ commands:
   - sources
   - ingest
   - analyze
+  - extract-forecasts
+  - settle
+  - score-series
+  - verify-score-log
   - validate
   - verify-receipt
   - smoke
