@@ -1,32 +1,35 @@
-
-!**/schema.json
-!examples/**/*.json
-!hyperlex.manifest.yaml
-!schemas/**/*.json
-!skills.sh.json
-!src/hyperlex/schemas/**/*.json
-# Generated / local JSON artifacts (schemas and examples stay tracked)
-# IDE
 # OS
-# Python
-# Receipts (local)
-# Temp
-*.egg
-*.egg-info/
-*.json
-*.py[cod]
 .DS_Store
-.env
-.idea/
-.pytest_cache/
-.venv/
-.venv/site/
-.vscode/
 Thumbs.db
+
+# Python
 __pycache__/
-build/
+*.py[cod]
+*.egg-info/
+*.egg
+.venv/
+.env
+.pytest_cache/
 dist/
-out/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# Receipts (local)
 receipts/
-site/
+
+# Generated / local JSON artifacts (schemas and examples stay tracked)
+*.json
+!examples/**/*.json
+!schemas/**/*.json
+!src/hyperlex/schemas/**/*.json
+!**/schema.json
+!hyperlex.manifest.yaml
+!skills.sh.json
+
+# Temp / build output
 tmp/
+out/
+site/
