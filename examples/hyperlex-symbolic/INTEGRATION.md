@@ -36,3 +36,30 @@ src/hyperlex/          ← mechanical
 └── ...
 
 See SKELETON.md for full dual names and loci.
+
+## v1.6 Update — Expanded Ingest + Schemas
+
+### Expanded Ingest (gate_of_intake)
+- New sources: `urban` (Urban Dictionary), `wikipedia`, `combined`
+- `fetch_ingest(query, source=..., structured=True)` returns rich dict with extracted_terms + metadata
+- Simple TTL cache + better fallbacks
+- Backward compatible `ingest_signal(...)` still returns strings
+
+### Schemas
+- `schemas/ingest.v1.schema.json`
+- `schemas/result.v1.schema.json`
+- `schemas/receipt.v1.schema.json`
+- Validation helpers in `hyperlex.schemas`
+- Optional `jsonschema` via `pip install -e ".[schema]"`
+- `detect_memetic_patterns(..., validate=True)` and `emit_receipt(..., validate=True)`
+
+### Usage
+```python
+from hyperlex import fetch_ingest, detect_memetic_patterns, schemas
+
+data = fetch_ingest("sharp money", source="combined")
+result = detect_memetic_patterns(use_structured_ingest=True, validate=True)
+print(schemas.validate_ingest(data))
+```
+
+All changes mirrored to `examples/hyperlex-symbolic/` in the specs repo.
