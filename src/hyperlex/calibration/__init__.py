@@ -2,6 +2,8 @@
 
 Forecasts are derived from analysis results. Brier scores exist only after
 settlement. Unsettled paths return NOT_COMPUTABLE — never a fabricated number.
+
+v1.1 diagnostics: Vieira Yates, Ferro–Fricker Murphy, discrimination slope Δf.
 """
 
 from .forecast import extract_forecasts
@@ -13,7 +15,10 @@ from .scoring import (
     brier_series,
     brier_skill_score,
     murphy_decomposition,
+    murphy_decomposition_ferro,
     yates_decomposition,
+    yates_vieira,
+    discrimination_slope,
     NOT_COMPUTABLE,
 )
 
@@ -27,6 +32,9 @@ __all__ = [
     "brier_series",
     "brier_skill_score",
     "murphy_decomposition",
+    "murphy_decomposition_ferro",
     "yates_decomposition",
+    "yates_vieira",
+    "discrimination_slope",
     "NOT_COMPUTABLE",
 ]
