@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/brier_series.v1.schema.json",
   "title": "Hyperlex Brier Series v1",
-  "description": "Aggregate Brier metrics over settled forecast–outcome pairs. status=NOT_COMPUTABLE when no valid pairs exist.",
+  "description": "Aggregate Brier metrics over settled forecast–outcome pairs. status=NOT_COMPUTABLE when no valid pairs exist. v1.1 adds murphy_ferro, yates_vieira, discrimination.",
   "type": "object",
   "required": ["status", "n"],
   "properties": {
@@ -18,16 +18,64 @@
         "resolution": { "type": ["number", "string"] },
         "uncertainty": { "type": ["number", "string"] },
         "brier_score": { "type": ["number", "string"] }
-      }
+      },
+      "additionalProperties": true
+    },
+    "murphy_ferro": {
+      "type": "object",
+      "description": "Ferro–Fricker bias-corrected Murphy components",
+      "properties": {
+        "reliability": { "type": ["number", "string"] },
+        "resolution": { "type": ["number", "string"] },
+        "uncertainty": { "type": ["number", "string"] },
+        "brier_score": { "type": ["number", "string"] },
+        "correction": { "type": "string" },
+        "uncorrected": { "type": "object", "additionalProperties": true }
+      },
+      "additionalProperties": true
     },
     "yates": {
       "type": "object",
+      "description": "Classical Yates covariance decomposition",
       "properties": {
         "bias_squared": { "type": ["number", "string"] },
         "excess_variance": { "type": ["number", "string"] },
         "covariance_deficit": { "type": ["number", "string"] },
-        "brier_score": { "type": ["number", "string"] }
-      }
+        "brier_score": { "type": ["number", "string"] },
+        "mean_forecast": { "type": ["number", "string"] },
+        "mean_outcome": { "type": ["number", "string"] },
+        "cov_fo": { "type": ["number", "string"] },
+        "var_f": { "type": ["number", "string"] },
+        "var_o": { "type": ["number", "string"] }
+      },
+      "additionalProperties": true
+    },
+    "yates_vieira": {
+      "type": "object",
+      "description": "Vieira non-negative rearrangement of Yates",
+      "properties": {
+        "variance_mismatch": { "type": ["number", "string"] },
+        "correlation_deficit": { "type": ["number", "string"] },
+        "bias_squared": { "type": ["number", "string"] },
+        "brier_score": { "type": ["number", "string"] },
+        "sigma_f": { "type": ["number", "string"] },
+        "sigma_o": { "type": ["number", "string"] },
+        "rho": { "type": ["number", "string"] }
+      },
+      "additionalProperties": true
+    },
+    "discrimination": {
+      "type": "object",
+      "description": "Yates discrimination slope Δf",
+      "properties": {
+        "delta_f": { "type": ["number", "string"] },
+        "mean_f_given_1": { "type": ["number", "string"] },
+        "mean_f_given_0": { "type": ["number", "string"] },
+        "n_pos": { "type": "integer" },
+        "n_neg": { "type": "integer" },
+        "reason": { "type": "string" }
+      },
+      "additionalProperties": true
     },
     "cohort": {
       "type": "object",
