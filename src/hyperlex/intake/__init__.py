@@ -393,10 +393,26 @@ def ingest_signal(query: str, source: str = "mock") -> str:
     source = source.lower().strip()
 
     if source == "mock":
-        return (
-            'X chatter on "low block revenge narrative" + "false nine sharp money signal" '
-            "— organic velocity in betting circles, minor coordinated push."
+        # Deterministic but query-aware so lineage/forecast fixtures stay distinct.
+        q = (query or "").strip()
+        base = (
+            f'Mock memetic channel on "{q}": organic velocity, minor coordinated push. '
+            "Narrative circulating in community discourse."
         )
+        # Seed family-rich tokens only when the query already hints at them —
+        # keeps empty/unrelated queries below lineage threshold.
+        ql = q.lower()
+        if any(k in ql for k in ("sharp", "steam", "revenge", "betting", "square", "wiseguy")):
+            base += " sharp steam square revenge wiseguy hammer low block."
+        elif any(k in ql for k in ("hodl", "degen", "rekt", "moon", "crypto")):
+            base += " hodl diamond hands rekt degen moon bagholder."
+        elif any(k in ql for k in ("brainrot", "aura", "mid", "cooked")):
+            base += " brainrot aura farming mid cooked let him cook."
+        elif any(k in ql for k in ("agentic", "slop", "hallucin", "clanker", "token")):
+            base += " agentic slop skill issue hallucinate clanker context window."
+        elif any(k in ql for k in ("based", "cope", "seethe", "redpill")):
+            base += " based redpilled cope seethe dilate."
+        return base
     elif source in ("real", "glossary", "web"):
         return _fetch_glossary_primary(query)
     elif source in ("glossary_expanded", "glossaries"):

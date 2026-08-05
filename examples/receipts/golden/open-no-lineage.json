@@ -1,0 +1,95 @@
+{
+  "analysis": {
+    "hyperstition": {
+      "loop_stage": "EMERGENT",
+      "mechanism": "narrative circulating but no market confirmation yet"
+    },
+    "memetics": {
+      "is_memetic": true,
+      "score": 0.82,
+      "typology": "betting_tactical"
+    },
+    "neologisms": [],
+    "semantic_variation": {
+      "community": "general_betting",
+      "driver": "communicative_need",
+      "sense": "general"
+    },
+    "virality": {
+      "acceleration": 0.6,
+      "hybrid_score": 0.615,
+      "velocity": 0.5
+    }
+  },
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.615.",
+  "ingest": {
+    "extracted_terms": [],
+    "metadata": {
+      "adapter": {},
+      "cache": {
+        "cache_dir": "/home/scrimshawlife/.hyperlex/cache",
+        "disk_entries": 0,
+        "memory_entries": 0,
+        "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
+      },
+      "cached": false,
+      "fetched_at": "2026-08-05T16:59:05.389522+00:00",
+      "live": false,
+      "source_locator": "hyperlex://mock",
+      "source_type": "synthetic_stub"
+    },
+    "query": "the weather is mild with clouds",
+    "source": "mock",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "8ef075940603ab75421dc1ee77caaf37001b43fa9bf66ccd61c5dfce4cdf5168",
+      "content_hash_short": "8ef075940603ab75",
+      "fetched_at": "2026-08-05T16:59:05.389522+00:00",
+      "fingerprint_id": "592d49cab256c518db336060",
+      "package_version": "0.2.1",
+      "query": "the weather is mild with clouds",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    }
+  },
+  "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
+  "observed": "Mock memetic channel on \"the weather is mild with clouds\": organic velocity, minor coordinated push. Narrative circulating in community discourse.",
+  "provenance": {
+    "adapter_version": "ingest-v1.7",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "brier": null,
+    "brier_note": "brier_requires_settlement",
+    "canonical_hash": "d1443b0ebe0dd405",
+    "content_hash": "8ef075940603ab75421dc1ee77caaf37001b43fa9bf66ccd61c5dfce4cdf5168",
+    "hyperstition_risk": "EMERGENT",
+    "ingest_source": "mock",
+    "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "8ef075940603ab75421dc1ee77caaf37001b43fa9bf66ccd61c5dfce4cdf5168",
+      "content_hash_short": "8ef075940603ab75",
+      "fetched_at": "2026-08-05T16:59:05.389522+00:00",
+      "fingerprint_id": "592d49cab256c518db336060",
+      "package_version": "0.2.1",
+      "query": "the weather is mild with clouds",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    },
+    "source_locator": "hyperlex://mock",
+    "timestamp": "2026-08-05T16:59:05.389721+00:00",
+    "version": "0.2.1"
+  },
+  "receipt": {
+    "integrity": "bf6d52e24f85",
+    "path": "examples/receipts/golden/open-no-lineage.json"
+  },
+  "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+}

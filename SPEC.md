@@ -1,61 +1,87 @@
-# Hyperlex Technical Specification v0.1.0+
+# Hyperlex Technical Specification v0.2
 
-## Runtime API
+**Standalone app.** No hard dependency on Abraxas. Relevant Abraxas wire
+capabilities are Hyperlex modules under `hyperlex.compat.abraxas`.
 
-### Package
+API freeze: [`docs/api-v1.md`](docs/api-v1.md) · `hyperlex.API_V1`
 
+## Runtime API (frozen symbols)
+
+### Ingest & analysis
 - `ingest_signal(query: str, source: str = "mock") -> str`
-- `fetch_ingest(query: str, source: str = "mock", structured: bool = True, max_terms: int = 8) -> dict`
-- `detect_memetic_patterns(query: str = ..., ingest_source: str = "mock", use_structured_ingest: bool = False, validate: bool = False) -> dict`
-- `mock_integrate_with_external_signal(result: dict) -> dict`
-- `emit_receipt(result: dict, out_dir: str | Path | None = None, validate: bool = False) -> Path`
-- `extract_forecasts(result: dict, receipt_ref: dict | None = None) -> list[dict]`
-- `settle(forecast: dict, outcome_value: float, settlement_decision: str, ...) -> dict`
-- `score_pair(forecast: dict, settlement: dict) -> dict`
-- `score_series(pairs: list[tuple[dict, dict]], reference: str = "climatology") -> dict`
+- `fetch_ingest(query, source="mock", structured=True, max_terms=8) -> dict`
+- `detect_memetic_patterns(query=..., ingest_source="mock", use_structured_ingest=False, validate=False) -> dict`
+- `match_lineage(text, terms=None, min_confidence=0.42) -> dict | None`
+- `compute_lineage_confidence(hits, family_terms, corpus) -> (float, dict)`
 
-Supported sources:
-- `mock`, `real`, `glossary`, `web`, `reddit`, `urban`, `wikipedia`, `combined`, `x_search`, `firecrawl`, `crawl4ai`
+### Receipts
+- `emit_receipt(result, out_dir=None, validate=False, append_ledger=True, ledger_path=None) -> Path`
+- `verify_receipt(payload) -> (bool, str)`
 
-### Command Surface
+### Calibration
+- `extract_forecasts(result, receipt_ref=None) -> list[dict]`
+- `settle(forecast, outcome_value, settlement_decision, ...) -> dict`
+- `score_pair(forecast, settlement) -> dict`
+- `score_series(pairs, reference="climatology") -> dict`
+- `settle_and_log(...)` / `recompute_series(path=None, ...)`
+- `NOT_COMPUTABLE`
 
-```bash
-python3 scripts/hyperlex.py check
-python3 scripts/hyperlex.py sources
-python3 scripts/hyperlex.py ingest <query> [--source ...] [--structured]
-python3 scripts/hyperlex.py analyze [--query ...] [--source ...] [--structured-ingest] [--validate] [--forecasts] [--append-log]
-python3 scripts/hyperlex.py analyze --input <ingest.json>
-python3 scripts/hyperlex.py extract-forecasts --input <result.json> [--append-log]
-python3 scripts/hyperlex.py settle --forecast-id <id> --decision TRUE|FALSE|VOID|CONFLICT
-python3 scripts/hyperlex.py score-series [--mean-shift] [--verify-chain]
-python3 scripts/hyperlex.py verify-score-log
-python3 scripts/hyperlex.py validate <artifact.json>
-python3 scripts/hyperlex.py verify-receipt <receipt.json>
-python3 scripts/hyperlex.py smoke
+### Relay
+- `relay_from_result(result) -> list[envelope]`
+- `relay_forecasts(forecasts) -> envelope`
+- `relay_series(series) -> envelope`
+- `list_runes() -> list[dict]`
+
+### Synthesis
+- `mock_integrate_with_external_signal(result) -> dict`
+
+### Compat (optional host import)
+```python
+from hyperlex.compat.abraxas import (
+    to_brier_ledger_entry,
+    to_brier_score_packet,
+    to_operator_brier_review,
+    list_hlx_runes,
+    envelopes_from_result,
+    CLAIM_LABELS,
+)
 ```
 
-## Output (canonical fields)
+## Sources
 
-Result objects follow `schemas/result.v1.schema.json` and must include:
+`mock`, `real`, `glossary`, `glossary_expanded`, `web`, `reddit`, `urban`,
+`wikipedia`, `x_search`, `firecrawl`, `crawl4ai`, `combined`
+
+## Command surface
+
+### Hermes skill CLI (`scripts/hyperlex.py`)
+```bash
+check | sources | ingest | analyze | scan | relay
+extract-forecasts | settle | score-series | verify-score-log
+emit-receipt | list-receipts | verify-receipt-ledger | validate | verify-receipt | smoke
+```
+
+### Package CLI
+```bash
+python -m hyperlex check|analyze|scan|relay|settle|score-series|version
+```
+
+## Output contracts
+
+### Analysis result
 - `observed`, `inferred`, `speculative`
-- `provenance` with at least `canonical_hash`, `timestamp`, `version`, `hyperstition_risk`, `ingest_source`
-- `analysis` object
+- `provenance`: `canonical_hash`, `timestamp`, `version`, `ingest_source`,
+  `hyperstition_risk`, `brier: null`, `source_fingerprint`, …
+- `analysis`: neologisms, virality, memetics, hyperstition, optional lineage
 
-**Brier on open results:** `provenance.brier` must be `null` (or omitted) with optional `brier_note: "brier_requires_settlement"`. Numeric Brier values are only valid on calibration series artifacts after settlement.
-
-Receipts follow `schemas/receipt.v1.schema.json` and embed a `receipt` block containing `path` and `integrity`.
-
-### Calibration artifacts
-
-- Forecasts: `schemas/forecast.v1.schema.json`
+### Calibration
+- Forecasts: `schemas/forecast.v1.schema.json` — never attach Brier
 - Settlements: `schemas/settlement.v1.schema.json`
-- Series scores: `schemas/brier_series.v1.schema.json`
-
-See `docs/brier-calibration.md` for lifecycle and formulas.
+- Series: `schemas/brier_series.v1.schema.json` — empty → `NOT_COMPUTABLE`
+- Rune envelopes: `schemas/rune_envelope.v1.schema.json`
 
 ## Error handling
 
-- Ingest failures must not crash the runtime.
-- Failures are exposed as explicit textual fallback content and optional schema metadata.
-- Calibration scoring returns `NOT_COMPUTABLE` when pairs are missing or unscoreable.
-- `scripts/hyperlex.py validate` and `verify-receipt` return non-zero exit code on invalid artifacts.
+- Ingest failures degrade; do not crash
+- Missing settlements → `NOT_COMPUTABLE`
+- CLI validate / verify-receipt exit non-zero on failure

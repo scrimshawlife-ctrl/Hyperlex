@@ -1,0 +1,129 @@
+{
+  "analysis": {
+    "hyperstition": {
+      "loop_stage": "ACTUALIZING",
+      "mechanism": "slang -> public pressure -> line movement -> confirmed"
+    },
+    "lineage": {
+      "branch_operator": "sense_extension",
+      "confidence": 0.98,
+      "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
+      "family_id": "betting-sharp",
+      "matched_terms": [
+        "sharp",
+        "steam",
+        "square",
+        "wiseguy",
+        "hammer",
+        "revenge",
+        "low block"
+      ],
+      "payload_note": "professional edge vs public money; line-physics signaling",
+      "provenance": "INFERRED",
+      "score_breakdown": {
+        "coverage": 0.778,
+        "density": 0.18,
+        "hit_bonus": 0.38,
+        "n_hits": 7,
+        "raw": 1.117,
+        "specificity": 0.541,
+        "term_weights": {
+          "hammer": 0.51,
+          "low block": 0.725,
+          "revenge": 0.535,
+          "sharp": 0.485,
+          "square": 0.51,
+          "steam": 0.485,
+          "wiseguy": 0.535
+        }
+      }
+    },
+    "memetics": {
+      "is_memetic": true,
+      "score": 0.82,
+      "typology": "betting_tactical"
+    },
+    "neologisms": [],
+    "semantic_variation": {
+      "community": "general_betting",
+      "driver": "communicative_need",
+      "sense": "general"
+    },
+    "virality": {
+      "acceleration": 0.6,
+      "hybrid_score": 0.675,
+      "velocity": 0.7
+    }
+  },
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.675. Lineage: betting-sharp (conf=0.98).",
+  "ingest": {
+    "extracted_terms": [],
+    "metadata": {
+      "adapter": {},
+      "cache": {
+        "cache_dir": "/home/scrimshawlife/.hyperlex/cache",
+        "disk_entries": 0,
+        "memory_entries": 0,
+        "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
+      },
+      "cached": false,
+      "fetched_at": "2026-08-05T16:59:05.385480+00:00",
+      "live": false,
+      "source_locator": "hyperlex://mock",
+      "source_type": "synthetic_stub"
+    },
+    "query": "sharp steam square revenge wiseguy hammer",
+    "source": "mock",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "40a81db7de76399a6db66f7ac3df902ae8e09324c249748a4c0c55b874baeb2b",
+      "content_hash_short": "40a81db7de76399a",
+      "fetched_at": "2026-08-05T16:59:05.385480+00:00",
+      "fingerprint_id": "1624b675de63cd0b0fe794a4",
+      "package_version": "0.2.1",
+      "query": "sharp steam square revenge wiseguy hammer",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    }
+  },
+  "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
+  "observed": "Mock memetic channel on \"sharp steam square revenge wiseguy hammer\": organic velocity, minor coordinated push. Narrative circulating in community discourse. sharp steam square revenge wiseguy hammer low block.",
+  "provenance": {
+    "adapter_version": "ingest-v1.7",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "brier": null,
+    "brier_note": "brier_requires_settlement",
+    "canonical_hash": "875608375031afca",
+    "content_hash": "40a81db7de76399a6db66f7ac3df902ae8e09324c249748a4c0c55b874baeb2b",
+    "hyperstition_risk": "ACTUALIZING",
+    "ingest_source": "mock",
+    "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "40a81db7de76399a6db66f7ac3df902ae8e09324c249748a4c0c55b874baeb2b",
+      "content_hash_short": "40a81db7de76399a",
+      "fetched_at": "2026-08-05T16:59:05.385480+00:00",
+      "fingerprint_id": "1624b675de63cd0b0fe794a4",
+      "package_version": "0.2.1",
+      "query": "sharp steam square revenge wiseguy hammer",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    },
+    "source_locator": "hyperlex://mock",
+    "timestamp": "2026-08-05T16:59:05.386434+00:00",
+    "version": "0.2.1"
+  },
+  "receipt": {
+    "integrity": "caa91d3ea23e",
+    "path": "examples/receipts/golden/betting-sharp.json"
+  },
+  "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
+  "speculative": "ACTUALIZING hyperstition risk. slang -> public pressure -> line movement -> confirmed. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+}

@@ -1,6 +1,8 @@
 # Hyperlex Roadmap
 
 ## Vision
+Hyperlex is a **standalone app**. Relevant Abraxas wire capabilities ship as Hyperlex modules (`hyperlex.compat.abraxas`); hosts import *from* Hyperlex.
+
 Hyperlex evolves into the canonical engine for detecting, scoring, and acting on emerging memetic signals in real time — grounded in real data, arXiv research, and strict provenance.
 
 ## Phases
@@ -50,10 +52,11 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 
 ### Phase 4 — Production & Ecosystem
 - [x] Local/Hermes packaging (`pip install -e .` / skill install) — **no public PyPI publish planned**
-- [ ] Comprehensive test suite + golden receipts
+- [x] Golden receipt corpus (`examples/receipts/golden/`) + API v1 freeze
+- [ ] Broader test corpus / CI expansion
 - [ ] Documentation site / MkDocs
 - [ ] Example notebooks and case studies
-- [ ] Public API surface stabilization
+- [x] Public API v1 freeze (`docs/api-v1.md`, `hyperlex.API_V1`)
 - [ ] Optional LLM augmentation layer (governed)
 - [ ] Cross-domain expansion (beyond betting slang)
 

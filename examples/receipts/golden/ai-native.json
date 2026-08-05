@@ -1,0 +1,127 @@
+{
+  "analysis": {
+    "hyperstition": {
+      "loop_stage": "EMERGENT",
+      "mechanism": "narrative circulating but no market confirmation yet"
+    },
+    "lineage": {
+      "branch_operator": "platform_compression",
+      "confidence": 0.98,
+      "diagram_ref": "examples/slang-families/ai-native-family.mmd",
+      "family_id": "ai-native",
+      "matched_terms": [
+        "hallucinate",
+        "slop",
+        "clanker",
+        "agentic",
+        "skill issue",
+        "context window"
+      ],
+      "payload_note": "machine language as culture; quality judgment + hostility + agency framing",
+      "provenance": "INFERRED",
+      "score_breakdown": {
+        "coverage": 0.75,
+        "density": 0.18,
+        "hit_bonus": 0.38,
+        "n_hits": 6,
+        "raw": 1.137,
+        "specificity": 0.611,
+        "term_weights": {
+          "agentic": 0.535,
+          "clanker": 0.535,
+          "context window": 0.75,
+          "hallucinate": 0.635,
+          "skill issue": 0.75,
+          "slop": 0.46
+        }
+      }
+    },
+    "memetics": {
+      "is_memetic": true,
+      "score": 0.82,
+      "typology": "betting_tactical"
+    },
+    "neologisms": [],
+    "semantic_variation": {
+      "community": "general_betting",
+      "driver": "communicative_need",
+      "sense": "general"
+    },
+    "virality": {
+      "acceleration": 0.6,
+      "hybrid_score": 0.667,
+      "velocity": 0.675
+    }
+  },
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.667. Lineage: ai-native (conf=0.98).",
+  "ingest": {
+    "extracted_terms": [],
+    "metadata": {
+      "adapter": {},
+      "cache": {
+        "cache_dir": "/home/scrimshawlife/.hyperlex/cache",
+        "disk_entries": 0,
+        "memory_entries": 0,
+        "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
+      },
+      "cached": false,
+      "fetched_at": "2026-08-05T16:59:05.388660+00:00",
+      "live": false,
+      "source_locator": "hyperlex://mock",
+      "source_type": "synthetic_stub"
+    },
+    "query": "agentic slop skill issue hallucinate",
+    "source": "mock",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "48e1bde64ae7b7b91fae0497971fbcfe7472d3b4639470c6ad8128d17a65ba62",
+      "content_hash_short": "48e1bde64ae7b7b9",
+      "fetched_at": "2026-08-05T16:59:05.388660+00:00",
+      "fingerprint_id": "8d16417cd31cfb86c1d2b151",
+      "package_version": "0.2.1",
+      "query": "agentic slop skill issue hallucinate",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    }
+  },
+  "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
+  "observed": "Mock memetic channel on \"agentic slop skill issue hallucinate\": organic velocity, minor coordinated push. Narrative circulating in community discourse. agentic slop skill issue hallucinate clanker context window.",
+  "provenance": {
+    "adapter_version": "ingest-v1.7",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "brier": null,
+    "brier_note": "brier_requires_settlement",
+    "canonical_hash": "cc72331fd86174f0",
+    "content_hash": "48e1bde64ae7b7b91fae0497971fbcfe7472d3b4639470c6ad8128d17a65ba62",
+    "hyperstition_risk": "EMERGENT",
+    "ingest_source": "mock",
+    "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "48e1bde64ae7b7b91fae0497971fbcfe7472d3b4639470c6ad8128d17a65ba62",
+      "content_hash_short": "48e1bde64ae7b7b9",
+      "fetched_at": "2026-08-05T16:59:05.388660+00:00",
+      "fingerprint_id": "8d16417cd31cfb86c1d2b151",
+      "package_version": "0.2.1",
+      "query": "agentic slop skill issue hallucinate",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    },
+    "source_locator": "hyperlex://mock",
+    "timestamp": "2026-08-05T16:59:05.389002+00:00",
+    "version": "0.2.1"
+  },
+  "receipt": {
+    "integrity": "28b466c8dd96",
+    "path": "examples/receipts/golden/ai-native.json"
+  },
+  "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+}

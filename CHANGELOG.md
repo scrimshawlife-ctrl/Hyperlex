@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — Standalone app, API freeze, golden receipts, Abraxas modules (2026-08-05)
+
+- Docs synced: `docs/ROADMAP.md`, `docs/api-v1.md`, `docs/standalone-app.md`, SPEC/DESIGN.
+- Public API v1 freeze via `hyperlex.API_V1`.
+- Golden receipt corpus: `examples/receipts/golden/` + MANIFEST.
+- Relevant Abraxas capabilities as Hyperlex modules: `hyperlex.compat.abraxas`
+  (claims, BrierScorePacket, BrierLedgerEntry, operator review, HLX runes).
+- Hyperlex never imports Abraxas; hosts may import from Hyperlex.
+
 ## 0.2.0 — Relay, provenance, glossary/X, local package (2026-08-05)
 
 - Rune/signal relay: `hyperlex.relay` + CLI `relay` + `schemas/rune_envelope.v1.schema.json`

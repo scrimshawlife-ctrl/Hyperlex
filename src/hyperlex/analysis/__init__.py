@@ -163,9 +163,11 @@ def match_lineage(
 
 
 def humanize_slang_output(text: str) -> str:
+    """Strip AI-ism tokens without injecting domain slang (preserves lineage purity)."""
     for p in ["pivotal", "underscoring", "showcasing", "crucial", "landscape", "tapestry", "delve", "realm"]:
         text = text.replace(p, "")
-    return text.strip() + " — feels off but sharp money is already running with it."
+    cleaned = " ".join(text.split()).strip()
+    return cleaned
 
 
 def detect_neologisms(text: str) -> List[Dict[str, Any]]:

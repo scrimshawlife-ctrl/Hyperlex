@@ -1,0 +1,127 @@
+{
+  "analysis": {
+    "hyperstition": {
+      "loop_stage": "EMERGENT",
+      "mechanism": "narrative circulating but no market confirmation yet"
+    },
+    "lineage": {
+      "branch_operator": "cross_family_borrowing",
+      "confidence": 0.98,
+      "diagram_ref": "examples/slang-families/crypto-degen-family.mmd",
+      "family_id": "crypto-degen",
+      "matched_terms": [
+        "hodl",
+        "diamond hands",
+        "rekt",
+        "degen",
+        "moon",
+        "bagholder"
+      ],
+      "payload_note": "conviction under volatility; risk identity as honorific",
+      "provenance": "INFERRED",
+      "score_breakdown": {
+        "coverage": 0.462,
+        "density": 0.18,
+        "hit_bonus": 0.38,
+        "n_hits": 6,
+        "raw": 1.044,
+        "specificity": 0.533,
+        "term_weights": {
+          "bagholder": 0.585,
+          "degen": 0.485,
+          "diamond hands": 0.75,
+          "hodl": 0.46,
+          "moon": 0.46,
+          "rekt": 0.46
+        }
+      }
+    },
+    "memetics": {
+      "is_memetic": true,
+      "score": 0.82,
+      "typology": "betting_tactical"
+    },
+    "neologisms": [],
+    "semantic_variation": {
+      "community": "general_betting",
+      "driver": "communicative_need",
+      "sense": "general"
+    },
+    "virality": {
+      "acceleration": 0.6,
+      "hybrid_score": 0.667,
+      "velocity": 0.675
+    }
+  },
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.667. Lineage: crypto-degen (conf=0.98).",
+  "ingest": {
+    "extracted_terms": [],
+    "metadata": {
+      "adapter": {},
+      "cache": {
+        "cache_dir": "/home/scrimshawlife/.hyperlex/cache",
+        "disk_entries": 0,
+        "memory_entries": 0,
+        "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
+      },
+      "cached": false,
+      "fetched_at": "2026-08-05T16:59:05.387021+00:00",
+      "live": false,
+      "source_locator": "hyperlex://mock",
+      "source_type": "synthetic_stub"
+    },
+    "query": "hodl diamond hands rekt degen moon",
+    "source": "mock",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "34699dc80a58b0afbbeaac244b5deab6fb5d4617e04342bbdf9483b098d6ba51",
+      "content_hash_short": "34699dc80a58b0af",
+      "fetched_at": "2026-08-05T16:59:05.387021+00:00",
+      "fingerprint_id": "70e341cbaaa3719af7fff98b",
+      "package_version": "0.2.1",
+      "query": "hodl diamond hands rekt degen moon",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    }
+  },
+  "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
+  "observed": "Mock memetic channel on \"hodl diamond hands rekt degen moon\": organic velocity, minor coordinated push. Narrative circulating in community discourse. hodl diamond hands rekt degen moon bagholder.",
+  "provenance": {
+    "adapter_version": "ingest-v1.7",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "brier": null,
+    "brier_note": "brier_requires_settlement",
+    "canonical_hash": "6f3c9d33ccbd8cca",
+    "content_hash": "34699dc80a58b0afbbeaac244b5deab6fb5d4617e04342bbdf9483b098d6ba51",
+    "hyperstition_risk": "EMERGENT",
+    "ingest_source": "mock",
+    "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "34699dc80a58b0afbbeaac244b5deab6fb5d4617e04342bbdf9483b098d6ba51",
+      "content_hash_short": "34699dc80a58b0af",
+      "fetched_at": "2026-08-05T16:59:05.387021+00:00",
+      "fingerprint_id": "70e341cbaaa3719af7fff98b",
+      "package_version": "0.2.1",
+      "query": "hodl diamond hands rekt degen moon",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    },
+    "source_locator": "hyperlex://mock",
+    "timestamp": "2026-08-05T16:59:05.387264+00:00",
+    "version": "0.2.1"
+  },
+  "receipt": {
+    "integrity": "6705d5e36aad",
+    "path": "examples/receipts/golden/crypto-degen.json"
+  },
+  "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+}

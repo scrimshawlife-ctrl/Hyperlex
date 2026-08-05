@@ -34,7 +34,7 @@ def test_cli_check_ok() -> None:
     assert result.returncode == 0
     body = _load_json(result.stdout)
     assert body["ok"] is True
-    assert body["version"] == "0.2.0"
+    assert body["version"] == "0.2.1"
     checks = {entry["name"]: entry["ok"] for entry in body["checks"]}
     assert checks["version_file"]
     assert checks["schema_ingest"]
@@ -86,7 +86,7 @@ def test_analyze_and_validate_schema() -> None:
     body = _load_json(result.stdout)
     payload = body["result"]
     assert body["ok"] is True
-    assert payload["provenance"]["version"] == "0.2.0"
+    assert payload["provenance"]["version"] == "0.2.1"
     assert "schema_validation" in payload
     assert payload["schema_validation"]["valid"]
 

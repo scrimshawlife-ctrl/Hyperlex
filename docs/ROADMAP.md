@@ -1,41 +1,59 @@
-# Hyperlex Roadmap (Orchestra-aligned)
+# Hyperlex Roadmap
 
-This roadmap follows the Abraxas-Orchestra-Hermes model of phased, evidence-bound delivery with clear analyze → design → implement gates.
+**Canonical copy:** root [`ROADMAP.md`](../ROADMAP.md). This file is kept in
+sync for docs-site consumers.
 
-## Phase 0 — Foundation (Shipped v1.5)
-- Standalone pip-installable package (`hyperlex`)
-- Core arXiv-distilled modules (neologism, semantic variation, virality hybrid, memetics, hyperstition)
-- Real ingest (glossary + reddit fallback)
-- Strict JSON + `emit_receipt()` with integrity
-- External signal integration stub
-- Initial specs in this repo
+Hyperlex is a **standalone app**. Relevant Abraxas wire capabilities ship as
+Hyperlex modules under `hyperlex.compat.abraxas` (no Abraxas import).
 
-## Phase 1 — Symbolic Integration & Orchestration (In Progress)
-- [ ] Map Hyperlex modules to traditional correspondences (Numogram for emergence loops, Chaos Magic for hyperstition, Peircean for signal classification)
-- [ ] Create `examples/memetic-forager-skeleton` using Orchestra structure command
-- [ ] Add full schemas/ (receipt, analysis, ingest)
-- [ ] SKILL.md + install.sh modeled on Orchestra
-- [ ] Design docs for Hyperlex-as-Orchestra-component
-- [ ] Dual-named module support in design (mechanical + symbolic)
+## Phase 0 — Foundation (Complete)
+- Standalone Python package (`hyperlex`)
+- Core modules: neologism, semantic variation, virality, memetics, hyperstition
+- Real ingest (Action Network glossary + Reddit)
+- Strict JSON + receipt system
+- arXiv distillation applied
 
-## Phase 2 — Robust Foraging & Provenance
-- [ ] Full X/Twitter and Firecrawl ingest adapters
-- [ ] Persistent signal ledger (append-only, hash-chained)
-- [ ] Brier calibration tracking across receipts
-- [ ] Advanced neologism pipeline (rules + governed LLM)
-- [ ] Receipt ledger viewer / diff tool
+## Phase 1 — Robust Ingest & Provenance (Complete for v0.2)
+- [x] X/Twitter ingest (API bearer / xurl / structured stub)
+- [x] Firecrawl / crawl4ai adapters
+- [x] Glossary expansion (`glossary_expanded`)
+- [x] Persistent cache + rate limiting
+- [x] Enhanced provenance fingerprints
+- [x] Receipt ledger (append-only, hash-chained)
 
-## Phase 3 — Deep Abraxas-Orchestra Integration
-- [ ] Hyperlex as native "signal-forager" skill inside Orchestra
-- [ ] Use Orchestra to scaffold Hyperlex itself with symbolic architecture
-- [ ] Rune-compatible signal relay (virality_boost + hyperstition_risk → market / forecast runes)
-- [ ] Multi-domain expansion (beyond betting slang)
+## Phase 2 — Advanced Analysis & Calibration
+- [x] Golden settled series + Brier layer (atomic, series, Murphy, Yates, v1.1)
+- [x] Forecast extraction + settlement models
+- [x] Lineage system (docs, diagrams, matcher, confidence)
+- [x] Operator settlement + score log
+- [x] Abraxas-compatible modules (`compat.abraxas`: ledger, score packet, review, runes)
+- [ ] Improved neologism pipeline (LLM + rules hybrid)
+- [ ] Community driver modeling
+- [ ] Virality prediction models
+- [ ] Memetic typology expansion
+- [ ] Automated diagram generation from receipt histories
 
-## Phase 4 — Production & Public Surface
-- [ ] PyPI release
-- [ ] Comprehensive golden receipt corpus
-- [ ] MkDocs or similar site
-- [ ] Security audit + SEMVER policy
-- [ ] CI modeled on Orchestra workflows
+## Phase 3 — Hermes / Host Integration
+- [x] Hermes skill packaging + install
+- [x] Rune / signal relay (`RUNE.HLX.*`)
+- [x] Cron / LIVE_EMERGENCE_SCAN
+- [ ] Hyperstition loop feedback into forecasting systems
+- [ ] Market-signal / forecast pipeline connectors (generic)
 
-See `docs/ANALYZE_OPTIMIZE_PLAN.md` (to be created) for current iteration plan.
+## Phase 4 — Production & Ecosystem
+- [x] Local/Hermes packaging — **no public PyPI publish planned**
+- [x] Public API v1 freeze (`docs/api-v1.md`, `hyperlex.API_V1`)
+- [x] Golden receipt corpus (`examples/receipts/golden/`)
+- [ ] Expanded golden corpus + CI coverage
+- [ ] Documentation site / MkDocs
+- [ ] Example notebooks and case studies
+- [ ] Optional governed LLM layer
+- [ ] Cross-domain expansion
+
+## Long-term
+- Cultural transmission simulation
+- Multi-agent memetic modeling
+- Hyperstition risk forecasting
+- Full phylogenetic libraries across domains
+
+See root `ROADMAP.md` for the checklist used in active planning.

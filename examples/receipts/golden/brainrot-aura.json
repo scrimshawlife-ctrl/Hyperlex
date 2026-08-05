@@ -1,0 +1,127 @@
+{
+  "analysis": {
+    "hyperstition": {
+      "loop_stage": "EMERGENT",
+      "mechanism": "narrative circulating but no market confirmation yet"
+    },
+    "lineage": {
+      "branch_operator": "irony_inversion",
+      "confidence": 0.98,
+      "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
+      "family_id": "brainrot-aura",
+      "matched_terms": [
+        "brainrot",
+        "aura",
+        "aura farming",
+        "mid",
+        "cooked",
+        "let him cook"
+      ],
+      "payload_note": "content-degradation + status radiation; self-aware consumption",
+      "provenance": "INFERRED",
+      "score_breakdown": {
+        "coverage": 0.857,
+        "density": 0.18,
+        "hit_bonus": 0.38,
+        "n_hits": 6,
+        "raw": 1.148,
+        "specificity": 0.578,
+        "term_weights": {
+          "aura": 0.46,
+          "aura farming": 0.75,
+          "brainrot": 0.56,
+          "cooked": 0.51,
+          "let him cook": 0.75,
+          "mid": 0.435
+        }
+      }
+    },
+    "memetics": {
+      "is_memetic": true,
+      "score": 0.82,
+      "typology": "betting_tactical"
+    },
+    "neologisms": [],
+    "semantic_variation": {
+      "community": "general_betting",
+      "driver": "communicative_need",
+      "sense": "general"
+    },
+    "virality": {
+      "acceleration": 0.6,
+      "hybrid_score": 0.667,
+      "velocity": 0.675
+    }
+  },
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.667. Lineage: brainrot-aura (conf=0.98).",
+  "ingest": {
+    "extracted_terms": [],
+    "metadata": {
+      "adapter": {},
+      "cache": {
+        "cache_dir": "/home/scrimshawlife/.hyperlex/cache",
+        "disk_entries": 0,
+        "memory_entries": 0,
+        "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
+      },
+      "cached": false,
+      "fetched_at": "2026-08-05T16:59:05.387954+00:00",
+      "live": false,
+      "source_locator": "hyperlex://mock",
+      "source_type": "synthetic_stub"
+    },
+    "query": "brainrot aura farming mid cooked",
+    "source": "mock",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "4197c06486ada5b0ff0a73aa27340413b29399afc90c7951075bf6a439630f59",
+      "content_hash_short": "4197c06486ada5b0",
+      "fetched_at": "2026-08-05T16:59:05.387954+00:00",
+      "fingerprint_id": "edf9e563dbd51955e7aa4809",
+      "package_version": "0.2.1",
+      "query": "brainrot aura farming mid cooked",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    }
+  },
+  "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
+  "observed": "Mock memetic channel on \"brainrot aura farming mid cooked\": organic velocity, minor coordinated push. Narrative circulating in community discourse. brainrot aura farming mid cooked let him cook.",
+  "provenance": {
+    "adapter_version": "ingest-v1.7",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "brier": null,
+    "brier_note": "brier_requires_settlement",
+    "canonical_hash": "588d53e7bf8b900c",
+    "content_hash": "4197c06486ada5b0ff0a73aa27340413b29399afc90c7951075bf6a439630f59",
+    "hyperstition_risk": "EMERGENT",
+    "ingest_source": "mock",
+    "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "4197c06486ada5b0ff0a73aa27340413b29399afc90c7951075bf6a439630f59",
+      "content_hash_short": "4197c06486ada5b0",
+      "fetched_at": "2026-08-05T16:59:05.387954+00:00",
+      "fingerprint_id": "edf9e563dbd51955e7aa4809",
+      "package_version": "0.2.1",
+      "query": "brainrot aura farming mid cooked",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    },
+    "source_locator": "hyperlex://mock",
+    "timestamp": "2026-08-05T16:59:05.388203+00:00",
+    "version": "0.2.1"
+  },
+  "receipt": {
+    "integrity": "fb635c942820",
+    "path": "examples/receipts/golden/brainrot-aura.json"
+  },
+  "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+}

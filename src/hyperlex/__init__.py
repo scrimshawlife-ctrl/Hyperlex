@@ -1,13 +1,14 @@
-"""Hyperlex — Memetic Emergence Engine.
+"""Hyperlex — standalone memetic emergence engine.
 
-Symbolic architecture (numogram + chaos-magic):
-- intake (gate_of_intake) — expanded ingest
-- analysis (zone_of_emergence)
-- synthesis (current_of_transmission)
-- receipt (archive_of_becoming)
-- calibration (forecast → settlement → Brier)
+Architecture:
+  intake → analysis → synthesis → receipt → calibration → relay
 
-Schemas available in .schemas
+Abraxas is **not** a dependency. Relevant Abraxas-shaped capabilities
+(Brier ledger/score packets, claim labels, operator review, HLX runes)
+are pure Hyperlex modules under ``hyperlex.compat.abraxas`` so hosts may
+import them from Hyperlex.
+
+Schemas live under ``hyperlex.schemas`` and repo ``schemas/``.
 """
 from pathlib import Path
 
@@ -44,6 +45,7 @@ from .receipt import (
 from . import schemas
 from . import calibration
 from . import relay
+from . import compat
 from .relay import (
     relay_from_result,
     relay_forecasts,
@@ -62,7 +64,8 @@ from .calibration import (
     NOT_COMPUTABLE,
 )
 
-__all__ = [
+# Stable public API (v0.2 freeze) — see docs/api-v1.md
+API_V1 = (
     "ingest_signal",
     "fetch_ingest",
     "detect_memetic_patterns",
@@ -71,29 +74,38 @@ __all__ = [
     "mock_integrate_with_external_signal",
     "emit_receipt",
     "verify_receipt",
-    "default_ledger_path",
-    "list_receipts",
-    "verify_ledger_chain",
-    "humanize_slang_output",
-    "compute_virality_score",
-    "simulate_hyperstition_loop",
     "extract_forecasts",
     "settle",
     "score_pair",
     "score_series",
     "settle_and_log",
     "recompute_series",
-    "append_forecast",
-    "default_log_path",
-    "NOT_COMPUTABLE",
     "relay_from_result",
     "relay_forecasts",
     "relay_series",
     "list_runes",
+    "NOT_COMPUTABLE",
+    "PKG_VERSION",
+)
+
+__all__ = [
+    *API_V1,
+    "default_ledger_path",
+    "list_receipts",
+    "verify_ledger_chain",
+    "humanize_slang_output",
+    "compute_virality_score",
+    "simulate_hyperstition_loop",
+    "detect_neologisms",
+    "trace_semantic_variation",
+    "memetics_protocol_check",
+    "append_forecast",
+    "default_log_path",
     "calibration",
     "relay",
+    "compat",
     "schemas",
-    "PKG_VERSION",
+    "API_V1",
 ]
 
 __version__ = PKG_VERSION

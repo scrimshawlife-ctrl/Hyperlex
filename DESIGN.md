@@ -43,8 +43,15 @@ Light post-processing to remove AI-isms while preserving sharp signal.
 ## 7. Receipt-Centric Workflow
 The `emit_receipt` pattern ensures every serious run produces an auditable artifact. Receipts are the primary output for serious use.
 
-## 8. Decoupling
-Hyperlex has no hard dependency on Hollersports, Abraxas, or any specific domain. Betting slang is the initial rich domain for validation. Calibration semantics are compatible with Abraxas Brier ledgers but do not import them.
+## 8. Standalone App + Modular Host Compat
+Hyperlex is a **standalone application**. It has no hard dependency on
+Hollersports, Abraxas, Orchestra, or any domain host. Betting slang is the
+initial validation domain.
+
+**Relevant Abraxas capabilities** (Brier ledger/score packets, claim labels,
+operator review, HLX rune envelopes) are implemented as Hyperlex modules under
+`hyperlex.compat.abraxas`. Hosts may `import hyperlex.compat.abraxas`; Hyperlex
+never imports Abraxas. See `docs/standalone-app.md`.
 
 ## 9. Determinism + Graceful Degradation
 - Mock mode is fully deterministic
