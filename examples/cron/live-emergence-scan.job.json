@@ -1,0 +1,23 @@
+{
+  "name": "hyperlex-live-emergence-scan",
+  "description": "Deterministic LIVE_EMERGENCE_SCAN via Hyperlex skill. Uses no_agent script so the scan is the whole job. Default source is mock (offline-safe); switch to combined when network is allowed.",
+  "skills": ["hyperlex"],
+  "skill": "hyperlex",
+  "script": "export HERMES_SKILL_DIR=\"${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}\"; export HYPERLEX_OFFLINE=\"${HYPERLEX_OFFLINE:-0}\"; python3 \"$HERMES_SKILL_DIR/scripts/hyperlex.py\" scan --config \"$HERMES_SKILL_DIR/examples/cron/scan-queries.json\" --source mock --receipt --forecasts --append-log --json",
+  "no_agent": true,
+  "model": null,
+  "provider": null,
+  "schedule": {
+    "kind": "cron",
+    "expr": "0 */6 * * *",
+    "display": "0 */6 * * * (every 6 hours)"
+  },
+  "schedule_display": "0 */6 * * *",
+  "state": "proposed",
+  "notes": [
+    "Register with: hermes cron add (paste fields) OR import from this file if supported.",
+    "Do not set source=combined without network + optional deps.",
+    "Score log: ~/.hyperlex/score_log.jsonl; receipt ledger: ~/.hyperlex/receipt_ledger.jsonl",
+    "Operator must settle forecasts later; scan never invents Brier numbers."
+  ]
+}

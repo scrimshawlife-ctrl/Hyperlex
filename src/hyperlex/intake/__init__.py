@@ -19,7 +19,6 @@ import asyncio
 import inspect
 import re
 import os
-import time
 import urllib.parse
 from typing import Any, Dict, List, Optional
 from datetime import datetime, timezone
@@ -34,27 +33,32 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     AsyncWebCrawler = None
 
-# Simple in-memory TTL cache
-_CACHE: Dict[str, tuple] = {}
-_CACHE_TTL = 300  # 5 minutes
+from .cache import (
+    cache_key as _cache_key,
+    get_cached as _get_cached_raw,
+    set_cached as _set_cached_raw,
+    wait_for_rate_limit,
+    is_cached,
+    cache_stats,
+)
 
 
 def _offline_mode() -> bool:
     flag = str(os.environ.get("HYPERLEX_OFFLINE", "")).strip().lower()
     return flag in {"1", "true", "yes", "on"}
 
-def _cache_key(query: str, source: str) -> str:
-    return f"{source}:{query.lower().strip()}"
 
-def _get_cached(key: str) -> Optional[str]:
-    if key in _CACHE:
-        ts, val = _CACHE[key]
-        if time.time() - ts < _CACHE_TTL:
-            return val
-    return None
+def _get_cached(key: str, source: str = "") -> Optional[str]:
+    return _get_cached_raw(key, source=source or key.split(":", 1)[0])
 
-def _set_cached(key: str, val: str):
-    _CACHE[key] = (time.time(), val)
+
+def _set_cached(key: str, val: str, source: str = "") -> None:
+    _set_cached_raw(key, val, source=source or key.split(":", 1)[0])
+
+
+def _before_network(source: str) -> None:
+    """Rate-limit live network adapters (no-op when disabled via env)."""
+    wait_for_rate_limit(source)
 
 def _fetch_real_betting_glossary(query: str) -> str:
     """Live fetch of current betting slang from public glossary."""
@@ -69,6 +73,7 @@ def _fetch_real_betting_glossary(query: str) -> str:
         return cached
 
     try:
+        _before_network("glossary")
         url = "https://www.actionnetwork.com/education/sports-betting-terms-glossary"
         r = requests.get(
             url,
@@ -115,6 +120,7 @@ def _fetch_reddit_slang(query: str) -> str:
         return cached
 
     try:
+        _before_network("reddit")
         url = "https://old.reddit.com/search.json"
         params = {"q": f"{query} betting slang OR sharp OR revenge OR memetic", "sort": "new", "limit": "8"}
         headers = {"User-Agent": "Hyperlex/1.6 (real-ingest)"}
@@ -151,6 +157,7 @@ def _fetch_urban_dict(query: str) -> str:
         return cached
 
     try:
+        _before_network("urban")
         url = "https://api.urbandictionary.com/v0/define"
         r = requests.get(url, params={"term": query}, timeout=6)
         if r.status_code == 200:
@@ -179,6 +186,7 @@ def _fetch_wikipedia(query: str) -> str:
         return cached
 
     try:
+        _before_network("wikipedia")
         # Use REST summary endpoint
         safe_term = query.replace(" ", "_")
         url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{safe_term}"
@@ -291,6 +299,7 @@ def _fetch_crawl4ai_query(query: str) -> str:
         return cached
 
     try:
+        _before_network("crawl4ai")
         raw = _run_crawl4ai(url)
         body = _coerce_crawl_payload(raw)
         if not body.strip():
@@ -382,6 +391,8 @@ def fetch_ingest(
       - metadata
       - timestamp
     """
+    key = _cache_key(query, source)
+    was_cached = is_cached(key)
     raw = ingest_signal(query, source=source)
 
     # Heuristic term extraction
@@ -395,8 +406,9 @@ def fetch_ingest(
         "extracted_terms": terms,
         "metadata": {
             "source_type": "real" if source in ("real", "glossary", "urban", "reddit", "wikipedia", "firecrawl", "crawl4ai") else "synthetic_stub",
-            "cached": _cache_key(query, source) in _CACHE,
+            "cached": was_cached,
             "fetched_at": datetime.now(timezone.utc).isoformat(),
+            "cache": cache_stats(),
         },
         "provenance": {
             "version": "1.6.0",

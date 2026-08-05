@@ -1,5 +1,5 @@
 name: hyperlex
-version: 0.1.2
+version: 0.1.3
 display_name: Hyperlex
 kind: hermes-openclaw-skill
 description: >
@@ -59,6 +59,7 @@ commands:
   - validate
   - verify-receipt
   - smoke
+  - scan
 
 intents:
   - check
@@ -75,6 +76,7 @@ intents:
   - validate
   - verify-receipt
   - smoke
+  - scan
 
 schemas:
   - schemas/ingest.v1.schema.json

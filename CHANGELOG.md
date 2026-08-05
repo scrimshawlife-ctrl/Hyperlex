@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 — Cache, golden series, LIVE_EMERGENCE_SCAN (2026-08-05)
+
+- Persistent ingest cache (`~/.hyperlex/cache/`) + per-source rate limiting.
+- Golden settled series fixture: `examples/calibration/settled_series.v1.json`.
+- CLI `scan` (LIVE_EMERGENCE_SCAN) for multi-query cron/autonomous monitoring.
+- Hermes cron template: `examples/cron/live-emergence-scan.job.json` + `docs/cron-live-emergence.md`.
+
 ## 0.1.2 — Receipt ledger (2026-08-05)
 
 - Append-only hash-chained receipt ledger (`~/.hyperlex/receipt_ledger.jsonl`).

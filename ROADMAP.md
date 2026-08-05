@@ -17,12 +17,12 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [ ] Reliable X/Twitter ingest (via xurl or API)
 - [ ] Firecrawl / web scraping for broader signals
 - [ ] Glossary expansion (multiple sources)
-- [ ] Persistent cache + rate limiting
+- [x] Persistent cache + rate limiting (`~/.hyperlex/cache/`, rate_limit.json)
 - [ ] Enhanced provenance (source fingerprints, timestamps)
 - [x] Receipt ledger (append-only, hash-chained) — `~/.hyperlex/receipt_ledger.jsonl`
 
 ### Phase 2 — Advanced Analysis & Calibration
-- [ ] Integration with real historical calibration data (settled series)
+- [x] Golden settled series fixture + tests (`examples/calibration/settled_series.v1.json`)
 - [x] Brier score calculation layer (atomic, series, BSS, Murphy, Yates)
 - [x] Forecast extraction + settlement models (`hyperlex.calibration`)
 - [x] Remove decorative `provenance.brier` from open analysis results
@@ -46,7 +46,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [ ] Rune / signal relay compatibility
 - [ ] Hyperstition loop feedback into forecasting systems
 - [ ] Market-signal and forecast pipeline connectors (generic)
-- [ ] Cron / autonomous monitoring jobs
+- [x] Cron / autonomous monitoring (`scan` + `examples/cron/live-emergence-scan.job.json`)
 
 ### Phase 4 — Production & Ecosystem
 - [ ] PyPI publication

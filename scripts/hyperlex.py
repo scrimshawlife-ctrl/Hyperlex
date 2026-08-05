@@ -641,9 +641,146 @@ def cmd_smoke(_args: argparse.Namespace) -> int:
         return 2
 
     sample = pkg.detect_memetic_patterns("smoke test", ingest_source="mock", use_structured_ingest=False, validate=False)
-    receipt_path = pkg.emit_receipt(sample, out_dir=ROOT / "out" / "smoke", validate=False)
+    receipt_path = pkg.emit_receipt(
+        sample,
+        out_dir=ROOT / "out" / "smoke",
+        validate=False,
+        append_ledger=False,  # smoke should not pollute operator ledger
+    )
     _emit({"ok": True, "stage": "smoke", "sample": sample["analysis"]["memetics"], "receipt": str(receipt_path)})
     return 0
+
+
+def _load_scan_queries(args: argparse.Namespace) -> List[str]:
+    queries: List[str] = []
+    if getattr(args, "query", None):
+        queries.append(str(args.query))
+    if getattr(args, "queries", None):
+        for part in str(args.queries).split(","):
+            part = part.strip()
+            if part:
+                queries.append(part)
+    if getattr(args, "config", None):
+        cfg_path = Path(args.config)
+        if not cfg_path.exists():
+            # try relative to skill root
+            alt = ROOT / args.config
+            if alt.exists():
+                cfg_path = alt
+        if cfg_path.exists():
+            data = json.loads(cfg_path.read_text(encoding="utf-8"))
+            if isinstance(data, dict) and isinstance(data.get("queries"), list):
+                queries.extend(str(q) for q in data["queries"] if str(q).strip())
+            elif isinstance(data, list):
+                queries.extend(str(q) for q in data if str(q).strip())
+    # dedupe preserve order
+    seen = set()
+    out: List[str] = []
+    for q in queries:
+        if q not in seen:
+            seen.add(q)
+            out.append(q)
+    return out
+
+
+def cmd_scan(args: argparse.Namespace) -> int:
+    """LIVE_EMERGENCE_SCAN — multi-query analyze for cron / autonomous monitoring."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    queries = _load_scan_queries(args)
+    if not queries:
+        # default pack
+        default_cfg = ROOT / "examples" / "cron" / "scan-queries.json"
+        if default_cfg.exists():
+            data = json.loads(default_cfg.read_text(encoding="utf-8"))
+            queries = list(data.get("queries") or [])
+    if not queries:
+        _emit({"ok": False, "error": "no queries; pass --query, --queries, or --config"})
+        return 2
+
+    source = args.source or "mock"
+    results: List[Dict[str, Any]] = []
+    n_forecasts = 0
+    n_receipts = 0
+    errors: List[Dict[str, str]] = []
+
+    for q in queries:
+        try:
+            result = pkg.detect_memetic_patterns(
+                query=q,
+                ingest_source=source,
+                use_structured_ingest=bool(getattr(args, "structured_ingest", False)),
+                validate=bool(args.validate),
+            )
+            receipt_path = None
+            if args.receipt:
+                out_dir = Path(args.receipt_dir) if args.receipt_dir else None
+                ledger = Path(args.ledger) if args.ledger else None
+                receipt_path = pkg.emit_receipt(
+                    result,
+                    out_dir=out_dir,
+                    validate=bool(args.validate),
+                    append_ledger=not args.no_ledger,
+                    ledger_path=ledger,
+                )
+                result = json.loads(Path(receipt_path).read_text(encoding="utf-8"))
+                n_receipts += 1
+
+            forecasts: List[Dict[str, Any]] = []
+            if args.forecasts:
+                receipt_ref = None
+                if isinstance(result.get("receipt"), dict):
+                    receipt_ref = {
+                        "integrity": result["receipt"].get("integrity"),
+                        "path": str(receipt_path) if receipt_path else None,
+                    }
+                forecasts = pkg.extract_forecasts(result, receipt_ref=receipt_ref)
+                if args.append_log and forecasts:
+                    log_path = _resolve_log_path(args)
+                    for fc in forecasts:
+                        pkg.append_forecast(fc, path=log_path)
+                n_forecasts += len(forecasts)
+
+            lineage = (result.get("analysis") or {}).get("lineage")
+            results.append({
+                "query": q,
+                "receipt": str(receipt_path) if receipt_path else None,
+                "lineage_family": (lineage or {}).get("family_id"),
+                "lineage_confidence": (lineage or {}).get("confidence"),
+                "n_forecasts": len(forecasts),
+                "forecast_ids": [f.get("forecast_id") for f in forecasts],
+                "brier": (result.get("provenance") or {}).get("brier"),
+                "hyperstition_risk": (result.get("provenance") or {}).get("hyperstition_risk"),
+            })
+        except Exception as exc:
+            errors.append({"query": q, "error": str(exc)})
+
+    summary = {
+        "ok": len(errors) == 0,
+        "command": "scan",
+        "rune": "LIVE_EMERGENCE_SCAN",
+        "source": source,
+        "n_queries": len(queries),
+        "n_ok": len(results),
+        "n_errors": len(errors),
+        "n_receipts": n_receipts,
+        "n_forecasts": n_forecasts,
+        "results": results,
+        "errors": errors,
+        "note": "Brier remains null until operator settlement",
+    }
+
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(summary, sort_keys=True, indent=2), encoding="utf-8")
+        summary["out"] = str(out)
+
+    _emit(summary)
+    return 0 if summary["ok"] else 1
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -746,6 +883,28 @@ def _build_parser() -> argparse.ArgumentParser:
 
     smoke_parser = subparsers.add_parser("smoke", help="Run fast smoke check")
     smoke_parser.set_defaults(func=cmd_smoke)
+
+    scan_parser = subparsers.add_parser(
+        "scan",
+        help="LIVE_EMERGENCE_SCAN — multi-query analyze for cron/autonomous monitoring",
+    )
+    scan_parser.add_argument("--query", default="", help="Single query")
+    scan_parser.add_argument("--queries", default="", help="Comma-separated queries")
+    scan_parser.add_argument("--config", default="", help="JSON file with {queries: [...]}")
+    scan_parser.add_argument("--source", default="mock")
+    scan_parser.add_argument("--structured-ingest", dest="structured_ingest", action="store_true", default=False)
+    scan_parser.add_argument("--validate", action="store_true", default=False)
+    scan_parser.add_argument("--receipt", action="store_true", default=False)
+    scan_parser.add_argument("--receipt-dir", default="")
+    scan_parser.add_argument("--ledger", default="")
+    scan_parser.add_argument("--no-ledger", action="store_true", default=False)
+    scan_parser.add_argument("--forecasts", action="store_true", default=False)
+    scan_parser.add_argument("--append-log", action="store_true", default=False)
+    scan_parser.add_argument("--log", default="")
+    scan_parser.add_argument("--repo-log", action="store_true", default=False)
+    scan_parser.add_argument("--out", default="", help="Write scan summary JSON")
+    scan_parser.add_argument("--json", action="store_true", default=True, help="JSON output (default)")
+    scan_parser.set_defaults(func=cmd_scan)
 
     return parser
 

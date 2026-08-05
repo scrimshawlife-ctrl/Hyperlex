@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.1.2
+version: 0.1.3
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
@@ -119,6 +119,7 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" list-receipts
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" verify-receipt-ledger
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" validate <artifact.json>
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" verify-receipt <receipt.json>
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" --source mock --receipt --forecasts
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
 ```
 
@@ -194,6 +195,7 @@ Hyperlex **may not**:
 
 ```bash
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" --source mock --receipt --forecasts
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
 ```
 

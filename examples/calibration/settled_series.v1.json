@@ -1,0 +1,108 @@
+{
+  "schema": "hyperlex.golden_settled_series.v1",
+  "description": "Golden forecast–settlement pairs with hand-checked Brier values. Used by tests and score-series demos. Do not invent scores outside this fixture.",
+  "mapping_version": "v1",
+  "reference": "climatology",
+  "pairs": [
+    {
+      "forecast": {
+        "forecast_id": "golden-a1",
+        "receipt_ref": { "integrity": "golden000001" },
+        "signal_key": "lineage.confidence",
+        "probability": 0.8,
+        "target_event": "Lineage family membership confirmed on review",
+        "target_schema": "lineage.family_confirmed",
+        "created_at": "2026-08-01T00:00:00+00:00",
+        "mapping_version": "v1",
+        "provenance": "INFERRED"
+      },
+      "settlement": {
+        "settlement_id": "golden-s1",
+        "forecast_id": "golden-a1",
+        "outcome_value": 1.0,
+        "settlement_decision": "TRUE",
+        "settled_at": "2026-08-02T00:00:00+00:00",
+        "authority": { "kind": "operator", "note": "golden fixture" }
+      },
+      "expected_atomic": 0.04
+    },
+    {
+      "forecast": {
+        "forecast_id": "golden-a2",
+        "receipt_ref": { "integrity": "golden000002" },
+        "signal_key": "lineage.confidence",
+        "probability": 0.3,
+        "target_event": "Lineage family membership confirmed on review",
+        "target_schema": "lineage.family_confirmed",
+        "created_at": "2026-08-01T01:00:00+00:00",
+        "mapping_version": "v1",
+        "provenance": "INFERRED"
+      },
+      "settlement": {
+        "settlement_id": "golden-s2",
+        "forecast_id": "golden-a2",
+        "outcome_value": 0.0,
+        "settlement_decision": "FALSE",
+        "settled_at": "2026-08-02T01:00:00+00:00",
+        "authority": { "kind": "operator", "note": "golden fixture" }
+      },
+      "expected_atomic": 0.09
+    },
+    {
+      "forecast": {
+        "forecast_id": "golden-a3",
+        "receipt_ref": { "integrity": "golden000003" },
+        "signal_key": "virality.hybrid_score",
+        "probability": 0.5,
+        "target_event": "Observed uptake above threshold",
+        "target_schema": "uptake.observed",
+        "created_at": "2026-08-01T02:00:00+00:00",
+        "mapping_version": "v1",
+        "provenance": "INFERRED"
+      },
+      "settlement": {
+        "settlement_id": "golden-s3",
+        "forecast_id": "golden-a3",
+        "outcome_value": 1.0,
+        "settlement_decision": "TRUE",
+        "settled_at": "2026-08-02T02:00:00+00:00",
+        "authority": { "kind": "operator", "note": "golden fixture" }
+      },
+      "expected_atomic": 0.25
+    },
+    {
+      "forecast": {
+        "forecast_id": "golden-void",
+        "receipt_ref": { "integrity": "golden000004" },
+        "signal_key": "hyperstition.stage",
+        "probability": 0.7,
+        "target_event": "Hyperstition loop confirmed",
+        "target_schema": "hyperstition.loop_confirmed",
+        "created_at": "2026-08-01T03:00:00+00:00",
+        "mapping_version": "v1",
+        "provenance": "SPECULATIVE"
+      },
+      "settlement": {
+        "settlement_id": "golden-svoid",
+        "forecast_id": "golden-void",
+        "outcome_value": 0.0,
+        "settlement_decision": "VOID",
+        "settled_at": "2026-08-02T03:00:00+00:00",
+        "authority": { "kind": "operator", "note": "void not scored" }
+      },
+      "expected_atomic": null,
+      "note": "VOID settlements must not contribute to series"
+    }
+  ],
+  "expected_series": {
+    "status": "SCORED",
+    "n": 3,
+    "series_brier": 0.12666666666666668,
+    "comment": "mean(0.04, 0.09, 0.25) = 0.1266... VOID excluded"
+  },
+  "expected_empty": {
+    "status": "NOT_COMPUTABLE",
+    "n": 0,
+    "series_brier": "NOT_COMPUTABLE"
+  }
+}
