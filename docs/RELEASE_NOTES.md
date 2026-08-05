@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.8
+- GitHub Pages MkDocs deploy; strict docs build; CI case study.
+
 ## 0.2.7
 - MkDocs; governed LLM stub; ledger-diff CLI.
 

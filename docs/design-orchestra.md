@@ -2,7 +2,7 @@
 
 **Status**: Design surface active  
 **Version target**: 2.0 (full symbolic integration)  
-**Hosts**: Hermes, OpenClaw, standalone
+**Hosts**: Hermes, OpenClaw
 
 ## Intent
 Hyperlex provides **governed memetic signal detection** that can be orchestrated using traditional symbolic maps. It surfaces real emerging slang and hyperstition loops as first-class, provenance-rich signals for Abraxas symbolic intelligence.
@@ -39,7 +39,7 @@ Hyperlex is intended to be used as:
 Future: full `analyze → map → optimize` pipeline when used inside Orchestra.
 
 ## Related Documents
-- [ROADMAP.md](../ROADMAP.md)
-- [SPEC.md](../SPEC.md)
-- [ARCHITECTURE.md](../ARCHITECTURE.md)
+- [ROADMAP.md](ROADMAP.md)
+- [SPEC.md](spec.md)
+- [ARCHITECTURE.md](architecture.md)
 - references/agent-posture.md (to be added)

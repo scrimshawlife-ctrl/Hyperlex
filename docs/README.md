@@ -21,10 +21,10 @@ Hyperlex is a **Hermes skill** (Python package repo). Relevant Abraxas wire shap
 - [Modules / Governed LLM](./modules/llm.md)
 
 ## Root specs
-- [ROADMAP.md](../ROADMAP.md) (canonical) · [docs/ROADMAP.md](./ROADMAP.md) (synced)
-- [ARCHITECTURE.md](../ARCHITECTURE.md)
-- [DESIGN.md](../DESIGN.md)
-- [SPEC.md](../SPEC.md)
+- [ROADMAP.md](ROADMAP.md) (canonical) · [docs/ROADMAP.md](./ROADMAP.md) (synced)
+- [ARCHITECTURE.md](architecture.md)
+- [DESIGN.md](design.md)
+- [SPEC.md](spec.md)
 
 ## Examples
 - `examples/slang-families/` — Mermaid family trees

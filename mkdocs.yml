@@ -31,7 +31,8 @@ nav:
   - Hermes skill: hermes-skill.md
   - API v1: api-v1.md
   - Architecture: architecture.md
-  - Design: design.md
+  - Design principles: design.md
+  - Design (Orchestra notes): design-orchestra.md
   - Spec: spec.md
   - Roadmap: ROADMAP.md
   - Calibration:
@@ -49,10 +50,15 @@ nav:
       - Rune relay: rune-signal-relay.md
       - Security: SECURITY.md
       - Semver: SEMVER.md
+      - Release notes: RELEASE_NOTES.md
   - Case studies: case-studies.md
 
 plugins:
   - search
 
+# Avoid collision: docs/README.md vs docs/index.md
+exclude_docs: |
+  README.md
+
 extra:
-  version: 0.2.7
+  version: 0.2.8

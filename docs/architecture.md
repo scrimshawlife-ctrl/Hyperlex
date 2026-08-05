@@ -92,4 +92,4 @@ from hyperlex.compat.abraxas import (
 - OBSERVED / INFERRED / SPECULATIVE discipline
 - Python ≥ 3.10, stdlib-first baseline
 
-See [SPEC.md](./SPEC.md), [docs/api-v1.md](./docs/api-v1.md), [docs/hermes-skill.md](./docs/hermes-skill.md).
+See [SPEC.md](spec.md), [docs/api-v1.md](api-v1.md), [docs/hermes-skill.md](hermes-skill.md).

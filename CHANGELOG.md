@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.8 — Docs site deploy, strict MkDocs, CI case study (2026-08-05)
+
+- GitHub Pages workflow (`.github/workflows/docs.yml`) builds/deploys MkDocs.
+- `scripts/sync_mkdocs_pages.py` rewrites root-doc links for strict builds.
+- Skill CI runs case study script; docs ROADMAP mirrored to site.
+- MkDocs `--strict` clean (README excluded from site).
+
 ## 0.2.7 — MkDocs site, governed LLM stub, ledger-diff (2026-08-05)
 
 - MkDocs documentation site (`mkdocs.yml`, optional extra `[docs]`).

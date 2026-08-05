@@ -33,5 +33,7 @@ jobs:
         run: python3 scripts/hyperlex.py smoke
       - name: Diagram from golden
         run: python3 scripts/hyperlex.py diagram --from-golden --out-dir out/ci-diagrams --no-html
+      - name: Case study runner
+        run: python3 scripts/run_case_study.py --out-dir out/ci-case-study
       - name: Run tests
         run: python3 -m pytest -q
