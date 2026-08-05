@@ -29,7 +29,8 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [ ] Virality prediction models
 - [ ] Memetic typology expansion
 - [x] Slang historical family documentation + emergent branch diagrams (Mermaid)
-- [ ] Schema support for lineage attachment on analysis results
+- [x] Schema support for lineage attachment on analysis results (`lineage.v1.schema.json`)
+- [x] Simple deterministic lineage matcher (`match_lineage`) wired into `detect_memetic_patterns`
 - [ ] Automated diagram generation from receipt histories
 
 ### Phase 3 — Hermes / Symbolic Integration
@@ -63,11 +64,15 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 
 See SPEC.md and DESIGN.md for detailed requirements per phase.
 
-## Recent Documentation Additions (2026-08-05)
-- `docs/slang-lineages.md` — expanded methodology (mutation operators, documentation template, live-feed process, receipt attachment sketch)
-- `examples/slang-families/` — Mermaid diagrams:
-  - betting-sharp family + chronological timeline
-  - kinship-address lineage
-  - crypto-degen family (HODL / diamond hands / ape / rekt)
-  - brainrot-aura family (mid / cooked / aura / brainrot)
-  - Hyperlex emergence process
+## Recent Documentation & Code Additions (2026-08-05)
+- `docs/slang-lineages.md` — full methodology, mutation operators, template, live-feed process
+- `schemas/lineage.v1.schema.json` — attachment schema
+- `src/hyperlex/analysis` — `match_lineage()` + automatic attachment under `analysis.lineage`
+- `examples/slang-families/` — 8 diagrams + 3 HTML renderers covering:
+  - betting-sharp (+ timeline)
+  - kinship-address
+  - crypto-degen
+  - brainrot-aura
+  - ai-native
+  - political-status
+  - emergence process
