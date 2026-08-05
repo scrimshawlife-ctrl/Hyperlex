@@ -47,10 +47,16 @@ def test_sources_command() -> None:
     body = _load_json(result.stdout)
     names = [entry["name"] for entry in body["sources"]]
     assert "mock" in names
-    assert "real" in names
+    assert "glossary" in names
     assert "combined" in names
-    assert "firecrawl" in names
     assert "crawl4ai" in names
+    # aliases live on catalog entries (real→glossary, firecrawl→crawl4ai)
+    glossary = next(s for s in body["sources"] if s["name"] == "glossary")
+    assert "real" in glossary.get("aliases", [])
+    crawl = next(s for s in body["sources"] if s["name"] == "crawl4ai")
+    assert "firecrawl" in crawl.get("aliases", [])
+    route_names = [r["name"] for r in body.get("routes") or []]
+    assert "offline" in route_names and "live" in route_names
 
 
 def test_ingest_mock_structured() -> None:
@@ -65,13 +71,15 @@ def test_ingest_mock_structured() -> None:
 
 
 def test_ingest_crawl4ai_fallback_is_safe() -> None:
+    # HYPERLEX_OFFLINE=1 forces network sources → mock (fail-safe)
     result = _run_cli("ingest", "sharp money revenge", "--source", "crawl4ai", "--structured")
     assert result.returncode == 0
     body = _load_json(result.stdout)
     payload = body["result"]
-    assert payload["source"] == "crawl4ai"
+    assert payload["source"] == "mock"
     assert payload["raw_signal"]
-    assert payload["metadata"]["source_type"] == "real"
+    assert payload.get("route", {}).get("offline_forced") is True
+    assert payload.get("route", {}).get("intended_source") == "crawl4ai"
 
 
 def test_analyze_and_validate_schema() -> None:

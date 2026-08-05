@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.7  
+**Version:** 0.3.8  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Hallmark desk UI
@@ -43,21 +43,18 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Transmission calibrate** | Ready (advisory β/γ from settled pairs) |
 | **Scenario library + export** | Ready (`compare` / `export`) |
 | **Risk → scan/cron schedule** | Ready (`risk-schedule`; advisory only) |
+| **Ingest routes + `run`/`commands`/`pending`** | Ready (v0.3.8) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
 ## Operator loop
 
 ```text
-analyze --receipt --forecasts --append-log
-  → relay / signal / diagram
-  → settle (operator)
-  → score-series / feedback
-  → lineage-backfill --list / lineage-backprop --from-golden
-  → simulate --from-analyze --domain markets|ai|politics   # Phase 5
-  → risk-schedule --tier ELEVATED --schedule-out /tmp/hlx-cron   # advisory cron
-  → archive-export --history   # append sanitized run to Pages history
-  → vector-seed / vector-search   # local vector DB
+commands                              # simplified map
+run "<query>" --route offline         # one-shot daily path
+  → pending → settle → score-series   # calibration (Brier only here)
+  → scan / risk-schedule              # cron advisory
+  → simulate / archive-export / vector-*   # research & pages (optional)
 ```
 
 ## Data dirs
@@ -71,6 +68,14 @@ analyze --receipt --forecasts --append-log
 data/backfill/2026/          # curated YTD term packs (repo)
 ```
 
-## Phase 5.3+ (next)
+## Recommended next (ops, not greenfield)
 
-Optional ANN backend if corpus grows past linear scan; further research polish.
+See [docs/operator-loop.md](docs/operator-loop.md):
+
+1. `run "<query>" --route offline` (or MODERATE cron)
+2. `pending` → `settle` → `score-series`
+3. Defer ANN until vector corpus is large; no more Phase 5 modes by default
+
+## Phase 5.3+ (deferred)
+
+Optional ANN backend if corpus grows past linear scan.

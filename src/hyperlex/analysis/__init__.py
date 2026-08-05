@@ -708,21 +708,23 @@ def detect_memetic_patterns(
     query: str = "slang emergence OR memetic patterns OR hyperstition",
     ingest_source: str = "mock",
     use_structured_ingest: bool = False,
-    validate: bool = False
+    validate: bool = False,
+    *,
+    ingest_route: Optional[str] = None,
 ) -> Dict[str, Any]:
-    if use_structured_ingest:
-        ingest_data = fetch_ingest(query, source=ingest_source)
-        raw_signal = ingest_data.get("raw_signal", "")
-        ingest_meta = ingest_data
-        source_fp = ingest_data.get("source_fingerprint") or (
-            (ingest_data.get("provenance") or {}).get("source_fingerprint")
-        )
-    else:
-        # always fingerprint even non-structured path
-        ingest_data = fetch_ingest(query, source=ingest_source, structured=True)
-        raw_signal = ingest_data.get("raw_signal", "")
-        ingest_meta = ingest_data
-        source_fp = ingest_data.get("source_fingerprint")
+    # Structured fingerprint path is always used (use_structured_ingest kept for API compat).
+    ingest_data = fetch_ingest(
+        query,
+        source=ingest_source,
+        structured=True,
+        route=ingest_route,
+    )
+    raw_signal = ingest_data.get("raw_signal", "")
+    ingest_meta = ingest_data
+    source_fp = ingest_data.get("source_fingerprint") or (
+        (ingest_data.get("provenance") or {}).get("source_fingerprint")
+    )
+    _ = use_structured_ingest  # API compat; always structured now
 
     observed = humanize_slang_output(raw_signal[:280])
     neos = detect_neologisms(observed)

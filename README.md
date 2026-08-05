@@ -11,7 +11,7 @@
 
 | | |
 |--|--|
-| **Version** | **0.3.7** |
+| **Version** | **0.3.8** |
 | **Posture** | Hermes skill · Python package repo (≥3.10) · MIT |
 | **Phases** | **0–4 complete** · **5.0–5.3** research simulation live |
 | **Pages** | Static history of runs (not live operator DB) |
@@ -27,13 +27,13 @@
 Hyperlex answers: *what is emerging in language/culture, which family does it belong to, how viral/hyperstitious is it, and can we score forecasts only after real outcomes?*
 
 ```text
-ingest → analysis (lineage · typology · virality · hyperstition)
-      → receipt (+ hash-chained ledger)
-      → forecasts (probabilities only)
-      → operator settle → Brier series
-      → optional: relay / market signal / diagram / Phase 5 simulate
-      → optional: archive-export --history → GitHub Pages
+run --route offline|live     # one-shot daily path
+  → receipt + forecasts → score log
+  → pending → settle → score-series   # Brier only after settlement
+  → optional: scan / risk-schedule / Phase 5 / archive-export
 ```
+
+Command map: `python3 scripts/hyperlex.py commands` · [docs/operator-loop.md](docs/operator-loop.md)
 
 ### Core functions
 

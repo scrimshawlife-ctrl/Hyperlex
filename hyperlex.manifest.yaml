@@ -1,5 +1,5 @@
 name: hyperlex
-version: 0.3.7
+version: 0.3.8
 display_name: Hyperlex
 kind: hermes-openclaw-skill
 description: >
@@ -64,6 +64,9 @@ commands:
   - verify-receipt
   - smoke
   - scan
+  - run
+  - commands
+  - pending
   - risk-schedule
   - simulate
   - relay
@@ -91,6 +94,9 @@ intents:
   - verify-receipt
   - smoke
   - scan
+  - run
+  - commands
+  - pending
   - risk-schedule
   - simulate
   - relay

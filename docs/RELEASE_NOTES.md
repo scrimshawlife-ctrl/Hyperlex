@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.8
+- Operator loop docs; simplified command map (`commands`, `run`, `pending`).
+- Ingest routes (`--route offline|live|…`) + canonical source catalog/aliases.
+
 ## 0.3.7
 - Risk-tier → scan/cron schedule coupling (`risk-schedule`, `simulate --mode schedule`).
 - Post-scan `scan_risk_advisory`; advisory job envelopes under `examples/cron/`.

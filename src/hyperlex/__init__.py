@@ -23,6 +23,7 @@ def _read_version() -> str:
 PKG_VERSION = _read_version()
 
 from .intake import ingest_signal, fetch_ingest
+from .intake.sources import list_sources, resolve_source, pick_source, ROUTE_PRESETS
 from .analysis import (
     humanize_slang_output,
     detect_neologisms,
@@ -176,6 +177,10 @@ API_EXTENDED = (
     "write_scan_plan",
     "aggregate_scan_risk",
     "TIER_POLICY",
+    "list_sources",
+    "resolve_source",
+    "pick_source",
+    "ROUTE_PRESETS",
     "vector_seed_all",
     "vector_search",
     "VectorStore",

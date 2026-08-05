@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.3.7
+version: 0.3.8
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
@@ -103,49 +103,35 @@ python3 "$HOME/.hermes/skills/hyperlex/scripts/hyperlex.py" check
 python3 "$HOME/.hermes/skills/hyperlex/scripts/hyperlex.py" smoke
 ```
 
-## Commands
-
-All commands run from the skill root (or with absolute path to the CLI):
+## Commands (prefer simplified path)
 
 ```bash
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" ledger-stats
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" sources
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" ingest "<query>" --source mock
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" analyze --query "<query>" --source mock [--validate] [--forecasts]
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" extract-forecasts --input <result.json> [--append-log]
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" settle --forecast-id <id> --decision TRUE|FALSE|VOID|CONFLICT [--export-ledger]
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" score-series [--mean-shift] [--verify-chain]
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" verify-score-log
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" analyze --query "..." --receipt --forecasts
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" emit-receipt --input <result.json>
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" list-receipts
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" verify-receipt-ledger
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" validate <artifact.json>
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" verify-receipt <receipt.json>
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" signal --input <result.json>
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" feedback --signal-key hyperstition.stage
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" diagram --from-golden --out-dir out/diagrams
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" lineage-backfill --list --through 2026-08
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" lineage-backprop --from-golden --out out/backprop/report.json
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scenario --domain ai
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --from-analyze --term "sharp steam revenge" --domain markets
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule --list-tiers
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule --tier ELEVATED --schedule-out /tmp/hlx-cron
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --mode schedule --term "agentic slop" --domain ai
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" archive-export --include-golden --history
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" archive-catalog
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" vector-seed --include-golden --through 2026-08
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" vector-search "sigma rizz locked in" --kind term
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" --source mock --receipt --forecasts
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
+HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
+
+$HLX commands                          # full simplified map (JSON)
+$HLX sources                           # sources + routes
+$HLX run "sharp steam revenge" --route offline   # daily one-shot
+$HLX pending                           # open forecasts
+$HLX settle --forecast-id <id> --decision TRUE
+$HLX score-series --mean-shift --verify-chain
+$HLX scan --route offline --receipt --forecasts --append-log
+$HLX risk-schedule --tier MODERATE --schedule-out /tmp/hlx-cron
+$HLX doctor && $HLX smoke
 ```
+
+**Ingest routing:** prefer `--route offline|live|glossary|social` over raw `--source`.
+Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai. Offline env: `HYPERLEX_OFFLINE=1`.
+
+Research / advanced (still available): `simulate`, `vector-*`, `archive-export`,
+`lineage-backfill`, `lineage-backprop`, `relay`, `signal`, `diagram`, `ledger-*`.
+
+Docs: `docs/operator-loop.md`, `docs/commands.md`.
 
 ### Operator calibration path
 
 ```text
-analyze --forecasts --append-log
+run "<query>" --route offline
+  → pending
   → settle --forecast-id … --decision TRUE|FALSE
   → score-series [--mean-shift] [--verify-chain]
 ```
@@ -156,14 +142,13 @@ analyze --forecasts --append-log
 
 ## Preferred sequence
 
-1. **Classify** — ingest only vs full analysis vs settle/score.
-2. **Ingest** — prefer `mock` for deterministic checks; real sources when network allowed.
-3. **Analyze** — `detect_memetic_patterns` / `analyze`; attach lineage when confidence ≥ 0.42.
-4. **Receipt** — serious runs call `emit_receipt` (or keep CLI analysis output + verify later).
-5. **Forecast** — `extract_forecasts` or `analyze --forecasts`; probabilities only.
-6. **Settle** — operator authority required; `TRUE`/`FALSE` score; `VOID`/`CONFLICT` do not score.
-7. **Series** — `score-series` recomputes BS, BSS, Murphy, Ferro–Fricker, Yates, Vieira, Δf.
-8. **Label claims** — `OBSERVED` / `INFERRED` / `SPECULATIVE`; fail closed on missing outcomes.
+1. **`commands`** — see simplified map.
+2. **`run --route offline`** — one-shot analyze + receipt + forecasts + score log.
+3. **`pending` → `settle` → `score-series`** — Brier only after operator settlement.
+4. **Cron** — `risk-schedule` (advisory) + `scan --route offline` for multi-query.
+5. **Live ingest** — only when network allowed: `--route live` (or glossary/social).
+6. **Label claims** — `OBSERVED` / `INFERRED` / `SPECULATIVE`; fail closed on missing outcomes.
+7. **Research** — `simulate` / archive / vector are optional and SPECULATIVE.
 
 ## Public API (package)
 

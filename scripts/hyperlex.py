@@ -316,22 +316,18 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
     return 0 if ok else 2
 
 
-def cmd_sources(_args: argparse.Namespace) -> int:
-    sources = [
-        {"name": "mock", "kind": "deterministic", "real": False, "description": "No network, deterministic fixture output"},
-        {"name": "real", "kind": "web", "real": True, "description": "Action Network betting glossary"},
-        {"name": "glossary", "kind": "web", "real": True, "description": "Action Network glossary alias"},
-        {"name": "glossary_expanded", "kind": "web", "real": True, "description": "Multi-glossary pack (AN + wiki slang + urban)"},
-        {"name": "web", "kind": "web", "real": True, "description": "Action Network glossary alias"},
-        {"name": "reddit", "kind": "web", "real": True, "description": "Reddit keyword search"},
-        {"name": "urban", "kind": "web", "real": True, "description": "Urban Dictionary public API"},
-        {"name": "wikipedia", "kind": "web", "real": True, "description": "Wikipedia page summary"},
-        {"name": "x_search", "kind": "social", "real": True, "description": "X/Twitter via API bearer, xurl CLI, or structured stub"},
-        {"name": "firecrawl", "kind": "web", "real": True, "description": "Crawl4AI-backed web crawl signal"},
-        {"name": "crawl4ai", "kind": "web", "real": True, "description": "Explicit Crawl4AI-backed web crawl signal"},
-        {"name": "combined", "kind": "composed", "real": True, "description": "glossary+urban+reddit+wiki+x+crawl4ai with graceful fallback"},
-    ]
-    _emit({"ok": True, "sources": sources})
+def cmd_sources(args: argparse.Namespace) -> int:
+    from hyperlex.intake.sources import list_sources, resolve_source
+
+    catalog = list_sources(include_aliases=not bool(getattr(args, "no_aliases", False)))
+    out: Dict[str, Any] = {"ok": True, "command": "sources", **catalog}
+    # Optional resolve preview: sources --route live  or  sources --source real
+    if getattr(args, "route", None) or getattr(args, "source", None):
+        out["resolve"] = resolve_source(
+            getattr(args, "source", None) or None,
+            route=getattr(args, "route", None) or None,
+        )
+    _emit(out)
     return 0
 
 
@@ -523,16 +519,40 @@ def cmd_relay(args: argparse.Namespace) -> int:
     return 0
 
 
+def _resolve_cli_source(args: argparse.Namespace) -> Tuple[str, Dict[str, Any]]:
+    """Shared --source / --route resolution for ingest, analyze, run, scan."""
+    from hyperlex.intake.sources import pick_source
+
+    route = getattr(args, "route", None) or None
+    source = getattr(args, "source", None) or "mock"
+    return pick_source(source, route=route)
+
+
 def _build_ingest_result(pkg, args: argparse.Namespace) -> Dict[str, Any]:
-    if args.structured:
-        return pkg.fetch_ingest(query=args.query, source=args.source, structured=True, max_terms=args.max_terms)
-    raw = pkg.ingest_signal(query=args.query, source=args.source)
-    return {
-        "query": args.query,
-        "source": args.source,
-        "raw_signal": raw,
-        "raw_len": len(raw),
-    }
+    # Pass original --source/--route into package so offline force keeps intended_source
+    route = getattr(args, "route", None) or None
+    requested = getattr(args, "source", None) or "mock"
+    # Always structured by default; --raw for string-only legacy shape
+    if getattr(args, "raw", False) and not getattr(args, "structured", True):
+        raw = pkg.ingest_signal(query=args.query, source=requested, route=route)
+        from hyperlex.intake.sources import pick_source
+
+        source, resolved = pick_source(requested, route=route)
+        return {
+            "query": args.query,
+            "source": source,
+            "raw_signal": raw,
+            "raw_len": len(raw),
+            "route": resolved,
+        }
+    max_terms = int(getattr(args, "max_terms", 8) or 8)
+    return pkg.fetch_ingest(
+        query=args.query,
+        source=requested,
+        structured=True,
+        max_terms=max_terms,
+        route=route,
+    )
 
 
 def cmd_ingest(args: argparse.Namespace) -> int:
@@ -546,7 +566,13 @@ def cmd_ingest(args: argparse.Namespace) -> int:
         out = Path(args.out)
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(result, sort_keys=True, indent=2), encoding="utf-8")
-    _emit({"ok": True, "command": "ingest", "result": result})
+    _emit({
+        "ok": True,
+        "command": "ingest",
+        "source": result.get("source"),
+        "route": (result.get("route") or {}).get("route") if isinstance(result.get("route"), dict) else None,
+        "result": result,
+    })
     return 0
 
 
@@ -590,20 +616,29 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         _emit({"ok": False, "error": load_error})
         return 2
 
-    query = args.query
-    source = args.source
+    # Positional query preferred; --query remains for scripts
+    query = (getattr(args, "query_pos", None) or args.query or "").strip()
     if payload is not None:
-        query = query or payload.get("query", "")
-        source = source or payload.get("source", source)
+        query = query or str(payload.get("query") or "")
+        # Prefer explicit CLI source/route; else inherit from ingest JSON
+        if not getattr(args, "route", None) and (not args.source or args.source == "mock"):
+            if payload.get("source"):
+                args.source = str(payload.get("source"))
 
     if not query:
         query = "slang emergence"
 
+    # Pass original source/route so resolve keeps intended_source under offline
+    requested = getattr(args, "source", None) or "mock"
+    route = getattr(args, "route", None) or None
+    source, resolved = _resolve_cli_source(args)
+
     result = pkg.detect_memetic_patterns(
         query=query,
-        ingest_source=source,
-        use_structured_ingest=args.use_structured_ingest,
+        ingest_source=requested,
+        use_structured_ingest=True,
         validate=args.validate,
+        ingest_route=route,
     )
 
     forecasts = None
@@ -646,7 +681,14 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(result, sort_keys=True, indent=2), encoding="utf-8")
 
-    payload_out: Dict[str, Any] = {"ok": True, "command": "analyze", "result": result}
+    payload_out: Dict[str, Any] = {
+        "ok": True,
+        "command": getattr(args, "command_label", None) or "analyze",
+        "query": query,
+        "source": source,
+        "route": resolved.get("route"),
+        "result": result,
+    }
     if receipt_path is not None:
         payload_out["receipt"] = str(receipt_path)
     if forecasts is not None:
@@ -656,6 +698,114 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         payload_out["log_path"] = str(_resolve_log_path(args))
         payload_out["logged"] = len(log_records)
     _emit(payload_out)
+    return 0
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    """One-shot operator path: ingest route → analyze → receipt → forecasts → score log."""
+    args.command_label = "run"
+    args.receipt = not bool(getattr(args, "no_receipt", False))
+    args.forecasts = not bool(getattr(args, "no_forecasts", False))
+    args.append_log = not bool(getattr(args, "no_append_log", False))
+    args.use_structured_ingest = True
+    q = (getattr(args, "query_pos", None) or getattr(args, "query", None) or "").strip()
+    if not q and not getattr(args, "input", None):
+        _emit({"ok": False, "error": "run requires a query (positional or --query)"})
+        return 2
+    return cmd_analyze(args)
+
+
+def cmd_commands(_args: argparse.Namespace) -> int:
+    """Print simplified command map (operator / calibration / research / maintenance)."""
+    map_obj = {
+        "schema": "hyperlex.command_map.v1",
+        "version": _read_version(),
+        "note": (
+            "Prefer short daily path. ANN vector backend deferred until corpus grows. "
+            "Risk→cron is advisory only. Never invent Brier."
+        ),
+        "daily_ops": [
+            {"cmd": "run \"<query>\"", "why": "One-shot: analyze + receipt + forecasts + append score log"},
+            {"cmd": "run \"<query>\" --route offline", "why": "Safe burn-in (mock ingest)"},
+            {"cmd": "run \"<query>\" --route live", "why": "Network multi-source when allowed"},
+            {"cmd": "scan --route offline --receipt --forecasts --append-log", "why": "Multi-query LIVE_EMERGENCE_SCAN"},
+            {"cmd": "risk-schedule --tier MODERATE --schedule-out /tmp/hlx-cron", "why": "Advisory cron envelope"},
+        ],
+        "calibration": [
+            {"cmd": "pending", "why": "List open (unsettled) forecasts from score log"},
+            {"cmd": "settle --forecast-id <id> --decision TRUE|FALSE|VOID", "why": "Operator settlement"},
+            {"cmd": "score-series --mean-shift --verify-chain", "why": "Brier series after settlements"},
+        ],
+        "ingest_routing": [
+            {"cmd": "sources", "why": "Catalog + routes (offline|live|default|glossary|social)"},
+            {"cmd": "sources --route live", "why": "Preview resolve for a route"},
+            {"cmd": "ingest \"<query>\" --route offline", "why": "Ingest only (structured + fingerprint)"},
+            {"cmd": "analyze \"<query>\" --route offline", "why": "Analyze without auto-receipt"},
+        ],
+        "research": [
+            {"cmd": "simulate --term <t> --mode scenario", "why": "Phase 5 research (SPECULATIVE, brier null)"},
+            {"cmd": "simulate --mode schedule --tier ELEVATED", "why": "Risk→scan plan"},
+            {"cmd": "vector-search \"…\"", "why": "Local vector DB"},
+            {"cmd": "archive-export --history", "why": "Sanitized Pages run history"},
+        ],
+        "maintenance": [
+            {"cmd": "doctor", "why": "Health check"},
+            {"cmd": "check / smoke", "why": "Packaging readiness"},
+            {"cmd": "list-receipts / ledger-stats", "why": "Local ledger review"},
+        ],
+        "operator_burn_in": [
+            "1. run \"…\" --route offline  (repeat on cron via risk-schedule MODERATE)",
+            "2. pending → settle a few forecasts",
+            "3. score-series --verify-chain",
+            "4. Only then consider --route live or higher risk tiers",
+        ],
+        "deferred": [
+            "ANN vector backend — wait until vector corpus is large enough to need it",
+            "More Phase 5 modes — research surface is dense enough",
+            "Public PyPI / Abraxas hard import — out of scope",
+        ],
+    }
+    _emit({"ok": True, "command": "commands", **map_obj})
+    return 0
+
+
+def cmd_pending(args: argparse.Namespace) -> int:
+    """List open (unsettled) forecasts from the score log."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.calibration.score_log import index_forecasts, index_settlements, read_log
+
+    log_path = _resolve_log_path(args)
+    records = read_log(log_path)
+    forecasts = index_forecasts(records)
+    settled_ids = set(index_settlements(records).keys())
+
+    open_fcs = []
+    for fid, fc in forecasts.items():
+        if fid in settled_ids:
+            continue
+        open_fcs.append({
+            "forecast_id": fid,
+            "signal_key": fc.get("signal_key"),
+            "probability": fc.get("probability") or fc.get("p"),
+            "claim": fc.get("claim") or fc.get("statement"),
+            "created_at": fc.get("created_at") or fc.get("extracted_at"),
+        })
+    limit = int(getattr(args, "limit", 50) or 50)
+    open_fcs = open_fcs[:limit]
+    _emit({
+        "ok": True,
+        "command": "pending",
+        "log_path": str(log_path),
+        "n_forecasts_indexed": len(forecasts),
+        "n_open": len(open_fcs),
+        "open": open_fcs,
+        "note": "Settle with: settle --forecast-id <id> --decision TRUE|FALSE|VOID",
+        "brier": None,
+    })
     return 0
 
 
@@ -1520,7 +1670,9 @@ def cmd_scan(args: argparse.Namespace) -> int:
         _emit({"ok": False, "error": "no queries; pass --query, --queries, or --config"})
         return 2
 
-    source = args.source or "mock"
+    requested = getattr(args, "source", None) or "mock"
+    route = getattr(args, "route", None) or None
+    source, resolved = _resolve_cli_source(args)
     results: List[Dict[str, Any]] = []
     n_forecasts = 0
     n_receipts = 0
@@ -1530,9 +1682,10 @@ def cmd_scan(args: argparse.Namespace) -> int:
         try:
             result = pkg.detect_memetic_patterns(
                 query=q,
-                ingest_source=source,
-                use_structured_ingest=bool(getattr(args, "structured_ingest", False)),
+                ingest_source=requested,
+                use_structured_ingest=True,
                 validate=bool(args.validate),
+                ingest_route=route,
             )
             receipt_path = None
             if args.receipt:
@@ -1582,6 +1735,7 @@ def cmd_scan(args: argparse.Namespace) -> int:
         "command": "scan",
         "rune": "LIVE_EMERGENCE_SCAN",
         "source": source,
+        "route": resolved.get("route"),
         "n_queries": len(queries),
         "n_ok": len(results),
         "n_errors": len(errors),
@@ -1712,22 +1866,68 @@ def _build_parser() -> argparse.ArgumentParser:
     doctor_parser = subparsers.add_parser("doctor", help="Deep Hermes-skill health check")
     doctor_parser.set_defaults(func=cmd_doctor)
 
-    sources_parser = subparsers.add_parser("sources", help="List supported ingest sources")
+    sources_parser = subparsers.add_parser(
+        "sources",
+        help="List ingest sources + routes (offline|live|default|glossary|social)",
+    )
+    sources_parser.add_argument("--route", default="", help="Preview resolve for a named route")
+    sources_parser.add_argument("--source", default="", help="Preview resolve for a source alias")
+    sources_parser.add_argument("--no-aliases", action="store_true", default=False)
     sources_parser.set_defaults(func=cmd_sources)
 
-    ingest_parser = subparsers.add_parser("ingest", help="Run ingest only")
+    commands_parser = subparsers.add_parser(
+        "commands",
+        help="Simplified command map (daily ops / calibration / research)",
+    )
+    commands_parser.set_defaults(func=cmd_commands)
+
+    ingest_parser = subparsers.add_parser(
+        "ingest",
+        help="Run ingest only (prefer --route offline|live over raw --source)",
+    )
     ingest_parser.add_argument("query")
-    ingest_parser.add_argument("--source", default="mock")
-    ingest_parser.add_argument("--structured", action="store_true", default=False)
+    ingest_parser.add_argument("--source", default="mock", help="Source or alias (real→glossary, x→x_search, …)")
+    ingest_parser.add_argument(
+        "--route",
+        default="",
+        help="Operator route: offline|mock|default|live|glossary|social",
+    )
+    ingest_parser.add_argument(
+        "--structured",
+        action="store_true",
+        default=True,
+        help="Structured fingerprint payload (default on)",
+    )
+    ingest_parser.add_argument(
+        "--raw",
+        action="store_true",
+        default=False,
+        help="Legacy raw string-only shape",
+    )
     ingest_parser.add_argument("--max-terms", type=int, default=8)
     ingest_parser.add_argument("--out", default="")
     ingest_parser.set_defaults(func=cmd_ingest)
 
-    analyze_parser = subparsers.add_parser("analyze", help="Run analysis")
-    analyze_parser.add_argument("--query")
+    analyze_parser = subparsers.add_parser(
+        "analyze",
+        help="Run analysis (positional query ok; --route offline|live)",
+    )
+    analyze_parser.add_argument("query_pos", nargs="?", default="", help="Query text (positional)")
+    analyze_parser.add_argument("--query", default="", help="Query text (flag form)")
     analyze_parser.add_argument("--source", "--ingest-source", default="mock", dest="source")
+    analyze_parser.add_argument(
+        "--route",
+        default="",
+        help="Operator route: offline|mock|default|live|glossary|social",
+    )
     analyze_parser.add_argument("--input", help="Optional ingest JSON payload")
-    analyze_parser.add_argument("--structured-ingest", dest="use_structured_ingest", action="store_true", default=False)
+    analyze_parser.add_argument(
+        "--structured-ingest",
+        dest="use_structured_ingest",
+        action="store_true",
+        default=True,
+        help="Always on; kept for API compat",
+    )
     analyze_parser.add_argument("--validate", action="store_true", default=False)
     analyze_parser.add_argument("--forecasts", action="store_true", default=False, help="Also extract calibration forecasts")
     analyze_parser.add_argument("--append-log", action="store_true", default=False, help="Append forecasts to score log")
@@ -1739,6 +1939,40 @@ def _build_parser() -> argparse.ArgumentParser:
     analyze_parser.add_argument("--no-ledger", action="store_true", default=False, help="Skip receipt ledger append")
     analyze_parser.add_argument("--out")
     analyze_parser.set_defaults(func=cmd_analyze)
+
+    run_parser = subparsers.add_parser(
+        "run",
+        help="One-shot operator path: analyze + receipt + forecasts + score log",
+    )
+    run_parser.add_argument("query_pos", nargs="?", default="", help="Query text (positional)")
+    run_parser.add_argument("--query", default="", help="Query text (flag form)")
+    run_parser.add_argument("--source", default="mock")
+    run_parser.add_argument(
+        "--route",
+        default="offline",
+        help="Operator route (default offline for safe burn-in)",
+    )
+    run_parser.add_argument("--input", default="")
+    run_parser.add_argument("--validate", action="store_true", default=False)
+    run_parser.add_argument("--no-receipt", action="store_true", default=False)
+    run_parser.add_argument("--no-forecasts", action="store_true", default=False)
+    run_parser.add_argument("--no-append-log", action="store_true", default=False)
+    run_parser.add_argument("--log", default="")
+    run_parser.add_argument("--repo-log", action="store_true", default=False)
+    run_parser.add_argument("--receipt-dir", default="")
+    run_parser.add_argument("--ledger", default="")
+    run_parser.add_argument("--no-ledger", action="store_true", default=False)
+    run_parser.add_argument("--out", default="")
+    run_parser.set_defaults(func=cmd_run)
+
+    pending_parser = subparsers.add_parser(
+        "pending",
+        help="List open (unsettled) forecasts from score log",
+    )
+    pending_parser.add_argument("--log", default="")
+    pending_parser.add_argument("--repo-log", action="store_true", default=False)
+    pending_parser.add_argument("--limit", type=int, default=50)
+    pending_parser.set_defaults(func=cmd_pending)
 
     emit_parser = subparsers.add_parser("emit-receipt", help="Emit receipt from analysis result JSON")
     emit_parser.add_argument("--input", required=True)
@@ -2017,7 +2251,12 @@ def _build_parser() -> argparse.ArgumentParser:
     scan_parser.add_argument("--queries", default="", help="Comma-separated queries")
     scan_parser.add_argument("--config", default="", help="JSON file with {queries: [...]}")
     scan_parser.add_argument("--source", default="mock")
-    scan_parser.add_argument("--structured-ingest", dest="structured_ingest", action="store_true", default=False)
+    scan_parser.add_argument(
+        "--route",
+        default="",
+        help="Operator route: offline|mock|default|live|glossary|social",
+    )
+    scan_parser.add_argument("--structured-ingest", dest="structured_ingest", action="store_true", default=True)
     scan_parser.add_argument("--validate", action="store_true", default=False)
     scan_parser.add_argument("--receipt", action="store_true", default=False)
     scan_parser.add_argument("--receipt-dir", default="")

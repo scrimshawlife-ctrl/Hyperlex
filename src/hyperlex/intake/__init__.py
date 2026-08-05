@@ -43,12 +43,16 @@ from .cache import (
 )
 from .glossaries import fetch_glossary, fetch_glossary_expanded, list_glossaries
 from .x_search import fetch_x_search
+from .sources import (
+    SOURCE_ALIASES,
+    SOURCE_CATALOG,
+    ROUTE_PRESETS,
+    list_sources,
+    offline_mode as _offline_mode,
+    pick_source,
+    resolve_source,
+)
 from ..provenance import source_fingerprint, merge_ingest_provenance
-
-
-def _offline_mode() -> bool:
-    flag = str(os.environ.get("HYPERLEX_OFFLINE", "")).strip().lower()
-    return flag in {"1", "true", "yes", "on"}
 
 
 def _get_cached(key: str, source: str = "") -> Optional[str]:
@@ -374,23 +378,15 @@ def _fetch_firecrawl_via_crawl4ai(query: str) -> str:
     # Reusing Crawl4AI for web crawl based signal extraction.
     return _fetch_crawl4ai_query(query)
 
-def ingest_signal(query: str, source: str = "mock") -> str:
+def ingest_signal(query: str, source: str = "mock", *, route: Optional[str] = None) -> str:
     """
-    Real-signal ingestion (expanded v1.7).
+    Real-signal ingestion.
 
-    Sources:
-    - "mock": deterministic test signal
-    - "real", "glossary", "web": Action Network primary glossary
-    - "glossary_expanded": multi-glossary pack (AN + wiki slang + urban)
-    - "reddit": real Reddit search
-    - "urban": Urban Dictionary
-    - "wikipedia": Wikipedia summary for context
-    - "x_search": X/Twitter via API token, xurl, or structured stub
-    - "firecrawl": Crawl4AI web crawl fallback
-    - "crawl4ai": explicit Crawl4AI web crawl
-    - "combined": tries glossary → urban → reddit → wikipedia → x_search → crawl4ai
+    Prefer `route=` (offline|live|default|glossary|social) over raw adapter names.
+    Aliases (real→glossary, x→x_search, firecrawl→crawl4ai, live→combined) resolve
+    via `resolve_source`. HYPERLEX_OFFLINE=1 forces mock for network sources.
     """
-    source = source.lower().strip()
+    source, _resolved = pick_source(source, route=route)
 
     if source == "mock":
         # Deterministic but query-aware so lineage/forecast fixtures stay distinct.
@@ -491,23 +487,30 @@ def fetch_ingest(
     query: str,
     source: str = "mock",
     structured: bool = True,
-    max_terms: int = 8
+    max_terms: int = 8,
+    *,
+    route: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Structured ingest entry point with source fingerprints.
+
+    Always routes through `resolve_source` / `pick_source` so CLI aliases and
+    `--route offline|live` behave consistently.
     """
-    source = source.lower().strip()
+    source, resolved = pick_source(source, route=route)
     key = _cache_key(query, source)
     was_cached = is_cached(key)
+    # Call adapters with canonical id; skip re-resolve by using internal path
+    # (ingest_signal re-resolves, which is fine when source is already canonical)
     raw = ingest_signal(query, source=source)
     fetched_at = datetime.now(timezone.utc).isoformat()
 
     locator = _SOURCE_LOCATORS.get(source, f"hyperlex://{source}")
     adapter_meta: Dict[str, Any] = {}
-    if source in ("x_search", "x", "twitter") and _LAST_X_META:
+    if source == "x_search" and _LAST_X_META:
         adapter_meta = dict(_LAST_X_META)
         locator = adapter_meta.get("source_locator") or locator
-    if source in ("glossary", "real", "web", "glossary_expanded", "glossaries") and _LAST_GLOSSARY_META:
+    if source in ("glossary", "glossary_expanded") and _LAST_GLOSSARY_META:
         adapter_meta = dict(_LAST_GLOSSARY_META)
         locator = adapter_meta.get("source_locator") or locator
 
@@ -526,11 +529,10 @@ def fetch_ingest(
     )
     terms = list(dict.fromkeys(terms))[:max_terms]
 
-    real_sources = {
-        "real", "glossary", "web", "glossary_expanded", "glossaries",
-        "urban", "reddit", "wikipedia", "firecrawl", "crawl4ai", "x_search", "x", "twitter",
+    network_sources = {
+        name for name, meta in SOURCE_CATALOG.items() if meta.get("network")
     }
-    live = bool(adapter_meta.get("live")) if adapter_meta else (source in real_sources and source != "mock")
+    live = bool(adapter_meta.get("live")) if adapter_meta else (source in network_sources)
 
     try:
         from .. import PKG_VERSION as _pkg_v
@@ -541,6 +543,8 @@ def fetch_ingest(
             "version": _pkg_v,
             "ingest_source": source,
             "fetched_at": fetched_at,
+            "route": resolved.get("route"),
+            "requested_source": resolved.get("requested"),
         },
         fp,
     )
@@ -550,14 +554,18 @@ def fetch_ingest(
         "source": source,
         "raw_signal": raw,
         "extracted_terms": terms,
+        "route": resolved,
         "metadata": {
-            "source_type": "real" if source in real_sources else "synthetic_stub",
-            "live": live if source in ("x_search", "x", "twitter") else (source in real_sources and source != "mock"),
+            "source_type": "real" if source in network_sources else "synthetic_stub",
+            "live": live if source == "x_search" else (source in network_sources),
             "cached": was_cached,
             "fetched_at": fetched_at,
             "source_locator": locator,
             "adapter": adapter_meta,
             "cache": cache_stats(),
+            "route": resolved.get("route"),
+            "requested_source": resolved.get("requested"),
+            "offline_forced": resolved.get("offline_forced"),
         },
         "provenance": provenance,
         "source_fingerprint": fp,

@@ -53,14 +53,25 @@ def cmd_check(_: argparse.Namespace) -> int:
 
 def cmd_analyze(args: argparse.Namespace) -> int:
     from hyperlex import detect_memetic_patterns, extract_forecasts, emit_receipt, relay_from_result
+    from hyperlex.intake.sources import pick_source
 
+    query = (getattr(args, "query_pos", None) or args.query or "").strip() or "slang emergence"
+    source, resolved = pick_source(args.source, route=getattr(args, "route", None) or None)
     result = detect_memetic_patterns(
-        query=args.query or "slang emergence",
-        ingest_source=args.source,
-        use_structured_ingest=bool(args.structured_ingest),
+        query=query,
+        ingest_source=source,
+        use_structured_ingest=True,
         validate=bool(args.validate),
+        ingest_route=resolved.get("route"),
     )
-    out: Dict[str, Any] = {"ok": True, "command": "analyze", "result": result}
+    out: Dict[str, Any] = {
+        "ok": True,
+        "command": getattr(args, "command_label", None) or "analyze",
+        "query": query,
+        "source": source,
+        "route": resolved.get("route"),
+        "result": result,
+    }
     if args.receipt:
         path = emit_receipt(result, out_dir=args.receipt_dir or None)
         out["receipt"] = str(path)
@@ -68,11 +79,51 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         out["result"] = result
     if args.forecasts:
         out["forecasts"] = extract_forecasts(result)
-    if args.relay:
+    if getattr(args, "relay", False):
         out["envelopes"] = relay_from_result(result)
     if args.out:
         Path(args.out).write_text(json.dumps(out["result"], indent=2, sort_keys=True), encoding="utf-8")
     _emit(out)
+    return 0
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    args.command_label = "run"
+    args.receipt = not bool(getattr(args, "no_receipt", False))
+    args.forecasts = not bool(getattr(args, "no_forecasts", False))
+    args.relay = False
+    return cmd_analyze(args)
+
+
+def cmd_sources(args: argparse.Namespace) -> int:
+    from hyperlex.intake.sources import list_sources, resolve_source
+
+    catalog = list_sources()
+    out: Dict[str, Any] = {"ok": True, "command": "sources", **catalog}
+    if getattr(args, "route", None) or getattr(args, "source", None):
+        out["resolve"] = resolve_source(
+            getattr(args, "source", None) or None,
+            route=getattr(args, "route", None) or None,
+        )
+    _emit(out)
+    return 0
+
+
+def cmd_commands(_: argparse.Namespace) -> int:
+    from hyperlex import PKG_VERSION
+
+    _emit({
+        "ok": True,
+        "command": "commands",
+        "version": PKG_VERSION,
+        "daily": [
+            'run "<query>" --route offline',
+            "pending → settle → score-series",
+            "scan --route offline --receipt --forecasts --append-log",
+        ],
+        "routes": ["offline", "mock", "default", "live", "glossary", "social"],
+        "docs": "docs/operator-loop.md · docs/commands.md",
+    })
     return 0
 
 
@@ -275,10 +326,20 @@ def build_parser() -> argparse.ArgumentParser:
     c = sub.add_parser("check")
     c.set_defaults(func=cmd_check)
 
+    src = sub.add_parser("sources", help="List sources + routes")
+    src.add_argument("--route", default="")
+    src.add_argument("--source", default="")
+    src.set_defaults(func=cmd_sources)
+
+    cmds = sub.add_parser("commands", help="Simplified command map")
+    cmds.set_defaults(func=cmd_commands)
+
     a = sub.add_parser("analyze")
+    a.add_argument("query_pos", nargs="?", default="")
     a.add_argument("--query", default="")
     a.add_argument("--source", default="mock")
-    a.add_argument("--structured-ingest", action="store_true")
+    a.add_argument("--route", default="")
+    a.add_argument("--structured-ingest", action="store_true", default=True)
     a.add_argument("--validate", action="store_true")
     a.add_argument("--forecasts", action="store_true")
     a.add_argument("--receipt", action="store_true")
@@ -286,6 +347,18 @@ def build_parser() -> argparse.ArgumentParser:
     a.add_argument("--relay", action="store_true")
     a.add_argument("--out", default="")
     a.set_defaults(func=cmd_analyze)
+
+    run = sub.add_parser("run", help="One-shot: analyze + receipt + forecasts")
+    run.add_argument("query_pos", nargs="?", default="")
+    run.add_argument("--query", default="")
+    run.add_argument("--source", default="mock")
+    run.add_argument("--route", default="offline")
+    run.add_argument("--no-receipt", action="store_true")
+    run.add_argument("--no-forecasts", action="store_true")
+    run.add_argument("--receipt-dir", default="")
+    run.add_argument("--out", default="")
+    run.add_argument("--validate", action="store_true")
+    run.set_defaults(func=cmd_run)
 
     r = sub.add_parser("relay")
     r.add_argument("--input", default="")

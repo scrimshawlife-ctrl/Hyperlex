@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.8 — Operator loop docs + simplified ingest routing (2026-08-05)
+
+- Canonical ingest catalog: `hyperlex.intake.sources` (`resolve_source`, `pick_source`, `ROUTE_PRESETS`)
+- Prefer `--route offline|live|glossary|social` over raw adapter names (aliases: real→glossary, x→x_search, …)
+- CLI: `run` one-shot path, `commands` map, `pending` open forecasts; positional query on `analyze`/`run`
+- Structured ingest always on the analyze path; `sources` shows routes + resolve preview
+- Docs: `docs/operator-loop.md`, `docs/commands.md`; ingest module rewrite
+- Recommendation: burn-in with offline cron + settle before ANN or more Phase 5 surface
+
 ## 0.3.7 — Risk-tier → scan/cron schedule coupling (2026-08-05)
 
 - `hyperlex.simulation.schedule`: `TIER_POLICY`, `plan_scan_from_risk/term/tier`, `write_scan_plan`, `aggregate_scan_risk`

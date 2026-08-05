@@ -34,7 +34,8 @@ bash install.sh
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scenario
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" commands
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" run "rizz" --route offline
 ```
 
 ## Run modes
@@ -45,6 +46,16 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scen
 | Package (dev) | `PYTHONPATH=src python -m hyperlex …` |
 | Library | `import hyperlex` from skill `src/` or editable install |
 | Cron | `examples/cron/live-emergence-scan.job.json` |
+
+## Preferred operator path
+
+See [operator-loop.md](operator-loop.md) and [commands.md](commands.md).
+
+```text
+run --route offline → pending → settle → score-series
+```
+
+Ingest: use `--route offline|live|glossary|social` (not raw adapter names).
 
 ## Relevant Abraxas capabilities (as Hyperlex modules)
 
