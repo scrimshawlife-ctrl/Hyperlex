@@ -1223,11 +1223,15 @@ def cmd_simulate(args: argparse.Namespace) -> int:
             memetic_score=float(args.memetic),
             hyperstition_stage=args.stage or None,
             domain=domain,
-            analysis_result=analysis,
+            analysis_result=analysis if not bool(getattr(args, "expand_terms", True)) else (
+                # multi-term expand ignores bag analysis to avoid density-stack bias
+                analysis if not term or " " not in term.strip() else None
+            ),
             n_communities=int(args.communities),
             transmission_steps=int(args.steps),
             n_agents=int(args.agents),
             include_phylogeny=not bool(args.no_phylogeny),
+            expand_terms=not bool(getattr(args, "no_expand", False)),
         )
 
     payload = {"ok": True, "command": "simulate", "mode": mode, "scenario": out}
@@ -1237,32 +1241,74 @@ def cmd_simulate(args: argparse.Namespace) -> int:
         payload["error"] = "simulation must keep brier null"
         _emit(payload)
         return 2
+    # multi-term: nested scenarios must also keep brier null
+    for nested in out.get("scenarios") or []:
+        if isinstance(nested, dict) and nested.get("brier") is not None:
+            payload["ok"] = False
+            payload["error"] = "simulation must keep brier null"
+            _emit(payload)
+            return 2
     if args.out:
         Path(args.out).parent.mkdir(parents=True, exist_ok=True)
         Path(args.out).write_text(json.dumps(out, indent=2, sort_keys=True), encoding="utf-8")
         payload["written"] = args.out
     if not args.verbose and mode == "scenario":
-        # compact CLI: drop full agent list / long trajectory tails
         sc = dict(out)
-        if isinstance(sc.get("transmission"), dict):
-            t = dict(sc["transmission"])
-            traj = t.get("trajectory") or []
-            t["trajectory"] = traj[:2] + ([{"_omitted_middle": len(traj) - 4}] if len(traj) > 4 else []) + traj[-2:]
-            sc["transmission"] = t
-        if isinstance(sc.get("multi_agent"), dict):
-            m = dict(sc["multi_agent"])
-            m.pop("agents", None)
-            m["agents_omitted"] = True
-            sc["multi_agent"] = m
-        if isinstance(sc.get("phylogeny"), dict):
-            p = dict(sc["phylogeny"])
-            p.pop("nodes", None)
-            p.pop("edges", None)
-            p["graph_omitted"] = True
-            sc["phylogeny"] = p
-        payload["scenario"] = sc
-        payload["hint"] = "pass --verbose for full trajectories; --out always writes full JSON"
+        if sc.get("schema") == "hyperlex.phase5_multi_term.v1":
+            # compact multi-term: summaries only unless --verbose
+            sc.pop("scenarios", None)
+            sc["scenarios_omitted"] = True
+            sc["hint"] = "multi-term: one scenario per lexicon atom; --verbose or --out for full"
+            payload["scenario"] = sc
+            payload["terms"] = out.get("terms")
+            payload["multi_term"] = True
+        else:
+            # compact CLI: drop full agent list / long trajectory tails
+            if isinstance(sc.get("transmission"), dict):
+                t = dict(sc["transmission"])
+                traj = t.get("trajectory") or []
+                t["trajectory"] = traj[:2] + ([{"_omitted_middle": len(traj) - 4}] if len(traj) > 4 else []) + traj[-2:]
+                sc["transmission"] = t
+            if isinstance(sc.get("multi_agent"), dict):
+                m = dict(sc["multi_agent"])
+                m.pop("agents", None)
+                m["agents_omitted"] = True
+                sc["multi_agent"] = m
+            if isinstance(sc.get("phylogeny"), dict):
+                p = dict(sc["phylogeny"])
+                p.pop("nodes", None)
+                p.pop("edges", None)
+                p["graph_omitted"] = True
+                sc["phylogeny"] = p
+            payload["scenario"] = sc
+            payload["hint"] = "pass --verbose for full trajectories; --out always writes full JSON"
     _emit(payload)
+    return 0
+
+
+def cmd_terms_split(args: argparse.Namespace) -> int:
+    """Split free-text seed into atomic lexicon terms."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.analysis.terms import per_term_lineage, split_seed_terms
+
+    text = (getattr(args, "text_pos", None) or args.text or args.query or args.term or "").strip()
+    if not text:
+        _emit({"ok": False, "error": "pass text to split (positional or --text)"})
+        return 2
+    split = split_seed_terms(text, include_backfill=not bool(args.no_backfill))
+    per = per_term_lineage(split.get("terms") or []) if not args.no_lineage else []
+    _emit({
+        "ok": True,
+        "command": "terms-split",
+        "split": split,
+        "per_term": per,
+        "note": "Each term is an independent lexicon atom — do not Phase-5 as one blended seed.",
+        "brier": None,
+    })
     return 0
 
 
@@ -2143,9 +2189,27 @@ def _build_parser() -> argparse.ArgumentParser:
         default=False,
         help="With --mode schedule: skip full Phase 5 when deriving risk from term",
     )
+    sim_parser.add_argument(
+        "--no-expand",
+        action="store_true",
+        default=False,
+        help="Do not split multi-term seeds (force single blended scenario)",
+    )
     sim_parser.add_argument("--verbose", action="store_true", default=False)
     sim_parser.add_argument("--out", default="")
     sim_parser.set_defaults(func=cmd_simulate)
+
+    ts_parser = subparsers.add_parser(
+        "terms-split",
+        help="Split free-text into atomic lexicon terms (sigma | rizz | locked in)",
+    )
+    ts_parser.add_argument("text_pos", nargs="?", default="", help="Text to split")
+    ts_parser.add_argument("--text", default="", help="Text to split (flag form)")
+    ts_parser.add_argument("--query", default="")
+    ts_parser.add_argument("--term", default="")
+    ts_parser.add_argument("--no-backfill", action="store_true", default=False)
+    ts_parser.add_argument("--no-lineage", action="store_true", default=False)
+    ts_parser.set_defaults(func=cmd_terms_split)
 
     rs_parser = subparsers.add_parser(
         "risk-schedule",

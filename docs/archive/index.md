@@ -15,6 +15,16 @@ Machine index: [`catalog.json`](./catalog.json) ·
 
 <div class="grid cards" markdown>
 
+-   :material-flask-outline: **[backfill-phase5-rizz-2026](./runs/backfill-phase5-rizz-2026/index.md)**
+
+    `phase5_scenario` · risk **LOW**
+
+    Families: —
+
+    ---
+
+    [Open snapshot →](./runs/backfill-phase5-rizz-2026/index.md)
+
 -   :material-flask-outline: **[backfill-phase5-ai-native-2026](./runs/backfill-phase5-ai-native-2026/index.md)**
 
     `phase5_scenario` · risk **MODERATE** · term `agentic slop skill issue`
@@ -34,16 +44,6 @@ Machine index: [`catalog.json`](./catalog.json) ·
     ---
 
     [Open snapshot →](./runs/backfill-phase5-sharp-2026/index.md)
-
--   :material-flask-outline: **[backfill-phase5-rizz-2026](./runs/backfill-phase5-rizz-2026/index.md)**
-
-    `phase5_scenario` · risk **MODERATE** · term `sigma rizz locked in`
-
-    Families: —
-
-    ---
-
-    [Open snapshot →](./runs/backfill-phase5-rizz-2026/index.md)
 
 -   :material-file-document-outline: **[backfill-ytd-2026-analysis](./runs/backfill-ytd-2026-analysis/index.md)**
 

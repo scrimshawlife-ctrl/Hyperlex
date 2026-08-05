@@ -6,6 +6,19 @@
   "purpose": "static_history_of_runs",
   "runs": [
     {
+      "created_at": "2026-08-05T21:54:38.918539+00:00",
+      "families": {},
+      "n_ledger_rows": 0,
+      "n_receipt_summaries": 0,
+      "notes": "Per-term Phase 5: sigma | rizz | locked in (atomic, not blended)",
+      "path": "runs/backfill-phase5-rizz-2026/",
+      "risk_tier": "LOW",
+      "run_kind": "phase5_scenario",
+      "seed_term": null,
+      "site_path": "runs/backfill-phase5-rizz-2026/",
+      "snapshot_id": "backfill-phase5-rizz-2026"
+    },
+    {
       "created_at": "2026-08-05T20:36:36.991106+00:00",
       "families": {},
       "n_ledger_rows": 0,
@@ -30,19 +43,6 @@
       "seed_term": "sharp steam revenge",
       "site_path": "runs/backfill-phase5-sharp-2026/",
       "snapshot_id": "backfill-phase5-sharp-2026"
-    },
-    {
-      "created_at": "2026-08-05T20:36:36.985929+00:00",
-      "families": {},
-      "n_ledger_rows": 0,
-      "n_receipt_summaries": 0,
-      "notes": "Backfill-linked Phase 5: sigma rizz locked in",
-      "path": "runs/backfill-phase5-rizz-2026/",
-      "risk_tier": "MODERATE",
-      "run_kind": "phase5_scenario",
-      "seed_term": "sigma rizz locked in",
-      "site_path": "runs/backfill-phase5-rizz-2026/",
-      "snapshot_id": "backfill-phase5-rizz-2026"
     },
     {
       "created_at": "2026-08-05T20:36:36.979993+00:00",
@@ -120,5 +120,5 @@
   ],
   "schema": "hyperlex.archive_catalog.v1",
   "site_base": "https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/archive/",
-  "updated_at": "2026-08-05T20:37:19.037899+00:00"
+  "updated_at": "2026-08-05T21:54:38.919278+00:00"
 }

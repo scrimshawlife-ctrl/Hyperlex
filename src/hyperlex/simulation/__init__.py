@@ -19,7 +19,7 @@ from .phylogeny import (
     list_domain_packs,
     list_phylogeny_families,
 )
-from .scenario import run_phase5_scenario
+from .scenario import run_phase5_scenario, run_phase5_multi_term
 from .calibrate import calibrate_transmission_params, load_calibration_pairs
 from .library import (
     SCENARIO_LIBRARY,
@@ -49,6 +49,7 @@ __all__ = [
     "build_domain_phylogeny",
     "list_domain_packs",
     "run_phase5_scenario",
+    "run_phase5_multi_term",
     "calibrate_transmission_params",
     "load_calibration_pairs",
     "SCENARIO_LIBRARY",

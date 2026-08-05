@@ -76,6 +76,38 @@ def sanitize_receipt_summary(
 
 def sanitize_phase5_summary(scenario: Dict[str, Any]) -> Dict[str, Any]:
     """Publish-safe Phase 5 scenario digest (no full agent lists / long trajectories)."""
+    # Multi-term packet: one summary per atomic seed (never a blended seed_term)
+    if scenario.get("schema") == "hyperlex.phase5_multi_term.v1" or scenario.get("multi_term"):
+        summaries = list(scenario.get("summaries") or [])
+        agg = scenario.get("aggregate") or {}
+        return {
+            "schema": "hyperlex.phase5_run_summary.v1",
+            "seed_term": None,
+            "terms": list(scenario.get("terms") or []),
+            "original_seed": scenario.get("original_seed"),
+            "multi_term": True,
+            "n_terms": scenario.get("n_terms") or len(summaries),
+            "per_term": summaries,
+            "lineage_family": None,
+            "domain": scenario.get("domain"),
+            "created_at": scenario.get("created_at"),
+            "risk_score": None,
+            "risk_tier": agg.get("top_risk_tier"),
+            "transmission_peak": None,
+            "transmission_reach": None,
+            "agent_adoption_rate": None,
+            "cascade_success": None,
+            "phylogeny_family": None,
+            "phylogeny_n_nodes": None,
+            "provenance": "SPECULATIVE",
+            "brier": None,
+            "publish_safe": True,
+            "note": (
+                "Atomic multi-term run: each lexicon item simulated separately "
+                "(e.g. sigma | rizz | locked in). top_risk_tier is max severity only."
+            ),
+        }
+
     risk = scenario.get("hyperstition_risk") or {}
     tsum = (scenario.get("transmission") or {}).get("summary") or {}
     asum = (scenario.get("multi_agent") or {}).get("summary") or {}
@@ -83,6 +115,8 @@ def sanitize_phase5_summary(scenario: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "schema": "hyperlex.phase5_run_summary.v1",
         "seed_term": scenario.get("seed_term"),
+        "terms": [scenario.get("seed_term")] if scenario.get("seed_term") else [],
+        "multi_term": False,
         "lineage_family": scenario.get("lineage_family"),
         "domain": scenario.get("domain"),
         "created_at": scenario.get("created_at"),
@@ -507,26 +541,46 @@ def export_run_history(
     if phase5_scenario is not None:
         run_dir.mkdir(parents=True, exist_ok=True)
         summary = sanitize_phase5_summary(phase5_scenario)
+        multi = bool(summary.get("multi_term"))
         # keep compact scenario without full agent table
-        compact = {
-            "schema": phase5_scenario.get("schema") or "hyperlex.phase5_scenario.v1",
-            "seed_term": phase5_scenario.get("seed_term"),
-            "lineage_family": phase5_scenario.get("lineage_family"),
-            "domain": phase5_scenario.get("domain"),
-            "created_at": phase5_scenario.get("created_at"),
-            "brier": None,
-            "provenance": "SPECULATIVE",
-            "hyperstition_risk": phase5_scenario.get("hyperstition_risk"),
-            "transmission_summary": (phase5_scenario.get("transmission") or {}).get("summary"),
-            "multi_agent_summary": (phase5_scenario.get("multi_agent") or {}).get("summary"),
-            "phylogeny": {
-                "family_id": (phase5_scenario.get("phylogeny") or {}).get("family_id"),
-                "n_nodes": (phase5_scenario.get("phylogeny") or {}).get("n_nodes"),
-                "ok": (phase5_scenario.get("phylogeny") or {}).get("ok"),
+        if multi:
+            compact = {
+                "schema": phase5_scenario.get("schema") or "hyperlex.phase5_multi_term.v1",
+                "original_seed": phase5_scenario.get("original_seed"),
+                "terms": phase5_scenario.get("terms"),
+                "n_terms": phase5_scenario.get("n_terms"),
+                "multi_term": True,
+                "domain": phase5_scenario.get("domain"),
+                "created_at": phase5_scenario.get("created_at"),
+                "brier": None,
+                "provenance": "SPECULATIVE",
+                "summaries": phase5_scenario.get("summaries"),
+                "aggregate": phase5_scenario.get("aggregate"),
+                "note": phase5_scenario.get("note"),
             }
-            if phase5_scenario.get("phylogeny")
-            else None,
-        }
+            terms_disp = " · ".join(str(t) for t in (summary.get("terms") or []))
+            md_seed_row = f"| Terms (atomic) | `{terms_disp}` |"
+        else:
+            compact = {
+                "schema": phase5_scenario.get("schema") or "hyperlex.phase5_scenario.v1",
+                "seed_term": phase5_scenario.get("seed_term"),
+                "lineage_family": phase5_scenario.get("lineage_family"),
+                "domain": phase5_scenario.get("domain"),
+                "created_at": phase5_scenario.get("created_at"),
+                "brier": None,
+                "provenance": "SPECULATIVE",
+                "hyperstition_risk": phase5_scenario.get("hyperstition_risk"),
+                "transmission_summary": (phase5_scenario.get("transmission") or {}).get("summary"),
+                "multi_agent_summary": (phase5_scenario.get("multi_agent") or {}).get("summary"),
+                "phylogeny": {
+                    "family_id": (phase5_scenario.get("phylogeny") or {}).get("family_id"),
+                    "n_nodes": (phase5_scenario.get("phylogeny") or {}).get("n_nodes"),
+                    "ok": (phase5_scenario.get("phylogeny") or {}).get("ok"),
+                }
+                if phase5_scenario.get("phylogeny")
+                else None,
+            }
+            md_seed_row = f"| Seed term | `{summary.get('seed_term')}` |"
         (run_dir / "phase5.json").write_text(
             json.dumps(compact, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
@@ -541,6 +595,8 @@ def export_run_history(
             "n_receipt_summaries": 0,
             "n_ledger_rows": 0,
             "seed_term": summary.get("seed_term"),
+            "terms": summary.get("terms"),
+            "multi_term": multi,
             "risk_tier": summary.get("risk_tier"),
             "phase5": summary,
             "notes": notes or None,
@@ -552,10 +608,11 @@ def export_run_history(
         md = f"""# Phase 5 run — `{snap}`
 
 **Kind:** `phase5_scenario` · SPECULATIVE research snapshot for Pages.
+{"**Multi-term:** each lexicon atom simulated separately (not one blended seed)." if multi else ""}
 
 | Field | Value |
 |-------|-------|
-| Seed term | `{summary.get("seed_term")}` |
+{md_seed_row}
 | Domain | `{summary.get("domain")}` |
 | Family | `{summary.get("lineage_family")}` |
 | Risk tier | `{summary.get("risk_tier")}` |
@@ -580,6 +637,7 @@ def export_run_history(
             "catalog_runs": catalog.get("n_runs"),
             "latest_updated": False,
             "index": str(run_dir / "index.json"),
+            "multi_term": multi,
         }
 
     # analysis path

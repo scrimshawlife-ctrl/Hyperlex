@@ -19,7 +19,7 @@ ENV = {
 def test_resolve_aliases_and_routes():
     from hyperlex.intake.sources import pick_source, resolve_source, list_sources
 
-    src, pkt = pick_source("real")
+    src, pkt = pick_source("real", force_offline=False)
     assert src == "glossary"
     assert pkt["known"] is True
 

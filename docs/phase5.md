@@ -31,11 +31,25 @@ and lightweight phylogenies.
 ## Operator entry
 
 ```bash
-python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --domain ai --out out/phase5/s.json
-python3 scripts/hyperlex.py simulate --from-analyze --term "sharp steam revenge" --domain markets
+# Single atomic term
+python3 scripts/hyperlex.py simulate --term rizz --domain ai --out out/phase5/rizz.json
+
+# Multi-term free text → auto-expands to separate scenarios (not one blended seed)
+python3 scripts/hyperlex.py terms-split "sigma rizz locked in"
+python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --domain ai
+# → schema hyperlex.phase5_multi_term.v1 with terms [sigma, rizz, locked in]
+
+# Force a single blended seed only if intentional
+python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --no-expand
 ```
 
 Details: [modules/simulation.md](modules/simulation.md).
+
+### Atomic terms
+
+Backfill packs store **one term per entry**. Phrases like `locked in` are one atom;
+`sigma` and `rizz` are separate. Concatenating them for a Phase 5 run was a demo
+mistake — the engine now expands by default.
 
 ## How it sits on the stack
 

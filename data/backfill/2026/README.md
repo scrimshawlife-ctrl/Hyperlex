@@ -10,6 +10,28 @@
 - Packs are **not** a live crawl corpus; they are operator-curated seeds for matcher expansion and timeline docs.
 - Applying packs merges terms into an in-memory registry overlay (or permanent registry expansion in code). Historical receipts stay immutable; backprop emits a **reclassification report**.
 
+## Atomic terms (do not blend)
+
+Each pack entry is **one lexicon atom**. Multi-word phrases that function as a single item stay together (`locked in`, `crash out`, `skill issue`). Independent items must **not** be concatenated into one seed for Phase 5 or lineage density scoring.
+
+| Wrong | Right |
+|-------|--------|
+| seed `"sigma rizz locked in"` as one simulation | three atoms: `sigma` · `rizz` · `locked in` |
+| one lineage confidence for the whole bag | `per_term` lineage for each atom |
+
+```bash
+# See the split
+python3 scripts/hyperlex.py terms-split "sigma rizz locked in"
+# → terms: ["sigma", "rizz", "locked in"]
+
+# Phase 5 expands automatically (one scenario per atom)
+python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --domain ai
+# Force blended seed only if you mean it:
+python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --no-expand
+```
+
+Older archive snapshots that used a concatenated `seed_term` are historical; re-run simulate + `archive-export --phase5` for correct multi-term packets.
+
 ## Operator flow
 
 ```bash

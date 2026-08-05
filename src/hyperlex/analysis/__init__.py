@@ -740,17 +740,50 @@ def detect_memetic_patterns(
     except Exception:
         llm_meta = {"status": "error", "applied": False}
 
+    # Split free-text seeds into atomic lexicon terms (sigma | rizz | locked in)
+    from .terms import (
+        per_term_lineage,
+        primary_term_from_split,
+        split_seed_terms,
+    )
+
+    # Prefer query surface for splitting (user intent); fall back to observed text
+    seed_split = split_seed_terms(query or observed)
+    if not seed_split.get("terms") and observed:
+        seed_split = split_seed_terms(observed)
+    per_term = per_term_lineage(seed_split.get("terms") or [])
+
     virality = compute_virality_score(observed)
     hyper = simulate_hyperstition_loop(observed)
 
     neo_terms = [n["term"] for n in neos]
-    lineage = match_lineage(observed, terms=neo_terms)
+    # Multi-term seeds: do NOT density-stack independent lexicon items into one
+    # lineage score. Primary lineage = best per-term match; full bag match kept
+    # as lineage_bag for transparency only.
+    lineage_bag = match_lineage(observed, terms=neo_terms + list(seed_split.get("terms") or []))
+    if seed_split.get("multi_term") and per_term:
+        ranked = [r for r in per_term if r.get("lineage")]
+        if ranked:
+            ranked.sort(key=lambda r: float(r.get("confidence") or 0.0), reverse=True)
+            lineage = dict(ranked[0]["lineage"])
+            lineage["primary_term"] = ranked[0]["term"]
+            lineage["multi_term_mode"] = True
+            lineage["note"] = (
+                "Primary lineage from best single-term match; independent lexicon "
+                "items considered separately (not density-stacked)."
+            )
+        else:
+            lineage = lineage_bag
+    else:
+        lineage = lineage_bag
+
+    primary = primary_term_from_split(seed_split, per_term)
     memetic = memetics_protocol_check(
         observed,
         lineage_family=(lineage or {}).get("family_id"),
     )
     variation = trace_semantic_variation(
-        neo_terms[0] if neo_terms else "term",
+        primary or (neo_terms[0] if neo_terms else "term"),
         observed,
         lineage_family=(lineage or {}).get("family_id"),
         typology=memetic.get("typology_primary") or memetic.get("typology"),
@@ -798,7 +831,19 @@ def detect_memetic_patterns(
         "virality": virality,
         "memetics": memetic,
         "hyperstition": hyper,
+        "seed_terms": seed_split,
+        "per_term": per_term,
+        "primary_term": primary,
     }
+    if seed_split.get("multi_term"):
+        analysis["multi_term"] = True
+        if lineage_bag and lineage and lineage.get("multi_term_mode"):
+            analysis["lineage_bag"] = {
+                "family_id": lineage_bag.get("family_id"),
+                "matched_terms": lineage_bag.get("matched_terms"),
+                "confidence": lineage_bag.get("confidence"),
+                "note": "Density-stacked bag match (not used as primary when multi_term)",
+            }
     if llm_meta is not None:
         analysis["llm_enrichment"] = {
             "status": llm_meta.get("status"),

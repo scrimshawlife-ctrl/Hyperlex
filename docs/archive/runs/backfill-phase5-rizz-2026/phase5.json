@@ -1,95 +1,50 @@
 {
+  "aggregate": {
+    "n_terms": 3,
+    "note": "Per-term scenarios only; aggregate tier is max severity, not a blended simulation.",
+    "top_risk_tier": "LOW"
+  },
   "brier": null,
-  "created_at": "2026-08-05T20:36:36.985385+00:00",
+  "created_at": "2026-08-05T21:53:53.917734+00:00",
   "domain": "ai",
-  "hyperstition_risk": {
-    "action_hints": [
-      "Label claims OBSERVED/INFERRED/SPECULATIVE; this packet is SPECULATIVE.",
-      "Do not invent Brier; settle forecasts only with operator authority."
-    ],
-    "brier": null,
-    "confidence": 0.7,
-    "domain": "ai",
-    "domain_note": "Model-culture loops; quality + agency framing may self-reinforce.",
-    "drivers": [
-      {
-        "id": "hyperstition_stage",
-        "raw": "EMERGENT",
-        "value": 0.45,
-        "weight": 0.28
-      },
-      {
-        "id": "virality_hybrid",
-        "value": 0.427,
-        "weight": 0.14
-      },
-      {
-        "id": "virality_predicted",
-        "value": 0.528,
-        "weight": 0.12
-      },
-      {
-        "id": "lineage_confidence",
-        "value": 0.82,
-        "weight": 0.1
-      },
-      {
-        "id": "memetic_score",
-        "value": 0.31,
-        "weight": 0.08
-      },
-      {
-        "id": "transmission_peak",
-        "value": 0.85,
-        "weight": 0.12
-      },
-      {
-        "id": "transmission_reach",
-        "value": 0.3333,
-        "weight": 0.08
-      },
-      {
-        "id": "agent_adoption_rate",
-        "value": 0.1,
-        "weight": 0.08
-      },
-      {
-        "id": "agent_cascade_success",
-        "value": 0.15,
-        "weight": 0.1
-      }
-    ],
-    "lineage_family": "brainrot-aura",
-    "note": "Forward-looking hyperstition risk composite. Not a settled forecast. Do not treat as Brier-eligible without operator settlement design.",
-    "provenance": "SPECULATIVE",
-    "risk_score": 0.461,
-    "schema": "hyperlex.hyperstition_risk.v1",
-    "seed_term": null,
-    "tier": "MODERATE"
-  },
-  "lineage_family": "brainrot-aura",
-  "multi_agent_summary": {
-    "cascade_success": false,
-    "final_adoption_rate": 0.1,
-    "roles_adopted": [
-      "innovator"
-    ],
-    "time_to_half": null
-  },
-  "phylogeny": {
-    "family_id": "brainrot-aura",
-    "n_nodes": 41,
-    "ok": true
-  },
+  "multi_term": true,
+  "n_terms": 3,
+  "note": "Each lexicon term is simulated separately. 'sigma rizz locked in' \u2192 sigma | rizz | locked in \u2014 never one blended seed. SPECULATIVE; brier always null.",
+  "original_seed": "sigma rizz locked in",
   "provenance": "SPECULATIVE",
-  "schema": "hyperlex.phase5_scenario.v1",
-  "seed_term": "sigma rizz locked in",
-  "transmission_summary": {
-    "dominant_community": "origin_niche",
-    "final_mean_adoption": 0.1767,
-    "final_reach_fraction": 0.3333,
-    "peak_mean_adoption": 0.85,
-    "stabilizing": true,
-    "time_to_peak": 0
-  }
+  "schema": "hyperlex.phase5_multi_term.v1",
+  "summaries": [
+    {
+      "brier": null,
+      "cascade_success": false,
+      "lineage_family": null,
+      "risk_score": 0.331,
+      "risk_tier": "LOW",
+      "seed_term": "sigma",
+      "transmission_peak": 0.85
+    },
+    {
+      "brier": null,
+      "cascade_success": false,
+      "lineage_family": null,
+      "risk_score": 0.331,
+      "risk_tier": "LOW",
+      "seed_term": "rizz",
+      "transmission_peak": 0.85
+    },
+    {
+      "brier": null,
+      "cascade_success": false,
+      "lineage_family": null,
+      "risk_score": 0.331,
+      "risk_tier": "LOW",
+      "seed_term": "locked in",
+      "transmission_peak": 0.85
+    }
+  ],
+  "terms": [
+    "sigma",
+    "rizz",
+    "locked in"
+  ]
 }

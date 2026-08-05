@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.9 — Atomic multi-term seeds (2026-08-05)
+
+- `split_seed_terms`: longest-match lexicon split (`sigma rizz locked in` → sigma | rizz | locked in)
+- Analyze attaches `seed_terms` + `per_term` lineage; primary lineage is best single atom (no density stack)
+- Phase 5 auto-expands multi-term seeds → `hyperlex.phase5_multi_term.v1` (use `--no-expand` to blend)
+- CLI: `terms-split`; docs/backfill README clarify atomic pack entries
+
 ## 0.3.8 — Operator loop docs + simplified ingest routing (2026-08-05)
 
 - Canonical ingest catalog: `hyperlex.intake.sources` (`resolve_source`, `pick_source`, `ROUTE_PRESETS`)

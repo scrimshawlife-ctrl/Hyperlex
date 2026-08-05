@@ -96,4 +96,4 @@ exclude_docs: |
   README.md
 
 extra:
-  version: 0.3.8
+  version: 0.3.9

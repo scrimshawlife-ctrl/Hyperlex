@@ -64,8 +64,13 @@ def test_risk_from_analysis():
     risk = risk_from_analysis(result, domain="markets")
     assert risk["brier"] is None
     assert risk["risk_score"] is not None
-    # full scenario from analysis
-    sc = run_phase5_scenario("sharp steam", analysis_result=result, domain="markets")
+    # full scenario from analysis — single atomic seed (multi-word bags expand by default)
+    sc = run_phase5_scenario(
+        "sharp",
+        analysis_result=result,
+        domain="markets",
+        expand_terms=False,
+    )
     assert sc["schema"] == "hyperlex.phase5_scenario.v1"
     assert sc["brier"] is None
     assert sc["hyperstition_risk"]["brier"] is None
@@ -93,7 +98,7 @@ def test_cli_simulate_scenario(tmp_path):
             str(ROOT / "scripts" / "hyperlex.py"),
             "simulate",
             "--term",
-            "rizz locked in",
+            "rizz",
             "--mode",
             "scenario",
             "--domain",
@@ -111,6 +116,8 @@ def test_cli_simulate_scenario(tmp_path):
     assert data["ok"] is True
     assert data["scenario"]["brier"] is None
     full = json.loads(out.read_text(encoding="utf-8"))
+    assert full["schema"] == "hyperlex.phase5_scenario.v1"
+    assert full["seed_term"] == "rizz"
     assert full["hyperstition_risk"]["tier"] in ("LOW", "MODERATE", "ELEVATED", "CRITICAL")
 
 

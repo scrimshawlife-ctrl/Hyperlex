@@ -14,7 +14,7 @@
   <a href="https://github.com/scrimshawlife-ctrl/Hyperlex/actions/workflows/docs.yml"><img src="https://img.shields.io/github/actions/workflow/status/scrimshawlife-ctrl/Hyperlex/docs.yml?branch=main&label=docs&logo=github" alt="Docs CI"></a>
   <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-0d9488?logo=markdown" alt="Docs"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-  <a href="./VERSION"><img src="https://img.shields.io/badge/version-0.3.8-informational" alt="Version 0.3.8"></a>
+  <a href="./VERSION"><img src="https://img.shields.io/badge/version-0.3.9-informational" alt="Version 0.3.9"></a>
   <img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/hermes-skill-7c3aed" alt="Hermes skill">
   <img src="https://img.shields.io/badge/offline--first-mock%20route-22c55e" alt="Offline-first">
@@ -115,7 +115,7 @@ Phases **0–4** are production skill surface. **5.0–5.3** adds research simul
 
 | | |
 |--|--|
-| **Version** | **0.3.8** |
+| **Version** | **0.3.9** |
 | **Posture** | Hermes skill · Python package (≥3.10) · MIT |
 | **Primary store** | `~/.hyperlex/` |
 | **Public PyPI** | Not planned |
@@ -199,9 +199,12 @@ $HLX risk-schedule --tier MODERATE --schedule-out /tmp/hlx-cron
 ### Research (optional)
 
 ```bash
-$HLX simulate --term "sigma rizz locked in" --mode scenario --domain ai
+$HLX simulate --term rizz --mode scenario --domain ai
+# Multi-term free text expands to separate atoms (sigma | rizz | locked in)
+$HLX terms-split "sigma rizz locked in"
+$HLX simulate --term "sigma rizz locked in" --domain ai
 $HLX vector-seed --through 2026-08 --include-golden --include-home
-$HLX vector-search "sigma rizz locked in" --kind term
+$HLX vector-search "rizz" --kind term
 $HLX archive-export --include-golden --history
 ```
 
@@ -212,8 +215,10 @@ export HYPERLEX_OFFLINE=1
 $HLX lineage-backfill --list --through 2026-08
 $HLX vector-seed --through 2026-08 --include-golden --include-home
 $HLX vector-stats
+# One atom per run (do not blend independent terms into one seed)
+$HLX run "rizz" --route offline
+$HLX run "locked in" --route offline
 $HLX run "sharp steam revenge" --route offline
-$HLX run "sigma rizz locked in" --route offline
 ```
 
 ### Local data

@@ -98,12 +98,30 @@ API: `plan_scan_from_risk`, `plan_scan_from_term`, `plan_scan_from_tier`,
 
 Post-scan: `scan` attaches `scan_risk_advisory` from lineage coverage.
 
+## Multi-term seeds (0.3.9)
+
+Free-text seeds that contain multiple lexicon atoms expand automatically:
+
+```bash
+python3 scripts/hyperlex.py terms-split "sigma rizz locked in"
+# → ["sigma", "rizz", "locked in"]
+
+python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --domain ai
+# → hyperlex.phase5_multi_term.v1  (one scenario per atom)
+
+python3 scripts/hyperlex.py simulate --term "sigma rizz locked in" --no-expand
+# → single blended scenario (opt-in only)
+```
+
+API: `split_seed_terms`, `run_phase5_multi_term`, `run_phase5_scenario(..., expand_terms=True)`.
+
 ## Integrity
 
 1. Simulation does **not** rewrite receipts or ledgers.
 2. Simulation does **not** write score-log settlements.
 3. Use `extract_forecasts` + operator `settle` if you want Brier later.
 4. Treat tiers as research signals for scan frequency and archival diligence — not market advice.
+5. Independent lexicon atoms are never density-stacked into one primary lineage when multi-term.
 
 ## Research lineage
 

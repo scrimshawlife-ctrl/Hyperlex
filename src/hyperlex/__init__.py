@@ -38,6 +38,7 @@ from .analysis import (
 )
 from .analysis.backfill import apply_backfill, inventory_backfill, list_backfill_packs
 from .analysis.backprop import backpropagate_lineage
+from .analysis.terms import split_seed_terms, collect_lexicon, per_term_lineage
 from .synthesis import mock_integrate_with_external_signal
 from .receipt import (
     emit_receipt,
@@ -97,6 +98,7 @@ from .simulation import (
     build_domain_phylogeny,
     list_domain_packs,
     run_phase5_scenario,
+    run_phase5_multi_term,
     calibrate_transmission_params,
     compare_scenarios,
     list_scenario_presets,
@@ -166,6 +168,7 @@ API_EXTENDED = (
     "build_domain_phylogeny",
     "list_domain_packs",
     "run_phase5_scenario",
+    "run_phase5_multi_term",
     "calibrate_transmission_params",
     "compare_scenarios",
     "list_scenario_presets",
@@ -176,6 +179,9 @@ API_EXTENDED = (
     "plan_scan_from_tier",
     "write_scan_plan",
     "aggregate_scan_risk",
+    "split_seed_terms",
+    "collect_lexicon",
+    "per_term_lineage",
     "TIER_POLICY",
     "list_sources",
     "resolve_source",

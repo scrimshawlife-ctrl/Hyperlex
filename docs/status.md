@@ -1,6 +1,6 @@
 # Hyperlex Skill Status
 
-**Version:** 0.3.8  
+**Version:** 0.3.9  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Hallmark desk UI
@@ -43,7 +43,7 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Transmission calibrate** | Ready (advisory β/γ from settled pairs) |
 | **Scenario library + export** | Ready (`compare` / `export`) |
 | **Risk → scan/cron schedule** | Ready (`risk-schedule`; advisory only) |
-| **Ingest routes + `run`/`commands`/`pending`** | Ready (v0.3.8) |
+| **Ingest routes + `run`/`commands`/`pending`** | Ready (v0.3.9) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
