@@ -1,38 +1,45 @@
 # Hyperlex Quickstart
 
-Hermes skill backed by this Python package repo.
+Hermes skill backed by this Python package repo. Full guide: [README.md](./README.md) · [docs/operator-loop.md](./docs/operator-loop.md).
 
 ## Install
 
 ```bash
 bash install.sh
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
-H="$HERMES_SKILL_DIR/scripts/hyperlex.py"
-python3 "$H" check && python3 "$H" smoke
+export HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
+$HLX check && $HLX smoke && $HLX commands
 ```
 
-## Full operator loop
+## Daily path
 
 ```bash
-# 1. Analyze + receipt + forecasts
-python3 "$H" analyze --query "sharp steam revenge" --source mock \
-  --forecasts --receipt --append-log --out /tmp/hlx.json
+# One-shot: analyze + receipt + forecasts + score log (offline-safe)
+$HLX run "sharp steam revenge" --route offline
 
-# 2. Rune envelopes + market/forecast packets
-python3 "$H" relay --input /tmp/hlx.json --forecasts
-python3 "$H" signal --input /tmp/hlx.json
+# Open forecasts → settle → Brier series
+$HLX pending
+$HLX settle --forecast-id <id> --decision TRUE
+$HLX score-series --mean-shift --verify-chain
+```
 
-# 3. Settle (operator)
-python3 "$H" settle --forecast-id <id> --decision TRUE \
-  --authority-note "review confirmed"
+## Ingest routes
 
-# 4. Score series + optional hyperstition feedback
-python3 "$H" score-series --mean-shift --verify-chain
-python3 "$H" feedback --signal-key hyperstition.stage
+```bash
+$HLX sources
+$HLX run "…" --route offline   # mock
+$HLX run "…" --route live      # combined (needs network)
+$HLX run "…" --route glossary
+$HLX run "…" --route social
+```
 
-# 5. Cron scan
-python3 "$H" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" \
-  --source mock --receipt --forecasts --append-log
+## Scan + advisory cron
+
+```bash
+$HLX scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" \
+  --route offline --receipt --forecasts --append-log
+
+$HLX risk-schedule --tier MODERATE --schedule-out /tmp/hlx-cron
 ```
 
 ## Library
@@ -40,20 +47,19 @@ python3 "$H" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" \
 ```python
 from hyperlex import (
     detect_memetic_patterns, extract_forecasts, emit_receipt,
-    settle_and_log, recompute_series, build_market_signal,
-    hyperstition_feedback_from_series,
+    settle_and_log, recompute_series, pick_source,
 )
 from hyperlex.compat.abraxas import to_brier_ledger_entry, list_hlx_runes
 
-result = detect_memetic_patterns("sharp steam", ingest_source="mock")
+src, _ = pick_source(route="offline")
+result = detect_memetic_patterns("sharp steam", ingest_source=src, ingest_route="offline")
 assert result["provenance"]["brier"] is None
 emit_receipt(result)
-sig = build_market_signal(result)
 ```
 
 ## Docs
 
-- [docs/api-v1.md](docs/api-v1.md) — frozen API
-- [docs/hermes-skill.md](docs/hermes-skill.md) — architecture posture
-- [docs/connectors.md](docs/connectors.md) — signal + feedback
-- [docs/brier-calibration.md](docs/brier-calibration.md)
+- [docs/commands.md](docs/commands.md) — command map  
+- [docs/modules/ingest.md](docs/modules/ingest.md) — routes  
+- [docs/brier-calibration.md](docs/brier-calibration.md)  
+- [docs/hermes-skill.md](docs/hermes-skill.md)  

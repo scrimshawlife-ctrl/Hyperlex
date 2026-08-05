@@ -13,125 +13,155 @@
 |--|--|
 | **Version** | **0.3.8** |
 | **Posture** | Hermes skill · Python package repo (≥3.10) · MIT |
-| **Phases** | **0–4 complete** · **5.0–5.3** research simulation live |
+| **Phases** | **0–4 complete** · **5.0–5.3** research + operator loop |
 | **Pages** | Static history of runs (not live operator DB) |
 | **PyPI** | Not planned (local / Hermes install only) |
 
-**Docs site:** https://scrimshawlife-ctrl.github.io/Hyperlex/ · splash home · [telemetry desk](https://scrimshawlife-ctrl.github.io/Hyperlex/telemetry/)  
-**Status snapshot:** [STATUS.md](./STATUS.md)
+**Docs site:** https://scrimshawlife-ctrl.github.io/Hyperlex/ · [telemetry desk](https://scrimshawlife-ctrl.github.io/Hyperlex/telemetry/) · [operator loop](https://scrimshawlife-ctrl.github.io/Hyperlex/operator-loop/)  
+**Status:** [STATUS.md](./STATUS.md) · **Skill contract:** [SKILL.md](./SKILL.md)
 
 ---
 
-## What Hyperlex is for
+## What it does
 
 Hyperlex answers: *what is emerging in language/culture, which family does it belong to, how viral/hyperstitious is it, and can we score forecasts only after real outcomes?*
 
 ```text
-run --route offline|live     # one-shot daily path
+run --route offline|live
   → receipt + forecasts → score log
-  → pending → settle → score-series   # Brier only after settlement
+  → pending → settle → score-series    # Brier only after settlement
   → optional: scan / risk-schedule / Phase 5 / archive-export
 ```
 
-Command map: `python3 scripts/hyperlex.py commands` · [docs/operator-loop.md](docs/operator-loop.md)
-
-### Core functions
-
 | Function | Role |
 |----------|------|
-| **Ingest** | `mock` offline, or glossary / reddit / urban / wiki / X / crawl |
-| **Analyze** | Neologisms, lineage families (8 + 2026 YTD leaves), memetic typology, virality prediction (**SPECULATIVE**), hyperstition stage |
+| **Ingest** | Routes: `offline` / `live` / `glossary` / `social` (or raw adapters) |
+| **Analyze** | Neologisms, lineage (8 families + 2026 YTD leaves), typology, virality (**SPECULATIVE**), hyperstition |
 | **Receipts** | Integrity-hashed JSON + append-only local ledger |
-| **Calibration** | Forecast extract → operator settle → Brier / BSS / Murphy / Yates (never invent scores) |
-| **Relay** | `RUNE.HLX.*` envelopes + market-signal / hyperstition-feedback connectors |
-| **Lineage ops** | YTD backfill packs + non-mutating lineage backpropagation |
-| **Phase 5** | Cultural transmission, multi-agent memetics, hyperstition risk tiers, phylogeny scaffold, risk→cron schedule |
-| **Vector DB** | Local SQLite embeddings (`~/.hyperlex/vector.db`) for terms + receipts |
-| **Pages archive** | Publish-safe dated run history under `docs/archive/runs/` |
+| **Calibration** | Forecasts → operator settle → Brier / BSS / Murphy / Yates (never invented) |
+| **Scan / cron** | Multi-query `LIVE_EMERGENCE_SCAN` + advisory risk→schedule plans |
+| **Phase 5** | Transmission, multi-agent, risk tiers, phylogeny, research export (**SPECULATIVE**) |
+| **Vector DB** | Local SQLite at `~/.hyperlex/vector.db` |
+| **Pages archive** | Sanitized dated run history under `docs/archive/runs/` |
 
 ### Hard rules
 
 1. **Brier requires settlement** — open analysis always has `provenance.brier = null`.
 2. **Phase 5 is SPECULATIVE** — simulation packets also keep `brier: null`.
-3. **No Abraxas hard import** — `hyperlex.compat.abraxas` is pure Hyperlex wire shapes for hosts.
-4. **Primary store is local** — `~/.hyperlex/` (receipts, ledger, score log, cache). Pages is sanitized history only.
+3. **No Abraxas hard import** — `hyperlex.compat.abraxas` is pure Hyperlex wire shapes.
+4. **Primary store is local** — `~/.hyperlex/`. Pages is sanitized history only.
+5. **Cron is advisory** — `risk-schedule` never auto-registers Hermes jobs.
 
 ---
 
-## Current status (ready surface)
+## How to use
 
-| Area | Status |
-|------|--------|
-| Hermes skill install + `doctor` | Ready |
-| Offline mock analyze | Ready |
-| Lineage (8 families + 2026 YTD leaves) | Ready |
-| YTD backfill + lineage backprop | Ready |
-| Receipts / ledger / ledger-stats | Ready |
-| Forecasts → settle → score-series | Ready |
-| Rune relay + market connectors | Ready |
-| Diagrams from history | Ready |
-| Phase 5 simulate | Ready |
-| Pages static run history | Ready |
-| Governed LLM | Opt-in |
-| Public PyPI | Not planned |
-
-Roadmap: [ROADMAP.md](./ROADMAP.md) · Phase 5.1+ = domain phylogenies, sim calibration vs settled series, research exports.
-
----
-
-## Install
+### 1. Install
 
 ```bash
 bash install.sh --dry-run && bash install.sh
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
+export HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
+
+$HLX check
+$HLX doctor
+$HLX smoke
+$HLX commands    # simplified command map (JSON)
 ```
 
-Editable package (optional):
+Optional editable package:
 
 ```bash
 pip install -e ".[dev]"
 python -m hyperlex check
+python -m hyperlex run "sharp steam" --route offline
 ```
 
----
+### 2. Daily path (recommended)
 
-## Operator loop
+One-shot: **ingest route → analyze → receipt → forecasts → score log**.
 
 ```bash
-export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
-H="$HERMES_SKILL_DIR/scripts/hyperlex.py"
+# Safe offline burn-in (default route for `run` is offline)
+$HLX run "sharp steam revenge" --route offline
 
-# Analyze + receipt + forecasts
-python3 "$H" analyze --query "sharp steam revenge" --source mock \
-  --forecasts --receipt --out /tmp/hlx.json
+# When network is allowed
+$HLX run "agentic slop skill issue" --route live
 
-# Relay / market packet
-python3 "$H" relay --input /tmp/hlx.json --forecasts
-python3 "$H" signal --input /tmp/hlx.json
-
-# Phase 5 research scenario (SPECULATIVE)
-python3 "$H" simulate --from-analyze --term "sigma rizz locked in" --domain ai
-
-# Operator settlement → series
-python3 "$H" settle --forecast-id <id> --decision TRUE
-python3 "$H" score-series --mean-shift --verify-chain
-
-# Lineage YTD + non-mutating rematch
-python3 "$H" lineage-backfill --list --through 2026-08
-python3 "$H" lineage-backprop --from-golden
-
-# Append sanitized run to Pages history
-python3 "$H" archive-export --include-golden --history
-
-# Local vector DB (seed + search)
-python3 "$H" vector-seed --include-golden --through 2026-08
-python3 "$H" vector-search "sigma rizz locked in" --kind term
+# Analyze only (no auto receipt / forecasts)
+$HLX analyze "rizz locked in" --route offline
+$HLX ingest "rizz locked in" --route offline
 ```
 
-### Local data dirs
+### 3. Ingest routes (prefer these over raw adapters)
+
+| Route | Resolves to | Network |
+|-------|-------------|---------|
+| `offline` / `mock` / `default` | `mock` | no |
+| `live` | `combined` | yes |
+| `glossary` | Action Network glossary | yes |
+| `social` | X/Twitter path | yes |
+
+```bash
+$HLX sources                 # full catalog + routes
+$HLX sources --route live    # preview resolve
+```
+
+Aliases still work: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai.  
+Force offline for any network source: `HYPERLEX_OFFLINE=1`.
+
+### 4. Calibration (where Brier appears)
+
+```bash
+$HLX pending                                      # open (unsettled) forecasts
+$HLX settle --forecast-id <id> --decision TRUE    # or FALSE / VOID / CONFLICT
+$HLX score-series --mean-shift --verify-chain
+```
+
+Empty series → `NOT_COMPUTABLE`. Never invent scores from open analysis or Phase 5.
+
+### 5. Multi-query scan + advisory cron
+
+```bash
+# LIVE_EMERGENCE_SCAN (offline-safe)
+$HLX scan \
+  --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" \
+  --route offline --receipt --forecasts --append-log
+
+# Risk tier → Hermes job envelope (operator must register)
+$HLX risk-schedule --list-tiers
+$HLX risk-schedule --tier MODERATE --schedule-out /tmp/hlx-cron
+```
+
+Scan summaries include `scan_risk_advisory` (lineage coverage → next cadence).  
+Job templates: `examples/cron/`.
+
+### 6. Research (optional · SPECULATIVE)
+
+```bash
+$HLX simulate --term "sigma rizz locked in" --mode scenario --domain ai
+$HLX simulate --from-analyze --term "sharp steam revenge" --domain markets
+$HLX simulate --mode schedule --tier ELEVATED
+
+$HLX vector-seed --include-golden --through 2026-08
+$HLX vector-search "sigma rizz locked in" --kind term
+
+$HLX archive-export --include-golden --history
+$HLX lineage-backfill --list --through 2026-08
+$HLX lineage-backprop --from-golden
+```
+
+### 7. Relay & connectors
+
+```bash
+$HLX run "sharp steam revenge" --route offline --out /tmp/hlx.json
+# (or analyze --receipt --out …)
+$HLX relay --input /tmp/hlx.json --forecasts
+$HLX signal --input /tmp/hlx.json
+$HLX diagram --from-golden --out-dir out/diagrams
+```
+
+### Local data
 
 ```text
 ~/.hyperlex/receipts/
@@ -141,24 +171,45 @@ python3 "$H" vector-search "sigma rizz locked in" --kind term
 ~/.hyperlex/vector.db
 ```
 
-Repo packs: `data/backfill/2026/` (curated YTD slang).
+Repo packs: `data/backfill/2026/` · phylogeny: `data/phylogeny/`.
+
+### Week-one checklist
+
+1. Install + `$HLX doctor` green  
+2. `$HLX run "…" --route offline` a few times (or MODERATE cron)  
+3. `$HLX pending` → settle a handful → `$HLX score-series --verify-chain`  
+4. Only then: `--route live` or higher risk tiers if advisory warrants  
+
+Full write-up: [docs/operator-loop.md](./docs/operator-loop.md) · [docs/commands.md](./docs/commands.md)
 
 ---
 
-## CLI surface (skill)
+## CLI surface
+
+**Prefer**
+
+| Command | Purpose |
+|---------|---------|
+| `commands` | Simplified map |
+| `run "<q>" --route offline` | Daily one-shot |
+| `pending` / `settle` / `score-series` | Calibration |
+| `scan` / `risk-schedule` | Cron advisory |
+| `sources` / `ingest` / `analyze` | Routing + partial pipeline |
+
+**Also available**
 
 ```text
-check · doctor · sources · ingest · analyze · scan
+check · doctor · smoke
 emit-receipt · list-receipts · ledger-stats · ledger-diff
-extract-forecasts · settle · score-series · verify-score-log
+extract-forecasts · verify-score-log · verify-receipt-ledger
 relay · signal · feedback · diagram
 lineage-backfill · lineage-backprop
-simulate                  # Phase 5
+simulate · vector-seed · vector-search · vector-stats
 archive-export · archive-catalog
-validate · verify-receipt · smoke
+validate · verify-receipt
 ```
 
-Package entry: `python -m hyperlex …` (subset of the skill CLI).
+Package entry (subset): `python -m hyperlex …`
 
 ---
 
@@ -173,20 +224,28 @@ from hyperlex import (
     settle_and_log,
     recompute_series,
     relay_from_result,
-    run_phase5_scenario,       # Phase 5
-    export_run_history,        # Pages archive
+    run_phase5_scenario,
+    list_sources,
+    pick_source,
+    export_run_history,
     NOT_COMPUTABLE,
     PKG_VERSION,
 )
 
-result = detect_memetic_patterns(query="sharp steam revenge", ingest_source="mock")
-# result["provenance"]["brier"] is always None until settlement
+# Prefer routes via pick_source / ingest_route when scripting
+src, _ = pick_source(route="offline")
+result = detect_memetic_patterns(
+    query="sharp steam revenge",
+    ingest_source=src,
+    ingest_route="offline",
+)
+assert result["provenance"]["brier"] is None
 ```
 
-Frozen symbol list: [docs/api-v1.md](./docs/api-v1.md) · `hyperlex.API_V1`  
-Extended (additive): calibration connectors, diagrams, backfill, simulation, archive.
+Frozen symbols: [docs/api-v1.md](./docs/api-v1.md) · `hyperlex.API_V1`  
+Extended (additive): simulation, archive, vector, sources, schedule.
 
-Abraxas-shaped modules (optional host import):
+Abraxas-shaped modules (optional host import — no Abraxas dependency):
 
 ```python
 from hyperlex.compat.abraxas import (
@@ -200,26 +259,46 @@ from hyperlex.compat.abraxas import (
 
 ---
 
+## Current status
+
+| Area | Status |
+|------|--------|
+| Hermes skill + `doctor` | Ready |
+| Offline mock + route-based ingest | Ready |
+| `run` / `commands` / `pending` | Ready (v0.3.8) |
+| Lineage + YTD backfill / backprop | Ready |
+| Receipts / ledger / settle / score-series | Ready |
+| Risk → scan/cron schedule (advisory) | Ready |
+| Phase 5 research simulation | Ready |
+| Local vector DB + hybrid lineage | Ready |
+| Pages static run history | Ready |
+| ANN vector backend | Deferred (corpus still small) |
+| Public PyPI | Not planned |
+
+Roadmap: [ROADMAP.md](./ROADMAP.md)
+
+---
+
 ## Docs & examples
 
 | Resource | Purpose |
 |----------|---------|
-| [STATUS.md](./STATUS.md) | Readiness snapshot |
-| [SKILL.md](./SKILL.md) | Hermes skill contract |
-| [SPEC.md](./SPEC.md) | Runtime surface |
-| [docs/hermes-skill.md](./docs/hermes-skill.md) | Skill model + Abraxas boundary |
+| [docs/operator-loop.md](./docs/operator-loop.md) | Recommended burn-in path |
+| [docs/commands.md](./docs/commands.md) | Simplified command map |
+| [docs/modules/ingest.md](./docs/modules/ingest.md) | Routes, aliases, provenance |
+| [docs/cron-live-emergence.md](./docs/cron-live-emergence.md) | Cron / risk tiers |
 | [docs/brier-calibration.md](./docs/brier-calibration.md) | Forecast → settle → Brier |
 | [docs/phase5.md](./docs/phase5.md) | Research simulation |
 | [docs/slang-lineages.md](./docs/slang-lineages.md) | Lineage methodology |
-| [ROADMAP.md](./ROADMAP.md) | Phases 0–5 |
-| [docs site](https://scrimshawlife-ctrl.github.io/Hyperlex/) | Workbench + **run history catalog** |
+| [docs/hermes-skill.md](./docs/hermes-skill.md) | Skill model + Abraxas boundary |
+| [docs site](https://scrimshawlife-ctrl.github.io/Hyperlex/) | Workbench + run history |
 
 Examples:
 
+- `examples/cron/` — LIVE_EMERGENCE_SCAN + risk-tier job envelopes  
 - `examples/receipts/golden/` — golden receipt corpus  
 - `examples/calibration/` — settled Brier series fixture  
 - `examples/slang-families/` — Mermaid lineage diagrams  
-- `examples/cron/` — `LIVE_EMERGENCE_SCAN` job  
 - `examples/case-studies/` — end-to-end walkthrough  
 
 ---
