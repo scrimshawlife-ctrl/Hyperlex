@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Hyperlex Emergence Process</title>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+</script>
+<style>
+  :root { --bg: #0f1115; --panel: #171a21; --text: #e8eaed; --muted: #9aa3b2; --accent: #e94560; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px; }
+  h1 { font-size: 1.25rem; margin: 0 0 4px; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
+  .diagram { background: var(--panel); border-radius: 12px; padding: 20px; overflow: auto; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+  <h1>Hyperlex Emergence Process</h1>
+  <div class="meta">Gate of Intake → Zone of Emergence → Current of Transmission → Archive of Becoming</div>
+  <div class="diagram">
+    <pre class="mermaid">
+flowchart LR
+  intake["Gate of Intake<br/>real signals<br/>X / Reddit / Urban / glossary"]
+  neo["Neologism Detection<br/>extra-grammatical / novel forms"]
+  var["Semantic Variation<br/>community + communicative need"]
+  vir["Virality / Acceleration<br/>velocity + network prior"]
+  mem["Memetics Protocol<br/>imitation + typology"]
+  hyp["Hyperstition Loop<br/>narrative → behavior → confirmation"]
+  archive["Archive of Becoming<br/>receipt + lineage attachment"]
+
+  intake --> neo
+  neo --> var
+  var --> vir
+  vir --> mem
+  mem --> hyp
+  hyp --> archive
+
+  hyp -.->|feedback| intake
+    </pre>
+  </div>
+</body>
+</html>
