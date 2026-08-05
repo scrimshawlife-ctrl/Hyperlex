@@ -26,11 +26,11 @@ def test_scenario_library_compare():
 
     presets = list_scenario_presets()
     assert len(presets) >= 4
-    one = run_named_scenario("viral_cascade", "rizz locked in")
+    one = run_named_scenario("viral_cascade", "rizz")
     assert one["ok"] is True
     assert one["brier"] is None
     assert one["summary"] is not None
-    cmp = compare_scenarios("rizz locked in", scenario_ids=["baseline", "skeptic_wall", "viral_cascade"])
+    cmp = compare_scenarios("rizz", scenario_ids=["baseline", "skeptic_wall", "viral_cascade"])
     assert cmp["ok"] is True
     assert cmp["n_scenarios"] == 3
     assert len(cmp["ranking"]) == 3

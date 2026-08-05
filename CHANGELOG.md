@@ -6,6 +6,8 @@
 - Analyze attaches `seed_terms` + `per_term` lineage; primary lineage is best single atom (no density stack)
 - Phase 5 auto-expands multi-term seeds → `hyperlex.phase5_multi_term.v1` (use `--no-expand` to blend)
 - CLI: `terms-split`; docs/backfill README clarify atomic pack entries
+- Scan/cron defaults use atomic queries; risk-schedule expands seed bags into atoms
+- Phase 5 archive snapshots re-exported multi-term; examples/docs scrubbed of blended seeds
 
 ## 0.3.8 — Operator loop docs + simplified ingest routing (2026-08-05)
 

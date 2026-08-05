@@ -15,7 +15,8 @@ $HLX check && $HLX smoke && $HLX commands
 
 ```bash
 # One-shot: analyze + receipt + forecasts + score log (offline-safe)
-$HLX run "sharp steam revenge" --route offline
+$HLX run "rizz" --route offline
+$HLX run "locked in" --route offline
 
 # Open forecasts → settle → Brier series
 $HLX pending

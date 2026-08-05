@@ -110,7 +110,8 @@ HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
 
 $HLX commands                          # full simplified map (JSON)
 $HLX sources                           # sources + routes
-$HLX run "sharp steam revenge" --route offline   # daily one-shot
+$HLX run "rizz" --route offline                 # one atom per run
+$HLX run "locked in" --route offline
 $HLX pending                           # open forecasts
 $HLX settle --forecast-id <id> --decision TRUE
 $HLX score-series --mean-shift --verify-chain
@@ -160,7 +161,7 @@ from hyperlex import (
     NOT_COMPUTABLE,
 )
 
-result = detect_memetic_patterns(query="sharp steam revenge", ingest_source="mock")
+result = detect_memetic_patterns(query="rizz", ingest_source="mock")
 forecasts = extract_forecasts(result)
 # later, after operator review:
 # settle_and_log(forecast, outcome_value=1.0, settlement_decision="TRUE")

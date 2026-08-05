@@ -40,7 +40,7 @@ Composes stage, virality, lineage, memetic score, optional transmission/agent su
 into `risk_score` + `tier` (`LOW` | `MODERATE` | `ELEVATED` | `CRITICAL`).
 
 ```bash
-python3 scripts/hyperlex.py simulate --mode risk --from-analyze --term "sharp steam revenge" --domain markets
+python3 scripts/hyperlex.py simulate --mode risk --from-analyze --term "sharp money" --domain markets
 ```
 
 Domains: `general`, `markets`, `ai`, `politics` (notes only; score drivers are shared).
@@ -72,7 +72,7 @@ python3 scripts/hyperlex.py simulate --mode calibrate
 
 ```bash
 python3 scripts/hyperlex.py simulate --mode compare --list-scenarios
-python3 scripts/hyperlex.py simulate --mode compare --term "rizz locked in"
+python3 scripts/hyperlex.py simulate --mode compare --term "rizz"
 python3 scripts/hyperlex.py simulate --mode compare --scenario viral_cascade --term "rizz"
 ```
 
@@ -90,7 +90,7 @@ Hermes cron job envelopes. **Does not auto-register** cron jobs.
 ```bash
 python3 scripts/hyperlex.py risk-schedule --list-tiers
 python3 scripts/hyperlex.py risk-schedule --tier ELEVATED --schedule-out /tmp/hlx-cron
-python3 scripts/hyperlex.py simulate --mode schedule --term "rizz locked in" --domain ai
+python3 scripts/hyperlex.py simulate --mode schedule --term "rizz" --domain ai
 ```
 
 API: `plan_scan_from_risk`, `plan_scan_from_term`, `plan_scan_from_tier`,

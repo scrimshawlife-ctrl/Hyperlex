@@ -13,8 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_hash_embed_deterministic():
     from hyperlex.vectordb.embed import cosine, embed_hash
 
-    a = embed_hash("sigma rizz locked in")
-    b = embed_hash("sigma rizz locked in")
+    a = embed_hash("locked in")
+    b = embed_hash("locked in")
     c = embed_hash("quiet quitting bandwidth")
     assert a == b
     assert abs(sum(x * x for x in a) - 1.0) < 1e-5

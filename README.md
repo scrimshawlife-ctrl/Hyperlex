@@ -152,10 +152,11 @@ Optional: `pip install -e ".[dev]"` then `python -m hyperlex check`.
 
 ```bash
 # One-shot: ingest → analyze → receipt → forecasts → score log
-$HLX run "sharp steam revenge" --route offline
+$HLX run "rizz" --route offline
+$HLX run "locked in" --route offline
 
 # When network is allowed
-$HLX run "agentic slop skill issue" --route live
+$HLX run "agentic slop" --route live
 ```
 
 ### Ingest routes
@@ -218,7 +219,7 @@ $HLX vector-stats
 # One atom per run (do not blend independent terms into one seed)
 $HLX run "rizz" --route offline
 $HLX run "locked in" --route offline
-$HLX run "sharp steam revenge" --route offline
+$HLX run "sharp money" --route offline
 ```
 
 ### Local data
@@ -272,7 +273,7 @@ from hyperlex import (
 
 src, _ = pick_source(route="offline")
 result = detect_memetic_patterns(
-    query="sharp steam revenge",
+    query="rizz",
     ingest_source=src,
     ingest_route="offline",
 )

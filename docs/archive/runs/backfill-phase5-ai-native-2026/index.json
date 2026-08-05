@@ -1,36 +1,69 @@
 {
-  "created_at": "2026-08-05T20:36:36.991106+00:00",
+  "created_at": "2026-08-05T21:58:07.777631+00:00",
+  "multi_term": true,
   "n_ledger_rows": 0,
   "n_receipt_summaries": 0,
-  "notes": "Backfill-linked Phase 5: agentic slop skill issue",
+  "notes": "Per-term Phase 5: agentic slop | skill issue",
   "phase5": {
-    "agent_adoption_rate": 0.1,
+    "agent_adoption_rate": null,
     "brier": null,
-    "cascade_success": false,
-    "created_at": "2026-08-05T20:36:36.990671+00:00",
+    "cascade_success": null,
+    "created_at": "2026-08-05T21:58:07.632964+00:00",
     "domain": "ai",
-    "lineage_family": "ai-native",
-    "phylogeny_family": "ai-native",
-    "phylogeny_n_nodes": 11,
+    "lineage_family": null,
+    "multi_term": true,
+    "n_terms": 2,
+    "note": "Atomic multi-term run: each lexicon item simulated separately (e.g. sigma | rizz | locked in). top_risk_tier is max severity only.",
+    "original_seed": "agentic slop skill issue",
+    "per_term": [
+      {
+        "brier": null,
+        "cascade_success": false,
+        "lineage_family": null,
+        "risk_score": 0.331,
+        "risk_tier": "LOW",
+        "seed_term": "agentic slop",
+        "transmission_peak": 0.85
+      },
+      {
+        "brier": null,
+        "cascade_success": false,
+        "lineage_family": null,
+        "risk_score": 0.331,
+        "risk_tier": "LOW",
+        "seed_term": "skill issue",
+        "transmission_peak": 0.85
+      }
+    ],
+    "phylogeny_family": null,
+    "phylogeny_n_nodes": null,
     "provenance": "SPECULATIVE",
     "publish_safe": true,
-    "risk_score": 0.533,
-    "risk_tier": "MODERATE",
+    "risk_score": null,
+    "risk_tier": "LOW",
     "schema": "hyperlex.phase5_run_summary.v1",
-    "seed_term": "agentic slop skill issue",
-    "transmission_peak": 0.85,
-    "transmission_reach": 0.3333
+    "seed_term": null,
+    "terms": [
+      "agentic slop",
+      "skill issue"
+    ],
+    "transmission_peak": null,
+    "transmission_reach": null
   },
   "primary_store": "local ~/.hyperlex (not replaced by this archive)",
   "publish_safe": true,
   "purpose": "static_run_history",
-  "risk_tier": "MODERATE",
+  "risk_tier": "LOW",
   "run_kind": "phase5_scenario",
   "schema": "hyperlex.analysis_archive.v1",
-  "seed_term": "agentic slop skill issue",
+  "seed_term": null,
   "snapshot_id": "backfill-phase5-ai-native-2026",
   "stats": {
     "chain_ok": null,
     "families": {}
-  }
+  },
+  "terms": [
+    "agentic slop",
+    "skill issue"
+  ]
 }

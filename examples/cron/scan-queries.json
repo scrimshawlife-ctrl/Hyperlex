@@ -1,11 +1,20 @@
 {
   "schema": "hyperlex.scan_queries.v1",
-  "description": "Default query pack for LIVE_EMERGENCE_SCAN. Edit per deployment.",
+  "description": "Default LIVE_EMERGENCE_SCAN pack. One lexicon atom (or true multi-word phrase) per query — never bag independent terms.",
   "queries": [
-    "sharp money steam revenge",
-    "hodl diamond hands rekt degen",
-    "brainrot aura farming mid",
-    "agentic slop skill issue",
-    "based cope seethe"
+    "sharp money",
+    "steam",
+    "revenge",
+    "diamond hands",
+    "rizz",
+    "locked in",
+    "crash out",
+    "agentic slop",
+    "skill issue",
+    "vibe coding",
+    "based",
+    "quiet quitting",
+    "act your wage",
+    "touch grass"
   ]
 }

@@ -118,7 +118,7 @@ def test_cli_analyze_positional():
             sys.executable,
             str(ROOT / "scripts" / "hyperlex.py"),
             "analyze",
-            "rizz locked in",
+            "locked in",
             "--route",
             "offline",
         ],
@@ -129,5 +129,5 @@ def test_cli_analyze_positional():
     )
     assert r.returncode == 0, r.stderr + r.stdout
     data = json.loads(r.stdout)
-    assert data["query"] == "rizz locked in"
+    assert data["query"] == "locked in"
     assert data["source"] == "mock"

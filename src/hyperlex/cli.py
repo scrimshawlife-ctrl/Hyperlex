@@ -191,7 +191,7 @@ def cmd_scan(args: argparse.Namespace) -> int:
     if args.query:
         queries.insert(0, args.query)
     if not queries:
-        queries = ["sharp steam revenge", "brainrot aura mid"]
+        queries = ["sharp money", "rizz", "locked in", "agentic slop"]
     rows = []
     for q in queries:
         result = detect_memetic_patterns(query=q, ingest_source=args.source)

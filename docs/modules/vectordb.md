@@ -27,7 +27,8 @@ python3 scripts/hyperlex.py vector-seed --include-golden --through 2026-08
 python3 scripts/hyperlex.py vector-stats
 
 # Search
-python3 scripts/hyperlex.py vector-search "sigma rizz locked in" --kind term --top-k 8
+python3 scripts/hyperlex.py vector-search "rizz" --kind term --top-k 8
+python3 scripts/hyperlex.py vector-search "locked in" --kind term --top-k 8
 python3 scripts/hyperlex.py vector-search "agentic slop" --kind receipt
 ```
 
@@ -92,6 +93,6 @@ Disable: `HYPERLEX_VECTOR=0` or `match_lineage(..., use_vector=False)`.
 Hyperlex: seed vector DB. HYPERLEX_OFFLINE=1.
 vector-seed --include-golden --through 2026-08
 vector-stats
-vector-search "sigma rizz locked in" --kind term
+vector-search "rizz" --kind term
 Report n_total, by_kind, sample hits. Never invent Brier.
 ```

@@ -26,14 +26,15 @@ HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
 $HLX commands
 
 # One-shot: ingest route → analyze → receipt → forecasts → score log
-$HLX run "sharp steam revenge" --route offline
+$HLX run "rizz" --route offline
+$HLX run "locked in" --route offline
 
-# Multi-query cron shape (still offline-safe)
+# Multi-query cron shape (atomic pack; offline-safe)
 $HLX scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" \
   --route offline --receipt --forecasts --append-log
 
 # When network is allowed
-$HLX run "agentic slop skill issue" --route live
+$HLX run "agentic slop" --route live
 ```
 
 ### Ingest routing (prefer routes over adapter names)

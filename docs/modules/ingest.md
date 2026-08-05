@@ -6,7 +6,8 @@
 python3 scripts/hyperlex.py sources
 python3 scripts/hyperlex.py ingest "sharp steam" --route offline
 python3 scripts/hyperlex.py analyze "sharp steam" --route live
-python3 scripts/hyperlex.py run "rizz locked in" --route offline
+python3 scripts/hyperlex.py run "rizz" --route offline
+python3 scripts/hyperlex.py run "locked in" --route offline
 ```
 
 | Route | Canonical source | Network |

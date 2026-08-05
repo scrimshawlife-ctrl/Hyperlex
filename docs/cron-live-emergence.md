@@ -99,7 +99,7 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule \
 
 # From seed term (Phase 5 risk)
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" risk-schedule \
-  --term "agentic slop skill issue" --domain ai --schedule-out /tmp/hlx-cron
+  --term "agentic slop" --domain ai --schedule-out /tmp/hlx-cron
 
 # Equivalent simulate mode
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --mode schedule --tier CRITICAL

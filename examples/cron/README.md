@@ -6,7 +6,10 @@ Advisory job envelopes for Hermes cron. **Never auto-registered** — operator m
 |------|------|---------|--------|
 | `live-emergence-scan.job.json` | MODERATE (default) | every 6h | Baseline mock scan |
 | `risk-tier-elevated.job.json` | ELEVATED | every 2h | combined source + vector-seed + archive post-hooks |
-| `scan-queries.json` | — | — | Default query pack |
+| `scan-queries.json` | — | — | Atomic query pack (one term/phrase each) |
+
+Queries are **lexicon atoms** (or true multi-word phrases like `locked in`). Do not bag
+independent items into one string.
 
 ## Generate from risk
 
@@ -14,8 +17,8 @@ Advisory job envelopes for Hermes cron. **Never auto-registered** — operator m
 # Direct tier
 python3 scripts/hyperlex.py risk-schedule --tier CRITICAL --schedule-out /tmp/hlx-cron
 
-# From Phase 5 risk on a seed term
-python3 scripts/hyperlex.py risk-schedule --term "agentic slop skill issue" --domain ai --schedule-out /tmp/hlx-cron
+# From Phase 5 risk on a seed (multi-term bags expand to atomic scan queries)
+python3 scripts/hyperlex.py risk-schedule --term "agentic slop" --domain ai --schedule-out /tmp/hlx-cron
 
 # Same via simulate
 python3 scripts/hyperlex.py simulate --mode schedule --tier MODERATE --schedule-out /tmp/hlx-cron

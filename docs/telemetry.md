@@ -70,7 +70,8 @@ Open analysis never invents Brier. Phase 5 stays SPECULATIVE.
 
     ```bash
     python3 scripts/hyperlex.py vector-seed --include-golden --through 2026-08
-    python3 scripts/hyperlex.py vector-search "rizz locked in" --kind term
+    python3 scripts/hyperlex.py vector-search "rizz" --kind term
+    python3 scripts/hyperlex.py vector-search "locked in" --kind term
     ```
 
     [Vector DB docs](modules/vectordb.md)

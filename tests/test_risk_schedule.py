@@ -45,7 +45,9 @@ def test_plan_scan_from_term_and_write(tmp_path):
     plan = plan_scan_from_term("rizz locked in", domain="ai", use_phase5=True)
     assert plan["brier"] is None
     assert plan["tier"] in ("LOW", "MODERATE", "ELEVATED", "CRITICAL")
-    assert "rizz locked in" in plan["queries"] or plan["queries"]
+    # seed bag expands to atomic queries
+    qset = {str(q).lower() for q in (plan["queries"] or [])}
+    assert "rizz" in qset or "locked in" in qset or plan["queries"]
 
     written = write_scan_plan(plan, out_dir=tmp_path)
     assert written["ok"] is True
@@ -132,7 +134,7 @@ def test_cli_scan_includes_advisory():
             str(ROOT / "scripts" / "hyperlex.py"),
             "scan",
             "--queries",
-            "rizz locked in,sharp steam revenge,agentic slop",
+            "rizz,locked in,sharp money,agentic slop",
             "--source",
             "mock",
         ],

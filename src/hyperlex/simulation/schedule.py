@@ -69,16 +69,40 @@ TIER_POLICY: Dict[str, Dict[str, Any]] = {
     },
 }
 
+# Atomic lexicon items / true multi-word phrases only — never bag independent atoms.
 DEFAULT_QUERIES = [
-    "sharp money steam revenge",
-    "hodl diamond hands rekt degen",
-    "brainrot aura farming mid",
-    "agentic slop skill issue",
-    "based cope seethe",
-    "rizz locked in crash out",
-    "quiet quitting act your wage",
-    "skill issue touch grass ratio",
+    "sharp money",
+    "steam",
+    "revenge",
+    "diamond hands",
+    "rizz",
+    "locked in",
+    "crash out",
+    "agentic slop",
+    "skill issue",
+    "vibe coding",
+    "based",
+    "quiet quitting",
+    "act your wage",
+    "touch grass",
 ]
+
+
+def _atomic_queries(text: Optional[str]) -> List[str]:
+    """Expand free text into scan queries (one atom each)."""
+    if not text:
+        return []
+    try:
+        from hyperlex.analysis.terms import split_seed_terms
+
+        split = split_seed_terms(str(text))
+        terms = [str(t).strip() for t in (split.get("terms") or []) if str(t).strip()]
+        if terms:
+            return terms
+    except Exception:
+        pass
+    s = str(text).strip()
+    return [s] if s else []
 
 
 def policy_for_tier(tier: str) -> Dict[str, Any]:
@@ -96,14 +120,27 @@ def plan_scan_from_risk(
     """Build an advisory scan plan from a hyperstition risk packet."""
     tier = str(risk.get("tier") or "MODERATE").upper()
     policy = policy_for_tier(tier)
-    q = [str(x).strip() for x in (queries or DEFAULT_QUERIES) if str(x).strip()]
+    # Expand any bag queries into atomic lexicon items
+    raw_q = list(queries) if queries is not None else list(DEFAULT_QUERIES)
+    expanded: List[str] = []
+    seen_q: set = set()
+    for item in raw_q:
+        for atom in _atomic_queries(str(item)):
+            key = atom.lower()
+            if key not in seen_q:
+                seen_q.add(key)
+                expanded.append(atom)
+    if not expanded:
+        expanded = list(DEFAULT_QUERIES)
+
     max_q = int(policy.get("max_queries") or 5)
-    selected = q[:max_q]
-    # Prefer risk seed term first if provided
+    selected = expanded[:max_q]
+    # Prefer risk seed atoms first (split multi-term bags)
     st = seed_term or risk.get("seed_term")
-    if st and st not in selected:
-        selected = [str(st)] + selected
-        selected = selected[:max_q]
+    seed_atoms = _atomic_queries(str(st) if st else "")
+    if seed_atoms:
+        head = [a for a in seed_atoms if a.lower() not in {x.lower() for x in selected}]
+        selected = (head + selected)[:max_q]
 
     name = job_name or f"hyperlex-scan-{tier.lower()}"
     cron = policy["cron"]

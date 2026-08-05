@@ -11,9 +11,10 @@ HLX="python3 ${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}/scripts/hyperlex
 
 | Command | Purpose |
 |---------|---------|
-| `run "<query>"` | One-shot: analyze + receipt + forecasts + append score log |
-| `run "<query>" --route offline` | Safe burn-in (default route for `run`) |
-| `run "<query>" --route live` | Network multi-source when allowed |
+| `run "<atom>"` | One-shot per lexicon atom (prefer `rizz`, not bag strings) |
+| `run "<atom>" --route offline` | Safe burn-in (default route for `run`) |
+| `run "<atom>" --route live` | Network multi-source when allowed |
+| `terms-split "…"` | Preview multi-term expansion |
 | `scan --route offline --receipt --forecasts --append-log` | Multi-query LIVE_EMERGENCE_SCAN |
 | `risk-schedule --tier MODERATE --schedule-out DIR` | Advisory Hermes cron envelope |
 

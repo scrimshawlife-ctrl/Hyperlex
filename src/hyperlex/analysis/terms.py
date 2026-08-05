@@ -20,6 +20,7 @@ DEFAULT_EXTRA_PHRASES: Sequence[str] = (
     "crash out",
     "touch grass",
     "skill issue",
+    "agentic slop",
     "quiet quitting",
     "act your wage",
     "diamond hands",
@@ -31,6 +32,7 @@ DEFAULT_EXTRA_PHRASES: Sequence[str] = (
     "return to office",
     "let him cook",
     "no cap",
+    "main character",
 )
 
 

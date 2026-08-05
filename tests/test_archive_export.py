@@ -48,7 +48,7 @@ def test_export_archive_bundle(tmp_path: Path) -> None:
 def test_export_run_history_catalog(tmp_path: Path) -> None:
     rec_dir = tmp_path / "receipts"
     ledger = tmp_path / "ledger.jsonl"
-    for q in ("sharp steam", "rizz locked in"):
+    for q in ("sharp money", "rizz", "locked in"):
         result = detect_memetic_patterns(query=q, ingest_source="mock")
         emit_receipt(result, out_dir=rec_dir, append_ledger=True, ledger_path=ledger)
     root = tmp_path / "docs_archive"
