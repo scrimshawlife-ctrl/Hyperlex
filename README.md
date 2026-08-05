@@ -1,57 +1,64 @@
 # Hyperlex
 
-**Hyperlex** (Hyper + Lexicon) is a standalone, evidence-bound engine for **slang emergence**, **memetic pattern detection**, **hyperstition tracking**, and **symbolic forecasting**.
+**Hyperlex** — Memetic Emergence Engine
 
-It analyzes real cultural signals (especially betting/community slang) to surface neologisms, virality, semantic shifts, memetic structures, and hyperstition loops (fictions that become self-fulfilling).
+<p align="center">
+  <strong>Standalone, real-data, provenance-first engine for slang, hyperstition, and symbolic signal analysis</strong>
+</p>
 
-This repository contains the **official design specifications, roadmaps, architecture, and reference material** for Hyperlex. The implementation lives separately (see the Hyperlex engine package).
+Version **1.5.0** · Skill name: `hyperlex` · Python ≥ 3.10 · License: MIT
 
-## Core Philosophy
-- **Pure real-data only** (no synthetic)
-- Strict, provenance-rich JSON output
-- Modular, arXiv-grounded analysis
-- Decoupled & installable as a Python package (`pip install -e .`)
-- Designed for integration with Hermes/Abraxas symbolic systems, market signals, and forecasting pipelines
+---
 
-## Quick Links
-- **Roadmap**: [ROADMAP.md](./ROADMAP.md)
-- **Architecture**: [ARCHITECTURE.md](./ARCHITECTURE.md)
-- **Design Principles**: [DESIGN.md](./DESIGN.md)
-- **Technical Specification**: [SPEC.md](./SPEC.md)
-- **Examples**: [examples/](./examples/)
-- **References**: [references/](./references/)
+## What this is (plain English)
 
-## Key Capabilities (v1.5+)
-- Wired real ingest (glossary + Reddit + X/firecrawl stubs)
-- Neologism detection pipeline
-- Semantic variation tracing
-- Hybrid virality scoring (velocity + acceleration)
-- Memetics protocol checks
-- Hyperstition loop simulation
-- External signal integration (`virality_boost`, `hyperstition_risk`, `confidence`, `actionable`)
-- Canonical receipt emission with integrity hashes
-- Brier 0.89 baseline + full provenance
+**Hyperlex** detects emerging slang and memetic patterns in real cultural signals. It tracks virality and hyperstition loops (fictions that become self-realizing) and outputs strict, auditable JSON receipts.
 
-## Core API (Implementation Reference)
-```python
-import hyperlex
+It is designed to work as a **signal forager** inside Abraxas-Orchestra and Hermes symbolic systems.
 
-# Real wired analysis
-result = hyperlex.detect_memetic_patterns(
-    query="sharp money revenge narrative",
-    ingest_source="real"
-)
+It does three things:
+1. **Ingest** real signals (glossaries, Reddit, X stubs)
+2. **Analyze** using arXiv-grounded modules + symbolic correspondences
+3. **Emit** canonical receipts with integrity and provenance
 
-# Feed into downstream pipelines
-signal = hyperlex.mock_integrate_with_external_signal(result)
+It is **not** a general LLM wrapper. It is evidence-bound and can be orchestrated with traditional symbolic maps (Numogram, Chaos Magic, Enochian transmission).
 
-# Emit strict receipt
-path = hyperlex.emit_receipt(result)
-print(path)
+## How to use (current implementation)
+
+See the package at `~/hyperlex` or the Hyperlex engine repo.
+
+```bash
+python -m hyperlex
 ```
 
-## License
-See [LICENSE](./LICENSE).
+Produces full analysis + receipt.
+
+## Design Surface
+
+This repository is the **authoritative specs and design surface**, modeled directly on the structure and rigor of [Abraxas-Orchestra-Hermes](https://github.com/scrimshawlife-ctrl/Abraxas-Orchestra-Hermes).
+
+- [SKILL.md](./SKILL.md) — Hermes/OpenClaw skill contract
+- [ROADMAP.md](./ROADMAP.md) — Phased plan
+- [ARCHITECTURE.md](./ARCHITECTURE.md)
+- [DESIGN.md](./DESIGN.md) — Principles + symbolic mapping
+- [SPEC.md](./SPEC.md) — Exact interfaces and schemas
+- `docs/` — Release notes, security, semver, etc.
+- `references/` — Chaos magic, Numogram, agent posture, arXiv
+- `examples/` — Memetic forager skeleton (Orchestra style)
+- `schemas/` — JSON schemas for receipts
+
+## Integration with Abraxas-Orchestra
+
+Hyperlex is intended to be used as a first-class "signal-forager" component.
+
+Future: Use Orchestra to give Hyperlex modules dual mechanical + symbolic names and diagrams.
+
+See `references/` and `examples/memetic-forager-skeleton/`.
 
 ## Contributing
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) and the Orchestra model of spec-first development.
+
+## License
+
+MIT (see LICENSE).
