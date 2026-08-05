@@ -4,8 +4,9 @@
 
 Hyperlex is a **Hermes skill** implemented as a **Python package repository**.
 Once installed, the skill tree is self-contained: analysis, receipts, forecasts,
-settlement, Brier scoring, score logs, diagrams, and HLX rune envelopes all run
-from the skill directory without Abraxas.
+settlement, Brier scoring, score logs, diagrams, HLX rune envelopes, YTD lineage
+backfill/backprop, and Phase 5 research simulation all run from the skill
+directory without Abraxas.
 
 Abraxas (or any other host) is an **optional consumer**. Relevant Abraxas wire
 shapes are pure Hyperlex modules under `hyperlex.compat.abraxas` — Hyperlex never
@@ -32,6 +33,8 @@ bash install.sh
 # → ~/.hermes/skills/hyperlex
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scenario
 ```
 
 ## Run modes
@@ -54,6 +57,15 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
 | Rune envelopes | `compat.abraxas.runes` + `relay` | `hyperlex.rune_envelope.v1` |
 
 **Not imported:** Abraxas runtime, YGGDRASIL, live Alembic runes, MCP, production execution.
+
+## Phase 5 (research)
+
+```bash
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --mode scenario --term "locked in" --domain ai
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --from-analyze --term "sharp steam" --domain markets
+```
+
+See [phase5.md](phase5.md). Simulation never invents Brier.
 
 ## Fail-closed rules (skill-wide)
 

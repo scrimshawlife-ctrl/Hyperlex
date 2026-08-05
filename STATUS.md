@@ -1,14 +1,16 @@
 # Hyperlex Skill Status
 
-**Version:** 0.2.12  
+**Version:** 0.3.0  
 **Posture:** Hermes skill (Python package repo)  
-**Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`
+**Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
+**Track:** Phases 0–4 complete · **Phase 5.0 research simulation** active
 
 ## Health
 
 ```bash
 python3 scripts/hyperlex.py doctor
 python3 scripts/release_preflight.py
+python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 ```
 
 ## Surface (ready)
@@ -28,8 +30,12 @@ python3 scripts/release_preflight.py
 | Diagrams from history | Ready |
 | Case study runner | Ready |
 | MkDocs + Pages (enabled) | Ready |
-| Long-term analysis archive | Ready (`archive-export` → docs/archive) |
+| Long-term analysis archive | Ready |
 | Governed LLM (echo / openai_compatible) | Opt-in |
+| **Phase 5 cultural transmission** | Ready |
+| **Phase 5 multi-agent memetics** | Ready |
+| **Phase 5 hyperstition risk** | Ready |
+| **Phase 5 phylogeny scaffold** | Ready |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
@@ -40,8 +46,8 @@ analyze --receipt --forecasts --append-log
   → relay / signal / diagram
   → settle (operator)
   → score-series / feedback
-  → ledger-stats
   → lineage-backfill --list / lineage-backprop --from-golden
+  → simulate --from-analyze --domain markets|ai|politics   # Phase 5
 ```
 
 ## Data dirs
@@ -54,6 +60,7 @@ analyze --receipt --forecasts --append-log
 data/backfill/2026/          # curated YTD term packs (repo)
 ```
 
-## Not in scope (Phase 5+)
+## Phase 5.1+ (next)
 
-Multi-agent simulation, cultural transmission engines, full phylogenies.
+Domain phylogeny libraries, sim parameter calibration against settled series,
+comparative multi-agent runs over archive snapshots, research export templates.

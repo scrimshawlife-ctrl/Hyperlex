@@ -159,6 +159,65 @@ def cmd_scan(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_simulate(args: argparse.Namespace) -> int:
+    from hyperlex.simulation import (
+        build_family_phylogeny,
+        forecast_hyperstition_risk,
+        run_multi_agent_memetics,
+        run_phase5_scenario,
+        simulate_cultural_transmission,
+    )
+    from hyperlex import detect_memetic_patterns
+
+    term = (args.term or args.query or "slang signal").strip()
+    mode = (args.mode or "scenario").lower()
+    analysis = None
+    family = args.family or None
+    if args.from_analyze:
+        analysis = detect_memetic_patterns(query=term, ingest_source=args.source or "mock")
+        lin = (analysis.get("analysis") or {}).get("lineage") or {}
+        family = family or lin.get("family_id")
+
+    if mode == "transmission":
+        out = simulate_cultural_transmission(
+            term, n_communities=int(args.communities), steps=int(args.steps),
+            lineage_family=family, virality_hybrid=float(args.virality),
+        )
+    elif mode == "agents":
+        out = run_multi_agent_memetics(
+            term, n_agents=int(args.agents), steps=int(args.steps),
+            lineage_family=family, memetic_score=float(args.memetic),
+        )
+    elif mode == "risk":
+        out = forecast_hyperstition_risk(
+            hyperstition_stage=args.stage or None,
+            virality_hybrid=float(args.virality),
+            memetic_score=float(args.memetic),
+            domain=args.domain or "general",
+            seed_term=term,
+            lineage_family=family,
+        )
+    elif mode == "phylogeny":
+        out = build_family_phylogeny(family or "brainrot-aura")
+    else:
+        out = run_phase5_scenario(
+            term,
+            lineage_family=family,
+            virality_hybrid=float(args.virality),
+            memetic_score=float(args.memetic),
+            hyperstition_stage=args.stage or None,
+            domain=args.domain or "general",
+            analysis_result=analysis,
+            n_communities=int(args.communities),
+            transmission_steps=int(args.steps),
+            n_agents=int(args.agents),
+        )
+    if args.out:
+        Path(args.out).write_text(json.dumps(out, indent=2, sort_keys=True), encoding="utf-8")
+    _emit({"ok": True, "command": "simulate", "mode": mode, "scenario": out, "written": args.out or None})
+    return 0
+
+
 def cmd_lineage_backfill(args: argparse.Namespace) -> int:
     from hyperlex.analysis.backfill import apply_backfill, inventory_backfill
 
@@ -254,6 +313,23 @@ def build_parser() -> argparse.ArgumentParser:
     sc.add_argument("--receipt", action="store_true")
     sc.add_argument("--forecasts", action="store_true")
     sc.set_defaults(func=cmd_scan)
+
+    sim = sub.add_parser("simulate", help="Phase 5 simulation / risk")
+    sim.add_argument("--term", default="")
+    sim.add_argument("--query", default="")
+    sim.add_argument("--mode", default="scenario")
+    sim.add_argument("--family", default="")
+    sim.add_argument("--domain", default="general")
+    sim.add_argument("--stage", default="")
+    sim.add_argument("--virality", type=float, default=0.5)
+    sim.add_argument("--memetic", type=float, default=0.5)
+    sim.add_argument("--communities", type=int, default=6)
+    sim.add_argument("--agents", type=int, default=20)
+    sim.add_argument("--steps", type=int, default=12)
+    sim.add_argument("--from-analyze", action="store_true")
+    sim.add_argument("--source", default="mock")
+    sim.add_argument("--out", default="")
+    sim.set_defaults(func=cmd_simulate)
 
     lbf = sub.add_parser("lineage-backfill", help="YTD slang backfill packs")
     lbf.add_argument("--year", type=int, default=2026)

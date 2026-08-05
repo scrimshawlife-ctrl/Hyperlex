@@ -1,7 +1,10 @@
-# Hyperlex Public API v1 (frozen for 0.2.x)
+# Hyperlex Public API v1 (frozen)
 
 Hyperlex is a **Hermes skill** implemented as a Python package. No Abraxas, Orchestra, or Hollersports
 import is required at runtime.
+
+`API_V1` remains frozen through **0.3.x**. Phase 5 simulation symbols are **additive** on
+`API_EXTENDED` only.
 
 ## Package entry
 
@@ -26,8 +29,9 @@ from hyperlex import (
 )
 ```
 
-`hyperlex.API_V1` is the frozen symbol tuple. Semver **0.2.x** will not remove or
-rename these symbols. New symbols may be added; breaking changes wait for 0.3+.
+`hyperlex.API_V1` is the frozen symbol tuple. Semver **0.2.x / 0.3.x** will not remove or
+rename these symbols. New symbols may be added on `API_EXTENDED`; breaking changes wait for 1.0
+or an explicit deprecation window.
 
 ## Stable call contracts
 
@@ -58,7 +62,23 @@ python -m hyperlex <command>
 
 Core commands: `check`, `sources`, `ingest`, `analyze`, `scan`, `relay`,
 `extract-forecasts`, `settle`, `score-series`, `emit-receipt`, `list-receipts`,
-`verify-receipt`, `verify-receipt-ledger`, `verify-score-log`, `smoke`.
+`verify-receipt`, `verify-receipt-ledger`, `verify-score-log`, `smoke`,
+`lineage-backfill`, `lineage-backprop`, `simulate` (Phase 5), `archive-export`, `diagram`.
+
+### Phase 5 extended API (0.3.0+)
+
+```python
+from hyperlex import (
+    simulate_cultural_transmission,
+    run_multi_agent_memetics,
+    forecast_hyperstition_risk,
+    risk_from_analysis,
+    build_family_phylogeny,
+    run_phase5_scenario,
+)
+```
+
+All return packets with `brier: null` and research provenance — never settled scores.
 
 ## Abraxas-compatible modules (optional host import)
 

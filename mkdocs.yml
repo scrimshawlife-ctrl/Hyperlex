@@ -44,6 +44,9 @@ nav:
       - Virality: modules/virality.md
       - Ingest: modules/ingest.md
       - LLM (governed): modules/llm.md
+  - Phase 5:
+      - Overview: phase5.md
+      - Simulation modules: modules/simulation.md
   - Ops:
       - Cron scan: cron-live-emergence.md
       - Diagrams: diagrams.md
@@ -62,4 +65,4 @@ exclude_docs: |
   README.md
 
 extra:
-  version: 0.2.12
+  version: 0.3.0

@@ -66,3 +66,12 @@ Slang is documented and analyzed as historical families with emergent branches r
 
 ## 12. Brier Requires Settlement
 A Brier score is never emitted from an open analysis run. Analysis may emit forecast probabilities (via `extract_forecasts`). Only after a settlement records an outcome may `score_pair` / `score_series` compute atomic BS, series BS, BSS, Murphy, and Yates decompositions. Missing outcomes yield `NOT_COMPUTABLE`, never a fabricated float. See `docs/brier-calibration.md`.
+
+## 13. Phase 5 Simulation Is Speculative Research
+Cultural transmission, multi-agent memetics, hyperstition risk, and phylogeny scaffolds are **research tooling**. They:
+- always label `provenance: SPECULATIVE` (or INFERRED for structural phylogeny)
+- never emit numeric Brier (`brier: null`)
+- never rewrite historical receipt integrity
+- never auto-settle forecasts
+
+Risk tiers inform operator diligence (scan frequency, archive, settlement criteria) — not automated market action. See `docs/phase5.md`.

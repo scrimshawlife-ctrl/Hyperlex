@@ -7,8 +7,9 @@
 **Hermes skill** (Python package repo) for memetic emergence — slang, lineage, hyperstition, virality,
 receipts, settled Brier calibration, and HLX rune relay.
 
-Version **0.2.12** · Skill: `hyperlex` · Python ≥ 3.10 · License: MIT  
-**Not** an Abraxas dependency. Relevant Abraxas wire shapes ship as Hyperlex modules.
+Version **0.3.0** · Skill: `hyperlex` · Python ≥ 3.10 · License: MIT  
+**Not** an Abraxas dependency. Relevant Abraxas wire shapes ship as Hyperlex modules.  
+Phases **0–4** complete · **Phase 5.0** research simulation track.
 
 ## What it does
 
@@ -18,6 +19,7 @@ Version **0.2.12** · Skill: `hyperlex` · Python ≥ 3.10 · License: MIT
 4. Extract **forecasts** (probabilities only — never fake Brier)
 5. **Settle** outcomes → score log → Murphy/Yates/Vieira series diagnostics
 6. Emit **RUNE.HLX.*** envelopes and generic market/forecast connector packets
+7. **Phase 5:** cultural transmission, multi-agent memetics, hyperstition risk, phylogeny scaffold
 
 ## Install (Hermes skill)
 
@@ -27,6 +29,7 @@ export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scenario
 ```
 
 Local package (optional):

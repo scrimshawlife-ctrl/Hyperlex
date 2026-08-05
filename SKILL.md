@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.2.12
+version: 0.3.0
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
@@ -72,6 +72,7 @@ export HERMES_SKILL_DIR="${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}"
 - Detect slang / neologisms and score virality, memetics, hyperstition
 - Match slang into historical **lineage families** with transparent confidence
 - **Backfill** YTD slang packs and **backpropagate** lineage onto historical receipts (non-mutating)
+- **Phase 5 simulate** cultural transmission, multi-agent memetics, hyperstition risk, phylogeny scaffold
 - Emit integrity-hashed **receipts** for auditable runs
 - Extract **forecasts** from analysis (probabilities only — no fake Brier)
 - **Settle** forecasts as an operator and recompute Brier series from the score log
@@ -127,6 +128,8 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" feedback --signal-key hyperstiti
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" diagram --from-golden --out-dir out/diagrams
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" lineage-backfill --list --through 2026-08
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" lineage-backprop --from-golden --out out/backprop/report.json
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --term rizz --mode scenario --domain ai
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" simulate --from-analyze --term "sharp steam revenge" --domain markets
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" --source mock --receipt --forecasts
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
 ```
@@ -190,6 +193,7 @@ Hyperlex **may not**:
 - auto-settle without authority marker
 - promote speculative hyperstition stages as hard truth
 - rewrite historical receipt integrity during lineage backprop (report only)
+- invent Brier from Phase 5 simulation (always `brier: null`, SPECULATIVE)
 - mutate Abraxas or other systems (export is optional and offline)
 
 ## Pitfalls
@@ -225,8 +229,10 @@ Successful packaging:
 - `DESIGN.md` — principles (incl. 11 lineage, 12 Brier requires settlement)
 - `docs/brier-calibration.md` — forecast → settlement → score
 - `docs/slang-lineages.md` — family methodology
+- `docs/phase5.md` / `docs/modules/simulation.md` — Phase 5 research simulation
 - `schemas/` — ingest, result, receipt, forecast, settlement, brier_series, lineage
 - `examples/slang-families/` — Mermaid + HTML family diagrams
+- `data/backfill/2026/` — YTD slang packs
 - `references/hermes-runtime-contract.md` — path / authority policy
 
 ## Security

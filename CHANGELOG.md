@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 — Phase 5.0 research simulation track (2026-08-05)
+
+- **Phase 5.0** package `hyperlex.simulation`:
+  - cultural transmission cascade (`simulate_cultural_transmission`)
+  - multi-agent memetic roles (`run_multi_agent_memetics`)
+  - hyperstition risk forecast (`forecast_hyperstition_risk`, `risk_from_analysis`)
+  - phylogeny scaffold (`build_family_phylogeny`)
+  - composed scenario (`run_phase5_scenario`)
+- CLI: `simulate` (`--mode scenario|transmission|agents|risk|phylogeny`, `--from-analyze`)
+- Docs: `docs/phase5.md`, `docs/modules/simulation.md`; ROADMAP/STATUS/SPEC/README refresh
+- All Phase 5 outputs **SPECULATIVE**; `brier` always null; no receipt mutation
+- API: symbols on `API_EXTENDED` (frozen `API_V1` unchanged)
+
 ## 0.2.12 — YTD 2026 slang backfill + lineage backpropagation (2026-08-05)
 
 - Curated monthly packs: `data/backfill/2026/` (Jan–Aug) with OBSERVED/INFERRED terms.

@@ -157,6 +157,12 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
         "src/hyperlex/connectors/market_signal.py",
         "src/hyperlex/diagrams/from_receipts.py",
         "src/hyperlex/llm/governed.py",
+        "src/hyperlex/simulation/__init__.py",
+        "src/hyperlex/analysis/backfill.py",
+        "src/hyperlex/analysis/backprop.py",
+        "data/backfill/2026/README.md",
+        "docs/phase5.md",
+        "docs/modules/simulation.md",
         "schemas/forecast.v1.schema.json",
         "schemas/settlement.v1.schema.json",
         "schemas/brier_series.v1.schema.json",
@@ -245,6 +251,30 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
             )
         except Exception as exc:
             checks.append(_check(False, "llm_module", "", str(exc)))
+        try:
+            from hyperlex.simulation import run_phase5_scenario
+
+            sc = run_phase5_scenario("rizz", domain="ai", include_phylogeny=True)
+            checks.append(
+                _check(
+                    sc.get("brier") is None and sc.get("schema") == "hyperlex.phase5_scenario.v1",
+                    "phase5_simulate",
+                    f"phase5 ok tier={((sc.get('hyperstition_risk') or {}).get('tier'))}",
+                    "phase5 scenario failed or invented brier",
+                )
+            )
+        except Exception as exc:
+            checks.append(_check(False, "phase5_simulate", "", f"phase5 failed: {exc}"))
+
+    packs = list((ROOT / "data" / "backfill" / "2026").glob("2026-*.json")) if (ROOT / "data" / "backfill" / "2026").is_dir() else []
+    checks.append(
+        _check(
+            len(packs) >= 8,
+            "backfill_packs",
+            f"YTD packs: {len(packs)}",
+            f"YTD packs thin: {len(packs)}",
+        )
+    )
 
     home_hx = Path.home() / ".hyperlex"
     checks.append(
@@ -775,6 +805,119 @@ def cmd_lineage_backfill(args: argparse.Namespace) -> int:
         Path(args.out).write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
         report["written"] = args.out
     _emit({"ok": True, "command": "lineage-backfill", "mode": "apply", **report})
+    return 0
+
+
+def cmd_simulate(args: argparse.Namespace) -> int:
+    """Phase 5: cultural transmission / multi-agent / risk / full scenario."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.simulation import (
+        build_family_phylogeny,
+        forecast_hyperstition_risk,
+        run_multi_agent_memetics,
+        run_phase5_scenario,
+        simulate_cultural_transmission,
+    )
+
+    term = (args.term or args.query or "slang signal").strip()
+    domain = args.domain or "general"
+    mode = (args.mode or "scenario").lower()
+
+    analysis = None
+    if args.from_analyze:
+        analysis = pkg.detect_memetic_patterns(
+            query=term,
+            ingest_source=args.source or "mock",
+        )
+        lin = (analysis.get("analysis") or {}).get("lineage") or {}
+        if not args.family and lin.get("family_id"):
+            args.family = lin.get("family_id")
+
+    if mode == "transmission":
+        out = simulate_cultural_transmission(
+            term,
+            n_communities=int(args.communities),
+            steps=int(args.steps),
+            lineage_family=args.family or None,
+            virality_hybrid=float(args.virality),
+        )
+    elif mode == "agents":
+        out = run_multi_agent_memetics(
+            term,
+            n_agents=int(args.agents),
+            steps=int(args.steps),
+            lineage_family=args.family or None,
+            memetic_score=float(args.memetic),
+        )
+    elif mode == "risk":
+        if analysis:
+            from hyperlex.simulation import risk_from_analysis
+
+            out = risk_from_analysis(analysis, domain=domain)
+        else:
+            out = forecast_hyperstition_risk(
+                hyperstition_stage=args.stage or None,
+                virality_hybrid=float(args.virality),
+                memetic_score=float(args.memetic),
+                domain=domain,
+                seed_term=term,
+                lineage_family=args.family or None,
+            )
+    elif mode == "phylogeny":
+        fam = args.family or "brainrot-aura"
+        out = build_family_phylogeny(fam)
+    else:
+        out = run_phase5_scenario(
+            term,
+            lineage_family=args.family or None,
+            virality_hybrid=float(args.virality),
+            memetic_score=float(args.memetic),
+            hyperstition_stage=args.stage or None,
+            domain=domain,
+            analysis_result=analysis,
+            n_communities=int(args.communities),
+            transmission_steps=int(args.steps),
+            n_agents=int(args.agents),
+            include_phylogeny=not bool(args.no_phylogeny),
+        )
+
+    payload = {"ok": True, "command": "simulate", "mode": mode, "scenario": out}
+    # assert never invents brier
+    if out.get("brier") is not None:
+        payload["ok"] = False
+        payload["error"] = "simulation must keep brier null"
+        _emit(payload)
+        return 2
+    if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(json.dumps(out, indent=2, sort_keys=True), encoding="utf-8")
+        payload["written"] = args.out
+    if not args.verbose and mode == "scenario":
+        # compact CLI: drop full agent list / long trajectory tails
+        sc = dict(out)
+        if isinstance(sc.get("transmission"), dict):
+            t = dict(sc["transmission"])
+            traj = t.get("trajectory") or []
+            t["trajectory"] = traj[:2] + ([{"_omitted_middle": len(traj) - 4}] if len(traj) > 4 else []) + traj[-2:]
+            sc["transmission"] = t
+        if isinstance(sc.get("multi_agent"), dict):
+            m = dict(sc["multi_agent"])
+            m.pop("agents", None)
+            m["agents_omitted"] = True
+            sc["multi_agent"] = m
+        if isinstance(sc.get("phylogeny"), dict):
+            p = dict(sc["phylogeny"])
+            p.pop("nodes", None)
+            p.pop("edges", None)
+            p["graph_omitted"] = True
+            sc["phylogeny"] = p
+        payload["scenario"] = sc
+        payload["hint"] = "pass --verbose for full trajectories; --out always writes full JSON"
+    _emit(payload)
     return 0
 
 
@@ -1351,6 +1494,32 @@ def _build_parser() -> argparse.ArgumentParser:
     lbf.add_argument("--verbose", action="store_true", default=False, help="Include full term list / registry")
     lbf.add_argument("--out", default="", help="Write apply report JSON")
     lbf.set_defaults(func=cmd_lineage_backfill)
+
+    sim_parser = subparsers.add_parser(
+        "simulate",
+        help="Phase 5: cultural transmission / multi-agent / hyperstition risk / phylogeny",
+    )
+    sim_parser.add_argument("--term", default="", help="Seed term / phrase")
+    sim_parser.add_argument("--query", default="", help="Alias for --term")
+    sim_parser.add_argument(
+        "--mode",
+        default="scenario",
+        choices=["scenario", "transmission", "agents", "risk", "phylogeny"],
+    )
+    sim_parser.add_argument("--family", default="", help="lineage family_id")
+    sim_parser.add_argument("--domain", default="general", help="markets|ai|politics|general")
+    sim_parser.add_argument("--stage", default="", help="EMERGENT|ACTUALIZING for risk mode")
+    sim_parser.add_argument("--virality", type=float, default=0.5)
+    sim_parser.add_argument("--memetic", type=float, default=0.5)
+    sim_parser.add_argument("--communities", type=int, default=6)
+    sim_parser.add_argument("--agents", type=int, default=20)
+    sim_parser.add_argument("--steps", type=int, default=12)
+    sim_parser.add_argument("--from-analyze", action="store_true", default=False, help="Seed from mock analyze")
+    sim_parser.add_argument("--source", default="mock")
+    sim_parser.add_argument("--no-phylogeny", action="store_true", default=False)
+    sim_parser.add_argument("--verbose", action="store_true", default=False)
+    sim_parser.add_argument("--out", default="")
+    sim_parser.set_defaults(func=cmd_simulate)
 
     lbp = subparsers.add_parser(
         "lineage-backprop",

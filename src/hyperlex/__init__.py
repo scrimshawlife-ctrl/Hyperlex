@@ -70,6 +70,7 @@ from .calibration import (
 from . import connectors
 from . import diagrams
 from . import archive
+from . import simulation
 from .diagrams import (
     diagram_from_ledger,
     diagram_from_receipt_files,
@@ -80,6 +81,15 @@ from .connectors import (
     build_market_signal,
     build_forecast_pipeline,
     hyperstition_feedback_from_series,
+)
+from .simulation import (
+    simulate_cultural_transmission,
+    run_multi_agent_memetics,
+    forecast_hyperstition_risk,
+    risk_from_analysis,
+    build_family_phylogeny,
+    list_phylogeny_families,
+    run_phase5_scenario,
 )
 
 # Stable public API (v0.2 freeze) — see docs/api-v1.md
@@ -120,6 +130,13 @@ API_EXTENDED = (
     "inventory_backfill",
     "list_backfill_packs",
     "backpropagate_lineage",
+    "simulate_cultural_transmission",
+    "run_multi_agent_memetics",
+    "forecast_hyperstition_risk",
+    "risk_from_analysis",
+    "build_family_phylogeny",
+    "list_phylogeny_families",
+    "run_phase5_scenario",
 )
 
 __all__ = [
@@ -154,6 +171,14 @@ __all__ = [
     "inventory_backfill",
     "list_backfill_packs",
     "backpropagate_lineage",
+    "simulate_cultural_transmission",
+    "run_multi_agent_memetics",
+    "forecast_hyperstition_risk",
+    "risk_from_analysis",
+    "build_family_phylogeny",
+    "list_phylogeny_families",
+    "run_phase5_scenario",
+    "simulation",
     "API_EXTENDED",
 ]
 

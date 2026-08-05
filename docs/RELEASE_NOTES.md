@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.3.0
+- Phase 5.0: cultural transmission, multi-agent memetics, hyperstition risk, phylogeny scaffold, CLI `simulate`.
+
 ## 0.2.12
 - YTD 2026 slang backfill packs + non-mutating lineage backpropagation.
 
