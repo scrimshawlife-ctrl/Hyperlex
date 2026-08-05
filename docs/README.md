@@ -4,6 +4,7 @@ This folder contains detailed design documents.
 
 - [Modules / Ingest](./modules/ingest.md)
 - [Slang Lineages & Emergent Branches](./slang-lineages.md)
+- [Brier & Calibration](./brier-calibration.md)
 - [References / arXiv](../references/arxiv_papers.md)
 
 See root files for the main specs:
