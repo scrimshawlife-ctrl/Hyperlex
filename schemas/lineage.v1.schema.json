@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/lineage.v1.schema.json",
   "title": "Hyperlex Lineage Attachment v1",
-  "description": "Optional lineage metadata attached to analysis results. Documents which historical slang family a signal belongs to and how the current terms relate to it.",
+  "description": "Optional lineage metadata attached to analysis results. Documents which historical slang family a signal belongs to and how the current terms relate to it. Confidence is produced by compute_lineage_confidence (specificity + coverage + hit_bonus + density).",
   "type": "object",
   "required": ["family_id", "matched_terms", "confidence"],
   "properties": {
@@ -35,7 +35,7 @@
       "type": "number",
       "minimum": 0.0,
       "maximum": 1.0,
-      "description": "Matcher confidence that the signal belongs to this family"
+      "description": "Matcher confidence that the signal belongs to this family (0–0.98). Produced by compute_lineage_confidence."
     },
     "diagram_ref": {
       "type": "string",
@@ -49,6 +49,23 @@
       "type": "string",
       "enum": ["OBSERVED", "INFERRED", "SPECULATIVE"],
       "default": "INFERRED"
+    },
+    "score_breakdown": {
+      "type": "object",
+      "description": "Transparent components of the confidence score for auditability",
+      "properties": {
+        "n_hits": { "type": "integer", "minimum": 0 },
+        "specificity": { "type": "number" },
+        "coverage": { "type": "number" },
+        "hit_bonus": { "type": "number" },
+        "density": { "type": "number" },
+        "raw": { "type": "number" },
+        "term_weights": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": false
