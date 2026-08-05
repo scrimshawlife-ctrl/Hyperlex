@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/lineage.v1.schema.json",
+  "title": "Hyperlex Lineage Attachment v1",
+  "description": "Optional lineage metadata attached to analysis results. Documents which historical slang family a signal belongs to and how the current terms relate to it.",
+  "type": "object",
+  "required": ["family_id", "matched_terms", "confidence"],
+  "properties": {
+    "family_id": {
+      "type": "string",
+      "description": "Canonical identifier for the documented family (e.g. betting-sharp, crypto-degen, ai-native)",
+      "minLength": 2
+    },
+    "matched_terms": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Terms from the current signal that matched this family",
+      "minItems": 1
+    },
+    "branch_operator": {
+      "type": "string",
+      "description": "Primary mutation operator that produced or is producing the current leaf",
+      "enum": [
+        "extra-grammatical",
+        "sense_extension",
+        "irony_inversion",
+        "platform_compression",
+        "eggcorn",
+        "cross_family_borrowing",
+        "hyperstition",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Matcher confidence that the signal belongs to this family"
+    },
+    "diagram_ref": {
+      "type": "string",
+      "description": "Relative path to the Mermaid or HTML diagram for this family"
+    },
+    "payload_note": {
+      "type": "string",
+      "description": "Short note on the stable semantic/identity payload still carried"
+    },
+    "provenance": {
+      "type": "string",
+      "enum": ["OBSERVED", "INFERRED", "SPECULATIVE"],
+      "default": "INFERRED"
+    }
+  },
+  "additionalProperties": false
+}
