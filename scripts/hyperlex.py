@@ -140,6 +140,129 @@ def cmd_check(_args: argparse.Namespace) -> int:
     return 0 if result["ok"] else 2
 
 
+def cmd_doctor(_args: argparse.Namespace) -> int:
+    """Deep Hermes-skill health check (filesystem + import + offline smoke path)."""
+    checks: List[_Check] = []
+
+    required_files = [
+        "VERSION",
+        "SKILL.md",
+        "hyperlex.manifest.yaml",
+        "scripts/hyperlex.py",
+        "src/hyperlex/__init__.py",
+        "src/hyperlex/analysis/__init__.py",
+        "src/hyperlex/calibration/scoring.py",
+        "src/hyperlex/relay/__init__.py",
+        "src/hyperlex/compat/abraxas/__init__.py",
+        "src/hyperlex/connectors/market_signal.py",
+        "src/hyperlex/diagrams/from_receipts.py",
+        "src/hyperlex/llm/governed.py",
+        "schemas/forecast.v1.schema.json",
+        "schemas/settlement.v1.schema.json",
+        "schemas/brier_series.v1.schema.json",
+        "schemas/rune_envelope.v1.schema.json",
+        "examples/receipts/golden/MANIFEST.json",
+        "examples/case-studies/e2e-mock-scan.md",
+        "scripts/run_case_study.py",
+        "mkdocs.yml",
+    ]
+    for rel in required_files:
+        p = ROOT / rel
+        checks.append(_check(p.exists(), f"file:{rel}", f"present: {rel}", f"missing: {rel}"))
+
+    golden = ROOT / "examples" / "receipts" / "golden"
+    golden_json = [p for p in golden.glob("*.json") if p.name != "MANIFEST.json"] if golden.is_dir() else []
+    checks.append(
+        _check(
+            len(golden_json) >= 7,
+            "golden_corpus",
+            f"golden receipts: {len(golden_json)}",
+            f"golden corpus thin: {len(golden_json)}",
+        )
+    )
+
+    pkg, err = _import_hyperlex()
+    checks.append(_check(pkg is not None, "import_hyperlex", "hyperlex importable", f"import failed: {err}"))
+
+    analyze_ok = False
+    brier_null = False
+    lineage_ok = False
+    pred_ok = False
+    if pkg is not None:
+        try:
+            result = pkg.detect_memetic_patterns(
+                query="sharp steam revenge",
+                ingest_source="mock",
+                validate=False,
+            )
+            analyze_ok = True
+            brier_null = result.get("provenance", {}).get("brier") is None
+            lineage_ok = bool((result.get("analysis") or {}).get("lineage"))
+            pred = ((result.get("analysis") or {}).get("virality") or {}).get("prediction")
+            pred_ok = isinstance(pred, dict) and "predicted_hybrid" in pred
+            api = getattr(pkg, "API_V1", None)
+            if api is None:
+                checks.append(_check(False, "api_v1", "", "API_V1 missing"))
+            else:
+                missing = [n for n in api if not hasattr(pkg, n)]
+                checks.append(
+                    _check(
+                        not missing,
+                        "api_v1",
+                        f"API_V1 n={len(api)}",
+                        f"API_V1 missing: {missing}",
+                    )
+                )
+        except Exception as exc:
+            checks.append(_check(False, "analyze_exception", "", f"analyze failed: {exc}"))
+
+    checks.append(_check(analyze_ok, "analyze_mock", "mock analyze ok", "mock analyze failed"))
+    checks.append(_check(brier_null, "brier_null", "open brier is null", "open brier is not null"))
+    checks.append(_check(lineage_ok, "lineage_match", "lineage attached on sharp query", "lineage missing on sharp query"))
+    checks.append(_check(pred_ok, "virality_prediction", "virality.prediction present", "virality.prediction missing"))
+
+    if pkg is not None:
+        try:
+            from hyperlex.compat import abraxas as abx
+
+            checks.append(
+                _check(
+                    len(abx.list_hlx_runes()) >= 4,
+                    "compat_abraxas",
+                    "compat.abraxas runes ok",
+                    "compat.abraxas weak",
+                )
+            )
+        except Exception as exc:
+            checks.append(_check(False, "compat_abraxas", "", f"compat import failed: {exc}"))
+        try:
+            from hyperlex.llm import llm_enabled
+
+            checks.append(
+                _check(True, "llm_module", f"llm module ok (enabled={llm_enabled()})", "llm module missing")
+            )
+        except Exception as exc:
+            checks.append(_check(False, "llm_module", "", str(exc)))
+
+    home_hx = Path.home() / ".hyperlex"
+    checks.append(
+        _check(True, "operator_home", f"~/.hyperlex exists={home_hx.is_dir()} path={home_hx}", "")
+    )
+
+    ok = all(c.ok for c in checks)
+    _emit({
+        "ok": ok,
+        "command": "doctor",
+        "version": _read_version(),
+        "skill_root": str(ROOT),
+        "n_checks": len(checks),
+        "n_failed": sum(1 for c in checks if not c.ok),
+        "checks": [c.__dict__ for c in checks],
+        "posture": "hermes_skill_python_package_repo",
+    })
+    return 0 if ok else 2
+
+
 def cmd_sources(_args: argparse.Namespace) -> int:
     sources = [
         {"name": "mock", "kind": "deterministic", "real": False, "description": "No network, deterministic fixture output"},
@@ -1026,6 +1149,9 @@ def _build_parser() -> argparse.ArgumentParser:
 
     check_parser = subparsers.add_parser("check", help="Validate package and manifest readiness")
     check_parser.set_defaults(func=cmd_check)
+
+    doctor_parser = subparsers.add_parser("doctor", help="Deep Hermes-skill health check")
+    doctor_parser.set_defaults(func=cmd_doctor)
 
     sources_parser = subparsers.add_parser("sources", help="List supported ingest sources")
     sources_parser.set_defaults(func=cmd_sources)

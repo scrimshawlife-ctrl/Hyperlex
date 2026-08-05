@@ -1,6 +1,6 @@
 site_name: Hyperlex
 site_description: Hermes skill for memetic emergence analysis (Python package repo)
-site_url: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
+site_url: https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
 repo_url: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
 repo_name: Hyperlex-Hermes-Specs
 edit_uri: edit/main/docs/
@@ -61,4 +61,4 @@ exclude_docs: |
   README.md
 
 extra:
-  version: 0.2.8
+  version: 0.2.9

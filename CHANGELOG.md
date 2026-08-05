@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.9 — Skill doctor, Pages URL, release preflight (2026-08-05)
+
+- CLI `doctor`: deep Hermes-skill health (files, API_V1, mock analyze, brier null, goldens, compat).
+- Expanded `scripts/release_preflight.py` (doctor, diagram, case study, tests).
+- MkDocs `site_url` set for GitHub Pages project site.
+
 ## 0.2.8 — Docs site deploy, strict MkDocs, CI case study (2026-08-05)
 
 - GitHub Pages workflow (`.github/workflows/docs.yml`) builds/deploys MkDocs.

@@ -1,5 +1,5 @@
 name: hyperlex
-version: 0.2.8
+version: 0.2.9
 display_name: Hyperlex
 kind: hermes-openclaw-skill
 description: >
@@ -46,6 +46,7 @@ entrypoint: scripts/hyperlex.py
 
 commands:
   - check
+  - doctor
   - sources
   - ingest
   - analyze
@@ -68,6 +69,7 @@ commands:
 
 intents:
   - check
+  - doctor
   - sources
   - ingest
   - analyze

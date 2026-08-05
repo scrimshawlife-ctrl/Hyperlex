@@ -39,6 +39,20 @@ python3 "$HERMES_SKILL_DIR/scripts/run_case_study.py" --out-dir out/case-study
 
 ```bash
 pip install -e ".[docs]"
+python3 scripts/sync_mkdocs_pages.py
 mkdocs serve   # http://127.0.0.1:8000
-mkdocs build   # site/
+mkdocs build --strict
+```
+
+GitHub Pages deploys from `.github/workflows/docs.yml` on `main`  
+(enable **Settings → Pages → Source: GitHub Actions** once).
+
+Public URL (after Pages is enabled):  
+https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
+
+## Skill health
+
+```bash
+python3 scripts/hyperlex.py doctor
+python3 scripts/release_preflight.py
 ```

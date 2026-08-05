@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.9
+- `doctor` command; release preflight; Pages site_url.
+
 ## 0.2.8
 - GitHub Pages MkDocs deploy; strict docs build; CI case study.
 
