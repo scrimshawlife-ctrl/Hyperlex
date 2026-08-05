@@ -51,6 +51,8 @@ Backfill packs store **one term per entry**. Phrases like `locked in` are one at
 `sigma` and `rizz` are separate. Concatenating them for a Phase 5 run was a demo
 mistake — the engine now expands by default.
 
+**Expanded demos (Pages):** [demos/atomic-terms.md](demos/atomic-terms.md) · fixtures in `examples/demos/`.
+
 ## How it sits on the stack
 
 ```text

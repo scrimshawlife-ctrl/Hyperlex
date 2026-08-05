@@ -1,0 +1,47 @@
+{
+  "schema": "hyperlex.phase5_multi_term.v1",
+  "original_seed": "sigma rizz locked in",
+  "terms": [
+    "sigma",
+    "rizz",
+    "locked in"
+  ],
+  "multi_term": true,
+  "n_terms": 3,
+  "summaries": [
+    {
+      "brier": null,
+      "cascade_success": false,
+      "lineage_family": null,
+      "risk_score": 0.331,
+      "risk_tier": "LOW",
+      "seed_term": "sigma",
+      "transmission_peak": 0.85
+    },
+    {
+      "brier": null,
+      "cascade_success": false,
+      "lineage_family": null,
+      "risk_score": 0.331,
+      "risk_tier": "LOW",
+      "seed_term": "rizz",
+      "transmission_peak": 0.85
+    },
+    {
+      "brier": null,
+      "cascade_success": false,
+      "lineage_family": null,
+      "risk_score": 0.331,
+      "risk_tier": "LOW",
+      "seed_term": "locked in",
+      "transmission_peak": 0.85
+    }
+  ],
+  "aggregate": {
+    "n_terms": 3,
+    "note": "Per-term scenarios only; aggregate tier is max severity, not a blended simulation.",
+    "top_risk_tier": "LOW"
+  },
+  "brier": null,
+  "provenance": "SPECULATIVE"
+}

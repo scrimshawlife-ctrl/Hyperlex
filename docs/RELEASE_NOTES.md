@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.3.9
+- Atomic multi-term seeds: `terms-split`, Phase 5 multi-term expand, per-term lineage.
+- Pages demos: `docs/demos/atomic-terms.md` + `examples/demos/` fixtures.
+- Scan/cron packs use atomic queries; archive Phase 5 snapshots re-exported multi-term.
+
 ## 0.3.8
 - Operator loop docs; simplified command map (`commands`, `run`, `pending`).
 - Ingest routes (`--route offline|live|…`) + canonical source catalog/aliases.

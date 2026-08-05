@@ -1,0 +1,229 @@
+{
+  "schema": "hyperlex.atomic_terms_demo.v1",
+  "cases": [
+    {
+      "input": "sigma rizz locked in",
+      "domain": "ai",
+      "split_terms": [
+        "sigma",
+        "rizz",
+        "locked in"
+      ],
+      "multi_term": true,
+      "analyze_primary_term": "locked in",
+      "analyze_per_term": [
+        {
+          "term": "sigma",
+          "family_id": "brainrot-aura",
+          "confidence": 0.49
+        },
+        {
+          "term": "rizz",
+          "family_id": "brainrot-aura",
+          "confidence": 0.48
+        },
+        {
+          "term": "locked in",
+          "family_id": "brainrot-aura",
+          "confidence": 0.581
+        }
+      ],
+      "phase5_schema": "hyperlex.phase5_multi_term.v1",
+      "phase5_terms": [
+        "sigma",
+        "rizz",
+        "locked in"
+      ],
+      "phase5_summaries": [
+        {
+          "seed_term": "sigma",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        },
+        {
+          "seed_term": "rizz",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        },
+        {
+          "seed_term": "locked in",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        }
+      ],
+      "brier": null
+    },
+    {
+      "input": "agentic slop skill issue",
+      "domain": "ai",
+      "split_terms": [
+        "agentic slop",
+        "skill issue"
+      ],
+      "multi_term": true,
+      "analyze_primary_term": "agentic slop",
+      "analyze_per_term": [
+        {
+          "term": "agentic slop",
+          "family_id": "ai-native",
+          "confidence": 0.697
+        },
+        {
+          "term": "skill issue",
+          "family_id": "ai-native",
+          "confidence": 0.609
+        }
+      ],
+      "phase5_schema": "hyperlex.phase5_multi_term.v1",
+      "phase5_terms": [
+        "agentic slop",
+        "skill issue"
+      ],
+      "phase5_summaries": [
+        {
+          "seed_term": "agentic slop",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        },
+        {
+          "seed_term": "skill issue",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        }
+      ],
+      "brier": null
+    },
+    {
+      "input": "sharp steam revenge",
+      "domain": "markets",
+      "split_terms": [
+        "sharp",
+        "steam",
+        "revenge"
+      ],
+      "multi_term": true,
+      "analyze_primary_term": "revenge",
+      "analyze_per_term": [
+        {
+          "term": "sharp",
+          "family_id": "betting-sharp",
+          "confidence": 0.509
+        },
+        {
+          "term": "steam",
+          "family_id": "betting-sharp",
+          "confidence": 0.509
+        },
+        {
+          "term": "revenge",
+          "family_id": "betting-sharp",
+          "confidence": 0.528
+        }
+      ],
+      "phase5_schema": "hyperlex.phase5_multi_term.v1",
+      "phase5_terms": [
+        "sharp",
+        "steam",
+        "revenge"
+      ],
+      "phase5_summaries": [
+        {
+          "seed_term": "sharp",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        },
+        {
+          "seed_term": "steam",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        },
+        {
+          "seed_term": "revenge",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        }
+      ],
+      "brier": null
+    },
+    {
+      "input": "locked in crash out",
+      "domain": "ai",
+      "split_terms": [
+        "locked in",
+        "crash out"
+      ],
+      "multi_term": true,
+      "analyze_primary_term": "locked in",
+      "analyze_per_term": [
+        {
+          "term": "locked in",
+          "family_id": "brainrot-aura",
+          "confidence": 0.581
+        },
+        {
+          "term": "crash out",
+          "family_id": "brainrot-aura",
+          "confidence": 0.581
+        }
+      ],
+      "phase5_schema": "hyperlex.phase5_multi_term.v1",
+      "phase5_terms": [
+        "locked in",
+        "crash out"
+      ],
+      "phase5_summaries": [
+        {
+          "seed_term": "locked in",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        },
+        {
+          "seed_term": "crash out",
+          "lineage_family": null,
+          "risk_tier": "LOW",
+          "risk_score": 0.331,
+          "transmission_peak": 0.85,
+          "cascade_success": false,
+          "brier": null
+        }
+      ],
+      "brier": null
+    }
+  ]
+}

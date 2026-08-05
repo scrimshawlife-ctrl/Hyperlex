@@ -75,6 +75,8 @@ nav:
   - Phase 5:
       - Overview: phase5.md
       - Simulation modules: modules/simulation.md
+  - Demos:
+      - Atomic multi-term seeds: demos/atomic-terms.md
   - Data:
       - Vector DB: modules/vectordb.md
   - Ops:

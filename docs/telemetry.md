@@ -50,9 +50,26 @@ Open analysis never invents Brier. Phase 5 stays SPECULATIVE.
 
     ```bash
     python3 scripts/hyperlex.py simulate --term rizz --mode scenario
+    # Multi-term expands: sigma | rizz | locked in
+    python3 scripts/hyperlex.py terms-split "sigma rizz locked in"
     ```
 
     [Phase 5 docs](phase5.md)
+    [Atomic terms demo →](demos/atomic-terms.md)
+
+-   :material-vector-arrange-below: **Atomic terms demo**
+
+    Bags of slang expand into separate atoms. Phrases like `locked in` stay whole.
+
+    ---
+
+    ```bash
+    python3 scripts/hyperlex.py terms-split "sigma rizz locked in"
+    python3 scripts/hyperlex.py simulate --term "agentic slop skill issue" --domain ai
+    ```
+
+    [Full demos →](demos/atomic-terms.md)
+    [Run history multi-term](archive/runs/backfill-phase5-rizz-2026/index.md)
 
 -   :material-heart-pulse: **Status**
 
@@ -95,6 +112,7 @@ Hosts may import Abraxas-shaped modules **from** Hyperlex (`hyperlex.compat.abra
 | Lineages | [slang-lineages](slang-lineages.md) |
 | Calibration | [brier-calibration](brier-calibration.md) |
 | Simulation | [phase5](phase5.md) · [modules/simulation](modules/simulation.md) |
+| Atomic multi-term demos | [demos/atomic-terms](demos/atomic-terms.md) |
 | Case study | [case-studies](case-studies.md) |
 | Roadmap | [ROADMAP](ROADMAP.md) |
 | Splash home | [Home](index.md) |

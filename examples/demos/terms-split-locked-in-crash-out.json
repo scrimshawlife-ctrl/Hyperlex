@@ -1,0 +1,19 @@
+{
+  "split": {
+    "matched": [
+      "locked in",
+      "crash out"
+    ],
+    "method": "lexicon_longest_match",
+    "multi_term": true,
+    "n_terms": 2,
+    "note": "Atomic lexicon terms only. Multi-word phrases (e.g. locked in) stay together; independent items are not blended into one seed.",
+    "original": "locked in crash out",
+    "residual": [],
+    "schema": "hyperlex.seed_terms.v1",
+    "terms": [
+      "locked in",
+      "crash out"
+    ]
+  }
+}

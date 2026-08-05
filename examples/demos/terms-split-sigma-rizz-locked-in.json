@@ -1,0 +1,21 @@
+{
+  "split": {
+    "matched": [
+      "sigma",
+      "rizz",
+      "locked in"
+    ],
+    "method": "lexicon_longest_match",
+    "multi_term": true,
+    "n_terms": 3,
+    "note": "Atomic lexicon terms only. Multi-word phrases (e.g. locked in) stay together; independent items are not blended into one seed.",
+    "original": "sigma rizz locked in",
+    "residual": [],
+    "schema": "hyperlex.seed_terms.v1",
+    "terms": [
+      "sigma",
+      "rizz",
+      "locked in"
+    ]
+  }
+}
