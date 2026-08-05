@@ -1,0 +1,18 @@
+<!-- orchestra-diagram.v1 framework=numogram -->
+<!-- overlay=chaos-magic -->
+
+```mermaid
+flowchart LR
+  intake["intake<br/>unmapped_intake"]
+  analysis["analysis<br/>unmapped_analysis"]
+  synthesis["synthesis<br/>unmapped_synthesis"]
+  receipt["receipt<br/>unmapped_receipt"]
+  intake --> analysis
+  analysis --> synthesis
+  synthesis --> receipt
+```
+
+<!-- flows
+  primary: numogram primary path :: intake → analysis → synthesis → receipt
+  overlay-chaos-magic: overlay · chaos-magic :: intake → analysis → synthesis → receipt
+-->

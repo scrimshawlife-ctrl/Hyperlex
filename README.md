@@ -61,4 +61,15 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) and the Orchestra model of spec-first d
 
 ## License
 
-MIT (see LICENSE).
+MIT (see LICENSE).## Symbolic Architecture (Numogram + Chaos Magic)
+
+Fresh symbolic structure for the Hyperlex skill, scaffolded via Abraxas Orchestra:
+
+- `examples/hyperlex-symbolic/` contains:
+  - Curated dual-named SKELETON.md and correspondence table
+  - Architecture diagrams (HTML + Mermaid + JSON)
+  - Analysis output from the actual `/home/scrimshawlife/hyperlex` package
+
+See `examples/hyperlex-symbolic/SKELETON.md` and `numogram-chaos-correspondence.json`.
+
+This is the living symbolic architecture reference.
