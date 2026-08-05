@@ -1,4 +1,4 @@
-# Run snapshot — `golden-seed-0.3.2`
+# Run snapshot — `backfill-ytd-2026-analysis`
 
 **Kind:** `analysis` · **Publish-safe static history** for GitHub Pages.
 
@@ -7,24 +7,23 @@ for the docs site / git history — not a replacement for the operator ledger.
 
 | Field | Value |
 |-------|-------|
-| Snapshot | `golden-seed-0.3.2` |
+| Snapshot | `backfill-ytd-2026-analysis` |
 | Kind | `analysis` |
-| Receipt summaries | 9 |
-| Ledger rows | 5 |
+| Receipt summaries | 16 |
+| Ledger rows | 0 |
 | Chain OK | True |
 
 ## Family distribution
 
 | Family | Count |
 |--------|------:|
-| ai-native | 1 |
-| betting-sharp | 1 |
-| brainrot-aura | 1 |
-| crypto-degen | 1 |
-| gaming-meta | 1 |
-| kinship-address | 1 |
-| (none) | 1 |
+| brainrot-aura | 5 |
+| ai-native | 3 |
+| betting-sharp | 2 |
+| gaming-meta | 2 |
 | political-status | 1 |
+| crypto-degen | 1 |
+| kinship-address | 1 |
 | workplace-corp | 1 |
 
 ## Machine index

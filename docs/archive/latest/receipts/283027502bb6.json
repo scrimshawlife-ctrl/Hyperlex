@@ -1,0 +1,33 @@
+{
+  "brier": null,
+  "canonical_hash": "1b711a023c8f6788",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "ACTUALIZING",
+  "ingest_source": "mock",
+  "integrity": "283027502bb6",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "betting-sharp",
+  "matched_terms": [
+    "sharp",
+    "steam",
+    "square",
+    "wiseguy",
+    "hammer",
+    "revenge",
+    "low block"
+  ],
+  "n_neologisms": 3,
+  "observed_preview": "Mock memetic channel on \"vibe check no thoughts just vibes hallucinate steam\": organic velocity, coordinated push. sharp steam square revenge wiseguy hammer low block.",
+  "query": "vibe check no thoughts just vibes hallucinate steam",
+  "source_fingerprint_id": "7135cd452a680778cc8bbf75",
+  "timestamp": "2026-08-05T20:36:36.968620+00:00",
+  "typology": "tactical_edge",
+  "version": "0.3.2",
+  "virality_hybrid": 0.741,
+  "virality_predicted": 0.949
+}

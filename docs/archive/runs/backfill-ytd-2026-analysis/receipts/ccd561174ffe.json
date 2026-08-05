@@ -1,0 +1,37 @@
+{
+  "brier": null,
+  "canonical_hash": "9c8f8f32c46d78c1",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "ccd561174ffe",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "workplace-corp",
+  "matched_terms": [
+    "quiet quitting",
+    "quiet firing",
+    "rto",
+    "return to office",
+    "layoffs",
+    "pip",
+    "synergy",
+    "circle back",
+    "bandwidth",
+    "low-hanging fruit",
+    "act your wage"
+  ],
+  "n_neologisms": 2,
+  "observed_preview": "Mock memetic channel on \"act your wage quiet quitting rto bandwidth circle back\". quiet quitting quiet firing rto return to office layoffs pip synergy circle back bandwidth low-hanging fruit act your wage.",
+  "query": "act your wage quiet quitting rto bandwidth circle back",
+  "source_fingerprint_id": "a28ec6bfe041095b1c939b0d",
+  "timestamp": "2026-08-05T20:36:36.975004+00:00",
+  "typology": "labor_identity",
+  "version": "0.3.2",
+  "virality_hybrid": 0.585,
+  "virality_predicted": 0.685
+}

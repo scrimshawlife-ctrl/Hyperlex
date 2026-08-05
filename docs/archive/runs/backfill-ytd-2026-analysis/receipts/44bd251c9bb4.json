@@ -1,0 +1,31 @@
+{
+  "brier": null,
+  "canonical_hash": "9fee19050f12d212",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "44bd251c9bb4",
+  "is_memetic": false,
+  "lineage_confidence": 0.973,
+  "lineage_family": "brainrot-aura",
+  "matched_terms": [
+    "rizz",
+    "skibidi",
+    "gyatt",
+    "sigma",
+    "locked in"
+  ],
+  "n_neologisms": 5,
+  "observed_preview": "Mock channel note on \"rizz skibidi gyatt sigma locked in\". Quiet discourse sample.",
+  "query": "rizz skibidi gyatt sigma locked in",
+  "source_fingerprint_id": "fd51c7ce5e1b2b5970ed3f1a",
+  "timestamp": "2026-08-05T20:36:36.964270+00:00",
+  "typology": "status_radiation",
+  "version": "0.3.2",
+  "virality_hybrid": 0.443,
+  "virality_predicted": 0.567
+}

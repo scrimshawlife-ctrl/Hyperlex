@@ -1,0 +1,36 @@
+{
+  "created_at": "2026-08-05T20:36:36.988588+00:00",
+  "n_ledger_rows": 0,
+  "n_receipt_summaries": 0,
+  "notes": "Backfill-linked Phase 5: sharp steam revenge",
+  "phase5": {
+    "agent_adoption_rate": 0.1,
+    "brier": null,
+    "cascade_success": false,
+    "created_at": "2026-08-05T20:36:36.988059+00:00",
+    "domain": "markets",
+    "lineage_family": "betting-sharp",
+    "phylogeny_family": "betting-sharp",
+    "phylogeny_n_nodes": 11,
+    "provenance": "SPECULATIVE",
+    "publish_safe": true,
+    "risk_score": 0.711,
+    "risk_tier": "ELEVATED",
+    "schema": "hyperlex.phase5_run_summary.v1",
+    "seed_term": "sharp steam revenge",
+    "transmission_peak": 0.85,
+    "transmission_reach": 0.5
+  },
+  "primary_store": "local ~/.hyperlex (not replaced by this archive)",
+  "publish_safe": true,
+  "purpose": "static_run_history",
+  "risk_tier": "ELEVATED",
+  "run_kind": "phase5_scenario",
+  "schema": "hyperlex.analysis_archive.v1",
+  "seed_term": "sharp steam revenge",
+  "snapshot_id": "backfill-phase5-sharp-2026",
+  "stats": {
+    "chain_ok": null,
+    "families": {}
+  }
+}

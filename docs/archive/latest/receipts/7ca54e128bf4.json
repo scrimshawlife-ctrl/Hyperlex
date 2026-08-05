@@ -1,0 +1,36 @@
+{
+  "brier": null,
+  "canonical_hash": "fe259406247128e7",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "7ca54e128bf4",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "brainrot-aura",
+  "matched_terms": [
+    "brainrot",
+    "aura",
+    "aura farming",
+    "mid",
+    "cooked",
+    "let him cook",
+    "six seven",
+    "67",
+    "edging",
+    "gooning"
+  ],
+  "n_neologisms": 5,
+  "observed_preview": "Mock memetic channel on \"six seven 67 edging gooning brainrot\". brainrot aura farming mid cooked let him cook.",
+  "query": "six seven 67 edging gooning brainrot",
+  "source_fingerprint_id": "883175626e7fb891e96a75af",
+  "timestamp": "2026-08-05T20:36:36.967105+00:00",
+  "typology": "status_radiation",
+  "version": "0.3.2",
+  "virality_hybrid": 0.48,
+  "virality_predicted": 0.633
+}

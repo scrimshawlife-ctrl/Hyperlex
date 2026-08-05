@@ -1,0 +1,32 @@
+{
+  "brier": null,
+  "canonical_hash": "1457e8f872ccfb52",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "2ab542b2530b",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "ai-native",
+  "matched_terms": [
+    "hallucinate",
+    "slop",
+    "clanker",
+    "agentic",
+    "skill issue",
+    "context window"
+  ],
+  "n_neologisms": 5,
+  "observed_preview": "Mock memetic channel on \"npc main character main character energy fanum tax clanker\". agentic slop skill issue hallucinate clanker context window.",
+  "query": "npc main character main character energy fanum tax clanker",
+  "source_fingerprint_id": "11cbadf572d20428b6d5a23f",
+  "timestamp": "2026-08-05T20:36:36.965880+00:00",
+  "typology": "platform_agency",
+  "version": "0.3.2",
+  "virality_hybrid": 0.502,
+  "virality_predicted": 0.653
+}

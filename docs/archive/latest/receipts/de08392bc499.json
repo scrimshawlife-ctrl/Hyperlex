@@ -1,0 +1,33 @@
+{
+  "brier": null,
+  "canonical_hash": "6596ade524d97524",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "ACTUALIZING",
+  "ingest_source": "mock",
+  "integrity": "de08392bc499",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "betting-sharp",
+  "matched_terms": [
+    "sharp",
+    "steam",
+    "square",
+    "wiseguy",
+    "hammer",
+    "revenge",
+    "low block"
+  ],
+  "n_neologisms": 2,
+  "observed_preview": "Mock memetic channel on \"steam sharp revenge\": organic velocity, coordinated push. sharp steam square revenge wiseguy hammer low block.",
+  "query": "steam sharp revenge",
+  "source_fingerprint_id": "21de69f8155ac45ae58077fc",
+  "timestamp": "2026-08-05T20:36:36.970826+00:00",
+  "typology": "tactical_edge",
+  "version": "0.3.2",
+  "virality_hybrid": 0.704,
+  "virality_predicted": 0.886
+}

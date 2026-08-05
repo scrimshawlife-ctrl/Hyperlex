@@ -1,0 +1,35 @@
+{
+  "brier": null,
+  "canonical_hash": "117c17c1ac19b534",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "940079811426",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "brainrot-aura",
+  "matched_terms": [
+    "brainrot",
+    "aura",
+    "aura farming",
+    "mid",
+    "cooked",
+    "let him cook",
+    "negative aura",
+    "aura points",
+    "yap"
+  ],
+  "n_neologisms": 5,
+  "observed_preview": "Mock memetic channel on \"aura negative aura aura points yap\". brainrot aura farming mid cooked let him cook.",
+  "query": "aura negative aura aura points yap",
+  "source_fingerprint_id": "4347830903a824cc28990884",
+  "timestamp": "2026-08-05T20:36:36.969408+00:00",
+  "typology": "status_radiation",
+  "version": "0.3.2",
+  "virality_hybrid": 0.48,
+  "virality_predicted": 0.633
+}

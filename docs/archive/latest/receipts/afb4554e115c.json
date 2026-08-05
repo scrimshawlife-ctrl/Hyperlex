@@ -1,0 +1,38 @@
+{
+  "brier": null,
+  "canonical_hash": "61b79d09bd037cf9",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "afb4554e115c",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "gaming-meta",
+  "matched_terms": [
+    "nerf",
+    "buff",
+    "meta",
+    "sweaty",
+    "noob",
+    "gg",
+    "ez",
+    "ratio",
+    "touch grass",
+    "skill issue",
+    "diff",
+    "smurf"
+  ],
+  "n_neologisms": 2,
+  "observed_preview": "Mock memetic channel on \"skill issue touch grass sus ratio diff smurf\". nerf buff meta sweaty noob gg ez ratio touch grass skill issue diff smurf.",
+  "query": "skill issue touch grass sus ratio diff smurf",
+  "source_fingerprint_id": "c6a3da968e9a58f949b3a5f9",
+  "timestamp": "2026-08-05T20:36:36.972992+00:00",
+  "typology": "platform_agency",
+  "version": "0.3.2",
+  "virality_hybrid": 0.54,
+  "virality_predicted": 0.647
+}

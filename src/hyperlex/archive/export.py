@@ -351,7 +351,7 @@ def rebuild_archive_catalog(
     runs_dir.mkdir(parents=True, exist_ok=True)
 
     entries: List[Dict[str, Any]] = []
-    for d in sorted(runs_dir.iterdir(), reverse=True):
+    for d in runs_dir.iterdir():
         if not d.is_dir():
             continue
         idx_path = d / "index.json"
@@ -376,6 +376,8 @@ def rebuild_archive_catalog(
             "seed_term": idx.get("seed_term") or (idx.get("phase5") or {}).get("seed_term"),
             "notes": idx.get("notes"),
         })
+    # Newest first by created_at (ISO), not directory name
+    entries.sort(key=lambda e: (e.get("created_at") or "", e.get("snapshot_id") or ""), reverse=True)
 
     # also record latest pointer
     latest_idx = root / "latest" / "index.json"

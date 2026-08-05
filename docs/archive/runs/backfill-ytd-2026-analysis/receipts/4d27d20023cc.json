@@ -1,0 +1,32 @@
+{
+  "brier": null,
+  "canonical_hash": "e744c18c0e7f97ad",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "4d27d20023cc",
+  "is_memetic": false,
+  "lineage_confidence": 0.972,
+  "lineage_family": "brainrot-aura",
+  "matched_terms": [
+    "rizz",
+    "skibidi",
+    "gyatt",
+    "sigma",
+    "delulu",
+    "no cap"
+  ],
+  "n_neologisms": 6,
+  "observed_preview": "Mock channel note on \"rizz skibidi gyatt sigma delulu no cap\". Quiet discourse sample.",
+  "query": "rizz skibidi gyatt sigma delulu no cap",
+  "source_fingerprint_id": "fbb8bd4e1d4d760454d1842e",
+  "timestamp": "2026-08-05T20:36:36.971396+00:00",
+  "typology": "status_radiation",
+  "version": "0.3.2",
+  "virality_hybrid": 0.45,
+  "virality_predicted": 0.574
+}

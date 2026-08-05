@@ -1,0 +1,32 @@
+{
+  "brier": null,
+  "canonical_hash": "9ae3467246c3b102",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "6f50515ee07f",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "ai-native",
+  "matched_terms": [
+    "hallucinate",
+    "slop",
+    "clanker",
+    "agentic",
+    "skill issue",
+    "context window"
+  ],
+  "n_neologisms": 4,
+  "observed_preview": "Mock memetic channel on \"bussin slay sus agentic slop\". agentic slop skill issue hallucinate clanker context window.",
+  "query": "bussin slay sus agentic slop",
+  "source_fingerprint_id": "bdd2313c9d61fb04e18f0197",
+  "timestamp": "2026-08-05T20:36:36.966497+00:00",
+  "typology": "platform_agency",
+  "version": "0.3.2",
+  "virality_hybrid": 0.472,
+  "virality_predicted": 0.626
+}

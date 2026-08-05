@@ -1,0 +1,97 @@
+{
+  "brier": null,
+  "created_at": "2026-08-05T20:36:36.988059+00:00",
+  "domain": "markets",
+  "hyperstition_risk": {
+    "action_hints": [
+      "Label claims OBSERVED/INFERRED/SPECULATIVE; this packet is SPECULATIVE.",
+      "Do not invent Brier; settle forecasts only with operator authority.",
+      "Increase scan frequency; archive receipts; prepare settlement criteria.",
+      "Loop may already couple narrative to external confirmation \u2014 verify evidence."
+    ],
+    "brier": null,
+    "confidence": 0.7,
+    "domain": "markets",
+    "domain_note": "Narrative\u2192price loops; confirm with settlement before acting.",
+    "drivers": [
+      {
+        "id": "hyperstition_stage",
+        "raw": "ACTUALIZING",
+        "value": 0.85,
+        "weight": 0.28
+      },
+      {
+        "id": "virality_hybrid",
+        "value": 0.704,
+        "weight": 0.14
+      },
+      {
+        "id": "virality_predicted",
+        "value": 0.886,
+        "weight": 0.12
+      },
+      {
+        "id": "lineage_confidence",
+        "value": 0.98,
+        "weight": 0.1
+      },
+      {
+        "id": "memetic_score",
+        "value": 0.95,
+        "weight": 0.08
+      },
+      {
+        "id": "transmission_peak",
+        "value": 0.85,
+        "weight": 0.12
+      },
+      {
+        "id": "transmission_reach",
+        "value": 0.5,
+        "weight": 0.08
+      },
+      {
+        "id": "agent_adoption_rate",
+        "value": 0.1,
+        "weight": 0.08
+      },
+      {
+        "id": "agent_cascade_success",
+        "value": 0.15,
+        "weight": 0.1
+      }
+    ],
+    "lineage_family": "betting-sharp",
+    "note": "Forward-looking hyperstition risk composite. Not a settled forecast. Do not treat as Brier-eligible without operator settlement design.",
+    "provenance": "SPECULATIVE",
+    "risk_score": 0.711,
+    "schema": "hyperlex.hyperstition_risk.v1",
+    "seed_term": null,
+    "tier": "ELEVATED"
+  },
+  "lineage_family": "betting-sharp",
+  "multi_agent_summary": {
+    "cascade_success": false,
+    "final_adoption_rate": 0.1,
+    "roles_adopted": [
+      "innovator"
+    ],
+    "time_to_half": null
+  },
+  "phylogeny": {
+    "family_id": "betting-sharp",
+    "n_nodes": 11,
+    "ok": true
+  },
+  "provenance": "SPECULATIVE",
+  "schema": "hyperlex.phase5_scenario.v1",
+  "seed_term": "sharp steam revenge",
+  "transmission_summary": {
+    "dominant_community": "origin_niche",
+    "final_mean_adoption": 0.2358,
+    "final_reach_fraction": 0.5,
+    "peak_mean_adoption": 0.85,
+    "stabilizing": true,
+    "time_to_peak": 0
+  }
+}

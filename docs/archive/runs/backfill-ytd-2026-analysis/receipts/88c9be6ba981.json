@@ -1,0 +1,38 @@
+{
+  "brier": null,
+  "canonical_hash": "2780a99c2f93cd7a",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "88c9be6ba981",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "gaming-meta",
+  "matched_terms": [
+    "nerf",
+    "buff",
+    "meta",
+    "sweaty",
+    "noob",
+    "gg",
+    "ez",
+    "ratio",
+    "touch grass",
+    "skill issue",
+    "diff",
+    "smurf"
+  ],
+  "n_neologisms": 6,
+  "observed_preview": "Mock memetic channel on \"mewing looksmaxxing mog mogging ate\". nerf buff meta sweaty noob gg ez ratio touch grass skill issue diff smurf.",
+  "query": "mewing looksmaxxing mog mogging ate",
+  "source_fingerprint_id": "57e28fcc7bea53f737c227b8",
+  "timestamp": "2026-08-05T20:36:36.965052+00:00",
+  "typology": "platform_agency",
+  "version": "0.3.2",
+  "virality_hybrid": 0.517,
+  "virality_predicted": 0.667
+}

@@ -1,0 +1,34 @@
+{
+  "brier": null,
+  "canonical_hash": "3b4c214b21ae1375",
+  "epistemic": {
+    "brier": "NOT_COMPUTABLE",
+    "lineage": "INFERRED",
+    "virality_prediction": "SPECULATIVE"
+  },
+  "hyperstition_stage": "EMERGENT",
+  "ingest_source": "mock",
+  "integrity": "2cb091b18ad6",
+  "is_memetic": true,
+  "lineage_confidence": 0.98,
+  "lineage_family": "ai-native",
+  "matched_terms": [
+    "hallucinate",
+    "slop",
+    "clanker",
+    "agentic",
+    "glazing",
+    "skill issue",
+    "context window",
+    "vibe coding"
+  ],
+  "n_neologisms": 3,
+  "observed_preview": "Mock memetic channel on \"vibe coding context window glazing clanker agentic slop\". agentic slop skill issue hallucinate clanker context window.",
+  "query": "vibe coding context window glazing clanker agentic slop",
+  "source_fingerprint_id": "27bec28b95dae89d98debb76",
+  "timestamp": "2026-08-05T20:36:36.970139+00:00",
+  "typology": "platform_agency",
+  "version": "0.3.2",
+  "virality_hybrid": 0.495,
+  "virality_predicted": 0.637
+}
