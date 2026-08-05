@@ -49,7 +49,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Cron / autonomous monitoring (`scan` + `examples/cron/live-emergence-scan.job.json`)
 
 ### Phase 4 — Production & Ecosystem
-- [x] PyPI packaging + publish script (0.2.0; upload requires token)
+- [x] Local/Hermes packaging (`pip install -e .` / skill install) — **no public PyPI publish planned**
 - [ ] Comprehensive test suite + golden receipts
 - [ ] Documentation site / MkDocs
 - [ ] Example notebooks and case studies
