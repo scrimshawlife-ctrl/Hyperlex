@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/hyperlex-hero.jpg" alt="Hyperlex — Memetic Emergence Engine" width="720">
+</p>
+
 # Hyperlex
 
 **Hyperlex** is a standalone Hermes skill for memetic emergence analysis.
