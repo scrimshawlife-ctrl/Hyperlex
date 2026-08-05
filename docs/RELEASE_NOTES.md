@@ -1,15 +1,11 @@
 # Hyperlex Release Notes
 
-## v1.5.0 (Current)
-- Renamed to Hyperlex
-- SKILL.md following Abraxas-Orchestra-Hermes conventions
-- Schemas, richer docs, symbolic references (Numogram, Chaos Magic)
-- Receipt emission standardized
-- Full integration with Hyperlex-Hermes-Specs design surface
+## v0.1.0 (Current)
 
-## Previous
-- v1.4: Wired real ingest + arXiv upgrades
-- v1.3: Market signal integration
-- v1.2: Core arXiv modules
+- Merged design and runtime into a standalone, executable Hermes skill.
+- Added practical command surface (`scripts/hyperlex.py`) and runtime checks.
+- Added bundled schema files at repo root.
+- Added manifest + install script.
+- Added receipt emission and integrity verification.
+- Updated docs/contracts to a single truthful versioning baseline.
 
-See ROADMAP.md for planned releases.

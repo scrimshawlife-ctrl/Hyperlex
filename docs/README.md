@@ -3,7 +3,7 @@
 This folder contains detailed design documents.
 
 - [Modules / Ingest](./modules/ingest.md)
-- [References / arXiv](./references/arxiv_papers.md)
+- [References / arXiv](../references/arxiv_papers.md)
 
 See root files for the main specs:
 - [ROADMAP.md](../ROADMAP.md)

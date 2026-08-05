@@ -1,29 +1,20 @@
 # Hyperlex Schemas
 
-This directory contains the canonical JSON Schema definitions for Hyperlex components.
+Canonical schemas for the Hyperlex skill.
 
-## Schemas
+- `ingest.v1.schema.json` — structured ingest records
+- `result.v1.schema.json` — full analysis output
+- `receipt.v1.schema.json` — result plus integrity receipt
 
-- **ingest.v1.schema.json** — Structured output from the `gate_of_intake` (expanded ingest layer)
-- **result.v1.schema.json** — Full memetic analysis result from `detect_memetic_patterns`
-- **receipt.v1.schema.json** — Canonical receipt with integrity hash (produced by `emit_receipt`)
-
-## Usage
-
-These schemas are used for validation in the reference implementation:
+## Validation
 
 ```python
 from hyperlex import schemas
 ok, msg = schemas.validate_result(result)
+ok, msg = schemas.validate_receipt(payload)
+ok, msg = schemas.validate_ingest(payload)
 ```
 
-## Alignment
+## Version
 
-These schemas are part of the symbolic architecture defined in:
-- `examples/hyperlex-symbolic/`
-- `references/numogram.md`
-- `references/chaos-magic.md`
-
-They follow the same style as other Abraxas-Orchestra specs.
-
-Version: 1.6.0
+Version: 0.1.0
