@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.10
+- openai_compatible LLM provider; ledger-stats; STATUS.md.
+
 ## 0.2.9
 - `doctor` command; release preflight; Pages site_url.
 

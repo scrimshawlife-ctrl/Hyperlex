@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.2.9
+version: 0.2.10
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
@@ -107,6 +107,7 @@ All commands run from the skill root (or with absolute path to the CLI):
 ```bash
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" ledger-stats
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" sources
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" ingest "<query>" --source mock
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" analyze --query "<query>" --source mock [--validate] [--forecasts]
@@ -200,6 +201,7 @@ Hyperlex **may not**:
 ```bash
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" doctor
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" ledger-stats
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" signal --input <result.json>
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" feedback --signal-key hyperstition.stage
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" diagram --from-golden --out-dir out/diagrams

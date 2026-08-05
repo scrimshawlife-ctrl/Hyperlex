@@ -6,10 +6,21 @@
 
 ```bash
 export HYPERLEX_LLM=1
-export HYPERLEX_LLM_PROVIDER=echo   # deterministic dry-run for tests
+
+# Deterministic dry-run (no network) — tests / CI
+export HYPERLEX_LLM_PROVIDER=echo
+
+# OpenAI-compatible HTTP (stdlib urllib; no openai package required)
+export HYPERLEX_LLM_PROVIDER=openai_compatible
+export HYPERLEX_LLM_API_KEY=sk-...          # or OPENAI_API_KEY
+export HYPERLEX_LLM_BASE_URL=https://api.openai.com/v1   # optional
+export HYPERLEX_LLM_MODEL=gpt-4o-mini                    # optional
+export HYPERLEX_LLM_TIMEOUT=30                           # seconds
 ```
 
-Or inject a real provider in process:
+`HYPERLEX_OFFLINE=1` refuses `openai_compatible` network calls (fail closed).
+
+Or inject a provider in process:
 
 ```python
 from hyperlex.llm.governed import set_provider, enrich_neologisms

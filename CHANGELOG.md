@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.10 — OpenAI-compatible LLM provider, ledger-stats, STATUS (2026-08-05)
+
+- Governed LLM: `HYPERLEX_LLM_PROVIDER=openai_compatible` (stdlib urllib; fail-closed offline).
+- CLI `ledger-stats` aggregates family/stage/source counts from receipt ledger.
+- `STATUS.md` skill readiness snapshot.
+
 ## 0.2.9 — Skill doctor, Pages URL, release preflight (2026-08-05)
 
 - CLI `doctor`: deep Hermes-skill health (files, API_V1, mock analyze, brier null, goldens, compat).

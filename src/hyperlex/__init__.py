@@ -42,6 +42,7 @@ from .receipt import (
     default_ledger_path,
     list_receipts,
     verify_ledger_chain,
+    ledger_stats,
 )
 from . import schemas
 from . import calibration
@@ -118,6 +119,7 @@ __all__ = [
     "default_ledger_path",
     "list_receipts",
     "verify_ledger_chain",
+    "ledger_stats",
     "humanize_slang_output",
     "compute_virality_score",
     "predict_virality",

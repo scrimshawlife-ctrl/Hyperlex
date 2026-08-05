@@ -19,6 +19,7 @@ from .ledger import (
     read_ledger,
     verify_ledger_chain,
 )
+from .stats import ledger_stats
 
 
 def _canonical_json(payload: dict) -> str:
@@ -109,4 +110,5 @@ __all__ = [
     "list_receipts",
     "read_ledger",
     "verify_ledger_chain",
+    "ledger_stats",
 ]

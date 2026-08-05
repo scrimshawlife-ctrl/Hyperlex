@@ -165,6 +165,8 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
         "examples/case-studies/e2e-mock-scan.md",
         "scripts/run_case_study.py",
         "mkdocs.yml",
+        "STATUS.md",
+        "src/hyperlex/receipt/stats.py",
     ]
     for rel in required_files:
         p = ROOT / rel
@@ -710,6 +712,20 @@ def cmd_list_receipts(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_ledger_stats(args: argparse.Namespace) -> int:
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.receipt import ledger_stats
+
+    ledger = Path(args.ledger) if args.ledger else pkg.default_ledger_path()
+    stats = ledger_stats(path=ledger, limit=int(args.limit) if args.limit else 0)
+    _emit({"ok": True, "command": "ledger-stats", **stats})
+    return 0 if stats.get("chain_ok", True) else 2
+
+
 def cmd_verify_receipt_ledger(args: argparse.Namespace) -> int:
     pkg, err = _import_hyperlex()
     if pkg is None:
@@ -1199,6 +1215,11 @@ def _build_parser() -> argparse.ArgumentParser:
     ld_parser.add_argument("--a", required=True, help="Receipt A JSON path")
     ld_parser.add_argument("--b", required=True, help="Receipt B JSON path")
     ld_parser.set_defaults(func=cmd_ledger_diff)
+
+    ls_parser = subparsers.add_parser("ledger-stats", help="Aggregate stats over receipt ledger")
+    ls_parser.add_argument("--ledger", default="")
+    ls_parser.add_argument("--limit", type=int, default=0, help="0 = all entries")
+    ls_parser.set_defaults(func=cmd_ledger_stats)
 
     vrl_parser = subparsers.add_parser("verify-receipt-ledger", help="Verify receipt ledger hash chain")
     vrl_parser.add_argument("--ledger", default="")

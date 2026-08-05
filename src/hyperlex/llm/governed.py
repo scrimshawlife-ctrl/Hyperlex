@@ -1,11 +1,12 @@
-"""Governed LLM augmentation (opt-in stub).
+"""Governed LLM augmentation (opt-in).
 
 Activation requires **both**:
   - env HYPERLEX_LLM=1 (or true/yes/on)
-  - a callable provider registered via set_provider(), **or**
-    HYPERLEX_LLM_PROVIDER=echo (deterministic dry-run)
+  - a provider via set_provider(), **or** HYPERLEX_LLM_PROVIDER=
+      echo              — deterministic dry-run (no network)
+      openai_compatible — OpenAI-style /chat/completions (stdlib urllib)
 
-No network client ships by default. Operators inject their own provider.
+No hard dependency on the `openai` package.
 
 Authority:
   - Outputs are always labeled SPECULATIVE / INFERRED as declared
@@ -47,7 +48,100 @@ def get_provider() -> Optional[ProviderFn]:
     kind = str(os.environ.get("HYPERLEX_LLM_PROVIDER", "")).strip().lower()
     if kind == "echo":
         return _echo_provider
+    if kind in {"openai", "openai_compatible", "openai-compatible", "http"}:
+        return _openai_compatible_provider
     return None
+
+
+def _openai_compatible_provider(prompt: str, context: Dict[str, Any]) -> str:
+    """
+    OpenAI-compatible chat completions via stdlib urllib.
+
+    Env:
+      HYPERLEX_LLM_API_KEY   (required)
+      HYPERLEX_LLM_BASE_URL  (default https://api.openai.com/v1)
+      HYPERLEX_LLM_MODEL     (default gpt-4o-mini)
+      HYPERLEX_LLM_TIMEOUT   (seconds, default 30)
+
+    Offline: HYPERLEX_OFFLINE=1 forces failure (no silent synthetic success).
+    """
+    offline = str(os.environ.get("HYPERLEX_OFFLINE", "")).strip().lower() in {
+        "1", "true", "yes", "on",
+    }
+    if offline:
+        raise GovernedLLMError("offline: refusing openai_compatible network call")
+
+    api_key = (
+        os.environ.get("HYPERLEX_LLM_API_KEY", "").strip()
+        or os.environ.get("OPENAI_API_KEY", "").strip()
+    )
+    if not api_key:
+        raise GovernedLLMError("HYPERLEX_LLM_API_KEY (or OPENAI_API_KEY) required")
+
+    base = os.environ.get("HYPERLEX_LLM_BASE_URL", "https://api.openai.com/v1").rstrip("/")
+    model = os.environ.get("HYPERLEX_LLM_MODEL", "gpt-4o-mini").strip() or "gpt-4o-mini"
+    try:
+        timeout = float(os.environ.get("HYPERLEX_LLM_TIMEOUT", "30") or "30")
+    except ValueError:
+        timeout = 30.0
+
+    text = str(context.get("text") or "")[:4000]
+    existing = context.get("existing") or []
+    system = (
+        "You extract slang/neologism candidates from cultural text. "
+        "Respond with ONLY valid JSON: "
+        '{"candidates":[{"term":str,"formation":str,"confidence":float}]}. '
+        "confidence in [0,0.85]. Do not invent Brier scores or settlements. "
+        "Prefer terms present or strongly implied in the text."
+    )
+    user = json.dumps({
+        "task": "neologism_candidates",
+        "text": text,
+        "existing_terms": [e.get("term") for e in existing if isinstance(e, dict)],
+        "instruction": prompt,
+    }, ensure_ascii=False)
+
+    body = {
+        "model": model,
+        "temperature": 0.2,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        "response_format": {"type": "json_object"},
+    }
+    payload = json.dumps(body).encode("utf-8")
+    url = f"{base}/chat/completions"
+
+    # Prefer requests if present; else urllib
+    try:
+        import urllib.error
+        import urllib.request
+
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            method="POST",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "User-Agent": "Hyperlex-GovernedLLM/0.2",
+            },
+        )
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            raw = resp.read().decode("utf-8", errors="replace")
+        data = json.loads(raw)
+        content = (
+            ((data.get("choices") or [{}])[0].get("message") or {}).get("content")
+            or ""
+        )
+        if not content:
+            raise GovernedLLMError("empty model content")
+        return content
+    except Exception as exc:
+        if isinstance(exc, GovernedLLMError):
+            raise
+        raise GovernedLLMError(f"openai_compatible failed: {type(exc).__name__}: {exc}") from exc
 
 
 def _echo_provider(prompt: str, context: Dict[str, Any]) -> str:

@@ -54,5 +54,6 @@ https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
 
 ```bash
 python3 scripts/hyperlex.py doctor
+python3 scripts/hyperlex.py ledger-stats
 python3 scripts/release_preflight.py
 ```
