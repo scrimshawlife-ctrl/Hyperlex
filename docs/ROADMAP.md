@@ -45,7 +45,7 @@ wire capabilities ship as Hyperlex modules under `hyperlex.compat.abraxas` (no A
 - [x] Public API v1 freeze (`docs/api-v1.md`, `hyperlex.API_V1`)
 - [x] Golden receipt corpus (`examples/receipts/golden/`)
 - [ ] Expanded golden corpus + CI coverage
-- [ ] Documentation site / MkDocs
+- [x] Documentation site / MkDocs (`mkdocs.yml`, `pip install -e ".[docs]"`)
 - [x] Example case studies (`examples/case-studies/`, `scripts/run_case_study.py`)
 - [ ] Optional governed LLM layer
 - [ ] Cross-domain expansion

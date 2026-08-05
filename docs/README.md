@@ -1,5 +1,8 @@
 # Hyperlex Documentation
 
+Published via **MkDocs** (`mkdocs.yml` at repo root). Run `pip install -e ".[docs]" && mkdocs serve`.
+
+
 Hyperlex is a **Hermes skill** (Python package repo). Relevant Abraxas wire shapes live in
 `hyperlex.compat.abraxas` (no Abraxas import).
 
@@ -15,6 +18,7 @@ Hyperlex is a **Hermes skill** (Python package repo). Relevant Abraxas wire shap
 - [Modules / Ingest](./modules/ingest.md)
 - [Modules / Memetics typology](./modules/memetics.md)
 - [Modules / Virality + drivers](./modules/virality.md)
+- [Modules / Governed LLM](./modules/llm.md)
 
 ## Root specs
 - [ROADMAP.md](../ROADMAP.md) (canonical) · [docs/ROADMAP.md](./ROADMAP.md) (synced)

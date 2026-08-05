@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.7
+- MkDocs; governed LLM stub; ledger-diff CLI.
+
 ## 0.2.6
 - Case study runner; gaming-meta + workplace-corp lineages.
 

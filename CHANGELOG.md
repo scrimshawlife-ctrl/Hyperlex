@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.7 — MkDocs site, governed LLM stub, ledger-diff (2026-08-05)
+
+- MkDocs documentation site (`mkdocs.yml`, optional extra `[docs]`).
+- Governed LLM neologism enrichment (`hyperlex.llm`); requires `HYPERLEX_LLM=1` + provider.
+- CLI `ledger-diff` compares two receipt snapshots.
+- Docs: `docs/modules/llm.md`, `docs/index.md`.
+
 ## 0.2.6 — Case study + cross-domain lineages (2026-08-05)
 
 - Case study: `examples/case-studies/e2e-mock-scan.md` + `scripts/run_case_study.py`.

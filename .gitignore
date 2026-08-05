@@ -32,4 +32,4 @@ receipts/
 # Temp
 tmp/
 out/
-.venv/
+.venv/site/

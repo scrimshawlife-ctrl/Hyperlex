@@ -517,6 +517,54 @@ def cmd_emit_receipt(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_ledger_diff(args: argparse.Namespace) -> int:
+    """Diff two receipt JSON files (integrity, lineage, typology, virality)."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    a, err_a = _get_input_payload(args.a)
+    b, err_b = _get_input_payload(args.b)
+    if err_a or err_b or a is None or b is None:
+        _emit({"ok": False, "error": err_a or err_b or "need --a and --b receipt JSON"})
+        return 2
+
+    def snap(r: Dict[str, Any]) -> Dict[str, Any]:
+        prov = r.get("provenance") or {}
+        analysis = r.get("analysis") or {}
+        lin = analysis.get("lineage") or {}
+        mem = analysis.get("memetics") or {}
+        vir = analysis.get("virality") or {}
+        rec = r.get("receipt") or {}
+        return {
+            "integrity": rec.get("integrity"),
+            "canonical_hash": prov.get("canonical_hash"),
+            "ingest_source": prov.get("ingest_source"),
+            "brier": prov.get("brier"),
+            "lineage_family": lin.get("family_id"),
+            "lineage_confidence": lin.get("confidence"),
+            "typology": mem.get("typology_primary") or mem.get("typology"),
+            "virality_hybrid": vir.get("hybrid_score"),
+            "virality_predicted": (vir.get("prediction") or {}).get("predicted_hybrid"),
+            "hyperstition": (analysis.get("hyperstition") or {}).get("loop_stage"),
+            "n_neologisms": len(analysis.get("neologisms") or []),
+        }
+
+    sa, sb = snap(a), snap(b)
+    deltas = {k: {"a": sa.get(k), "b": sb.get(k)} for k in sa if sa.get(k) != sb.get(k)}
+    _emit({
+        "ok": True,
+        "command": "ledger-diff",
+        "a": sa,
+        "b": sb,
+        "changed_fields": sorted(deltas.keys()),
+        "deltas": deltas,
+        "same_integrity": sa.get("integrity") == sb.get("integrity"),
+    })
+    return 0
+
+
 def cmd_list_receipts(args: argparse.Namespace) -> int:
     pkg, err = _import_hyperlex()
     if pkg is None:
@@ -1020,6 +1068,11 @@ def _build_parser() -> argparse.ArgumentParser:
     list_parser.add_argument("--limit", type=int, default=50)
     list_parser.add_argument("--lineage-family", default="")
     list_parser.set_defaults(func=cmd_list_receipts)
+
+    ld_parser = subparsers.add_parser("ledger-diff", help="Diff two receipt JSON snapshots")
+    ld_parser.add_argument("--a", required=True, help="Receipt A JSON path")
+    ld_parser.add_argument("--b", required=True, help="Receipt B JSON path")
+    ld_parser.set_defaults(func=cmd_ledger_diff)
 
     vrl_parser = subparsers.add_parser("verify-receipt-ledger", help="Verify receipt ledger hash chain")
     vrl_parser.add_argument("--ledger", default="")

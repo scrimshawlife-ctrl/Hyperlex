@@ -54,10 +54,10 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] Local/Hermes packaging (`pip install -e .` / skill install) — **no public PyPI publish planned**
 - [x] Golden receipt corpus (`examples/receipts/golden/`) + API v1 freeze
 - [x] Broader golden corpus + CI (kinship/political goldens; pytest+diagram in GHA)
-- [ ] Documentation site / MkDocs
+- [x] Documentation site / MkDocs (`mkdocs.yml`, `pip install -e ".[docs]"`)
 - [x] Example case studies (`examples/case-studies/`, `scripts/run_case_study.py`)
 - [x] Public API v1 freeze (`docs/api-v1.md`, `hyperlex.API_V1`)
-- [ ] Optional LLM augmentation layer (governed)
+- [x] Optional governed LLM layer (`hyperlex.llm`, off by default)
 - [x] Cross-domain lineages (gaming-meta, workplace-corp + goldens)
 
 ### Long-term (Phase 5+)

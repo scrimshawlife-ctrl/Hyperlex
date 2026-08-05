@@ -1,0 +1,58 @@
+site_name: Hyperlex
+site_description: Hermes skill for memetic emergence analysis (Python package repo)
+site_url: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
+repo_url: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
+repo_name: Hyperlex-Hermes-Specs
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: pink
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - search.suggest
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Hermes skill: hermes-skill.md
+  - API v1: api-v1.md
+  - Architecture: architecture.md
+  - Design: design.md
+  - Spec: spec.md
+  - Roadmap: ROADMAP.md
+  - Calibration:
+      - Brier design: brier-calibration.md
+      - Connectors: connectors.md
+  - Analysis:
+      - Slang lineages: slang-lineages.md
+      - Memetics typology: modules/memetics.md
+      - Virality: modules/virality.md
+      - Ingest: modules/ingest.md
+      - LLM (governed): modules/llm.md
+  - Ops:
+      - Cron scan: cron-live-emergence.md
+      - Diagrams: diagrams.md
+      - Rune relay: rune-signal-relay.md
+      - Security: SECURITY.md
+      - Semver: SEMVER.md
+  - Case studies: case-studies.md
+
+plugins:
+  - search
+
+extra:
+  version: 0.2.7

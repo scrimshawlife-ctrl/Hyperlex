@@ -557,6 +557,18 @@ def detect_memetic_patterns(
 
     observed = humanize_slang_output(raw_signal[:280])
     neos = detect_neologisms(observed)
+    llm_meta: Optional[Dict[str, Any]] = None
+    # Optional governed LLM enrichment (HYPERLEX_LLM=1 + provider)
+    try:
+        from ..llm import llm_enabled, enrich_neologisms
+
+        if llm_enabled():
+            llm_meta = enrich_neologisms(observed, neos)
+            if llm_meta.get("applied"):
+                neos = list(llm_meta.get("merged") or neos)
+    except Exception:
+        llm_meta = {"status": "error", "applied": False}
+
     virality = compute_virality_score(observed)
     hyper = simulate_hyperstition_loop(observed)
 
@@ -616,6 +628,14 @@ def detect_memetic_patterns(
         "memetics": memetic,
         "hyperstition": hyper,
     }
+    if llm_meta is not None:
+        analysis["llm_enrichment"] = {
+            "status": llm_meta.get("status"),
+            "applied": bool(llm_meta.get("applied")),
+            "n_new": llm_meta.get("n_new", 0),
+            "reason": llm_meta.get("reason"),
+            "provenance": "SPECULATIVE" if llm_meta.get("applied") else "NOT_COMPUTABLE",
+        }
     if lineage:
         analysis["lineage"] = lineage
 

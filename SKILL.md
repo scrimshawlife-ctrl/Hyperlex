@@ -9,7 +9,7 @@ description: >
   brainrot, and receipt-backed cultural signal scans. Not for general web
   research (use agent-reach), product audits (neon-genie), or cinematic work
   (kubrick).
-version: 0.2.6
+version: 0.2.7
 author: Applied Alchemy Labs / Hermes
 license: MIT
 platforms: [linux, macos]
