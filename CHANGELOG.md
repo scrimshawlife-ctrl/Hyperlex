@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.1 — Hermes skill packaging (2026-08-05)
+
+- Full Hermes skill contract in `SKILL.md` (frontmatter, triggers, procedure, authority).
+- Atomic-style `install.sh`: `--dry-run`, `--target`, `--rollback`, `--openclaw`, post-install check/smoke.
+- `hyperlex.manifest.yaml` expanded for Hermes/OpenClaw hosts and command surface.
+- `skills.sh.json`, `QUICKSTART.md`, `references/hermes-runtime-contract.md`.
+- Install target: `~/.hermes/skills/hyperlex`.
+
+
 ## 0.1.0
 
 - Added executable Hermes skill runtime for standalone use.

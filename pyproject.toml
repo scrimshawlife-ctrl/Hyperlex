@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hyperlex"
-version = "0.1.0"
+version = "0.1.1"
 description = "Standalone memetic emergence engine for slang detection, hyperstition, virality, and symbolic forecasting."
 authors = [
     {name = "Hermes / Abraxas systems"}

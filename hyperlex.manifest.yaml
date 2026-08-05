@@ -1,16 +1,49 @@
 name: hyperlex
-description: "Standalone memetic emergence engine for slang detection, hyperstition tracking, and virality analysis"
-version: 0.1.0
+version: 0.1.1
+display_name: Hyperlex
+kind: hermes-openclaw-skill
+description: >
+  Standalone memetic emergence engine for slang detection, hyperstition
+  tracking, virality analysis, lineage matching, and settled Brier calibration.
 license: MIT
-entrypoint: scripts/hyperlex.py
+homepage: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
+repository: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
+
+skill_entry: SKILL.md
+cli_entry: scripts/hyperlex.py
+installer: install.sh
+package_root: src/hyperlex
+
+hosts:
+  - hermes
+  - openclaw
+
+install:
+  hermes_path: ~/.hermes/skills/hyperlex
+  openclaw_path: ~/.openclaw/skills/hyperlex
+  atomic: true
+  supports_dry_run: true
+  supports_rollback: true
+  path_jail_home: true
+
 supports:
   - python3
   - linux
   - darwin
+
 tags:
   - memetics
+  - slang
+  - hyperstition
+  - virality
+  - lineage
+  - calibration
+  - brier
   - symbolic-analysis
   - hermes-skill
+
+entrypoint: scripts/hyperlex.py
+
 commands:
   - check
   - sources
@@ -23,12 +56,62 @@ commands:
   - validate
   - verify-receipt
   - smoke
+
+intents:
+  - check
+  - sources
+  - ingest
+  - analyze
+  - extract-forecasts
+  - settle
+  - score-series
+  - verify-score-log
+  - validate
+  - verify-receipt
+  - smoke
+
+schemas:
+  - schemas/ingest.v1.schema.json
+  - schemas/result.v1.schema.json
+  - schemas/receipt.v1.schema.json
+  - schemas/forecast.v1.schema.json
+  - schemas/settlement.v1.schema.json
+  - schemas/brier_series.v1.schema.json
+  - schemas/lineage.v1.schema.json
+
+runtime_profiles:
+  stdlib:
+    dependencies: []
+    guarantee: "mock ingest, analysis, lineage, calibration, receipts with Python 3.10+"
+  validation:
+    dependencies: ["jsonschema>=4"]
+    guarantee: "JSON Schema validation of artifacts"
+  network:
+    dependencies: ["requests>=2"]
+    guarantee: "real/reddit/urban/wikipedia ingest adapters"
+  crawl:
+    dependencies: ["crawl4ai"]
+    guarantee: "firecrawl/crawl4ai web crawl adapters"
+
 metadata:
   hermes:
     skill_type: runtime
     runtime: python
     stdlib_first: true
+    category: analysis
   optional_dependencies:
     requests: false
     jsonschema: false
     crawl4ai: false
+
+score_log:
+  default_path: ~/.hyperlex/score_log.jsonl
+  env: HYPERLEX_SCORE_LOG
+  events: [forecast, settlement, score]
+  hash_chained: true
+
+authority:
+  - analyze emits forecasts only; provenance.brier is null until settlement
+  - settle requires operator (or declared) authority
+  - VOID/CONFLICT settlements are not scored
+  - score_series empty → NOT_COMPUTABLE

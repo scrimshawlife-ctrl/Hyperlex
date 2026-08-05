@@ -1,0 +1,11 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Memetic Analysis",
+      "description": "Cultural signal foraging, slang lineage, hyperstition/virality scoring, and settled Brier calibration.",
+      "skills": ["hyperlex"]
+    }
+  ]
+}

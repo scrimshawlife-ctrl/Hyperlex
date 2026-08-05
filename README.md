@@ -6,7 +6,7 @@
 
 **Hyperlex** is a standalone Hermes skill for memetic emergence analysis.
 
-Version **0.1.0** · Skill name: `hyperlex` · Python ≥ 3.10 · License: MIT
+Version **0.1.1** · Skill name: `hyperlex` · Python ≥ 3.10 · License: MIT
 
 ## What this skill does
 
@@ -20,20 +20,26 @@ with integrity metadata.
 python3 scripts/hyperlex.py check
 python3 scripts/hyperlex.py sources
 python3 scripts/hyperlex.py ingest "sharp money revenge" --source mock
-python3 scripts/hyperlex.py analyze --query "sharp money revenge" --source mock
-python3 scripts/hyperlex.py analyze --input out/ingest.json
+python3 scripts/hyperlex.py analyze --query "sharp money revenge" --source mock --forecasts
+python3 scripts/hyperlex.py settle --forecast-id <id> --decision TRUE
+python3 scripts/hyperlex.py score-series --verify-chain
 python3 scripts/hyperlex.py validate out/receipt.json
 python3 scripts/hyperlex.py verify-receipt out/receipt.json
 ```
 
-## Install
+## Install (Hermes skill)
 
 ```bash
+bash install.sh --dry-run
 bash install.sh
+export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" check
+python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
 ```
 
-Install supports `--dry-run` and copies the skill to
-`${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}`.
+Installer options: `--dry-run`, `--target DIR`, `--rollback`, `--openclaw`, `--skip-smoke`.
+
+See [QUICKSTART.md](./QUICKSTART.md) and [SKILL.md](./SKILL.md).
 
 ## Design surface
 

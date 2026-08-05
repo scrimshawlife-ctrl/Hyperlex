@@ -23,10 +23,15 @@ Supported sources:
 python3 scripts/hyperlex.py check
 python3 scripts/hyperlex.py sources
 python3 scripts/hyperlex.py ingest <query> [--source ...] [--structured]
-python3 scripts/hyperlex.py analyze [--query ...] [--source ...] [--structured-ingest] [--validate]
+python3 scripts/hyperlex.py analyze [--query ...] [--source ...] [--structured-ingest] [--validate] [--forecasts] [--append-log]
 python3 scripts/hyperlex.py analyze --input <ingest.json>
+python3 scripts/hyperlex.py extract-forecasts --input <result.json> [--append-log]
+python3 scripts/hyperlex.py settle --forecast-id <id> --decision TRUE|FALSE|VOID|CONFLICT
+python3 scripts/hyperlex.py score-series [--mean-shift] [--verify-chain]
+python3 scripts/hyperlex.py verify-score-log
 python3 scripts/hyperlex.py validate <artifact.json>
 python3 scripts/hyperlex.py verify-receipt <receipt.json>
+python3 scripts/hyperlex.py smoke
 ```
 
 ## Output (canonical fields)
