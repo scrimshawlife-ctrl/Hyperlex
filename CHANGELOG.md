@@ -23,3 +23,11 @@
 - Schemas: `forecast.v1`, `settlement.v1`, `brier_series.v1`.
 - Removed hardcoded `provenance.brier = 0.89`; open results set `brier: null` with `brier_requires_settlement`.
 - DESIGN principle 12: Brier requires settlement; fail-closed `NOT_COMPUTABLE` when outcomes missing.
+
+## Calibration v1.1 diagnostics (2026-08-05)
+
+- **Vieira non-negative Yates** (`yates_vieira`): variance mismatch + correlation deficit + bias²; reports ρ when defined.
+- **Ferro–Fricker Murphy** (`murphy_ferro`): bias-corrected REL/RES/UNC for small-n series; keeps uncorrected snapshot.
+- **Discrimination slope** (`discrimination.delta_f`): mean(f|o=1) − mean(f|o=0).
+- Classical Yates enriched with mean_forecast, mean_outcome, cov_fo, var_f, var_o.
+- Schema `brier_series.v1` extended; design doc updated.
