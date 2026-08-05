@@ -1,6 +1,6 @@
 # Hyperlex Public API v1 (frozen for 0.2.x)
 
-Hyperlex is a **standalone application**. No Abraxas, Orchestra, or Hollersports
+Hyperlex is a **Hermes skill** implemented as a Python package. No Abraxas, Orchestra, or Hollersports
 import is required at runtime.
 
 ## Package entry
@@ -41,7 +41,7 @@ rename these symbols. New symbols may be added; breaking changes wait for 0.3+.
 | `settle` / `score_pair` / `score_series` | Brier only after settlement; else `NOT_COMPUTABLE` |
 | `relay_from_result(result)` | `RUNE.HLX.*` envelopes |
 
-## CLI (standalone app)
+## CLI (Hermes skill)
 
 Hermes skill tree:
 

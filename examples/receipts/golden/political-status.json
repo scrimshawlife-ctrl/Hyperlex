@@ -7,32 +7,32 @@
     "lineage": {
       "branch_operator": "irony_inversion",
       "confidence": 0.98,
-      "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
-      "family_id": "brainrot-aura",
+      "diagram_ref": "examples/slang-families/political-status-family.mmd",
+      "family_id": "political-status",
       "matched_terms": [
-        "brainrot",
-        "aura",
-        "aura farming",
-        "mid",
-        "cooked",
-        "let him cook"
+        "based",
+        "redpilled",
+        "blackpilled",
+        "cope",
+        "seethe",
+        "dilate"
       ],
-      "payload_note": "content-degradation + status radiation; self-aware consumption",
+      "payload_note": "tribal signaling + emotional routing; high mutation rate",
       "provenance": "INFERRED",
       "score_breakdown": {
-        "coverage": 0.857,
+        "coverage": 1.0,
         "density": 0.18,
         "hit_bonus": 0.38,
         "n_hits": 6,
-        "raw": 1.148,
-        "specificity": 0.578,
+        "raw": 1.162,
+        "specificity": 0.531,
         "term_weights": {
-          "aura": 0.46,
-          "aura farming": 0.75,
-          "brainrot": 0.56,
-          "cooked": 0.51,
-          "let him cook": 0.75,
-          "mid": 0.435
+          "based": 0.485,
+          "blackpilled": 0.635,
+          "cope": 0.46,
+          "dilate": 0.51,
+          "redpilled": 0.585,
+          "seethe": 0.51
         }
       }
     },
@@ -41,23 +41,23 @@
       "provenance": "INFERRED",
       "rules_hit": {
         "irony_inversion": [
-          "brainrot"
+          "cope",
+          "seethe",
+          "dilate",
+          "redpill",
+          "blackpill",
+          "lineage:political-status"
         ],
         "status_radiation": [
-          "aura",
-          "aura farming",
-          "mid",
-          "cooked",
-          "let him cook",
-          "lineage:brainrot-aura"
+          "based"
         ]
       },
       "score": 0.95,
-      "typology": "status_radiation",
-      "typology_primary": "status_radiation",
+      "typology": "irony_inversion",
+      "typology_primary": "irony_inversion",
       "typology_scores": {
-        "irony_inversion": 0.522,
-        "status_radiation": 1.1
+        "irony_inversion": 1.1,
+        "status_radiation": 0.522
       }
     },
     "neologisms": [],
@@ -68,11 +68,11 @@
     },
     "virality": {
       "acceleration": 0.3,
-      "hybrid_score": 0.472,
-      "velocity": 0.425
+      "hybrid_score": 0.457,
+      "velocity": 0.375
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.472. Lineage: brainrot-aura (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.457. Lineage: political-status (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -84,27 +84,27 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
+      "fetched_at": "2026-08-05T17:31:05.560925+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
     },
-    "query": "brainrot aura farming mid cooked",
+    "query": "based redpilled cope seethe dilate",
     "source": "mock",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
-      "content_hash_short": "391f6b43665c1b54",
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
-      "fingerprint_id": "85a42bb2a513b94785c6b791",
+      "content_hash": "d45f7bcd7e4f3f63fb26d38e3e3abe3254a8e023a9e2c397f0f32c968dcfe2f9",
+      "content_hash_short": "d45f7bcd7e4f3f63",
+      "fetched_at": "2026-08-05T17:31:05.560925+00:00",
+      "fingerprint_id": "28a2dafa3ab986b9d02c9fe4",
       "package_version": "0.2.3",
-      "query": "brainrot aura farming mid cooked",
+      "query": "based redpilled cope seethe dilate",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     }
   },
   "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
-  "observed": "Mock memetic channel on \"brainrot aura farming mid cooked\". brainrot aura farming mid cooked let him cook.",
+  "observed": "Mock memetic channel on \"based redpilled cope seethe dilate\". based redpilled cope seethe dilate blackpilled.",
   "provenance": {
     "adapter_version": "ingest-v1.7",
     "arxiv_concepts_applied": [
@@ -117,29 +117,29 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "0d8a5dd6b68fbc16",
-    "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
+    "canonical_hash": "9bec7d9304da556f",
+    "content_hash": "d45f7bcd7e4f3f63fb26d38e3e3abe3254a8e023a9e2c397f0f32c968dcfe2f9",
     "hyperstition_risk": "EMERGENT",
     "ingest_source": "mock",
     "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
-      "content_hash_short": "391f6b43665c1b54",
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
-      "fingerprint_id": "85a42bb2a513b94785c6b791",
+      "content_hash": "d45f7bcd7e4f3f63fb26d38e3e3abe3254a8e023a9e2c397f0f32c968dcfe2f9",
+      "content_hash_short": "d45f7bcd7e4f3f63",
+      "fetched_at": "2026-08-05T17:31:05.560925+00:00",
+      "fingerprint_id": "28a2dafa3ab986b9d02c9fe4",
       "package_version": "0.2.3",
-      "query": "brainrot aura farming mid cooked",
+      "query": "based redpilled cope seethe dilate",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:31:05.558961+00:00",
+    "timestamp": "2026-08-05T17:31:05.561166+00:00",
     "version": "0.2.3"
   },
   "receipt": {
-    "integrity": "297201d68836",
-    "path": "examples/receipts/golden/brainrot-aura.json"
+    "integrity": "ba290573b781",
+    "path": "examples/receipts/golden/political-status.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
   "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."

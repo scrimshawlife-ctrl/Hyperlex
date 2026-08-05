@@ -1,6 +1,6 @@
 # Hyperlex Quickstart
 
-Standalone app. Hermes skill install recommended.
+Hermes skill backed by this Python package repo.
 
 ## Install
 
@@ -54,6 +54,6 @@ sig = build_market_signal(result)
 ## Docs
 
 - [docs/api-v1.md](docs/api-v1.md) — frozen API
-- [docs/standalone-app.md](docs/standalone-app.md) — architecture posture
+- [docs/hermes-skill.md](docs/hermes-skill.md) — architecture posture
 - [docs/connectors.md](docs/connectors.md) — signal + feedback
 - [docs/brier-calibration.md](docs/brier-calibration.md)

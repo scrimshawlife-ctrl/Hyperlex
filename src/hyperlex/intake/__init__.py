@@ -395,23 +395,39 @@ def ingest_signal(query: str, source: str = "mock") -> str:
     if source == "mock":
         # Deterministic but query-aware so lineage/forecast fixtures stay distinct.
         q = (query or "").strip()
-        base = (
-            f'Mock memetic channel on "{q}": organic velocity, minor coordinated push. '
-            "Narrative circulating in community discourse."
-        )
-        # Seed family-rich tokens only when the query already hints at them —
-        # keeps empty/unrelated queries below lineage threshold.
         ql = q.lower()
+        # Neutral base — no imitation/spread cues unless family seed matches
+        base = f'Mock channel note on "{q}". Quiet discourse sample.'
         if any(k in ql for k in ("sharp", "steam", "revenge", "betting", "square", "wiseguy")):
-            base += " sharp steam square revenge wiseguy hammer low block."
+            base = (
+                f'Mock memetic channel on "{q}": organic velocity, coordinated push. '
+                "sharp steam square revenge wiseguy hammer low block."
+            )
         elif any(k in ql for k in ("hodl", "degen", "rekt", "moon", "crypto")):
-            base += " hodl diamond hands rekt degen moon bagholder."
+            base = (
+                f'Mock memetic channel on "{q}": organic velocity. '
+                "hodl diamond hands rekt degen moon bagholder."
+            )
         elif any(k in ql for k in ("brainrot", "aura", "mid", "cooked")):
-            base += " brainrot aura farming mid cooked let him cook."
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "brainrot aura farming mid cooked let him cook."
+            )
         elif any(k in ql for k in ("agentic", "slop", "hallucin", "clanker", "token")):
-            base += " agentic slop skill issue hallucinate clanker context window."
-        elif any(k in ql for k in ("based", "cope", "seethe", "redpill")):
-            base += " based redpilled cope seethe dilate."
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "agentic slop skill issue hallucinate clanker context window."
+            )
+        elif any(k in ql for k in ("based", "cope", "seethe", "redpill", "blackpill", "political")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "based redpilled cope seethe dilate blackpilled."
+            )
+        elif any(k in ql for k in ("bro", "sis", "twin", "unc", "cuz", "kinship")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "bro sis twin unc cuz family."
+            )
         return base
     elif source in ("real", "glossary", "web"):
         return _fetch_glossary_primary(query)

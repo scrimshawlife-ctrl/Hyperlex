@@ -38,8 +38,27 @@
     },
     "memetics": {
       "is_memetic": true,
-      "score": 0.82,
-      "typology": "betting_tactical"
+      "provenance": "INFERRED",
+      "rules_hit": {
+        "imitation_spread": [
+          "organic velocity"
+        ],
+        "risk_identity": [
+          "degen",
+          "hodl",
+          "rekt",
+          "diamond hands",
+          "moon",
+          "lineage:crypto-degen"
+        ]
+      },
+      "score": 0.95,
+      "typology": "risk_identity",
+      "typology_primary": "risk_identity",
+      "typology_scores": {
+        "imitation_spread": 0.413,
+        "risk_identity": 1.15
+      }
     },
     "neologisms": [],
     "semantic_variation": {
@@ -49,11 +68,11 @@
     },
     "virality": {
       "acceleration": 0.6,
-      "hybrid_score": 0.667,
-      "velocity": 0.675
+      "hybrid_score": 0.607,
+      "velocity": 0.475
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.667. Lineage: crypto-degen (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.607. Lineage: crypto-degen (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -65,7 +84,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T16:59:05.387021+00:00",
+      "fetched_at": "2026-08-05T17:31:05.557135+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -74,18 +93,18 @@
     "source": "mock",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "34699dc80a58b0afbbeaac244b5deab6fb5d4617e04342bbdf9483b098d6ba51",
-      "content_hash_short": "34699dc80a58b0af",
-      "fetched_at": "2026-08-05T16:59:05.387021+00:00",
-      "fingerprint_id": "70e341cbaaa3719af7fff98b",
-      "package_version": "0.2.1",
+      "content_hash": "fec422a8cb3950834da9db745bb6ae8242d2cf0d92fc0efc8ead526d291b320f",
+      "content_hash_short": "fec422a8cb395083",
+      "fetched_at": "2026-08-05T17:31:05.557135+00:00",
+      "fingerprint_id": "bef36c861c4134fe423fadca",
+      "package_version": "0.2.3",
       "query": "hodl diamond hands rekt degen moon",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     }
   },
   "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
-  "observed": "Mock memetic channel on \"hodl diamond hands rekt degen moon\": organic velocity, minor coordinated push. Narrative circulating in community discourse. hodl diamond hands rekt degen moon bagholder.",
+  "observed": "Mock memetic channel on \"hodl diamond hands rekt degen moon\": organic velocity. hodl diamond hands rekt degen moon bagholder.",
   "provenance": {
     "adapter_version": "ingest-v1.7",
     "arxiv_concepts_applied": [
@@ -98,28 +117,28 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "6f3c9d33ccbd8cca",
-    "content_hash": "34699dc80a58b0afbbeaac244b5deab6fb5d4617e04342bbdf9483b098d6ba51",
+    "canonical_hash": "6fae05ca1eeb1f69",
+    "content_hash": "fec422a8cb3950834da9db745bb6ae8242d2cf0d92fc0efc8ead526d291b320f",
     "hyperstition_risk": "EMERGENT",
     "ingest_source": "mock",
     "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "34699dc80a58b0afbbeaac244b5deab6fb5d4617e04342bbdf9483b098d6ba51",
-      "content_hash_short": "34699dc80a58b0af",
-      "fetched_at": "2026-08-05T16:59:05.387021+00:00",
-      "fingerprint_id": "70e341cbaaa3719af7fff98b",
-      "package_version": "0.2.1",
+      "content_hash": "fec422a8cb3950834da9db745bb6ae8242d2cf0d92fc0efc8ead526d291b320f",
+      "content_hash_short": "fec422a8cb395083",
+      "fetched_at": "2026-08-05T17:31:05.557135+00:00",
+      "fingerprint_id": "bef36c861c4134fe423fadca",
+      "package_version": "0.2.3",
       "query": "hodl diamond hands rekt degen moon",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T16:59:05.387264+00:00",
-    "version": "0.2.1"
+    "timestamp": "2026-08-05T17:31:05.557380+00:00",
+    "version": "0.2.3"
   },
   "receipt": {
-    "integrity": "6705d5e36aad",
+    "integrity": "701f86ddeab6",
     "path": "examples/receipts/golden/crypto-degen.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

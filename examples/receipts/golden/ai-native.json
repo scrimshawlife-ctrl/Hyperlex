@@ -38,8 +38,24 @@
     },
     "memetics": {
       "is_memetic": true,
-      "score": 0.82,
-      "typology": "betting_tactical"
+      "provenance": "INFERRED",
+      "rules_hit": {
+        "platform_agency": [
+          "agentic",
+          "slop",
+          "hallucin",
+          "clanker",
+          "context window",
+          "skill issue",
+          "lineage:ai-native"
+        ]
+      },
+      "score": 0.95,
+      "typology": "platform_agency",
+      "typology_primary": "platform_agency",
+      "typology_scores": {
+        "platform_agency": 1.15
+      }
     },
     "neologisms": [],
     "semantic_variation": {
@@ -48,12 +64,12 @@
       "sense": "general"
     },
     "virality": {
-      "acceleration": 0.6,
-      "hybrid_score": 0.667,
-      "velocity": 0.675
+      "acceleration": 0.3,
+      "hybrid_score": 0.472,
+      "velocity": 0.425
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.667. Lineage: ai-native (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.472. Lineage: ai-native (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -65,7 +81,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T16:59:05.388660+00:00",
+      "fetched_at": "2026-08-05T17:31:05.559505+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -74,18 +90,18 @@
     "source": "mock",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "48e1bde64ae7b7b91fae0497971fbcfe7472d3b4639470c6ad8128d17a65ba62",
-      "content_hash_short": "48e1bde64ae7b7b9",
-      "fetched_at": "2026-08-05T16:59:05.388660+00:00",
-      "fingerprint_id": "8d16417cd31cfb86c1d2b151",
-      "package_version": "0.2.1",
+      "content_hash": "f5c4babeb4dfbf940bc15a6b11fe22b213bee58e047d63e1d4bd377205c8d5d3",
+      "content_hash_short": "f5c4babeb4dfbf94",
+      "fetched_at": "2026-08-05T17:31:05.559505+00:00",
+      "fingerprint_id": "13d8a337c417482296bfe2a9",
+      "package_version": "0.2.3",
       "query": "agentic slop skill issue hallucinate",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     }
   },
   "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
-  "observed": "Mock memetic channel on \"agentic slop skill issue hallucinate\": organic velocity, minor coordinated push. Narrative circulating in community discourse. agentic slop skill issue hallucinate clanker context window.",
+  "observed": "Mock memetic channel on \"agentic slop skill issue hallucinate\". agentic slop skill issue hallucinate clanker context window.",
   "provenance": {
     "adapter_version": "ingest-v1.7",
     "arxiv_concepts_applied": [
@@ -98,28 +114,28 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "cc72331fd86174f0",
-    "content_hash": "48e1bde64ae7b7b91fae0497971fbcfe7472d3b4639470c6ad8128d17a65ba62",
+    "canonical_hash": "f23df8fac0e88508",
+    "content_hash": "f5c4babeb4dfbf940bc15a6b11fe22b213bee58e047d63e1d4bd377205c8d5d3",
     "hyperstition_risk": "EMERGENT",
     "ingest_source": "mock",
     "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "48e1bde64ae7b7b91fae0497971fbcfe7472d3b4639470c6ad8128d17a65ba62",
-      "content_hash_short": "48e1bde64ae7b7b9",
-      "fetched_at": "2026-08-05T16:59:05.388660+00:00",
-      "fingerprint_id": "8d16417cd31cfb86c1d2b151",
-      "package_version": "0.2.1",
+      "content_hash": "f5c4babeb4dfbf940bc15a6b11fe22b213bee58e047d63e1d4bd377205c8d5d3",
+      "content_hash_short": "f5c4babeb4dfbf94",
+      "fetched_at": "2026-08-05T17:31:05.559505+00:00",
+      "fingerprint_id": "13d8a337c417482296bfe2a9",
+      "package_version": "0.2.3",
       "query": "agentic slop skill issue hallucinate",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T16:59:05.389002+00:00",
-    "version": "0.2.1"
+    "timestamp": "2026-08-05T17:31:05.559722+00:00",
+    "version": "0.2.3"
   },
   "receipt": {
-    "integrity": "28b466c8dd96",
+    "integrity": "dac0ddcdc35f",
     "path": "examples/receipts/golden/ai-native.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

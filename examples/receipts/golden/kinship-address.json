@@ -5,34 +5,34 @@
       "mechanism": "narrative circulating but no market confirmation yet"
     },
     "lineage": {
-      "branch_operator": "irony_inversion",
+      "branch_operator": "sense_extension",
       "confidence": 0.98,
-      "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
-      "family_id": "brainrot-aura",
+      "diagram_ref": "examples/slang-families/kinship-address.mmd",
+      "family_id": "kinship-address",
       "matched_terms": [
-        "brainrot",
-        "aura",
-        "aura farming",
-        "mid",
-        "cooked",
-        "let him cook"
+        "bro",
+        "sis",
+        "twin",
+        "unc",
+        "cuz",
+        "family"
       ],
-      "payload_note": "content-degradation + status radiation; self-aware consumption",
+      "payload_note": "fictive kinship; community responsibility + platform acceleration",
       "provenance": "INFERRED",
       "score_breakdown": {
-        "coverage": 0.857,
+        "coverage": 1.0,
         "density": 0.18,
         "hit_bonus": 0.38,
         "n_hits": 6,
-        "raw": 1.148,
-        "specificity": 0.578,
+        "raw": 1.132,
+        "specificity": 0.452,
         "term_weights": {
-          "aura": 0.46,
-          "aura farming": 0.75,
-          "brainrot": 0.56,
-          "cooked": 0.51,
-          "let him cook": 0.75,
-          "mid": 0.435
+          "bro": 0.435,
+          "cuz": 0.435,
+          "family": 0.51,
+          "sis": 0.435,
+          "twin": 0.46,
+          "unc": 0.435
         }
       }
     },
@@ -40,24 +40,21 @@
       "is_memetic": true,
       "provenance": "INFERRED",
       "rules_hit": {
-        "irony_inversion": [
-          "brainrot"
-        ],
-        "status_radiation": [
-          "aura",
-          "aura farming",
-          "mid",
-          "cooked",
-          "let him cook",
-          "lineage:brainrot-aura"
+        "kinship_address": [
+          "bro",
+          "sis",
+          "twin",
+          "unc",
+          "cuz",
+          "family",
+          "lineage:kinship-address"
         ]
       },
-      "score": 0.95,
-      "typology": "status_radiation",
-      "typology_primary": "status_radiation",
+      "score": 0.93,
+      "typology": "kinship_address",
+      "typology_primary": "kinship_address",
       "typology_scores": {
-        "irony_inversion": 0.522,
-        "status_radiation": 1.1
+        "kinship_address": 1.05
       }
     },
     "neologisms": [],
@@ -68,11 +65,11 @@
     },
     "virality": {
       "acceleration": 0.3,
-      "hybrid_score": 0.472,
-      "velocity": 0.425
+      "hybrid_score": 0.465,
+      "velocity": 0.4
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.472. Lineage: brainrot-aura (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.465. Lineage: kinship-address (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -84,27 +81,27 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
+      "fetched_at": "2026-08-05T17:31:05.560247+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
     },
-    "query": "brainrot aura farming mid cooked",
+    "query": "bro sis twin unc cuz family",
     "source": "mock",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
-      "content_hash_short": "391f6b43665c1b54",
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
-      "fingerprint_id": "85a42bb2a513b94785c6b791",
+      "content_hash": "64f97a7017d34d5642b99bdbe3832e99cc6d0c1e69ae8b380c7f8a060e9e30d0",
+      "content_hash_short": "64f97a7017d34d56",
+      "fetched_at": "2026-08-05T17:31:05.560247+00:00",
+      "fingerprint_id": "51f79ec232267538d20d1e40",
       "package_version": "0.2.3",
-      "query": "brainrot aura farming mid cooked",
+      "query": "bro sis twin unc cuz family",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     }
   },
   "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
-  "observed": "Mock memetic channel on \"brainrot aura farming mid cooked\". brainrot aura farming mid cooked let him cook.",
+  "observed": "Mock memetic channel on \"bro sis twin unc cuz family\". bro sis twin unc cuz family.",
   "provenance": {
     "adapter_version": "ingest-v1.7",
     "arxiv_concepts_applied": [
@@ -117,29 +114,29 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "0d8a5dd6b68fbc16",
-    "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
+    "canonical_hash": "cf57bd4d8a7172e2",
+    "content_hash": "64f97a7017d34d5642b99bdbe3832e99cc6d0c1e69ae8b380c7f8a060e9e30d0",
     "hyperstition_risk": "EMERGENT",
     "ingest_source": "mock",
     "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "391f6b43665c1b547d9fb38e14349a0ec3f0b25a035e2dbcb26b3226ed65a012",
-      "content_hash_short": "391f6b43665c1b54",
-      "fetched_at": "2026-08-05T17:31:05.558612+00:00",
-      "fingerprint_id": "85a42bb2a513b94785c6b791",
+      "content_hash": "64f97a7017d34d5642b99bdbe3832e99cc6d0c1e69ae8b380c7f8a060e9e30d0",
+      "content_hash_short": "64f97a7017d34d56",
+      "fetched_at": "2026-08-05T17:31:05.560247+00:00",
+      "fingerprint_id": "51f79ec232267538d20d1e40",
       "package_version": "0.2.3",
-      "query": "brainrot aura farming mid cooked",
+      "query": "bro sis twin unc cuz family",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T17:31:05.558961+00:00",
+    "timestamp": "2026-08-05T17:31:05.560464+00:00",
     "version": "0.2.3"
   },
   "receipt": {
-    "integrity": "297201d68836",
-    "path": "examples/receipts/golden/brainrot-aura.json"
+    "integrity": "5de16066cc0d",
+    "path": "examples/receipts/golden/kinship-address.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
   "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."

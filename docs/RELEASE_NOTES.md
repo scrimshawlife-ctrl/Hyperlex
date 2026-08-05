@@ -1,5 +1,8 @@
 # Release notes
 
+## 0.2.4
+- Hermes skill posture docs; typology expansion; CI + golden corpus growth.
+
 ## 0.2.3
 - Automated Mermaid diagrams from receipts/ledger (`diagram` CLI).
 
@@ -10,7 +13,7 @@
 - CLI: `signal`, `feedback`.
 
 ## 0.2.1
-- Standalone app model; `hyperlex.compat.abraxas` modules.
+- Hermes skill model (Python package repo); `hyperlex.compat.abraxas` modules.
 - Public API v1 freeze; golden receipt corpus.
 
 ## 0.2.0

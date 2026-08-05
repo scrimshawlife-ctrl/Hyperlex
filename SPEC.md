@@ -1,6 +1,6 @@
 # Hyperlex Technical Specification v0.2
 
-**Standalone app.** No hard dependency on Abraxas. Relevant Abraxas wire
+**Hermes skill (Python package repo).** No hard dependency on Abraxas. Relevant Abraxas wire
 capabilities are Hyperlex modules under `hyperlex.compat.abraxas`.
 
 API freeze: [`docs/api-v1.md`](docs/api-v1.md) · `hyperlex.API_V1`

@@ -1,4 +1,4 @@
-"""Hyperlex — standalone memetic emergence engine.
+"""Hyperlex — Hermes skill package for memetic emergence analysis.
 
 Architecture:
   intake → analysis → synthesis → receipt → calibration → relay

@@ -1,10 +1,10 @@
 # Hyperlex Architecture
 
-**Version:** 0.2.x · **Mode:** standalone application
+**Version:** 0.2.x · **Mode:** Hermes skill (Python package repo)
 
-Hyperlex is a pure-function-first memetic engine with optional append-only
-side effects (receipts, score log, receipt ledger). It does **not** import
-Abraxas. Relevant Abraxas wire shapes live under `hyperlex.compat.abraxas`.
+Hyperlex is a pure-function-first memetic engine packaged as a Hermes skill.
+Optional append-only side effects: receipts, score log, receipt ledger.
+It does **not** import Abraxas. Relevant Abraxas wire shapes live under `hyperlex.compat.abraxas`.
 
 ## Data flow
 
@@ -92,4 +92,4 @@ from hyperlex.compat.abraxas import (
 - OBSERVED / INFERRED / SPECULATIVE discipline
 - Python ≥ 3.10, stdlib-first baseline
 
-See [SPEC.md](./SPEC.md), [docs/api-v1.md](./docs/api-v1.md), [docs/standalone-app.md](./docs/standalone-app.md).
+See [SPEC.md](./SPEC.md), [docs/api-v1.md](./docs/api-v1.md), [docs/hermes-skill.md](./docs/hermes-skill.md).

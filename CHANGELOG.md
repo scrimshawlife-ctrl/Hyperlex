@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.4 — Hermes skill posture, CI, typology, goldens (2026-08-05)
+
+- Docs: Hyperlex is a **Hermes skill (Python package repo)** — not a separate product app.
+  `docs/hermes-skill.md` replaces standalone-app framing.
+- CI: `PYTHONPATH=src`, offline env, diagram --from-golden step.
+- Memetic typology expansion: multi-type rule table + lineage soft prior + transparent rules_hit.
+- Golden receipts: kinship-address, political-status (+ typology field in MANIFEST).
+
 ## 0.2.3 — Receipt history diagrams (2026-08-05)
 
 - `hyperlex.diagrams` — Mermaid lineage distribution, receipt timeline, family graph, per-receipt flow.
@@ -16,7 +24,7 @@
 
 ## 0.2.1 — Standalone app, API freeze, golden receipts, Abraxas modules (2026-08-05)
 
-- Docs synced: `docs/ROADMAP.md`, `docs/api-v1.md`, `docs/standalone-app.md`, SPEC/DESIGN.
+- Docs synced: `docs/ROADMAP.md`, `docs/api-v1.md`, `docs/hermes-skill.md`, SPEC/DESIGN.
 - Public API v1 freeze via `hyperlex.API_V1`.
 - Golden receipt corpus: `examples/receipts/golden/` + MANIFEST.
 - Relevant Abraxas capabilities as Hyperlex modules: `hyperlex.compat.abraxas`

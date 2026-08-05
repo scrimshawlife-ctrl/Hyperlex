@@ -2,60 +2,89 @@
   "receipts": [
     {
       "brier": null,
-      "canonical_hash": "875608375031afca",
+      "canonical_hash": "025e65f28b9fdceb",
       "file": "betting-sharp.json",
       "has_source_fingerprint": true,
       "id": "betting-sharp",
-      "integrity": "caa91d3ea23e",
+      "integrity": "018674222eb8",
       "lineage_family": "betting-sharp",
       "n_forecasts": 3,
-      "query": "sharp steam square revenge wiseguy hammer"
+      "query": "sharp steam square revenge wiseguy hammer",
+      "typology": "tactical_edge"
     },
     {
       "brier": null,
-      "canonical_hash": "6f3c9d33ccbd8cca",
+      "canonical_hash": "6fae05ca1eeb1f69",
       "file": "crypto-degen.json",
       "has_source_fingerprint": true,
       "id": "crypto-degen",
-      "integrity": "6705d5e36aad",
+      "integrity": "701f86ddeab6",
       "lineage_family": "crypto-degen",
       "n_forecasts": 3,
-      "query": "hodl diamond hands rekt degen moon"
+      "query": "hodl diamond hands rekt degen moon",
+      "typology": "risk_identity"
     },
     {
       "brier": null,
-      "canonical_hash": "588d53e7bf8b900c",
+      "canonical_hash": "0d8a5dd6b68fbc16",
       "file": "brainrot-aura.json",
       "has_source_fingerprint": true,
       "id": "brainrot-aura",
-      "integrity": "fb635c942820",
+      "integrity": "297201d68836",
       "lineage_family": "brainrot-aura",
       "n_forecasts": 3,
-      "query": "brainrot aura farming mid cooked"
+      "query": "brainrot aura farming mid cooked",
+      "typology": "status_radiation"
     },
     {
       "brier": null,
-      "canonical_hash": "cc72331fd86174f0",
+      "canonical_hash": "f23df8fac0e88508",
       "file": "ai-native.json",
       "has_source_fingerprint": true,
       "id": "ai-native",
-      "integrity": "28b466c8dd96",
+      "integrity": "dac0ddcdc35f",
       "lineage_family": "ai-native",
       "n_forecasts": 3,
-      "query": "agentic slop skill issue hallucinate"
+      "query": "agentic slop skill issue hallucinate",
+      "typology": "platform_agency"
     },
     {
       "brier": null,
-      "canonical_hash": "d1443b0ebe0dd405",
+      "canonical_hash": "cf57bd4d8a7172e2",
+      "file": "kinship-address.json",
+      "has_source_fingerprint": true,
+      "id": "kinship-address",
+      "integrity": "5de16066cc0d",
+      "lineage_family": "kinship-address",
+      "n_forecasts": 3,
+      "query": "bro sis twin unc cuz family",
+      "typology": "kinship_address"
+    },
+    {
+      "brier": null,
+      "canonical_hash": "9bec7d9304da556f",
+      "file": "political-status.json",
+      "has_source_fingerprint": true,
+      "id": "political-status",
+      "integrity": "ba290573b781",
+      "lineage_family": "political-status",
+      "n_forecasts": 3,
+      "query": "based redpilled cope seethe dilate",
+      "typology": "irony_inversion"
+    },
+    {
+      "brier": null,
+      "canonical_hash": "2b10c51f487dcd5f",
       "file": "open-no-lineage.json",
       "has_source_fingerprint": true,
       "id": "open-no-lineage",
-      "integrity": "bf6d52e24f85",
+      "integrity": "88c9634dbb5b",
       "lineage_family": null,
       "n_forecasts": 2,
-      "query": "the weather is mild with clouds"
+      "query": "the weather is mild with clouds",
+      "typology": "one_off"
     }
   ],
   "schema": "hyperlex.golden_receipts.v1",
-  "version": "0.2.1"
+  "version": "0.2.4"
 }

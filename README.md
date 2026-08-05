@@ -4,10 +4,10 @@
 
 # Hyperlex
 
-**Standalone memetic emergence engine** — slang, lineage, hyperstition, virality,
+**Hermes skill** (Python package repo) for memetic emergence — slang, lineage, hyperstition, virality,
 receipts, settled Brier calibration, and HLX rune relay.
 
-Version **0.2.3** · Skill: `hyperlex` · Python ≥ 3.10 · License: MIT  
+Version **0.2.4** · Skill: `hyperlex` · Python ≥ 3.10 · License: MIT  
 **Not** an Abraxas dependency. Relevant Abraxas wire shapes ship as Hyperlex modules.
 
 ## What it does
@@ -61,7 +61,7 @@ python3 "$H" diagram --from-golden --out-dir out/diagrams
 | [SKILL.md](./SKILL.md) | Hermes contract |
 | [SPEC.md](./SPEC.md) | Runtime API |
 | [docs/api-v1.md](./docs/api-v1.md) | **Frozen public API** |
-| [docs/standalone-app.md](./docs/standalone-app.md) | Standalone + Abraxas modules |
+| [docs/hermes-skill.md](./docs/hermes-skill.md) | Standalone + Abraxas modules |
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | System layout |
 | [DESIGN.md](./DESIGN.md) | Principles |
 | [ROADMAP.md](./ROADMAP.md) | Canonical roadmap |

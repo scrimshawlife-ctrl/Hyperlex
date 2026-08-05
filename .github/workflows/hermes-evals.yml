@@ -13,6 +13,10 @@ jobs:
         os: [ubuntu-latest]
         python-version: ["3.10", "3.11", "3.12"]
     runs-on: ${{ matrix.os }}
+    env:
+      HYPERLEX_OFFLINE: "1"
+      HYPERLEX_NO_RATE_LIMIT: "1"
+      PYTHONPATH: src
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python
@@ -20,12 +24,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install test dependencies
-        run: python -m pip install pytest jsonschema
+        run: python -m pip install -U pip pytest jsonschema
       - name: Check skill
         run: python3 scripts/hyperlex.py check
       - name: Verify sources command
         run: python3 scripts/hyperlex.py sources
       - name: Run smoke
         run: python3 scripts/hyperlex.py smoke
+      - name: Diagram from golden
+        run: python3 scripts/hyperlex.py diagram --from-golden --out-dir out/ci-diagrams --no-html
       - name: Run tests
         run: python3 -m pytest -q

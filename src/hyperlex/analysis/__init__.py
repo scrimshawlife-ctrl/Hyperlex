@@ -194,10 +194,118 @@ def compute_virality_score(observed_text: str) -> Dict[str, float]:
     return {"hybrid_score": hybrid, "velocity": round(velocity, 3), "acceleration": round(acceleration, 3)}
 
 
-def memetics_protocol_check(text: str) -> Dict[str, Any]:
-    imitation_signals = ["narrative", "holler", "spread", "everyone saying"]
-    is_memetic = any(s in text.lower() for s in imitation_signals) and len(text) > 40
-    return {"is_memetic": is_memetic, "typology": "betting_tactical" if is_memetic else "one_off", "score": 0.82 if is_memetic else 0.31}
+# Deterministic memetic typology rules (additive; primary = highest score).
+# Labels are INFERRED from lexical cues — not OBSERVED ground truth.
+TYPOLOGY_RULES: List[Dict[str, Any]] = [
+    {
+        "id": "tactical_edge",
+        "cues": ["sharp", "steam", "square", "wiseguy", "hammer", "clv", "juice", "vig", "line move", "revenge"],
+        "weight": 1.0,
+        "note": "professional edge / line-physics signaling",
+    },
+    {
+        "id": "risk_identity",
+        "cues": ["degen", "hodl", "rekt", "diamond hands", "paper hands", "ape", "moon", "rug", "ngmi", "wagmi"],
+        "weight": 1.0,
+        "note": "risk/conviction identity under volatility",
+    },
+    {
+        "id": "platform_agency",
+        "cues": ["agentic", "slop", "hallucin", "clanker", "context window", "skill issue", "token", "glazing"],
+        "weight": 1.0,
+        "note": "machine language as culture / quality + agency framing",
+    },
+    {
+        "id": "status_radiation",
+        "cues": ["aura", "aura farming", "based", "mid", "cooked", "let him cook", "glazing"],
+        "weight": 0.95,
+        "note": "status radiation / quality judgment",
+    },
+    {
+        "id": "irony_inversion",
+        "cues": ["brainrot", "brain rot", "cope", "seethe", "dilate", "redpill", "blackpill"],
+        "weight": 0.95,
+        "note": "irony inversion + emotional routing",
+    },
+    {
+        "id": "kinship_address",
+        "cues": [" bro ", " sis ", "twin", " unc ", " cuz ", "family"],
+        "weight": 0.9,
+        "note": "fictive kinship address",
+    },
+    {
+        "id": "imitation_spread",
+        "cues": ["narrative", "holler", "spread", "everyone saying", "organic velocity", "coordinated"],
+        "weight": 0.75,
+        "note": "generic imitation / spread cues",
+    },
+]
+
+# Lineage family → preferred typology (soft prior when cues tied)
+LINEAGE_TYPOLOGY = {
+    "betting-sharp": "tactical_edge",
+    "crypto-degen": "risk_identity",
+    "ai-native": "platform_agency",
+    "brainrot-aura": "status_radiation",
+    "kinship-address": "kinship_address",
+    "political-status": "irony_inversion",
+}
+
+
+def memetics_protocol_check(
+    text: str,
+    *,
+    lineage_family: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Rule-based memetic typology with transparent cue hits.
+
+    Returns primary typology, per-type scores, and rules_hit for audit.
+    """
+    corpus = f" {(text or '').lower()} "
+    scores: Dict[str, float] = {}
+    hits: Dict[str, List[str]] = {}
+
+    for rule in TYPOLOGY_RULES:
+        matched = [c.strip() for c in rule["cues"] if c.lower() in corpus]
+        if not matched:
+            continue
+        # score = weight * diminishing hits
+        raw = float(rule["weight"]) * min(1.0, 0.35 + 0.2 * len(matched))
+        scores[rule["id"]] = round(raw, 3)
+        hits[rule["id"]] = matched
+
+    # Soft prior from lineage family when present
+    if lineage_family and lineage_family in LINEAGE_TYPOLOGY:
+        pref = LINEAGE_TYPOLOGY[lineage_family]
+        scores[pref] = round(scores.get(pref, 0.0) + 0.15, 3)
+        hits.setdefault(pref, []).append(f"lineage:{lineage_family}")
+
+    if not scores:
+        return {
+            "is_memetic": False,
+            "typology": "one_off",
+            "typology_scores": {},
+            "rules_hit": {},
+            "score": 0.31,
+            "provenance": "INFERRED",
+        }
+
+    primary = max(scores.items(), key=lambda kv: kv[1])[0]
+    top = scores[primary]
+    is_memetic = top >= 0.45 or len(scores) >= 2
+    # Map legacy alias for back-compat consumers
+    legacy = "betting_tactical" if primary == "tactical_edge" and is_memetic else primary
+
+    return {
+        "is_memetic": is_memetic,
+        "typology": legacy if primary == "tactical_edge" else primary,
+        "typology_primary": primary,
+        "typology_scores": dict(sorted(scores.items(), key=lambda kv: -kv[1])),
+        "rules_hit": hits,
+        "score": round(min(0.95, 0.4 + top * 0.5), 2) if is_memetic else 0.31,
+        "provenance": "INFERRED",
+    }
 
 
 def simulate_hyperstition_loop(narrative: str) -> Dict[str, str]:
@@ -230,11 +338,14 @@ def detect_memetic_patterns(
     neos = detect_neologisms(observed)
     variation = trace_semantic_variation("low block", observed)
     virality = compute_virality_score(observed)
-    memetic = memetics_protocol_check(observed)
     hyper = simulate_hyperstition_loop(observed)
 
     neo_terms = [n["term"] for n in neos]
     lineage = match_lineage(observed, terms=neo_terms)
+    memetic = memetics_protocol_check(
+        observed,
+        lineage_family=(lineage or {}).get("family_id"),
+    )
 
     inferred = (
         f"Memetic spread accelerating. Neologisms: {len(neos)}. "

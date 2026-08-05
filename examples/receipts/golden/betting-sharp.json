@@ -40,8 +40,29 @@
     },
     "memetics": {
       "is_memetic": true,
-      "score": 0.82,
-      "typology": "betting_tactical"
+      "provenance": "INFERRED",
+      "rules_hit": {
+        "imitation_spread": [
+          "organic velocity",
+          "coordinated"
+        ],
+        "tactical_edge": [
+          "sharp",
+          "steam",
+          "square",
+          "wiseguy",
+          "hammer",
+          "revenge",
+          "lineage:betting-sharp"
+        ]
+      },
+      "score": 0.95,
+      "typology": "betting_tactical",
+      "typology_primary": "tactical_edge",
+      "typology_scores": {
+        "imitation_spread": 0.562,
+        "tactical_edge": 1.15
+      }
     },
     "neologisms": [],
     "semantic_variation": {
@@ -51,11 +72,11 @@
     },
     "virality": {
       "acceleration": 0.6,
-      "hybrid_score": 0.675,
-      "velocity": 0.7
+      "hybrid_score": 0.63,
+      "velocity": 0.55
     }
   },
-  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.675. Lineage: betting-sharp (conf=0.98).",
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: general. Virality: 0.63. Lineage: betting-sharp (conf=0.98).",
   "ingest": {
     "extracted_terms": [],
     "metadata": {
@@ -67,7 +88,7 @@
         "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
       },
       "cached": false,
-      "fetched_at": "2026-08-05T16:59:05.385480+00:00",
+      "fetched_at": "2026-08-05T17:31:05.554903+00:00",
       "live": false,
       "source_locator": "hyperlex://mock",
       "source_type": "synthetic_stub"
@@ -76,18 +97,18 @@
     "source": "mock",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "40a81db7de76399a6db66f7ac3df902ae8e09324c249748a4c0c55b874baeb2b",
-      "content_hash_short": "40a81db7de76399a",
-      "fetched_at": "2026-08-05T16:59:05.385480+00:00",
-      "fingerprint_id": "1624b675de63cd0b0fe794a4",
-      "package_version": "0.2.1",
+      "content_hash": "7748069b2e43674f4f92c96d99a9e23da108b18766700248f658078918c119e2",
+      "content_hash_short": "7748069b2e43674f",
+      "fetched_at": "2026-08-05T17:31:05.554903+00:00",
+      "fingerprint_id": "401279ec3ee29601041b0f0f",
+      "package_version": "0.2.3",
       "query": "sharp steam square revenge wiseguy hammer",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     }
   },
   "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
-  "observed": "Mock memetic channel on \"sharp steam square revenge wiseguy hammer\": organic velocity, minor coordinated push. Narrative circulating in community discourse. sharp steam square revenge wiseguy hammer low block.",
+  "observed": "Mock memetic channel on \"sharp steam square revenge wiseguy hammer\": organic velocity, coordinated push. sharp steam square revenge wiseguy hammer low block.",
   "provenance": {
     "adapter_version": "ingest-v1.7",
     "arxiv_concepts_applied": [
@@ -100,28 +121,28 @@
     ],
     "brier": null,
     "brier_note": "brier_requires_settlement",
-    "canonical_hash": "875608375031afca",
-    "content_hash": "40a81db7de76399a6db66f7ac3df902ae8e09324c249748a4c0c55b874baeb2b",
+    "canonical_hash": "025e65f28b9fdceb",
+    "content_hash": "7748069b2e43674f4f92c96d99a9e23da108b18766700248f658078918c119e2",
     "hyperstition_risk": "ACTUALIZING",
     "ingest_source": "mock",
     "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
     "source_fingerprint": {
       "adapter_version": "ingest-v1.7",
-      "content_hash": "40a81db7de76399a6db66f7ac3df902ae8e09324c249748a4c0c55b874baeb2b",
-      "content_hash_short": "40a81db7de76399a",
-      "fetched_at": "2026-08-05T16:59:05.385480+00:00",
-      "fingerprint_id": "1624b675de63cd0b0fe794a4",
-      "package_version": "0.2.1",
+      "content_hash": "7748069b2e43674f4f92c96d99a9e23da108b18766700248f658078918c119e2",
+      "content_hash_short": "7748069b2e43674f",
+      "fetched_at": "2026-08-05T17:31:05.554903+00:00",
+      "fingerprint_id": "401279ec3ee29601041b0f0f",
+      "package_version": "0.2.3",
       "query": "sharp steam square revenge wiseguy hammer",
       "source": "mock",
       "source_locator": "hyperlex://mock"
     },
     "source_locator": "hyperlex://mock",
-    "timestamp": "2026-08-05T16:59:05.386434+00:00",
-    "version": "0.2.1"
+    "timestamp": "2026-08-05T17:31:05.556477+00:00",
+    "version": "0.2.3"
   },
   "receipt": {
-    "integrity": "caa91d3ea23e",
+    "integrity": "018674222eb8",
     "path": "examples/receipts/golden/betting-sharp.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

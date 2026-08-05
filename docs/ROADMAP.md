@@ -3,8 +3,8 @@
 **Canonical copy:** root [`ROADMAP.md`](../ROADMAP.md). This file is kept in
 sync for docs-site consumers.
 
-Hyperlex is a **standalone app**. Relevant Abraxas wire capabilities ship as
-Hyperlex modules under `hyperlex.compat.abraxas` (no Abraxas import).
+Hyperlex is a **Hermes skill** backed by this Python package repo. Relevant Abraxas
+wire capabilities ship as Hyperlex modules under `hyperlex.compat.abraxas` (no Abraxas import).
 
 ## Phase 0 — Foundation (Complete)
 - Standalone Python package (`hyperlex`)
@@ -30,7 +30,7 @@ Hyperlex modules under `hyperlex.compat.abraxas` (no Abraxas import).
 - [ ] Improved neologism pipeline (LLM + rules hybrid)
 - [ ] Community driver modeling
 - [ ] Virality prediction models
-- [ ] Memetic typology expansion
+- [x] Memetic typology expansion (rule table + lineage prior)
 - [x] Automated diagram generation from receipt histories (`hyperlex.diagrams`, CLI `diagram`)
 
 ## Phase 3 — Hermes / Host Integration

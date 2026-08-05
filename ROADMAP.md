@@ -1,7 +1,7 @@
 # Hyperlex Roadmap
 
 ## Vision
-Hyperlex is a **standalone app**. Relevant Abraxas wire capabilities ship as Hyperlex modules (`hyperlex.compat.abraxas`); hosts import *from* Hyperlex.
+Hyperlex is a **Hermes skill** backed by this Python package repo. Relevant Abraxas wire capabilities ship as Hyperlex modules (`hyperlex.compat.abraxas`); hosts import *from* Hyperlex.
 
 Hyperlex evolves into the canonical engine for detecting, scoring, and acting on emerging memetic signals in real time — grounded in real data, arXiv research, and strict provenance.
 
@@ -31,7 +31,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [ ] Improved neologism pipeline (LLM + rules hybrid)
 - [ ] Community driver modeling (from arXiv semantic variation papers)
 - [ ] Virality prediction models
-- [ ] Memetic typology expansion
+- [x] Memetic typology expansion (rule table + lineage prior)
 - [x] Slang historical family documentation + emergent branch diagrams (Mermaid)
 - [x] Schema support for lineage attachment on analysis results (`lineage.v1.schema.json`)
 - [x] Deterministic lineage matcher with confidence scoring
@@ -53,7 +53,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 ### Phase 4 — Production & Ecosystem
 - [x] Local/Hermes packaging (`pip install -e .` / skill install) — **no public PyPI publish planned**
 - [x] Golden receipt corpus (`examples/receipts/golden/`) + API v1 freeze
-- [ ] Broader test corpus / CI expansion
+- [x] Broader golden corpus + CI (kinship/political goldens; pytest+diagram in GHA)
 - [ ] Documentation site / MkDocs
 - [ ] Example notebooks and case studies
 - [x] Public API v1 freeze (`docs/api-v1.md`, `hyperlex.API_V1`)

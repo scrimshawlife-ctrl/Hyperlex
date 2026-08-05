@@ -1,10 +1,10 @@
 # Hyperlex Documentation
 
-Hyperlex is a **standalone app**. Relevant Abraxas wire shapes live in
+Hyperlex is a **Hermes skill** (Python package repo). Relevant Abraxas wire shapes live in
 `hyperlex.compat.abraxas` (no Abraxas import).
 
 ## Core
-- [Standalone app model](./standalone-app.md)
+- [Hermes skill model](./hermes-skill.md)
 - [Public API v1 freeze](./api-v1.md)
 - [Brier & Calibration](./brier-calibration.md)
 - [Rune / Signal Relay](./rune-signal-relay.md)
@@ -13,6 +13,7 @@ Hyperlex is a **standalone app**. Relevant Abraxas wire shapes live in
 - [Connectors (market + hyperstition feedback)](./connectors.md)
 - [Diagrams from receipts](./diagrams.md)
 - [Modules / Ingest](./modules/ingest.md)
+- [Modules / Memetics typology](./modules/memetics.md)
 
 ## Root specs
 - [ROADMAP.md](../ROADMAP.md) (canonical) · [docs/ROADMAP.md](./ROADMAP.md) (synced)
