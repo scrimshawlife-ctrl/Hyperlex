@@ -1,7 +1,7 @@
 # Design: SIGNAL REPORT parity (Companion process adaptation)
 
 **Date:** 2026-08-06  
-**Status:** Schema + builder + call-site wiring complete  
+**Status:** Schema + builder + wiring + signals inbox + SHADOW candidate complete  
 **Version target:** 0.4.x (additive)  
 
 ## Source
@@ -10,48 +10,41 @@ Abraxas Companion deep Hyperstition / Memetic Emergence Scan (LIVE_EMERGENCE_SCA
 
 ## What was adapted into Hyperlex
 
-1. **Schema (`schemas/result.v1.schema.json` + package-local)** — optional fields:
-   - `provenance.seed` — SEED-style integrity header
-   - `analysis.compression_metrics`
-   - `analysis.symbolic_role`
-   - `analysis.propagation_vector`
-   - `analysis.slang_family_tree`
-   - `analysis.signal_report`
-   - `analysis.mutation_prediction` (already present)
+1. **Schema** — optional SIGNAL REPORT fields + `provenance.seed`
+2. **Builder** — `src/hyperlex/analysis/signal_report.py`
+3. **Call-site** — wired into `detect_memetic_patterns`
+4. **Signals inbox** — `src/hyperlex/signals/` → `~/.hyperlex/signals/inbox.jsonl`
+5. **SHADOW candidate** — `RUNE.HLX.SHADOW_CANDIDATE` in relay catalog + schema enum
+6. **CLI** — `hyperlex inbox list|push|clear`; `relay --push-inbox`
 
-2. **Builder module** — `src/hyperlex/analysis/signal_report.py`
-   - `build_compression_metrics`
-   - `build_symbolic_roles`
-   - `build_propagation_vector`
-   - `build_signal_report`
-   - `attach_signal_report_fields(analysis, ...)` — fail-open mutator
-   - `build_seed_header`
+## Operator usage
 
-3. **Call-site** — `detect_memetic_patterns` now:
-   - imports the helpers
-   - calls `attach_signal_report_fields(...)` after mutation / vector blocks
-   - attaches `provenance.seed` via `build_seed_header(...)`
+```bash
+# Analyze with relay (SHADOW envelope when stage is EMERGENT/ACTUALIZING)
+python -m hyperlex analyze "sharp money" --relay
 
-4. **Invariants preserved**
-   - `provenance.brier` remains `null` on open analysis
-   - All new fields optional and fail-open
-   - Offline-first; no Abraxas hard dependency
+# Relay + auto-push to local inbox
+python -m hyperlex relay --input result.json --push-inbox
 
-## Remaining (optional next tranche)
+# Inbox surface
+python -m hyperlex inbox list
+python -m hyperlex inbox push --input result.json --force
+python -m hyperlex inbox clear --dry-run
+```
 
-1. Local signals inbox (`~/.hyperlex/signals/` + thin `inbox` CLI)
-2. Enrich `scan` / live routes with focus + time_window + min_virality
-3. Emit optional SHADOW `rune_candidate` envelopes on high hyperstition stage
-4. Forage / daily aggregate receipt
+## Invariants preserved
 
-## Success criteria (met for core path)
+- `provenance.brier` remains `null` on open analysis
+- All new fields optional and fail-open
+- Offline-first; no Abraxas hard dependency
+- SHADOW is advisory only; human sovereignty required before any canon binding
 
-- Offline `pipeline "rizz"` / `analyze` carries non-empty `compression_metrics` + `symbolic_role` + `signal_report` when data supports it.
-- Schema validates; existing golden receipts still pass (new fields absent = fine).
-- No numeric Brier on open analysis.
+## Remaining (optional)
+
+1. Enrich `scan` / live routes with focus + time_window + min_virality
+2. Forage / daily aggregate receipt that can correct prior “quiet” assessments
 
 ## References
 
 - Companion SIGNAL REPORT structure
-- Mutation prediction design (same day)
 - Hyperlex hard rules: settled Brier only, Phase 5 SPECULATIVE, no Abraxas import
