@@ -31,44 +31,34 @@ python -m hyperlex inbox list
 | Diagrams from history | Ready |
 | Case study runner | Ready |
 | MkDocs + Pages (enabled) | Ready |
-| Pages static run history | Ready (`docs/archive/runs/` + catalog) |
-| Long-term analysis archive | Ready (`latest/` + dated runs) |
+| Pages static run history | Ready |
+| Long-term analysis archive | Ready |
 | Governed LLM (echo / openai_compatible) | Opt-in |
-| **Phase 5 cultural transmission** | Ready |
-| **Phase 5 multi-agent memetics** | Ready |
-| **Phase 5 hyperstition risk** | Ready |
-| **Phase 5 phylogeny scaffold** | Ready |
-| **Local vector DB** (`~/.hyperlex/vector.db`) | Ready |
-| **Chroma vector backend** (local path or Cloud) | Ready (opt-in · `HYPERLEX_VECTOR_BACKEND=chroma`) |
-| **Vector promote** (`vector-export` / `import` / `sync`) | Ready (local → cloud without re-embed) |
-| **Mutation prediction** (next forms) | Ready (SPECULATIVE · `mutation_prediction` · offline) |
-| **Vector auto-index on ingest** | Ready (fail-open · local sqlite/chroma · `HYPERLEX_VECTOR`) |
-| **Hybrid lineage re-rank** | Ready (lexical + vector boost) |
-| **Domain phylogeny packs** | Ready (`data/phylogeny/`) |
-| **Transmission calibrate** | Ready (advisory β/γ from settled pairs) |
-| **Scenario library + export** | Ready (`compare` / `export`) |
-| **Risk → scan/cron schedule** | Ready (`risk-schedule`; advisory only) |
-| **Ingest routes + `run`/`commands`/`pending`** | Ready (v0.3.8+) |
-| **Atomic multi-term seeds** | Ready (v0.4.0 · `terms-split` / multi Phase 5) |
-| **Pages demos (atomic terms)** | Ready (`docs/demos/atomic-terms.md`) |
-| **Automatic pipeline** | Ready (v0.4.0 · `pipeline` / `run` / `ingest` → full results) |
-| **SIGNAL REPORT parity fields** | Ready (schema + builder + wired 2026-08-06) |
-| **Local signals inbox** (`~/.hyperlex/signals/`) | Ready (CLI `inbox list|push|clear`) |
-| **SHADOW candidate rune** (`RUNE.HLX.SHADOW_CANDIDATE`) | Ready (relay + schema; advisory only) |
+| Phase 5 cultural transmission / multi-agent / risk / phylogeny | Ready |
+| Local vector DB + Chroma promote | Ready |
+| Mutation prediction | Ready (SPECULATIVE) |
+| Hybrid lineage re-rank | Ready |
+| Domain phylogeny packs | Ready |
+| Transmission calibrate / scenario library | Ready |
+| Risk → scan/cron schedule | Ready (advisory) |
+| Ingest routes + automatic pipeline | Ready |
+| Atomic multi-term seeds | Ready |
+| **Analysis enrichment** (compression_metrics, typology tags, signal_report, integrity header) | Ready |
+| **Local attractor store** (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
+| **Attractor candidate rune** (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
 | Public PyPI | Not planned |
-| Abraxas hard import | Never |
+| External system hard import | Never |
 
 ## Operator loop
 
 ```text
-pipeline "rizz" | ingest "rizz" | run "rizz"   # AUTO full results
-  → pending → settle → score-series            # only manual step (Brier)
-  → scan / risk-schedule                       # cron advisory
-  → relay --push-inbox                         # SHADOW envelope + local inbox
-  → inbox list                                 # review attractors
-  → vector-seed (sqlite or local chroma)       # optional index
-  → vector-sync --to cloud                     # promote when good
-  → archive-export                             # optional Pages snapshot
+pipeline "rizz" | run "rizz"
+  → pending → settle → score-series
+  → scan / risk-schedule
+  → relay --push-inbox          # attractor envelope + local store
+  → inbox list
+  → vector-seed / vector-sync
+  → archive-export
 ```
 
 ## Data dirs
@@ -78,20 +68,14 @@ pipeline "rizz" | ingest "rizz" | run "rizz"   # AUTO full results
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
-~/.hyperlex/vector.db            # local SQLite vector store (default)
-~/.hyperlex/chroma/              # local Chroma persist (opt-in)
-~/.hyperlex/signals/inbox.jsonl  # local SHADOW / high-priority attractors
-data/backfill/2026/              # curated YTD term packs (repo)
+~/.hyperlex/vector.db
+~/.hyperlex/chroma/
+~/.hyperlex/signals/inbox.jsonl   # high-priority attractor candidates
+data/backfill/2026/
 ```
 
-## Recommended next (ops, not greenfield)
+## Recommended next
 
-1. `bash examples/ops/burn-in.sh` (atomic offline runs)
-2. `pending` → `settle` → `score-series`
-3. Local Chroma backfill when ready
-4. Optional: enrich `scan` with focus / time_window / min_virality
-5. Optional: forage / daily aggregate receipt
-
-## Phase 5.3+ (deferred)
-
-Larger remote embedding models / multi-collection topologies if corpus grows.
+1. Burn-in offline runs + settle path
+2. Optional: enrich `scan` with focus / time_window / min_virality
+3. Optional: daily aggregate forage receipt
