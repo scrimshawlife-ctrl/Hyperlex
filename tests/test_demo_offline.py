@@ -62,3 +62,36 @@ def test_committed_quickstart_sample_has_null_brier():
     assert s.get("ok") is True
     r = json.loads(receipt.read_text(encoding="utf-8"))
     assert r.get("provenance", {}).get("brier") is None
+
+
+def test_demo_receipt_includes_mutation_prediction(tmp_path):
+    import json, os, subprocess, sys
+    out_dir = tmp_path / "demo-mut"
+    env = {
+        **dict(os.environ),
+        "PYTHONPATH": str(ROOT / "src"),
+        "HYPERLEX_OFFLINE": "1",
+        "HYPERLEX_VECTOR": "0",
+    }
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "hyperlex.py"),
+            "demo",
+            "--query",
+            "rizz",
+            "--out-dir",
+            str(out_dir),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert r.returncode == 0, r.stderr + r.stdout
+    data = json.loads(r.stdout)
+    receipt = json.loads(Path(data["receipt"]).read_text(encoding="utf-8"))
+    mp = (receipt.get("analysis") or {}).get("mutation_prediction")
+    assert mp is not None
+    assert mp.get("brier") is None
+    assert mp.get("n_candidates", 0) >= 1

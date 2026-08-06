@@ -286,3 +286,136 @@ def _parse_candidates(raw: str) -> List[Dict[str, Any]]:
         elif isinstance(item, dict) and item.get("term"):
             out.append(dict(item))
     return out
+
+
+_MUTATION_OPS = frozenset({
+    "platform_compression",
+    "derivational",
+    "irony_inversion",
+    "compound_phrase",
+    "sense_extension",
+    "cross_family_borrowing",
+    "extra-grammatical",
+})
+
+
+def enrich_mutation_candidates(
+    seed_term: str,
+    *,
+    family_id: Optional[str] = None,
+    family_operator: Optional[str] = None,
+    existing: Optional[List[Dict[str, Any]]] = None,
+    require_enabled: bool = True,
+) -> Dict[str, Any]:
+    """Optional LLM next-form candidates. Fail-open; never invents Brier."""
+    existing = list(existing or [])
+    if require_enabled and not llm_enabled():
+        return {
+            "enabled": False,
+            "applied": False,
+            "candidates": [],
+            "status": "skipped",
+            "reason": "HYPERLEX_LLM not enabled",
+        }
+    provider = get_provider()
+    if provider is None:
+        return {
+            "enabled": llm_enabled(),
+            "applied": False,
+            "candidates": [],
+            "status": "not_configured",
+            "reason": "no provider (set_provider or HYPERLEX_LLM_PROVIDER=echo)",
+        }
+
+    prompt = (
+        "Propose next surface-form mutations for a slang seed. "
+        "Return JSON {candidates:[{form, operator, confidence, rationale}]}. "
+        "Operators must be one of: platform_compression, derivational, irony_inversion, "
+        "compound_phrase, sense_extension, cross_family_borrowing, extra-grammatical. "
+        "Do not invent Brier scores. Max 5 candidates. Speculative only."
+    )
+    context = {
+        "seed_term": seed_term,
+        "family_id": family_id,
+        "family_operator": family_operator,
+        "existing": existing[:8],
+    }
+    try:
+        raw = provider(prompt, context)
+    except Exception as exc:
+        return {
+            "enabled": True,
+            "applied": False,
+            "candidates": [],
+            "status": "error",
+            "reason": f"{type(exc).__name__}: {exc}",
+        }
+
+    parsed = _parse_mutation_candidates(raw)
+    if not parsed:
+        return {
+            "enabled": True,
+            "applied": False,
+            "candidates": [],
+            "status": "empty",
+            "reason": "no parseable candidates",
+        }
+    return {
+        "enabled": True,
+        "applied": True,
+        "candidates": parsed[:5],
+        "status": "applied",
+        "n_new": len(parsed[:5]),
+    }
+
+
+def _parse_mutation_candidates(raw: str) -> List[Dict[str, Any]]:
+    raw = (raw or "").strip()
+    if not raw:
+        return []
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        m = re.search(r"\{[\s\S]*\}", raw)
+        if not m:
+            return []
+        try:
+            data = json.loads(m.group(0))
+        except json.JSONDecodeError:
+            return []
+    if isinstance(data, dict):
+        cands = data.get("candidates") or []
+    elif isinstance(data, list):
+        cands = data
+    else:
+        return []
+    out: List[Dict[str, Any]] = []
+    for item in cands:
+        if isinstance(item, str):
+            out.append({
+                "form": item,
+                "operator": "extra-grammatical",
+                "confidence": 0.35,
+                "rationale": "governed LLM mutation candidate",
+            })
+            continue
+        if not isinstance(item, dict):
+            continue
+        form = str(item.get("form") or item.get("term") or "").strip()
+        if not form:
+            continue
+        op = str(item.get("operator") or item.get("formation") or "extra-grammatical")
+        if op not in _MUTATION_OPS:
+            op = "extra-grammatical"
+        try:
+            conf = float(item.get("confidence", 0.35))
+        except (TypeError, ValueError):
+            conf = 0.35
+        conf = max(0.05, min(0.85, conf))
+        out.append({
+            "form": form,
+            "operator": op,
+            "confidence": conf,
+            "rationale": str(item.get("rationale") or "governed LLM mutation candidate"),
+        })
+    return out

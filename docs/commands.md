@@ -57,6 +57,7 @@ Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai, `live`→com
 |---------|---------|
 | `simulate --term T --mode scenario` | Phase 5 composed scenario |
 | `simulate --mode schedule --tier ELEVATED` | Risk→scan plan |
+| `mutation-predict "rizz"` | Next surface forms (SPECULATIVE · brier null) |
 | `archive-export --history` | Sanitized Pages run history |
 
 ## Vector DB (sqlite · local chroma · cloud)

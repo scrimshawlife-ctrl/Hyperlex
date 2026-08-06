@@ -1923,6 +1923,44 @@ def cmd_smoke(_args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_mutation_predict(args: argparse.Namespace) -> int:
+    """Predict next surface forms for a slang atom (SPECULATIVE, brier null)."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+    from hyperlex.analysis import LINEAGE_REGISTRY, match_lineage, predict_mutations
+
+    seed = (getattr(args, "query", None) or getattr(args, "term", None) or "").strip()
+    if not seed:
+        _emit({"ok": False, "error": "empty query", "brier": None})
+        return 2
+    family_id = (getattr(args, "family", None) or "").strip() or None
+    family_terms: List[str] = []
+    family_operator = None
+    if not family_id:
+        lin = match_lineage(seed)
+        if lin:
+            family_id = lin.get("family_id")
+            family_operator = lin.get("branch_operator")
+    if family_id:
+        for entry in LINEAGE_REGISTRY:
+            if entry.get("family_id") == family_id:
+                family_terms = list(entry.get("terms") or [])
+                family_operator = family_operator or entry.get("branch_operator")
+                break
+    max_n = int(getattr(args, "max", 0) or 0) or None
+    out = predict_mutations(
+        seed,
+        family_id=family_id,
+        family_terms=family_terms,
+        family_operator=family_operator,
+        max_candidates=max_n,
+    )
+    _emit({"ok": True, "command": "mutation-predict", **out})
+    return 0
+
+
 def cmd_demo(args: argparse.Namespace) -> int:
     """Zero-config offline first success: real pipeline + receipt, brier null.
 
@@ -2732,6 +2770,16 @@ def _build_parser() -> argparse.ArgumentParser:
 
     smoke_parser = subparsers.add_parser("smoke", help="Run fast smoke check")
     smoke_parser.set_defaults(func=cmd_smoke)
+
+    mp = subparsers.add_parser(
+        "mutation-predict",
+        help="Predict next surface-form mutations (SPECULATIVE · brier null)",
+    )
+    mp.add_argument("query", nargs="?", default="", help="Seed term / atom")
+    mp.add_argument("--term", default="", help="Alias for query")
+    mp.add_argument("--family", default="", help="Force family_id")
+    mp.add_argument("--max", type=int, default=0, help="Max candidates (1-20)")
+    mp.set_defaults(func=cmd_mutation_predict)
 
     demo_parser = subparsers.add_parser(
         "demo",

@@ -35,6 +35,7 @@ from .analysis import (
     detect_memetic_patterns,
     match_lineage,
     compute_lineage_confidence,
+    predict_mutations,
 )
 from .analysis.backfill import apply_backfill, inventory_backfill, list_backfill_packs
 from .analysis.backprop import backpropagate_lineage
@@ -153,6 +154,7 @@ API_EXTENDED = (
     "diagram_from_receipt_files",
     "write_diagram_bundle",
     "predict_virality",
+    "predict_mutations",
     "export_analysis_archive",
     "export_run_history",
     "rebuild_archive_catalog",
@@ -206,6 +208,7 @@ __all__ = [
     "humanize_slang_output",
     "compute_virality_score",
     "predict_virality",
+    "predict_mutations",
     "simulate_hyperstition_loop",
     "detect_neologisms",
     "trace_semantic_variation",

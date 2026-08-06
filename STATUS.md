@@ -40,6 +40,7 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Local vector DB** (`~/.hyperlex/vector.db`) | Ready |
 | **Chroma vector backend** (local path or Cloud) | Ready (opt-in · `HYPERLEX_VECTOR_BACKEND=chroma`) |
 | **Vector promote** (`vector-export` / `import` / `sync`) | Ready (local → cloud without re-embed) |
+| **Mutation prediction** (next forms) | Ready (SPECULATIVE · `mutation_prediction` · offline) |
 | **Vector auto-index on ingest** | Ready (fail-open · local sqlite/chroma · `HYPERLEX_VECTOR`) |
 | **Hybrid lineage re-rank** | Ready (lexical + vector boost) |
 | **Domain phylogeny packs** | Ready (`data/phylogeny/`) |

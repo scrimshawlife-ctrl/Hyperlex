@@ -169,6 +169,7 @@ On [Run history](../archive/index.md):
 |-------|--------------|------------------|
 | Term belongs to a lineage family (with confidence) | Lineage on receipt | Vector score alone |
 | Terms are embedding-near in Hyperlex’s index | Vector neighbors / search | Brier, Phase 5 risk |
+| Mutation candidates (next forms) | `mutation_prediction` (SPECULATIVE) | Brier, virality as certainty, market advice |
 | Operator forecast skill over settled events | `score-series` after settle | Open pipeline results |
 | Counterfactual transmission / cascade | Phase 5 (SPECULATIVE) | Vector DB, Brier |
 | Live web prevalence | Live ingest + external methods | Pages static archive alone |

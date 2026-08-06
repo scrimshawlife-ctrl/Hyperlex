@@ -15,6 +15,7 @@ from ..intake import ingest_signal, fetch_ingest
 from .. import PKG_VERSION
 from ..schemas import validate_result
 from ..provenance import analysis_canonical_hash
+from .mutation import predict_mutations
 
 # ---------------------------------------------------------------------------
 # Lineage registry (static seed; expand via docs/examples/slang-families)
@@ -854,6 +855,55 @@ def detect_memetic_patterns(
         }
     if lineage:
         analysis["lineage"] = lineage
+
+    # Speculative next-form mutations (fail-open; never Brier)
+    try:
+        fam_id = (lineage or {}).get("family_id")
+        fam_op = (lineage or {}).get("branch_operator")
+        fam_terms: List[str] = []
+        if fam_id:
+            for entry in LINEAGE_REGISTRY:
+                if entry.get("family_id") == fam_id:
+                    fam_terms = [str(t) for t in (entry.get("terms") or [])]
+                    break
+        seed_for_mut = (
+            (lineage or {}).get("primary_term")
+            or primary
+            or (seed_split.get("terms") or [None])[0]
+            or query
+        )
+        llm_mut = None
+        llm_mut_meta = None
+        try:
+            from ..llm import llm_enabled, enrich_mutation_candidates
+
+            if llm_enabled():
+                llm_mut_meta = enrich_mutation_candidates(
+                    str(seed_for_mut or ""),
+                    family_id=fam_id,
+                    family_operator=fam_op,
+                    existing=[],
+                )
+                if llm_mut_meta.get("applied"):
+                    llm_mut = llm_mut_meta.get("candidates") or []
+        except Exception:
+            llm_mut_meta = {"status": "error", "applied": False}
+        mp = predict_mutations(
+            str(seed_for_mut or ""),
+            family_id=fam_id,
+            family_terms=fam_terms,
+            family_operator=fam_op,
+            llm_candidates=llm_mut,
+        )
+        if llm_mut_meta is not None:
+            mp["llm_enrich"] = {
+                "status": llm_mut_meta.get("status"),
+                "applied": bool(llm_mut_meta.get("applied")),
+                "reason": llm_mut_meta.get("reason"),
+            }
+        analysis["mutation_prediction"] = mp
+    except Exception:
+        pass
 
     # Optional local vector-DB neighbors (fail-open; never invents Brier)
     try:

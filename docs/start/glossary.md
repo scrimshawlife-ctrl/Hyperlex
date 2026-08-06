@@ -49,6 +49,12 @@ Cosine-similar terms/receipts from the local vector index (sqlite or chroma).
 Similarity is **not** a probability of virality and **never** Brier.
 See [reading evidence](../demos/reading-evidence.md).
 
+### Mutation prediction
+Speculative **next surface forms** of a slang atom (compression, derivation,
+irony templates, family compounds). Attached as `analysis.mutation_prediction`.
+Always `provenance: SPECULATIVE` and `brier: null` — ranking weights are not
+calibrated probabilities. CLI: `mutation-predict "<term>"`.
+
 ### RUNE.HLX.\*
 Relay envelope naming for Hyperlex-shaped signals in host systems. Optional
 interop; not required for offline CLI use.
