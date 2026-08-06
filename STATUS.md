@@ -51,7 +51,7 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Atomic multi-term seeds** | Ready (v0.4.0 · `terms-split` / multi Phase 5) |
 | **Pages demos (atomic terms)** | Ready (`docs/demos/atomic-terms.md`) |
 | **Automatic pipeline** | Ready (v0.4.0 · `pipeline` / `run` / `ingest` → full results) |
-| **SIGNAL REPORT parity fields** (compression_metrics, symbolic_role, propagation_vector, signal_report, seed header) | Ready (schema 2026-08-06 · analysis population next) |
+| **SIGNAL REPORT parity fields** (compression_metrics, symbolic_role, propagation_vector, signal_report, seed header) | Ready (schema + builder + wired into detect_memetic_patterns 2026-08-06) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
@@ -87,7 +87,7 @@ See [docs/operator-loop.md](docs/operator-loop.md) · [docs/demos/atomic-terms.m
 3. Local Chroma backfill: `vector-seed --backend chroma --db ~/.hyperlex/chroma --through 2026-08 --include-home --include-golden`
 4. Promote when ready: `vector-sync --from-path ~/.hyperlex/chroma --to cloud`
 5. Register MODERATE cron from `risk-schedule` when ready
-6. Populate new analysis.signal_report / compression_metrics fields from detect_memetic_patterns (Companion adaptation)
+6. Optional: local signals inbox + SHADOW rune_candidate emission (next adaptation tranche)
 
 ## Phase 5.3+ (deferred)
 
