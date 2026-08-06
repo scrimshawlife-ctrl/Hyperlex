@@ -1,12 +1,15 @@
 {
   "schema": "hyperlex.lineage_map.v1",
   "title": "Hyperlex slang lineage map",
-  "note": "Static export from LINEAGE_REGISTRY + YTD backfill first-seen. Not a live DB.",
+  "note": "Static export from LINEAGE_REGISTRY + YTD backfill first-seen + within-family hash neighbors.",
   "brier": null,
+  "embed_model": "hyperlex.hash_ngram_v1.d256",
+  "embed_provenance": "INFERRED",
   "n_nodes": 117,
-  "n_edges": 117,
+  "n_edges": 252,
   "n_families": 8,
   "n_cross_links": 1,
+  "n_neighbor_edges": 135,
   "nodes": [
     {
       "id": "hyperlex",
@@ -34,7 +37,8 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": "7",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": []
     },
     {
       "id": "term:betting-sharp:steam",
@@ -43,7 +47,13 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": "7",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "square",
+          "score": 0.1128
+        }
+      ]
     },
     {
       "id": "term:betting-sharp:square",
@@ -52,7 +62,21 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "wiseguy",
+          "score": 0.2178
+        },
+        {
+          "term": "false nine",
+          "score": 0.1139
+        },
+        {
+          "term": "steam",
+          "score": 0.1128
+        }
+      ]
     },
     {
       "id": "term:betting-sharp:wiseguy",
@@ -61,7 +85,13 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "square",
+          "score": 0.2178
+        }
+      ]
     },
     {
       "id": "term:betting-sharp:hammer",
@@ -70,7 +100,17 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "holler",
+          "score": 0.2103
+        },
+        {
+          "term": "false nine",
+          "score": 0.0814
+        }
+      ]
     },
     {
       "id": "term:betting-sharp:holler",
@@ -79,7 +119,17 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "hammer",
+          "score": 0.2103
+        },
+        {
+          "term": "revenge",
+          "score": 0.1447
+        }
+      ]
     },
     {
       "id": "term:betting-sharp:revenge",
@@ -88,7 +138,17 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": "7",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "holler",
+          "score": 0.1447
+        },
+        {
+          "term": "false nine",
+          "score": 0.1109
+        }
+      ]
     },
     {
       "id": "term:betting-sharp:low block",
@@ -97,7 +157,8 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": []
     },
     {
       "id": "term:betting-sharp:false nine",
@@ -106,7 +167,21 @@
       "family_id": "betting-sharp",
       "hue": 350,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "square",
+          "score": 0.1139
+        },
+        {
+          "term": "revenge",
+          "score": 0.1109
+        },
+        {
+          "term": "hammer",
+          "score": 0.0814
+        }
+      ]
     },
     {
       "id": "crypto-degen",
@@ -127,7 +202,8 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": []
     },
     {
       "id": "term:crypto-degen:diamond hands",
@@ -136,7 +212,17 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "paper hands",
+          "score": 0.4728
+        },
+        {
+          "term": "bagholder",
+          "score": 0.3247
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:paper hands",
@@ -145,7 +231,13 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "diamond hands",
+          "score": 0.4728
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:rekt",
@@ -154,7 +246,21 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "ape",
+          "score": 0.1816
+        },
+        {
+          "term": "ngmi",
+          "score": 0.1759
+        },
+        {
+          "term": "fomo",
+          "score": 0.1495
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:ape",
@@ -163,7 +269,17 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "ngmi",
+          "score": 0.3229
+        },
+        {
+          "term": "rekt",
+          "score": 0.1816
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:degen",
@@ -172,7 +288,21 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": "5",
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "rug",
+          "score": 0.2379
+        },
+        {
+          "term": "fomo",
+          "score": 0.1707
+        },
+        {
+          "term": "rekt",
+          "score": 0.1219
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:moon",
@@ -181,7 +311,8 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": []
     },
     {
       "id": "term:crypto-degen:bagholder",
@@ -190,7 +321,17 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "diamond hands",
+          "score": 0.3247
+        },
+        {
+          "term": "fomo",
+          "score": 0.2307
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:fud",
@@ -199,7 +340,8 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": []
     },
     {
       "id": "term:crypto-degen:fomo",
@@ -208,7 +350,21 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "bagholder",
+          "score": 0.2307
+        },
+        {
+          "term": "degen",
+          "score": 0.1707
+        },
+        {
+          "term": "rekt",
+          "score": 0.1495
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:ngmi",
@@ -217,7 +373,21 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": "5",
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "ape",
+          "score": 0.3229
+        },
+        {
+          "term": "wagmi",
+          "score": 0.2236
+        },
+        {
+          "term": "rekt",
+          "score": 0.1759
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:wagmi",
@@ -226,7 +396,13 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "ngmi",
+          "score": 0.2236
+        }
+      ]
     },
     {
       "id": "term:crypto-degen:rug",
@@ -235,7 +411,17 @@
       "family_id": "crypto-degen",
       "hue": 45,
       "first_seen_month": null,
-      "branch_operator": "cross_family_borrowing"
+      "branch_operator": "cross_family_borrowing",
+      "neighbors": [
+        {
+          "term": "degen",
+          "score": 0.2379
+        },
+        {
+          "term": "rekt",
+          "score": 0.0908
+        }
+      ]
     },
     {
       "id": "ai-native",
@@ -256,7 +442,21 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "7",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "vibe coding",
+          "score": 0.1698
+        },
+        {
+          "term": "skill issue",
+          "score": 0.1432
+        },
+        {
+          "term": "agentic",
+          "score": 0.1296
+        }
+      ]
     },
     {
       "id": "term:ai-native:slop",
@@ -265,7 +465,13 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "4",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "vibe coding",
+          "score": 0.2711
+        }
+      ]
     },
     {
       "id": "term:ai-native:clanker",
@@ -274,7 +480,8 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "3",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": []
     },
     {
       "id": "term:ai-native:agentic",
@@ -283,7 +490,17 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "4",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "hallucinate",
+          "score": 0.1296
+        },
+        {
+          "term": "context window",
+          "score": 0.105
+        }
+      ]
     },
     {
       "id": "term:ai-native:glazing",
@@ -292,7 +509,21 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "2",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "context window",
+          "score": 0.2855
+        },
+        {
+          "term": "vibe coding",
+          "score": 0.1836
+        },
+        {
+          "term": "token",
+          "score": 0.1045
+        }
+      ]
     },
     {
       "id": "term:ai-native:skill issue",
@@ -301,7 +532,17 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "3",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "hallucinate",
+          "score": 0.1432
+        },
+        {
+          "term": "context window",
+          "score": 0.1104
+        }
+      ]
     },
     {
       "id": "term:ai-native:token",
@@ -310,7 +551,17 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "8",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "glazing",
+          "score": 0.1045
+        },
+        {
+          "term": "vibe coding",
+          "score": 0.0808
+        }
+      ]
     },
     {
       "id": "term:ai-native:context window",
@@ -319,7 +570,21 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "1",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "glazing",
+          "score": 0.2855
+        },
+        {
+          "term": "skill issue",
+          "score": 0.1104
+        },
+        {
+          "term": "hallucinate",
+          "score": 0.11
+        }
+      ]
     },
     {
       "id": "term:ai-native:vibe coding",
@@ -328,7 +593,21 @@
       "family_id": "ai-native",
       "hue": 200,
       "first_seen_month": "1",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "slop",
+          "score": 0.2711
+        },
+        {
+          "term": "glazing",
+          "score": 0.1836
+        },
+        {
+          "term": "hallucinate",
+          "score": 0.1698
+        }
+      ]
     },
     {
       "id": "brainrot-aura",
@@ -349,7 +628,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "5",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "brain rot",
+          "score": 0.3872
+        },
+        {
+          "term": "aura",
+          "score": 0.3151
+        },
+        {
+          "term": "negative aura",
+          "score": 0.2437
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:brain rot",
@@ -358,7 +651,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": null,
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "brainrot",
+          "score": 0.3872
+        },
+        {
+          "term": "delulu",
+          "score": 0.1734
+        },
+        {
+          "term": "main character",
+          "score": 0.1323
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:aura",
@@ -367,7 +674,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "8",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "aura points",
+          "score": 0.6349
+        },
+        {
+          "term": "aura farming",
+          "score": 0.6262
+        },
+        {
+          "term": "negative aura",
+          "score": 0.6177
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:aura farming",
@@ -376,7 +697,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "5",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "aura",
+          "score": 0.6262
+        },
+        {
+          "term": "aura points",
+          "score": 0.4514
+        },
+        {
+          "term": "negative aura",
+          "score": 0.3851
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:mid",
@@ -385,7 +720,17 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "6",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "skibidi",
+          "score": 0.1515
+        },
+        {
+          "term": "gooning",
+          "score": 0.0834
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:cooked",
@@ -394,7 +739,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "6",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "rizz",
+          "score": 0.166
+        },
+        {
+          "term": "mewing",
+          "score": 0.1566
+        },
+        {
+          "term": "vibe check",
+          "score": 0.1538
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:let him cook",
@@ -403,7 +762,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "6",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "aura",
+          "score": 0.2161
+        },
+        {
+          "term": "negative aura",
+          "score": 0.2091
+        },
+        {
+          "term": "aura points",
+          "score": 0.1806
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:rizz",
@@ -412,7 +785,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "1",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "ate",
+          "score": 0.2594
+        },
+        {
+          "term": "cooked",
+          "score": 0.166
+        },
+        {
+          "term": "six seven",
+          "score": 0.1225
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:skibidi",
@@ -421,7 +808,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "1",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "no cap",
+          "score": 0.3138
+        },
+        {
+          "term": "bussin",
+          "score": 0.2077
+        },
+        {
+          "term": "mid",
+          "score": 0.1515
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:gyatt",
@@ -430,7 +831,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "1",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "delulu",
+          "score": 0.2301
+        },
+        {
+          "term": "looksmaxxing",
+          "score": 0.1813
+        },
+        {
+          "term": "edging",
+          "score": 0.1611
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:sigma",
@@ -439,7 +854,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "1",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "npc",
+          "score": 0.1762
+        },
+        {
+          "term": "vibe check",
+          "score": 0.1674
+        },
+        {
+          "term": "left no crumbs",
+          "score": 0.141
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:delulu",
@@ -448,7 +877,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "1",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "gyatt",
+          "score": 0.2301
+        },
+        {
+          "term": "main character energy",
+          "score": 0.1987
+        },
+        {
+          "term": "brain rot",
+          "score": 0.1734
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:no cap",
@@ -457,7 +900,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "1",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "left no crumbs",
+          "score": 0.3877
+        },
+        {
+          "term": "skibidi",
+          "score": 0.3138
+        },
+        {
+          "term": "fanum tax",
+          "score": 0.2555
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:locked in",
@@ -466,7 +923,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "1",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "yap",
+          "score": 0.1346
+        },
+        {
+          "term": "cooked",
+          "score": 0.123
+        },
+        {
+          "term": "bussin",
+          "score": 0.123
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:crash out",
@@ -475,7 +946,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "1",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "gooning",
+          "score": 0.3465
+        },
+        {
+          "term": "let him cook",
+          "score": 0.1595
+        },
+        {
+          "term": "left no crumbs",
+          "score": 0.1433
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:mewing",
@@ -484,7 +969,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "2",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "mogging",
+          "score": 0.2919
+        },
+        {
+          "term": "edging",
+          "score": 0.2763
+        },
+        {
+          "term": "npc",
+          "score": 0.2313
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:looksmaxxing",
@@ -493,7 +992,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "2",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "gooning",
+          "score": 0.2688
+        },
+        {
+          "term": "yapping",
+          "score": 0.2243
+        },
+        {
+          "term": "left no crumbs",
+          "score": 0.2177
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:mog",
@@ -502,7 +1015,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "2",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "main character energy",
+          "score": 0.2643
+        },
+        {
+          "term": "mogging",
+          "score": 0.2359
+        },
+        {
+          "term": "delulu",
+          "score": 0.1713
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:mogging",
@@ -511,7 +1038,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "2",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "mewing",
+          "score": 0.2919
+        },
+        {
+          "term": "edging",
+          "score": 0.269
+        },
+        {
+          "term": "mog",
+          "score": 0.2359
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:ate",
@@ -520,7 +1061,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "2",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "rizz",
+          "score": 0.2594
+        },
+        {
+          "term": "yap",
+          "score": 0.253
+        },
+        {
+          "term": "edging",
+          "score": 0.2447
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:left no crumbs",
@@ -529,7 +1084,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "2",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "no cap",
+          "score": 0.3877
+        },
+        {
+          "term": "looksmaxxing",
+          "score": 0.2177
+        },
+        {
+          "term": "npc",
+          "score": 0.1928
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:it's giving",
@@ -538,7 +1107,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "2",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "mogging",
+          "score": 0.2249
+        },
+        {
+          "term": "mewing",
+          "score": 0.1927
+        },
+        {
+          "term": "edging",
+          "score": 0.1927
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:npc",
@@ -547,7 +1130,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "3",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "slay",
+          "score": 0.2451
+        },
+        {
+          "term": "mewing",
+          "score": 0.2313
+        },
+        {
+          "term": "left no crumbs",
+          "score": 0.1928
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:main character",
@@ -556,7 +1153,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "3",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "main character energy",
+          "score": 0.813
+        },
+        {
+          "term": "looksmaxxing",
+          "score": 0.1694
+        },
+        {
+          "term": "aura",
+          "score": 0.1454
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:main character energy",
@@ -565,7 +1176,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "3",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "main character",
+          "score": 0.813
+        },
+        {
+          "term": "mog",
+          "score": 0.2643
+        },
+        {
+          "term": "delulu",
+          "score": 0.1987
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:fanum tax",
@@ -574,7 +1199,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "3",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "no cap",
+          "score": 0.2555
+        },
+        {
+          "term": "67",
+          "score": 0.1869
+        },
+        {
+          "term": "mewing",
+          "score": 0.1734
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:ohio",
@@ -583,7 +1222,17 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "3",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "main character energy",
+          "score": 0.104
+        },
+        {
+          "term": "negative aura",
+          "score": 0.0996
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:bussin",
@@ -592,7 +1241,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "4",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "edging",
+          "score": 0.2785
+        },
+        {
+          "term": "skibidi",
+          "score": 0.2077
+        },
+        {
+          "term": "chat is this real",
+          "score": 0.1517
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:slay",
@@ -601,7 +1264,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "4",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "npc",
+          "score": 0.2451
+        },
+        {
+          "term": "edging",
+          "score": 0.224
+        },
+        {
+          "term": "mewing",
+          "score": 0.166
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:six seven",
@@ -610,7 +1287,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "5",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "chat is this real",
+          "score": 0.1352
+        },
+        {
+          "term": "sigma",
+          "score": 0.1265
+        },
+        {
+          "term": "aura points",
+          "score": 0.1243
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:67",
@@ -619,7 +1310,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "5",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "yapping",
+          "score": 0.2465
+        },
+        {
+          "term": "looksmaxxing",
+          "score": 0.2111
+        },
+        {
+          "term": "fanum tax",
+          "score": 0.1869
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:edging",
@@ -628,7 +1333,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "5",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "yapping",
+          "score": 0.3681
+        },
+        {
+          "term": "bussin",
+          "score": 0.2785
+        },
+        {
+          "term": "mewing",
+          "score": 0.2763
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:gooning",
@@ -637,7 +1356,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "5",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "crash out",
+          "score": 0.3465
+        },
+        {
+          "term": "looksmaxxing",
+          "score": 0.2688
+        },
+        {
+          "term": "mewing",
+          "score": 0.2156
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:vibe check",
@@ -646,7 +1379,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "7",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "sigma",
+          "score": 0.1674
+        },
+        {
+          "term": "cooked",
+          "score": 0.1538
+        },
+        {
+          "term": "mewing",
+          "score": 0.1538
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:negative aura",
@@ -655,7 +1402,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "8",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "aura",
+          "score": 0.6177
+        },
+        {
+          "term": "aura points",
+          "score": 0.4179
+        },
+        {
+          "term": "aura farming",
+          "score": 0.3851
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:aura points",
@@ -664,7 +1425,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "8",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "aura",
+          "score": 0.6349
+        },
+        {
+          "term": "aura farming",
+          "score": 0.4514
+        },
+        {
+          "term": "negative aura",
+          "score": 0.4179
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:yap",
@@ -673,7 +1448,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "8",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "ate",
+          "score": 0.253
+        },
+        {
+          "term": "yapping",
+          "score": 0.2359
+        },
+        {
+          "term": "no cap",
+          "score": 0.141
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:yapping",
@@ -682,7 +1471,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "8",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "edging",
+          "score": 0.3681
+        },
+        {
+          "term": "67",
+          "score": 0.2465
+        },
+        {
+          "term": "yap",
+          "score": 0.2359
+        }
+      ]
     },
     {
       "id": "term:brainrot-aura:chat is this real",
@@ -691,7 +1494,21 @@
       "family_id": "brainrot-aura",
       "hue": 300,
       "first_seen_month": "8",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "mogging",
+          "score": 0.1524
+        },
+        {
+          "term": "bussin",
+          "score": 0.1517
+        },
+        {
+          "term": "six seven",
+          "score": 0.1352
+        }
+      ]
     },
     {
       "id": "kinship-address",
@@ -712,7 +1529,8 @@
       "family_id": "kinship-address",
       "hue": 140,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": []
     },
     {
       "id": "term:kinship-address:sis",
@@ -721,7 +1539,8 @@
       "family_id": "kinship-address",
       "hue": 140,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": []
     },
     {
       "id": "term:kinship-address:twin",
@@ -730,7 +1549,8 @@
       "family_id": "kinship-address",
       "hue": 140,
       "first_seen_month": "6",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": []
     },
     {
       "id": "term:kinship-address:unc",
@@ -739,7 +1559,13 @@
       "family_id": "kinship-address",
       "hue": 140,
       "first_seen_month": "4",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "family",
+          "score": 0.0857
+        }
+      ]
     },
     {
       "id": "term:kinship-address:cuz",
@@ -748,7 +1574,8 @@
       "family_id": "kinship-address",
       "hue": 140,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": []
     },
     {
       "id": "term:kinship-address:family",
@@ -757,7 +1584,13 @@
       "family_id": "kinship-address",
       "hue": 140,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "unc",
+          "score": 0.0857
+        }
+      ]
     },
     {
       "id": "political-status",
@@ -778,7 +1611,17 @@
       "family_id": "political-status",
       "hue": 15,
       "first_seen_month": "6",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "redpilled",
+          "score": 0.1589
+        },
+        {
+          "term": "blackpilled",
+          "score": 0.1519
+        }
+      ]
     },
     {
       "id": "term:political-status:redpilled",
@@ -787,7 +1630,17 @@
       "family_id": "political-status",
       "hue": 15,
       "first_seen_month": null,
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "blackpilled",
+          "score": 0.3618
+        },
+        {
+          "term": "based",
+          "score": 0.1589
+        }
+      ]
     },
     {
       "id": "term:political-status:blackpilled",
@@ -796,7 +1649,17 @@
       "family_id": "political-status",
       "hue": 15,
       "first_seen_month": null,
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": [
+        {
+          "term": "redpilled",
+          "score": 0.3618
+        },
+        {
+          "term": "based",
+          "score": 0.1519
+        }
+      ]
     },
     {
       "id": "term:political-status:cope",
@@ -805,7 +1668,8 @@
       "family_id": "political-status",
       "hue": 15,
       "first_seen_month": "6",
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": []
     },
     {
       "id": "term:political-status:seethe",
@@ -814,7 +1678,8 @@
       "family_id": "political-status",
       "hue": 15,
       "first_seen_month": null,
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": []
     },
     {
       "id": "term:political-status:dilate",
@@ -823,7 +1688,8 @@
       "family_id": "political-status",
       "hue": 15,
       "first_seen_month": null,
-      "branch_operator": "irony_inversion"
+      "branch_operator": "irony_inversion",
+      "neighbors": []
     },
     {
       "id": "gaming-meta",
@@ -844,7 +1710,21 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "touch grass",
+          "score": 0.4119
+        },
+        {
+          "term": "smurf",
+          "score": 0.1817
+        },
+        {
+          "term": "ratio",
+          "score": 0.0854
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:buff",
@@ -853,7 +1733,21 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "diff",
+          "score": 0.1872
+        },
+        {
+          "term": "sweaty",
+          "score": 0.1185
+        },
+        {
+          "term": "skill issue",
+          "score": 0.0833
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:meta",
@@ -862,7 +1756,13 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "skill issue",
+          "score": 0.085
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:sweaty",
@@ -871,7 +1771,21 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "noob",
+          "score": 0.166
+        },
+        {
+          "term": "feed",
+          "score": 0.1411
+        },
+        {
+          "term": "buff",
+          "score": 0.1185
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:noob",
@@ -880,7 +1794,17 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "smurf",
+          "score": 0.3414
+        },
+        {
+          "term": "sweaty",
+          "score": 0.166
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:gg",
@@ -889,7 +1813,8 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": []
     },
     {
       "id": "term:gaming-meta:ez",
@@ -898,7 +1823,8 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": []
     },
     {
       "id": "term:gaming-meta:ratio",
@@ -907,7 +1833,21 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": "6",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "touch grass",
+          "score": 0.2961
+        },
+        {
+          "term": "int",
+          "score": 0.2517
+        },
+        {
+          "term": "nerf",
+          "score": 0.0854
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:touch grass",
@@ -916,7 +1856,21 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": "3",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "nerf",
+          "score": 0.4119
+        },
+        {
+          "term": "ratio",
+          "score": 0.2961
+        },
+        {
+          "term": "int",
+          "score": 0.1575
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:skill issue",
@@ -925,7 +1879,17 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": "3",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "meta",
+          "score": 0.085
+        },
+        {
+          "term": "buff",
+          "score": 0.0833
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:diff",
@@ -934,7 +1898,13 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": "6",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "buff",
+          "score": 0.1872
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:int",
@@ -943,7 +1913,17 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "ratio",
+          "score": 0.2517
+        },
+        {
+          "term": "touch grass",
+          "score": 0.1575
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:feed",
@@ -952,7 +1932,13 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": null,
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "sweaty",
+          "score": 0.1411
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:smurf",
@@ -961,7 +1947,17 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": "7",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "noob",
+          "score": 0.3414
+        },
+        {
+          "term": "nerf",
+          "score": 0.1817
+        }
+      ]
     },
     {
       "id": "term:gaming-meta:sus",
@@ -970,7 +1966,13 @@
       "family_id": "gaming-meta",
       "hue": 170,
       "first_seen_month": "4",
-      "branch_operator": "platform_compression"
+      "branch_operator": "platform_compression",
+      "neighbors": [
+        {
+          "term": "sweaty",
+          "score": 0.0857
+        }
+      ]
     },
     {
       "id": "workplace-corp",
@@ -991,7 +1993,21 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": "4",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "quiet firing",
+          "score": 0.615
+        },
+        {
+          "term": "circle back",
+          "score": 0.2138
+        },
+        {
+          "term": "low-hanging fruit",
+          "score": 0.1604
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:quiet firing",
@@ -1000,7 +2016,21 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "quiet quitting",
+          "score": 0.615
+        },
+        {
+          "term": "circle back",
+          "score": 0.1617
+        },
+        {
+          "term": "synergy",
+          "score": 0.1038
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:rto",
@@ -1009,7 +2039,8 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": "4",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": []
     },
     {
       "id": "term:workplace-corp:return to office",
@@ -1018,7 +2049,17 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "layoffs",
+          "score": 0.2087
+        },
+        {
+          "term": "pip",
+          "score": 0.0868
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:layoffs",
@@ -1027,7 +2068,13 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "return to office",
+          "score": 0.2087
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:pip",
@@ -1036,7 +2083,13 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "return to office",
+          "score": 0.0868
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:synergy",
@@ -1045,7 +2098,21 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "act your wage",
+          "score": 0.1385
+        },
+        {
+          "term": "quiet firing",
+          "score": 0.1038
+        },
+        {
+          "term": "quiet quitting",
+          "score": 0.0976
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:circle back",
@@ -1054,7 +2121,17 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": "8",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "quiet quitting",
+          "score": 0.2138
+        },
+        {
+          "term": "quiet firing",
+          "score": 0.1617
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:bandwidth",
@@ -1063,7 +2140,13 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": "7",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "low-hanging fruit",
+          "score": 0.1375
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:low-hanging fruit",
@@ -1072,7 +2155,17 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": null,
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "quiet quitting",
+          "score": 0.1604
+        },
+        {
+          "term": "bandwidth",
+          "score": 0.1375
+        }
+      ]
     },
     {
       "id": "term:workplace-corp:act your wage",
@@ -1081,7 +2174,13 @@
       "family_id": "workplace-corp",
       "hue": 80,
       "first_seen_month": "2",
-      "branch_operator": "sense_extension"
+      "branch_operator": "sense_extension",
+      "neighbors": [
+        {
+          "term": "synergy",
+          "score": 0.1385
+        }
+      ]
     }
   ],
   "edges": [
@@ -1670,6 +2769,1221 @@
       "target": "term:gaming-meta:skill issue",
       "kind": "cross_family",
       "term": "skill issue"
+    },
+    {
+      "source": "term:betting-sharp:square",
+      "target": "term:betting-sharp:steam",
+      "kind": "embed_neighbor",
+      "score": 0.1128,
+      "family_id": "betting-sharp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:betting-sharp:square",
+      "target": "term:betting-sharp:wiseguy",
+      "kind": "embed_neighbor",
+      "score": 0.2178,
+      "family_id": "betting-sharp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:betting-sharp:false nine",
+      "target": "term:betting-sharp:square",
+      "kind": "embed_neighbor",
+      "score": 0.1139,
+      "family_id": "betting-sharp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:betting-sharp:hammer",
+      "target": "term:betting-sharp:holler",
+      "kind": "embed_neighbor",
+      "score": 0.2103,
+      "family_id": "betting-sharp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:betting-sharp:false nine",
+      "target": "term:betting-sharp:hammer",
+      "kind": "embed_neighbor",
+      "score": 0.0814,
+      "family_id": "betting-sharp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:betting-sharp:holler",
+      "target": "term:betting-sharp:revenge",
+      "kind": "embed_neighbor",
+      "score": 0.1447,
+      "family_id": "betting-sharp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:betting-sharp:false nine",
+      "target": "term:betting-sharp:revenge",
+      "kind": "embed_neighbor",
+      "score": 0.1109,
+      "family_id": "betting-sharp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:diamond hands",
+      "target": "term:crypto-degen:paper hands",
+      "kind": "embed_neighbor",
+      "score": 0.4728,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:bagholder",
+      "target": "term:crypto-degen:diamond hands",
+      "kind": "embed_neighbor",
+      "score": 0.3247,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:ape",
+      "target": "term:crypto-degen:rekt",
+      "kind": "embed_neighbor",
+      "score": 0.1816,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:ngmi",
+      "target": "term:crypto-degen:rekt",
+      "kind": "embed_neighbor",
+      "score": 0.1759,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:fomo",
+      "target": "term:crypto-degen:rekt",
+      "kind": "embed_neighbor",
+      "score": 0.1495,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:ape",
+      "target": "term:crypto-degen:ngmi",
+      "kind": "embed_neighbor",
+      "score": 0.3229,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:degen",
+      "target": "term:crypto-degen:rug",
+      "kind": "embed_neighbor",
+      "score": 0.2379,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:degen",
+      "target": "term:crypto-degen:fomo",
+      "kind": "embed_neighbor",
+      "score": 0.1707,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:degen",
+      "target": "term:crypto-degen:rekt",
+      "kind": "embed_neighbor",
+      "score": 0.1219,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:bagholder",
+      "target": "term:crypto-degen:fomo",
+      "kind": "embed_neighbor",
+      "score": 0.2307,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:ngmi",
+      "target": "term:crypto-degen:wagmi",
+      "kind": "embed_neighbor",
+      "score": 0.2236,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:crypto-degen:rekt",
+      "target": "term:crypto-degen:rug",
+      "kind": "embed_neighbor",
+      "score": 0.0908,
+      "family_id": "crypto-degen",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:hallucinate",
+      "target": "term:ai-native:vibe coding",
+      "kind": "embed_neighbor",
+      "score": 0.1698,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:hallucinate",
+      "target": "term:ai-native:skill issue",
+      "kind": "embed_neighbor",
+      "score": 0.1432,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:agentic",
+      "target": "term:ai-native:hallucinate",
+      "kind": "embed_neighbor",
+      "score": 0.1296,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:slop",
+      "target": "term:ai-native:vibe coding",
+      "kind": "embed_neighbor",
+      "score": 0.2711,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:agentic",
+      "target": "term:ai-native:context window",
+      "kind": "embed_neighbor",
+      "score": 0.105,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:context window",
+      "target": "term:ai-native:glazing",
+      "kind": "embed_neighbor",
+      "score": 0.2855,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:glazing",
+      "target": "term:ai-native:vibe coding",
+      "kind": "embed_neighbor",
+      "score": 0.1836,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:glazing",
+      "target": "term:ai-native:token",
+      "kind": "embed_neighbor",
+      "score": 0.1045,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:context window",
+      "target": "term:ai-native:skill issue",
+      "kind": "embed_neighbor",
+      "score": 0.1104,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:token",
+      "target": "term:ai-native:vibe coding",
+      "kind": "embed_neighbor",
+      "score": 0.0808,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:ai-native:context window",
+      "target": "term:ai-native:hallucinate",
+      "kind": "embed_neighbor",
+      "score": 0.11,
+      "family_id": "ai-native",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:brain rot",
+      "target": "term:brainrot-aura:brainrot",
+      "kind": "embed_neighbor",
+      "score": 0.3872,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura",
+      "target": "term:brainrot-aura:brainrot",
+      "kind": "embed_neighbor",
+      "score": 0.3151,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:brainrot",
+      "target": "term:brainrot-aura:negative aura",
+      "kind": "embed_neighbor",
+      "score": 0.2437,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:brain rot",
+      "target": "term:brainrot-aura:delulu",
+      "kind": "embed_neighbor",
+      "score": 0.1734,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:brain rot",
+      "target": "term:brainrot-aura:main character",
+      "kind": "embed_neighbor",
+      "score": 0.1323,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura",
+      "target": "term:brainrot-aura:aura points",
+      "kind": "embed_neighbor",
+      "score": 0.6349,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura",
+      "target": "term:brainrot-aura:aura farming",
+      "kind": "embed_neighbor",
+      "score": 0.6262,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura",
+      "target": "term:brainrot-aura:negative aura",
+      "kind": "embed_neighbor",
+      "score": 0.6177,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura farming",
+      "target": "term:brainrot-aura:aura points",
+      "kind": "embed_neighbor",
+      "score": 0.4514,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura farming",
+      "target": "term:brainrot-aura:negative aura",
+      "kind": "embed_neighbor",
+      "score": 0.3851,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:mid",
+      "target": "term:brainrot-aura:skibidi",
+      "kind": "embed_neighbor",
+      "score": 0.1515,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:gooning",
+      "target": "term:brainrot-aura:mid",
+      "kind": "embed_neighbor",
+      "score": 0.0834,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:cooked",
+      "target": "term:brainrot-aura:rizz",
+      "kind": "embed_neighbor",
+      "score": 0.166,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:cooked",
+      "target": "term:brainrot-aura:mewing",
+      "kind": "embed_neighbor",
+      "score": 0.1566,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:cooked",
+      "target": "term:brainrot-aura:vibe check",
+      "kind": "embed_neighbor",
+      "score": 0.1538,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura",
+      "target": "term:brainrot-aura:let him cook",
+      "kind": "embed_neighbor",
+      "score": 0.2161,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:let him cook",
+      "target": "term:brainrot-aura:negative aura",
+      "kind": "embed_neighbor",
+      "score": 0.2091,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura points",
+      "target": "term:brainrot-aura:let him cook",
+      "kind": "embed_neighbor",
+      "score": 0.1806,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:ate",
+      "target": "term:brainrot-aura:rizz",
+      "kind": "embed_neighbor",
+      "score": 0.2594,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:rizz",
+      "target": "term:brainrot-aura:six seven",
+      "kind": "embed_neighbor",
+      "score": 0.1225,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:no cap",
+      "target": "term:brainrot-aura:skibidi",
+      "kind": "embed_neighbor",
+      "score": 0.3138,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:bussin",
+      "target": "term:brainrot-aura:skibidi",
+      "kind": "embed_neighbor",
+      "score": 0.2077,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:delulu",
+      "target": "term:brainrot-aura:gyatt",
+      "kind": "embed_neighbor",
+      "score": 0.2301,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:gyatt",
+      "target": "term:brainrot-aura:looksmaxxing",
+      "kind": "embed_neighbor",
+      "score": 0.1813,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:edging",
+      "target": "term:brainrot-aura:gyatt",
+      "kind": "embed_neighbor",
+      "score": 0.1611,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:npc",
+      "target": "term:brainrot-aura:sigma",
+      "kind": "embed_neighbor",
+      "score": 0.1762,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:sigma",
+      "target": "term:brainrot-aura:vibe check",
+      "kind": "embed_neighbor",
+      "score": 0.1674,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:left no crumbs",
+      "target": "term:brainrot-aura:sigma",
+      "kind": "embed_neighbor",
+      "score": 0.141,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:delulu",
+      "target": "term:brainrot-aura:main character energy",
+      "kind": "embed_neighbor",
+      "score": 0.1987,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:left no crumbs",
+      "target": "term:brainrot-aura:no cap",
+      "kind": "embed_neighbor",
+      "score": 0.3877,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:fanum tax",
+      "target": "term:brainrot-aura:no cap",
+      "kind": "embed_neighbor",
+      "score": 0.2555,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:locked in",
+      "target": "term:brainrot-aura:yap",
+      "kind": "embed_neighbor",
+      "score": 0.1346,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:cooked",
+      "target": "term:brainrot-aura:locked in",
+      "kind": "embed_neighbor",
+      "score": 0.123,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:bussin",
+      "target": "term:brainrot-aura:locked in",
+      "kind": "embed_neighbor",
+      "score": 0.123,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:crash out",
+      "target": "term:brainrot-aura:gooning",
+      "kind": "embed_neighbor",
+      "score": 0.3465,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:crash out",
+      "target": "term:brainrot-aura:let him cook",
+      "kind": "embed_neighbor",
+      "score": 0.1595,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:crash out",
+      "target": "term:brainrot-aura:left no crumbs",
+      "kind": "embed_neighbor",
+      "score": 0.1433,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:mewing",
+      "target": "term:brainrot-aura:mogging",
+      "kind": "embed_neighbor",
+      "score": 0.2919,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:edging",
+      "target": "term:brainrot-aura:mewing",
+      "kind": "embed_neighbor",
+      "score": 0.2763,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:mewing",
+      "target": "term:brainrot-aura:npc",
+      "kind": "embed_neighbor",
+      "score": 0.2313,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:gooning",
+      "target": "term:brainrot-aura:looksmaxxing",
+      "kind": "embed_neighbor",
+      "score": 0.2688,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:looksmaxxing",
+      "target": "term:brainrot-aura:yapping",
+      "kind": "embed_neighbor",
+      "score": 0.2243,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:left no crumbs",
+      "target": "term:brainrot-aura:looksmaxxing",
+      "kind": "embed_neighbor",
+      "score": 0.2177,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:main character energy",
+      "target": "term:brainrot-aura:mog",
+      "kind": "embed_neighbor",
+      "score": 0.2643,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:mog",
+      "target": "term:brainrot-aura:mogging",
+      "kind": "embed_neighbor",
+      "score": 0.2359,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:delulu",
+      "target": "term:brainrot-aura:mog",
+      "kind": "embed_neighbor",
+      "score": 0.1713,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:edging",
+      "target": "term:brainrot-aura:mogging",
+      "kind": "embed_neighbor",
+      "score": 0.269,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:ate",
+      "target": "term:brainrot-aura:yap",
+      "kind": "embed_neighbor",
+      "score": 0.253,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:ate",
+      "target": "term:brainrot-aura:edging",
+      "kind": "embed_neighbor",
+      "score": 0.2447,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:left no crumbs",
+      "target": "term:brainrot-aura:npc",
+      "kind": "embed_neighbor",
+      "score": 0.1928,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:it's giving",
+      "target": "term:brainrot-aura:mogging",
+      "kind": "embed_neighbor",
+      "score": 0.2249,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:it's giving",
+      "target": "term:brainrot-aura:mewing",
+      "kind": "embed_neighbor",
+      "score": 0.1927,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:edging",
+      "target": "term:brainrot-aura:it's giving",
+      "kind": "embed_neighbor",
+      "score": 0.1927,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:npc",
+      "target": "term:brainrot-aura:slay",
+      "kind": "embed_neighbor",
+      "score": 0.2451,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:main character",
+      "target": "term:brainrot-aura:main character energy",
+      "kind": "embed_neighbor",
+      "score": 0.813,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:looksmaxxing",
+      "target": "term:brainrot-aura:main character",
+      "kind": "embed_neighbor",
+      "score": 0.1694,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura",
+      "target": "term:brainrot-aura:main character",
+      "kind": "embed_neighbor",
+      "score": 0.1454,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:67",
+      "target": "term:brainrot-aura:fanum tax",
+      "kind": "embed_neighbor",
+      "score": 0.1869,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:fanum tax",
+      "target": "term:brainrot-aura:mewing",
+      "kind": "embed_neighbor",
+      "score": 0.1734,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:main character energy",
+      "target": "term:brainrot-aura:ohio",
+      "kind": "embed_neighbor",
+      "score": 0.104,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:negative aura",
+      "target": "term:brainrot-aura:ohio",
+      "kind": "embed_neighbor",
+      "score": 0.0996,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:bussin",
+      "target": "term:brainrot-aura:edging",
+      "kind": "embed_neighbor",
+      "score": 0.2785,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:bussin",
+      "target": "term:brainrot-aura:chat is this real",
+      "kind": "embed_neighbor",
+      "score": 0.1517,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:edging",
+      "target": "term:brainrot-aura:slay",
+      "kind": "embed_neighbor",
+      "score": 0.224,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:mewing",
+      "target": "term:brainrot-aura:slay",
+      "kind": "embed_neighbor",
+      "score": 0.166,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:chat is this real",
+      "target": "term:brainrot-aura:six seven",
+      "kind": "embed_neighbor",
+      "score": 0.1352,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:sigma",
+      "target": "term:brainrot-aura:six seven",
+      "kind": "embed_neighbor",
+      "score": 0.1265,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura points",
+      "target": "term:brainrot-aura:six seven",
+      "kind": "embed_neighbor",
+      "score": 0.1243,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:67",
+      "target": "term:brainrot-aura:yapping",
+      "kind": "embed_neighbor",
+      "score": 0.2465,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:67",
+      "target": "term:brainrot-aura:looksmaxxing",
+      "kind": "embed_neighbor",
+      "score": 0.2111,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:edging",
+      "target": "term:brainrot-aura:yapping",
+      "kind": "embed_neighbor",
+      "score": 0.3681,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:gooning",
+      "target": "term:brainrot-aura:mewing",
+      "kind": "embed_neighbor",
+      "score": 0.2156,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:mewing",
+      "target": "term:brainrot-aura:vibe check",
+      "kind": "embed_neighbor",
+      "score": 0.1538,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:aura points",
+      "target": "term:brainrot-aura:negative aura",
+      "kind": "embed_neighbor",
+      "score": 0.4179,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:yap",
+      "target": "term:brainrot-aura:yapping",
+      "kind": "embed_neighbor",
+      "score": 0.2359,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:no cap",
+      "target": "term:brainrot-aura:yap",
+      "kind": "embed_neighbor",
+      "score": 0.141,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:brainrot-aura:chat is this real",
+      "target": "term:brainrot-aura:mogging",
+      "kind": "embed_neighbor",
+      "score": 0.1524,
+      "family_id": "brainrot-aura",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:kinship-address:family",
+      "target": "term:kinship-address:unc",
+      "kind": "embed_neighbor",
+      "score": 0.0857,
+      "family_id": "kinship-address",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:political-status:based",
+      "target": "term:political-status:redpilled",
+      "kind": "embed_neighbor",
+      "score": 0.1589,
+      "family_id": "political-status",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:political-status:based",
+      "target": "term:political-status:blackpilled",
+      "kind": "embed_neighbor",
+      "score": 0.1519,
+      "family_id": "political-status",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:political-status:blackpilled",
+      "target": "term:political-status:redpilled",
+      "kind": "embed_neighbor",
+      "score": 0.3618,
+      "family_id": "political-status",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:nerf",
+      "target": "term:gaming-meta:touch grass",
+      "kind": "embed_neighbor",
+      "score": 0.4119,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:nerf",
+      "target": "term:gaming-meta:smurf",
+      "kind": "embed_neighbor",
+      "score": 0.1817,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:nerf",
+      "target": "term:gaming-meta:ratio",
+      "kind": "embed_neighbor",
+      "score": 0.0854,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:buff",
+      "target": "term:gaming-meta:diff",
+      "kind": "embed_neighbor",
+      "score": 0.1872,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:buff",
+      "target": "term:gaming-meta:sweaty",
+      "kind": "embed_neighbor",
+      "score": 0.1185,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:buff",
+      "target": "term:gaming-meta:skill issue",
+      "kind": "embed_neighbor",
+      "score": 0.0833,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:meta",
+      "target": "term:gaming-meta:skill issue",
+      "kind": "embed_neighbor",
+      "score": 0.085,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:noob",
+      "target": "term:gaming-meta:sweaty",
+      "kind": "embed_neighbor",
+      "score": 0.166,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:feed",
+      "target": "term:gaming-meta:sweaty",
+      "kind": "embed_neighbor",
+      "score": 0.1411,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:noob",
+      "target": "term:gaming-meta:smurf",
+      "kind": "embed_neighbor",
+      "score": 0.3414,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:ratio",
+      "target": "term:gaming-meta:touch grass",
+      "kind": "embed_neighbor",
+      "score": 0.2961,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:int",
+      "target": "term:gaming-meta:ratio",
+      "kind": "embed_neighbor",
+      "score": 0.2517,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:int",
+      "target": "term:gaming-meta:touch grass",
+      "kind": "embed_neighbor",
+      "score": 0.1575,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:gaming-meta:sus",
+      "target": "term:gaming-meta:sweaty",
+      "kind": "embed_neighbor",
+      "score": 0.0857,
+      "family_id": "gaming-meta",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:quiet firing",
+      "target": "term:workplace-corp:quiet quitting",
+      "kind": "embed_neighbor",
+      "score": 0.615,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:circle back",
+      "target": "term:workplace-corp:quiet quitting",
+      "kind": "embed_neighbor",
+      "score": 0.2138,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:low-hanging fruit",
+      "target": "term:workplace-corp:quiet quitting",
+      "kind": "embed_neighbor",
+      "score": 0.1604,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:circle back",
+      "target": "term:workplace-corp:quiet firing",
+      "kind": "embed_neighbor",
+      "score": 0.1617,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:quiet firing",
+      "target": "term:workplace-corp:synergy",
+      "kind": "embed_neighbor",
+      "score": 0.1038,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:layoffs",
+      "target": "term:workplace-corp:return to office",
+      "kind": "embed_neighbor",
+      "score": 0.2087,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:pip",
+      "target": "term:workplace-corp:return to office",
+      "kind": "embed_neighbor",
+      "score": 0.0868,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:act your wage",
+      "target": "term:workplace-corp:synergy",
+      "kind": "embed_neighbor",
+      "score": 0.1385,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:quiet quitting",
+      "target": "term:workplace-corp:synergy",
+      "kind": "embed_neighbor",
+      "score": 0.0976,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
+    },
+    {
+      "source": "term:workplace-corp:bandwidth",
+      "target": "term:workplace-corp:low-hanging fruit",
+      "kind": "embed_neighbor",
+      "score": 0.1375,
+      "family_id": "workplace-corp",
+      "provenance": "INFERRED",
+      "note": "hash embed cosine within family; not Brier"
     }
   ]
 }

@@ -53,7 +53,26 @@ Mutation operators, family write-ups, Mermaid sources.
 | **Disk size** | Number of atomic terms in registry |
 | **Disk color** | Domain hue (betting, crypto, AI, …) |
 | **Orbit labels** | Atomic terms after you open a family |
+| **Dashed arc** | Within-family hash-embed neighbor (INFERRED · not Brier) |
 | **Month chip** | First seen in YTD backfill packs (if any) |
+
+## Deep links (share a view)
+
+| URL | Opens |
+|-----|--------|
+| [`?term=rizz`](?term=rizz) | Family + selected term + neighbor arcs |
+| [`?family=brainrot-aura`](?family=brainrot-aura) | Family expanded |
+| [`?family=ai-native`](?family=ai-native) | AI-native hub |
+| [`?q=steam`](?q=steam) | Search filter |
+
+Use **Copy link** on the map toolbar after selecting a term.  
+From a pipeline receipt with lineage, open:
+
+```text
+…/map/?term=<primary_term>
+# or
+…/map/?family=<family_id>
+```
 
 ## Why this shape
 

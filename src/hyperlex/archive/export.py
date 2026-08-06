@@ -233,8 +233,13 @@ def _write_analysis_bundle(
 
     display_fams = index["stats"]["families"] or {}
     fam_lines = "\n".join(
-        f"| {k} | {v} |" for k, v in display_fams.items()
-    ) or "| — | 0 |"
+        f"| `{k}` | {v} | [map](../../../map/index.md?family={k}) |"
+        for k, v in display_fams.items()
+        if k != "(none)"
+    ) or "| — | 0 | — |"
+    none_line = ""
+    if "(none)" in display_fams:
+        none_line = f"\n| `(none)` | {display_fams['(none)']} | — |"
     md = f"""# Run snapshot — `{snap}`
 
 **Kind:** `{run_kind}` · **Publish-safe static history** for GitHub Pages.
@@ -252,9 +257,12 @@ for the docs site / git history — not a replacement for the operator ledger.
 
 ## Family distribution
 
-| Family | Count |
-|--------|------:|
-{fam_lines}
+| Family | Count | Map |
+|--------|------:|-----|
+{fam_lines}{none_line}
+
+Open the [slang lineage map](../../../map/index.md) for the full constellation.
+Deep-link a term from a receipt: `…/map/index.md?term=<primary_term>`.
 
 ## Machine index
 
@@ -268,6 +276,7 @@ for the docs site / git history — not a replacement for the operator ledger.
 - Virality predictions are **SPECULATIVE**
 - Open receipts keep `brier: null` (Brier requires settlement)
 - This Pages snapshot is a **static history of runs**, not live state
+- Map / cosine neighbors are **not** Brier
 
 Regenerate / append history:
 
@@ -275,7 +284,7 @@ Regenerate / append history:
 python3 scripts/hyperlex.py archive-export --include-golden --history
 ```
 
-Back to [run history catalog](../../index.md).
+Back to [run history catalog](../../index.md) · [Slang map](../../../map/index.md).
 """
     (out / "README.md").write_text(md, encoding="utf-8")
     (out / "index.md").write_text(md, encoding="utf-8")

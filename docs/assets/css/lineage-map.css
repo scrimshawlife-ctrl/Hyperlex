@@ -143,6 +143,53 @@
   opacity: 0.35;
 }
 
+.hlx-map-edge-neighbor {
+  stroke-width: 1.75;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+}
+
+.hlx-map-term-ring {
+  stroke-width: 1.5;
+  opacity: 0.9;
+}
+
+.hlx-map-term.is-selected .hlx-map-term-label,
+.hlx-map-term-label.is-selected {
+  font-weight: 700;
+  fill: var(--map-ink);
+}
+
+.hlx-map-chips .chip.is-selected {
+  border-color: var(--map-accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--map-accent) 40%, transparent);
+}
+
+.hlx-map-copy {
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--map-ink);
+  background: transparent;
+  border: 1px solid var(--map-rule);
+  border-radius: 2px;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+}
+
+.hlx-map-copy:hover {
+  border-color: var(--map-accent);
+  color: var(--map-accent);
+}
+
+.hlx-map-legend .hlx-swatch.is-neighbor {
+  width: 0.85rem;
+  height: 0;
+  border-radius: 0;
+  border-top: 2px dashed var(--map-accent);
+  background: transparent;
+  vertical-align: middle;
+}
+
 .hlx-map-hub-disk {
   fill: var(--hlx-paper, #12151a);
   stroke: var(--map-accent);

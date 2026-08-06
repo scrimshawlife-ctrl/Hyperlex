@@ -1,7 +1,7 @@
 /**
  * Hyperlex lineage constellation map
- * Radial family hubs + term orbits. Instantly scannable; no external libs.
- * Hallmark · macrostructure: Map/Diagram · technical desk tokens
+ * Radial family hubs + term orbits + deep links (?term= / ?family= / ?q=)
+ * Within-family hash-neighbor arcs when a term is selected (INFERRED ≠ Brier)
  */
 (function () {
   "use strict";
@@ -11,32 +11,120 @@
 
   const DATA_URL =
     ROOT.getAttribute("data-src") ||
-    new URL("lineage-map.json", ROOT.baseURI || document.baseURI).href;
+    new URL("lineage-map.json", document.baseURI).href;
 
   const state = {
     data: null,
-    focus: "hyperlex", // family id or hyperlex
+    focus: "hyperlex",
     query: "",
-    hover: null,
+    selectedTermId: null,
   };
 
   function oklch(h, l, c) {
     return `oklch(${l}% ${c} ${h})`;
   }
-
   function familyColor(hue) {
     return oklch(hue || 220, 72, 0.14);
   }
-
   function familySoft(hue) {
     return oklch(hue || 220, 28, 0.06);
+  }
+
+  function parseDeepLink() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      term: (params.get("term") || "").trim(),
+      family: (params.get("family") || "").trim(),
+      q: (params.get("q") || params.get("query") || "").trim(),
+    };
+  }
+
+  function findTermNode(termText) {
+    if (!termText || !state.data) return null;
+    const key = termText.toLowerCase();
+    const exact = state.data.nodes.filter(
+      (n) => n.kind === "term" && n.label.toLowerCase() === key
+    );
+    if (exact.length) return exact[0];
+    const partial = state.data.nodes.find(
+      (n) => n.kind === "term" && n.label.toLowerCase().includes(key)
+    );
+    return partial || null;
+  }
+
+  function findFamily(familyId) {
+    if (!familyId || !state.data) return null;
+    return (
+      state.data.nodes.find(
+        (n) => n.kind === "family" && n.id === familyId
+      ) ||
+      state.data.nodes.find(
+        (n) =>
+          n.kind === "family" &&
+          n.label.toLowerCase() === familyId.toLowerCase()
+      )
+    );
+  }
+
+  function applyDeepLink() {
+    const dl = parseDeepLink();
+    if (dl.q) state.query = dl.q;
+    if (dl.term) {
+      const t = findTermNode(dl.term);
+      if (t) {
+        state.focus = t.family_id;
+        state.selectedTermId = t.id;
+        state.query = state.query || t.label;
+        return { type: "term", node: t };
+      }
+    }
+    if (dl.family) {
+      const f = findFamily(dl.family);
+      if (f) {
+        state.focus = f.id;
+        state.selectedTermId = null;
+        return { type: "family", node: f };
+      }
+    }
+    if (dl.q) {
+      const t = findTermNode(dl.q);
+      if (t) {
+        state.focus = t.family_id;
+        state.selectedTermId = t.id;
+        return { type: "term", node: t };
+      }
+    }
+    return { type: "overview" };
+  }
+
+  function pushDeepLink() {
+    if (!window.history || !window.history.replaceState) return;
+    const params = new URLSearchParams();
+    if (state.selectedTermId) {
+      const t = state.data.nodes.find((n) => n.id === state.selectedTermId);
+      if (t) params.set("term", t.label);
+    } else if (state.focus && state.focus !== "hyperlex") {
+      params.set("family", state.focus);
+    }
+    if (state.query && !state.selectedTermId) {
+      params.set("q", state.query);
+    }
+    const qs = params.toString();
+    const url = qs
+      ? `${window.location.pathname}?${qs}${window.location.hash || ""}`
+      : `${window.location.pathname}${window.location.hash || ""}`;
+    window.history.replaceState({}, "", url);
   }
 
   async function load() {
     const res = await fetch(DATA_URL, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to load lineage-map.json");
     state.data = await res.json();
+    const applied = applyDeepLink();
     render();
+    if (applied.type === "term") showTerm(applied.node);
+    else if (applied.type === "family") showFamily(applied.node);
+    else showOverview();
   }
 
   function families() {
@@ -55,6 +143,31 @@
     return String(label).toLowerCase().includes(q);
   }
 
+  function selectFamily(f, { push = true } = {}) {
+    state.focus = f.id;
+    state.selectedTermId = null;
+    render();
+    showFamily(f);
+    if (push) pushDeepLink();
+  }
+
+  function selectTerm(t, { push = true } = {}) {
+    state.focus = t.family_id;
+    state.selectedTermId = t.id;
+    render();
+    showTerm(t);
+    if (push) pushDeepLink();
+  }
+
+  function resetView({ push = true } = {}) {
+    state.focus = "hyperlex";
+    state.query = "";
+    state.selectedTermId = null;
+    render();
+    showOverview();
+    if (push) pushDeepLink();
+  }
+
   function render() {
     const fams = families();
     const W = Math.min(ROOT.clientWidth || 720, 900);
@@ -71,14 +184,12 @@
       ? termsFor(focusFam.id).filter((t) => matchQuery(t.label))
       : [];
 
-    // Layout family nodes on a ring
     const famPos = {};
     fams.forEach((f, i) => {
       const a = -Math.PI / 2 + (i / fams.length) * Math.PI * 2;
       famPos[f.id] = { x: cx + Math.cos(a) * R, y: cy + Math.sin(a) * R, a };
     });
 
-    // Term positions: second ring around focused family, or faint around all
     const termPos = {};
     if (focusFam) {
       const p = famPos[focusFam.id];
@@ -103,15 +214,14 @@
     ROOT.innerHTML = "";
     ROOT.classList.add("hlx-map-root");
 
-    // Shell
     const shell = el("div", "hlx-map-shell");
     const toolbar = el("div", "hlx-map-toolbar");
+    const nTerms = state.data.n_nodes - 1 - state.data.n_families;
     toolbar.innerHTML = `
       <div class="hlx-map-title">
         <strong>Slang lineage map</strong>
-        <span>${state.data.n_families} families · ${
-      state.data.n_nodes - 1 - state.data.n_families
-    } terms · brier null</span>
+        <span>${state.data.n_families} families · ${nTerms} terms
+        · neighbors INFERRED · brier null</span>
       </div>
       <label class="hlx-map-search">
         <span class="sr-only">Search terms</span>
@@ -120,8 +230,11 @@
         )}" autocomplete="off" />
       </label>
       <button type="button" class="hlx-map-reset" ${
-        state.focus === "hyperlex" && !state.query ? "disabled" : ""
+        state.focus === "hyperlex" && !state.query && !state.selectedTermId
+          ? "disabled"
+          : ""
       }>Reset view</button>
+      <button type="button" class="hlx-map-copy" title="Copy link to this view">Copy link</button>
     `;
     shell.appendChild(toolbar);
 
@@ -130,13 +243,9 @@
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     svg.setAttribute("role", "img");
-    svg.setAttribute(
-      "aria-label",
-      "Radial map of slang families and terms"
-    );
+    svg.setAttribute("aria-label", "Radial map of slang families and terms");
     svg.classList.add("hlx-map-svg");
 
-    // ring guide
     svg.appendChild(
       svgEl("circle", {
         cx,
@@ -147,11 +256,12 @@
       })
     );
 
-    // edges family → root
     fams.forEach((f) => {
       const p = famPos[f.id];
       const active =
-        !focusFam || focusFam.id === f.id || hitTerms.some((t) => t.family_id === f.id);
+        !focusFam ||
+        focusFam.id === f.id ||
+        hitTerms.some((t) => t.family_id === f.id);
       svg.appendChild(
         svgEl("line", {
           x1: cx,
@@ -164,7 +274,32 @@
       );
     });
 
-    // term edges + nodes
+    // Neighbor arcs for selected term
+    if (focusFam && state.selectedTermId && termPos[state.selectedTermId]) {
+      const selected = focusTerms.find((t) => t.id === state.selectedTermId);
+      if (selected && selected.neighbors) {
+        selected.neighbors.forEach((n) => {
+          const other = focusTerms.find(
+            (t) => t.label.toLowerCase() === String(n.term).toLowerCase()
+          );
+          if (!other || !termPos[other.id]) return;
+          const a = termPos[selected.id];
+          const b = termPos[other.id];
+          svg.appendChild(
+            svgEl("line", {
+              x1: a.x,
+              y1: a.y,
+              x2: b.x,
+              y2: b.y,
+              class: "hlx-map-edge-neighbor",
+              stroke: familyColor(focusFam.hue),
+              "stroke-opacity": Math.min(0.85, 0.25 + n.score),
+            })
+          );
+        });
+      }
+    }
+
     if (focusFam) {
       const p = famPos[focusFam.id];
       focusTerms.forEach((t) => {
@@ -182,14 +317,25 @@
       });
       focusTerms.forEach((t) => {
         const tp = termPos[t.id];
+        const selected = t.id === state.selectedTermId;
         const g = svgEl("g", {
-          class: "hlx-map-term",
+          class: selected ? "hlx-map-term is-selected" : "hlx-map-term",
           transform: `translate(${tp.x},${tp.y})`,
           "data-id": t.id,
         });
+        if (selected) {
+          g.appendChild(
+            svgEl("circle", {
+              r: 12,
+              class: "hlx-map-term-ring",
+              fill: "none",
+              stroke: familyColor(t.hue),
+            })
+          );
+        }
         g.appendChild(
           svgEl("circle", {
-            r: 5,
+            r: selected ? 7 : 5,
             fill: familyColor(t.hue),
             class: "hlx-map-term-dot",
           })
@@ -197,23 +343,26 @@
         const label = svgEl("text", {
           x: 8,
           y: 4,
-          class: "hlx-map-term-label",
+          class: selected
+            ? "hlx-map-term-label is-selected"
+            : "hlx-map-term-label",
         });
         label.textContent = t.label;
         g.appendChild(label);
         g.addEventListener("click", (ev) => {
           ev.stopPropagation();
-          showTerm(t);
+          selectTerm(t);
         });
         svg.appendChild(g);
       });
     }
 
-    // family nodes
     fams.forEach((f) => {
       const p = famPos[f.id];
       const dim =
-        focusFam && focusFam.id !== f.id && !hitTerms.some((t) => t.family_id === f.id);
+        focusFam &&
+        focusFam.id !== f.id &&
+        !hitTerms.some((t) => t.family_id === f.id);
       const g = svgEl("g", {
         class: dim ? "hlx-map-family is-dim" : "hlx-map-family",
         transform: `translate(${p.x},${p.y})`,
@@ -245,23 +394,16 @@
       });
       lab.textContent = f.label;
       g.appendChild(lab);
-      g.addEventListener("click", () => {
-        state.focus = f.id;
-        render();
-        showFamily(f);
-      });
+      g.addEventListener("click", () => selectFamily(f));
       g.addEventListener("keydown", (ev) => {
         if (ev.key === "Enter" || ev.key === " ") {
           ev.preventDefault();
-          state.focus = f.id;
-          render();
-          showFamily(f);
+          selectFamily(f);
         }
       });
       svg.appendChild(g);
     });
 
-    // center hub
     const hub = svgEl("g", {
       class: "hlx-map-hub",
       transform: `translate(${cx},${cy})`,
@@ -269,9 +411,7 @@
       role: "button",
       "aria-label": "Show all families",
     });
-    hub.appendChild(
-      svgEl("circle", { r: 36, class: "hlx-map-hub-disk" })
-    );
+    hub.appendChild(svgEl("circle", { r: 36, class: "hlx-map-hub-disk" }));
     const hubT = svgEl("text", {
       y: -2,
       "text-anchor": "middle",
@@ -286,11 +426,7 @@
     });
     hubS.textContent = `${fams.length} families`;
     hub.appendChild(hubS);
-    hub.addEventListener("click", () => {
-      state.focus = "hyperlex";
-      render();
-      showOverview();
-    });
+    hub.addEventListener("click", () => resetView());
     svg.appendChild(hub);
 
     canvasWrap.appendChild(svg);
@@ -299,26 +435,23 @@
     const panel = el("aside", "hlx-map-panel");
     panel.id = "hlx-map-panel";
     body.appendChild(panel);
-
     shell.appendChild(body);
 
-    // legend
     const legend = el("div", "hlx-map-legend");
     legend.innerHTML = `
       <span><i class="hlx-swatch is-family"></i> Family hub (size ∝ term count)</span>
       <span><i class="hlx-swatch is-term"></i> Term leaf</span>
-      <span>Click a hub to expand · search filters terms</span>
-      <span>Similarity / map ≠ Brier</span>
+      <span><i class="hlx-swatch is-neighbor"></i> Hash neighbor (INFERRED)</span>
+      <span>Deep link: <code>?term=rizz</code> · <code>?family=brainrot-aura</code></span>
+      <span>Map / cosine ≠ Brier</span>
     `;
     shell.appendChild(legend);
-
     ROOT.appendChild(shell);
 
-    // wire controls
     const input = toolbar.querySelector("input");
     input.addEventListener("input", () => {
       state.query = input.value;
-      // if searching, auto-focus first matching family
+      state.selectedTermId = null;
       if (state.query.trim()) {
         const hits = state.data.nodes.filter(
           (n) => n.kind === "term" && matchQuery(n.label)
@@ -337,20 +470,34 @@
         const f = fams.find((x) => x.id === state.focus);
         if (f) showFamily(f);
       } else showOverview();
+      pushDeepLink();
     });
     toolbar.querySelector(".hlx-map-reset").addEventListener("click", () => {
-      state.focus = "hyperlex";
-      state.query = "";
-      render();
-      showOverview();
+      resetView();
+    });
+    toolbar.querySelector(".hlx-map-copy").addEventListener("click", () => {
+      pushDeepLink();
+      const url = window.location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+          const btn = toolbar.querySelector(".hlx-map-copy");
+          const prev = btn.textContent;
+          btn.textContent = "Copied";
+          setTimeout(() => {
+            btn.textContent = prev;
+          }, 1200);
+        });
+      }
     });
 
-    // initial panel
-    if (focusFam) showFamily(focusFam);
+    if (focusFam && state.selectedTermId) {
+      const t = focusTerms.find((x) => x.id === state.selectedTermId);
+      if (t) showTerm(t);
+      else showFamily(focusFam);
+    } else if (focusFam) showFamily(focusFam);
     else showOverview();
 
-    // search highlight list
-    if (q && hitTerms.length) {
+    if (q && hitTerms.length && !state.selectedTermId) {
       const list = hitTerms
         .slice(0, 12)
         .map(
@@ -368,12 +515,10 @@
       );
       panel.querySelectorAll("[data-term]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const t = state.data.nodes.find((n) => n.id === btn.getAttribute("data-term"));
-          if (t) {
-            state.focus = t.family_id;
-            render();
-            showTerm(t);
-          }
+          const t = state.data.nodes.find(
+            (n) => n.id === btn.getAttribute("data-term")
+          );
+          if (t) selectTerm(t);
         });
       });
     }
@@ -388,8 +533,9 @@
     panel.innerHTML = `
       <p class="hlx-map-kicker">Overview</p>
       <h2>Eight slang families</h2>
-      <p class="hlx-map-blurb">Each hub is a <strong>lineage family</strong> — not a flat word list.
-      Size scales with term count. Click a hub to open its leaves.</p>
+      <p class="hlx-map-blurb">Each hub is a <strong>lineage family</strong>.
+      Size scales with term count. Click a hub to open leaves.
+      Share a view with <code>?term=rizz</code> or <code>?family=ai-native</code>.</p>
       <ul class="hlx-map-famlist">
         ${fams
           .map(
@@ -404,16 +550,12 @@
           )
           .join("")}
       </ul>
-      <p class="hlx-map-footnote">Data: LINEAGE_REGISTRY + YTD first-seen · publish-safe static export · not live Cloud.</p>
+      <p class="hlx-map-footnote">Data: LINEAGE_REGISTRY + YTD first-seen + within-family hash neighbors · not live Cloud.</p>
     `;
     panel.querySelectorAll("[data-fam]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const f = fams.find((x) => x.id === btn.getAttribute("data-fam"));
-        if (f) {
-          state.focus = f.id;
-          render();
-          showFamily(f);
-        }
+        if (f) selectFamily(f);
       });
     });
   }
@@ -422,12 +564,14 @@
     const panel = document.getElementById("hlx-map-panel");
     if (!panel) return;
     const terms = termsFor(f.id).filter((t) => matchQuery(t.label));
+    const mapBase = window.location.pathname;
     panel.innerHTML = `
       <p class="hlx-map-kicker">Family</p>
       <h2 style="color:${familyColor(f.hue)}">${escapeHtml(f.label)}</h2>
       <p class="hlx-map-meta"><code>${escapeHtml(f.family_id)}</code>
         · operator <code>${escapeHtml(f.branch_operator || "—")}</code>
-        · ${f.n_terms} terms</p>
+        · ${f.n_terms} terms
+        · <a href="${escapeAttr(mapBase + "?family=" + encodeURIComponent(f.id))}">permalink</a></p>
       <p class="hlx-map-blurb">${escapeHtml(f.payload_note || "")}</p>
       <p class="hlx-map-kicker">Terms</p>
       <div class="hlx-map-chips">
@@ -436,7 +580,9 @@
             const leaf = t.first_seen_month
               ? `<span class="when">${escapeHtml(t.first_seen_month)}</span>`
               : "";
-            return `<button type="button" class="chip" data-term="${escapeAttr(
+            const sel =
+              t.id === state.selectedTermId ? " is-selected" : "";
+            return `<button type="button" class="chip${sel}" data-term="${escapeAttr(
               t.id
             )}"><code>${escapeHtml(t.label)}</code>${leaf}</button>`;
           })
@@ -454,8 +600,10 @@
     `;
     panel.querySelectorAll("[data-term]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const t = state.data.nodes.find((n) => n.id === btn.getAttribute("data-term"));
-        if (t) showTerm(t);
+        const t = state.data.nodes.find(
+          (n) => n.id === btn.getAttribute("data-term")
+        );
+        if (t) selectTerm(t);
       });
     });
   }
@@ -464,6 +612,16 @@
     const panel = document.getElementById("hlx-map-panel");
     if (!panel) return;
     const fam = families().find((f) => f.id === t.family_id);
+    const mapBase = window.location.pathname;
+    const neigh = (t.neighbors || [])
+      .map(
+        (n) =>
+          `<button type="button" class="chip" data-neigh="${escapeAttr(
+            n.term
+          )}"><code>${escapeHtml(n.term)}</code>
+          <span class="when">${n.score}</span></button>`
+      )
+      .join("");
     panel.innerHTML = `
       <p class="hlx-map-kicker">Term</p>
       <h2><code>${escapeHtml(t.label)}</code></h2>
@@ -473,34 +631,49 @@
         )}">${escapeHtml(fam ? fam.label : t.family_id)}</button>
         ${
           t.first_seen_month
-            ? ` · first seen in packs <code>${escapeHtml(
-                t.first_seen_month
-              )}</code>`
-            : " · registry trunk (no YTD first-seen)"
+            ? ` · first seen <code>${escapeHtml(t.first_seen_month)}</code>`
+            : " · registry trunk"
         }
+        · <a href="${escapeAttr(
+          mapBase + "?term=" + encodeURIComponent(t.label)
+        )}">permalink</a>
       </p>
       <p class="hlx-map-blurb">${escapeHtml(
         (fam && fam.payload_note) || "Atomic slang unit in this lineage family."
       )}</p>
+      ${
+        neigh
+          ? `<p class="hlx-map-kicker">Within-family neighbors (hash embed · INFERRED)</p>
+             <div class="hlx-map-chips">${neigh}</div>
+             <p class="hlx-map-footnote">Cosine on hyperlex.hash_ngram_v1.d256 — not Brier.</p>`
+          : ""
+      }
       <div class="hlx-claim hlx-claim--good" style="margin-top:0.75rem">
         <p><strong>Say</strong></p>
         <p>“${escapeHtml(t.label)} is an atomic leaf in the
-        ${escapeHtml(fam ? fam.label : t.family_id)} family
-        (${escapeHtml(t.branch_operator || "lineage")} operator).”</p>
+        ${escapeHtml(fam ? fam.label : t.family_id)} family.”</p>
       </div>
       <div class="hlx-claim hlx-claim--bad" style="margin-top:0.5rem">
         <p><strong>Don’t say</strong></p>
-        <p>Map position or cosine score is a probability of virality or Brier skill.</p>
+        <p>Map position or neighbor score is a probability of virality or Brier skill.</p>
       </div>
     `;
     const b = panel.querySelector("[data-fam]");
     if (b) {
       b.addEventListener("click", () => {
-        state.focus = t.family_id;
-        render();
-        if (fam) showFamily(fam);
+        const f = fam;
+        if (f) selectFamily(f);
       });
     }
+    panel.querySelectorAll("[data-neigh]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const label = btn.getAttribute("data-neigh");
+        const node = termsFor(t.family_id).find(
+          (x) => x.label.toLowerCase() === String(label).toLowerCase()
+        );
+        if (node) selectTerm(node);
+      });
+    });
   }
 
   function el(tag, cls) {
@@ -531,13 +704,35 @@
     return escapeHtml(s).replace(/'/g, "&#39;");
   }
 
-  // re-render on resize (debounced)
-  let t = null;
+  let resizeTimer = null;
   window.addEventListener("resize", () => {
-    clearTimeout(t);
-    t = setTimeout(() => {
-      if (state.data) render();
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (state.data) {
+        const sel = state.selectedTermId;
+        const focus = state.focus;
+        render();
+        if (sel) {
+          const t = state.data.nodes.find((n) => n.id === sel);
+          if (t) showTerm(t);
+        } else if (focus !== "hyperlex") {
+          const f = families().find((x) => x.id === focus);
+          if (f) showFamily(f);
+        } else showOverview();
+      }
     }, 120);
+  });
+
+  window.addEventListener("popstate", () => {
+    if (!state.data) return;
+    state.focus = "hyperlex";
+    state.query = "";
+    state.selectedTermId = null;
+    const applied = applyDeepLink();
+    render();
+    if (applied.type === "term") showTerm(applied.node);
+    else if (applied.type === "family") showFamily(applied.node);
+    else showOverview();
   });
 
   load().catch((err) => {

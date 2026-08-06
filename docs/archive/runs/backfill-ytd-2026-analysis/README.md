@@ -15,16 +15,18 @@ for the docs site / git history — not a replacement for the operator ledger.
 
 ## Family distribution
 
-| Family | Count |
-|--------|------:|
-| brainrot-aura | 5 |
-| ai-native | 3 |
-| betting-sharp | 2 |
-| gaming-meta | 2 |
-| political-status | 1 |
-| crypto-degen | 1 |
-| kinship-address | 1 |
-| workplace-corp | 1 |
+| Family | Count | Map |
+|--------|------:|-----|
+| `brainrot-aura` | 5 | [map](../../../map/index.md?family=brainrot-aura) |
+| `ai-native` | 3 | [map](../../../map/index.md?family=ai-native) |
+| `betting-sharp` | 2 | [map](../../../map/index.md?family=betting-sharp) |
+| `gaming-meta` | 2 | [map](../../../map/index.md?family=gaming-meta) |
+| `political-status` | 1 | [map](../../../map/index.md?family=political-status) |
+| `crypto-degen` | 1 | [map](../../../map/index.md?family=crypto-degen) |
+| `kinship-address` | 1 | [map](../../../map/index.md?family=kinship-address) |
+| `workplace-corp` | 1 | [map](../../../map/index.md?family=workplace-corp) |
+
+Open the [slang lineage map](../../../map/index.md) for the full constellation.
 
 ## Machine index
 
@@ -44,4 +46,4 @@ Regenerate / append history:
 python3 scripts/hyperlex.py archive-export --include-golden --history
 ```
 
-Back to [run history catalog](../../index.md).
+Back to [run history catalog](../../index.md) · [Slang map](../../../map/index.md).
