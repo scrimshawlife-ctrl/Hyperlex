@@ -11,6 +11,7 @@
 python3 scripts/hyperlex.py doctor
 python3 scripts/release_preflight.py
 python3 scripts/hyperlex.py simulate --term rizz --mode scenario
+python -m hyperlex inbox list
 ```
 
 ## Surface (ready)
@@ -51,7 +52,9 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Atomic multi-term seeds** | Ready (v0.4.0 · `terms-split` / multi Phase 5) |
 | **Pages demos (atomic terms)** | Ready (`docs/demos/atomic-terms.md`) |
 | **Automatic pipeline** | Ready (v0.4.0 · `pipeline` / `run` / `ingest` → full results) |
-| **SIGNAL REPORT parity fields** (compression_metrics, symbolic_role, propagation_vector, signal_report, seed header) | Ready (schema + builder + wired into detect_memetic_patterns 2026-08-06) |
+| **SIGNAL REPORT parity fields** | Ready (schema + builder + wired 2026-08-06) |
+| **Local signals inbox** (`~/.hyperlex/signals/`) | Ready (CLI `inbox list|push|clear`) |
+| **SHADOW candidate rune** (`RUNE.HLX.SHADOW_CANDIDATE`) | Ready (relay + schema; advisory only) |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
@@ -61,6 +64,8 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 pipeline "rizz" | ingest "rizz" | run "rizz"   # AUTO full results
   → pending → settle → score-series            # only manual step (Brier)
   → scan / risk-schedule                       # cron advisory
+  → relay --push-inbox                         # SHADOW envelope + local inbox
+  → inbox list                                 # review attractors
   → vector-seed (sqlite or local chroma)       # optional index
   → vector-sync --to cloud                     # promote when good
   → archive-export                             # optional Pages snapshot
@@ -75,19 +80,17 @@ pipeline "rizz" | ingest "rizz" | run "rizz"   # AUTO full results
 ~/.hyperlex/cache/
 ~/.hyperlex/vector.db            # local SQLite vector store (default)
 ~/.hyperlex/chroma/              # local Chroma persist (opt-in)
+~/.hyperlex/signals/inbox.jsonl  # local SHADOW / high-priority attractors
 data/backfill/2026/              # curated YTD term packs (repo)
 ```
 
 ## Recommended next (ops, not greenfield)
 
-See [docs/operator-loop.md](docs/operator-loop.md) · [docs/demos/atomic-terms.md](docs/demos/atomic-terms.md) · [docs/modules/vectordb.md](docs/modules/vectordb.md):
-
 1. `bash examples/ops/burn-in.sh` (atomic offline runs)
 2. `pending` → `settle` → `score-series`
-3. Local Chroma backfill: `vector-seed --backend chroma --db ~/.hyperlex/chroma --through 2026-08 --include-home --include-golden`
-4. Promote when ready: `vector-sync --from-path ~/.hyperlex/chroma --to cloud`
-5. Register MODERATE cron from `risk-schedule` when ready
-6. Optional: local signals inbox + SHADOW rune_candidate emission (next adaptation tranche)
+3. Local Chroma backfill when ready
+4. Optional: enrich `scan` with focus / time_window / min_virality
+5. Optional: forage / daily aggregate receipt
 
 ## Phase 5.3+ (deferred)
 
