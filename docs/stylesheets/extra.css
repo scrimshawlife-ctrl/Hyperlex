@@ -702,3 +702,255 @@
   max-height: 16rem;
   overflow: auto;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Mobile — chef's kiss floor (320 / 375 / 414 / 768)
+   Hallmark gates: no horizontal scroll, no 2-line CTAs,
+   minmax(0,1fr), overflow-wrap on display, section collapse
+   ═══════════════════════════════════════════════════════════ */
+
+html,
+body {
+  overflow-x: clip;
+}
+
+.md-typeset,
+.md-content__inner,
+.md-main__inner {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Long tokens / URLs don't blow the viewport */
+.md-typeset,
+.md-typeset p,
+.md-typeset li,
+.md-typeset td,
+.md-typeset th {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* Code: scroll inside, never expand page */
+.md-typeset pre {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.md-typeset pre > code {
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.md-typeset :not(pre) > code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Tables: swipe, don't squash */
+.md-typeset__table,
+.md-typeset table:not([class]) {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.md-typeset table:not([class]) {
+  font-size: 0.8rem;
+}
+
+/* Touch-friendly primary controls */
+.md-typeset .md-button {
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.hlx-cta-card .md-button,
+.hlx-path-card .md-button {
+  width: 100%;
+  margin: 0.35rem 0 0;
+}
+
+.hlx-cta-card .md-button + .md-button,
+.hlx-path-card .md-button + .md-button {
+  margin-top: 0.4rem;
+}
+
+/* Status strip: chips stack cleanly */
+.hlx-status {
+  gap: 0.4rem 0.75rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.hlx-status span {
+  line-height: 1.35;
+}
+
+/* Mermaid: scroll on narrow */
+.mermaid {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+/* ── ≤ 768px (tablet / large phone landscape) ── */
+@media screen and (max-width: 48em) {
+  .md-typeset {
+    font-size: 0.92rem;
+  }
+
+  .md-typeset h1 {
+    font-size: 1.55rem;
+    letter-spacing: -0.015em;
+  }
+
+  .md-typeset h2 {
+    font-size: 1.2rem;
+  }
+
+  .hlx-purpose,
+  .hlx-lead {
+    font-size: 1rem;
+    max-width: none;
+  }
+
+  .hlx-cta-grid,
+  .hlx-path-grid,
+  .hlx-claim-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    max-width: none;
+  }
+
+  .hlx-cta-card,
+  .hlx-path-card {
+    padding: 0.9rem 1rem;
+  }
+
+  .hlx-cta-card pre,
+  .hlx-cta-card .highlight {
+    font-size: 0.68rem;
+  }
+
+  .hlx-gateway table {
+    max-width: none;
+  }
+
+  .hlx-keyrules {
+    position: static;
+    padding: 0.85rem 1rem;
+  }
+
+  .hlx-keyrules li {
+    font-size: 0.88rem;
+  }
+
+  .hlx-index-row {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .hlx-specimen-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .hlx-splash-brand-foot {
+    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+  }
+
+  .hlx-posture {
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  /* Material cards: single column feel */
+  .md-typeset .grid.cards > ul,
+  .md-typeset .grid.cards > ol {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── ≤ 414px (phones) ── */
+@media screen and (max-width: 26em) {
+  .md-content__inner {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .hlx-status {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .md-typeset table:not([class]) {
+    font-size: 0.74rem;
+  }
+
+  .md-typeset .md-button {
+    font-size: 0.85rem;
+    white-space: normal; /* allow wrap only on very narrow; prefer short labels */
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  .hlx-kind {
+    font-size: 0.62rem;
+    padding: 0.12rem 0.35rem;
+  }
+
+  .hlx-cta-card h3 {
+    font-size: 1rem;
+  }
+
+  /* Prevent mono code blocks from feeling cramped */
+  .md-typeset pre > code {
+    font-size: 0.7rem;
+  }
+}
+
+/* Safe areas (notched phones) */
+@supports (padding: max(0px)) {
+  .md-header {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+
+  .md-content__inner {
+    padding-left: max(0.8rem, env(safe-area-inset-left));
+    padding-right: max(0.8rem, env(safe-area-inset-right));
+  }
+}
+
+/* Touch: larger hit targets for index/chips without changing desktop */
+@media (pointer: coarse) {
+  .hlx-map-chips .chip,
+  .hlx-map-famlist button {
+    min-height: 2.5rem;
+  }
+
+  .hlx-index-row a {
+    display: inline-block;
+    padding: 0.15rem 0;
+  }
+}

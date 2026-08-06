@@ -95,6 +95,60 @@
 @media screen and (max-width: 52em) {
   .hlx-map-body {
     grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .hlx-map-canvas-wrap {
+    border-right: none;
+    border-bottom: 1px solid var(--map-rule);
+  }
+
+  .hlx-map-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+  }
+
+  .hlx-map-search {
+    display: block;
+    width: 100%;
+  }
+
+  .hlx-map-search input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    min-height: 2.75rem;
+    font-size: 16px; /* prevent iOS zoom on focus */
+  }
+
+  .hlx-map-reset,
+  .hlx-map-copy {
+    min-height: 2.5rem;
+    width: 100%;
+  }
+
+  .hlx-map-panel {
+    max-height: none;
+    padding: 0.85rem 0.9rem 1.1rem;
+  }
+
+  .hlx-map-legend {
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.68rem;
+  }
+
+  .hlx-map-svg {
+    max-height: 22rem;
+  }
+
+  .hlx-map-family-label {
+    font-size: 8px;
+  }
+
+  .hlx-map-term-label {
+    font-size: 9px;
   }
 }
 
@@ -106,13 +160,6 @@
     color-mix(in srgb, var(--map-accent) 6%, transparent),
     transparent 65%
   );
-}
-
-@media screen and (max-width: 52em) {
-  .hlx-map-canvas-wrap {
-    border-right: none;
-    border-bottom: 1px solid var(--map-rule);
-  }
 }
 
 .hlx-map-svg {

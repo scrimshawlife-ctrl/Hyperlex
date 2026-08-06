@@ -168,13 +168,32 @@
     if (push) pushDeepLink();
   }
 
+  function shortFamilyLabel(label, narrow) {
+    if (!narrow) return label;
+    // Compact labels for phone constellation
+    const map = {
+      "Betting / Sharp": "Betting",
+      "Crypto / Degen": "Crypto",
+      "AI-native": "AI",
+      "Brainrot / Aura": "Brainrot",
+      Kinship: "Kin",
+      "Political status": "Political",
+      "Gaming / Meta": "Gaming",
+      "Workplace / Corp": "Work",
+    };
+    return map[label] || label;
+  }
+
   function render() {
     const fams = families();
+    const narrow = (ROOT.clientWidth || 720) < 480;
     const W = Math.min(ROOT.clientWidth || 720, 900);
-    const H = Math.min(560, Math.max(420, W * 0.72));
+    const H = narrow
+      ? Math.min(400, Math.max(320, W * 0.95))
+      : Math.min(560, Math.max(420, W * 0.72));
     const cx = W / 2;
     const cy = H / 2;
-    const R = Math.min(W, H) * 0.32;
+    const R = Math.min(W, H) * (narrow ? 0.28 : 0.32);
 
     const focusFam =
       state.focus !== "hyperlex"
@@ -194,9 +213,10 @@
     if (focusFam) {
       const p = famPos[focusFam.id];
       const n = Math.max(focusTerms.length, 1);
+      const baseR = narrow ? 64 : 88;
       focusTerms.forEach((t, i) => {
         const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
-        const r = 88 + (i % 3) * 10;
+        const r = baseR + (i % 3) * (narrow ? 8 : 10);
         termPos[t.id] = {
           x: p.x + Math.cos(a) * r,
           y: p.y + Math.sin(a) * r,
@@ -371,7 +391,7 @@
         role: "button",
         "aria-label": `${f.label}, ${f.n_terms} terms`,
       });
-      const r = 18 + Math.min(14, Math.sqrt(f.n_terms) * 3);
+      const r = (narrow ? 14 : 18) + Math.min(narrow ? 10 : 14, Math.sqrt(f.n_terms) * 3);
       g.appendChild(
         svgEl("circle", {
           r,
@@ -388,11 +408,11 @@
       count.textContent = String(f.n_terms);
       g.appendChild(count);
       const lab = svgEl("text", {
-        y: r + 14,
+        y: r + (narrow ? 12 : 14),
         "text-anchor": "middle",
         class: "hlx-map-family-label",
       });
-      lab.textContent = f.label;
+      lab.textContent = shortFamilyLabel(f.label, narrow);
       g.appendChild(lab);
       g.addEventListener("click", () => selectFamily(f));
       g.addEventListener("keydown", (ev) => {

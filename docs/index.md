@@ -52,10 +52,9 @@ Zero config. No API keys. Produces a real receipt; `brier` stays `null`.
 
 ```bash
 python3 scripts/hyperlex.py demo
-# or: pipeline "rizz" --route offline
 ```
 
-[Quickstart →](start/quickstart.md){ .md-button .md-button--primary }
+[Try offline →](start/quickstart.md){ .md-button .md-button--primary }
 
 </div>
 
