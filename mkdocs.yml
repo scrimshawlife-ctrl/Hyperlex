@@ -33,6 +33,10 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+  - assets/css/lineage-map.css
+
+extra_javascript:
+  - assets/js/lineage-map.js
 
 markdown_extensions:
   - admonition
@@ -67,6 +71,7 @@ nav:
       - Brier design: brier-calibration.md
       - Connectors: connectors.md
   - Analysis:
+      - Slang lineage map: map/index.md
       - Slang lineages: slang-lineages.md
       - Memetics typology: modules/memetics.md
       - Virality: modules/virality.md

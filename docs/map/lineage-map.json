@@ -1,0 +1,1675 @@
+{
+  "schema": "hyperlex.lineage_map.v1",
+  "title": "Hyperlex slang lineage map",
+  "note": "Static export from LINEAGE_REGISTRY + YTD backfill first-seen. Not a live DB.",
+  "brier": null,
+  "n_nodes": 117,
+  "n_edges": 117,
+  "n_families": 8,
+  "n_cross_links": 1,
+  "nodes": [
+    {
+      "id": "hyperlex",
+      "kind": "root",
+      "label": "Hyperlex slang",
+      "n_terms": 108,
+      "n_families": 8
+    },
+    {
+      "id": "betting-sharp",
+      "kind": "family",
+      "label": "Betting / Sharp",
+      "family_id": "betting-sharp",
+      "domain": "betting",
+      "hue": 350,
+      "branch_operator": "sense_extension",
+      "payload_note": "professional edge vs public money; line-physics signaling",
+      "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
+      "n_terms": 9
+    },
+    {
+      "id": "term:betting-sharp:sharp",
+      "kind": "term",
+      "label": "sharp",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": "7",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:betting-sharp:steam",
+      "kind": "term",
+      "label": "steam",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": "7",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:betting-sharp:square",
+      "kind": "term",
+      "label": "square",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:betting-sharp:wiseguy",
+      "kind": "term",
+      "label": "wiseguy",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:betting-sharp:hammer",
+      "kind": "term",
+      "label": "hammer",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:betting-sharp:holler",
+      "kind": "term",
+      "label": "holler",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:betting-sharp:revenge",
+      "kind": "term",
+      "label": "revenge",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": "7",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:betting-sharp:low block",
+      "kind": "term",
+      "label": "low block",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:betting-sharp:false nine",
+      "kind": "term",
+      "label": "false nine",
+      "family_id": "betting-sharp",
+      "hue": 350,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "crypto-degen",
+      "kind": "family",
+      "label": "Crypto / Degen",
+      "family_id": "crypto-degen",
+      "domain": "crypto",
+      "hue": 45,
+      "branch_operator": "cross_family_borrowing",
+      "payload_note": "conviction under volatility; risk identity as honorific",
+      "diagram_ref": "examples/slang-families/crypto-degen-family.mmd",
+      "n_terms": 13
+    },
+    {
+      "id": "term:crypto-degen:hodl",
+      "kind": "term",
+      "label": "hodl",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:diamond hands",
+      "kind": "term",
+      "label": "diamond hands",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:paper hands",
+      "kind": "term",
+      "label": "paper hands",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:rekt",
+      "kind": "term",
+      "label": "rekt",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:ape",
+      "kind": "term",
+      "label": "ape",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:degen",
+      "kind": "term",
+      "label": "degen",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": "5",
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:moon",
+      "kind": "term",
+      "label": "moon",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:bagholder",
+      "kind": "term",
+      "label": "bagholder",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:fud",
+      "kind": "term",
+      "label": "fud",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:fomo",
+      "kind": "term",
+      "label": "fomo",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:ngmi",
+      "kind": "term",
+      "label": "ngmi",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": "5",
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:wagmi",
+      "kind": "term",
+      "label": "wagmi",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "term:crypto-degen:rug",
+      "kind": "term",
+      "label": "rug",
+      "family_id": "crypto-degen",
+      "hue": 45,
+      "first_seen_month": null,
+      "branch_operator": "cross_family_borrowing"
+    },
+    {
+      "id": "ai-native",
+      "kind": "family",
+      "label": "AI-native",
+      "family_id": "ai-native",
+      "domain": "ai",
+      "hue": 200,
+      "branch_operator": "platform_compression",
+      "payload_note": "machine language as culture; quality judgment + hostility + agency framing",
+      "diagram_ref": "examples/slang-families/ai-native-family.mmd",
+      "n_terms": 9
+    },
+    {
+      "id": "term:ai-native:hallucinate",
+      "kind": "term",
+      "label": "hallucinate",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "7",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:ai-native:slop",
+      "kind": "term",
+      "label": "slop",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "4",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:ai-native:clanker",
+      "kind": "term",
+      "label": "clanker",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "3",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:ai-native:agentic",
+      "kind": "term",
+      "label": "agentic",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "4",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:ai-native:glazing",
+      "kind": "term",
+      "label": "glazing",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "2",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:ai-native:skill issue",
+      "kind": "term",
+      "label": "skill issue",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "3",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:ai-native:token",
+      "kind": "term",
+      "label": "token",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "8",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:ai-native:context window",
+      "kind": "term",
+      "label": "context window",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "1",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:ai-native:vibe coding",
+      "kind": "term",
+      "label": "vibe coding",
+      "family_id": "ai-native",
+      "hue": 200,
+      "first_seen_month": "1",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "brainrot-aura",
+      "kind": "family",
+      "label": "Brainrot / Aura",
+      "family_id": "brainrot-aura",
+      "domain": "internet",
+      "hue": 300,
+      "branch_operator": "irony_inversion",
+      "payload_note": "content-degradation + status radiation; self-aware consumption; 2026 Gen Alpha carryover",
+      "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
+      "n_terms": 39
+    },
+    {
+      "id": "term:brainrot-aura:brainrot",
+      "kind": "term",
+      "label": "brainrot",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "5",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:brain rot",
+      "kind": "term",
+      "label": "brain rot",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": null,
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:aura",
+      "kind": "term",
+      "label": "aura",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "8",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:aura farming",
+      "kind": "term",
+      "label": "aura farming",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "5",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:mid",
+      "kind": "term",
+      "label": "mid",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "6",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:cooked",
+      "kind": "term",
+      "label": "cooked",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "6",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:let him cook",
+      "kind": "term",
+      "label": "let him cook",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "6",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:rizz",
+      "kind": "term",
+      "label": "rizz",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "1",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:skibidi",
+      "kind": "term",
+      "label": "skibidi",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "1",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:gyatt",
+      "kind": "term",
+      "label": "gyatt",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "1",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:sigma",
+      "kind": "term",
+      "label": "sigma",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "1",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:delulu",
+      "kind": "term",
+      "label": "delulu",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "1",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:no cap",
+      "kind": "term",
+      "label": "no cap",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "1",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:locked in",
+      "kind": "term",
+      "label": "locked in",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "1",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:crash out",
+      "kind": "term",
+      "label": "crash out",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "1",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:mewing",
+      "kind": "term",
+      "label": "mewing",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "2",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:looksmaxxing",
+      "kind": "term",
+      "label": "looksmaxxing",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "2",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:mog",
+      "kind": "term",
+      "label": "mog",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "2",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:mogging",
+      "kind": "term",
+      "label": "mogging",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "2",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:ate",
+      "kind": "term",
+      "label": "ate",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "2",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:left no crumbs",
+      "kind": "term",
+      "label": "left no crumbs",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "2",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:it's giving",
+      "kind": "term",
+      "label": "it's giving",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "2",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:npc",
+      "kind": "term",
+      "label": "npc",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "3",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:main character",
+      "kind": "term",
+      "label": "main character",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "3",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:main character energy",
+      "kind": "term",
+      "label": "main character energy",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "3",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:fanum tax",
+      "kind": "term",
+      "label": "fanum tax",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "3",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:ohio",
+      "kind": "term",
+      "label": "ohio",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "3",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:bussin",
+      "kind": "term",
+      "label": "bussin",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "4",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:slay",
+      "kind": "term",
+      "label": "slay",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "4",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:six seven",
+      "kind": "term",
+      "label": "six seven",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "5",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:67",
+      "kind": "term",
+      "label": "67",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "5",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:edging",
+      "kind": "term",
+      "label": "edging",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "5",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:gooning",
+      "kind": "term",
+      "label": "gooning",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "5",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:vibe check",
+      "kind": "term",
+      "label": "vibe check",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "7",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:negative aura",
+      "kind": "term",
+      "label": "negative aura",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "8",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:aura points",
+      "kind": "term",
+      "label": "aura points",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "8",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:yap",
+      "kind": "term",
+      "label": "yap",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "8",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:yapping",
+      "kind": "term",
+      "label": "yapping",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "8",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:brainrot-aura:chat is this real",
+      "kind": "term",
+      "label": "chat is this real",
+      "family_id": "brainrot-aura",
+      "hue": 300,
+      "first_seen_month": "8",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "kinship-address",
+      "kind": "family",
+      "label": "Kinship",
+      "family_id": "kinship-address",
+      "domain": "social",
+      "hue": 140,
+      "branch_operator": "sense_extension",
+      "payload_note": "fictive kinship; community responsibility + platform acceleration",
+      "diagram_ref": "examples/slang-families/kinship-address.mmd",
+      "n_terms": 6
+    },
+    {
+      "id": "term:kinship-address:bro",
+      "kind": "term",
+      "label": "bro",
+      "family_id": "kinship-address",
+      "hue": 140,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:kinship-address:sis",
+      "kind": "term",
+      "label": "sis",
+      "family_id": "kinship-address",
+      "hue": 140,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:kinship-address:twin",
+      "kind": "term",
+      "label": "twin",
+      "family_id": "kinship-address",
+      "hue": 140,
+      "first_seen_month": "6",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:kinship-address:unc",
+      "kind": "term",
+      "label": "unc",
+      "family_id": "kinship-address",
+      "hue": 140,
+      "first_seen_month": "4",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:kinship-address:cuz",
+      "kind": "term",
+      "label": "cuz",
+      "family_id": "kinship-address",
+      "hue": 140,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:kinship-address:family",
+      "kind": "term",
+      "label": "family",
+      "family_id": "kinship-address",
+      "hue": 140,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "political-status",
+      "kind": "family",
+      "label": "Political status",
+      "family_id": "political-status",
+      "domain": "politics",
+      "hue": 15,
+      "branch_operator": "irony_inversion",
+      "payload_note": "tribal signaling + emotional routing; high mutation rate",
+      "diagram_ref": "examples/slang-families/political-status-family.mmd",
+      "n_terms": 6
+    },
+    {
+      "id": "term:political-status:based",
+      "kind": "term",
+      "label": "based",
+      "family_id": "political-status",
+      "hue": 15,
+      "first_seen_month": "6",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:political-status:redpilled",
+      "kind": "term",
+      "label": "redpilled",
+      "family_id": "political-status",
+      "hue": 15,
+      "first_seen_month": null,
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:political-status:blackpilled",
+      "kind": "term",
+      "label": "blackpilled",
+      "family_id": "political-status",
+      "hue": 15,
+      "first_seen_month": null,
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:political-status:cope",
+      "kind": "term",
+      "label": "cope",
+      "family_id": "political-status",
+      "hue": 15,
+      "first_seen_month": "6",
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:political-status:seethe",
+      "kind": "term",
+      "label": "seethe",
+      "family_id": "political-status",
+      "hue": 15,
+      "first_seen_month": null,
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "term:political-status:dilate",
+      "kind": "term",
+      "label": "dilate",
+      "family_id": "political-status",
+      "hue": 15,
+      "first_seen_month": null,
+      "branch_operator": "irony_inversion"
+    },
+    {
+      "id": "gaming-meta",
+      "kind": "family",
+      "label": "Gaming / Meta",
+      "family_id": "gaming-meta",
+      "domain": "gaming",
+      "hue": 170,
+      "branch_operator": "platform_compression",
+      "payload_note": "competitive balance + status in multiplayer; meta as living rule-set",
+      "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
+      "n_terms": 15
+    },
+    {
+      "id": "term:gaming-meta:nerf",
+      "kind": "term",
+      "label": "nerf",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:buff",
+      "kind": "term",
+      "label": "buff",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:meta",
+      "kind": "term",
+      "label": "meta",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:sweaty",
+      "kind": "term",
+      "label": "sweaty",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:noob",
+      "kind": "term",
+      "label": "noob",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:gg",
+      "kind": "term",
+      "label": "gg",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:ez",
+      "kind": "term",
+      "label": "ez",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:ratio",
+      "kind": "term",
+      "label": "ratio",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": "6",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:touch grass",
+      "kind": "term",
+      "label": "touch grass",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": "3",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:skill issue",
+      "kind": "term",
+      "label": "skill issue",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": "3",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:diff",
+      "kind": "term",
+      "label": "diff",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": "6",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:int",
+      "kind": "term",
+      "label": "int",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:feed",
+      "kind": "term",
+      "label": "feed",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": null,
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:smurf",
+      "kind": "term",
+      "label": "smurf",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": "7",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "term:gaming-meta:sus",
+      "kind": "term",
+      "label": "sus",
+      "family_id": "gaming-meta",
+      "hue": 170,
+      "first_seen_month": "4",
+      "branch_operator": "platform_compression"
+    },
+    {
+      "id": "workplace-corp",
+      "kind": "family",
+      "label": "Workplace / Corp",
+      "family_id": "workplace-corp",
+      "domain": "labor",
+      "hue": 80,
+      "branch_operator": "sense_extension",
+      "payload_note": "labor identity under corporate speech; resistance + managerial cant",
+      "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",
+      "n_terms": 11
+    },
+    {
+      "id": "term:workplace-corp:quiet quitting",
+      "kind": "term",
+      "label": "quiet quitting",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": "4",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:quiet firing",
+      "kind": "term",
+      "label": "quiet firing",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:rto",
+      "kind": "term",
+      "label": "rto",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": "4",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:return to office",
+      "kind": "term",
+      "label": "return to office",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:layoffs",
+      "kind": "term",
+      "label": "layoffs",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:pip",
+      "kind": "term",
+      "label": "pip",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:synergy",
+      "kind": "term",
+      "label": "synergy",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:circle back",
+      "kind": "term",
+      "label": "circle back",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": "8",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:bandwidth",
+      "kind": "term",
+      "label": "bandwidth",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": "7",
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:low-hanging fruit",
+      "kind": "term",
+      "label": "low-hanging fruit",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": null,
+      "branch_operator": "sense_extension"
+    },
+    {
+      "id": "term:workplace-corp:act your wage",
+      "kind": "term",
+      "label": "act your wage",
+      "family_id": "workplace-corp",
+      "hue": 80,
+      "first_seen_month": "2",
+      "branch_operator": "sense_extension"
+    }
+  ],
+  "edges": [
+    {
+      "source": "hyperlex",
+      "target": "betting-sharp",
+      "kind": "family_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:sharp",
+      "kind": "term_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:steam",
+      "kind": "term_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:square",
+      "kind": "term_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:wiseguy",
+      "kind": "term_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:hammer",
+      "kind": "term_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:holler",
+      "kind": "term_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:revenge",
+      "kind": "term_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:low block",
+      "kind": "term_link"
+    },
+    {
+      "source": "betting-sharp",
+      "target": "term:betting-sharp:false nine",
+      "kind": "term_link"
+    },
+    {
+      "source": "hyperlex",
+      "target": "crypto-degen",
+      "kind": "family_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:hodl",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:diamond hands",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:paper hands",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:rekt",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:ape",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:degen",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:moon",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:bagholder",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:fud",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:fomo",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:ngmi",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:wagmi",
+      "kind": "term_link"
+    },
+    {
+      "source": "crypto-degen",
+      "target": "term:crypto-degen:rug",
+      "kind": "term_link"
+    },
+    {
+      "source": "hyperlex",
+      "target": "ai-native",
+      "kind": "family_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:hallucinate",
+      "kind": "term_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:slop",
+      "kind": "term_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:clanker",
+      "kind": "term_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:agentic",
+      "kind": "term_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:glazing",
+      "kind": "term_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:skill issue",
+      "kind": "term_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:token",
+      "kind": "term_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:context window",
+      "kind": "term_link"
+    },
+    {
+      "source": "ai-native",
+      "target": "term:ai-native:vibe coding",
+      "kind": "term_link"
+    },
+    {
+      "source": "hyperlex",
+      "target": "brainrot-aura",
+      "kind": "family_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:brainrot",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:brain rot",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:aura",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:aura farming",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:mid",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:cooked",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:let him cook",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:rizz",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:skibidi",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:gyatt",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:sigma",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:delulu",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:no cap",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:locked in",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:crash out",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:mewing",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:looksmaxxing",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:mog",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:mogging",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:ate",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:left no crumbs",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:it's giving",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:npc",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:main character",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:main character energy",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:fanum tax",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:ohio",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:bussin",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:slay",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:six seven",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:67",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:edging",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:gooning",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:vibe check",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:negative aura",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:aura points",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:yap",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:yapping",
+      "kind": "term_link"
+    },
+    {
+      "source": "brainrot-aura",
+      "target": "term:brainrot-aura:chat is this real",
+      "kind": "term_link"
+    },
+    {
+      "source": "hyperlex",
+      "target": "kinship-address",
+      "kind": "family_link"
+    },
+    {
+      "source": "kinship-address",
+      "target": "term:kinship-address:bro",
+      "kind": "term_link"
+    },
+    {
+      "source": "kinship-address",
+      "target": "term:kinship-address:sis",
+      "kind": "term_link"
+    },
+    {
+      "source": "kinship-address",
+      "target": "term:kinship-address:twin",
+      "kind": "term_link"
+    },
+    {
+      "source": "kinship-address",
+      "target": "term:kinship-address:unc",
+      "kind": "term_link"
+    },
+    {
+      "source": "kinship-address",
+      "target": "term:kinship-address:cuz",
+      "kind": "term_link"
+    },
+    {
+      "source": "kinship-address",
+      "target": "term:kinship-address:family",
+      "kind": "term_link"
+    },
+    {
+      "source": "hyperlex",
+      "target": "political-status",
+      "kind": "family_link"
+    },
+    {
+      "source": "political-status",
+      "target": "term:political-status:based",
+      "kind": "term_link"
+    },
+    {
+      "source": "political-status",
+      "target": "term:political-status:redpilled",
+      "kind": "term_link"
+    },
+    {
+      "source": "political-status",
+      "target": "term:political-status:blackpilled",
+      "kind": "term_link"
+    },
+    {
+      "source": "political-status",
+      "target": "term:political-status:cope",
+      "kind": "term_link"
+    },
+    {
+      "source": "political-status",
+      "target": "term:political-status:seethe",
+      "kind": "term_link"
+    },
+    {
+      "source": "political-status",
+      "target": "term:political-status:dilate",
+      "kind": "term_link"
+    },
+    {
+      "source": "hyperlex",
+      "target": "gaming-meta",
+      "kind": "family_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:nerf",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:buff",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:meta",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:sweaty",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:noob",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:gg",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:ez",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:ratio",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:touch grass",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:skill issue",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:diff",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:int",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:feed",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:smurf",
+      "kind": "term_link"
+    },
+    {
+      "source": "gaming-meta",
+      "target": "term:gaming-meta:sus",
+      "kind": "term_link"
+    },
+    {
+      "source": "hyperlex",
+      "target": "workplace-corp",
+      "kind": "family_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:quiet quitting",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:quiet firing",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:rto",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:return to office",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:layoffs",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:pip",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:synergy",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:circle back",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:bandwidth",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:low-hanging fruit",
+      "kind": "term_link"
+    },
+    {
+      "source": "workplace-corp",
+      "target": "term:workplace-corp:act your wage",
+      "kind": "term_link"
+    },
+    {
+      "source": "term:ai-native:skill issue",
+      "target": "term:gaming-meta:skill issue",
+      "kind": "cross_family",
+      "term": "skill issue"
+    }
+  ]
+}

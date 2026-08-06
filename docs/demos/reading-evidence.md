@@ -74,6 +74,7 @@ Hash model id: `hyperlex.hash_ngram_v1.d256` → always treat as **INFERRED**.
 |-------|----------------------|
 | **This page + sample JSON** | How to interpret scores; publish-safe table |
 | [Telemetry](../telemetry.md) | Desk map + how-to-read |
+| [**Slang lineage map**](../map/index.md) | Interactive family constellation (hubs → leaves) |
 | [Run history](../archive/index.md) | Sanitized analysis / Phase 5 snapshots |
 | [Vector backend](../modules/vectordb.md) | Operator map (sqlite · chroma · promote) |
 | **Live local / Cloud** | **Not** mirrored on Pages |

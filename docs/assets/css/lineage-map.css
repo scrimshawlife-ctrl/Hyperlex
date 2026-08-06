@@ -1,0 +1,424 @@
+/* Hyperlex lineage map — constellation desk */
+/* Hallmark · macrostructure: Map/Diagram · technical · phosphor teal */
+
+.hlx-map-root {
+  --map-paper: var(--hlx-paper-2, #1a1f27);
+  --map-ink: var(--hlx-ink, #e8edf4);
+  --map-muted: var(--hlx-ink-muted, #9aa7b8);
+  --map-rule: var(--hlx-rule, #2e3746);
+  --map-accent: var(--hlx-accent, #2dd4bf);
+  margin: 0 0 2rem;
+  min-width: 0;
+}
+
+.hlx-map-shell {
+  border: 1px solid var(--map-rule);
+  border-radius: 2px;
+  background: var(--map-paper);
+  overflow: hidden;
+}
+
+.hlx-map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--map-rule);
+  background: var(--hlx-paper-3, #242b36);
+}
+
+.hlx-map-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.hlx-map-title strong {
+  font-family: var(--hlx-font-display, system-ui, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--map-ink);
+}
+
+.hlx-map-title span {
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  color: var(--map-muted);
+}
+
+.hlx-map-search input {
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  font-size: 0.85rem;
+  color: var(--map-ink);
+  background: var(--hlx-paper, #12151a);
+  border: 1px solid var(--map-rule);
+  border-radius: 2px;
+  padding: 0.4rem 0.65rem;
+  min-width: min(100%, 12rem);
+}
+
+.hlx-map-search input:focus-visible {
+  outline: 2px solid var(--map-accent);
+  outline-offset: 1px;
+}
+
+.hlx-map-reset {
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--map-ink);
+  background: transparent;
+  border: 1px solid var(--map-rule);
+  border-radius: 2px;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+}
+
+.hlx-map-reset:hover:not(:disabled) {
+  border-color: var(--map-accent);
+  color: var(--map-accent);
+}
+
+.hlx-map-reset:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.hlx-map-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(14rem, 0.9fr);
+  min-height: 28rem;
+}
+
+@media screen and (max-width: 52em) {
+  .hlx-map-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hlx-map-canvas-wrap {
+  min-width: 0;
+  border-right: 1px solid var(--map-rule);
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--map-accent) 6%, transparent),
+    transparent 65%
+  );
+}
+
+@media screen and (max-width: 52em) {
+  .hlx-map-canvas-wrap {
+    border-right: none;
+    border-bottom: 1px solid var(--map-rule);
+  }
+}
+
+.hlx-map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 34rem;
+  touch-action: manipulation;
+}
+
+.hlx-map-ring {
+  stroke: var(--map-rule);
+  stroke-dasharray: 3 5;
+  opacity: 0.7;
+}
+
+.hlx-map-edge {
+  stroke-width: 1.25;
+  opacity: 0.55;
+}
+
+.hlx-map-edge.is-dim {
+  opacity: 0.12;
+}
+
+.hlx-map-edge-term {
+  stroke-width: 1;
+  opacity: 0.35;
+}
+
+.hlx-map-hub-disk {
+  fill: var(--hlx-paper, #12151a);
+  stroke: var(--map-accent);
+  stroke-width: 1.5;
+  cursor: pointer;
+}
+
+.hlx-map-hub-title {
+  fill: var(--map-ink);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--hlx-font-display, system-ui, sans-serif);
+  pointer-events: none;
+}
+
+.hlx-map-hub-sub {
+  fill: var(--map-muted);
+  font-size: 9px;
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  pointer-events: none;
+}
+
+.hlx-map-family {
+  cursor: pointer;
+}
+
+.hlx-map-family.is-dim {
+  opacity: 0.28;
+}
+
+.hlx-map-family:focus-visible .hlx-map-family-disk {
+  stroke-width: 3;
+  stroke: var(--map-accent);
+}
+
+.hlx-map-family-disk {
+  stroke-width: 1.5;
+  transition: transform 120ms ease-out;
+}
+
+.hlx-map-family:hover .hlx-map-family-disk {
+  filter: brightness(1.15);
+}
+
+.hlx-map-family-count {
+  fill: var(--map-ink);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  pointer-events: none;
+}
+
+.hlx-map-family-label {
+  fill: var(--map-muted);
+  font-size: 10px;
+  font-family: var(--hlx-font-display, system-ui, sans-serif);
+  pointer-events: none;
+}
+
+.hlx-map-term {
+  cursor: pointer;
+}
+
+.hlx-map-term-label {
+  fill: var(--map-ink);
+  font-size: 10px;
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  pointer-events: none;
+}
+
+.hlx-map-panel {
+  padding: 1rem 1.1rem 1.25rem;
+  min-width: 0;
+  overflow: auto;
+  max-height: 34rem;
+  color: var(--map-ink);
+}
+
+.hlx-map-kicker {
+  margin: 0 0 0.35rem;
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--map-accent);
+}
+
+.hlx-map-panel h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-style: normal;
+  color: var(--map-ink);
+  line-height: 1.25;
+}
+
+.hlx-map-meta {
+  margin: 0 0 0.65rem;
+  font-size: 0.8rem;
+  color: var(--map-muted);
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+}
+
+.hlx-map-blurb {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--map-ink);
+}
+
+.hlx-map-famlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hlx-map-famlist li {
+  margin: 0;
+  border-bottom: 1px solid var(--map-rule);
+}
+
+.hlx-map-famlist button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0;
+  background: none;
+  border: 0;
+  color: var(--map-ink);
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.hlx-map-famlist button:hover,
+.hlx-map-famlist button:focus-visible {
+  color: var(--map-accent);
+}
+
+.hlx-map-famlist .dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.hlx-map-famlist .name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.hlx-map-famlist .n {
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--map-muted);
+}
+
+.hlx-map-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.hlx-map-chips .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--map-rule);
+  background: var(--hlx-paper, #12151a);
+  color: var(--map-ink);
+  border-radius: 2px;
+  padding: 0.25rem 0.45rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.hlx-map-chips .chip:hover,
+.hlx-map-chips .chip:focus-visible {
+  border-color: var(--map-accent);
+}
+
+.hlx-map-chips .when {
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  font-size: 0.65rem;
+  color: var(--map-muted);
+}
+
+.hlx-map-footnote {
+  margin: 0.85rem 0 0;
+  font-size: 0.75rem;
+  color: var(--map-muted);
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+  line-height: 1.45;
+}
+
+.hlx-map-footnote a {
+  color: var(--map-accent);
+}
+
+.hlx-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  padding: 0.55rem 1rem;
+  border-top: 1px solid var(--map-rule);
+  font-size: 0.72rem;
+  color: var(--map-muted);
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+}
+
+.hlx-map-legend .hlx-swatch {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+  background: var(--map-accent);
+}
+
+.hlx-map-legend .hlx-swatch.is-term {
+  width: 0.35rem;
+  height: 0.35rem;
+}
+
+.hlx-map-hits ul {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+}
+
+.hlx-map-hits button {
+  background: none;
+  border: 0;
+  color: var(--map-ink);
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0.2rem 0;
+  font-family: var(--hlx-font-mono, ui-monospace, monospace);
+}
+
+.hlx-map-hits button:hover {
+  color: var(--map-accent);
+}
+
+.hlx-map-panel .linkish {
+  background: none;
+  border: 0;
+  color: var(--map-accent);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.hlx-map-error {
+  color: var(--hlx-bad, #f87171);
+  padding: 1rem;
+  border: 1px solid var(--map-rule);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hlx-map-family-disk {
+    transition: none;
+  }
+}

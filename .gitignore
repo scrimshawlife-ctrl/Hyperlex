@@ -34,6 +34,7 @@ build/
 !docs/archive/**/*.json
 !docs/archive/**/*.jsonl
 !docs/demos/samples/**/*.json
+!docs/map/**/*.json
 !data/backfill/**/*.json
 !data/phylogeny/**/*.json
 

@@ -4,6 +4,11 @@
 **Version**: expanded 2026-08-05 (schema + matcher + confidence scoring + HTML + additional families + YTD backfill/backprop)  
 **Purpose**: Provide canonical visual and structural documentation for historical families of slang words and the processes by which new branches emerge. This layer supports Hyperlex analysis outputs, Abraxas Slang Module family-tree sections, and Orchestra symbolic mapping.
 
+!!! tip "Interactive overview"
+    For a **dynamic radial map** of all families and terms (click hubs, search leaves),
+    open the [Slang lineage map](map/index.md). Static Mermaid family trees remain below
+    and under `examples/slang-families/`.
+
 ## Why Lineages Matter
 
 Slang is not a flat inventory of terms. It forms phylogenetic structures:

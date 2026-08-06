@@ -71,6 +71,14 @@ Week-one: `bash examples/ops/burn-in.sh`
 
     [Open guide →](demos/reading-evidence.md){ .md-button }
 
+-   :material-family-tree: **Slang lineage map**
+
+    Interactive constellation: 8 family hubs → atomic leaves. Instant structure.
+
+    ---
+
+    [Open map →](map/index.md){ .md-button }
+
 -   :material-play-circle: **Pipeline (auto)**
 
     Ingest → analyze → receipt → forecasts → Phase 5.  

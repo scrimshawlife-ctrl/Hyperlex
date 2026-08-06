@@ -33,6 +33,7 @@ Interpret lineage, vector neighbors, Phase 5, and Brier without overclaiming.
 
 [Reading evidence →](demos/reading-evidence.md){ .md-button .md-button--primary }
 
+[Slang map](map/index.md){ .md-button }
 [Run history](archive/index.md){ .md-button }
 
 </div>
