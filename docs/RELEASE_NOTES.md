@@ -29,6 +29,7 @@
 
 ## 0.3.3
 - Local SQLite vector DB (`vector-seed` / `vector-search`) for terms + receipts.
+- Chroma local + Cloud; backfill via `vector-seed --backend chroma --db ~/.hyperlex/chroma`; promote with `vector-sync --to cloud` (embeddings preserved). Hermes `.env` auto-load for `CHROMA_*` keys.
 
 ## 0.3.2
 - Hallmark redesign of Pages: workbench home, teal identity, run-history cards.

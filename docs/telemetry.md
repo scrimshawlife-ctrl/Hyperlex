@@ -112,17 +112,24 @@ Week-one script: `bash examples/ops/burn-in.sh`
 
 -   :material-vector-polyline: **Vector DB**
 
-    Local SQLite at `~/.hyperlex/vector.db` — **terms are atomic**.
+    SQLite default · **local Chroma backfill** · promote to Cloud.  
+    **Terms are atomic.** Similarity ≠ Brier.
 
     ---
 
     ```bash
-    $HLX vector-seed --include-golden --through 2026-08
-    $HLX vector-search "rizz" --kind term
-    $HLX vector-search "locked in" --kind term
+    # Local Chroma (recommended iterate path)
+    $HLX vector-seed --backend chroma --db ~/.hyperlex/chroma \
+      --through 2026-08 --include-home --include-golden
+    $HLX vector-stats --backend chroma --db ~/.hyperlex/chroma
+    $HLX vector-search "rizz" --backend chroma --db ~/.hyperlex/chroma --kind term
+
+    # Promote when good (creds in ~/.hermes/.env)
+    $HLX vector-sync --from-path ~/.hyperlex/chroma --to cloud
+    $HLX vector-stats --cloud
     ```
 
-    [Vector docs](modules/vectordb.md)
+    [Vector DB · Chroma map →](modules/vectordb.md)
 
 -   :material-heart-pulse: **Status**
 

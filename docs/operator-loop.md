@@ -85,6 +85,25 @@ cadence). Re-run `risk-schedule` before changing live jobs.
 
 See [cron-live-emergence.md](cron-live-emergence.md).
 
+## Vector backfill (optional · after burn-in)
+
+Index registry + YTD packs + receipts into a local store, then promote:
+
+```bash
+# Local Chroma backfill
+$HLX vector-seed --backend chroma --db ~/.hyperlex/chroma \
+  --through 2026-08 --include-home --include-golden
+$HLX vector-stats --backend chroma --db ~/.hyperlex/chroma
+
+# When search looks right → Cloud (keys in ~/.hermes/.env)
+$HLX vector-sync --from-path ~/.hyperlex/chroma --to cloud
+$HLX vector-stats --cloud
+```
+
+SQLite default (no chromadb install): `$HLX vector-seed --through 2026-08 --include-home --include-golden`.
+
+Full map: [modules/vectordb.md](modules/vectordb.md) · [commands.md](commands.md).
+
 ## Week-one checklist
 
 1. Install skill: `bash install.sh`
@@ -96,7 +115,8 @@ See [cron-live-emergence.md](cron-live-emergence.md).
    Or manually: `$HLX run "rizz" --route offline` (one atom per run)
 4. Settle a handful of forecasts via `pending` → `settle`
 5. `$HLX score-series --verify-chain` — first real Brier series
-6. Only then: `--route live` or ELEVATED/CRITICAL tiers if advisory warrants
+6. Optional: local Chroma backfill + `vector-sync --to cloud` (see above)
+7. Only then: `--route live` or ELEVATED/CRITICAL tiers if advisory warrants
 
 Atomic multi-term demos: [demos/atomic-terms.md](demos/atomic-terms.md)
 

@@ -56,12 +56,23 @@ Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai, `live`→com
 |---------|---------|
 | `simulate --term T --mode scenario` | Phase 5 composed scenario |
 | `simulate --mode schedule --tier ELEVATED` | Risk→scan plan |
-| `vector-search "…"` | Local vector DB (sqlite or chroma) |
-| `vector-seed` | Seed sqlite / local chroma / cloud |
-| `vector-export -o file.jsonl` | Dump vectors (embeddings kept) |
-| `vector-import -i file.jsonl [--cloud]` | Load dump into sqlite/chroma/cloud |
-| `vector-sync --from-path ~/.hyperlex/chroma --to cloud` | Promote local chroma → Cloud |
 | `archive-export --history` | Sanitized Pages run history |
+
+## Vector DB (sqlite · local chroma · cloud)
+
+| Command | Purpose |
+|---------|---------|
+| `vector-seed --backend chroma --db ~/.hyperlex/chroma --through 2026-08 --include-home --include-golden` | **Backfill local Chroma** (registry + packs + receipts) |
+| `vector-seed --through 2026-08 --include-home` | Same into default SQLite |
+| `vector-stats --backend chroma --db ~/.hyperlex/chroma` | Local Chroma counts |
+| `vector-stats --cloud` | Chroma Cloud counts |
+| `vector-search "…" --backend chroma --db ~/.hyperlex/chroma --kind term` | Search local Chroma |
+| `vector-sync --from-path ~/.hyperlex/chroma --to cloud` | **Promote** local → Cloud (no re-embed) |
+| `vector-export -o file.jsonl` | Dump embeddings JSONL |
+| `vector-import -i file.jsonl [--cloud]` | Load dump |
+
+Flow: **seed local → search → sync to cloud**. Secrets: `~/.hermes/.env` (`CHROMA_API_KEY`, …).  
+Docs: [modules/vectordb.md](modules/vectordb.md).
 
 ## Maintenance
 
@@ -85,6 +96,6 @@ Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai, `live`→com
 
 ## Deferred (do not prioritize)
 
-- ANN vector backend (until corpus is large)
+- Multi-collection / remote embed models beyond hash default
 - More Phase 5 modes
 - Public PyPI; Abraxas hard dependency

@@ -122,6 +122,10 @@ Demos: [demos/atomic-terms.md](demos/atomic-terms.md).
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
-~/.hyperlex/vector.db
+~/.hyperlex/vector.db              # SQLite vector store (default)
+~/.hyperlex/chroma/                # local Chroma persist (opt-in)
 ~/.hyperlex/rate_limit.json
+~/.hermes/.env                     # CHROMA_* / HYPERLEX_CHROMA_* secrets (auto-loaded)
 ```
+
+Vector map: [modules/vectordb.md](modules/vectordb.md).

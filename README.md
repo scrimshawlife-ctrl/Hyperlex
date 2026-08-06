@@ -99,7 +99,7 @@ How the pieces sit together:
 | **Calibration** | `pending` → `settle` → `score-series` (only place Brier is real) |
 | **Scan / cron** | Multi-query `LIVE_EMERGENCE_SCAN` + advisory risk→schedule (never auto-registers) |
 | **Research** | Phase 5 transmission, multi-agent, risk, phylogeny — always **SPECULATIVE** |
-| **Vector** | Local SQLite embeddings for hybrid lineage re-rank |
+| **Vector** | SQLite or Chroma (local → Cloud promote) for hybrid lineage re-rank |
 | **Pages** | Static, sanitized history — not your operator store |
 
 ---
@@ -223,13 +223,24 @@ $HLX archive-export --include-golden --history
 ```bash
 export HYPERLEX_OFFLINE=1
 $HLX lineage-backfill --list --through 2026-08
+
+# Default SQLite
 $HLX vector-seed --through 2026-08 --include-golden --include-home
 $HLX vector-stats
+
+# Local Chroma (iterate) → promote to Cloud when good
+$HLX vector-seed --backend chroma --db ~/.hyperlex/chroma \
+  --through 2026-08 --include-home --include-golden
+$HLX vector-sync --from-path ~/.hyperlex/chroma --to cloud   # keys in ~/.hermes/.env
+$HLX vector-stats --cloud
+
 # One atom per run (do not blend independent terms into one seed)
 $HLX run "rizz" --route offline
 $HLX run "locked in" --route offline
 $HLX run "sharp money" --route offline
 ```
+
+Docs: [docs/modules/vectordb.md](./docs/modules/vectordb.md)
 
 ### Local data
 
@@ -238,7 +249,8 @@ $HLX run "sharp money" --route offline
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
-~/.hyperlex/vector.db
+~/.hyperlex/vector.db              # SQLite vectors
+~/.hyperlex/chroma/                # local Chroma
 ```
 
 **Week-one:** install → offline `run` → `pending` / `settle` / `score-series` → only then live routes or higher risk tiers.

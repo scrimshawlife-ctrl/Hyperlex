@@ -63,7 +63,9 @@ python -m hyperlex <command>
 Core commands: `check`, `sources`, `ingest`, `analyze`, `scan`, `relay`,
 `extract-forecasts`, `settle`, `score-series`, `emit-receipt`, `list-receipts`,
 `verify-receipt`, `verify-receipt-ledger`, `verify-score-log`, `smoke`,
-`lineage-backfill`, `lineage-backprop`, `simulate` (Phase 5), `archive-export`, `diagram`.
+`lineage-backfill`, `lineage-backprop`, `simulate` (Phase 5), `archive-export`, `diagram`,
+`vector-seed` / `vector-search` / `vector-stats` / `vector-export` / `vector-import` / `vector-sync`
+(SQLite · local Chroma · Cloud promote — see [modules/vectordb.md](modules/vectordb.md)).
 
 ### Phase 5 extended API (0.3.0+)
 

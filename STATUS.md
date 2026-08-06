@@ -58,7 +58,9 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 pipeline "rizz" | ingest "rizz" | run "rizz"   # AUTO full results
   → pending → settle → score-series            # only manual step (Brier)
   → scan / risk-schedule                       # cron advisory
-  → archive-export / vector-*                  # optional
+  → vector-seed (sqlite or local chroma)       # optional index
+  → vector-sync --to cloud                     # promote when good
+  → archive-export                             # optional Pages snapshot
 ```
 
 ## Data dirs
@@ -69,19 +71,20 @@ pipeline "rizz" | ingest "rizz" | run "rizz"   # AUTO full results
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
 ~/.hyperlex/vector.db            # local SQLite vector store (default)
-~/.hyperlex/chroma/              # optional local Chroma persist (HYPERLEX_CHROMA_PATH)
-data/backfill/2026/          # curated YTD term packs (repo)
+~/.hyperlex/chroma/              # local Chroma persist (opt-in)
+data/backfill/2026/              # curated YTD term packs (repo)
 ```
 
 ## Recommended next (ops, not greenfield)
 
-See [docs/operator-loop.md](docs/operator-loop.md) · [docs/demos/atomic-terms.md](docs/demos/atomic-terms.md):
+See [docs/operator-loop.md](docs/operator-loop.md) · [docs/demos/atomic-terms.md](docs/demos/atomic-terms.md) · [docs/modules/vectordb.md](docs/modules/vectordb.md):
 
 1. `bash examples/ops/burn-in.sh` (atomic offline runs)
 2. `pending` → `settle` → `score-series`
-3. Register MODERATE cron from `risk-schedule` when ready
-4. Defer ANN until vector corpus is large
+3. Local Chroma backfill: `vector-seed --backend chroma --db ~/.hyperlex/chroma --through 2026-08 --include-home --include-golden`
+4. Promote when ready: `vector-sync --from-path ~/.hyperlex/chroma --to cloud`
+5. Register MODERATE cron from `risk-schedule` when ready
 
 ## Phase 5.3+ (deferred)
 
-Optional ANN backend if corpus grows past linear scan.
+Larger remote embedding models / multi-collection topologies if corpus grows.
