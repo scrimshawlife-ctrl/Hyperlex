@@ -1084,6 +1084,7 @@ def cmd_vector_seed(args: argparse.Namespace) -> int:
         include_registry=not bool(args.no_registry),
         include_backfill=not bool(args.no_backfill),
         include_receipts=not bool(args.no_receipts),
+        backend=getattr(args, "backend", None),
     )
     _emit({"ok": True, "command": "vector-seed", **report})
     return 0
@@ -1105,23 +1106,30 @@ def cmd_vector_search(args: argparse.Namespace) -> int:
         family_id=args.family or None,
         top_k=int(args.top_k),
         min_score=float(args.min_score),
+        backend=getattr(args, "backend", None),
     )
     _emit({"ok": bool(out.get("ok")), "command": "vector-search", **out})
     return 0 if out.get("ok") else 2
 
 
 def cmd_vector_stats(args: argparse.Namespace) -> int:
-    """Stats for local vector DB."""
+    """Stats for vector DB (sqlite or chroma)."""
     pkg, err = _import_hyperlex()
     if pkg is None:
         _emit({"ok": False, "error": f"import failure: {err}"})
         return 2
 
-    from hyperlex.vectordb import VectorStore
-
-    with VectorStore(Path(args.db) if args.db else None) as store:
+    backend = getattr(args, "backend", None) or __import__("os").environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite")
+    if backend == "chroma":
+        from hyperlex.vectordb.chroma import ChromaVectorStore
+        store = ChromaVectorStore()
         stats = store.stats()
-    _emit({"ok": True, "command": "vector-stats", **stats})
+        _emit({"ok": True, "command": "vector-stats", "backend": "chroma", **stats})
+    else:
+        from hyperlex.vectordb import VectorStore
+        with VectorStore(Path(args.db) if args.db else None) as store:
+            stats = store.stats()
+        _emit({"ok": True, "command": "vector-stats", "backend": "sqlite", **stats})
     return 0
 
 
@@ -2168,7 +2176,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
     vs = subparsers.add_parser(
         "vector-seed",
-        help="Seed local SQLite vector DB (registry + backfill + receipts)",
+        help="Seed vector DB (sqlite or chroma via --backend or HYPERLEX_VECTOR_BACKEND)",
     )
     vs.add_argument("--db", default="", help="Default: ~/.hyperlex/vector.db")
     vs.add_argument("--year", type=int, default=2026)
@@ -2181,19 +2189,22 @@ def _build_parser() -> argparse.ArgumentParser:
     vs.add_argument("--no-registry", action="store_true", default=False)
     vs.add_argument("--no-backfill", action="store_true", default=False)
     vs.add_argument("--no-receipts", action="store_true", default=False)
+    vs.add_argument("--backend", default="", help="sqlite (default) or chroma")
     vs.set_defaults(func=cmd_vector_seed)
 
-    vq = subparsers.add_parser("vector-search", help="Cosine search over local vector DB")
+    vq = subparsers.add_parser("vector-search", help="Cosine search over vector DB (sqlite/chroma)")
     vq.add_argument("query", help="Query text")
     vq.add_argument("--db", default="")
     vq.add_argument("--kind", default="", help="term | receipt")
     vq.add_argument("--family", default="")
     vq.add_argument("--top-k", type=int, default=10)
     vq.add_argument("--min-score", type=float, default=0.15)
+    vq.add_argument("--backend", default="", help="sqlite (default) or chroma")
     vq.set_defaults(func=cmd_vector_search)
 
-    vst = subparsers.add_parser("vector-stats", help="Local vector DB stats")
+    vst = subparsers.add_parser("vector-stats", help="Vector DB stats (sqlite or chroma)")
     vst.add_argument("--db", default="")
+    vst.add_argument("--backend", default="", help="sqlite (default) or chroma")
     vst.set_defaults(func=cmd_vector_stats)
 
     lbf = subparsers.add_parser(
