@@ -72,7 +72,7 @@ data/backfill/2026/          # curated YTD term packs (repo)
 
 ## Recommended next (ops, not greenfield)
 
-See [docs/operator-loop.md](docs/operator-loop.md) · [docs/demos/atomic-terms.md](docs/demos/atomic-terms.md):
+See [operator-loop.md](operator-loop.md) · [demos/atomic-terms.md](demos/atomic-terms.md):
 
 1. `bash examples/ops/burn-in.sh` (atomic offline runs)
 2. `pending` → `settle` → `score-series`

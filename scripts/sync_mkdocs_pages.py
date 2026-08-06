@@ -37,6 +37,17 @@ FIXES = {
         ("](./docs/api-v1.md)", "](api-v1.md)"),
         ("](docs/brier-calibration.md)", "](brier-calibration.md)"),
     ],
+    # STATUS.md is mirrored as docs/status.md; root paths need MkDocs-relative rewrite
+    "status.md": [
+        (
+            "[docs/operator-loop.md](docs/operator-loop.md)",
+            "[operator-loop.md](operator-loop.md)",
+        ),
+        (
+            "[docs/demos/atomic-terms.md](docs/demos/atomic-terms.md)",
+            "[demos/atomic-terms.md](demos/atomic-terms.md)",
+        ),
+    ],
     "ROADMAP.md": [
         ("](../ROADMAP.md)", "](https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/blob/main/ROADMAP.md)"),
     ],
