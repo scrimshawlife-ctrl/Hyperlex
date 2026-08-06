@@ -5,6 +5,9 @@
 The backend is **automatic**. One command runs ingest through results. Settlement
 is the only step that stays human.
 
+**New here?** [Offline demo](start/quickstart.md) · [Glossary](start/glossary.md) ·
+[Why settled Brier only](start/settled-brier.md)
+
 ## Posture
 
 | Do | Defer |

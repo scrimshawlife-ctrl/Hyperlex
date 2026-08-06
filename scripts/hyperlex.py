@@ -1923,6 +1923,94 @@ def cmd_smoke(_args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_demo(args: argparse.Namespace) -> int:
+    """Zero-config offline first success: real pipeline + receipt, brier null.
+
+    No API keys. No Hermes host. Uses mock ingest via --route offline.
+    """
+    import os
+
+    os.environ.setdefault("HYPERLEX_OFFLINE", "1")
+    # Keep demo from requiring an existing vector DB
+    os.environ.setdefault("HYPERLEX_VECTOR", "0")
+
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "command": "demo", "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.pipeline import run_pipeline
+
+    query = (getattr(args, "query", None) or "rizz").strip() or "rizz"
+    out_dir = Path(args.out_dir) if getattr(args, "out_dir", None) else (ROOT / "examples" / "quickstart" / "out")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    log_path = out_dir / "demo_score_log.jsonl"
+    receipt_dir = out_dir / "receipts"
+
+    try:
+        packet = run_pipeline(
+            query,
+            route="offline",
+            source="mock",
+            expand_terms=True,
+            receipt=True,
+            forecasts=True,
+            append_log=True,
+            phase5=bool(getattr(args, "phase5", False)),
+            log_path=log_path,
+            receipt_dir=receipt_dir,
+            validate=False,
+        )
+    except Exception as exc:
+        _emit({"ok": False, "command": "demo", "error": str(exc)})
+        return 2
+
+    brier = packet.get("brier")
+    unit0 = (packet.get("results") or [{}])[0]
+    result = unit0.get("result") or {}
+    prov_brier = (result.get("provenance") or {}).get("brier")
+    lineage = ((result.get("analysis") or {}).get("lineage") or {})
+    receipt = unit0.get("receipt")
+
+    summary = {
+        "ok": bool(packet.get("ok")),
+        "command": "demo",
+        "query": query,
+        "route": "offline",
+        "n_atoms": packet.get("n_atoms"),
+        "atoms": packet.get("atoms"),
+        "brier": brier,
+        "provenance_brier": prov_brier,
+        "lineage_family": lineage.get("family_id"),
+        "matched_terms": lineage.get("matched_terms"),
+        "receipt": receipt,
+        "log_path": str(log_path),
+        "out_dir": str(out_dir),
+        "note": "Zero-config offline demo. brier must stay null until settle.",
+        "next": [
+            "python3 scripts/hyperlex.py pending",
+            "python3 scripts/hyperlex.py settle --forecast-id <id> --decision TRUE",
+            "docs/start/quickstart.md",
+        ],
+    }
+    # Compact packet for operators (full units still available in receipts)
+    if not packet.get("ok"):
+        summary["error"] = packet.get("error") or unit0.get("error")
+        _emit(summary)
+        return 2
+    if brier is not None or prov_brier is not None:
+        summary["ok"] = False
+        summary["error"] = "demo integrity: open analysis must keep brier null"
+        _emit(summary)
+        return 2
+
+    summary_path = out_dir / "demo_summary.json"
+    summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    summary["summary_path"] = str(summary_path)
+    _emit(summary)
+    return 0
+
+
 def _load_scan_queries(args: argparse.Namespace) -> List[str]:
     queries: List[str] = []
     if getattr(args, "query", None):
@@ -2644,6 +2732,28 @@ def _build_parser() -> argparse.ArgumentParser:
 
     smoke_parser = subparsers.add_parser("smoke", help="Run fast smoke check")
     smoke_parser.set_defaults(func=cmd_smoke)
+
+    demo_parser = subparsers.add_parser(
+        "demo",
+        help="Zero-config offline first success: pipeline mock ingest + receipt (brier null)",
+    )
+    demo_parser.add_argument(
+        "--query",
+        default="rizz",
+        help="Sample slang query (default: rizz)",
+    )
+    demo_parser.add_argument(
+        "--out-dir",
+        default="",
+        help="Write receipts/log under DIR (default: examples/quickstart/out)",
+    )
+    demo_parser.add_argument(
+        "--phase5",
+        action="store_true",
+        default=False,
+        help="Include Phase 5 risk digest (still brier null)",
+    )
+    demo_parser.set_defaults(func=cmd_demo)
 
     scan_parser = subparsers.add_parser(
         "scan",

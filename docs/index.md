@@ -1,61 +1,131 @@
 ---
 hide:
-  - navigation
   - toc
 ---
 
-# <!-- intentional empty H1: splash uses brand block -->
+# Hyperlex
 
-<div class="hlx-splash" markdown>
+<div class="hlx-status" markdown>
+<span><span class="hlx-dot"></span><strong>v0.4.0</strong></span>
+<span>Hermes skill · Python package</span>
+<span>Settled Brier only</span>
+<span>Local-first · offline mock ready</span>
+</div>
 
-<figure class="hlx-splash-hero" markdown>
-![Hyperlex — READ DEEPER. THINK WIDER.](assets/images/hyperlex-imagine-hero.jpg)
-</figure>
-
-<div class="hlx-splash-copy" markdown>
-
-<p class="hlx-splash-brand">HYPERLEX</p>
-<p class="hlx-splash-tag">READ DEEPER. THINK WIDER.</p>
-<p class="hlx-splash-sub">
-Memetic emergence engine · Hermes skill · v0.4.0
-</p>
-<p class="hlx-splash-line">
-pipeline = auto · atoms not bags · settled Brier only · vector ≠ probability
+<p class="hlx-lead hlx-purpose">
+<strong>Hyperlex detects emerging slang and cultural signals, traces their lineage,
+scores virality and hyperstition potential, and emits integrity-hashed receipts.</strong>
+Brier calibration is computed <em>only</em> after outcomes are settled — never invented on open analysis.
 </p>
 
-<div class="hlx-path-grid" markdown>
+## What happens on a run
 
-<div class="hlx-path-card hlx-path-card--primary" markdown>
+```mermaid
+flowchart LR
+  A[Ingest] --> B[Analyze]
+  B --> C[Receipt]
+  C --> D[Forecasts]
+  D --> E[Settle]
+  E --> F[Brier score]
+  B -.-> G[Phase 5 research]
+```
 
-**Researchers**
+Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5).
 
-Interpret lineage, vector neighbors, Phase 5, and Brier without overclaiming.
+| Stage | What you get |
+|-------|----------------|
+| **Ingest → analyze** | Lineage family, atomic terms, virality signals |
+| **Receipt** | Integrity-hashed JSON (auditable) |
+| **Forecasts** | Open probabilities waiting for settlement |
+| **Settle → score** | Real Brier only after operator outcome |
+| **Phase 5** | Speculative sims — never Brier |
 
-[Reading evidence →](demos/reading-evidence.md){ .md-button .md-button--primary }
+## Start here — three actions
 
-[Slang map](map/index.md){ .md-button }
-[Run history](archive/index.md){ .md-button }
+<div class="hlx-cta-grid" markdown>
+
+<div class="hlx-cta-card hlx-cta-card--primary" markdown>
+
+### 1. Try offline
+
+Zero config. No API keys. Produces a real receipt; `brier` stays `null`.
+
+```bash
+python3 scripts/hyperlex.py demo
+# or: pipeline "rizz" --route offline
+```
+
+[Quickstart →](start/quickstart.md){ .md-button .md-button--primary }
 
 </div>
 
-<div class="hlx-path-card" markdown>
+<div class="hlx-cta-card" markdown>
 
-**Operators**
+### 2. Operator loop
 
-Install, run the auto pipeline, settle forecasts, seed / promote vectors.
+Daily path: pipeline → pending → settle → score-series.
 
-[Telemetry desk →](telemetry.md){ .md-button .md-button--primary }
+[Operator loop →](operator-loop.md){ .md-button .md-button--primary }
 
-[How to run](operator-loop.md){ .md-button }
+</div>
+
+<div class="hlx-cta-card" markdown>
+
+### 3. See real runs
+
+Golden receipts, archive snapshots, featured example.
+
+[See it work →](start/see-it-work.md){ .md-button .md-button--primary }
 
 </div>
 
 </div>
 
-<p class="hlx-splash-credit">
-Visual · <a href="https://grok.com/imagine/post/0fef2df1-6bec-4b18-9ee6-823dd77ba9f6">Grok Imagine</a>
-· <a href="https://github.com/scrimshawlife-ctrl/Hyperlex">GitHub</a>
+## Featured example (30 seconds)
+
+**Golden receipt · brainrot-aura** · query `brainrot aura farming mid cooked`
+
+| Field | Value |
+|-------|--------|
+| Lineage family | `brainrot-aura` |
+| Matched atoms | brainrot · aura · mid · cooked · … |
+| Confidence | 0.98 (INFERRED) |
+| Integrity | `e8e43b010371` |
+| **Brier** | **`null`** (correct — not settled) |
+
+[Human summary + JSON →](start/see-it-work.md#featured-brainrot-aura) ·
+[Open map on this family →](map/index.md?family=brainrot-aura) ·
+[Archive catalog →](archive/index.md)
+
+## Explore the rest
+
+<div class="hlx-gateway" markdown>
+
+| Need | Go |
+|------|-----|
+| **Commands** | [Command map](commands.md) |
+| **Architecture** | [Architecture](architecture.md) |
+| **Case studies** | [Case studies](case-studies.md) |
+| **Slang lineages** | [Lineages](slang-lineages.md) · [Map](map/index.md) |
+| **Status / telemetry** | [Status](status.md) · [Telemetry desk](telemetry.md) |
+| **Glossary** | [Terms & hard constraints](start/glossary.md) |
+| **Why settled Brier** | [Settled Brier only](start/settled-brier.md) |
+
+</div>
+
+## Hard rules (one line each)
+
+- **No fabricated Brier** — open analysis always has `brier: null`.
+- **Phase 5 is SPECULATIVE** — research tooling, not measurement.
+- **No Abraxas hard import** — hosts may import Hyperlex; not the reverse.
+- **Local-first** — durable state in `~/.hyperlex/`; Pages is static history.
+
+Full glossary: [start/glossary.md](start/glossary.md)
+
+---
+
+<p class="hlx-splash-brand-foot">READ DEEPER. THINK WIDER.</p>
+
+<p class="hlx-posture">
+v0.4.0 · Hermes skill · settled Brier only · offline mock default for first success
 </p>
-
-</div>
-</div>

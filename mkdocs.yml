@@ -43,7 +43,11 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.emoji:
@@ -54,47 +58,52 @@ markdown_extensions:
       permalink: true
 
 nav:
-  - Splash: index.md
-  - Telemetry: telemetry.md
-  - Status: status.md
-  - Run history:
-      - Catalog: archive/index.md
-      - Latest analysis: archive/latest/index.md
-  - Hermes skill: hermes-skill.md
-  - API v1: api-v1.md
-  - Architecture: architecture.md
-  - Design principles: design.md
-  - Design (Orchestra notes): design-orchestra.md
-  - Spec: spec.md
-  - Roadmap: ROADMAP.md
-  - Calibration:
-      - Brier design: brier-calibration.md
-      - Connectors: connectors.md
-  - Analysis:
-      - Slang lineage map: map/index.md
-      - Slang lineages: slang-lineages.md
-      - Memetics typology: modules/memetics.md
-      - Virality: modules/virality.md
-      - Ingest: modules/ingest.md
-      - LLM (governed): modules/llm.md
-  - Phase 5:
-      - Overview: phase5.md
-      - Simulation modules: modules/simulation.md
-  - Demos:
-      - Atomic multi-term seeds: demos/atomic-terms.md
-      - Reading evidence (researchers): demos/reading-evidence.md
-  - Data:
-      - Vector DB: modules/vectordb.md
-  - Ops:
-      - Operator loop: operator-loop.md
+  - Home: index.md
+  - Start Here:
+      - Overview: start/index.md
+      - Quickstart (offline): start/quickstart.md
+      - See it work: start/see-it-work.md
+      - Glossary: start/glossary.md
+      - Settled Brier only: start/settled-brier.md
+  - Operator Guide:
       - Command map: commands.md
-      - Cron scan: cron-live-emergence.md
-      - Diagrams: diagrams.md
-      - Rune relay: rune-signal-relay.md
+      - Operator loop: operator-loop.md
+      - Cron / live emergence: cron-live-emergence.md
+      - Case studies: case-studies.md
+      - Hermes skill: hermes-skill.md
+  - Core Reference:
+      - Architecture: architecture.md
+      - Spec: spec.md
+      - API v1: api-v1.md
+      - Modules:
+          - Ingest: modules/ingest.md
+          - Memetics: modules/memetics.md
+          - Virality: modules/virality.md
+          - Vector DB: modules/vectordb.md
+          - LLM: modules/llm.md
+      - Slang lineages: slang-lineages.md
+      - Slang lineage map: map/index.md
+  - Research & Phase 5:
+      - Phase 5 overview: phase5.md
+      - Simulation modules: modules/simulation.md
+      - Reading evidence: demos/reading-evidence.md
+      - Atomic multi-term demos: demos/atomic-terms.md
+      - Brier design: brier-calibration.md
+  - Archive & Telemetry:
+      - Telemetry desk: telemetry.md
+      - Status: status.md
+      - Run history: archive/index.md
+      - Latest analysis: archive/latest/index.md
+  - Design & Roadmap:
+      - Design principles: design.md
+      - Design (Orchestra): design-orchestra.md
+      - Roadmap: ROADMAP.md
       - Security: SECURITY.md
       - Semver: SEMVER.md
       - Release notes: RELEASE_NOTES.md
-  - Case studies: case-studies.md
+      - Diagrams: diagrams.md
+      - Rune relay: rune-signal-relay.md
+      - Connectors: connectors.md
 
 plugins:
   - search

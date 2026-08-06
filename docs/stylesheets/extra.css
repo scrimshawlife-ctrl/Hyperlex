@@ -501,6 +501,78 @@
   font-family: var(--hlx-font-mono);
 }
 
+/* Homepage funnel */
+.hlx-purpose {
+  max-width: 46rem;
+  font-size: 1.08rem;
+  line-height: 1.6;
+  color: var(--hlx-ink);
+}
+
+.hlx-purpose strong {
+  font-weight: 600;
+  color: var(--hlx-ink);
+}
+
+.hlx-cta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--hlx-space-md);
+  margin: 0 0 var(--hlx-space-xl);
+}
+
+.hlx-cta-card {
+  border: 1px solid var(--hlx-rule);
+  border-radius: var(--hlx-radius);
+  background: var(--hlx-paper-2);
+  padding: var(--hlx-space-md) var(--hlx-space-lg);
+  min-width: 0;
+}
+
+.hlx-cta-card--primary {
+  border-color: var(--hlx-accent-dim);
+  background: color-mix(in srgb, var(--hlx-paper-2) 88%, var(--hlx-accent) 12%);
+}
+
+.hlx-cta-card h3 {
+  margin-top: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.hlx-cta-card pre {
+  margin: 0.65rem 0;
+  font-size: 0.72rem;
+}
+
+.hlx-gateway {
+  margin: 0 0 var(--hlx-space-lg);
+}
+
+.hlx-gateway table {
+  width: 100%;
+  max-width: 40rem;
+}
+
+.hlx-splash-brand-foot {
+  margin: 2rem 0 0.5rem;
+  font-family: var(--hlx-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hlx-accent);
+}
+
+/* Mermaid diagrams on dark paper */
+.mermaid {
+  background: var(--hlx-paper-2);
+  border: 1px solid var(--hlx-rule);
+  border-radius: var(--hlx-radius);
+  padding: 1rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
 /* ── Archive index (catalogue, not equal card grid) ───── */
 .hlx-kind {
   display: inline-block;

@@ -1,0 +1,222 @@
+{
+  "analysis": {
+    "hyperstition": {
+      "loop_stage": "EMERGENT",
+      "mechanism": "narrative circulating but no market confirmation yet"
+    },
+    "lineage": {
+      "branch_operator": "irony_inversion",
+      "confidence": 0.48,
+      "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
+      "family_id": "brainrot-aura",
+      "matched_terms": [
+        "rizz"
+      ],
+      "payload_note": "content-degradation + status radiation; self-aware consumption; 2026 Gen Alpha carryover",
+      "provenance": "INFERRED",
+      "score_breakdown": {
+        "coverage": 0.026,
+        "density": 0.0,
+        "hit_bonus": 0.12,
+        "hybrid_applied": false,
+        "hybrid_confidence": 0.48,
+        "lexical_confidence": 0.48,
+        "n_hits": 1,
+        "raw": 0.48,
+        "specificity": 0.46,
+        "term_weights": {
+          "rizz": 0.46
+        },
+        "vector_boost": 0.0,
+        "vector_flipped": false
+      }
+    },
+    "memetics": {
+      "is_memetic": false,
+      "provenance": "INFERRED",
+      "rules_hit": {
+        "status_radiation": [
+          "lineage:brainrot-aura"
+        ]
+      },
+      "score": 0.31,
+      "typology": "status_radiation",
+      "typology_primary": "status_radiation",
+      "typology_scores": {
+        "status_radiation": 0.15
+      }
+    },
+    "neologisms": [
+      {
+        "confidence": 0.72,
+        "formation": "platform_compression",
+        "provenance": "INFERRED",
+        "term": "rizz"
+      }
+    ],
+    "per_term": [
+      {
+        "confidence": 0.48,
+        "considered_separately": true,
+        "family_id": "brainrot-aura",
+        "lineage": {
+          "branch_operator": "irony_inversion",
+          "confidence": 0.48,
+          "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
+          "family_id": "brainrot-aura",
+          "matched_terms": [
+            "rizz"
+          ],
+          "payload_note": "content-degradation + status radiation; self-aware consumption; 2026 Gen Alpha carryover",
+          "provenance": "INFERRED",
+          "score_breakdown": {
+            "coverage": 0.026,
+            "density": 0.0,
+            "hit_bonus": 0.12,
+            "hybrid_applied": false,
+            "hybrid_confidence": 0.48,
+            "lexical_confidence": 0.48,
+            "n_hits": 1,
+            "raw": 0.48,
+            "specificity": 0.46,
+            "term_weights": {
+              "rizz": 0.46
+            },
+            "vector_boost": 0.0,
+            "vector_flipped": false
+          }
+        },
+        "lineage_soft": null,
+        "term": "rizz"
+      }
+    ],
+    "primary_term": "rizz",
+    "seed_terms": {
+      "matched": [
+        "rizz"
+      ],
+      "method": "lexicon_longest_match",
+      "multi_term": false,
+      "n_terms": 1,
+      "note": "Atomic lexicon terms only. Multi-word phrases (e.g. locked in) stay together; independent items are not blended into one seed.",
+      "original": "rizz",
+      "residual": [],
+      "schema": "hyperlex.seed_terms.v1",
+      "terms": [
+        "rizz"
+      ]
+    },
+    "semantic_variation": {
+      "community": "general",
+      "driver": "communicative_need + community_identity + status_competition",
+      "drivers": [
+        "communicative_need",
+        "community_identity",
+        "status_competition"
+      ],
+      "lineage_family": "brainrot-aura",
+      "provenance": "INFERRED",
+      "sense": "general"
+    },
+    "virality": {
+      "acceleration": 0.3,
+      "hybrid_score": 0.405,
+      "prediction": {
+        "baseline_hybrid": 0.405,
+        "confidence": 0.55,
+        "delta_vs_baseline": 0.009,
+        "features_used": {
+          "acceleration": 0.3,
+          "hybrid_score": 0.405,
+          "hyperstition_stage": "EMERGENT",
+          "lineage_confidence": 0.48,
+          "memetic_score": 0.31,
+          "n_neologisms": 1,
+          "velocity": 0.2
+        },
+        "horizon": "short",
+        "method": "feature_blend_v0",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
+        "predicted_hybrid": 0.414,
+        "provenance": "SPECULATIVE"
+      },
+      "spread_cues": 0,
+      "velocity": 0.2
+    }
+  },
+  "inferred": "Memetic spread accelerating. Neologisms: 1. Memetic: False. Variation: general. Virality: 0.405. Lineage: brainrot-aura (conf=0.48).",
+  "ingest": {
+    "extracted_terms": [],
+    "metadata": {
+      "adapter": {},
+      "cache": {
+        "cache_dir": "/home/scrimshawlife/.hyperlex/cache",
+        "disk_entries": 1,
+        "memory_entries": 0,
+        "rate_state_path": "/home/scrimshawlife/.hyperlex/rate_limit.json"
+      },
+      "cached": false,
+      "fetched_at": "2026-08-06T06:07:24.115858+00:00",
+      "live": false,
+      "offline_forced": true,
+      "requested_source": "mock",
+      "route": "offline",
+      "source_locator": "hyperlex://mock",
+      "source_type": "synthetic_stub"
+    },
+    "query": "rizz",
+    "source": "mock",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "d3eeb239de67594e7622297129588924fb77c5b7b4800ffaf296078d9a9f37f5",
+      "content_hash_short": "d3eeb239de67594e",
+      "fetched_at": "2026-08-06T06:07:24.115858+00:00",
+      "fingerprint_id": "80731d3e7f0f9acd91a5710f",
+      "package_version": "0.4.0",
+      "query": "rizz",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    }
+  },
+  "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
+  "observed": "Mock channel note on \"rizz\". Quiet discourse sample.",
+  "provenance": {
+    "adapter_version": "ingest-v1.7",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "brier": null,
+    "brier_note": "brier_requires_settlement",
+    "canonical_hash": "23c0507fcc4d3366",
+    "content_hash": "d3eeb239de67594e7622297129588924fb77c5b7b4800ffaf296078d9a9f37f5",
+    "hyperstition_risk": "EMERGENT",
+    "ingest_source": "mock",
+    "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
+    "source_fingerprint": {
+      "adapter_version": "ingest-v1.7",
+      "content_hash": "d3eeb239de67594e7622297129588924fb77c5b7b4800ffaf296078d9a9f37f5",
+      "content_hash_short": "d3eeb239de67594e",
+      "fetched_at": "2026-08-06T06:07:24.115858+00:00",
+      "fingerprint_id": "80731d3e7f0f9acd91a5710f",
+      "package_version": "0.4.0",
+      "query": "rizz",
+      "source": "mock",
+      "source_locator": "hyperlex://mock"
+    },
+    "source_locator": "hyperlex://mock",
+    "timestamp": "2026-08-06T06:07:24.119390+00:00",
+    "version": "0.4.0"
+  },
+  "receipt": {
+    "integrity": "c1566d6cde6a",
+    "ledger_record_hash": "62129100333a886d744c704fec7b7c1e81025d14bfa199ea4f4c403fcd338ce2",
+    "path": "examples/quickstart/out/receipts/hyperlex_20260806T060724_c1566d6cde6a.json"
+  },
+  "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",
+  "speculative": "EMERGENT hyperstition risk. narrative circulating but no market confirmation yet. Virality prediction (SPECULATIVE): 0.414 \u0394=0.009. Brier requires settlement via hyperlex.calibration \u2014 not claimed on open forecasts."
+}

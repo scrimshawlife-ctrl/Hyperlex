@@ -45,3 +45,6 @@ site/
 
 # Hallmark local memory (optional)
 .hallmark/
+
+# Demo runtime output (committed sample lives beside it)
+examples/quickstart/out/

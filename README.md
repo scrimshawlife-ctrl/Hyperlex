@@ -22,12 +22,17 @@
 </p>
 
 <p align="center">
-  <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/">Workbench</a> ·
-  <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/telemetry/">Telemetry</a> ·
+  <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/">Home</a> ·
+  <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/start/quickstart/">Quickstart</a> ·
+  <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/start/see-it-work/">See it work</a> ·
+  <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/commands/">Commands</a> ·
   <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/operator-loop/">Operator loop</a> ·
   <a href="https://scrimshawlife-ctrl.github.io/Hyperlex/archive/">Run history</a> ·
-  <a href="./STATUS.md">Status</a> ·
-  <a href="./SKILL.md">Skill contract</a>
+  <a href="./STATUS.md">Status</a>
+</p>
+
+<p align="center">
+  <sub>Offline first success (no API keys): <code>python3 scripts/hyperlex.py demo</code></sub>
 </p>
 
 <p align="center">

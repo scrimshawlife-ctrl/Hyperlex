@@ -1,0 +1,25 @@
+{
+  "atoms": [
+    "rizz"
+  ],
+  "brier": null,
+  "command": "demo",
+  "lineage_family": "brainrot-aura",
+  "log_path": "examples/quickstart/out/demo_score_log.jsonl",
+  "matched_terms": [
+    "rizz"
+  ],
+  "n_atoms": 1,
+  "next": [
+    "python3 scripts/hyperlex.py pending",
+    "python3 scripts/hyperlex.py settle --forecast-id <id> --decision TRUE",
+    "docs/start/quickstart.md"
+  ],
+  "note": "Zero-config offline demo. brier must stay null until settle.",
+  "ok": true,
+  "out_dir": "examples/quickstart/out",
+  "provenance_brier": null,
+  "query": "rizz",
+  "receipt": "examples/quickstart/out/receipts/hyperlex_20260806T060724_c1566d6cde6a.json",
+  "route": "offline"
+}
