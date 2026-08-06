@@ -1,7 +1,8 @@
-"""signal_report — Companion LIVE_EMERGENCE_SCAN parity helpers.
+"""signal_report — optional analysis enrichment for Hyperlex results.
 
-Derives optional analysis fields from existing virality / memetics /
-hyperstition / lineage / mutation blocks. Pure, fail-open, never emits Brier.
+Derives compression metrics, typology tags, propagation tags, and a compact
+human summary from existing virality / memetics / hyperstition / lineage /
+mutation blocks. Pure, fail-open, never emits Brier.
 """
 from __future__ import annotations
 
@@ -24,7 +25,7 @@ def build_compression_metrics(
     n_neologisms: int = 0,
     hyper_stage: Optional[str] = None,
 ) -> Dict[str, str]:
-    """Map existing scores into Companion-style compression labels."""
+    """Map existing scores into compact density labels."""
     v = virality or {}
     m = memetic or {}
     hybrid = float(v.get("hybrid_score") or 0.0)
@@ -54,53 +55,58 @@ def build_compression_metrics(
     }
 
 
-def build_symbolic_roles(
+def build_typology_tags(
     *,
     memetic: Optional[Dict[str, Any]] = None,
     lineage: Optional[Dict[str, Any]] = None,
     variation: Optional[Dict[str, Any]] = None,
     hyper_stage: Optional[str] = None,
 ) -> List[str]:
-    """Derive multi-select symbolic roles from typology + lineage."""
-    roles: List[str] = []
+    """
+    Multi-select tags aligned to Hyperlex typology IDs + drivers.
+
+    Prefer existing typology vocabulary over external role labels.
+    """
+    tags: List[str] = []
     m = memetic or {}
     primary = str(m.get("typology_primary") or m.get("typology") or "")
+    scores = m.get("typology_scores") or {}
     fam = str((lineage or {}).get("family_id") or "")
-    sense = str((variation or {}).get("sense") or "")
+    drivers = list((variation or {}).get("drivers") or [])
     stage = str(hyper_stage or "").upper()
 
-    mapping = {
-        "tactical_edge": ["Memetic Weapon", "Status Signal"],
-        "risk_identity": ["Tribal Marker", "Belief Reinforcement"],
-        "platform_agency": ["Attention Hook", "Dissociation Layer"],
-        "labor_identity": ["Tribal Marker", "Irony Shield"],
-        "status_radiation": ["Status Signal", "Emotional Compression"],
-        "irony_inversion": ["Irony Shield", "Emotional Compression"],
-        "kinship_address": ["Tribal Marker", "Ritual Phrase"],
-        "imitation_spread": ["Attention Hook", "Memetic Weapon"],
-    }
-    for r in mapping.get(primary, []):
-        if r not in roles:
-            roles.append(r)
+    if primary and primary not in ("one_off", ""):
+        tags.append(primary)
 
-    if fam in ("brainrot-aura", "political-status"):
-        for r in ("Irony Shield", "Emotional Compression"):
-            if r not in roles:
-                roles.append(r)
-    if fam in ("betting-sharp", "crypto-degen"):
-        for r in ("Memetic Weapon", "Belief Reinforcement"):
-            if r not in roles:
-                roles.append(r)
-    if "status" in sense or "irony" in sense:
-        if "Status Signal" not in roles:
-            roles.append("Status Signal")
-    if stage == "ACTUALIZING":
-        if "Belief Reinforcement" not in roles:
-            roles.append("Belief Reinforcement")
+    # Secondary typology scores above a soft threshold
+    for tid, sc in sorted(scores.items(), key=lambda kv: -float(kv[1] or 0)):
+        if tid == primary:
+            continue
+        if float(sc or 0) >= 0.45 and tid not in tags:
+            tags.append(str(tid))
 
-    if not roles:
-        roles = ["Attention Hook"]
-    return roles[:6]
+    # Lineage family as soft tag
+    if fam and fam not in tags:
+        tags.append(f"lineage:{fam}")
+
+    # Semantic-variation drivers already used by Hyperlex
+    for d in drivers:
+        if d and d not in tags:
+            tags.append(str(d))
+
+    if stage == "ACTUALIZING" and "hyperstition_actualizing" not in tags:
+        tags.append("hyperstition_actualizing")
+    elif stage == "EMERGENT" and "hyperstition_emergent" not in tags:
+        tags.append("hyperstition_emergent")
+
+    if not tags:
+        tags = ["imitation_spread"]
+    return tags[:8]
+
+
+# Back-compat name used by older call sites / schema field symbolic_role
+def build_symbolic_roles(*args: Any, **kwargs: Any) -> List[str]:
+    return build_typology_tags(*args, **kwargs)
 
 
 def build_propagation_vector(
@@ -109,34 +115,34 @@ def build_propagation_vector(
     variation: Optional[Dict[str, Any]] = None,
     ingest_source: Optional[str] = None,
 ) -> List[str]:
-    """Platform / demographic tags."""
+    """Platform / community tags derived from lineage + variation + source."""
     tags: List[str] = []
     fam = str((lineage or {}).get("family_id") or "")
     community = str((variation or {}).get("community") or "")
     src = str(ingest_source or "").lower()
 
     family_map = {
-        "betting-sharp": ["X/Twitter", "Niche Internet"],
-        "crypto-degen": ["X/Twitter", "Discord", "Niche Internet"],
-        "ai-native": ["X/Twitter", "AI/Tech", "Reddit"],
-        "brainrot-aura": ["TikTok", "X/Twitter", "Niche Internet"],
-        "kinship-address": ["X/Twitter", "Discord"],
-        "political-status": ["X/Twitter", "Reddit"],
-        "gaming-meta": ["Discord", "Twitch", "X/Twitter"],
-        "workplace-corp": ["LinkedIn", "X/Twitter"],
+        "betting-sharp": ["x_twitter", "niche"],
+        "crypto-degen": ["x_twitter", "discord", "niche"],
+        "ai-native": ["x_twitter", "ai_tech", "reddit"],
+        "brainrot-aura": ["tiktok", "x_twitter", "niche"],
+        "kinship-address": ["x_twitter", "discord"],
+        "political-status": ["x_twitter", "reddit"],
+        "gaming-meta": ["discord", "twitch", "x_twitter"],
+        "workplace-corp": ["linkedin", "x_twitter"],
     }
-    for t in family_map.get(fam, ["X/Twitter"]):
+    for t in family_map.get(fam, ["x_twitter"]):
         if t not in tags:
             tags.append(t)
 
     if "ai" in community or "machine" in community:
-        if "AI/Tech" not in tags:
-            tags.append("AI/Tech")
+        if "ai_tech" not in tags:
+            tags.append("ai_tech")
     if src in ("x_search", "social", "live"):
-        if "X/Twitter" not in tags:
-            tags.append("X/Twitter")
+        if "x_twitter" not in tags:
+            tags.append("x_twitter")
     if not tags:
-        tags = ["Niche Internet"]
+        tags = ["niche"]
     return tags[:6]
 
 
@@ -148,7 +154,7 @@ def build_signal_report(
     mutation_prediction: Optional[Dict[str, Any]] = None,
     recommendation: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Human-facing SIGNAL REPORT summary block."""
+    """Compact human-facing summary block (O/I/S + mutations + recs)."""
     gens: List[Any] = []
     mp = mutation_prediction or {}
     for c in (mp.get("candidates") or [])[:5]:
@@ -162,8 +168,8 @@ def build_signal_report(
     recs: List[str] = []
     if recommendation:
         recs.append(str(recommendation))
-    recs.append("Filter high-virality attractors for provenance before forecasting ingest.")
-    recs.append("Retain classic compression slang as high-utility tribal/emotional routing.")
+    recs.append("Route high-virality attractors through receipt + forecast extract before settlement.")
+    recs.append("Prefer lineage-matched atoms for calibration series continuity.")
 
     return {
         "observed": observed,
@@ -184,7 +190,7 @@ def attach_signal_report_fields(
     ingest_source: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
-    Mutate (and return) analysis with Companion parity fields.
+    Attach optional enrichment fields onto analysis.
     Fail-open: never raises; leaves existing keys untouched on error.
     """
     try:
@@ -203,7 +209,9 @@ def attach_signal_report_fields(
             n_neologisms=len(neos),
             hyper_stage=hyper.get("loop_stage"),
         )
-        analysis["symbolic_role"] = build_symbolic_roles(
+        # Field name remains symbolic_role in schema for stability;
+        # values are typology-aligned tags.
+        analysis["symbolic_role"] = build_typology_tags(
             memetic=memetic,
             lineage=lineage,
             variation=variation,
@@ -214,7 +222,6 @@ def attach_signal_report_fields(
             variation=variation,
             ingest_source=ingest_source,
         )
-        # Compact family tree stub when lineage present
         if lineage and lineage.get("family_id"):
             analysis["slang_family_tree"] = {
                 "root": lineage.get("family_id"),
@@ -236,18 +243,24 @@ def attach_signal_report_fields(
     return analysis
 
 
-def build_seed_header(
+def build_integrity_header(
     *,
     ingest_source: Optional[str] = None,
     hyper_stage: Optional[str] = None,
 ) -> Dict[str, str]:
-    """Lightweight SEED-style integrity header for provenance."""
+    """Compact integrity note for provenance (optional)."""
     stage = str(hyper_stage or "").upper()
-    entropy = "medium" if stage in ("ACTUALIZING", "EMERGENT") else "low"
+    risk = "elevated" if stage in ("ACTUALIZING", "EMERGENT") else "baseline"
     return {
-        "status": "PASS",
-        "determinism": "yes (rule-based + lineage registry + optional vector boost)",
-        "provenance": f"hyperlex.analysis; ingest_source={ingest_source or 'unknown'}",
-        "entropy_class": entropy,
-        "capability_lane": "advisory",
+        "status": "ok",
+        "method": "rule_based_lineage_vector",
+        "ingest_source": ingest_source or "unknown",
+        "hyperstition_stage": stage or "none",
+        "risk_band": risk,
+        "authority": "advisory",
     }
+
+
+# Back-compat alias used by detect_memetic_patterns
+def build_seed_header(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    return build_integrity_header(*args, **kwargs)
