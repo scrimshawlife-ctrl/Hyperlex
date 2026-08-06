@@ -43,7 +43,7 @@ def cmd_check(_: argparse.Namespace) -> int:
     except Exception as exc:
         checks.append({"name": "analyze_mock", "ok": False, "error": str(exc)})
     try:
-        checks.append({"name": "runes", "ok": len(list_runes()) >= 4})
+        checks.append({"name": "runes", "ok": len(list_runes()) >= 5})
     except Exception as exc:
         checks.append({"name": "runes", "ok": False, "error": str(exc)})
     ok = all(c.get("ok") for c in checks)
@@ -120,6 +120,7 @@ def cmd_commands(_: argparse.Namespace) -> int:
             'run "<query>" --route offline',
             "pending → settle → score-series",
             "scan --route offline --receipt --forecasts --append-log",
+            "inbox list",
         ],
         "routes": ["offline", "mock", "default", "live", "glossary", "social"],
         "docs": "docs/operator-loop.md · docs/commands.md",
@@ -136,7 +137,7 @@ def cmd_relay(args: argparse.Namespace) -> int:
     result = _load_json(args.input)
     if "analysis" not in result and isinstance(result.get("result"), dict):
         result = result["result"]
-    envs = relay_from_result(result)
+    envs = relay_from_result(result, push_inbox=bool(getattr(args, "push_inbox", False)))
     if args.forecasts:
         envs.append(relay_forecasts(extract_forecasts(result)))
     _emit({"ok": True, "n_envelopes": len(envs), "envelopes": envs})
@@ -316,6 +317,38 @@ def cmd_lineage_backprop(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_inbox(args: argparse.Namespace) -> int:
+    from hyperlex.signals import list_signals, push_signal, clear_inbox, maybe_push_from_result
+
+    action = (args.action or "list").lower()
+    if action == "list":
+        out = list_signals(limit=int(args.limit or 50), min_priority=args.min_priority or None)
+        _emit({"ok": out.get("ok", True), "command": "inbox", "action": "list", **out})
+        return 0 if out.get("ok") else 2
+    if action == "clear":
+        out = clear_inbox(dry_run=bool(args.dry_run))
+        _emit({"ok": out.get("ok", True), "command": "inbox", "action": "clear", **out})
+        return 0 if out.get("ok") else 2
+    if action == "push":
+        if args.input:
+            result = _load_json(args.input)
+            if "analysis" not in result and isinstance(result.get("result"), dict):
+                result = result["result"]
+            out = maybe_push_from_result(result, force=bool(args.force))
+        else:
+            entry = {
+                "kind": "manual",
+                "priority": args.priority or "medium",
+                "note": args.note or "",
+                "payload": {"term": args.term or "", "note": args.note or ""},
+            }
+            out = push_signal(entry)
+        _emit({"ok": out.get("ok", True), "command": "inbox", "action": "push", **out})
+        return 0 if out.get("ok") else 2
+    _emit({"ok": False, "error": f"unknown inbox action: {action}"})
+    return 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="hyperlex", description="Hyperlex memetic emergence engine")
     sub = p.add_subparsers(dest="command", required=True)
@@ -364,6 +397,7 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--input", default="")
     r.add_argument("--list-runes", action="store_true")
     r.add_argument("--forecasts", action="store_true")
+    r.add_argument("--push-inbox", action="store_true", help="also append SHADOW candidates to local inbox")
     r.set_defaults(func=cmd_relay)
 
     s = sub.add_parser("settle")
@@ -426,6 +460,18 @@ def build_parser() -> argparse.ArgumentParser:
     lbp.add_argument("--verbose", action="store_true")
     lbp.add_argument("--out", default="")
     lbp.set_defaults(func=cmd_lineage_backprop)
+
+    ib = sub.add_parser("inbox", help="Local signals inbox (SHADOW candidates)")
+    ib.add_argument("action", nargs="?", default="list", help="list | push | clear")
+    ib.add_argument("--limit", type=int, default=50)
+    ib.add_argument("--min-priority", default="")
+    ib.add_argument("--input", default="", help="analysis result JSON for push")
+    ib.add_argument("--force", action="store_true", help="push even below ACTUALIZING")
+    ib.add_argument("--term", default="")
+    ib.add_argument("--note", default="")
+    ib.add_argument("--priority", default="medium")
+    ib.add_argument("--dry-run", action="store_true")
+    ib.set_defaults(func=cmd_inbox)
 
     return p
 
