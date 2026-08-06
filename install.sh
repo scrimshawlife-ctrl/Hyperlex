@@ -171,6 +171,11 @@ sync_tree() {
       -cf - . | tar -C "${dest}" -xf -
   fi
   chmod +x "${dest}/install.sh" "${dest}/scripts/hyperlex.py" 2>/dev/null || true
+  # rsync --exclude '.git' also skips deleting a leftover dest .git; drop it so the
+  # skill install is never a nested half-repo from a prior manual checkout.
+  if [[ -e "${dest}/.git" ]]; then
+    rm -rf "${dest}/.git"
+  fi
   mkdir -p "${dest}/.hermes"
   cat > "${dest}/.hermes/install-receipt.json" <<EOF
 {

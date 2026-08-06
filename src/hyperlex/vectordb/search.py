@@ -28,7 +28,7 @@ def vector_search(
     backend = backend or __import__("os").environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite")
 
     if backend == "chroma":
-        store = get_vector_store(backend="chroma")
+        store = get_vector_store(backend="chroma", path=path)
         hits = store.search(
             vec,
             kind=kind,
@@ -40,7 +40,7 @@ def vector_search(
         if not hits and info.provider != "hash":
             hits = store.search(vec, kind=kind, family_id=family_id, top_k=top_k, min_score=min_score)
         stats = store.stats()
-        db_ref = f"chroma:{getattr(store, 'collection_name', 'hyperlex')}"
+        db_ref = stats.get("path") or f"chroma:{getattr(store, 'collection_name', 'hyperlex')}"
     else:
         from .store import VectorStore
         with VectorStore(path) as store:

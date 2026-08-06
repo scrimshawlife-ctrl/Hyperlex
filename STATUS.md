@@ -38,6 +38,7 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 | **Phase 5 hyperstition risk** | Ready |
 | **Phase 5 phylogeny scaffold** | Ready |
 | **Local vector DB** (`~/.hyperlex/vector.db`) | Ready |
+| **Chroma vector backend** (local path or Cloud) | Ready (opt-in · `HYPERLEX_VECTOR_BACKEND=chroma`) |
 | **Hybrid lineage re-rank** | Ready (lexical + vector boost) |
 | **Domain phylogeny packs** | Ready (`data/phylogeny/`) |
 | **Transmission calibrate** | Ready (advisory β/γ from settled pairs) |
@@ -66,7 +67,8 @@ pipeline "rizz" | ingest "rizz" | run "rizz"   # AUTO full results
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
 ~/.hyperlex/cache/
-~/.hyperlex/vector.db            # local SQLite vector store
+~/.hyperlex/vector.db            # local SQLite vector store (default)
+~/.hyperlex/chroma/              # optional local Chroma persist (HYPERLEX_CHROMA_PATH)
 data/backfill/2026/          # curated YTD term packs (repo)
 ```
 

@@ -268,13 +268,19 @@ def seed_all(
     stats = store.stats()
     if hasattr(store, "close"):
         store.close()
-    note = "Chroma Cloud vector DB" if backend == "chroma" else "Local SQLite vector DB. Default embedder is deterministic hash (offline)."
+    if backend == "chroma":
+        note = "Chroma vector DB (local PersistentClient or Cloud). Default embedder is deterministic hash (offline)."
+        path_out = stats.get("path") or "chroma"
+    else:
+        note = "Local SQLite vector DB. Default embedder is deterministic hash (offline)."
+        path_out = str(Path(path) if path else default_vector_db_path())
     return {
         "schema": "hyperlex.vector_seed.v1",
         "ok": True,
         "backend": backend,
-        "path": "chroma" if backend == "chroma" else str(Path(path) if path else default_vector_db_path()),
+        "path": path_out,
         "parts": parts,
         "stats": stats,
         "note": note,
     }
+

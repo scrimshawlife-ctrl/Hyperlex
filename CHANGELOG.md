@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Vector/Chroma: `get_vector_store(backend="chroma", path=...)` no longer TypeErrors (`seed_all` always passed `path`)
+- Chroma local PersistentClient via `--db` / `HYPERLEX_CHROMA_PATH` (cloud credentials still supported)
+- Installer removes leftover destination `.git` so Hermes skill installs are not nested half-repos
+- Tests: ephemeral + local persistent Chroma seed/search smoke
+
 ## 0.4.0 — Automatic backend pipeline (2026-08-05)
 
 - `run_pipeline` / CLI `pipeline`: ingest → analyze → receipt → forecasts → score log → Phase 5 risk

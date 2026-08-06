@@ -1059,8 +1059,14 @@ def cmd_archive_catalog(args: argparse.Namespace) -> int:
     return 0
 
 
+def _vector_backend(args: argparse.Namespace) -> str | None:
+    raw = getattr(args, "backend", None) or ""
+    raw = str(raw).strip()
+    return raw or None
+
+
 def cmd_vector_seed(args: argparse.Namespace) -> int:
-    """Seed local SQLite vector DB from registry, backfill, and/or receipts."""
+    """Seed vector DB (sqlite file or chroma local/cloud) from registry, backfill, receipts."""
     pkg, err = _import_hyperlex()
     if pkg is None:
         _emit({"ok": False, "error": f"import failure: {err}"})
@@ -1074,24 +1080,28 @@ def cmd_vector_seed(args: argparse.Namespace) -> int:
     if args.include_golden:
         receipt_dirs.append(str(ROOT / "examples" / "receipts" / "golden"))
 
-    report = seed_all(
-        path=Path(args.db) if args.db else None,
-        year=int(args.year),
-        through=args.through or "2026-08",
-        backfill_root=Path(args.root) if args.root else (ROOT / "data" / "backfill"),
-        receipt_dirs=receipt_dirs or None,
-        include_home=bool(args.include_home),
-        include_registry=not bool(args.no_registry),
-        include_backfill=not bool(args.no_backfill),
-        include_receipts=not bool(args.no_receipts),
-        backend=getattr(args, "backend", None),
-    )
+    try:
+        report = seed_all(
+            path=Path(args.db) if args.db else None,
+            year=int(args.year),
+            through=args.through or "2026-08",
+            backfill_root=Path(args.root) if args.root else (ROOT / "data" / "backfill"),
+            receipt_dirs=receipt_dirs or None,
+            include_home=bool(args.include_home),
+            include_registry=not bool(args.no_registry),
+            include_backfill=not bool(args.no_backfill),
+            include_receipts=not bool(args.no_receipts),
+            backend=_vector_backend(args),
+        )
+    except Exception as exc:  # pragma: no cover - surface config errors cleanly
+        _emit({"ok": False, "command": "vector-seed", "error": str(exc)})
+        return 2
     _emit({"ok": True, "command": "vector-seed", **report})
     return 0
 
 
 def cmd_vector_search(args: argparse.Namespace) -> int:
-    """Cosine search over local vector DB."""
+    """Cosine search over vector DB (sqlite or chroma)."""
     pkg, err = _import_hyperlex()
     if pkg is None:
         _emit({"ok": False, "error": f"import failure: {err}"})
@@ -1099,15 +1109,19 @@ def cmd_vector_search(args: argparse.Namespace) -> int:
 
     from hyperlex.vectordb import vector_search
 
-    out = vector_search(
-        args.query,
-        path=Path(args.db) if args.db else None,
-        kind=args.kind or None,
-        family_id=args.family or None,
-        top_k=int(args.top_k),
-        min_score=float(args.min_score),
-        backend=getattr(args, "backend", None),
-    )
+    try:
+        out = vector_search(
+            args.query,
+            path=Path(args.db) if args.db else None,
+            kind=args.kind or None,
+            family_id=args.family or None,
+            top_k=int(args.top_k),
+            min_score=float(args.min_score),
+            backend=_vector_backend(args),
+        )
+    except Exception as exc:  # pragma: no cover
+        _emit({"ok": False, "command": "vector-search", "error": str(exc)})
+        return 2
     _emit({"ok": bool(out.get("ok")), "command": "vector-search", **out})
     return 0 if out.get("ok") else 2
 
@@ -1119,17 +1133,23 @@ def cmd_vector_stats(args: argparse.Namespace) -> int:
         _emit({"ok": False, "error": f"import failure: {err}"})
         return 2
 
-    backend = getattr(args, "backend", None) or __import__("os").environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite")
-    if backend == "chroma":
-        from hyperlex.vectordb.chroma import ChromaVectorStore
-        store = ChromaVectorStore()
-        stats = store.stats()
-        _emit({"ok": True, "command": "vector-stats", "backend": "chroma", **stats})
-    else:
-        from hyperlex.vectordb import VectorStore
-        with VectorStore(Path(args.db) if args.db else None) as store:
+    backend = _vector_backend(args) or __import__("os").environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite")
+    try:
+        if backend == "chroma":
+            from hyperlex.vectordb.chroma import ChromaVectorStore
+
+            store = ChromaVectorStore(path=Path(args.db) if args.db else None)
             stats = store.stats()
-        _emit({"ok": True, "command": "vector-stats", "backend": "sqlite", **stats})
+            _emit({"ok": True, "command": "vector-stats", "backend": "chroma", **stats})
+        else:
+            from hyperlex.vectordb import VectorStore
+
+            with VectorStore(Path(args.db) if args.db else None) as store:
+                stats = store.stats()
+            _emit({"ok": True, "command": "vector-stats", "backend": "sqlite", **stats})
+    except Exception as exc:  # pragma: no cover
+        _emit({"ok": False, "command": "vector-stats", "error": str(exc)})
+        return 2
     return 0
 
 

@@ -1,17 +1,29 @@
-"""ChromaDB Cloud backend for Hyperlex vector store.
+"""ChromaDB backend for Hyperlex vector store.
 
-Usage:
+Modes (first match wins):
+  1. Explicit client= passed to ChromaVectorStore / get_vector_store
+  2. Local PersistentClient when path= or HYPERLEX_CHROMA_PATH is set
+  3. CloudClient when cloud credentials are set
+
+Usage (cloud)::
+
     export HYPERLEX_CHROMA_API_KEY=...
     export HYPERLEX_CHROMA_TENANT=...
     export HYPERLEX_CHROMA_DATABASE=Demo
     export HYPERLEX_VECTOR_BACKEND=chroma
 
-Then vector-search / vector-seed will use it (or pass backend="chroma").
+Usage (local persistent)::
+
+    export HYPERLEX_VECTOR_BACKEND=chroma
+    export HYPERLEX_CHROMA_PATH=~/.hyperlex/chroma
+
+Then vector-search / vector-seed use Chroma (or pass backend=\"chroma\").
 """
 
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 try:
@@ -21,39 +33,73 @@ except ImportError:  # pragma: no cover
     chromadb = None
     CloudClient = None
 
-from .embed import embed_text
-
 
 DEFAULT_COLLECTION = os.environ.get("HYPERLEX_CHROMA_COLLECTION", "hyperlex")
 
 
-def get_chroma_client() -> Any:
-    """Create a Chroma CloudClient from environment variables.
+def _cloud_credentials() -> tuple[Optional[str], Optional[str], Optional[str]]:
+    return (
+        os.environ.get("HYPERLEX_CHROMA_API_KEY"),
+        os.environ.get("HYPERLEX_CHROMA_TENANT"),
+        os.environ.get("HYPERLEX_CHROMA_DATABASE"),
+    )
 
-    Required env vars:
+
+def resolve_chroma_path(path: Optional[Path | str] = None) -> Optional[Path]:
+    """Return a local chroma persist path if configured, else None."""
+    raw = path if path is not None else os.environ.get("HYPERLEX_CHROMA_PATH")
+    if raw is None or str(raw).strip() == "":
+        return None
+    return Path(str(raw)).expanduser()
+
+
+def get_chroma_client(path: Optional[Path | str] = None) -> Any:
+    """Create a Chroma client (local PersistentClient or CloudClient).
+
+    Local path (preferred when set):
+      path= argument, or HYPERLEX_CHROMA_PATH
+
+    Cloud credentials (when no local path):
       HYPERLEX_CHROMA_API_KEY
       HYPERLEX_CHROMA_TENANT
       HYPERLEX_CHROMA_DATABASE
 
     Optional:
-      HYPERLEX_CHROMA_COLLECTION (default: "hyperlex")
+      HYPERLEX_CHROMA_COLLECTION (default: \"hyperlex\")
     """
+    if chromadb is None:
+        raise RuntimeError("chromadb is not installed. pip install 'hyperlex[runtime]' or chromadb")
+
+    local_path = resolve_chroma_path(path)
+    if local_path is not None:
+        local_path.mkdir(parents=True, exist_ok=True)
+        return chromadb.PersistentClient(path=str(local_path))
+
     if CloudClient is None:
         raise RuntimeError("chromadb is not installed. pip install chromadb")
 
-    api_key = os.environ.get("HYPERLEX_CHROMA_API_KEY")
-    tenant = os.environ.get("HYPERLEX_CHROMA_TENANT")
-    database = os.environ.get("HYPERLEX_CHROMA_DATABASE")
-
+    api_key, tenant, database = _cloud_credentials()
     if not api_key or not tenant or not database:
         raise RuntimeError(
-            "Chroma Cloud credentials not found. Set:\n"
-            "  HYPERLEX_CHROMA_API_KEY\n"
-            "  HYPERLEX_CHROMA_TENANT\n"
-            "  HYPERLEX_CHROMA_DATABASE"
+            "Chroma not configured. Set a local path or cloud credentials:\n"
+            "  Local:  HYPERLEX_CHROMA_PATH=~/.hyperlex/chroma\n"
+            "  Cloud:  HYPERLEX_CHROMA_API_KEY / HYPERLEX_CHROMA_TENANT / HYPERLEX_CHROMA_DATABASE"
         )
 
     return CloudClient(api_key=api_key, tenant=tenant, database=database)
+
+
+def _sanitize_meta(meta: Dict[str, Any]) -> Dict[str, Any]:
+    """Chroma metadata values must be str/int/float/bool; drop None."""
+    out: Dict[str, Any] = {}
+    for k, v in meta.items():
+        if v is None:
+            continue
+        if isinstance(v, (str, int, float, bool)):
+            out[str(k)] = v
+        else:
+            out[str(k)] = str(v)
+    return out
 
 
 class ChromaVectorStore:
@@ -63,12 +109,15 @@ class ChromaVectorStore:
         self,
         client: Optional[Any] = None,
         collection_name: str = DEFAULT_COLLECTION,
+        path: Optional[Path | str] = None,
+        **_ignored: Any,
     ):
         if chromadb is None:
             raise RuntimeError("chromadb package is required for ChromaVectorStore")
 
-        self.client = client or get_chroma_client()
-        self.collection_name = collection_name
+        self.path = resolve_chroma_path(path)
+        self.client = client or get_chroma_client(path=self.path)
+        self.collection_name = collection_name or DEFAULT_COLLECTION
         self._collection = None
 
     @property
@@ -90,19 +139,19 @@ class ChromaVectorStore:
         family_id: Optional[str] = None,
         meta: Optional[Dict[str, Any]] = None,
     ) -> None:
-        meta = dict(meta or {})
-        meta.update({
+        m = _sanitize_meta(dict(meta or {}))
+        m.update(_sanitize_meta({
             "kind": kind,
             "text": text,
             "model": model,
             "family_id": family_id,
-        })
+        }))
         # Chroma expects list of lists for embeddings
         self.collection.upsert(
             ids=[id],
-            embeddings=[embedding],
+            embeddings=[list(embedding)],
             documents=[text],
-            metadatas=[meta],
+            metadatas=[m],
         )
 
     def upsert_many(self, rows: List[Dict[str, Any]]) -> int:
@@ -114,15 +163,15 @@ class ChromaVectorStore:
         metadatas = []
         for r in rows:
             ids.append(r["id"])
-            embeddings.append(r["embedding"])
+            embeddings.append(list(r["embedding"]))
             documents.append(r["text"])
-            m = dict(r.get("meta", {}))
-            m.update({
+            m = _sanitize_meta(dict(r.get("meta") or {}))
+            m.update(_sanitize_meta({
                 "kind": r.get("kind"),
                 "text": r.get("text"),
                 "model": r.get("model"),
                 "family_id": r.get("family_id"),
-            })
+            }))
             metadatas.append(m)
         self.collection.upsert(
             ids=ids,
@@ -142,19 +191,26 @@ class ChromaVectorStore:
         min_score: float = 0.15,
         model: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
-        where: Dict[str, Any] = {}
+        # Chroma requires a single top-level operator when combining filters.
+        clauses: List[Dict[str, Any]] = []
         if kind:
-            where["kind"] = kind
+            clauses.append({"kind": kind})
         if family_id:
-            where["family_id"] = family_id
+            clauses.append({"family_id": family_id})
         if model:
-            where["model"] = model
+            clauses.append({"model": model})
+        if not clauses:
+            where: Optional[Dict[str, Any]] = None
+        elif len(clauses) == 1:
+            where = clauses[0]
+        else:
+            where = {"$and": clauses}
 
         results = self.collection.query(
-            query_embeddings=[embedding],
-            n_results=top_k,
-            where=where if where else None,
-            include=["embeddings", "documents", "metadatas", "distances"],
+            query_embeddings=[list(embedding)],
+            n_results=max(1, int(top_k)),
+            where=where,
+            include=["documents", "metadatas", "distances"],
         )
 
         hits = []
@@ -184,36 +240,58 @@ class ChromaVectorStore:
         hits.sort(key=lambda x: x["score"], reverse=True)
         return hits[:top_k]
 
-    def count(self) -> int:
+    def count(self, kind: Optional[str] = None) -> int:
+        """Match SQLite VectorStore.count signature (kind filter is best-effort)."""
         try:
+            if kind:
+                # Chroma has no cheap filtered count; use get with where when available
+                try:
+                    got = self.collection.get(where={"kind": kind}, include=[])
+                    return len(got.get("ids") or [])
+                except Exception:
+                    return self.collection.count()
             return self.collection.count()
         except Exception:
             return 0
 
     def stats(self) -> Dict[str, Any]:
         n = self.count()
-        # Chroma doesn't give easy per-kind counts without extra queries
-        return {
+        out: Dict[str, Any] = {
+            "schema": "hyperlex.vector_stats.v1",
             "backend": "chroma",
             "collection": self.collection_name,
             "n_total": n,
         }
+        if self.path is not None:
+            out["path"] = str(self.path)
+        else:
+            out["path"] = f"chroma-cloud:{self.collection_name}"
+        return out
 
     def close(self) -> None:
-        # Cloud client does not require explicit close
+        # Persistent/Cloud clients do not require explicit close
         pass
 
 
 def get_vector_store(backend: Optional[str] = None, **kwargs: Any):
     """Factory that returns the appropriate vector store.
 
-    backend: "sqlite" (default) or "chroma"
+    backend: \"sqlite\" (default) or \"chroma\"
+
+    For chroma, ``path`` maps to a local PersistentClient directory
+    (or falls through to cloud credentials when unset).
     """
-    backend = backend or os.environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite").lower()
+    backend = (backend or os.environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite")).lower()
 
     if backend == "chroma":
-        return ChromaVectorStore(**kwargs)
+        # Accept path= from seed_all / CLI without TypeError
+        return ChromaVectorStore(
+            client=kwargs.get("client"),
+            collection_name=kwargs.get("collection_name", DEFAULT_COLLECTION),
+            path=kwargs.get("path"),
+        )
 
     # fallback to sqlite
     from .store import VectorStore
+
     return VectorStore(**kwargs)
