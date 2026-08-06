@@ -47,6 +47,14 @@ FIXES = {
             "[docs/demos/atomic-terms.md](docs/demos/atomic-terms.md)",
             "[demos/atomic-terms.md](demos/atomic-terms.md)",
         ),
+        (
+            "[docs/modules/vectordb.md](docs/modules/vectordb.md)",
+            "[modules/vectordb.md](modules/vectordb.md)",
+        ),
+        ("](docs/operator-loop.md)", "](operator-loop.md)"),
+        ("](docs/demos/atomic-terms.md)", "](demos/atomic-terms.md)"),
+        ("](docs/modules/vectordb.md)", "](modules/vectordb.md)"),
+        ("](docs/", "]("),
     ],
     "ROADMAP.md": [
         ("](../ROADMAP.md)", "](https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/blob/main/ROADMAP.md)"),

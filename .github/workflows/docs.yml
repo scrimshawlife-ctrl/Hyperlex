@@ -7,14 +7,19 @@ on:
       - "docs/**"
       - "mkdocs.yml"
       - ".github/workflows/docs.yml"
+      - "scripts/sync_mkdocs_pages.py"
       - "README.md"
       - "ARCHITECTURE.md"
       - "DESIGN.md"
       - "SPEC.md"
+      - "STATUS.md"
+      - "ROADMAP.md"
   pull_request:
     paths:
       - "docs/**"
       - "mkdocs.yml"
+      - "scripts/sync_mkdocs_pages.py"
+      - "STATUS.md"
   workflow_dispatch:
 
 permissions:
