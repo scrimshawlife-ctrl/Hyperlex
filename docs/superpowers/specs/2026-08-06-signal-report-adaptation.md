@@ -1,7 +1,7 @@
 # Design: SIGNAL REPORT parity (Companion process adaptation)
 
 **Date:** 2026-08-06  
-**Status:** Schema + builder landed · call-site wiring next  
+**Status:** Schema + builder + call-site wiring complete  
 **Version target:** 0.4.x (additive)  
 
 ## Source
@@ -27,47 +27,27 @@ Abraxas Companion deep Hyperstition / Memetic Emergence Scan (LIVE_EMERGENCE_SCA
    - `attach_signal_report_fields(analysis, ...)` — fail-open mutator
    - `build_seed_header`
 
-3. **Invariants preserved**
+3. **Call-site** — `detect_memetic_patterns` now:
+   - imports the helpers
+   - calls `attach_signal_report_fields(...)` after mutation / vector blocks
+   - attaches `provenance.seed` via `build_seed_header(...)`
+
+4. **Invariants preserved**
    - `provenance.brier` remains `null` on open analysis
    - All new fields optional and fail-open
    - Offline-first; no Abraxas hard dependency
 
-## Remaining implementation (ordered)
+## Remaining (optional next tranche)
 
-1. **Wire into `detect_memetic_patterns`** (one import + two calls):
+1. Local signals inbox (`~/.hyperlex/signals/` + thin `inbox` CLI)
+2. Enrich `scan` / live routes with focus + time_window + min_virality
+3. Emit optional SHADOW `rune_candidate` envelopes on high hyperstition stage
+4. Forage / daily aggregate receipt
 
-```python
-from .signal_report import attach_signal_report_fields, build_seed_header
+## Success criteria (met for core path)
 
-# after mutation_prediction / vector_neighbors block, before result = {...}:
-attach_signal_report_fields(
-    analysis,
-    observed=observed,
-    inferred=inferred,
-    speculative=speculative,
-    recommendation=(
-        "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; "
-        "extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN."
-    ),
-    ingest_source=ingest_source,
-)
-
-# inside result["provenance"]:
-"seed": build_seed_header(
-    ingest_source=ingest_source,
-    hyper_stage=hyper.get("loop_stage"),
-),
-```
-
-2. Optional local signals inbox (`~/.hyperlex/signals/` or `inbox` CLI).
-3. Enrich `scan` / live routes with focus + time_window + min_virality.
-4. Emit optional SHADOW `rune_candidate` envelopes on high hyperstition stage.
-5. Forage / daily aggregate receipt.
-
-## Success criteria
-
-- Offline `pipeline "rizz"` carries non-empty `compression_metrics` + `symbolic_role`.
-- Schema validates; existing golden receipts still pass.
+- Offline `pipeline "rizz"` / `analyze` carries non-empty `compression_metrics` + `symbolic_role` + `signal_report` when data supports it.
+- Schema validates; existing golden receipts still pass (new fields absent = fine).
 - No numeric Brier on open analysis.
 
 ## References
