@@ -33,6 +33,7 @@ build/
 !skills.sh.json
 !docs/archive/**/*.json
 !docs/archive/**/*.jsonl
+!docs/demos/samples/**/*.json
 !data/backfill/**/*.json
 !data/phylogeny/**/*.json
 

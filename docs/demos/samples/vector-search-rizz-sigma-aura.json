@@ -1,0 +1,52 @@
+{
+  "schema": "hyperlex.vector_search.v1",
+  "query": "rizz sigma aura",
+  "backend": "chroma",
+  "model": "hyperlex.hash_ngram_v1.d256",
+  "embed_provenance": "INFERRED",
+  "n_hits": 5,
+  "brier": null,
+  "note": "Similarity is cosine over unit vectors; not a calibrated probability / Brier.",
+  "hits": [
+    {
+      "rank": 1,
+      "text": "rizz",
+      "family_id": "brainrot-aura",
+      "score": 0.592554,
+      "kind": "term",
+      "source": "LINEAGE_REGISTRY"
+    },
+    {
+      "rank": 2,
+      "text": "rizz",
+      "family_id": "brainrot-aura",
+      "score": 0.592554,
+      "kind": "term",
+      "source": "backfill"
+    },
+    {
+      "rank": 3,
+      "text": "aura",
+      "family_id": "brainrot-aura",
+      "score": 0.499028,
+      "kind": "term",
+      "source": "LINEAGE_REGISTRY"
+    },
+    {
+      "rank": 4,
+      "text": "aura",
+      "family_id": "brainrot-aura",
+      "score": 0.499028,
+      "kind": "term",
+      "source": "backfill"
+    },
+    {
+      "rank": 5,
+      "text": "aura",
+      "family_id": "brainrot-aura",
+      "score": 0.499028,
+      "kind": "term",
+      "source": "ingest_autoindex"
+    }
+  ]
+}
