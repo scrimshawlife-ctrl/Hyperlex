@@ -442,36 +442,39 @@ def rebuild_archive_catalog(
         json.dumps(catalog, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
 
-    card_blocks: List[str] = []
-    for e in entries:
+    def _index_row(e: Dict[str, Any]) -> str:
         fam = e.get("families") or {}
         top_fam = ", ".join(f"`{k}`×{v}" for k, v in list(fam.items())[:5]) or "—"
         link = f"./runs/{Path(e['path']).name}/index.md"
         kind = e.get("run_kind") or "analysis"
-        icon = "material-flask-outline" if kind == "phase5_scenario" else "material-file-document-outline"
-        meta_bits = [f"`{kind}`"]
+        is_phase5 = kind == "phase5_scenario"
+        kind_cls = "hlx-kind hlx-kind--phase5" if is_phase5 else "hlx-kind hlx-kind--analysis"
+        kind_label = "phase5 · SPECULATIVE" if is_phase5 else "analysis"
+        bits: List[str] = []
         if e.get("n_receipt_summaries"):
-            meta_bits.append(f"{e['n_receipt_summaries']} receipts")
+            bits.append(f"{e['n_receipt_summaries']} receipts")
         if e.get("risk_tier"):
-            meta_bits.append(f"risk **{e['risk_tier']}**")
+            bits.append(f"risk **{e['risk_tier']}**")
         terms = e.get("terms") or []
         if e.get("multi_term") and terms:
-            terms_disp = " · ".join(f"`{t}`" for t in terms[:6])
-            meta_bits.append(f"atoms {terms_disp}")
+            bits.append("atoms " + " · ".join(f"`{t}`" for t in terms[:6]))
         elif e.get("seed_term"):
-            meta_bits.append(f"term `{e['seed_term']}`")
-        meta = " · ".join(meta_bits)
-        note_line = ""
-        if e.get("notes"):
-            note_line = f"\n\n    {e['notes']}"
-        card_blocks.append(
-            f"-   :{icon}: **[{e['snapshot_id']}]({link})**\n\n"
-            f"    {meta}{note_line}\n\n"
-            f"    Families: {top_fam}\n\n"
-            f"    ---\n\n"
-            f"    [Open snapshot →]({link})\n"
+            bits.append(f"term `{e['seed_term']}`")
+        meta = " · ".join(bits) if bits else "—"
+        note = f"  \n  <span class=\"hlx-index-note\">{e['notes']}</span>" if e.get("notes") else ""
+        return (
+            f'<div class="hlx-index-row {"hlx-index-row--phase5" if is_phase5 else "hlx-index-row--analysis"}" markdown>\n\n'
+            f'<span class="{kind_cls}">{kind_label}</span>\n'
+            f"**[{e['snapshot_id']}]({link})**  \n"
+            f"{meta}  \n"
+            f"Families: {top_fam}{note}\n\n"
+            f"</div>\n"
         )
-    cards = "\n".join(card_blocks) if card_blocks else "- No runs yet.\n"
+
+    analysis_entries = [e for e in entries if (e.get("run_kind") or "analysis") != "phase5_scenario"]
+    phase5_entries = [e for e in entries if (e.get("run_kind") or "") == "phase5_scenario"]
+    analysis_block = "\n".join(_index_row(e) for e in analysis_entries) or "_No analysis snapshots yet._\n"
+    phase5_block = "\n".join(_index_row(e) for e in phase5_entries) or "_No Phase 5 snapshots yet._\n"
 
     md = f"""# Run history
 
@@ -484,24 +487,56 @@ def rebuild_archive_catalog(
 
 Publish-safe history of Hyperlex runs. **Not** live operator state — that lives in `~/.hyperlex/`.
 
-**How to read these cards**
+<div class="hlx-path-grid" markdown>
+
+<div class="hlx-path-card hlx-path-card--primary" markdown>
+
+**Researchers**
+
+How to interpret kinds, atoms, risk, and vector scores without overclaiming.
+
+[Reading evidence →](../demos/reading-evidence.md){{ .md-button .md-button--primary }}
+
+</div>
+
+<div class="hlx-path-card" markdown>
+
+**Operators**
+
+Append sanitized snapshots from local receipts / Phase 5.
+
+[Operator loop →](../operator-loop.md){{ .md-button }}
+
+</div>
+
+</div>
+
+**How to read this index**
 
 | Kind | Meaning |
 |------|---------|
-| `analysis` | Receipt-backed analyze/pipeline snapshots |
-| `phase5_scenario` | Research sim (SPECULATIVE). **atoms** = separate lexicon terms (not one blended seed) |
+| <span class="hlx-kind hlx-kind--analysis">analysis</span> | Receipt-backed analyze / pipeline snapshots |
+| <span class="hlx-kind hlx-kind--phase5">phase5 · SPECULATIVE</span> | Research sim. **atoms** = separate lexicon terms (not one blended seed) |
 | risk tier | Advisory only — not market advice; not Brier |
+| vector / similarity | Cosine neighbors if present — **not** Brier; see [reading guide](../demos/reading-evidence.md) |
 
 Machine index: [`catalog.json`](./catalog.json) ·
 [Latest analysis](./latest/index.md){f" (`{latest_snap}`)" if latest_snap else ""} ·
-[Atomic terms demo](../demos/atomic-terms.md) · [Operator loop](../operator-loop.md)
+[Atomic terms](../demos/atomic-terms.md) ·
+[Reading evidence](../demos/reading-evidence.md) ·
+[Operator loop](../operator-loop.md)
 
-## Snapshots
+## Analysis snapshots
 
-<div class="grid cards" markdown>
+Receipt-backed history. Prefer these when citing lineage / receipts.
 
-{cards}
-</div>
+{analysis_block}
+
+## Phase 5 research (SPECULATIVE)
+
+Scenario literature only — never Brier. Atoms stay separate.
+
+{phase5_block}
 
 ## Published vs not
 
@@ -510,6 +545,7 @@ Machine index: [`catalog.json`](./catalog.json) ·
 | Sanitized receipt summaries | Full raw signals / API keys |
 | Lineage, typology, virality, stage | Score-log settlements (unless you export) |
 | Phase 5 digests (SPECULATIVE) | Invented Brier (never) |
+| Vector method + samples | Live `~/.hyperlex/chroma` / Cloud |
 
 ## Append a run
 
@@ -524,7 +560,7 @@ python3 scripts/hyperlex.py archive-catalog
 Commit + push `docs/archive/` → Pages rebuild (`.github/workflows/docs.yml`).
 
 <p class="hlx-posture">
-Hermes skill · Brier requires settlement · no Abraxas hard import · primary store ~/.hyperlex
+Hermes skill · Brier requires settlement · vector ≠ probability · primary store ~/.hyperlex
 </p>
 """
     (root / "index.md").write_text(md, encoding="utf-8")

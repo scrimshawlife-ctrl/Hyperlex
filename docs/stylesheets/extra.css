@@ -500,3 +500,133 @@
   color: var(--hlx-ink-muted);
   font-family: var(--hlx-font-mono);
 }
+
+/* ── Archive index (catalogue, not equal card grid) ───── */
+.hlx-kind {
+  display: inline-block;
+  font-family: var(--hlx-font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--hlx-radius);
+  border: 1px solid var(--hlx-rule);
+  margin: 0 0 0.4rem;
+  color: var(--hlx-ink-muted);
+  white-space: nowrap;
+}
+
+.hlx-kind--analysis {
+  color: var(--hlx-accent);
+  border-color: color-mix(in srgb, var(--hlx-accent) 40%, var(--hlx-rule));
+  background: var(--hlx-accent-faint);
+}
+
+.hlx-kind--phase5 {
+  color: var(--hlx-warn);
+  border-color: color-mix(in srgb, var(--hlx-warn) 40%, var(--hlx-rule));
+  background: var(--hlx-warn-soft);
+}
+
+.hlx-index-row {
+  border: 1px solid var(--hlx-rule);
+  border-radius: var(--hlx-radius);
+  background: var(--hlx-paper-2);
+  padding: 0.85rem 1rem;
+  margin: 0 0 0.65rem;
+  min-width: 0;
+}
+
+.hlx-index-row--analysis {
+  border-left: 2px solid var(--hlx-accent-dim);
+}
+
+.hlx-index-row--phase5 {
+  border-left: 2px solid var(--hlx-warn);
+}
+
+.hlx-index-row p {
+  margin: 0.15rem 0;
+  font-size: 0.88rem;
+  color: var(--hlx-ink-muted);
+  line-height: 1.45;
+}
+
+.hlx-index-row a {
+  font-weight: 600;
+  color: var(--hlx-ink);
+}
+
+.hlx-index-row a:hover {
+  color: var(--hlx-accent);
+}
+
+.hlx-index-note {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--hlx-ink-muted);
+  font-family: var(--hlx-font-mono);
+}
+
+/* Specimen: publish-safe vector sample block */
+.hlx-specimen {
+  border: 1px solid var(--hlx-rule);
+  border-radius: var(--hlx-radius);
+  background: var(--hlx-paper-2);
+  margin: 0 0 var(--hlx-space-lg);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.hlx-specimen-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--hlx-rule);
+  background: var(--hlx-paper-3);
+}
+
+.hlx-specimen-head strong {
+  font-family: var(--hlx-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hlx-accent);
+  font-weight: 600;
+}
+
+.hlx-specimen-head span {
+  font-family: var(--hlx-font-mono);
+  font-size: 0.72rem;
+  color: var(--hlx-ink-muted);
+}
+
+.hlx-specimen-body {
+  padding: 0.75rem 1rem 1rem;
+}
+
+.hlx-specimen-body .md-typeset table,
+.hlx-specimen .md-typeset table {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+}
+
+.hlx-specimen-meta {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--hlx-ink-muted);
+  font-family: var(--hlx-font-mono);
+  line-height: 1.45;
+}
+
+/* Prefer readable code inside specimen */
+.hlx-specimen pre {
+  margin: 0.5rem 0 0;
+  max-height: 16rem;
+  overflow: auto;
+}

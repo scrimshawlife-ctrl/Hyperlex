@@ -83,7 +83,19 @@ export a sanitized sample, or archive a receipt that already includes `vector_ne
 
 ### Worked sample (local Chroma · publish-safe)
 
-Query **`rizz sigma aura`** · hash embeddings · `brier: null`
+<div class="hlx-specimen" markdown>
+
+<div class="hlx-specimen-head" markdown>
+<strong>Specimen · vector search</strong>
+<span>schema hyperlex.vector_search.v1 · brier null · INFERRED</span>
+</div>
+
+<div class="hlx-specimen-body" markdown>
+
+<p class="hlx-specimen-meta">
+query <code>rizz sigma aura</code> · backend chroma (local) · model <code>hyperlex.hash_ngram_v1.d256</code><br>
+note: cosine over unit vectors — not a calibrated probability / Brier
+</p>
 
 | Rank | Term | Family | Score | Source |
 |-----:|------|--------|------:|--------|
@@ -93,7 +105,22 @@ Query **`rizz sigma aura`** · hash embeddings · `brier: null`
 | 4 | aura | brainrot-aura | 0.50 | YTD backfill |
 | 5 | aura | brainrot-aura | 0.50 | ingest auto-index |
 
-Machine sample: [`samples/vector-search-rizz-sigma-aura.json`](./samples/vector-search-rizz-sigma-aura.json)
+Machine JSON: [`samples/vector-search-rizz-sigma-aura.json`](./samples/vector-search-rizz-sigma-aura.json)
+
+```json
+{
+  "schema": "hyperlex.vector_search.v1",
+  "query": "rizz sigma aura",
+  "backend": "chroma",
+  "model": "hyperlex.hash_ngram_v1.d256",
+  "embed_provenance": "INFERRED",
+  "n_hits": 5,
+  "brier": null
+}
+```
+
+</div>
+</div>
 
 <div class="hlx-claim-grid" markdown>
 
