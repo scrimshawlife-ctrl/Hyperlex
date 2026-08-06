@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/rune_envelope.v1.schema.json",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex/schemas/rune_envelope.v1.schema.json",
   "title": "Hyperlex Rune Envelope v1",
   "description": "Abraxas/Hermes-compatible signal relay envelope. No hard Abraxas dependency.",
   "type": "object",
@@ -14,7 +14,8 @@
         "RUNE.HLX.LIVE_EMERGENCE_SCAN",
         "RUNE.HLX.COMMUNICATION_RELAY",
         "RUNE.HLX.CALIBRATION_FORECAST",
-        "RUNE.HLX.CALIBRATION_SERIES"
+        "RUNE.HLX.CALIBRATION_SERIES",
+        "RUNE.HLX.SHADOW_CANDIDATE"
       ]
     },
     "envelope_id": { "type": "string" },
