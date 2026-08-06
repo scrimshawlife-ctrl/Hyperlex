@@ -1,17 +1,17 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/result.v1.schema.json",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex/schemas/result.v1.schema.json",
   "title": "Hyperlex Memetic Result v1",
   "type": "object",
-    "required": ["observed", "inferred", "speculative", "provenance", "analysis"],
-    "properties": {
+  "required": ["observed", "inferred", "speculative", "provenance", "analysis"],
+  "properties": {
     "observed": { "type": "string" },
     "inferred": { "type": "string" },
     "speculative": { "type": "string" },
-        "provenance": {
-          "type": "object",
+    "provenance": {
+      "type": "object",
       "required": ["canonical_hash", "timestamp", "version", "brier", "hyperstition_risk", "ingest_source"],
-          "properties": {
+      "properties": {
         "canonical_hash": { "type": "string" },
         "timestamp": { "type": "string" },
         "version": { "type": "string" },
@@ -23,55 +23,107 @@
         "hyperstition_risk": { "type": "string" },
         "memclaw": { "type": "string" },
         "arxiv_concepts_applied": { "type": "array" },
-            "ingest_source": { "type": "string" }
-          },
-          "additionalProperties": true
-        },
-        "evidence": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "evidence_id": { "type": "string" },
-              "requested_source": { "type": "string" },
-              "effective_source": { "type": "string" },
-              "acquisition_status": { "type": "string" },
-              "evidence_class": { "type": "string" },
-              "failure_reason": { "type": ["string", "null"] },
-              "eligible_for_observed": { "type": "boolean" },
-              "fetched_at": { "type": "string" },
-              "cached": { "type": "boolean" },
-              "content_hash": { "type": "string" },
-              "status_code": { "type": ["integer", "null"] },
-              "source_locator": { "type": ["string", "null"] },
-              "snippet": { "type": "string" }
-            }
+        "ingest_source": { "type": "string" },
+        "seed": {
+          "type": "object",
+          "description": "Optional SEED-style integrity header (advisory / shadow lane).",
+          "properties": {
+            "status": { "type": "string", "enum": ["PASS", "PARTIAL", "FAIL"] },
+            "determinism": { "type": "string" },
+            "provenance": { "type": "string" },
+            "entropy_class": { "type": "string", "enum": ["low", "medium", "high"] },
+            "capability_lane": { "type": "string", "enum": ["advisory", "shadow", "research", "canary"] }
           }
-        },
-        "claims": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "claim_id": { "type": "string" },
-              "statement": { "type": "string" },
-              "epistemic_status": { "type": "string" },
-              "confidence": { "type": "number" },
-              "evidence_refs": { "type": "array", "items": { "type": "string" } },
-              "method": { "type": "string" },
-              "counterevidence_refs": { "type": "array", "items": { "type": "string" } },
-              "valid_as_of": { "type": "string" }
-            }
-          }
-        },
-        "analysis": {
+        }
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "evidence_id": { "type": "string" },
+          "requested_source": { "type": "string" },
+          "effective_source": { "type": "string" },
+          "acquisition_status": { "type": "string" },
+          "evidence_class": { "type": "string" },
+          "failure_reason": { "type": ["string", "null"] },
+          "eligible_for_observed": { "type": "boolean" },
+          "fetched_at": { "type": "string" },
+          "cached": { "type": "boolean" },
+          "content_hash": { "type": "string" },
+          "status_code": { "type": ["integer", "null"] },
+          "source_locator": { "type": ["string", "null"] },
+          "snippet": { "type": "string" }
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": { "type": "string" },
+          "statement": { "type": "string" },
+          "epistemic_status": { "type": "string" },
+          "confidence": { "type": "number" },
+          "evidence_refs": { "type": "array", "items": { "type": "string" } },
+          "method": { "type": "string" },
+          "counterevidence_refs": { "type": "array", "items": { "type": "string" } },
+          "valid_as_of": { "type": "string" }
+        }
+      }
+    },
+    "analysis": {
       "type": "object",
       "properties": {
         "neologisms": { "type": "array" },
         "semantic_variation": { "type": "object" },
         "virality": { "type": "object" },
         "memetics": { "type": "object" },
-        "hyperstition": { "type": "object" }
+        "hyperstition": { "type": "object" },
+        "mutation_prediction": {
+          "type": "object",
+          "description": "SPECULATIVE next surface forms (see mutation design 2026-08-06). Always brier null."
+        },
+        "compression_metrics": {
+          "type": "object",
+          "description": "Companion-style compression scores. Values Low/Medium/High or 0-1.",
+          "properties": {
+            "semantic_density": { "type": "string" },
+            "emotional_density": { "type": "string" },
+            "virality_potential": { "type": "string" },
+            "identity_signaling_strength": { "type": "string" },
+            "compression_efficiency": { "type": "string" },
+            "drift_probability": { "type": "string" }
+          }
+        },
+        "symbolic_role": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "e.g. Tribal Marker, Emotional Compression, Irony Shield, Memetic Weapon, Belief Reinforcement, Ritual Phrase, Dissociation Layer, Attention Hook, Status Signal"
+        },
+        "propagation_vector": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Platforms / demographics: X/Twitter, TikTok, Reddit, Discord, AI/Tech, Niche Internet, Mainstream Adoption, Regional, etc."
+        },
+        "slang_family_tree": {
+          "type": "object",
+          "description": "Compact lineage adjacency or tree for primary atom + co-terms. Mermaid-ready preferred."
+        },
+        "signal_report": {
+          "type": "object",
+          "description": "Full SIGNAL REPORT parity block (optional summary of the above for human/operator consumption).",
+          "properties": {
+            "observed": { "type": "string" },
+            "inferred": { "type": "string" },
+            "speculative": { "type": "string" },
+            "generated_mutations": { "type": "array" },
+            "actionable_recommendations": { "type": "array", "items": { "type": "string" } }
+          }
+        }
       }
     },
     "notes": { "type": "string" },
