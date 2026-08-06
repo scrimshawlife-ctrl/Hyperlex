@@ -41,6 +41,7 @@ jobs:
           cp ARCHITECTURE.md docs/architecture.md
           cp DESIGN.md docs/design.md
           cp SPEC.md docs/spec.md
+          cp STATUS.md docs/status.md
           python3 scripts/sync_mkdocs_pages.py
       - name: Build site (strict)
         run: mkdocs build --strict
