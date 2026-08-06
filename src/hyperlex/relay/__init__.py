@@ -8,6 +8,7 @@ Primary runes:
   RUNE.HLX.COMMUNICATION_RELAY  — virality + hyperstition → external signal
   RUNE.HLX.CALIBRATION_FORECAST — forecast extraction handoff
   RUNE.HLX.CALIBRATION_SERIES   — settled Brier series handoff
+  RUNE.HLX.SHADOW_CANDIDATE     — advisory SHADOW attractor (high hyperstition)
 """
 
 from __future__ import annotations
@@ -26,6 +27,7 @@ RUNE_LIVE_EMERGENCE = "RUNE.HLX.LIVE_EMERGENCE_SCAN"
 RUNE_COMMUNICATION_RELAY = "RUNE.HLX.COMMUNICATION_RELAY"
 RUNE_CALIBRATION_FORECAST = "RUNE.HLX.CALIBRATION_FORECAST"
 RUNE_CALIBRATION_SERIES = "RUNE.HLX.CALIBRATION_SERIES"
+RUNE_SHADOW_CANDIDATE = "RUNE.HLX.SHADOW_CANDIDATE"
 
 CATALOG: Dict[str, Dict[str, str]] = {
     RUNE_LIVE_EMERGENCE: {
@@ -43,6 +45,10 @@ CATALOG: Dict[str, Dict[str, str]] = {
     RUNE_CALIBRATION_SERIES: {
         "role": "calibration",
         "description": "Settled Brier series (SCORED or NOT_COMPUTABLE)",
+    },
+    RUNE_SHADOW_CANDIDATE: {
+        "role": "shadow",
+        "description": "Advisory SHADOW attractor candidate (high hyperstition / elevated virality)",
     },
 }
 
@@ -90,8 +96,15 @@ def relay_from_result(
     *,
     include_signal: bool = True,
     include_scan: bool = True,
+    include_shadow: bool = True,
+    push_inbox: bool = False,
 ) -> List[Dict[str, Any]]:
-    """Emit rune envelopes from an analysis result."""
+    """Emit rune envelopes from an analysis result.
+
+    When include_shadow is True and hyperstition stage is ACTUALIZING (or
+    elevated), emit a RUNE.HLX.SHADOW_CANDIDATE envelope (advisory only).
+    When push_inbox is True, also append to the local signals inbox.
+    """
     envelopes: List[Dict[str, Any]] = []
     prov = result.get("provenance") or {}
     analysis = result.get("analysis") or {}
@@ -152,6 +165,35 @@ def relay_from_result(
             )
         )
 
+    if include_shadow:
+        try:
+            from ..signals import build_shadow_candidate, maybe_push_from_result
+
+            hyper = analysis.get("hyperstition") or {}
+            stage = str(hyper.get("loop_stage") or prov.get("hyperstition_risk") or "").upper()
+            if stage in {"ACTUALIZING", "EMERGENT"}:
+                candidate = build_shadow_candidate(
+                    result,
+                    priority="high" if stage == "ACTUALIZING" else "medium",
+                )
+                envelopes.append(
+                    build_envelope(
+                        RUNE_SHADOW_CANDIDATE,
+                        candidate,
+                        authority="advisory",
+                        provenance=base_prov,
+                        claims=[
+                            {"statement": "shadow_candidate", "label": "SPECULATIVE"},
+                            {"statement": "hyperstition_stage", "label": "INFERRED"},
+                            {"statement": "brier", "label": "NOT_COMPUTABLE"},
+                        ],
+                    )
+                )
+                if push_inbox:
+                    maybe_push_from_result(result, force=(stage == "ACTUALIZING"))
+        except Exception:
+            pass
+
     return envelopes
 
 
@@ -203,6 +245,7 @@ __all__ = [
     "RUNE_COMMUNICATION_RELAY",
     "RUNE_CALIBRATION_FORECAST",
     "RUNE_CALIBRATION_SERIES",
+    "RUNE_SHADOW_CANDIDATE",
     "CATALOG",
     "build_envelope",
     "relay_from_result",
