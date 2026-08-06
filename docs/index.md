@@ -20,15 +20,34 @@ hide:
 Memetic emergence engine · Hermes skill · v0.4.0
 </p>
 <p class="hlx-splash-line">
-pipeline = auto results · atomic terms · settled Brier only · Phase 5 research
+pipeline = auto · atoms not bags · settled Brier only · vector ≠ probability
 </p>
 
-<div class="hlx-splash-cta" markdown>
+<div class="hlx-path-grid" markdown>
 
-[Enter telemetry →](telemetry.md){ .md-button .md-button--primary }
-[How to run](operator-loop.md){ .md-button }
-[Reading evidence](demos/reading-evidence.md){ .md-button }
+<div class="hlx-path-card hlx-path-card--primary" markdown>
+
+**Researchers**
+
+Interpret lineage, vector neighbors, Phase 5, and Brier without overclaiming.
+
+[Reading evidence →](demos/reading-evidence.md){ .md-button .md-button--primary }
+
 [Run history](archive/index.md){ .md-button }
+
+</div>
+
+<div class="hlx-path-card" markdown>
+
+**Operators**
+
+Install, run the auto pipeline, settle forecasts, seed / promote vectors.
+
+[Telemetry desk →](telemetry.md){ .md-button .md-button--primary }
+
+[How to run](operator-loop.md){ .md-button }
+
+</div>
 
 </div>
 

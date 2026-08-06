@@ -1,7 +1,8 @@
 /* Hallmark · macrostructure: Workbench · tone: technical · anchor hue: phosphor-teal
  * theme: custom (vibe: "signal desk, ink, terminal restraint")
  * paper: dark slate · display: IBM Plex Sans · mono: IBM Plex Mono
- * redesign: home + archive catalog · MkDocs Material shell preserved
+ * redesign: researcher path + evidence readability · MkDocs Material shell preserved
+ * pre-emit critique: P4 H4 E4 S4 R4 V3
  */
 
 :root {
@@ -11,9 +12,17 @@
   --hlx-ink: #e8edf4;
   --hlx-ink-muted: #9aa7b8;
   --hlx-rule: #2e3746;
-  --hlx-accent: #2dd4bf; /* phosphor teal */
+  --hlx-accent: #2dd4bf;
   --hlx-accent-dim: #14b8a6;
+  --hlx-accent-soft: color-mix(in srgb, var(--hlx-accent) 15%, transparent);
+  --hlx-accent-faint: color-mix(in srgb, var(--hlx-accent) 8%, transparent);
   --hlx-warn: #f0b429;
+  --hlx-warn-soft: color-mix(in srgb, var(--hlx-warn) 10%, transparent);
+  --hlx-good: #4ade80;
+  --hlx-good-soft: color-mix(in srgb, var(--hlx-good) 10%, transparent);
+  --hlx-bad: #f87171;
+  --hlx-bad-soft: color-mix(in srgb, var(--hlx-bad) 10%, transparent);
+  --hlx-shadow: color-mix(in srgb, #000 40%, transparent);
   --hlx-font-display: "IBM Plex Sans", system-ui, sans-serif;
   --hlx-font-body: "IBM Plex Sans", system-ui, sans-serif;
   --hlx-font-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -22,15 +31,16 @@
   --hlx-space-md: 1rem;
   --hlx-space-lg: 1.5rem;
   --hlx-space-xl: 2.5rem;
+  --hlx-radius: 2px;
 
   /* Override Material primaries (kill deep-purple / pink demo) */
   --md-primary-fg-color: #0f766e;
   --md-primary-fg-color--light: #14b8a6;
   --md-primary-fg-color--dark: #115e59;
   --md-primary-bg-color: var(--hlx-ink);
-  --md-primary-bg-color--light: rgba(232, 237, 244, 0.7);
+  --md-primary-bg-color--light: color-mix(in srgb, var(--hlx-ink) 70%, transparent);
   --md-accent-fg-color: var(--hlx-accent);
-  --md-accent-fg-color--transparent: rgba(45, 212, 191, 0.12);
+  --md-accent-fg-color--transparent: var(--hlx-accent-soft);
   --md-accent-bg-color: #0b1220;
   --md-typeset-a-color: var(--hlx-accent);
   --md-text-font-family: var(--hlx-font-body);
@@ -98,7 +108,7 @@
   background-color: var(--hlx-paper);
 }
 
-/* Workbench home: status strip + cards */
+/* Workbench: status strip (hairline all around — no thick side-stripe) */
 .hlx-status {
   display: flex;
   flex-wrap: wrap;
@@ -107,9 +117,8 @@
   padding: 0.75rem 1rem;
   margin: 0 0 1.5rem;
   border: 1px solid var(--hlx-rule);
-  border-left: 3px solid var(--hlx-accent);
   background: var(--hlx-paper-2);
-  border-radius: 2px;
+  border-radius: var(--hlx-radius);
   font-size: 0.85rem;
 }
 
@@ -131,7 +140,124 @@
   background: var(--hlx-accent);
   display: inline-block;
   margin-right: 0.35rem;
-  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.15);
+  box-shadow: 0 0 0 3px var(--hlx-accent-soft);
+}
+
+/* Dual path: researcher vs operator */
+.hlx-path-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--hlx-space-md);
+  margin: 0 0 var(--hlx-space-xl);
+  max-width: 40rem;
+}
+
+.hlx-path-card {
+  border: 1px solid var(--hlx-rule);
+  border-radius: var(--hlx-radius);
+  background: var(--hlx-paper-2);
+  padding: var(--hlx-space-md) var(--hlx-space-lg);
+  min-width: 0;
+}
+
+.hlx-path-card--primary {
+  border-color: var(--hlx-accent-dim);
+  background: color-mix(in srgb, var(--hlx-paper-2) 88%, var(--hlx-accent) 12%);
+}
+
+.hlx-path-card > p:first-child,
+.hlx-path-card > p > strong:only-child,
+.hlx-path-card p strong {
+  display: block;
+  font-family: var(--hlx-font-display);
+  font-weight: 600;
+  font-style: normal;
+  font-size: 0.95rem;
+  color: var(--hlx-ink);
+  margin: 0 0 0.35rem;
+}
+
+.hlx-path-card p {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--hlx-ink-muted);
+  line-height: 1.45;
+}
+
+.hlx-path-card .md-button {
+  margin: 0.25rem 0.35rem 0 0;
+}
+
+/* Sticky key rules for long research pages */
+.hlx-keyrules {
+  border: 1px solid var(--hlx-rule);
+  border-radius: var(--hlx-radius);
+  background: var(--hlx-paper-2);
+  padding: var(--hlx-space-md) var(--hlx-space-lg);
+  margin: 0 0 var(--hlx-space-lg);
+}
+
+.hlx-keyrules > p:first-child,
+.hlx-keyrules > p > strong {
+  font-family: var(--hlx-font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--hlx-accent);
+}
+
+.hlx-keyrules ol {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.hlx-keyrules li {
+  margin: 0.35rem 0;
+  color: var(--hlx-ink);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+@media screen and (min-width: 60em) {
+  .hlx-keyrules {
+    position: sticky;
+    top: 3.5rem;
+    z-index: 2;
+  }
+}
+
+/* Claims: good vs bad language */
+.hlx-claim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--hlx-space-md);
+  margin: var(--hlx-space-md) 0 var(--hlx-space-lg);
+}
+
+.hlx-claim {
+  border: 1px solid var(--hlx-rule);
+  border-radius: var(--hlx-radius);
+  padding: var(--hlx-space-md);
+  min-width: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.hlx-claim--good {
+  border-color: color-mix(in srgb, var(--hlx-good) 45%, var(--hlx-rule));
+  background: var(--hlx-good-soft);
+}
+
+.hlx-claim--bad {
+  border-color: color-mix(in srgb, var(--hlx-bad) 45%, var(--hlx-rule));
+  background: var(--hlx-bad-soft);
+}
+
+.hlx-claim p:first-child strong {
+  font-family: var(--hlx-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 /* Material cards: sharper edges, accent hover */
@@ -148,7 +274,12 @@
 .md-typeset .grid.cards > ol > li:hover,
 .md-typeset .grid > .card:hover {
   border-color: var(--hlx-accent-dim);
-  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.2);
+  box-shadow: 0 0 0 1px var(--hlx-accent-soft);
+}
+
+/* First desk card (reading evidence) slightly elevated */
+.md-typeset .grid.cards > ul > li:first-child {
+  border-color: var(--hlx-accent-dim);
 }
 
 .md-typeset .grid.cards > ul > li > hr,
@@ -164,13 +295,14 @@
 
 .md-typeset .admonition.warning > .admonition-title,
 .md-typeset details.warning > summary {
-  background-color: rgba(240, 180, 41, 0.08);
+  background-color: var(--hlx-warn-soft);
 }
 
-/* Tables denser, desk-like */
+/* Tables: readable for research (was 0.72rem — too dense) */
 .md-typeset table:not([class]) {
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   border-color: var(--hlx-rule);
+  font-variant-numeric: tabular-nums;
 }
 
 .md-typeset table:not([class]) th {
@@ -220,8 +352,8 @@
   max-width: 22rem;
   height: auto;
   border: 1px solid var(--hlx-rule);
-  border-radius: 2px;
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35);
+  border-radius: var(--hlx-radius);
+  box-shadow: 0 0.5rem 1.5rem var(--hlx-shadow);
 }
 
 .hlx-hero figcaption {
@@ -247,11 +379,17 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 2rem 3rem;
-  min-height: calc(100vh - 8rem);
+  /* content-height hero — not full-viewport centered AI landing */
+  min-height: 0;
   padding: 1.5rem 0 2.5rem;
   box-sizing: border-box;
+}
+
+.hlx-splash .hlx-path-grid {
+  max-width: none;
+  margin-bottom: 1.25rem;
 }
 
 .hlx-splash-hero {
@@ -265,10 +403,18 @@
   width: 100%;
   height: auto;
   border: 1px solid var(--hlx-rule);
-  border-radius: 2px;
+  border-radius: var(--hlx-radius);
   box-shadow:
-    0 0 0 1px rgba(45, 212, 191, 0.08),
-    0 1rem 2.5rem rgba(0, 0, 0, 0.45);
+    0 0 0 1px var(--hlx-accent-faint),
+    0 1rem 2.5rem var(--hlx-shadow);
+}
+
+.hlx-splash-cta {
+  /* legacy class kept for any remaining pages */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
 }
 
 .hlx-splash-copy {
@@ -308,13 +454,6 @@
   color: var(--hlx-ink-muted);
   font-family: var(--hlx-font-mono);
   line-height: 1.5;
-}
-
-.hlx-splash-cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 1.5rem;
 }
 
 .hlx-splash-cta .md-button {
