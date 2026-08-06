@@ -1,7 +1,7 @@
 # Design: SIGNAL REPORT parity (Companion process adaptation)
 
 **Date:** 2026-08-06  
-**Status:** Schema landed · analysis population pending  
+**Status:** Schema + builder landed · call-site wiring next  
 **Version target:** 0.4.x (additive)  
 
 ## Source
@@ -10,37 +10,68 @@ Abraxas Companion deep Hyperstition / Memetic Emergence Scan (LIVE_EMERGENCE_SCA
 
 ## What was adapted into Hyperlex
 
-1. **Schema (`schemas/result.v1.schema.json`)** — optional fields:
-   - `provenance.seed` — SEED-style integrity header (status, determinism, entropy_class, capability_lane)
-   - `analysis.compression_metrics` — semantic / emotional / virality / identity / efficiency / drift
-   - `analysis.symbolic_role` — multi-select roles
-   - `analysis.propagation_vector` — platform / demographic tags
-   - `analysis.slang_family_tree` — compact lineage tree
-   - `analysis.signal_report` — human-facing summary (observed / inferred / speculative + generated_mutations + actionable_recommendations)
-   - `analysis.mutation_prediction` already present (aligned)
+1. **Schema (`schemas/result.v1.schema.json` + package-local)** — optional fields:
+   - `provenance.seed` — SEED-style integrity header
+   - `analysis.compression_metrics`
+   - `analysis.symbolic_role`
+   - `analysis.propagation_vector`
+   - `analysis.slang_family_tree`
+   - `analysis.signal_report`
+   - `analysis.mutation_prediction` (already present)
 
-2. **Invariants preserved**
+2. **Builder module** — `src/hyperlex/analysis/signal_report.py`
+   - `build_compression_metrics`
+   - `build_symbolic_roles`
+   - `build_propagation_vector`
+   - `build_signal_report`
+   - `attach_signal_report_fields(analysis, ...)` — fail-open mutator
+   - `build_seed_header`
+
+3. **Invariants preserved**
    - `provenance.brier` remains `null` on open analysis
    - All new fields optional and fail-open
    - Offline-first; no Abraxas hard dependency
-   - Generated mutations / next forms stay SPECULATIVE
 
 ## Remaining implementation (ordered)
 
-1. Populate the new fields inside `detect_memetic_patterns` / analysis core from existing virality, memetics, hyperstition, lineage, and mutation blocks.
-2. Optional local signals inbox (`~/.hyperlex/signals/` or `inbox` CLI) for high-priority attractors.
-3. Enrich `scan` / live routes with focus + time_window + min_virality parameters matching Companion multi-tool pattern.
-4. Emit optional SHADOW `rune_candidate` envelopes on high hyperstition stage (via existing relay / rune_envelope).
-5. Forage / daily aggregate receipt that can correct prior “quiet” assessments.
+1. **Wire into `detect_memetic_patterns`** (one import + two calls):
+
+```python
+from .signal_report import attach_signal_report_fields, build_seed_header
+
+# after mutation_prediction / vector_neighbors block, before result = {...}:
+attach_signal_report_fields(
+    analysis,
+    observed=observed,
+    inferred=inferred,
+    speculative=speculative,
+    recommendation=(
+        "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; "
+        "extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN."
+    ),
+    ingest_source=ingest_source,
+)
+
+# inside result["provenance"]:
+"seed": build_seed_header(
+    ingest_source=ingest_source,
+    hyper_stage=hyper.get("loop_stage"),
+),
+```
+
+2. Optional local signals inbox (`~/.hyperlex/signals/` or `inbox` CLI).
+3. Enrich `scan` / live routes with focus + time_window + min_virality.
+4. Emit optional SHADOW `rune_candidate` envelopes on high hyperstition stage.
+5. Forage / daily aggregate receipt.
 
 ## Success criteria
 
-- Offline `pipeline "rizz"` (or demo) can carry non-empty `compression_metrics` + `symbolic_role` when data supports it.
-- Schema validates; existing golden receipts still pass (new fields absent = fine).
-- No numeric Brier introduced on open analysis.
+- Offline `pipeline "rizz"` carries non-empty `compression_metrics` + `symbolic_role`.
+- Schema validates; existing golden receipts still pass.
+- No numeric Brier on open analysis.
 
 ## References
 
-- Companion SIGNAL REPORT structure (OBSERVED / INFERRED / SPECULATIVE + COMPRESSION METRICS + SYMBOLIC ROLE + PROPAGATION VECTOR + GENERATED MUTATIONS + SLANG FAMILY TREE)
+- Companion SIGNAL REPORT structure
 - Mutation prediction design (same day)
 - Hyperlex hard rules: settled Brier only, Phase 5 SPECULATIVE, no Abraxas import
