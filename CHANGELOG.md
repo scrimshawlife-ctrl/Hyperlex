@@ -8,6 +8,8 @@
 - Tests: ephemeral + local persistent Chroma seed/search smoke
 - **Promote path:** `vector-export` / `vector-import` / `vector-sync` copy embeddings as-is (local chroma → Cloud without re-embed)
 - `force_cloud=True` ignores `HYPERLEX_CHROMA_PATH` so promote does not write back to local by mistake
+- CLI auto-loads `~/.hermes/.env` (and `~/.hyperlex/.env`); accepts official `CHROMA_API_KEY` / `CHROMA_TENANT` / `CHROMA_DATABASE` aliases
+- Cloud client only requires API key; tenant/database optional when Chroma can infer them
 
 ## 0.4.0 — Automatic backend pipeline (2026-08-05)
 

@@ -28,6 +28,56 @@ if _src in sys.path:
 sys.path.insert(0, _src)
 
 
+def _load_dotenv_file(path: Path, *, override: bool = False) -> int:
+    """Minimal .env loader (no dependency). Returns count of keys applied."""
+    if not path.is_file():
+        return 0
+    n = 0
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return 0
+    import os
+
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[7:].strip()
+        if "=" not in line:
+            continue
+        key, val = line.split("=", 1)
+        key = key.strip()
+        if not key:
+            continue
+        val = val.strip()
+        if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+            val = val[1:-1]
+        if not override and key in os.environ and os.environ.get(key, "") != "":
+            continue
+        os.environ[key] = val
+        n += 1
+    return n
+
+
+def _load_hermes_env() -> None:
+    """Pull secrets from Hermes / Hyperlex env files (existing process env wins)."""
+    import os
+
+    home = Path.home()
+    hermes = Path(os.environ.get("HERMES_HOME", str(home / ".hermes"))).expanduser()
+    for p in (
+        hermes / ".env",
+        home / ".hyperlex" / ".env",
+        ROOT / ".env",
+    ):
+        _load_dotenv_file(p, override=False)
+
+
+_load_hermes_env()
+
+
 def _read_version() -> str:
     version_file = ROOT / "VERSION"
     if version_file.exists():
@@ -1136,11 +1186,17 @@ def cmd_vector_stats(args: argparse.Namespace) -> int:
         return 2
 
     backend = _vector_backend(args) or __import__("os").environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite")
+    force_cloud = bool(getattr(args, "cloud", False))
+    if force_cloud:
+        backend = "chroma"
     try:
         if backend == "chroma":
             from hyperlex.vectordb.chroma import ChromaVectorStore
 
-            store = ChromaVectorStore(path=Path(args.db) if args.db else None)
+            store = ChromaVectorStore(
+                path=None if force_cloud else (Path(args.db) if args.db else None),
+                force_cloud=force_cloud,
+            )
             stats = store.stats()
             _emit({"ok": True, "command": "vector-stats", "backend": "chroma", **stats})
         else:
@@ -2328,6 +2384,7 @@ def _build_parser() -> argparse.ArgumentParser:
     vst = subparsers.add_parser("vector-stats", help="Vector DB stats (sqlite or chroma)")
     vst.add_argument("--db", default="")
     vst.add_argument("--backend", default="", help="sqlite (default) or chroma")
+    vst.add_argument("--cloud", action="store_true", default=False, help="Stats from Chroma Cloud")
     vst.set_defaults(func=cmd_vector_stats)
 
     vex = subparsers.add_parser(

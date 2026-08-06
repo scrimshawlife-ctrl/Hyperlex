@@ -34,20 +34,35 @@ except ImportError:  # pragma: no cover
     CloudClient = None
 
 
-DEFAULT_COLLECTION = os.environ.get("HYPERLEX_CHROMA_COLLECTION", "hyperlex")
+def _env(*names: str) -> Optional[str]:
+    """First non-empty env value among names (HYPERLEX_* preferred over CHROMA_*)."""
+    for name in names:
+        raw = os.environ.get(name)
+        if raw is not None and str(raw).strip() != "":
+            return str(raw).strip()
+    return None
+
+
+DEFAULT_COLLECTION = (
+    _env("HYPERLEX_CHROMA_COLLECTION", "CHROMA_COLLECTION") or "hyperlex"
+)
 
 
 def _cloud_credentials() -> tuple[Optional[str], Optional[str], Optional[str]]:
-    return (
-        os.environ.get("HYPERLEX_CHROMA_API_KEY"),
-        os.environ.get("HYPERLEX_CHROMA_TENANT"),
-        os.environ.get("HYPERLEX_CHROMA_DATABASE"),
-    )
+    """Resolve cloud creds from Hyperlex or official Chroma env names.
+
+    API key is required. Tenant/database are optional when Chroma Cloud can
+    infer them from the key (``chroma_overwrite_singleton_tenant_database_access_from_auth``).
+    """
+    api_key = _env("HYPERLEX_CHROMA_API_KEY", "CHROMA_API_KEY")
+    tenant = _env("HYPERLEX_CHROMA_TENANT", "CHROMA_TENANT")
+    database = _env("HYPERLEX_CHROMA_DATABASE", "CHROMA_DATABASE")
+    return api_key, tenant, database
 
 
 def resolve_chroma_path(path: Optional[Path | str] = None) -> Optional[Path]:
     """Return a local chroma persist path if configured, else None."""
-    raw = path if path is not None else os.environ.get("HYPERLEX_CHROMA_PATH")
+    raw = path if path is not None else _env("HYPERLEX_CHROMA_PATH", "CHROMA_PATH")
     if raw is None or str(raw).strip() == "":
         return None
     return Path(str(raw)).expanduser()
@@ -61,15 +76,15 @@ def get_chroma_client(
     """Create a Chroma client (local PersistentClient or CloudClient).
 
     Local path (preferred when set, unless force_cloud=True):
-      path= argument, or HYPERLEX_CHROMA_PATH
+      path= argument, or HYPERLEX_CHROMA_PATH / CHROMA_PATH
 
     Cloud credentials (when no local path, or force_cloud=True):
-      HYPERLEX_CHROMA_API_KEY
-      HYPERLEX_CHROMA_TENANT
-      HYPERLEX_CHROMA_DATABASE
+      HYPERLEX_CHROMA_API_KEY or CHROMA_API_KEY (required)
+      HYPERLEX_CHROMA_TENANT or CHROMA_TENANT (optional if Cloud can infer)
+      HYPERLEX_CHROMA_DATABASE or CHROMA_DATABASE (optional; default Demo)
 
     Optional:
-      HYPERLEX_CHROMA_COLLECTION (default: \"hyperlex\")
+      HYPERLEX_CHROMA_COLLECTION / CHROMA_COLLECTION (default: \"hyperlex\")
     """
     if chromadb is None:
         raise RuntimeError("chromadb is not installed. pip install 'hyperlex[runtime]' or chromadb")
@@ -84,14 +99,21 @@ def get_chroma_client(
         raise RuntimeError("chromadb is not installed. pip install chromadb")
 
     api_key, tenant, database = _cloud_credentials()
-    if not api_key or not tenant or not database:
+    if not api_key:
         raise RuntimeError(
             "Chroma not configured. Set a local path or cloud credentials:\n"
             "  Local:  HYPERLEX_CHROMA_PATH=~/.hyperlex/chroma\n"
-            "  Cloud:  HYPERLEX_CHROMA_API_KEY / HYPERLEX_CHROMA_TENANT / HYPERLEX_CHROMA_DATABASE"
+            "  Cloud:  CHROMA_API_KEY (or HYPERLEX_CHROMA_API_KEY)\n"
+            "          optional: CHROMA_TENANT / CHROMA_DATABASE\n"
+            "  Hermes: add keys to ~/.hermes/.env (auto-loaded by hyperlex CLI)"
         )
 
-    return CloudClient(api_key=api_key, tenant=tenant, database=database)
+    kwargs: Dict[str, Any] = {"api_key": api_key}
+    if tenant:
+        kwargs["tenant"] = tenant
+    if database:
+        kwargs["database"] = database
+    return CloudClient(**kwargs)
 
 
 def _sanitize_meta(meta: Dict[str, Any]) -> Dict[str, Any]:
