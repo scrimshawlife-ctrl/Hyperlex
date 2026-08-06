@@ -30,6 +30,7 @@ dependencies = []
 runtime = [
     "requests>=2.0",
     "crawl4ai",
+    "chromadb>=0.5.0",
 ]
 dev = [
     "pytest>=7.0",
@@ -46,10 +47,10 @@ schema = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs"
-Repository = "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs"
-Documentation = "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs#readme"
-Issues = "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/issues"
+Homepage = "https://github.com/scrimshawlife-ctrl/Hyperlex"
+Repository = "https://github.com/scrimshawlife-ctrl/Hyperlex"
+Documentation = "https://github.com/scrimshawlife-ctrl/Hyperlex#readme"
+Issues = "https://github.com/scrimshawlife-ctrl/Hyperlex/issues"
 
 [project.scripts]
 hyperlex = "hyperlex.cli:main"

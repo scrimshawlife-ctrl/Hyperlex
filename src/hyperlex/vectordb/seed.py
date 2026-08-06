@@ -11,6 +11,7 @@ from ..analysis import LINEAGE_REGISTRY
 from ..analysis.backfill import default_backfill_root, inventory_backfill
 from .embed import embed_batch
 from .store import VectorStore, default_vector_db_path
+from .chroma import get_vector_store
 
 
 def _id(kind: str, key: str) -> str:
@@ -19,12 +20,14 @@ def _id(kind: str, key: str) -> str:
 
 
 def seed_from_registry(
-    store: Optional[VectorStore] = None,
+    store: Optional[Any] = None,
     *,
     registry: Optional[Sequence[Dict[str, Any]]] = None,
+    backend: Optional[str] = None,
 ) -> Dict[str, Any]:
     own = store is None
-    store = store or VectorStore()
+    if store is None:
+        store = get_vector_store(backend=backend)
     reg = list(registry) if registry is not None else LINEAGE_REGISTRY
     texts: List[str] = []
     meta_rows: List[Dict[str, Any]] = []
@@ -73,14 +76,16 @@ def seed_from_registry(
 
 
 def seed_from_backfill(
-    store: Optional[VectorStore] = None,
+    store: Optional[Any] = None,
     *,
     year: int = 2026,
     through: Optional[str] = None,
     backfill_root: Optional[Path | str] = None,
+    backend: Optional[str] = None,
 ) -> Dict[str, Any]:
     own = store is None
-    store = store or VectorStore()
+    if store is None:
+        store = get_vector_store(backend=backend)
     root = Path(backfill_root) if backfill_root else default_backfill_root()
     inv = inventory_backfill(year, root=root, through=through)
     texts: List[str] = []
@@ -249,22 +254,27 @@ def seed_all(
     include_registry: bool = True,
     include_backfill: bool = True,
     include_receipts: bool = True,
+    backend: Optional[str] = None,
 ) -> Dict[str, Any]:
-    store = VectorStore(path)
+    backend = backend or __import__("os").environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite")
+    store = get_vector_store(backend=backend, path=path)
     parts = []
     if include_registry:
-        parts.append(seed_from_registry(store))
+        parts.append(seed_from_registry(store, backend=backend))
     if include_backfill:
-        parts.append(seed_from_backfill(store, year=year, through=through, backfill_root=backfill_root))
+        parts.append(seed_from_backfill(store, year=year, through=through, backfill_root=backfill_root, backend=backend))
     if include_receipts:
         parts.append(seed_from_receipts(store, receipt_dirs=receipt_dirs, include_home=include_home))
     stats = store.stats()
-    store.close()
+    if hasattr(store, "close"):
+        store.close()
+    note = "Chroma Cloud vector DB" if backend == "chroma" else "Local SQLite vector DB. Default embedder is deterministic hash (offline)."
     return {
         "schema": "hyperlex.vector_seed.v1",
         "ok": True,
-        "path": str(Path(path) if path else default_vector_db_path()),
+        "backend": backend,
+        "path": "chroma" if backend == "chroma" else str(Path(path) if path else default_vector_db_path()),
         "parts": parts,
         "stats": stats,
-        "note": "Local SQLite vector DB. Default embedder is deterministic hash (offline).",
+        "note": note,
     }

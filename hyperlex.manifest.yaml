@@ -6,8 +6,8 @@ description: >
   Standalone memetic emergence engine for slang detection, hyperstition
   tracking, virality analysis, lineage matching, and settled Brier calibration.
 license: MIT
-homepage: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
-repository: https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs
+homepage: https://github.com/scrimshawlife-ctrl/Hyperlex
+repository: https://github.com/scrimshawlife-ctrl/Hyperlex
 
 skill_entry: SKILL.md
 cli_entry: scripts/hyperlex.py
@@ -139,6 +139,7 @@ metadata:
     requests: false
     jsonschema: false
     crawl4ai: false
+    chromadb: false
 
 score_log:
   default_path: ~/.hyperlex/score_log.jsonl
