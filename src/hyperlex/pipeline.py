@@ -109,6 +109,23 @@ def run_one(
         except Exception as exc:
             unit["receipt_error"] = str(exc)
 
+    # Fail-open: keep local vector index warm after every ingest unit
+    # (sqlite or local chroma via HYPERLEX_VECTOR_BACKEND). Never blocks pipeline.
+    try:
+        from .vectordb.autoindex import index_from_analysis
+
+        vrep = index_from_analysis(result, receipt_path=receipt_path)
+        if vrep.get("n_upserted"):
+            unit["steps"].append("vector_index")
+            unit["vector_index"] = {
+                "ok": vrep.get("ok"),
+                "n_upserted": vrep.get("n_upserted"),
+                "backend": vrep.get("backend"),
+                "brier": None,
+            }
+    except Exception as exc:
+        unit["vector_index_error"] = str(exc)
+
     fcs: List[Dict[str, Any]] = []
     if forecasts:
         try:

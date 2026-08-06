@@ -85,22 +85,32 @@ cadence). Re-run `risk-schedule` before changing live jobs.
 
 See [cron-live-emergence.md](cron-live-emergence.md).
 
-## Vector backfill (optional · after burn-in)
+## Vector index (tied to ingest · optional bulk)
 
-Index registry + YTD packs + receipts into a local store, then promote:
+**Automatic (local):** after each `pipeline` / `run` / `ingest` unit, Hyperlex
+fail-open indexes terms + receipt into the local vector store when
+`HYPERLEX_VECTOR` is on (default **auto** if a store already exists). Set
+`HYPERLEX_VECTOR=1` and optionally `HYPERLEX_VECTOR_BACKEND=chroma` to always
+keep local Chroma warm on every ingest.
 
 ```bash
-# Local Chroma backfill
+export HYPERLEX_VECTOR=1
+export HYPERLEX_VECTOR_BACKEND=chroma
+export HYPERLEX_CHROMA_PATH=~/.hyperlex/chroma
+$HLX pipeline "rizz" --route offline   # also steps: vector_index
+```
+
+**Bulk backfill** (registry + YTD packs + all receipts) still uses seed:
+
+```bash
 $HLX vector-seed --backend chroma --db ~/.hyperlex/chroma \
   --through 2026-08 --include-home --include-golden
 $HLX vector-stats --backend chroma --db ~/.hyperlex/chroma
 
-# When search looks right → Cloud (keys in ~/.hermes/.env)
+# Cloud promote stays explicit (not on the hot ingest path)
 $HLX vector-sync --from-path ~/.hyperlex/chroma --to cloud
 $HLX vector-stats --cloud
 ```
-
-SQLite default (no chromadb install): `$HLX vector-seed --through 2026-08 --include-home --include-golden`.
 
 Full map: [modules/vectordb.md](modules/vectordb.md) · [commands.md](commands.md).
 

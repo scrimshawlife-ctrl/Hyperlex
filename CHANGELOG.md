@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Ingest ↔ vector:** fail-open auto-index on `pipeline` / `run` / receipt emit (`hyperlex.vectordb.autoindex`); respects `HYPERLEX_VECTOR` + `HYPERLEX_VECTOR_BACKEND` (local only; Cloud promote stays explicit)
 - Vector/Chroma: `get_vector_store(backend="chroma", path=...)` no longer TypeErrors (`seed_all` always passed `path`)
 - Chroma local PersistentClient via `--db` / `HYPERLEX_CHROMA_PATH` (cloud credentials still supported)
 - Installer removes leftover destination `.git` so Hermes skill installs are not nested half-repos

@@ -4,6 +4,13 @@ from .seed import seed_from_backfill, seed_from_registry, seed_from_receipts, se
 from .search import vector_search, search_similar_terms, search_similar_receipts
 from .chroma import ChromaVectorStore, get_chroma_client, get_vector_store
 from .transfer import export_vectors, import_vectors, sync_vectors, open_vector_store
+from .autoindex import (
+    index_from_analysis,
+    index_receipt_path,
+    index_texts,
+    vector_auto_enabled,
+    vector_backend,
+)
 
 __all__ = [
     "embed_text",
@@ -26,4 +33,9 @@ __all__ = [
     "import_vectors",
     "sync_vectors",
     "open_vector_store",
+    "index_from_analysis",
+    "index_receipt_path",
+    "index_texts",
+    "vector_auto_enabled",
+    "vector_backend",
 ]

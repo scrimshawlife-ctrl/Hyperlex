@@ -78,6 +78,37 @@ def test_run_pipeline_no_expand(tmp_path):
     assert p["atoms"] == ["sigma rizz locked in"]
 
 
+def test_pipeline_autoindexes_vector_on_ingest(tmp_path, monkeypatch):
+    """Ingest/pipeline should fail-open index into the configured local vector store."""
+    from hyperlex.pipeline import run_pipeline
+    from hyperlex.vectordb import VectorStore, vector_search
+
+    db = tmp_path / "auto.db"
+    monkeypatch.setenv("HYPERLEX_VECTOR", "1")
+    monkeypatch.setenv("HYPERLEX_VECTOR_BACKEND", "sqlite")
+    monkeypatch.setenv("HYPERLEX_VECTOR_DB", str(db))
+    monkeypatch.delenv("HYPERLEX_CHROMA_PATH", raising=False)
+
+    p = run_pipeline(
+        "rizz",
+        route="offline",
+        log_path=tmp_path / "log.jsonl",
+        receipt_dir=tmp_path / "r",
+        phase5=False,
+    )
+    assert p["ok"] is True
+    unit = p["results"][0]
+    assert "vector_index" in unit
+    assert unit["vector_index"]["n_upserted"] >= 1
+    assert unit["vector_index"]["brier"] is None
+    assert db.is_file()
+    with VectorStore(db) as store:
+        assert store.count() >= 1
+    hits = vector_search("rizz", path=db, kind="term", top_k=3, min_score=0.05)
+    assert hits["ok"] is True
+    assert hits["n_hits"] >= 1
+
+
 def test_cli_pipeline_and_ingest_auto(tmp_path):
     env = {**ENV, "HYPERLEX_SCORE_LOG": str(tmp_path / "score.jsonl")}
     r = subprocess.run(

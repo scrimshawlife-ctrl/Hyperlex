@@ -58,6 +58,8 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] **5.0** Local SQLite vector DB (`hyperlex.vectordb`, `vector-seed` / `vector-search`)
 - [x] **5.0** Analyze attaches `vector_neighbors` when DB present; receipts auto-index (fail-open)
 - [x] **5.x** Chroma local + Cloud backend; `vector-export` / `import` / `sync` promote path
+- [x] **5.x** Fail-open vector auto-index on ingest/pipeline/receipt (local sqlite/chroma)
+- [ ] **5.x+** Optional post-ingest Cloud promote (`HYPERLEX_VECTOR_PROMOTE`) — off by default
 
 - [x] **5.1** Domain-specific phylogeny packs (`data/phylogeny/`: finance, ai-native, political, regional)
 - [x] **5.1** Transmission parameter calibration against settled series (still no invented Brier)

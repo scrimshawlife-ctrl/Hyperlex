@@ -862,12 +862,9 @@ def detect_memetic_patterns(
 
         from ..vectordb import default_vector_db_path, vector_search
 
-        vflag = str(os.environ.get("HYPERLEX_VECTOR", "auto")).strip().lower()
-        vpath = default_vector_db_path()
-        want = vflag in {"1", "true", "yes", "on"} or (
-            vflag in {"", "auto"} and vpath.is_file() and vpath.stat().st_size > 0
-        )
-        if want and vflag not in {"0", "false", "off", "no"}:
+        from ..vectordb.autoindex import vector_auto_enabled
+
+        if vector_auto_enabled():
             qtext = " ".join(
                 x for x in [query, observed, " ".join(neo_terms[:8])] if x
             ).strip()
@@ -881,9 +878,10 @@ def detect_memetic_patterns(
                         "hits": vs.get("hits")[:5],
                         "n_hits": vs.get("n_hits"),
                         "db_path": vs.get("db_path"),
+                        "backend": vs.get("backend"),
                         "provenance": "INFERRED",
                         "brier": None,
-                        "note": "Cosine neighbors from local vector DB; not calibrated probabilities.",
+                        "note": "Cosine neighbors from vector DB (sqlite/chroma); not calibrated probabilities.",
                     }
     except Exception:
         pass

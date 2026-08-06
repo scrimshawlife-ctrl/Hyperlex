@@ -34,7 +34,44 @@ registry + backfill packs + receipts
                       Chroma Cloud (collection hyperlex)
 ```
 
-## Recommended: backfill local Chroma
+## Auto-index on ingest (pipeline)
+
+**Now (local):** every `pipeline` / `run` / `ingest` unit fail-open indexes
+primary/matched terms + the receipt into the configured **local** backend
+(`HYPERLEX_VECTOR_BACKEND=sqlite|chroma`). Receipt emit uses the same path.
+
+| Switch | Behavior |
+|--------|----------|
+| `HYPERLEX_VECTOR=auto` (default) | Index if sqlite DB or local chroma dir already exists |
+| `HYPERLEX_VECTOR=1` | Always index (creates store) |
+| `HYPERLEX_VECTOR=0` | Off |
+
+Result units may include `vector_index: { n_upserted, backend, brier: null }` and
+step `vector_index`. Failures never break ingest.
+
+**Future / opt-in:** automatic Cloud promote after ingest is **not** default
+(network + cost). Operators still run:
+
+```bash
+$HLX vector-sync --from-path ~/.hyperlex/chroma --to cloud
+```
+
+A later `HYPERLEX_VECTOR_PROMOTE=1` (or cron after daily seed) can wire promote;
+design keeps Cloud write off the hot ingest path unless explicitly enabled.
+
+```text
+ingest / pipeline / run
+        │
+        ├─ analyze (+ vector_neighbors if index warm)
+        ├─ receipt
+        └─ vector_index  ──►  sqlite or local chroma   (fail-open)
+                                    │
+                     manual / future promote
+                                    ▼
+                              Chroma Cloud
+```
+
+## Recommended: bulk backfill local Chroma
 
 Full offline seed (registry + YTD packs + home/golden receipts):
 
