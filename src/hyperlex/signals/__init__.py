@@ -1,7 +1,8 @@
-"""signals — local high-priority attractor inbox + SHADOW candidate emission.
+"""signals — local high-priority attractor store.
 
-Offline-first. Writes under ~/.hyperlex/signals/ (override via HYPERLEX_SIGNALS_DIR).
-Never invents Brier. Authority remains advisory / shadow.
+Offline-first operator queue under ~/.hyperlex/signals/
+(override via HYPERLEX_SIGNALS_DIR). Same family as receipts / score_log.
+Never invents Brier. Authority remains advisory.
 """
 from __future__ import annotations
 
@@ -13,7 +14,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 SIGNALS_SCHEMA = "hyperlex.signals_inbox.v1"
-SHADOW_RUNE_ID = "RUNE.HLX.SHADOW_CANDIDATE"
+ATTRACTOR_RUNE_ID = "RUNE.HLX.ATTRACTOR_CANDIDATE"
+# Back-compat alias for any early callers
+SHADOW_RUNE_ID = ATTRACTOR_RUNE_ID
 
 
 def default_signals_dir() -> Path:
@@ -53,7 +56,6 @@ def push_signal(
         body.setdefault("schema", SIGNALS_SCHEMA)
         body.setdefault("created_at", datetime.now(timezone.utc).isoformat())
         body.setdefault("authority", "advisory")
-        body.setdefault("capability_lane", "shadow")
         if "signal_id" not in body:
             body["signal_id"] = _signal_id(body)
         p = inbox_path(path=path)
@@ -112,48 +114,57 @@ def clear_inbox(*, path: Optional[Path] = None, dry_run: bool = False) -> Dict[s
     return {"ok": True, "cleared": n, "path": str(p)}
 
 
-def build_shadow_candidate(
+def build_attractor_candidate(
     result: Dict[str, Any],
     *,
     priority: str = "high",
 ) -> Dict[str, Any]:
     """
-    Build a SHADOW rune_candidate payload from an analysis result.
+    Build an attractor-candidate payload from an analysis result.
 
-    Intended for high hyperstition stage (ACTUALIZING) or elevated virality.
-    Always advisory; never mutates canon.
+    Intended for elevated hyperstition stage (ACTUALIZING) or high virality.
+    Always advisory; never mutates receipts, lineage, or registry.
     """
     analysis = result.get("analysis") or {}
     prov = result.get("provenance") or {}
     hyper = analysis.get("hyperstition") or {}
     lineage = analysis.get("lineage") or {}
     virality = analysis.get("virality") or {}
-    roles = analysis.get("symbolic_role") or []
+    typology = (analysis.get("memetics") or {}).get("typology_primary") or (
+        analysis.get("memetics") or {}
+    ).get("typology")
     metrics = analysis.get("compression_metrics") or {}
     stage = str(hyper.get("loop_stage") or prov.get("hyperstition_risk") or "").upper()
 
     payload = {
-        "schema": "hyperlex.shadow_candidate.v1",
-        "rune_id": SHADOW_RUNE_ID,
+        "schema": "hyperlex.attractor_candidate.v1",
+        "rune_id": ATTRACTOR_RUNE_ID,
         "candidate_label": lineage.get("family_id") or analysis.get("primary_term") or "unknown",
         "hyperstition_stage": stage or None,
         "lineage_family": lineage.get("family_id"),
         "lineage_confidence": lineage.get("confidence"),
+        "typology": typology,
         "virality_hybrid": virality.get("hybrid_score"),
-        "symbolic_roles": roles,
         "compression_metrics": metrics,
         "observed_preview": (result.get("observed") or "")[:180],
         "inferred_preview": (result.get("inferred") or "")[:180],
         "speculative_preview": (result.get("speculative") or "")[:180],
         "priority": priority,
         "authority": "advisory",
-        "capability_lane": "shadow",
         "brier": None,
-        "note": "SHADOW candidate only. Human sovereignty required before any canon binding.",
+        "note": (
+            "Attractor candidate only. Operator review required before any "
+            "forecast settlement or registry change."
+        ),
         "source_hash": prov.get("canonical_hash"),
         "ingest_source": prov.get("ingest_source"),
     }
     return payload
+
+
+# Back-compat alias
+def build_shadow_candidate(*args: Any, **kwargs: Any) -> Dict[str, Any]:
+    return build_attractor_candidate(*args, **kwargs)
 
 
 def maybe_push_from_result(
@@ -164,7 +175,7 @@ def maybe_push_from_result(
     force: bool = False,
 ) -> Dict[str, Any]:
     """
-    Auto-push a SHADOW candidate when hyperstition stage meets threshold.
+    Auto-push an attractor candidate when hyperstition stage meets threshold.
 
     Default: only ACTUALIZING. Use force=True to always push.
     """
@@ -179,9 +190,11 @@ def maybe_push_from_result(
             "pushed": False,
             "reason": f"stage={stage or 'none'} below min_stage={min_stage}",
         }
-    candidate = build_shadow_candidate(result, priority="high" if stage == "ACTUALIZING" else "medium")
+    candidate = build_attractor_candidate(
+        result, priority="high" if stage == "ACTUALIZING" else "medium"
+    )
     entry = {
-        "kind": "shadow_candidate",
+        "kind": "attractor_candidate",
         "priority": candidate.get("priority"),
         "stage": stage,
         "payload": candidate,
@@ -195,12 +208,14 @@ def maybe_push_from_result(
 
 __all__ = [
     "SIGNALS_SCHEMA",
-    "SHADOW_RUNE_ID",
+    "ATTRACTOR_RUNE_ID",
+    "SHADOW_RUNE_ID",  # alias
     "default_signals_dir",
     "inbox_path",
     "push_signal",
     "list_signals",
     "clear_inbox",
-    "build_shadow_candidate",
+    "build_attractor_candidate",
+    "build_shadow_candidate",  # alias
     "maybe_push_from_result",
 ]
