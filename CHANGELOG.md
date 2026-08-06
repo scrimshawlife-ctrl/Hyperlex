@@ -6,6 +6,8 @@
 - Chroma local PersistentClient via `--db` / `HYPERLEX_CHROMA_PATH` (cloud credentials still supported)
 - Installer removes leftover destination `.git` so Hermes skill installs are not nested half-repos
 - Tests: ephemeral + local persistent Chroma seed/search smoke
+- **Promote path:** `vector-export` / `vector-import` / `vector-sync` copy embeddings as-is (local chroma → Cloud without re-embed)
+- `force_cloud=True` ignores `HYPERLEX_CHROMA_PATH` so promote does not write back to local by mistake
 
 ## 0.4.0 — Automatic backend pipeline (2026-08-05)
 

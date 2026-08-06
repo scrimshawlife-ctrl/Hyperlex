@@ -230,3 +230,161 @@ def test_cli_chroma_local_seed_search(tmp_path: Path):
     assert hits["n_hits"] >= 1
     assert hits.get("backend") == "chroma"
     assert str(chroma_dir) in str(hits.get("db_path") or "")
+
+
+def test_export_import_sqlite_roundtrip(tmp_path: Path):
+    from hyperlex.vectordb import VectorStore, seed_from_registry
+    from hyperlex.vectordb.transfer import export_vectors, import_vectors
+
+    src = tmp_path / "src.db"
+    dst = tmp_path / "dst.db"
+    out = tmp_path / "vectors.jsonl"
+    with VectorStore(src) as store:
+        seed_from_registry(store)
+        n_src = store.count()
+    rep = export_vectors(out_path=out, backend="sqlite", path=src)
+    assert rep["ok"] is True
+    assert rep["n_exported"] == n_src
+    assert out.is_file()
+    imp = import_vectors(in_path=out, backend="sqlite", path=dst)
+    assert imp["n_imported"] == n_src
+    with VectorStore(dst) as store:
+        assert store.count() == n_src
+
+
+def test_sync_chroma_local_to_local(tmp_path: Path):
+    pytest = __import__("pytest")
+    pytest.importorskip("chromadb")
+
+    from hyperlex.vectordb.seed import seed_from_registry
+    from hyperlex.vectordb.transfer import export_vectors, import_vectors, sync_vectors
+    from hyperlex.vectordb.chroma import ChromaVectorStore
+    from hyperlex.vectordb.embed import embed_text
+
+    src_dir = tmp_path / "chroma-src"
+    dst_dir = tmp_path / "chroma-dst"
+    src = ChromaVectorStore(path=src_dir)
+    seed_from_registry(src)
+    n = src.count()
+    assert n >= 20
+
+    # one-shot sync local → local path
+    rep = sync_vectors(
+        from_backend="chroma",
+        from_path=src_dir,
+        to_backend="chroma",
+        to_path=dst_dir,
+        to_cloud=False,
+    )
+    assert rep["ok"] is True
+    assert rep["n_synced"] == n
+    dst = ChromaVectorStore(path=dst_dir)
+    assert dst.count() == n
+    vec, _ = embed_text("rizz sigma")
+    hits = dst.search(vec, kind="term", top_k=3, min_score=0.05)
+    assert hits
+
+    # staged export → import path
+    jsonl = tmp_path / "promote.jsonl"
+    export_vectors(out_path=jsonl, backend="chroma", path=src_dir)
+    dst2 = tmp_path / "chroma-from-jsonl"
+    imp = import_vectors(in_path=jsonl, backend="chroma", path=dst2)
+    assert imp["n_imported"] == n
+    assert ChromaVectorStore(path=dst2).count() == n
+
+
+def test_cli_vector_export_import_sync(tmp_path: Path):
+    pytest = __import__("pytest")
+    pytest.importorskip("chromadb")
+
+    chroma_src = tmp_path / "cli-src"
+    chroma_dst = tmp_path / "cli-dst"
+    jsonl = tmp_path / "out.jsonl"
+    env = {
+        k: v
+        for k, v in dict(__import__("os").environ).items()
+        if not k.startswith("HYPERLEX_CHROMA") and k != "HYPERLEX_VECTOR_BACKEND"
+    }
+    env.update({"PYTHONPATH": str(ROOT / "src"), "HYPERLEX_OFFLINE": "1"})
+
+    # seed source
+    r0 = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "hyperlex.py"),
+            "vector-seed",
+            "--backend",
+            "chroma",
+            "--db",
+            str(chroma_src),
+            "--no-receipts",
+            "--no-backfill",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert r0.returncode == 0, r0.stderr + r0.stdout
+
+    r1 = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "hyperlex.py"),
+            "vector-export",
+            "--backend",
+            "chroma",
+            "--db",
+            str(chroma_src),
+            "-o",
+            str(jsonl),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert r1.returncode == 0, r1.stderr + r1.stdout
+    data = json.loads(r1.stdout)
+    assert data["n_exported"] >= 20
+
+    r2 = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "hyperlex.py"),
+            "vector-sync",
+            "--from-path",
+            str(chroma_src),
+            "--to",
+            "path",
+            "--to-path",
+            str(chroma_dst),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert r2.returncode == 0, r2.stderr + r2.stdout
+    sync = json.loads(r2.stdout)
+    assert sync["n_synced"] >= 20
+
+    r3 = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "hyperlex.py"),
+            "vector-import",
+            "-i",
+            str(jsonl),
+            "--backend",
+            "chroma",
+            "--db",
+            str(tmp_path / "from-jsonl"),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert r3.returncode == 0, r3.stderr + r3.stdout
+    assert json.loads(r3.stdout)["n_imported"] >= 20

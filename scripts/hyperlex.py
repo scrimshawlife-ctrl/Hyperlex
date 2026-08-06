@@ -815,7 +815,9 @@ def cmd_commands(_args: argparse.Namespace) -> int:
         "research": [
             {"cmd": "simulate --term <t> --mode scenario", "why": "Phase 5 research (SPECULATIVE, brier null)"},
             {"cmd": "simulate --mode schedule --tier ELEVATED", "why": "Risk→scan plan"},
-            {"cmd": "vector-search \"…\"", "why": "Local vector DB"},
+            {"cmd": "vector-search \"…\"", "why": "Local/chroma vector DB"},
+            {"cmd": "vector-sync --from-path ~/.hyperlex/chroma --to cloud", "why": "Promote local chroma → Cloud (no re-embed)"},
+            {"cmd": "vector-export -o good.jsonl && vector-import -i good.jsonl --cloud", "why": "Staged promote/backup of vectors"},
             {"cmd": "archive-export --history", "why": "Sanitized Pages run history"},
         ],
         "maintenance": [
@@ -1150,6 +1152,107 @@ def cmd_vector_stats(args: argparse.Namespace) -> int:
     except Exception as exc:  # pragma: no cover
         _emit({"ok": False, "command": "vector-stats", "error": str(exc)})
         return 2
+    return 0
+
+
+def cmd_vector_export(args: argparse.Namespace) -> int:
+    """Export vectors to JSONL (embeddings preserved)."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.vectordb.transfer import default_export_path, export_vectors
+
+    backend = _vector_backend(args) or "sqlite"
+    out = Path(args.out) if args.out else default_export_path()
+    try:
+        report = export_vectors(
+            out_path=out,
+            backend=backend,
+            path=Path(args.db) if args.db else None,
+            kind=args.kind or None,
+            force_cloud=bool(getattr(args, "cloud", False)),
+        )
+    except Exception as exc:
+        _emit({"ok": False, "command": "vector-export", "error": str(exc)})
+        return 2
+    _emit({"ok": True, "command": "vector-export", **report})
+    return 0
+
+
+def cmd_vector_import(args: argparse.Namespace) -> int:
+    """Import JSONL vectors into sqlite or chroma (local or --cloud)."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.vectordb.transfer import import_vectors
+
+    backend = _vector_backend(args) or "sqlite"
+    if bool(getattr(args, "cloud", False)):
+        backend = "chroma"
+    try:
+        report = import_vectors(
+            in_path=Path(args.input),
+            backend=backend,
+            path=Path(args.db) if args.db else None,
+            force_cloud=bool(getattr(args, "cloud", False)),
+        )
+    except Exception as exc:
+        _emit({"ok": False, "command": "vector-import", "error": str(exc)})
+        return 2
+    _emit({"ok": True, "command": "vector-import", **report})
+    return 0
+
+
+def cmd_vector_sync(args: argparse.Namespace) -> int:
+    """Promote vectors local→cloud (or store→store) without re-embedding."""
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+
+    from hyperlex.vectordb.transfer import sync_vectors
+
+    to = (getattr(args, "to", None) or "cloud").strip().lower()
+    to_cloud = to == "cloud"
+    to_backend = "chroma" if to_cloud else (getattr(args, "to_backend", None) or "chroma")
+    from_backend = (getattr(args, "from_backend", None) or "chroma").strip().lower()
+
+    from_path = None
+    if getattr(args, "from_path", None):
+        from_path = Path(args.from_path)
+    elif getattr(args, "from_db", None):
+        from_path = Path(args.from_db)
+        from_backend = "sqlite"
+    elif getattr(args, "db", None):
+        from_path = Path(args.db)
+
+    to_path = Path(args.to_path) if getattr(args, "to_path", None) else None
+    if to == "path" and to_path is None:
+        _emit({"ok": False, "command": "vector-sync", "error": "--to path requires --to-path DIR"})
+        return 2
+    if to == "sqlite":
+        to_backend = "sqlite"
+        to_cloud = False
+        if to_path is None and getattr(args, "to_db", None):
+            to_path = Path(args.to_db)
+
+    try:
+        report = sync_vectors(
+            from_backend=from_backend,
+            from_path=from_path,
+            to_backend=to_backend,
+            to_path=to_path,
+            to_cloud=to_cloud,
+            kind=args.kind or None,
+        )
+    except Exception as exc:
+        _emit({"ok": False, "command": "vector-sync", "error": str(exc)})
+        return 2
+    _emit({"ok": True, "command": "vector-sync", **report})
     return 0
 
 
@@ -2227,10 +2330,61 @@ def _build_parser() -> argparse.ArgumentParser:
     vst.add_argument("--backend", default="", help="sqlite (default) or chroma")
     vst.set_defaults(func=cmd_vector_stats)
 
+    vex = subparsers.add_parser(
+        "vector-export",
+        help="Export vectors to JSONL (embeddings preserved; for promote/backup)",
+    )
+    vex.add_argument("-o", "--out", default="", help="Output JSONL (default: ~/.hyperlex/exports/vectors_*.jsonl)")
+    vex.add_argument("--db", default="", help="Source path (sqlite file or chroma persist dir)")
+    vex.add_argument("--backend", default="", help="sqlite (default) or chroma")
+    vex.add_argument("--kind", default="", help="Optional filter: term | receipt")
+    vex.add_argument("--cloud", action="store_true", default=False, help="Export from Chroma Cloud")
+    vex.set_defaults(func=cmd_vector_export)
+
+    vim = subparsers.add_parser(
+        "vector-import",
+        help="Import JSONL vectors into sqlite or chroma (local or --cloud)",
+    )
+    vim.add_argument("-i", "--input", required=True, help="Input JSONL from vector-export")
+    vim.add_argument("--db", default="", help="Dest path (sqlite file or chroma persist dir)")
+    vim.add_argument("--backend", default="", help="sqlite (default) or chroma")
+    vim.add_argument(
+        "--cloud",
+        action="store_true",
+        default=False,
+        help="Import into Chroma Cloud (uses HYPERLEX_CHROMA_* creds; ignores local path env)",
+    )
+    vim.set_defaults(func=cmd_vector_import)
+
+    vsy = subparsers.add_parser(
+        "vector-sync",
+        help="Promote vectors without re-embed (local chroma → cloud, or store→store)",
+    )
+    vsy.add_argument(
+        "--from-path",
+        default="",
+        help="Source local chroma persist dir (e.g. ~/.hyperlex/chroma)",
+    )
+    vsy.add_argument("--from-db", default="", help="Source sqlite vector.db (sets from-backend=sqlite)")
+    vsy.add_argument("--db", default="", help="Alias for --from-path / source path")
+    vsy.add_argument("--from-backend", default="chroma", help="chroma (default) or sqlite")
+    vsy.add_argument(
+        "--to",
+        default="cloud",
+        choices=["cloud", "path", "sqlite"],
+        help="Destination: cloud (default), path (local chroma), or sqlite",
+    )
+    vsy.add_argument("--to-path", default="", help="Dest local chroma dir when --to path")
+    vsy.add_argument("--to-db", default="", help="Dest sqlite file when --to sqlite")
+    vsy.add_argument("--to-backend", default="chroma", help="Used with --to path (default chroma)")
+    vsy.add_argument("--kind", default="", help="Optional filter: term | receipt")
+    vsy.set_defaults(func=cmd_vector_sync)
+
     lbf = subparsers.add_parser(
         "lineage-backfill",
         help="Load YTD slang backfill packs; inventory or merge into registry overlay",
     )
+
     lbf.add_argument("--year", type=int, default=2026)
     lbf.add_argument("--through", default="", help="Cap packs at YYYY-MM (e.g. 2026-08)")
     lbf.add_argument("--root", default="", help="data/backfill root (default: repo data/backfill)")

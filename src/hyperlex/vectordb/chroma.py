@@ -53,13 +53,17 @@ def resolve_chroma_path(path: Optional[Path | str] = None) -> Optional[Path]:
     return Path(str(raw)).expanduser()
 
 
-def get_chroma_client(path: Optional[Path | str] = None) -> Any:
+def get_chroma_client(
+    path: Optional[Path | str] = None,
+    *,
+    force_cloud: bool = False,
+) -> Any:
     """Create a Chroma client (local PersistentClient or CloudClient).
 
-    Local path (preferred when set):
+    Local path (preferred when set, unless force_cloud=True):
       path= argument, or HYPERLEX_CHROMA_PATH
 
-    Cloud credentials (when no local path):
+    Cloud credentials (when no local path, or force_cloud=True):
       HYPERLEX_CHROMA_API_KEY
       HYPERLEX_CHROMA_TENANT
       HYPERLEX_CHROMA_DATABASE
@@ -70,10 +74,11 @@ def get_chroma_client(path: Optional[Path | str] = None) -> Any:
     if chromadb is None:
         raise RuntimeError("chromadb is not installed. pip install 'hyperlex[runtime]' or chromadb")
 
-    local_path = resolve_chroma_path(path)
-    if local_path is not None:
-        local_path.mkdir(parents=True, exist_ok=True)
-        return chromadb.PersistentClient(path=str(local_path))
+    if not force_cloud:
+        local_path = resolve_chroma_path(path)
+        if local_path is not None:
+            local_path.mkdir(parents=True, exist_ok=True)
+            return chromadb.PersistentClient(path=str(local_path))
 
     if CloudClient is None:
         raise RuntimeError("chromadb is not installed. pip install chromadb")
@@ -110,13 +115,16 @@ class ChromaVectorStore:
         client: Optional[Any] = None,
         collection_name: str = DEFAULT_COLLECTION,
         path: Optional[Path | str] = None,
+        *,
+        force_cloud: bool = False,
         **_ignored: Any,
     ):
         if chromadb is None:
             raise RuntimeError("chromadb package is required for ChromaVectorStore")
 
-        self.path = resolve_chroma_path(path)
-        self.client = client or get_chroma_client(path=self.path)
+        self.force_cloud = bool(force_cloud)
+        self.path = None if self.force_cloud else resolve_chroma_path(path)
+        self.client = client or get_chroma_client(path=self.path, force_cloud=self.force_cloud)
         self.collection_name = collection_name or DEFAULT_COLLECTION
         self._collection = None
 
@@ -272,6 +280,74 @@ class ChromaVectorStore:
         # Persistent/Cloud clients do not require explicit close
         pass
 
+    def iter_rows(
+        self,
+        *,
+        kind: Optional[str] = None,
+        batch_size: int = 256,
+    ):
+        """Yield full vector rows (including embedding list) for export/sync."""
+        offset = 0
+        batch_size = max(1, int(batch_size))
+        where = {"kind": kind} if kind else None
+        while True:
+            kwargs: Dict[str, Any] = {
+                "include": ["embeddings", "documents", "metadatas"],
+                "limit": batch_size,
+                "offset": offset,
+            }
+            if where is not None:
+                kwargs["where"] = where
+            try:
+                got = self.collection.get(**kwargs)
+            except TypeError:
+                # Older chromadb without offset: fetch all once
+                if offset > 0:
+                    break
+                kwargs.pop("offset", None)
+                kwargs.pop("limit", None)
+                got = self.collection.get(
+                    include=["embeddings", "documents", "metadatas"],
+                    where=where,
+                )
+                offset = -1  # signal single-shot
+
+            ids = got.get("ids") or []
+            if not ids:
+                break
+            docs = got.get("documents") or [None] * len(ids)
+            metas = got.get("metadatas") or [{}] * len(ids)
+            embs = got.get("embeddings")
+            if embs is None:
+                raise RuntimeError("Chroma get() returned no embeddings; cannot export/sync")
+            for i, _id in enumerate(ids):
+                m = dict(metas[i] or {})
+                emb = embs[i]
+                # numpy array or list
+                try:
+                    embedding = [float(x) for x in emb]
+                except TypeError:
+                    embedding = [float(x) for x in list(emb)]
+                text = docs[i] if docs[i] is not None else m.get("text") or ""
+                yield {
+                    "id": str(_id),
+                    "kind": m.get("kind") or "term",
+                    "text": str(text),
+                    "family_id": m.get("family_id"),
+                    "model": m.get("model") or "",
+                    "embedding": embedding,
+                    "meta": {
+                        k: v
+                        for k, v in m.items()
+                        if k not in ("kind", "text", "model", "family_id")
+                    },
+                }
+            if offset < 0:
+                break
+            offset += len(ids)
+            if len(ids) < batch_size:
+                break
+
 
 def get_vector_store(backend: Optional[str] = None, **kwargs: Any):
     """Factory that returns the appropriate vector store.
@@ -280,6 +356,7 @@ def get_vector_store(backend: Optional[str] = None, **kwargs: Any):
 
     For chroma, ``path`` maps to a local PersistentClient directory
     (or falls through to cloud credentials when unset).
+    Pass force_cloud=True to target Cloud even if HYPERLEX_CHROMA_PATH is set.
     """
     backend = (backend or os.environ.get("HYPERLEX_VECTOR_BACKEND", "sqlite")).lower()
 
@@ -289,9 +366,11 @@ def get_vector_store(backend: Optional[str] = None, **kwargs: Any):
             client=kwargs.get("client"),
             collection_name=kwargs.get("collection_name", DEFAULT_COLLECTION),
             path=kwargs.get("path"),
+            force_cloud=bool(kwargs.get("force_cloud", False)),
         )
 
-    # fallback to sqlite
+    # fallback to sqlite — drop chroma-only kwargs
     from .store import VectorStore
 
-    return VectorStore(**kwargs)
+    path = kwargs.get("path")
+    return VectorStore(path=path)

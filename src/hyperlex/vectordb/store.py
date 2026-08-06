@@ -197,3 +197,33 @@ class VectorStore:
         cur = self._conn.execute("DELETE FROM vectors WHERE kind=?", (kind,))
         self._conn.commit()
         return int(cur.rowcount or 0)
+
+    def iter_rows(self, *, kind: Optional[str] = None) -> Iterable[Dict[str, Any]]:
+        """Yield full vector rows (including embedding list) for export/sync."""
+        if kind:
+            cur = self._conn.execute(
+                "SELECT id, kind, text, family_id, meta_json, dim, embedding, model, created_at "
+                "FROM vectors WHERE kind=? ORDER BY id",
+                (kind,),
+            )
+        else:
+            cur = self._conn.execute(
+                "SELECT id, kind, text, family_id, meta_json, dim, embedding, model, created_at "
+                "FROM vectors ORDER BY id"
+            )
+        for row in cur:
+            meta: Dict[str, Any] = {}
+            try:
+                meta = json.loads(row["meta_json"] or "{}")
+            except json.JSONDecodeError:
+                meta = {}
+            yield {
+                "id": str(row["id"]),
+                "kind": str(row["kind"]),
+                "text": str(row["text"]),
+                "family_id": row["family_id"],
+                "model": str(row["model"]),
+                "embedding": unpack_embedding(row["embedding"], dim=int(row["dim"])),
+                "meta": meta,
+                "created_at": row["created_at"],
+            }

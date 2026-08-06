@@ -56,7 +56,11 @@ Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai, `live`→com
 |---------|---------|
 | `simulate --term T --mode scenario` | Phase 5 composed scenario |
 | `simulate --mode schedule --tier ELEVATED` | Risk→scan plan |
-| `vector-search "…"` | Local vector DB |
+| `vector-search "…"` | Local vector DB (sqlite or chroma) |
+| `vector-seed` | Seed sqlite / local chroma / cloud |
+| `vector-export -o file.jsonl` | Dump vectors (embeddings kept) |
+| `vector-import -i file.jsonl [--cloud]` | Load dump into sqlite/chroma/cloud |
+| `vector-sync --from-path ~/.hyperlex/chroma --to cloud` | Promote local chroma → Cloud |
 | `archive-export --history` | Sanitized Pages run history |
 
 ## Maintenance

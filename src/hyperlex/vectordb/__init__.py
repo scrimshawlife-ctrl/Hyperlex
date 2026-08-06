@@ -3,6 +3,7 @@ from .store import VectorStore, default_vector_db_path
 from .seed import seed_from_backfill, seed_from_registry, seed_from_receipts, seed_all
 from .search import vector_search, search_similar_terms, search_similar_receipts
 from .chroma import ChromaVectorStore, get_chroma_client, get_vector_store
+from .transfer import export_vectors, import_vectors, sync_vectors, open_vector_store
 
 __all__ = [
     "embed_text",
@@ -21,4 +22,8 @@ __all__ = [
     "vector_search",
     "search_similar_terms",
     "search_similar_receipts",
+    "export_vectors",
+    "import_vectors",
+    "sync_vectors",
+    "open_vector_store",
 ]
