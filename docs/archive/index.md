@@ -16,10 +16,13 @@ Publish-safe history of Hyperlex runs. **Not** live operator state — that live
 | `analysis` | Receipt-backed analyze/pipeline snapshots |
 | `phase5_scenario` | Research sim (SPECULATIVE). **atoms** = separate lexicon terms (not one blended seed) |
 | risk tier | Advisory only — not market advice; not Brier |
+| vector / similarity (if present on a receipt) | Cosine neighbors — **not** Brier; see [reading guide](../demos/reading-evidence.md) |
 
 Machine index: [`catalog.json`](./catalog.json) ·
 [Latest analysis](./latest/index.md) (`backfill-ytd-2026-analysis`) ·
-[Atomic terms demo](../demos/atomic-terms.md) · [Operator loop](../operator-loop.md)
+[Atomic terms demo](../demos/atomic-terms.md) ·
+[**Reading evidence (researchers)**](../demos/reading-evidence.md) ·
+[Operator loop](../operator-loop.md)
 
 ## Snapshots
 

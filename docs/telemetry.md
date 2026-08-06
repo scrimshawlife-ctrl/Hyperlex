@@ -110,26 +110,21 @@ Week-one script: `bash examples/ops/burn-in.sh`
 
     [Phase 5](phase5.md) · [Simulation modules](modules/simulation.md)
 
--   :material-vector-polyline: **Vector DB**
+-   :material-vector-polyline: **Vector evidence**
 
-    SQLite default · **local Chroma backfill** · promote to Cloud.  
-    **Terms are atomic.** Similarity ≠ Brier.
+    Local index (sqlite/chroma) · auto on ingest · optional Cloud promote.  
+    **Similarity ≠ Brier.** Pages shows method + samples, not your live DB.
 
     ---
 
     ```bash
-    # Local Chroma (recommended iterate path)
     $HLX vector-seed --backend chroma --db ~/.hyperlex/chroma \
       --through 2026-08 --include-home --include-golden
-    $HLX vector-stats --backend chroma --db ~/.hyperlex/chroma
-    $HLX vector-search "rizz" --backend chroma --db ~/.hyperlex/chroma --kind term
-
-    # Promote when good (creds in ~/.hermes/.env)
-    $HLX vector-sync --from-path ~/.hyperlex/chroma --to cloud
-    $HLX vector-stats --cloud
+    $HLX vector-search "rizz sigma aura" --backend chroma --db ~/.hyperlex/chroma --kind term
     ```
 
-    [Vector DB · Chroma map →](modules/vectordb.md)
+    [How researchers should read this →](demos/reading-evidence.md)  
+    [Vector backend map →](modules/vectordb.md)
 
 -   :material-heart-pulse: **Status**
 
@@ -148,9 +143,14 @@ Week-one script: `bash examples/ops/burn-in.sh`
 | **atoms** `sigma` · `rizz` · `locked in` | Three separate scenarios (good) |
 | **term** `rizz` | Single-atom run |
 | **original_seed** | Free-text input only — not a blended lexicon item |
+| **vector neighbors / cosine score** | Embedding similarity — **not** a probability, **not** Brier |
 | **risk tier** | Advisory Phase 5 signal — not Brier, not market advice |
 | **Brier `null`** | Correct until you settle forecasts |
 | **Families** on analysis cards | Lineage counts from receipt summaries |
+| **OBSERVED / INFERRED / SPECULATIVE** | Provenance of the claim — see [reading guide](demos/reading-evidence.md) |
+
+**Researchers:** start with [Reading Hyperlex evidence](demos/reading-evidence.md)
+(what each layer means, worked vector sample, claims matrix).
 
 ## Rules (non-negotiable)
 
@@ -169,6 +169,7 @@ Hosts may import Abraxas-shaped modules **from** Hyperlex. Hyperlex never import
 |------|-----|
 | Auto backend | [commands](commands.md) · [operator-loop](operator-loop.md) |
 | Multi-term demos | [demos/atomic-terms](demos/atomic-terms.md) |
+| **Researcher reading guide** | [demos/reading-evidence](demos/reading-evidence.md) |
 | Skill contract | [hermes-skill](hermes-skill.md) |
 | Lineages | [slang-lineages](slang-lineages.md) |
 | Calibration | [brier-calibration](brier-calibration.md) |

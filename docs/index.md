@@ -27,7 +27,7 @@ pipeline = auto results · atomic terms · settled Brier only · Phase 5 researc
 
 [Enter telemetry →](telemetry.md){ .md-button .md-button--primary }
 [How to run](operator-loop.md){ .md-button }
-[Atomic terms](demos/atomic-terms.md){ .md-button }
+[Reading evidence](demos/reading-evidence.md){ .md-button }
 [Run history](archive/index.md){ .md-button }
 
 </div>

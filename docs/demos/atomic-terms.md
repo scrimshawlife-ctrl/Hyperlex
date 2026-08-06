@@ -1,5 +1,8 @@
 # Demo: atomic multi-term seeds
 
+**Researchers:** also read [Reading Hyperlex evidence](./reading-evidence.md)
+(lineage · vector neighbors · Phase 5 · Brier — what you may claim).
+
 ## The short version
 
 | You type | Engine does |

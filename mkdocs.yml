@@ -77,6 +77,7 @@ nav:
       - Simulation modules: modules/simulation.md
   - Demos:
       - Atomic multi-term seeds: demos/atomic-terms.md
+      - Reading evidence (researchers): demos/reading-evidence.md
   - Data:
       - Vector DB: modules/vectordb.md
   - Ops:

@@ -5,6 +5,11 @@
 **Opt-in:** local Chroma (`~/.hyperlex/chroma`) or Chroma Cloud  
 **CLI:** `vector-seed` · `vector-search` · `vector-stats` · `vector-export` · `vector-import` · `vector-sync`
 
+!!! tip "Researchers"
+    For how to **interpret** scores, provenance, and Pages samples — not just
+    operate the backend — read
+    [Reading Hyperlex evidence](../demos/reading-evidence.md).
+
 Hyperlex keeps a **seedable vector index** for semantic search over:
 
 - lineage registry terms  
