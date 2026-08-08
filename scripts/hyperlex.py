@@ -844,6 +844,7 @@ def cmd_commands(_args: argparse.Namespace) -> int:
             "Risk→cron is advisory only. Never invent Brier."
         ),
         "daily_ops": [
+            {"cmd": "wizard --auto", "why": "Week-one guided path (doctor→demo→pipeline→calibration coach)"},
             {"cmd": "pipeline \"rizz\"", "why": "AUTO backend: ingest→analyze→receipt→forecasts→phase5 risk"},
             {"cmd": "ingest \"rizz\"", "why": "Same as pipeline (default); use --raw-only for signal only"},
             {"cmd": "run \"rizz\" --route offline", "why": "Alias of pipeline (safe burn-in)"},
@@ -2049,6 +2050,35 @@ def cmd_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_wizard(args: argparse.Namespace) -> int:
+    """Week-one guided path: doctor → demo → pipeline → calibration coach."""
+    import os
+    from hyperlex.wizard import run_wizard
+
+    os.environ.setdefault("HYPERLEX_OFFLINE", "1")
+    mode = "auto" if getattr(args, "auto", False) else "interactive"
+    # resolve skill root = this install
+    skill_root = ROOT
+    out_dir = getattr(args, "out_dir", None) or None
+    if out_dir == "":
+        out_dir = None
+    result = run_wizard(
+        mode=mode,
+        query=(getattr(args, "query", None) or "rizz"),
+        skill_root=skill_root,
+        skip_doctor=bool(getattr(args, "skip_doctor", False)),
+        strict=bool(getattr(args, "strict", False)),
+        out_dir=out_dir,
+        log_path=getattr(args, "log", None) or None,
+    )
+    out_path = getattr(args, "out", None) or ""
+    if out_path:
+        Path(out_path).write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        result = {**result, "out": out_path}
+    _emit(result)
+    return 0 if result.get("ok") else 2
+
+
 def _load_scan_queries(args: argparse.Namespace) -> List[str]:
     queries: List[str] = []
     if getattr(args, "query", None):
@@ -2802,6 +2832,19 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Include Phase 5 risk digest (still brier null)",
     )
     demo_parser.set_defaults(func=cmd_demo)
+
+    wiz = subparsers.add_parser(
+        "wizard",
+        help="Week-one guided Hermes workflow (doctor→demo→pipeline→calibration coach)",
+    )
+    wiz.add_argument("--auto", action="store_true", default=False, help="Non-interactive offline path")
+    wiz.add_argument("--query", default="rizz", help="Sample query (default: rizz)")
+    wiz.add_argument("--skip-doctor", action="store_true", default=False)
+    wiz.add_argument("--strict", action="store_true", default=False, help="Abort if doctor fails")
+    wiz.add_argument("--out-dir", default="", help="Isolate receipts/score log under DIR")
+    wiz.add_argument("--log", default="", help="Score log path override")
+    wiz.add_argument("--out", default="", help="Write full wizard JSON to path")
+    wiz.set_defaults(func=cmd_wizard)
 
     scan_parser = subparsers.add_parser(
         "scan",

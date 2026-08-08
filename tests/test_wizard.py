@@ -107,3 +107,37 @@ def test_wizard_skip_doctor(tmp_path, monkeypatch):
     doc = next(s for s in out["steps"] if s["id"] == "doctor")
     assert doc["skipped"] is True
     assert out["ok"] is True
+
+
+def test_wizard_cli_auto(tmp_path):
+    out_dir = tmp_path / "cli-wiz"
+    env = {
+        **dict(os.environ),
+        "PYTHONPATH": str(ROOT / "src"),
+        "HYPERLEX_OFFLINE": "1",
+        "HYPERLEX_VECTOR": "0",
+    }
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "hyperlex.py"),
+            "wizard",
+            "--auto",
+            "--query",
+            "rizz",
+            "--out-dir",
+            str(out_dir),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+        check=False,
+    )
+    assert r.returncode == 0, r.stderr + r.stdout
+    data = json.loads(r.stdout)
+    assert data["ok"] is True
+    assert data["command"] == "wizard"
+    assert data["schema"] == "hyperlex.wizard.v1"
+    assert data["brier"] is None
+    assert len(data["steps"]) == 7
