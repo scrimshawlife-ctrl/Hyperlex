@@ -13,7 +13,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_wizard_step_order_and_schema():
+def test_wizard_step_order_and_schema(tmp_path):
     from hyperlex.wizard import WIZARD_SCHEMA, WIZARD_STEP_IDS, run_wizard
 
     assert WIZARD_SCHEMA == "hyperlex.wizard.v1"
@@ -26,8 +26,12 @@ def test_wizard_step_order_and_schema():
         "score_series_hint",
         "handoff",
     ]
-    # skeleton may still return not-fully-wired steps; ids must match
-    out = run_wizard(mode="auto", query="rizz")
+    out = run_wizard(
+        mode="auto",
+        query="rizz",
+        skill_root=ROOT,
+        out_dir=tmp_path / "wiz",
+    )
     assert out["schema"] == WIZARD_SCHEMA
     assert [s["id"] for s in out["steps"]] == list(WIZARD_STEP_IDS)
     assert "brier" in out

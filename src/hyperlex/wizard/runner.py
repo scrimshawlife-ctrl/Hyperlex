@@ -55,7 +55,6 @@ def run_wizard(
         "log_path": Path(log_path) if log_path else None,
         "receipt_dir": Path(receipt_dir) if receipt_dir else None,
         "out_dir": Path(out_dir) if out_dir else None,
-        "settlement_count_before": 0,
         "open_forecasts": [],
         "pipeline_ok": False,
         "degraded": False,
