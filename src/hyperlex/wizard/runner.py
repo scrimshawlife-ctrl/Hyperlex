@@ -42,6 +42,10 @@ def run_wizard(
         log_path = log_path or (out_p / "wizard_score_log.jsonl")
         receipt_dir = receipt_dir or (out_p / "receipts")
 
+    os.environ.setdefault("HYPERLEX_OFFLINE", "1")
+    if resolved == "auto":
+        os.environ.setdefault("HYPERLEX_VECTOR", "0")
+
     ctx: Dict[str, Any] = {
         "mode": resolved,
         "query": q,
@@ -63,30 +67,26 @@ def run_wizard(
 
     for sid in WIZARD_STEP_IDS:
         if stop:
-            steps.append(_step(sid, ok=False, skipped=True, summary="skipped after failure"))
+            steps.append(_step(sid, ok=True, skipped=True, summary="skipped after hard failure"))
             continue
         if sid == "doctor" and skip_doctor:
             steps.append(_step(sid, ok=True, skipped=True, summary="skipped (--skip-doctor)"))
             continue
-        runner = STEP_RUNNERS[sid]
-        result = runner(ctx)
+        result = STEP_RUNNERS[sid](ctx)
         steps.append(result)
         if result.get("degraded"):
             ctx["degraded"] = True
-        if not result.get("ok") and not result.get("skipped"):
-            overall_ok = False
-            if sid in {"demo", "first_pipeline"} or (sid == "doctor" and strict):
-                stop = True
-            elif sid == "doctor" and not strict:
-                # soft continue
-                overall_ok = True if all(
-                    s.get("ok") or s.get("skipped") or s.get("id") == "doctor"
-                    for s in steps
-                ) else overall_ok
-                # keep overall_ok true for soft doctor fail; mark degraded
-                overall_ok = True
-                ctx["degraded"] = True
-                result["degraded"] = True
+        if result.get("ok") or result.get("skipped"):
+            continue
+        # hard failure
+        if sid == "doctor" and not strict:
+            ctx["degraded"] = True
+            # rewrite as degraded continue — doctor already returns ok=True when soft
+            overall_ok = overall_ok  # no-op
+            continue
+        overall_ok = False
+        if sid in {"demo", "first_pipeline"} or (sid == "doctor" and strict):
+            stop = True
 
     next_cmds = [
         'python3 "${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}/scripts/hyperlex.py" pending',
@@ -96,7 +96,7 @@ def run_wizard(
 
     return {
         "schema": WIZARD_SCHEMA,
-        "ok": overall_ok and not stop,
+        "ok": overall_ok,
         "mode": resolved,
         "query": q,
         "route": "offline",
