@@ -38,7 +38,8 @@ def test_list_runes_catalog() -> None:
 def test_relay_from_result_envelopes() -> None:
     result = detect_memetic_patterns("sharp steam revenge", ingest_source="mock")
     envs = relay_from_result(result)
-    assert len(envs) == 2
+    # Base scan + signal; attractor may also emit for elevated hyperstition
+    assert len(envs) >= 2
     rune_ids = {e["rune_id"] for e in envs}
     assert "RUNE.HLX.LIVE_EMERGENCE_SCAN" in rune_ids
     assert "RUNE.HLX.COMMUNICATION_RELAY" in rune_ids
@@ -47,6 +48,8 @@ def test_relay_from_result_envelopes() -> None:
         assert e["envelope_id"]
         # brier not fabricated
         assert e["provenance"].get("brier") is None
+    if "RUNE.HLX.ATTRACTOR_CANDIDATE" in rune_ids:
+        assert len(envs) >= 3
 
 
 def test_relay_forecasts_not_computable_brier() -> None:

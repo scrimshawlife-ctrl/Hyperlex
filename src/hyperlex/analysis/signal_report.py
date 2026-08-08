@@ -250,9 +250,17 @@ def build_integrity_header(
 ) -> Dict[str, str]:
     """Compact integrity note for provenance (optional)."""
     stage = str(hyper_stage or "").upper()
-    risk = "elevated" if stage in ("ACTUALIZING", "EMERGENT") else "baseline"
+    elevated = stage in ("ACTUALIZING", "EMERGENT")
+    risk = "elevated" if elevated else "baseline"
+    # Schema: provenance.seed.status enum PASS|PARTIAL|FAIL (result.v1)
+    status = "PARTIAL" if elevated else "PASS"
     return {
-        "status": "ok",
+        "status": status,
+        "determinism": "rule_based_lineage_vector",
+        "provenance": f"ingest={ingest_source or 'unknown'};stage={stage or 'none'}",
+        "entropy_class": "high" if elevated else "medium",
+        "capability_lane": "advisory",
+        # Extra diagnostic fields (schema allows additionalProperties on seed)
         "method": "rule_based_lineage_vector",
         "ingest_source": ingest_source or "unknown",
         "hyperstition_stage": stage or "none",
