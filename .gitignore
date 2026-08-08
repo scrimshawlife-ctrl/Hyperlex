@@ -48,3 +48,7 @@ site/
 
 # Demo runtime output (committed sample lives beside it)
 examples/quickstart/out/
+
+# Isolated agent worktrees / SDD scratch
+.worktrees/
+.superpowers/

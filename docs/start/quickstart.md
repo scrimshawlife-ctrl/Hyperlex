@@ -40,7 +40,9 @@ python3 scripts/hyperlex.py check
 ```bash
 bash install.sh
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
-python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" demo
+export HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
+$HLX demo
+$HLX wizard --auto
 ```
 
 ## Committed sample output

@@ -32,7 +32,12 @@ bash install.sh
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
 export HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
 $HLX check && $HLX doctor && $HLX commands
+$HLX wizard --auto
 ```
+
+The **wizard** is the preferred first-run Hermes procedure: offline guided path
+(env → doctor → demo → first pipeline → calibration coach). It never auto-settles;
+settlement stays a human operator step (`pending` → `settle` → `score-series`).
 
 ## Preferred path (automatic backend)
 
