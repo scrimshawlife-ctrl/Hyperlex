@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- CLI `wizard` + package `hyperlex.wizard`: week-one Hermes guided path
+  (`--auto` / interactive); never auto-settles; offline-first; SKILL.md procedure
 - **SIGNAL REPORT parity (Companion adaptation):** `result.v1` extended with optional `provenance.seed`, `analysis.compression_metrics`, `analysis.symbolic_role`, `analysis.propagation_vector`, `analysis.slang_family_tree`, `analysis.signal_report` (schema + package-local copy). Builder: `src/hyperlex/analysis/signal_report.py`. Wired into `detect_memetic_patterns` (attach + seed header). Docs: `docs/superpowers/specs/2026-08-06-signal-report-adaptation.md`. All new fields optional and fail-open. Brier remains null on open analysis.
 - **Ingest ↔ vector:** fail-open auto-index on `pipeline` / `run` / receipt emit (`hyperlex.vectordb.autoindex`); respects `HYPERLEX_VECTOR` + `HYPERLEX_VECTOR_BACKEND` (local only; Cloud promote stays explicit)
 - Vector/Chroma: `get_vector_store(backend="chroma", path=...)` no longer TypeErrors (`seed_all` always passed `path`)

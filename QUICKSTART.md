@@ -23,6 +23,7 @@ bash install.sh
 export HERMES_SKILL_DIR="${HOME}/.hermes/skills/hyperlex"
 export HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
 $HLX check && $HLX smoke && $HLX demo
+$HLX wizard --auto
 $HLX commands
 ```
 

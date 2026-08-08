@@ -120,16 +120,17 @@ Full map: [modules/vectordb.md](modules/vectordb.md) · [commands.md](commands.m
 ## Week-one checklist
 
 1. Install skill: `bash install.sh`
-2. `$HLX doctor` green
-3. **Burn-in (atomic offline runs):**
+2. `$HLX wizard --auto` (or interactive `$HLX wizard`) — guided offline path
+3. `$HLX doctor` green if wizard degraded
+4. **Burn-in (atomic offline runs):**
    ```bash
    bash examples/ops/burn-in.sh
    ```
    Or manually: `$HLX run "rizz" --route offline` (one atom per run)
-4. Settle a handful of forecasts via `pending` → `settle`
-5. `$HLX score-series --verify-chain` — first real Brier series
-6. Optional: local Chroma backfill + `vector-sync --to cloud` (see above)
-7. Only then: `--route live` or ELEVATED/CRITICAL tiers if advisory warrants
+5. Settle a handful of forecasts via `pending` → `settle`
+6. `$HLX score-series --verify-chain` — first real Brier series
+7. Optional: local Chroma backfill + `vector-sync --to cloud` (see above)
+8. Only then: `--route live` or ELEVATED/CRITICAL tiers if advisory warrants
 
 Atomic multi-term demos: [demos/atomic-terms.md](demos/atomic-terms.md)
 

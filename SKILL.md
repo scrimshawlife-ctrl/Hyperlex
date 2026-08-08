@@ -50,6 +50,9 @@ triggers:
   - score series
   - cultural signal
   - memetic receipt
+  - hyperlex wizard
+  - get started with hyperlex
+  - hyperlex onboarding
 ---
 
 # Hyperlex
@@ -108,6 +111,8 @@ python3 "$HOME/.hermes/skills/hyperlex/scripts/hyperlex.py" smoke
 ```bash
 HLX="python3 $HERMES_SKILL_DIR/scripts/hyperlex.py"
 
+$HLX wizard --auto                 # week-one guided path (offline)
+$HLX wizard                        # interactive (TTY)
 $HLX commands                          # full simplified map (JSON)
 $HLX sources                           # sources + routes
 # AUTO backend — ingest → full results (receipt, forecasts, phase5 risk)
@@ -130,6 +135,25 @@ Research / advanced (still available): `simulate`, `vector-*`, `archive-export`,
 
 Docs: `docs/operator-loop.md`, `docs/commands.md`.
 
+## Guided wizard
+
+When the user is new to Hyperlex, asks to get started, or wants a guided
+operator path:
+
+1. Ensure skill install (`bash install.sh` if missing).
+2. Run `$HLX wizard --auto` (or `$HLX wizard --auto --query "<term>"`).
+3. Summarize steps: env → doctor → demo → first pipeline → calibration coach.
+4. **Never invent Brier.** Open analysis keeps `brier: null`.
+5. Show open forecasts from the wizard output / `$HLX pending`.
+6. **Settlement requires operator authority** — ask for TRUE|FALSE|VOID, then:
+   `$HLX settle --forecast-id <id> --decision …`
+7. `$HLX score-series --mean-shift --verify-chain`
+8. Optional advisory only: `$HLX risk-schedule --tier MODERATE --schedule-out /tmp/hlx-cron`
+   (never auto-register Hermes cron).
+
+Step IDs (stable): `env_intro`, `doctor`, `demo`, `first_pipeline`,
+`calibration_coach`, `score_series_hint`, `handoff`.
+
 ### Operator calibration path
 
 ```text
@@ -145,7 +169,7 @@ run "<query>" --route offline
 
 ## Preferred sequence
 
-1. **`commands`** — see simplified map.
+1. **`wizard --auto`** then `commands` / `run` — week-one guided path, then map or one-shot.
 2. **`run --route offline`** — one-shot analyze + receipt + forecasts + score log.
 3. **`pending` → `settle` → `score-series`** — Brier only after operator settlement.
 4. **Cron** — `risk-schedule` (advisory) + `scan --route offline` for multi-query.

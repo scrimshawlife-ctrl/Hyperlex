@@ -11,6 +11,7 @@ HLX="python3 ${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}/scripts/hyperlex
 
 | Command | Purpose |
 |---------|---------|
+| `wizard [--auto]` | **Week-one guided path** (doctor→demo→pipeline→calibration coach) |
 | `demo` | **First success:** offline mock pipeline + receipt (`brier` null) |
 | `pipeline "<q>"` | **AUTO:** ingest→analyze→receipt→forecasts→score log→phase5 risk |
 | `ingest "<q>"` | Same as pipeline by default (`--raw-only` = signal only) |
