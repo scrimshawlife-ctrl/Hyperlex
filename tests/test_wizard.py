@@ -141,3 +141,34 @@ def test_wizard_cli_auto(tmp_path):
     assert data["schema"] == "hyperlex.wizard.v1"
     assert data["brier"] is None
     assert len(data["steps"]) == 7
+
+
+def test_wizard_strict_doctor_missing_skill_root(tmp_path, monkeypatch):
+    monkeypatch.setenv("HYPERLEX_OFFLINE", "1")
+    monkeypatch.setenv("HYPERLEX_VECTOR", "0")
+    from hyperlex.wizard import run_wizard
+
+    empty = tmp_path / "empty-skill"
+    empty.mkdir()
+    out = run_wizard(
+        mode="auto",
+        query="rizz",
+        skill_root=empty,
+        out_dir=tmp_path / "wiz-strict",
+        strict=True,
+    )
+    doc = next(s for s in out["steps"] if s["id"] == "doctor")
+    assert doc["ok"] is False or out["ok"] is False
+    assert out["ok"] is False
+
+
+def test_wizard_resolve_mode_nontty_forces_auto(monkeypatch):
+    from hyperlex.wizard.runner import resolve_mode
+    import io
+
+    class FakeStdin(io.StringIO):
+        def isatty(self):
+            return False
+
+    monkeypatch.setattr(sys, "stdin", FakeStdin())
+    assert resolve_mode("interactive") == "auto"
