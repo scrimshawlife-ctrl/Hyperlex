@@ -258,3 +258,5 @@ Successful packaging:
 ## Security
 
 Local stdlib-first CLI. Baseline (`mock`) needs no network. Real ingest may call public web APIs. Score log and receipts are local files under `~/.hyperlex/` or skill `out/`.
+
+Source, profile, and migration rules: `references/source-and-upgrades.md`.

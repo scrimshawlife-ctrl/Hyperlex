@@ -78,10 +78,18 @@ while [[ $# -gt 0 ]]; do
 done
 
 validate_target() {
+  python3 - "$TARGET" <<'PY'
+import sys
+from pathlib import Path
+p = Path(sys.argv[1]).expanduser().absolute()
+if not sys.argv[1].strip() or any(q.is_symlink() for q in (p, *p.parents)):
+    raise SystemExit("refusing empty or symlinked target path")
+PY
+
   local parent base resolved home_resolved
   parent="$(dirname "$TARGET")"
   base="$(basename "$TARGET")"
-  mkdir -p "$parent" 2>/dev/null || true
+  # Path resolution and dry-run must not create target parents.
   resolved="$(resolve_path "$parent")/${base}"
   TARGET="$resolved"
 
@@ -206,18 +214,13 @@ post_check() {
 
 do_rollback() {
   validate_target
-  local latest
-  latest="$(ls -1dt "${BACKUP_ROOT}"/*/ 2>/dev/null | head -1 || true)"
-  [[ -n "$latest" ]] || die "no backups under ${BACKUP_ROOT}"
-  log "Rolling back from ${latest}"
   if [[ $DRY_RUN -eq 1 ]]; then
-    printf '[dry-run] restore %q → %q\n' "$latest" "$TARGET"
-  else
-    rm -rf "$TARGET"
-    mkdir -p "$(dirname "$TARGET")"
-    cp -a "$latest" "$TARGET"
+    log "DRY RUN: would validate and restore a backup bound to ${TARGET}"
+    return 0
   fi
-  log "Rollback complete"
+  local check_args=()
+  [[ $SKIP_SMOKE -eq 1 ]] && check_args+=(--skip-checks)
+  python3 "${ROOT}/scripts/install_transaction.py" "$ROOT" "$TARGET" hyperlex --rollback "${check_args[@]}"
 }
 
 if [[ $ROLLBACK -eq 1 ]]; then
@@ -235,9 +238,9 @@ if [[ $DRY_RUN -eq 1 ]]; then
   exit 0
 fi
 
-backup_existing
-sync_tree "$TARGET"
-post_check "$TARGET" || true
+CHECK_ARGS=()
+[[ $SKIP_SMOKE -eq 1 ]] && CHECK_ARGS+=(--skip-checks)
+python3 "${ROOT}/scripts/install_transaction.py" "$ROOT" "$TARGET" hyperlex "${CHECK_ARGS[@]}"
 
 if [[ $INSTALL_OPENCLAW -eq 1 ]]; then
   mkdir -p "$(dirname "$OPENCLAW_TARGET")"
@@ -245,13 +248,16 @@ if [[ $INSTALL_OPENCLAW -eq 1 ]]; then
   _saved="$TARGET"
   TARGET="$OPENCLAW_TARGET"
   validate_target
-  sync_tree "$TARGET"
-  post_check "$TARGET" || true
+  python3 "${ROOT}/scripts/install_transaction.py" "$ROOT" "$TARGET" hyperlex "${CHECK_ARGS[@]}"
   TARGET="$_saved"
 fi
 
 echo ""
-log "Hyperlex v${VERSION} installed"
+if [[ $SKIP_SMOKE -eq 1 ]]; then
+  log "Hyperlex v${VERSION} installed — UNVERIFIED (--skip-smoke)"
+else
+  log "Hyperlex v${VERSION} installed"
+fi
 echo "  Hermes:  ${TARGET}"
 [[ $INSTALL_OPENCLAW -eq 1 ]] && echo "  OpenClaw: ${OPENCLAW_TARGET}"
 echo ""

@@ -368,3 +368,5 @@ bash install.sh --dry-run
 MIT — [LICENSE](./LICENSE).
 
 Built for operators who want memetic signal **with a receipt trail**, not a mood board.
+
+Source, profile, and migration rules: `references/source-and-upgrades.md`.
