@@ -1,25 +1,25 @@
-# Install Hyperlex as a Python package
+# Install like graft
 
-Skill install (`bash install.sh` → `~/.hermes/skills/hyperlex`) stays the Hermes path.
-This is the importable / console-script path.
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-hyperlex version
-hyperlex mutation trace "it's giving mid rizz"
-hyperlex commands
-```
-
-From a clone without editable mode:
+Graft: `npm i -g @nanonets/graft` then `graft init` writes a thin skill that calls `graft` on PATH.
+Hyperlex is the same shape.
 
 ```bash
-pip install .
+pip install -e ".[dev]"          # or pip install .
+hyperlex init                    # Hermes + OpenClaw + Grok skill dirs
+hyperlex init --dry-run
+hyperlex init --target hermes --target grok
+hyperlex uninstall-skill --target hermes
 ```
 
-Optional extras: `runtime` (requests, crawl4ai, chromadb), `schema` (jsonschema), `docs` (mkdocs).
+`init` writes only `SKILL.md` (marker `<!-- hyperlex-init -->`) under:
 
-Console scripts after install: `hyperlex`, `hlx` (same entry).
+- `~/.hermes/skills/hyperlex/`
+- `~/.openclaw/skills/hyperlex/`
+- `~/.grok/skills/hyperlex/`
+- optional `--target claude` → `~/.claude/skills/hyperlex/`
 
-Hermes skill CLI is unchanged. Do not replace `install.sh` with pip-only until the operator wants skill discovery driven by site-packages.
+It does **not** rsync `src/` or `scripts/hyperlex.py`. The agent runs `hyperlex …`.
+
+Reload the agent session after init.
+
+Legacy full-tree install remains `bash install.sh` for hosts that still want the fat skill CLI.
