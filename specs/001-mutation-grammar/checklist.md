@@ -17,11 +17,11 @@
 - [x] Agency prohibition (LLM03)
 - [x] Hosts told to treat output as untrusted (LLM10)
 
-## Implement readiness (not done)
-- [ ] T1–T11 in tasks.md
-- [ ] Pytest offline
-- [ ] SKILL.md When to Use updated
-- [ ] Operator review recorded
+## Implement readiness
+- [x] T1–T11 in tasks.md (on main)
+- [x] Pytest offline (`tests/test_mutation_grammar.py`)
+- [x] SKILL.md When to Use updated
+- [ ] Operator review recorded as constitution **promotion** (code merge ≠ promotion)
 
 ## Constitution
 - [x] I–X checked against this spec
