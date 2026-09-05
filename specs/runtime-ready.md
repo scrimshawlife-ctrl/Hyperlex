@@ -31,12 +31,12 @@ It does **not** mean GAME_ENCODE parsers, watch jsonl, `--human` cards, constitu
 | result.v1 explicit attach field | **no** (additionalProperties) |
 | 000 / 001 CONVERGE stamp | **no** |
 
-## Deferred (v0.2)
+## Deferred (v0.2) — specified in `specs/003-mutation-detect-v02/`
 
 - GAME_ENCODE / CODE_SWITCH / PHONETIC_WARP parsers
 - `mutation watch` + `~/.hyperlex/mutation_watch.jsonl`
 - `--human` card helper
-- Constitution promotion off SHADOW
+- Constitution promotion off SHADOW (still **not** in 003)
 
 ## Integrate
 
