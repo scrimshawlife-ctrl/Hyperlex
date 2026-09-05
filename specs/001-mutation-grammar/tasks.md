@@ -1,15 +1,15 @@
 # Tasks 001 — Mutation grammar
 
-Clarify locked. Implement still gated.
+Clarify locked. Implement in progress on this branch.
 
-- [ ] T1 Schema tests against `schemas/mutation_trace.v0.1.schema.json` including restricted redaction.
-- [ ] T2 Operator enum + maps to lineage / prediction vocab (`operators.py`).
-- [ ] T3 Packet dataclass; hard-false `forecast_eligible`; hard-null `brier`.
-- [ ] T4 Parser v0.1: AFFIX, SUBSTITUTE, REGISTER_SHIFT, EGGCORN fixtures, COMPOSE.
-- [ ] T5 `watch_score` formula from spec.md + unit tests on civilian strings.
-- [ ] T6 Redaction helper used by receipt emit.
-- [ ] T7 `analysis.mutation_trace` attach; omit if empty.
-- [ ] T8 CLI `mutation-trace`.
-- [ ] T9 ≥20 civilian fixture packets.
-- [ ] T10 Docs: glossary, slang-lineages addendum, SKILL.md, STATUS.
-- [ ] T11 Dual-use merge-gate questions in plan.md answered in the PR body.
+- [x] T1 Schema file `schemas/mutation_trace.v0.1.schema.json`
+- [x] T2 Operator enum + maps (`operators.py`)
+- [x] T3 Packet dataclass; hard-false forecast_eligible; hard-null brier
+- [x] T4 Parser v0.1: AFFIX, SUBSTITUTE, REGISTER_SHIFT, EGGCORN, COMPOSE
+- [x] T5 watch_score + unit tests
+- [x] T6 Redaction helper
+- [x] T7 attach helper `analysis/mutation_trace_attach.py` (wire one call in detect_memetic_patterns still open)
+- [ ] T8 `$HLX mutation trace|predict` noun in scripts/hyperlex.py (module CLI ships: `python -m hyperlex.mutation`)
+- [x] T9 civilian fixtures in tests
+- [x] T10 SKILL / commands / glossary deltas
+- [ ] T11 Dual-use merge-gate answers in PR body
