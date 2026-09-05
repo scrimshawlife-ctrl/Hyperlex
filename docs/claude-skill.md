@@ -84,7 +84,10 @@ step: `pending` → operator decision → `settle` → `score-series`.
 | Contract | Same `SKILL.md` | Same `SKILL.md` + Claude section |
 
 Fail-closed rules do not change: no invented Brier, no auto-settle, no
-phenomenology claims.
+phenomenology claims. `hyperlex doctor` emits `CLAUDE_SOT_CLEARED=true|false`
+from the local pin `references/claude-sot-cleared.json` plus git/install
+provenance (not a live GitHub fetch). When Claude packaging is installed or
+claimed and the pin does not match, doctor fails.
 
 ## See also
 

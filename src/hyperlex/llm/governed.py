@@ -78,7 +78,10 @@ def _openai_compatible_provider(prompt: str, context: Dict[str, Any]) -> str:
     if not api_key:
         raise GovernedLLMError("HYPERLEX_LLM_API_KEY (or OPENAI_API_KEY) required")
 
+    from hyperlex.guards import require_http_url
+
     base = os.environ.get("HYPERLEX_LLM_BASE_URL", "https://api.openai.com/v1").rstrip("/")
+    base = require_http_url(base, name="HYPERLEX_LLM_BASE_URL").rstrip("/")
     model = os.environ.get("HYPERLEX_LLM_MODEL", "gpt-4o-mini").strip() or "gpt-4o-mini"
     try:
         timeout = float(os.environ.get("HYPERLEX_LLM_TIMEOUT", "30") or "30")

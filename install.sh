@@ -192,22 +192,23 @@ install_extra_host() {
   TARGET="$_saved"
 }
 
-copy_claude_helpers() {
+install_claude_helpers() {
   local dest_root="${HOME}/.claude/skills"
   local name src dest
+  local check_args=()
+  [[ $SKIP_SMOKE -eq 1 ]] && check_args+=(--skip-checks)
   for name in "${CLAUDE_HELPERS[@]}"; do
-    src="${ROOT}/.claude/skills/${name}/SKILL.md"
-    dest="${dest_root}/${name}/SKILL.md"
-    if [[ ! -f "$src" ]]; then
-      warn "Claude helper missing in source: ${src}"
+    src="${ROOT}/.claude/skills/${name}"
+    dest="${dest_root}/${name}"
+    if [[ ! -f "${src}/SKILL.md" ]]; then
+      warn "Claude helper missing in source: ${src}/SKILL.md"
       continue
     fi
     if [[ $DRY_RUN -eq 1 ]]; then
-      log "DRY RUN: would install Claude helper ${name} → ${dest}"
+      log "DRY RUN: would transactional-install Claude helper ${name} → ${dest}"
       continue
     fi
-    mkdir -p "$(dirname "$dest")"
-    cp -f "$src" "$dest"
+    python3 "${ROOT}/scripts/install_transaction.py" "$src" "$dest" hyperlex-helper "${check_args[@]}"
   done
 }
 
@@ -237,8 +238,9 @@ if [[ $DRY_RUN -eq 1 ]]; then
   [[ -d "$TARGET" ]] && log "DRY RUN: would publish a target-keyed backup under ${HERMES_ROOT}/backups/hyperlex/"
   [[ $INSTALL_OPENCLAW -eq 1 ]] && log "DRY RUN: would also install to ${OPENCLAW_TARGET}"
   [[ $INSTALL_CLAUDE -eq 1 ]] && log "DRY RUN: would also install Claude personal skill to ${CLAUDE_SKILL_TARGET}"
-  [[ $INSTALL_CLAUDE -eq 1 ]] && copy_claude_helpers
+  [[ $INSTALL_CLAUDE -eq 1 ]] && install_claude_helpers
   [[ $INSTALL_CLAUDE_PLUGIN -eq 1 ]] && log "DRY RUN: would also install Claude plugin dir to ${CLAUDE_PLUGIN_TARGET}"
+  [[ $INSTALL_CLAUDE_PLUGIN -eq 1 ]] && install_claude_helpers
   exit 0
 fi
 
@@ -250,11 +252,12 @@ fi
 
 if [[ $INSTALL_CLAUDE -eq 1 ]]; then
   install_extra_host "$CLAUDE_SKILL_TARGET" "Claude personal skill"
-  copy_claude_helpers
+  install_claude_helpers
 fi
 
 if [[ $INSTALL_CLAUDE_PLUGIN -eq 1 ]]; then
   install_extra_host "$CLAUDE_PLUGIN_TARGET" "Claude plugin"
+  install_claude_helpers
 fi
 
 echo ""

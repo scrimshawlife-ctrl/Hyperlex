@@ -161,7 +161,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "885f482d77d8",
+    "integrity": "885f482d77d8d49eb60038b18c2d1f70f3a068f099b39df7d3c5077ca0981372",
     "path": "examples/receipts/golden/kinship-address.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

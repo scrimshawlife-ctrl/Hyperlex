@@ -38,6 +38,7 @@ build/
 !data/backfill/**/*.json
 !data/phylogeny/**/*.json
 !.claude-plugin/plugin.json
+!references/claude-sot-cleared.json
 
 # Temp / build output
 tmp/

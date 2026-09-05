@@ -94,11 +94,14 @@ def embed_openai_compatible(texts: Sequence[str]) -> tuple[List[List[float]], Em
     import urllib.error
     import urllib.request
 
+    from hyperlex.guards import require_http_url
+
     base = os.environ.get("HYPERLEX_EMBED_BASE_URL") or os.environ.get("HYPERLEX_LLM_BASE_URL") or ""
     key = os.environ.get("HYPERLEX_EMBED_API_KEY") or os.environ.get("HYPERLEX_LLM_API_KEY") or os.environ.get("OPENAI_API_KEY") or ""
     model = os.environ.get("HYPERLEX_EMBED_MODEL", "text-embedding-3-small")
     if not base:
         raise RuntimeError("HYPERLEX_EMBED_BASE_URL or HYPERLEX_LLM_BASE_URL required for openai_compatible embeddings")
+    base = require_http_url(base, name="HYPERLEX_EMBED_BASE_URL")
     if str(os.environ.get("HYPERLEX_OFFLINE", "")).strip() in {"1", "true", "yes", "on"}:
         raise RuntimeError("offline: remote embeddings disabled (HYPERLEX_OFFLINE=1)")
 

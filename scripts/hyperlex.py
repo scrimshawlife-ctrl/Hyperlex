@@ -128,6 +128,25 @@ def _claude_host_check() -> _Check:
     )
 
 
+def _claude_sot_cleared_check() -> _Check:
+    """Fail-closed SoT marker. Local pin/provenance only — no live GitHub fetch."""
+    from hyperlex.claude_sot import (
+        claude_packaging_claimed,
+        doctor_sot_should_fail,
+        resolve_claude_sot_cleared,
+    )
+
+    cleared, reason = resolve_claude_sot_cleared(ROOT)
+    marker = f"CLAUDE_SOT_CLEARED={'true' if cleared else 'false'}"
+    claimed = claude_packaging_claimed()
+    message = f"{marker}; {reason}"
+    if doctor_sot_should_fail(cleared=cleared, claimed=claimed):
+        return _check(False, "claude_sot_cleared", "", f"{message}; Claude packaging claimed")
+    if claimed:
+        return _check(True, "claude_sot_cleared", f"{message}; Claude packaging claimed", "")
+    return _check(True, "claude_sot_cleared", f"{message}; Claude packaging not claimed", "")
+
+
 def _import_hyperlex():
     try:
         import importlib
@@ -382,8 +401,16 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
         _check(True, "operator_home", f"~/.hyperlex exists={home_hx.is_dir()} path={home_hx}", "")
     )
     checks.append(_claude_host_check())
+    checks.append(_claude_sot_cleared_check())
 
     ok = all(c.ok for c in checks)
+    sot_cleared = False
+    sot_msg = "CLAUDE_SOT_CLEARED=false"
+    for c in checks:
+        if c.name == "claude_sot_cleared":
+            sot_cleared = bool(c.ok) and c.message.startswith("CLAUDE_SOT_CLEARED=true")
+            sot_msg = c.message.split(";")[0].strip() if c.message else sot_msg
+            break
     _emit({
         "ok": ok,
         "command": "doctor",
@@ -393,6 +420,8 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
         "n_failed": sum(1 for c in checks if not c.ok),
         "checks": [c.__dict__ for c in checks],
         "posture": "hermes_skill_python_package_repo",
+        "CLAUDE_SOT_CLEARED": sot_cleared,
+        "claude_sot_cleared": sot_msg,
     })
     return 0 if ok else 2
 
@@ -984,7 +1013,7 @@ def cmd_emit_receipt(args: argparse.Namespace) -> int:
     path = pkg.emit_receipt(
         body,
         out_dir=out_dir,
-        validate=bool(args.validate),
+        validate=not bool(getattr(args, "no_validate", False)),
         append_ledger=not args.no_ledger,
         ledger_path=ledger,
     )
@@ -1282,6 +1311,10 @@ def cmd_vector_import(args: argparse.Namespace) -> int:
     if bool(getattr(args, "cloud", False)):
         backend = "chroma"
     try:
+        if bool(getattr(args, "cloud", False)) and bool(getattr(args, "i_understand_cloud_write", False)):
+            from hyperlex.guards import set_tty_cloud_write_ack
+
+            set_tty_cloud_write_ack(True)
         report = import_vectors(
             in_path=Path(args.input),
             backend=backend,
@@ -1328,6 +1361,10 @@ def cmd_vector_sync(args: argparse.Namespace) -> int:
         if to_path is None and getattr(args, "to_db", None):
             to_path = Path(args.to_db)
 
+    if to_cloud and bool(getattr(args, "i_understand_cloud_write", False)):
+        from hyperlex.guards import set_tty_cloud_write_ack
+
+        set_tty_cloud_write_ack(True)
     try:
         report = sync_vectors(
             from_backend=from_backend,
@@ -1801,6 +1838,7 @@ def cmd_settle(args: argparse.Namespace) -> int:
             authority_ref=args.authority_ref or None,
             authority_note=args.authority_note or None,
             evidence_ref=args.evidence_ref or None,
+            settle_token=getattr(args, "settle_token", None) or None,
             path=log_path,
         )
     except ValueError as exc:
@@ -1930,10 +1968,24 @@ def cmd_receipt_verify(args: argparse.Namespace) -> int:
         _emit({"ok": False, "error": "receipt.integrity missing"})
         return 2
 
-    canonical = json.dumps({k: payload[k] for k in payload if k != "receipt"}, sort_keys=True, separators=(",", ":"))
-    actual = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:12]
-    ok = actual == expected
-    _emit({"ok": ok, "path": str(args.path), "expected": expected, "actual": actual})
+    pkg, err = _import_hyperlex()
+    if pkg is None:
+        _emit({"ok": False, "error": f"import failure: {err}"})
+        return 2
+    ok, msg = pkg.verify_receipt(payload)
+    actual = None
+    if isinstance(payload, dict):
+        body = {k: payload[k] for k in payload if k != "receipt"}
+        actual = hashlib.sha256(
+            json.dumps(body, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+    _emit({
+        "ok": ok,
+        "path": str(args.path),
+        "expected": expected,
+        "actual": actual,
+        "message": msg,
+    })
     return 0 if ok else 2
 
 
@@ -2497,7 +2549,8 @@ def _build_parser() -> argparse.ArgumentParser:
     emit_parser.add_argument("--out-dir", default="", help="Receipt directory (default ~/.hyperlex/receipts)")
     emit_parser.add_argument("--ledger", default="")
     emit_parser.add_argument("--no-ledger", action="store_true", default=False)
-    emit_parser.add_argument("--validate", action="store_true", default=False)
+    emit_parser.add_argument("--validate", action="store_true", default=True)
+    emit_parser.add_argument("--no-validate", action="store_true", default=False, dest="no_validate")
     emit_parser.set_defaults(func=cmd_emit_receipt)
 
     list_parser = subparsers.add_parser("list-receipts", help="List receipt ledger index entries")
@@ -2600,6 +2653,13 @@ def _build_parser() -> argparse.ArgumentParser:
         default=False,
         help="Import into Chroma Cloud (uses HYPERLEX_CHROMA_* creds; ignores local path env)",
     )
+    vim.add_argument(
+        "--i-understand-cloud-write",
+        action="store_true",
+        default=False,
+        dest="i_understand_cloud_write",
+        help="TTY ack for cloud writes (or set HYPERLEX_CLOUD_WRITE=1)",
+    )
     vim.set_defaults(func=cmd_vector_import)
 
     vsy = subparsers.add_parser(
@@ -2624,6 +2684,13 @@ def _build_parser() -> argparse.ArgumentParser:
     vsy.add_argument("--to-db", default="", help="Dest sqlite file when --to sqlite")
     vsy.add_argument("--to-backend", default="chroma", help="Used with --to path (default chroma)")
     vsy.add_argument("--kind", default="", help="Optional filter: term | receipt")
+    vsy.add_argument(
+        "--i-understand-cloud-write",
+        action="store_true",
+        default=False,
+        dest="i_understand_cloud_write",
+        help="TTY ack for cloud writes (or set HYPERLEX_CLOUD_WRITE=1)",
+    )
     vsy.set_defaults(func=cmd_vector_sync)
 
     lbf = subparsers.add_parser(
@@ -2802,6 +2869,11 @@ def _build_parser() -> argparse.ArgumentParser:
     settle_parser.add_argument("--authority-kind", default="operator", choices=["operator", "automated_rule", "external_oracle"])
     settle_parser.add_argument("--authority-ref", default="")
     settle_parser.add_argument("--authority-note", default="")
+    settle_parser.add_argument(
+        "--settle-token",
+        default="",
+        help="Human settlement token (or set HYPERLEX_SETTLE_TOKEN). Never logged.",
+    )
     settle_parser.add_argument("--evidence-ref", default="")
     settle_parser.add_argument("--export-ledger", action="store_true", default=False, help="Emit Abraxas-compatible BrierLedgerEntry")
     settle_parser.add_argument("--log", default="")

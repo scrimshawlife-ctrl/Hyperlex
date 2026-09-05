@@ -115,7 +115,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "48d6b080d68f",
+    "integrity": "48d6b080d68fb9cdd71e5350b8c308f762a263379633590b44033168b13b037b",
     "path": "examples/receipts/golden/open-no-lineage.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

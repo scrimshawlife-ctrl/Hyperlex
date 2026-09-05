@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **P1 fail-closed hardening:** Claude `init` / `install.sh --claude` helpers
+  are transactional (symlink refuse, target-keyed backup, staged smoke /
+  UNVERIFIED). Unguarded `copy_claude_helpers` removed. Scored `settle()` /
+  `settle_and_log()` require token or TTY confirm, non-empty `authority.ref`,
+  and non-advisory kind; piped yes is refused. X API base allowlists
+  `api.twitter.com` / `api.x.com` (https only). Cloud vector writes require
+  `HYPERLEX_CLOUD_WRITE=1` or TTY `--i-understand-cloud-write`. `doctor`
+  emits `CLAUDE_SOT_CLEARED=` from local pin/provenance (Skill Validation
+  fetches full git history so the pin SHA is locally present). `receipt.integrity`
+  is full sha256; `emit_receipt(..., validate=True)` default; legacy 12-char
+  verify only with `HYPERLEX_RECEIPT_LEGACY_INTEGRITY=1`.
 - **Claude Code host (additive):** `.claude-plugin/plugin.json`, project
   `CLAUDE.md`, slash helpers (`.claude/skills/` + plugin `commands/`),
   `install.sh --claude` / `--claude-plugin`, `scripts/claude_hlx.sh`,

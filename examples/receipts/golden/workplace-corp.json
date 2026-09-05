@@ -178,7 +178,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "0fcc0f79803d",
+    "integrity": "0fcc0f79803dac8a62abd2d1883fc2fa7b8451f6a8ae7add9e0b3425643b6fcb",
     "path": "examples/receipts/golden/workplace-corp.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

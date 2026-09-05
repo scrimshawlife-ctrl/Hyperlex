@@ -20,8 +20,10 @@ import uuid
 from pathlib import Path
 
 KIND = "hyperlex"
+KIND_HELPER = "hyperlex-helper"
 CHECKS = {
     KIND: [("hyperlex.py", "check"), ("hyperlex.py", "smoke")],
+    KIND_HELPER: [],
 }
 IGNORE = shutil.ignore_patterns(
     ".git",
@@ -125,6 +127,11 @@ def _check_env(workspace: Path, stage: Path) -> dict[str, str]:
 def _run_checks(stage: Path, kind: str, env: dict[str, str], skip_checks: bool) -> None:
     if skip_checks:
         return
+    if kind == KIND_HELPER:
+        skill = stage / "SKILL.md"
+        if not skill.is_file() or not skill.read_text(encoding="utf-8").strip():
+            raise ValueError("helper SKILL.md missing or empty")
+        return
     for command in CHECKS[kind]:
         subprocess.run(
             [sys.executable, str(stage / "scripts" / command[0]), *command[1:]],
@@ -169,7 +176,7 @@ def _write_receipt(
         "repository": _git(source, "remote", "get-url", "origin") if own_checkout else None,
         "source_commit": _git(source, "rev-parse", "HEAD") if own_checkout else None,
         "source_dirty": bool(dirty) if dirty is not None else None,
-        "version": (source / "VERSION").read_text().strip(),
+        "version": (source / "VERSION").read_text().strip() if (source / "VERSION").is_file() else None,
         "destination": str(target),
         "status": "UNVERIFIED" if skip_checks else "VALIDATED",
         "checks_skipped": list(CHECKS[kind]) if skip_checks else [],
@@ -247,10 +254,10 @@ def install(source: Path, target: Path, kind: str, skip_checks: bool = False) ->
             _run_checks(stage, kind, _check_env(workspace, stage), skip_checks)
         _preserve_legacy_out(target, stage)
         receipt = _write_receipt(source, target, stage, kind, skip_checks)
-        expected = {
-            path: (stage / path).read_bytes()
-            for path in ("SKILL.md", "VERSION", ".install-provenance.json")
-        }
+        expected_names = ["SKILL.md", ".install-provenance.json"]
+        if (stage / "VERSION").is_file():
+            expected_names.append("VERSION")
+        expected = {path: (stage / path).read_bytes() for path in expected_names}
         backup = _publish_backup(target, backups)
         _refuse_symlink_target(target, "target became a symlink during staging")
         try:

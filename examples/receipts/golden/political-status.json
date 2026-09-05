@@ -177,7 +177,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "2a4fcf971e08",
+    "integrity": "2a4fcf971e08baebb53b648e8fac0fc7065aff6d35de12ca856b4c536a6a61f1",
     "path": "examples/receipts/golden/political-status.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

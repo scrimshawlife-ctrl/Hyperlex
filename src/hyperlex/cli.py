@@ -263,6 +263,10 @@ def cmd_settle(args: argparse.Namespace) -> int:
         forecast,
         outcome_value=outcome,
         settlement_decision=decision,
+        authority_kind=getattr(args, "authority_kind", "operator"),
+        authority_ref=getattr(args, "authority_ref", None) or None,
+        authority_note=getattr(args, "authority_note", None) or None,
+        settle_token=getattr(args, "settle_token", None) or None,
         path=log,
     )
     _emit({"ok": True, "command": "settle", "score": out["score"], "settlement": out["settlement"]})
@@ -537,6 +541,10 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--forecast-file", default="")
     s.add_argument("--decision", required=True)
     s.add_argument("--outcome", type=float, default=None)
+    s.add_argument("--authority-kind", default="operator")
+    s.add_argument("--authority-ref", default="")
+    s.add_argument("--authority-note", default="")
+    s.add_argument("--settle-token", default="")
     s.add_argument("--log", default="")
     s.set_defaults(func=cmd_settle)
 

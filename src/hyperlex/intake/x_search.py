@@ -18,6 +18,8 @@ import shutil
 import subprocess
 from typing import Any, Dict, Optional, Tuple
 
+from hyperlex.guards import UrlGateError, validate_x_api_base, x_api_custom_allowed
+
 try:
     import requests
 except ImportError:
@@ -37,19 +39,40 @@ def _bearer() -> str:
     )
 
 
-def _api_base() -> str:
-    return os.environ.get("HYPERLEX_X_API_BASE", "https://api.twitter.com/2").rstrip("/")
+def _api_base(*, allow_custom: Optional[bool] = None) -> str:
+    raw = os.environ.get("HYPERLEX_X_API_BASE", "https://api.twitter.com/2")
+    return validate_x_api_base(raw, allow_custom=allow_custom)
 
 
-def fetch_x_api(query: str) -> Tuple[str, Dict[str, Any]]:
+def fetch_x_api(query: str, *, allow_custom: Optional[bool] = None) -> Tuple[str, Dict[str, Any]]:
     """Twitter API v2 recent search. Returns (signal, meta)."""
     token = _bearer()
-    locator = f"{_api_base()}/tweets/search/recent"
     meta: Dict[str, Any] = {
         "adapter": "x_api_v2",
-        "source_locator": locator,
         "live": False,
     }
+    try:
+        base = _api_base(allow_custom=allow_custom)
+    except UrlGateError as exc:
+        meta["reason"] = "x_api_base_refused"
+        meta["error"] = str(exc)
+        meta["source_locator"] = "hyperlex://x_search/refused"
+        if x_api_custom_allowed(allow_custom=allow_custom):
+            meta["custom_base_allowed"] = True
+        return f"[X_API_BASE_REFUSED] {exc} for '{query}'", meta
+
+    locator = f"{base}/tweets/search/recent"
+    meta["source_locator"] = locator
+    if x_api_custom_allowed(allow_custom=allow_custom):
+        from urllib.parse import urlparse
+
+        host = (urlparse(base).hostname or "").lower()
+        from hyperlex.guards import X_API_ALLOWED_HOSTS
+
+        if host not in X_API_ALLOWED_HOSTS:
+            meta["custom_base"] = True
+            meta["warn"] = "HYPERLEX_X_API_BASE_ALLOW_CUSTOM override in use"
+
     if _offline():
         meta["reason"] = "offline"
         return f"[X_OFFLINE] search disabled for '{query}'", meta

@@ -1,0 +1,6 @@
+{
+  "schema": "hyperlex.claude_sot_cleared.v1",
+  "cleared": false,
+  "cleared_sha": "c9233c98376b0b40494071b9f12ed1c8d1994696",
+  "note": "Public MIT tip with Claude helpers (#15). Doctor sets CLAUDE_SOT_CLEARED=true when local git HEAD or .install-provenance.json source_commit matches or descends from this SHA. Live GitHub fetch is not used. Updated while mirroring org SoT P1 fail-closed (#11 / 3188ef4) so public trees that land matching product content clear when this pin is an ancestor of HEAD."
+}

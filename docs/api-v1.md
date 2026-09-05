@@ -40,7 +40,7 @@ or an explicit deprecation window.
 | `ingest_signal(query, source="mock")` | `str` signal |
 | `fetch_ingest(query, source="mock", ...)` | structured ingest + `source_fingerprint` |
 | `detect_memetic_patterns(...)` | result dict; `provenance.brier` is always `null` |
-| `emit_receipt(result, ...)` | writes receipt JSON; optional ledger append |
+| `emit_receipt(result, ...)` | writes receipt JSON with full sha256 `receipt.integrity`; `validate=True` default (`--no-validate` CLI escape) |
 | `extract_forecasts(result)` | list of forecasts; **no** Brier field |
 | `settle` / `score_pair` / `score_series` | Brier only after settlement; else `NOT_COMPUTABLE` |
 | `relay_from_result(result)` | `RUNE.HLX.*` envelopes |
