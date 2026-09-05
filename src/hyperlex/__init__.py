@@ -14,10 +14,9 @@ from pathlib import Path
 
 
 def _read_version() -> str:
-    candidate = Path(__file__).resolve().parents[2] / "VERSION"
-    if candidate.exists():
-        return candidate.read_text(encoding="utf-8").strip() or "0.1.0"
-    return "0.1.0"
+    from ._version import read_version
+
+    return read_version()
 
 
 PKG_VERSION = _read_version()
