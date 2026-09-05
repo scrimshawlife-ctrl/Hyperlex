@@ -35,6 +35,9 @@ $HLX check && $HLX doctor && $HLX commands
 $HLX wizard --auto
 ```
 
+Claude Code is an additional host (same CLI, same settlement rule):
+[claude-skill.md](claude-skill.md). `--claude` on `install.sh` is additive.
+
 The **wizard** is the preferred first-run Hermes procedure: offline guided path
 (env → doctor → demo → first pipeline → calibration coach). It never auto-settles;
 settlement stays a human operator step (`pending` → `settle` → `score-series`).

@@ -71,6 +71,7 @@ nav:
       - Cron / live emergence: cron-live-emergence.md
       - Case studies: case-studies.md
       - Hermes skill: hermes-skill.md
+      - Claude Code skill: claude-skill.md
   - Core Reference:
       - Architecture: architecture.md
       - Spec: spec.md

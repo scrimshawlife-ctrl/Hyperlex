@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **Claude Code host (additive):** `.claude-plugin/plugin.json`, project
+  `CLAUDE.md`, slash helpers (`.claude/skills/` + plugin `commands/`),
+  `install.sh --claude` / `--claude-plugin`, `scripts/claude_hlx.sh`,
+  `docs/claude-skill.md`, `references/claude-runtime-contract.md`.
+  `doctor` reports `CLAUDE_OK` / `CLAUDE_MISSING` (missing does not fail).
+  Hermes install paths unchanged.
 - CLI `wizard` + package `hyperlex.wizard`: week-one Hermes guided path
   (`--auto` / interactive); never auto-settles; offline-first; SKILL.md procedure
 - **SIGNAL REPORT parity (Companion adaptation):** `result.v1` extended with optional `provenance.seed`, `analysis.compression_metrics`, `analysis.symbolic_role`, `analysis.propagation_vector`, `analysis.slang_family_tree`, `analysis.signal_report` (schema + package-local copy). Builder: `src/hyperlex/analysis/signal_report.py`. Wired into `detect_memetic_patterns` (attach + seed header). Docs: `docs/superpowers/specs/2026-08-06-signal-report-adaptation.md`. All new fields optional and fail-open. Brier remains null on open analysis.

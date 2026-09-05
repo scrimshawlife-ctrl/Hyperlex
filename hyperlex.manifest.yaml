@@ -19,10 +19,13 @@ package_root: src/hyperlex
 hosts:
   - hermes
   - openclaw
+  - claude-code
 
 install:
   hermes_path: ~/.hermes/skills/hyperlex
   openclaw_path: ~/.openclaw/skills/hyperlex
+  claude_skill_path: ~/.claude/skills/hyperlex
+  claude_plugin_path: ~/.claude/plugins/hyperlex
   atomic: true
   supports_dry_run: true
   supports_rollback: true

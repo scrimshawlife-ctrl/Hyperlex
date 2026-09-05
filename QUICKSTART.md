@@ -27,6 +27,20 @@ $HLX wizard --auto
 $HLX commands
 ```
 
+## Claude Code
+
+```bash
+bash install.sh --claude
+export HYPERLEX_SKILL_DIR="${HOME}/.claude/skills/hyperlex"
+export HLX="python3 $HYPERLEX_SKILL_DIR/scripts/hyperlex.py"
+$HLX demo
+$HLX wizard --auto
+```
+
+Personal skill path: `~/.claude/skills/hyperlex`. Plugin path:
+`~/.claude/plugins/hyperlex` (`--claude-plugin`). Project helpers live under
+`.claude/skills/`. Settlement stays a human step. Guide: [docs/claude-skill.md](docs/claude-skill.md).
+
 ## Daily path
 
 ```bash

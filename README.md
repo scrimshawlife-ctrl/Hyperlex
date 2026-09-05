@@ -17,6 +17,7 @@
   <a href="./VERSION"><img src="https://img.shields.io/badge/version-0.4.0-informational" alt="Version 0.4.0"></a>
   <img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/hermes-skill-7c3aed" alt="Hermes skill">
+  <img src="https://img.shields.io/badge/claude%20code-skill%20%2B%20plugin-d97706" alt="Claude Code">
   <img src="https://img.shields.io/badge/offline--first-mock%20route-22c55e" alt="Offline-first">
   <img src="https://img.shields.io/badge/Brier-settlement%20required-f59e0b" alt="Brier requires settlement">
 </p>
@@ -152,6 +153,22 @@ $HLX commands    # simplified map (JSON)
 ```
 
 Optional: `pip install -e ".[dev]"` then `python -m hyperlex check`.
+
+### Claude Code (additional host)
+
+Hermes stays primary. Claude Code can load the same skill.
+
+```bash
+bash install.sh --claude --dry-run && bash install.sh --claude
+export HYPERLEX_SKILL_DIR="${HOME}/.claude/skills/hyperlex"
+export HLX="python3 $HYPERLEX_SKILL_DIR/scripts/hyperlex.py"
+$HLX demo
+```
+
+Personal skill: `~/.claude/skills/hyperlex`. Local plugin tree:
+`bash install.sh --claude-plugin` → `~/.claude/plugins/hyperlex`. Opening this
+repo as a project uses `CLAUDE.md` plus `.claude/skills/` slash helpers.
+Guide: [docs/claude-skill.md](./docs/claude-skill.md).
 
 ### Daily path (start here) — automatic backend
 
@@ -346,7 +363,8 @@ from hyperlex.compat.abraxas import to_brier_ledger_entry, list_hlx_runes
 | [docs/brier-calibration.md](./docs/brier-calibration.md) | Forecast → settle → Brier |
 | [docs/phase5.md](./docs/phase5.md) | Research simulation |
 | [docs/slang-lineages.md](./docs/slang-lineages.md) | Lineage methodology |
-| [docs/hermes-skill.md](./docs/hermes-skill.md) | Skill model |
+| [docs/hermes-skill.md](./docs/hermes-skill.md) | Hermes skill model |
+| [docs/claude-skill.md](./docs/claude-skill.md) | Claude Code skill + plugin |
 
 Examples: `examples/cron/` · `examples/receipts/golden/` · `examples/calibration/` · `examples/slang-families/` · `examples/case-studies/`
 

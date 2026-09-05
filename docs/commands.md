@@ -4,7 +4,7 @@ Hyperlex has many subcommands. Prefer this map. Full list: `$HLX commands` (JSON
 or `python3 scripts/hyperlex.py -h`.
 
 ```bash
-HLX="python3 ${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}/scripts/hyperlex.py"
+HLX="python3 ${HYPERLEX_SKILL_DIR:-${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}}/scripts/hyperlex.py"
 ```
 
 ## Daily ops (automatic backend)

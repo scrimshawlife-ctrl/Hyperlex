@@ -34,3 +34,7 @@ def test_doctor_ok() -> None:
     assert "brier_null" in names
     assert "api_v1" in names
     assert "golden_corpus" in names
+    assert "claude_host" in names
+    claude = next(c for c in body["checks"] if c["name"] == "claude_host")
+    assert claude["ok"] is True
+    assert claude["message"].startswith("CLAUDE_")

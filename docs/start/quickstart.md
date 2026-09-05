@@ -45,6 +45,18 @@ $HLX demo
 $HLX wizard --auto
 ```
 
+## Claude Code
+
+```bash
+bash install.sh --claude
+export HYPERLEX_SKILL_DIR="${HOME}/.claude/skills/hyperlex"
+export HLX="python3 $HYPERLEX_SKILL_DIR/scripts/hyperlex.py"
+$HLX demo
+```
+
+Same offline first success. Hermes remains the default `install.sh` target;
+`--claude` is additive. Details: [Claude skill](../claude-skill.md).
+
 ## Committed sample output
 
 See [`examples/quickstart/`](https://github.com/scrimshawlife-ctrl/Hyperlex/tree/main/examples/quickstart)
