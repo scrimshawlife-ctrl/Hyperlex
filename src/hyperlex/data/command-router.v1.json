@@ -10,6 +10,7 @@
   ],
   "research": [
     {"cmd": "mutation trace", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": false},
+    {"cmd": "mutation watch", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": false},
     {"cmd": "mutation predict", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": false},
     {"cmd": "mutation-predict", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": true},
     {"cmd": "mutation-trace", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": true},

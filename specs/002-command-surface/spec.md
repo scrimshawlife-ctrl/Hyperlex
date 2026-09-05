@@ -23,7 +23,7 @@ $HLX mutation <verb> [text]
 
   trace     detect operators on attested text     (001 detector)
   predict   next civilian surfaces of a slang atom (existing)
-  watch     print watcher A/B sketch for a window  (later)
+  watch     print watcher A/B sketch for a window  (003)
 ```
 
 ### Hermes invocation (v0.1 SHADOW)

@@ -59,6 +59,8 @@ Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai, `live`→com
 | `simulate --term T --mode scenario` | Phase 5 composed scenario |
 | `simulate --mode schedule --tier ELEVATED` | Risk→scan plan |
 | `mutation trace "it's giving mid rizz"` | Detect operator stacks (brier null · forecast_eligible false) |
+| `mutation trace "…" --human` | Civilian advisory card (SHADOW; not a forecast) |
+| `mutation watch` | Read mutation watch jsonl (instrumentation; never auto-fires) |
 | `mutation predict "rizz"` | Next civilian surfaces (SPECULATIVE · brier null) |
 | `mutation-predict "rizz"` | Deprecated alias of `mutation predict` |
 | `archive-export --history` | Sanitized Pages run history |

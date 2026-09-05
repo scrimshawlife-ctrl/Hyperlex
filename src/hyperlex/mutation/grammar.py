@@ -1,9 +1,15 @@
-"""Offline v0.1 parser: AFFIX, SUBSTITUTE, REGISTER_SHIFT, EGGCORN, COMPOSE."""
+"""Offline parser: v0.1 L2/L3/L5 + v0.2 L1/L4/L6 detect-only."""
 from __future__ import annotations
 
 import re
 from typing import Any, Dict, List, Optional
 
+from .detect import (
+    detect_code_switch,
+    detect_game_encode,
+    detect_phonetic_warp,
+    slang_context,
+)
 from .operators import (
     EGGCORN_PHRASES,
     FRAME_MARKERS,
@@ -79,6 +85,7 @@ def parse_mutation_trace(
             break
 
     tokens = re.findall(r"[a-z0-9']+", norm)
+    words = [w.strip(".,!?;:\"“”") for w in norm.split() if w.strip(".,!?;:\"“”")]
     for tok in tokens:
         if tok in SUBSTITUTE_TERMS:
             ops.append("SUBSTITUTE")
@@ -107,6 +114,40 @@ def parse_mutation_trace(
             decode = max(decode, 0.6)
             claim = "OBSERVED"
             break
+
+    warped = detect_phonetic_warp(tokens)
+    if warped:
+        ops.append("PHONETIC_WARP")
+        recovered = recovered or warped
+        lexicon_hit = True
+        if warped == "unalive":
+            algospeak = True
+        if "SUBSTITUTE" not in ops:
+            ops.append("SUBSTITUTE")
+        decode = max(decode, 0.66)
+        if claim != "OBSERVED":
+            claim = "INFERRED"
+
+    game = detect_game_encode(
+        tokens,
+        norm,
+        slang_context=slang_context(tokens, ops) or bool(warped),
+    )
+    if game:
+        ops.append("GAME_ENCODE")
+        if game in SUBSTITUTE_TERMS:
+            recovered = recovered or game
+            lexicon_hit = True
+            if "SUBSTITUTE" not in ops:
+                ops.append("SUBSTITUTE")
+        decode = max(decode, 0.64)
+        if game in SUBSTITUTE_TERMS:
+            claim = "OBSERVED"
+
+    if detect_code_switch(raw, words, lexicon_hit=lexicon_hit or bool(warped)):
+        ops.append("CODE_SWITCH")
+        decode = max(decode, 0.64)
+        claim = "OBSERVED"
 
     # unique preserve order
     seen = set()
@@ -152,6 +193,6 @@ def parse_mutation_trace(
         class_=claim if ops else "OBSERVED",
         restricted_intent_suspected=bool(restricted_intent_suspected),
         payload_ref=payload_ref_for(norm) if restricted_intent_suspected else None,
-        provenance=["hyperlex.mutation.grammar.v0.1"],
+        provenance=["hyperlex.mutation.grammar.v0.2"],
     )
     return redact_packet(pkt.to_dict())
