@@ -1,13 +1,12 @@
 # Hyperlex Spec Kit
 
-Spec-Driven Development lock for Hyperlex. Runtime code remains the package under `src/hyperlex/`.
-
-| ID | Title | Status |
-|----|-------|--------|
+| ID | Title | SDD status |
+|----|-------|------------|
 | 000 | Hyperlex spine (as-built) | SPECIFY |
-| 001 | Adversarial slang mutation grammar (detector) | SPECIFY / SHADOW |
+| 001 | Adversarial slang mutation grammar (detector) | SPECIFY + CLARIFY locked / SHADOW |
 
 Constitution: `.specify/memory/constitution.md`
 
-Flow: constitution → specify → clarify → plan → checklist → tasks → analyze → implement → converge.
-001 is specified and planned. Implement is a separate operator-gated cycle.
+001 extras: `clarify.md`, `threat-model.md`, `owasp-mapping.md`, `checklist.md`, `schemas/mutation_trace.v0.1.schema.json`
+
+Implement and converge are not started.
