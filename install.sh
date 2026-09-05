@@ -108,6 +108,7 @@ validate_source() {
     "hyperlex.manifest.yaml"
     "VERSION"
     "scripts/hyperlex.py"
+    "scripts/hlx-mutation"
     "src/hyperlex/__init__.py"
     "src/hyperlex/calibration/scoring.py"
     "src/hyperlex/schemas/result.v1.schema.json"
@@ -118,6 +119,7 @@ validate_source() {
     "schemas/settlement.v1.schema.json"
     "schemas/brier_series.v1.schema.json"
     "schemas/lineage.v1.schema.json"
+    "schemas/mutation_trace.v0.1.schema.json"
   )
   local f
   for f in "${required[@]}"; do
@@ -125,6 +127,8 @@ validate_source() {
   done
   python3 -c "import ast, pathlib; ast.parse(pathlib.Path(r'''${ROOT}/scripts/hyperlex.py''').read_text())" \
     || die "scripts/hyperlex.py failed syntax check"
+  python3 -c "import ast, pathlib; ast.parse(pathlib.Path(r'''${ROOT}/scripts/hlx-mutation''').read_text())" \
+    || die "scripts/hlx-mutation failed syntax check"
   log "Source validation OK"
 }
 
@@ -170,9 +174,7 @@ sync_tree() {
       --exclude 'out' \
       -cf - . | tar -C "${dest}" -xf -
   fi
-  chmod +x "${dest}/install.sh" "${dest}/scripts/hyperlex.py" 2>/dev/null || true
-  # rsync --exclude '.git' also skips deleting a leftover dest .git; drop it so the
-  # skill install is never a nested half-repo from a prior manual checkout.
+  chmod +x "${dest}/install.sh" "${dest}/scripts/hyperlex.py" "${dest}/scripts/hlx-mutation" 2>/dev/null || true
   if [[ -e "${dest}/.git" ]]; then
     rm -rf "${dest}/.git"
   fi
@@ -241,7 +243,6 @@ post_check "$TARGET" || true
 
 if [[ $INSTALL_OPENCLAW -eq 1 ]]; then
   mkdir -p "$(dirname "$OPENCLAW_TARGET")"
-  # reuse TARGET temporarily for openclaw path
   _saved="$TARGET"
   TARGET="$OPENCLAW_TARGET"
   validate_target
@@ -258,6 +259,7 @@ echo ""
 echo "Next:"
 echo "  export HERMES_SKILL_DIR=\"${TARGET}\""
 echo "  python3 \"\$HERMES_SKILL_DIR/scripts/hyperlex.py\" check"
-echo "  python3 \"\$HERMES_SKILL_DIR/scripts/hyperlex.py\" analyze --query \"sharp steam\" --source mock --forecasts"
+echo "  python3 \"\$HERMES_SKILL_DIR/scripts/hyperlex.py\" pipeline \"rizz\" --route offline"
+echo "  python3 \"\$HERMES_SKILL_DIR/scripts/hlx-mutation\" trace \"it's giving mid rizz\""
 echo "  # Reload Hermes skills if the agent is already running"
 echo ""
