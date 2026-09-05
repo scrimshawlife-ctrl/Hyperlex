@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_hlx_mutation_trace_alias():
-    env = {**os.environ, "PYTHONPATH": str(ROOT / "src"), "HYPERLEX_OFFLINE": "1"}
+    env = {**os.environ, "HYPERLEX_OFFLINE": "1"}
+    env.pop("PYTHONPATH", None)
     r = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "hlx-mutation"), "trace", "it's", "giving", "mid", "rizz"],
         cwd=str(ROOT),

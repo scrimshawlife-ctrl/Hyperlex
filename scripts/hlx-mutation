@@ -9,11 +9,16 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-src = ROOT / "src"
-if str(src) not in sys.path:
-    sys.path.insert(0, str(src))
+SRC = ROOT / "src"
+SCRIPTS = Path(__file__).resolve().parent
+
+# scripts/hyperlex.py shadows the package if it sits first on sys.path.
+sys.path = [p for p in sys.path if Path(p).resolve() != SCRIPTS]
+sys.path.insert(0, str(SRC))
+sys.modules.pop("hyperlex", None)
 
 from hyperlex.cli import main  # noqa: E402
+
 
 def _argv(raw: list[str]) -> list[str]:
     if raw and raw[0] == "mutation":
