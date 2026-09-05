@@ -4,13 +4,15 @@ display_name: Hyperlex
 kind: hermes-openclaw-skill
 description: >
   Standalone memetic emergence engine for slang detection, hyperstition
-  tracking, virality analysis, lineage matching, and settled Brier calibration.
+  tracking, virality analysis, lineage matching, settled Brier calibration,
+  and slang mutation-operator detection on attested text.
 license: MIT
 homepage: https://github.com/scrimshawlife-ctrl/Hyperlex
 repository: https://github.com/scrimshawlife-ctrl/Hyperlex
 
 skill_entry: SKILL.md
 cli_entry: scripts/hyperlex.py
+mutation_cli: scripts/hlx-mutation
 installer: install.sh
 package_root: src/hyperlex
 
@@ -39,6 +41,8 @@ tags:
   - lineage
   - calibration
   - brier
+  - mutation
+  - algospeak
   - symbolic-analysis
   - hermes-skill
 
@@ -50,61 +54,27 @@ commands:
   - sources
   - ingest
   - analyze
-  - extract-forecasts
-  - settle
-  - score-series
-  - verify-score-log
-  - emit-receipt
-  - list-receipts
-  - ledger-diff
-  - ledger-stats
-  - archive-export
-  - verify-receipt-ledger
-  - validate
-  - verify-receipt
-  - smoke
-  - scan
   - pipeline
   - run
-  - commands
   - pending
-  - risk-schedule
+  - settle
+  - score-series
+  - mutation
+  - mutation-trace
+  - mutation-predict
+  - commands
+  - scan
   - simulate
-  - relay
-  - feedback
-  - diagram
-  - signal
+  - smoke
 
 intents:
-  - check
-  - doctor
-  - sources
-  - ingest
-  - analyze
-  - extract-forecasts
-  - settle
-  - score-series
-  - verify-score-log
-  - emit-receipt
-  - list-receipts
-  - ledger-diff
-  - ledger-stats
-  - archive-export
-  - verify-receipt-ledger
-  - validate
-  - verify-receipt
-  - smoke
-  - scan
   - pipeline
-  - run
-  - commands
-  - pending
-  - risk-schedule
-  - simulate
-  - relay
-  - feedback
-  - diagram
-  - signal
+  - analyze
+  - settle
+  - mutation-trace
+  - mutation-predict
+  - slang-mutation
+  - algospeak
 
 schemas:
   - schemas/ingest.v1.schema.json
@@ -114,11 +84,12 @@ schemas:
   - schemas/settlement.v1.schema.json
   - schemas/brier_series.v1.schema.json
   - schemas/lineage.v1.schema.json
+  - schemas/mutation_trace.v0.1.schema.json
 
 runtime_profiles:
   stdlib:
     dependencies: []
-    guarantee: "mock ingest, analysis, lineage, calibration, receipts with Python 3.10+"
+    guarantee: "mock ingest, analysis, lineage, calibration, receipts, mutation trace with Python 3.10+"
   validation:
     dependencies: ["jsonschema>=4"]
     guarantee: "JSON Schema validation of artifacts"
@@ -149,6 +120,8 @@ score_log:
 
 authority:
   - analyze emits forecasts only; provenance.brier is null until settlement
+  - mutation_trace is never forecast-eligible; watch_score is not Brier
   - settle requires operator (or declared) authority
   - VOID/CONFLICT settlements are not scored
   - score_series empty → NOT_COMPUTABLE
+  - detector-over-generator; no wrap composition
