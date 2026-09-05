@@ -7,6 +7,9 @@ from typing import Any, Dict
 
 
 def router_path() -> Path:
+    packaged = Path(__file__).resolve().parent / "data" / "command-router.v1.json"
+    if packaged.is_file():
+        return packaged
     return Path(__file__).resolve().parents[2] / "docs" / "command-router.v1.json"
 
 
@@ -17,8 +20,8 @@ def load_router() -> Dict[str, Any]:
             "daily": [],
             "research": [],
             "invoke": {
-                "pipeline": "scripts/hyperlex.py",
-                "mutation": "scripts/hlx-mutation",
+                "pipeline": "hyperlex pipeline",
+                "mutation": "hyperlex mutation",
             },
             "note": "router file missing",
         }

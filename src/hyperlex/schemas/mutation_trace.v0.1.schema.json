@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/mutation_trace.v0.1.schema.json",
+  "title": "hyperlex.mutation_trace.v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "packet_id",
+    "operators",
+    "layers_touched",
+    "class",
+    "restricted_intent_suspected",
+    "forecast_eligible",
+    "brier"
+  ],
+  "properties": {
+    "schema": { "const": "hyperlex.mutation_trace.v0.1" },
+    "packet_id": { "type": "string", "minLength": 8 },
+    "observed_at": { "type": ["string", "null"] },
+    "source": {
+      "type": ["string", "null"],
+      "enum": ["mock", "glossary", "x_search", "reddit", "web", "human", "analyze", "cli", null]
+    },
+    "surface_span": { "type": ["string", "null"] },
+    "recovered_lemma": { "type": ["string", "null"] },
+    "canonical_gloss": { "type": ["string", "null"] },
+    "operators": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "SUBSTITUTE",
+          "AFFIX",
+          "CLIP_BLEND",
+          "EGGCORN",
+          "PHONETIC_WARP",
+          "GAME_ENCODE",
+          "REGISTER_SHIFT",
+          "CODE_SWITCH",
+          "FRAME_WRAP",
+          "COMPOSE"
+        ]
+      }
+    },
+    "layers_touched": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8"]
+      }
+    },
+    "register_shift": {
+      "type": "string",
+      "enum": ["none", "low", "med", "high"]
+    },
+    "irony_flag": { "type": "boolean" },
+    "dissociation_flag": { "type": "boolean" },
+    "algospeak_flag": { "type": "boolean" },
+    "machine_dialect": { "type": "boolean" },
+    "affix_family": { "type": ["string", "null"] },
+    "decode_confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "lexicon_hit": { "type": "boolean" },
+    "watch_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "class": { "enum": ["OBSERVED", "INFERRED", "SPECULATIVE"] },
+    "restricted_intent_suspected": { "type": "boolean" },
+    "payload_ref": { "type": ["string", "null"] },
+    "forecast_eligible": { "const": false },
+    "brier": { "type": "null" },
+    "provenance": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "receipt_id": { "type": ["string", "null"] },
+    "ritualCharge": { "type": ["number", "null"] },
+    "inGroupKeying": { "type": ["number", "null"] },
+    "paraphraseResistance": { "type": ["number", "null"] },
+    "attractorStability": { "type": ["number", "null"] },
+    "disseminationImperative": { "type": ["number", "null"] },
+    "falseStabilizationRisk": { "type": ["number", "null"] }
+  }
+}
