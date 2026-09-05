@@ -12,7 +12,6 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HERMES_ROOT="${HERMES_HOME:-$HOME/.hermes}"
 DEFAULT_TARGET="${HERMES_ROOT}/skills/hyperlex"
-BACKUP_ROOT="${HERMES_ROOT}/receipts/hyperlex-backups"
 OPENCLAW_TARGET="${HOME}/.openclaw/skills/hyperlex"
 
 VERSION="$(tr -d '[:space:]' < "${ROOT}/VERSION" 2>/dev/null || echo "0.0.0")"
@@ -33,9 +32,9 @@ Usage: ./install.sh [options]
 Options:
   --dry-run               Show actions without writing
   --target DIR            Install to DIR (default: ${DEFAULT_TARGET})
-  --rollback              Restore most recent backup
+  --rollback              Restore most recent target-keyed backup
   --openclaw              Also install to ~/.openclaw/skills/hyperlex
-  --skip-smoke            Skip post-install smoke check
+  --skip-smoke            Skip staged check/smoke (marks UNVERIFIED)
   --allow-outside-home    Permit --target outside \$HOME
   --version               Print version and exit
   -h, --help              Show this help
@@ -78,10 +77,18 @@ while [[ $# -gt 0 ]]; do
 done
 
 validate_target() {
+  python3 - "$TARGET" <<'PY'
+import sys
+from pathlib import Path
+p = Path(sys.argv[1]).expanduser().absolute()
+if not sys.argv[1].strip() or any(q.is_symlink() for q in (p, *p.parents)):
+    raise SystemExit("refusing empty or symlinked target path")
+PY
+
   local parent base resolved home_resolved
   parent="$(dirname "$TARGET")"
   base="$(basename "$TARGET")"
-  mkdir -p "$parent" 2>/dev/null || true
+  # Path resolution and dry-run must not create target parents.
   resolved="$(resolve_path "$parent")/${base}"
   TARGET="$resolved"
 
@@ -109,6 +116,7 @@ validate_source() {
     "VERSION"
     "scripts/hyperlex.py"
     "scripts/hlx-mutation"
+    "scripts/install_transaction.py"
     "src/hyperlex/__init__.py"
     "src/hyperlex/calibration/scoring.py"
     "src/hyperlex/schemas/result.v1.schema.json"
@@ -129,97 +137,28 @@ validate_source() {
     || die "scripts/hyperlex.py failed syntax check"
   python3 -c "import ast, pathlib; ast.parse(pathlib.Path(r'''${ROOT}/scripts/hlx-mutation''').read_text())" \
     || die "scripts/hlx-mutation failed syntax check"
+  python3 -c "import ast, pathlib; ast.parse(pathlib.Path(r'''${ROOT}/scripts/install_transaction.py''').read_text())" \
+    || die "scripts/install_transaction.py failed syntax check"
   log "Source validation OK"
 }
 
-backup_existing() {
-  if [[ ! -d "$TARGET" ]]; then
-    return 0
-  fi
-  local stamp dest
-  stamp="$(date -u +%Y%m%dT%H%M%SZ)"
-  dest="${BACKUP_ROOT}/${stamp}"
-  log "Backing up existing install to ${dest}"
-  if [[ $DRY_RUN -eq 1 ]]; then
-    printf '[dry-run] cp -a %q %q\n' "$TARGET" "$dest"
-  else
-    mkdir -p "${BACKUP_ROOT}"
-    cp -a "${TARGET}" "${dest}"
-  fi
-}
-
-sync_tree() {
+run_transaction() {
   local dest="$1"
-  log "Installing to ${dest}"
-  if [[ $DRY_RUN -eq 1 ]]; then
-    printf '[dry-run] rsync/copy %q → %q\n' "$ROOT" "$dest"
-    return 0
-  fi
-  mkdir -p "$dest"
-  if command -v rsync >/dev/null 2>&1; then
-    rsync -a --delete \
-      --exclude '.git' \
-      --exclude '.venv' \
-      --exclude '__pycache__' \
-      --exclude '.pytest_cache' \
-      --exclude 'out/' \
-      --exclude '*.pyc' \
-      "${ROOT}/" "${dest}/"
-  else
-    tar -C "${ROOT}" \
-      --exclude '.git' \
-      --exclude '.venv' \
-      --exclude '__pycache__' \
-      --exclude '.pytest_cache' \
-      --exclude 'out' \
-      -cf - . | tar -C "${dest}" -xf -
-  fi
-  chmod +x "${dest}/install.sh" "${dest}/scripts/hyperlex.py" "${dest}/scripts/hlx-mutation" 2>/dev/null || true
-  if [[ -e "${dest}/.git" ]]; then
-    rm -rf "${dest}/.git"
-  fi
-  mkdir -p "${dest}/.hermes"
-  cat > "${dest}/.hermes/install-receipt.json" <<EOF
-{
-  "skill": "hyperlex",
-  "version": "${VERSION}",
-  "installed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-  "source": "${ROOT}",
-  "destination": "${dest}"
-}
-EOF
-}
-
-post_check() {
-  local dest="$1"
-  [[ $SKIP_SMOKE -eq 1 ]] && return 0
-  [[ $DRY_RUN -eq 1 ]] && return 0
-  log "Post-install check"
-  if ! python3 "${dest}/scripts/hyperlex.py" check >/dev/null; then
-    warn "check failed — run: python3 ${dest}/scripts/hyperlex.py check"
-    return 1
-  fi
-  if ! python3 "${dest}/scripts/hyperlex.py" smoke >/dev/null; then
-    warn "smoke failed — run: python3 ${dest}/scripts/hyperlex.py smoke"
-    return 1
-  fi
-  log "Post-install check OK"
+  local check_args=()
+  [[ $SKIP_SMOKE -eq 1 ]] && check_args+=(--skip-checks)
+  python3 "${ROOT}/scripts/install_transaction.py" "$ROOT" "$dest" hyperlex "${check_args[@]}"
 }
 
 do_rollback() {
   validate_target
-  local latest
-  latest="$(ls -1dt "${BACKUP_ROOT}"/*/ 2>/dev/null | head -1 || true)"
-  [[ -n "$latest" ]] || die "no backups under ${BACKUP_ROOT}"
-  log "Rolling back from ${latest}"
   if [[ $DRY_RUN -eq 1 ]]; then
-    printf '[dry-run] restore %q → %q\n' "$latest" "$TARGET"
-  else
-    rm -rf "$TARGET"
-    mkdir -p "$(dirname "$TARGET")"
-    cp -a "$latest" "$TARGET"
+    log "DRY RUN: would validate and restore a backup bound to ${TARGET}"
+    log "DRY RUN: locks are never auto-reclaimed; two-rename restore is not crash-atomic"
+    return 0
   fi
-  log "Rollback complete"
+  local check_args=()
+  [[ $SKIP_SMOKE -eq 1 ]] && check_args+=(--skip-checks)
+  python3 "${ROOT}/scripts/install_transaction.py" "$ROOT" "$TARGET" hyperlex --rollback "${check_args[@]}"
 }
 
 if [[ $ROLLBACK -eq 1 ]]; then
@@ -231,28 +170,29 @@ validate_source
 validate_target
 
 if [[ $DRY_RUN -eq 1 ]]; then
-  log "DRY RUN: would install Hyperlex v${VERSION} → ${TARGET}"
-  [[ -d "$TARGET" ]] && log "DRY RUN: would backup existing install under ${BACKUP_ROOT}"
+  log "DRY RUN: would staged-validate then activate Hyperlex v${VERSION} → ${TARGET}"
+  log "DRY RUN: two-rename activation is not crash-atomic; locks are never auto-reclaimed"
+  [[ -d "$TARGET" ]] && log "DRY RUN: would publish a target-keyed backup under ${HERMES_ROOT}/backups/hyperlex/"
   [[ $INSTALL_OPENCLAW -eq 1 ]] && log "DRY RUN: would also install to ${OPENCLAW_TARGET}"
   exit 0
 fi
 
-backup_existing
-sync_tree "$TARGET"
-post_check "$TARGET" || true
+run_transaction "$TARGET"
 
 if [[ $INSTALL_OPENCLAW -eq 1 ]]; then
-  mkdir -p "$(dirname "$OPENCLAW_TARGET")"
   _saved="$TARGET"
   TARGET="$OPENCLAW_TARGET"
   validate_target
-  sync_tree "$TARGET"
-  post_check "$TARGET" || true
+  run_transaction "$TARGET"
   TARGET="$_saved"
 fi
 
 echo ""
-log "Hyperlex v${VERSION} installed"
+if [[ $SKIP_SMOKE -eq 1 ]]; then
+  log "Hyperlex v${VERSION} installed — UNVERIFIED (--skip-smoke)"
+else
+  log "Hyperlex v${VERSION} installed"
+fi
 echo "  Hermes:  ${TARGET}"
 [[ $INSTALL_OPENCLAW -eq 1 ]] && echo "  OpenClaw: ${OPENCLAW_TARGET}"
 echo ""
