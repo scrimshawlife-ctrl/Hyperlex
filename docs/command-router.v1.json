@@ -1,0 +1,22 @@
+{
+  "schema": "hyperlex.command_router.v1",
+  "brier_note": "router metadata is not a score",
+  "daily": [
+    {"cmd": "pipeline", "layer": "daily", "noun": null, "forecast_eligible": false, "authority": "advisory", "deprecated": false},
+    {"cmd": "run", "layer": "daily", "noun": null, "forecast_eligible": false, "authority": "advisory", "deprecated": false},
+    {"cmd": "pending", "layer": "daily", "noun": null, "forecast_eligible": true, "authority": "operator", "deprecated": false},
+    {"cmd": "settle", "layer": "daily", "noun": null, "forecast_eligible": true, "authority": "operator", "deprecated": false},
+    {"cmd": "score-series", "layer": "daily", "noun": null, "forecast_eligible": true, "authority": "operator", "deprecated": false}
+  ],
+  "research": [
+    {"cmd": "mutation trace", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": false},
+    {"cmd": "mutation predict", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": false},
+    {"cmd": "mutation-predict", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": true},
+    {"cmd": "mutation-trace", "layer": "research", "noun": "mutation", "forecast_eligible": false, "authority": "advisory", "deprecated": true},
+    {"cmd": "simulate", "layer": "research", "noun": "simulate", "forecast_eligible": false, "authority": "advisory", "deprecated": false}
+  ],
+  "invoke": {
+    "pipeline": "scripts/hyperlex.py",
+    "mutation": "scripts/hlx-mutation"
+  }
+}
