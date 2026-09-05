@@ -53,8 +53,8 @@ Documentation = "https://github.com/scrimshawlife-ctrl/Hyperlex#readme"
 Issues = "https://github.com/scrimshawlife-ctrl/Hyperlex/issues"
 
 [project.scripts]
-hyperlex = "hyperlex.cli:main"
-hlx = "hyperlex.cli:main"
+hyperlex = "hyperlex.entrypoint:main"
+hlx = "hyperlex.entrypoint:main"
 
 [tool.setuptools.dynamic]
 version = {file = "VERSION"}
@@ -66,4 +66,5 @@ where = ["src"]
 hyperlex = [
     "schemas/*.json",
     "data/*.json",
+    "data/*.md",
 ]
