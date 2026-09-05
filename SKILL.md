@@ -10,6 +10,14 @@ description: >
   ai-native slang, brainrot, and receipt-backed cultural signal scans.
   Not for general web research (use agent-reach), product audits (neon-genie),
   cinematic work (kubrick), or jailbreak / wrap composition.
+when_to_use: >
+  Invoke for slang detection, memetic emergence, lineage matching,
+  hyperstition or virality scoring, forecast settlement, or mutation
+  traces. Prefer the Hyperlex CLI over inventing scores.
+allowed-tools:
+  - Bash
+  - Read
+  - Grep
 version: 0.4.0
 author: Applied Alchemy Labs / Hermes
 license: MIT
@@ -30,6 +38,11 @@ metadata:
       - Mutation
     category: analysis
     related_skills: []
+  claude:
+    hosts: [claude-code]
+    personal_skill: ~/.claude/skills/hyperlex
+    plugin_dir: ~/.claude/plugins/hyperlex
+    plugin_manifest: .claude-plugin/plugin.json
   openclaw:
     requires:
       bins: [python3]
@@ -114,6 +127,47 @@ bash install.sh
 python3 "$HOME/.hermes/skills/hyperlex/scripts/hyperlex.py" check
 python3 "$HOME/.hermes/skills/hyperlex/scripts/hyperlex.py" smoke
 ```
+
+Claude Code personal skill (Hermes install still runs; this flag is additive):
+
+```bash
+bash install.sh --claude --dry-run
+bash install.sh --claude
+# ~/.claude/skills/hyperlex  + sibling slash helpers
+# optional plugin tree: bash install.sh --claude-plugin
+```
+
+## Claude Code
+
+Claude is an additional host. Hermes remains the primary skill surface.
+Prefer the Bash CLI. Do not invent scores. Do not auto-settle.
+
+```bash
+export HYPERLEX_SKILL_DIR="${HYPERLEX_SKILL_DIR:-${HERMES_SKILL_DIR:-$HOME/.claude/skills/hyperlex}}"
+export HERMES_SKILL_DIR="${HERMES_SKILL_DIR:-$HYPERLEX_SKILL_DIR}"
+export HLX="${HLX:-python3 $HYPERLEX_SKILL_DIR/scripts/hyperlex.py}"
+# wrapper: bash scripts/claude_hlx.sh
+# after pip: hyperlex
+```
+
+When to call:
+
+| Need | Command |
+|------|---------|
+| First success | `$HLX demo` |
+| Week-one path | `$HLX wizard --auto` |
+| Analyze + receipt | `$HLX pipeline "<term>" --route offline` |
+| Multi-query scan | `$HLX scan --query "<term>" --route offline --receipt --forecasts` |
+| Open forecasts | `$HLX pending` |
+| Close a forecast | `$HLX settle --forecast-id <id> --decision TRUE` after the human chooses |
+
+Slash helpers (project `.claude/skills/` or plugin `commands/`): `/hyperlex`,
+`/hyperlex-demo`, `/hyperlex-wizard`, `/hyperlex-scan`, `/hyperlex-analyze`,
+`/hyperlex-pending`, `/hyperlex-settle`.
+
+Fail-closed: never invent Brier; never auto-settle; repeat OBSERVED / INFERRED /
+SPECULATIVE. Docs: `docs/claude-skill.md`, `CLAUDE.md` (project only — plugin
+context does not load `CLAUDE.md`).
 
 ## Commands (prefer simplified path)
 
@@ -270,10 +324,12 @@ PYTHONPATH="$HERMES_SKILL_DIR/src" python3 -m hyperlex mutation trace "it's givi
 Successful packaging:
 
 - `~/.hermes/skills/hyperlex/SKILL.md` exists
+- optional Claude: `~/.claude/skills/hyperlex/SKILL.md` after `install.sh --claude`
 - `check` returns `"ok": true`
 - `smoke` writes a receipt under `out/smoke/`
 - Open analysis has `"brier": null`
 - Mutation trace packets have `"forecast_eligible": false`
+- `doctor` reports `CLAUDE_OK` or `CLAUDE_MISSING` (missing does not fail the skill)
 
 ## Design references
 
@@ -287,6 +343,7 @@ Successful packaging:
 - `examples/slang-families/` — Mermaid + HTML family diagrams
 - `data/backfill/2026/` — YTD slang packs
 - `references/hermes-runtime-contract.md` — path / authority policy
+- `references/claude-runtime-contract.md` — Claude Code paths / env / CLI
 - `references/source-and-upgrades.md` — install identity, two-rename limits, lock recovery
 
 ## Security

@@ -100,6 +100,34 @@ def _check(condition: bool, name: str, message_ok: str, message_fail: str) -> _C
     return _Check(name=name, ok=bool(condition), message=message_ok if condition else message_fail)
 
 
+def _claude_host_check() -> _Check:
+    """Report Claude Code personal-skill / plugin install. Absence is not a failure."""
+    import os
+
+    home = Path.home()
+    personal = home / ".claude" / "skills" / "hyperlex"
+    plugin = home / ".claude" / "plugins" / "hyperlex"
+    found: List[str] = []
+    if (personal / "SKILL.md").is_file():
+        kind = "personal" if (personal / "scripts" / "hyperlex.py").is_file() else "personal_thin"
+        found.append(f"{kind}={personal}")
+    if (plugin / ".claude-plugin" / "plugin.json").is_file() or (plugin / "SKILL.md").is_file():
+        found.append(f"plugin={plugin}")
+    env_raw = os.environ.get("HYPERLEX_SKILL_DIR") or os.environ.get("CLAUDE_SKILL_DIR") or ""
+    if env_raw:
+        env_path = Path(env_raw).expanduser()
+        if (env_path / "scripts" / "hyperlex.py").is_file() or (env_path / "SKILL.md").is_file():
+            found.append(f"env={env_path}")
+    if found:
+        return _check(True, "claude_host", "CLAUDE_OK: " + "; ".join(found), "")
+    return _check(
+        True,
+        "claude_host",
+        "CLAUDE_MISSING: ~/.claude/skills/hyperlex not installed (optional host)",
+        "",
+    )
+
+
 def _import_hyperlex():
     try:
         import importlib
@@ -224,6 +252,8 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
         "mkdocs.yml",
         "STATUS.md",
         "src/hyperlex/receipt/stats.py",
+        ".claude-plugin/plugin.json",
+        "scripts/claude_hlx.sh",
     ]
     for rel in required_files:
         p = ROOT / rel
@@ -351,6 +381,7 @@ def cmd_doctor(_args: argparse.Namespace) -> int:
     checks.append(
         _check(True, "operator_home", f"~/.hyperlex exists={home_hx.is_dir()} path={home_hx}", "")
     )
+    checks.append(_claude_host_check())
 
     ok = all(c.ok for c in checks)
     _emit({
@@ -2322,7 +2353,9 @@ def _build_parser() -> argparse.ArgumentParser:
     check_parser = subparsers.add_parser("check", help="Validate package and manifest readiness")
     check_parser.set_defaults(func=cmd_check)
 
-    doctor_parser = subparsers.add_parser("doctor", help="Deep Hermes-skill health check")
+    doctor_parser = subparsers.add_parser(
+        "doctor", help="Deep skill health check (Hermes + optional Claude host)"
+    )
     doctor_parser.set_defaults(func=cmd_doctor)
 
     sources_parser = subparsers.add_parser(

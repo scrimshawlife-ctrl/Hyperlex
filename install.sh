@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Hyperlex — Hermes skill installer
+# Hyperlex — Hermes skill installer (Claude Code is an additional host)
 # Usage:
 #   ./install.sh
 #   ./install.sh --dry-run
 #   ./install.sh --target DIR
 #   ./install.sh --rollback
 #   ./install.sh --openclaw
+#   ./install.sh --claude
+#   ./install.sh --claude-plugin
 #   ./install.sh --version
 set -euo pipefail
 
@@ -13,6 +15,16 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HERMES_ROOT="${HERMES_HOME:-$HOME/.hermes}"
 DEFAULT_TARGET="${HERMES_ROOT}/skills/hyperlex"
 OPENCLAW_TARGET="${HOME}/.openclaw/skills/hyperlex"
+CLAUDE_SKILL_TARGET="${HOME}/.claude/skills/hyperlex"
+CLAUDE_PLUGIN_TARGET="${HOME}/.claude/plugins/hyperlex"
+CLAUDE_HELPERS=(
+  hyperlex-demo
+  hyperlex-wizard
+  hyperlex-scan
+  hyperlex-analyze
+  hyperlex-pending
+  hyperlex-settle
+)
 
 VERSION="$(tr -d '[:space:]' < "${ROOT}/VERSION" 2>/dev/null || echo "0.0.0")"
 
@@ -20,6 +32,8 @@ DRY_RUN=0
 ROLLBACK=0
 ALLOW_OUTSIDE_HOME=0
 INSTALL_OPENCLAW=0
+INSTALL_CLAUDE=0
+INSTALL_CLAUDE_PLUGIN=0
 SKIP_SMOKE=0
 TARGET="$DEFAULT_TARGET"
 
@@ -29,15 +43,25 @@ Hyperlex Hermes skill installer v${VERSION}
 
 Usage: ./install.sh [options]
 
+Hermes remains the default target. Claude flags are additive extra hosts.
+
 Options:
   --dry-run               Show actions without writing
   --target DIR            Install to DIR (default: ${DEFAULT_TARGET})
   --rollback              Restore most recent target-keyed backup
   --openclaw              Also install to ~/.openclaw/skills/hyperlex
+  --claude                Also install personal skill to ~/.claude/skills/hyperlex
+                          plus slash helpers (hyperlex-demo, …) as sibling skills
+  --claude-plugin         Also install plugin tree to ~/.claude/plugins/hyperlex
   --skip-smoke            Skip staged check/smoke (marks UNVERIFIED)
   --allow-outside-home    Permit --target outside \$HOME
   --version               Print version and exit
   -h, --help              Show this help
+
+Claude paths:
+  Personal skill:  ~/.claude/skills/hyperlex/   (SKILL.md + scripts/src)
+  Local plugin:    ~/.claude/plugins/hyperlex/  (.claude-plugin/ + commands/)
+  Project helpers: .claude/skills/ in this repo (when the checkout is the project)
 EOF
 }
 
@@ -62,6 +86,8 @@ while [[ $# -gt 0 ]]; do
     --dry-run) DRY_RUN=1; shift ;;
     --rollback) ROLLBACK=1; shift ;;
     --openclaw) INSTALL_OPENCLAW=1; shift ;;
+    --claude) INSTALL_CLAUDE=1; shift ;;
+    --claude-plugin) INSTALL_CLAUDE_PLUGIN=1; shift ;;
     --skip-smoke) SKIP_SMOKE=1; shift ;;
     --allow-outside-home) ALLOW_OUTSIDE_HOME=1; shift ;;
     --version) echo "$VERSION"; exit 0 ;;
@@ -116,7 +142,9 @@ validate_source() {
     "VERSION"
     "scripts/hyperlex.py"
     "scripts/hlx-mutation"
+    "scripts/claude_hlx.sh"
     "scripts/install_transaction.py"
+    ".claude-plugin/plugin.json"
     "src/hyperlex/__init__.py"
     "src/hyperlex/calibration/scoring.py"
     "src/hyperlex/schemas/result.v1.schema.json"
@@ -149,6 +177,40 @@ run_transaction() {
   python3 "${ROOT}/scripts/install_transaction.py" "$ROOT" "$dest" hyperlex "${check_args[@]}"
 }
 
+install_extra_host() {
+  local dest="$1"
+  local label="$2"
+  local _saved="$TARGET"
+  TARGET="$dest"
+  validate_target
+  if [[ $DRY_RUN -eq 1 ]]; then
+    log "DRY RUN: would also install ${label} to ${TARGET}"
+    TARGET="$_saved"
+    return 0
+  fi
+  run_transaction "$TARGET"
+  TARGET="$_saved"
+}
+
+copy_claude_helpers() {
+  local dest_root="${HOME}/.claude/skills"
+  local name src dest
+  for name in "${CLAUDE_HELPERS[@]}"; do
+    src="${ROOT}/.claude/skills/${name}/SKILL.md"
+    dest="${dest_root}/${name}/SKILL.md"
+    if [[ ! -f "$src" ]]; then
+      warn "Claude helper missing in source: ${src}"
+      continue
+    fi
+    if [[ $DRY_RUN -eq 1 ]]; then
+      log "DRY RUN: would install Claude helper ${name} → ${dest}"
+      continue
+    fi
+    mkdir -p "$(dirname "$dest")"
+    cp -f "$src" "$dest"
+  done
+}
+
 do_rollback() {
   validate_target
   if [[ $DRY_RUN -eq 1 ]]; then
@@ -174,17 +236,25 @@ if [[ $DRY_RUN -eq 1 ]]; then
   log "DRY RUN: two-rename activation is not crash-atomic; locks are never auto-reclaimed"
   [[ -d "$TARGET" ]] && log "DRY RUN: would publish a target-keyed backup under ${HERMES_ROOT}/backups/hyperlex/"
   [[ $INSTALL_OPENCLAW -eq 1 ]] && log "DRY RUN: would also install to ${OPENCLAW_TARGET}"
+  [[ $INSTALL_CLAUDE -eq 1 ]] && log "DRY RUN: would also install Claude personal skill to ${CLAUDE_SKILL_TARGET}"
+  [[ $INSTALL_CLAUDE -eq 1 ]] && copy_claude_helpers
+  [[ $INSTALL_CLAUDE_PLUGIN -eq 1 ]] && log "DRY RUN: would also install Claude plugin dir to ${CLAUDE_PLUGIN_TARGET}"
   exit 0
 fi
 
 run_transaction "$TARGET"
 
 if [[ $INSTALL_OPENCLAW -eq 1 ]]; then
-  _saved="$TARGET"
-  TARGET="$OPENCLAW_TARGET"
-  validate_target
-  run_transaction "$TARGET"
-  TARGET="$_saved"
+  install_extra_host "$OPENCLAW_TARGET" "OpenClaw"
+fi
+
+if [[ $INSTALL_CLAUDE -eq 1 ]]; then
+  install_extra_host "$CLAUDE_SKILL_TARGET" "Claude personal skill"
+  copy_claude_helpers
+fi
+
+if [[ $INSTALL_CLAUDE_PLUGIN -eq 1 ]]; then
+  install_extra_host "$CLAUDE_PLUGIN_TARGET" "Claude plugin"
 fi
 
 echo ""
@@ -195,11 +265,22 @@ else
 fi
 echo "  Hermes:  ${TARGET}"
 [[ $INSTALL_OPENCLAW -eq 1 ]] && echo "  OpenClaw: ${OPENCLAW_TARGET}"
+[[ $INSTALL_CLAUDE -eq 1 ]] && echo "  Claude:   ${CLAUDE_SKILL_TARGET}"
+[[ $INSTALL_CLAUDE_PLUGIN -eq 1 ]] && echo "  Plugin:   ${CLAUDE_PLUGIN_TARGET}"
 echo ""
 echo "Next:"
 echo "  export HERMES_SKILL_DIR=\"${TARGET}\""
 echo "  python3 \"\$HERMES_SKILL_DIR/scripts/hyperlex.py\" check"
 echo "  python3 \"\$HERMES_SKILL_DIR/scripts/hyperlex.py\" pipeline \"rizz\" --route offline"
 echo "  python3 \"\$HERMES_SKILL_DIR/scripts/hlx-mutation\" trace \"it's giving mid rizz\""
+if [[ $INSTALL_CLAUDE -eq 1 ]]; then
+  echo "  export HYPERLEX_SKILL_DIR=\"${CLAUDE_SKILL_TARGET}\""
+  echo "  export HLX=\"python3 \$HYPERLEX_SKILL_DIR/scripts/hyperlex.py\""
+  echo "  bash \"\$HYPERLEX_SKILL_DIR/scripts/claude_hlx.sh\" check"
+  echo "  # Reload Claude Code so it sees ~/.claude/skills/hyperlex"
+fi
+if [[ $INSTALL_CLAUDE_PLUGIN -eq 1 ]]; then
+  echo "  # Enable the local plugin, or: claude plugin add ${CLAUDE_PLUGIN_TARGET}"
+fi
 echo "  # Reload Hermes skills if the agent is already running"
 echo ""

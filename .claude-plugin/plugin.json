@@ -1,0 +1,22 @@
+{
+  "name": "hyperlex",
+  "displayName": "Hyperlex",
+  "version": "0.4.0",
+  "description": "Memetic emergence analysis: slang detection, lineage matching, virality and hyperstition scoring, receipt-backed forecasts, and settled Brier calibration. Never invents Brier scores; settlement stays a human step.",
+  "author": {
+    "name": "Applied Alchemy Labs / Hermes"
+  },
+  "homepage": "https://github.com/scrimshawlife-ctrl/Hyperlex",
+  "repository": "https://github.com/scrimshawlife-ctrl/Hyperlex",
+  "license": "MIT",
+  "keywords": [
+    "memetics",
+    "slang",
+    "hyperstition",
+    "virality",
+    "lineage",
+    "calibration",
+    "brier",
+    "mutation"
+  ]
+}

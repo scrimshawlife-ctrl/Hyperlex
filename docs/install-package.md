@@ -23,3 +23,12 @@ It does **not** rsync `src/` or `scripts/hyperlex.py`. The agent runs `hyperlex 
 Reload the agent session after init.
 
 Legacy full-tree install remains `bash install.sh` for hosts that still want the fat skill CLI.
+Claude Code full tree (SKILL.md + scripts/src, not the thin init wire):
+
+```bash
+bash install.sh --claude --dry-run
+bash install.sh --claude            # ~/.claude/skills/hyperlex
+bash install.sh --claude-plugin     # ~/.claude/plugins/hyperlex
+```
+
+See [claude-skill.md](claude-skill.md).
