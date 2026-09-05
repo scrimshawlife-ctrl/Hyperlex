@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     strategy:
@@ -19,6 +22,10 @@ jobs:
       PYTHONPATH: src
     steps:
       - uses: actions/checkout@v4
+        with:
+          # SoT-cleared is local git ancestry of references/claude-sot-cleared.json
+          # (no live GitHub fetch in doctor). Default depth=1 hides the pin SHA.
+          fetch-depth: 0
       - name: Setup Python
         uses: actions/setup-python@v5
         with:

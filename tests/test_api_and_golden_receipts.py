@@ -91,7 +91,7 @@ def test_abraxas_score_and_ledger_packets() -> None:
         "created_at": "2026-08-05T00:00:00+00:00",
         "mapping_version": "v1",
     }
-    st = settle(fc, outcome_value=1.0, settlement_decision="TRUE")
+    st = settle(fc, outcome_value=1.0, settlement_decision="TRUE", authority_ref="pytest", settle_token="pytest")
     sc = score_pair(fc, st)
     assert sc["status"] == "SCORED"
 
@@ -124,7 +124,13 @@ def test_operator_review_from_series() -> None:
             "created_at": "2026-08-05T00:00:00+00:00",
             "mapping_version": "v1",
         }
-        st = settle(fc, outcome_value=o, settlement_decision="TRUE" if o == 1.0 else "FALSE")
+        st = settle(
+            fc,
+            outcome_value=o,
+            settlement_decision="TRUE" if o == 1.0 else "FALSE",
+            authority_ref="pytest",
+            settle_token="pytest",
+        )
         pairs.append((fc, st))
     series = score_series(pairs)
     review = to_operator_brier_review(series)

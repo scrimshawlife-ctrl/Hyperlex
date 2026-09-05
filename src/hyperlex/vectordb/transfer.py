@@ -21,6 +21,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
+from hyperlex.guards import require_cloud_write
+
 from .chroma import ChromaVectorStore, DEFAULT_COLLECTION
 from .store import VectorStore
 
@@ -73,6 +75,8 @@ def open_vector_store(
     force_cloud: target Chroma Cloud (ignores HYPERLEX_CHROMA_PATH)
     """
     backend = (backend or "sqlite").strip().lower()
+    if force_cloud:
+        require_cloud_write()
     if backend == "chroma":
         return ChromaVectorStore(
             client=client,
@@ -245,6 +249,8 @@ def sync_vectors(
     """
     own_from = from_store is None
     own_to = to_store is None
+    if to_cloud:
+        require_cloud_write()
     from_store = from_store or open_vector_store(
         backend=from_backend,
         path=from_path,

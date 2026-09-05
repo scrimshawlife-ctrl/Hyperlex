@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 from typing import Any, Optional, Tuple
 
+from ..guards import receipt_legacy_integrity_enabled
 from ..schemas import validate_receipt
 from .ledger import (
     append_receipt_index,
@@ -29,7 +30,7 @@ def _canonical_json(payload: dict) -> str:
 def emit_receipt(
     result: dict,
     out_dir: str | Path | None = None,
-    validate: bool = False,
+    validate: bool = True,
     *,
     append_ledger: bool = True,
     ledger_path: str | Path | None = None,
@@ -45,10 +46,10 @@ def emit_receipt(
     out.mkdir(parents=True, exist_ok=True)
 
     canonical = _canonical_json(result)
-    integrity = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:12]
+    integrity = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
     ts = result.get("provenance", {}).get("timestamp", "now").replace(":", "").replace("-", "").split(".")[0][:15]
-    # integrity suffix avoids collisions when multiple receipts share a second
-    path = out / f"hyperlex_{ts}_{integrity}.json"
+    # short filename suffix; receipt.integrity remains the full 64-char digest
+    path = out / f"hyperlex_{ts}_{integrity[:12]}.json"
 
     receipt = dict(result)
     receipt["receipt"] = {
@@ -106,10 +107,16 @@ def verify_receipt(payload: dict) -> Tuple[bool, str]:
     if not expected:
         return False, "missing receipt.integrity"
     canonical = _canonical_json({k: v for k, v in payload.items() if k != "receipt"})
-    actual = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:12]
-    if actual != expected:
-        return False, f"integrity mismatch: expected {expected}, actual {actual}"
-    return True, "valid"
+    actual_full = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    if expected == actual_full:
+        return True, "valid"
+    if (
+        len(expected) == 12
+        and expected == actual_full[:12]
+        and receipt_legacy_integrity_enabled()
+    ):
+        return True, "valid (legacy 12-char; HYPERLEX_RECEIPT_LEGACY_INTEGRITY=1)"
+    return False, f"integrity mismatch: expected {expected}, actual {actual_full}"
 
 
 __all__ = [

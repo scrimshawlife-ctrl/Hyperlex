@@ -99,7 +99,10 @@ def _fc(fid: str, p: float, signal: str = "lineage.confidence") -> dict:
 
 
 def _st(fid: str, o: float, decision: str = "TRUE") -> dict:
-    return settle(_fc(fid, 0.5), outcome_value=o, settlement_decision=decision)
+    kwargs = {}
+    if str(decision).upper() in ("TRUE", "FALSE"):
+        kwargs = {"authority_ref": "pytest", "settle_token": "pytest"}
+    return settle(_fc(fid, 0.5), outcome_value=o, settlement_decision=decision, **kwargs)
 
 
 def test_brier_atomic_known() -> None:
@@ -111,7 +114,7 @@ def test_brier_atomic_known() -> None:
 
 def test_score_pair_scored() -> None:
     fc = _fc("f1", 0.8)
-    st = settle(fc, outcome_value=1.0, settlement_decision="TRUE")
+    st = settle(fc, outcome_value=1.0, settlement_decision="TRUE", authority_ref="pytest", settle_token="pytest")
     rec = score_pair(fc, st)
     assert rec["status"] == "SCORED"
     assert rec["atomic_score"] == pytest.approx(0.04)
@@ -128,7 +131,7 @@ def test_score_pair_void_not_computable() -> None:
 
 def test_score_pair_id_mismatch() -> None:
     fc = _fc("f3", 0.5)
-    st = settle(_fc("other", 0.5), outcome_value=1.0, settlement_decision="TRUE")
+    st = settle(_fc("other", 0.5), outcome_value=1.0, settlement_decision="TRUE", authority_ref="pytest", settle_token="pytest")
     rec = score_pair(fc, st)
     assert rec["status"] == NOT_COMPUTABLE
     assert "mismatch" in rec["reason"]
@@ -151,7 +154,7 @@ def test_score_series_two_pairs_known_bs() -> None:
     pairs = []
     for fid, p, o, dec in [("a", 0.8, 1.0, "TRUE"), ("b", 0.3, 0.0, "FALSE")]:
         fc = _fc(fid, p)
-        st = settle(fc, outcome_value=o, settlement_decision=dec)
+        st = settle(fc, outcome_value=o, settlement_decision=dec, authority_ref="pytest", settle_token="pytest")
         pairs.append((fc, st))
 
     series = score_series(pairs)
@@ -167,7 +170,7 @@ def test_score_series_two_pairs_known_bs() -> None:
 
 def test_score_series_skips_void() -> None:
     fc1 = _fc("v1", 0.9)
-    st1 = settle(fc1, outcome_value=1.0, settlement_decision="TRUE")
+    st1 = settle(fc1, outcome_value=1.0, settlement_decision="TRUE", authority_ref="pytest", settle_token="pytest")
     fc2 = _fc("v2", 0.1)
     st2 = settle(fc2, outcome_value=0.0, settlement_decision="VOID")
     series = score_series([(fc1, st1), (fc2, st2)])
@@ -236,7 +239,9 @@ def test_settle_and_log_roundtrip(tmp_path: Path) -> None:
         fc,
         outcome_value=1.0,
         settlement_decision="TRUE",
+        authority_ref="pytest",
         authority_note="operator confirmed family",
+        settle_token="pytest",
         path=log,
     )
     assert out["scorable"] is True
@@ -262,7 +267,7 @@ def test_recompute_series_empty_log(tmp_path: Path) -> None:
 
 def test_to_brier_ledger_entry_compatible() -> None:
     fc = _fc("led1", 0.6)
-    st = settle(fc, outcome_value=0.0, settlement_decision="FALSE")
+    st = settle(fc, outcome_value=0.0, settlement_decision="FALSE", authority_ref="pytest", settle_token="pytest")
     sc = score_pair(fc, st)
     entry = to_brier_ledger_entry(fc, sc, settlement=st)
     assert entry["schema_version"] == "BrierLedgerEntry.v1"
@@ -291,7 +296,13 @@ def test_mean_shift_advisory() -> None:
     pairs = []
     for i, (p, o) in enumerate([(0.9, 0.0), (0.8, 0.0), (0.85, 1.0)]):
         fc = _fc(f"ms{i}", p)
-        st = settle(fc, outcome_value=o, settlement_decision="TRUE" if o == 1.0 else "FALSE")
+        st = settle(
+            fc,
+            outcome_value=o,
+            settlement_decision="TRUE" if o == 1.0 else "FALSE",
+            authority_ref="pytest",
+            settle_token="pytest",
+        )
         pairs.append((fc, st))
     series = score_series(pairs)
     advisory = mean_shift_from_series(series)
@@ -364,7 +375,9 @@ def test_cli_forecasts_settle_score_series(tmp_path: Path) -> None:
         "settle",
         "--forecast-id", fid,
         "--decision", "TRUE",
+        "--authority-ref", "pytest",
         "--authority-note", "fixture confirm",
+        "--settle-token", "pytest",
         "--export-ledger",
         "--log", str(log),
     )

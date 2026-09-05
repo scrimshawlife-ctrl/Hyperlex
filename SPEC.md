@@ -16,7 +16,7 @@ Extended: `hyperlex.API_EXTENDED` (additive; includes Phase 5 simulation)
 - `compute_lineage_confidence(hits, family_terms, corpus) -> (float, dict)`
 
 ### Receipts
-- `emit_receipt(result, out_dir=None, validate=False, append_ledger=True, ledger_path=None) -> Path`
+- `emit_receipt(result, out_dir=None, validate=True, append_ledger=True, ledger_path=None) -> Path`
 - `verify_receipt(payload) -> (bool, str)`
 
 ### Calibration

@@ -175,7 +175,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "88573ce1608b",
+    "integrity": "88573ce1608b2f02b456a484080066f36a688dffc58fc6077e0cec3fcefe53f0",
     "path": "examples/receipts/golden/ai-native.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

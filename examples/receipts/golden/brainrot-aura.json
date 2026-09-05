@@ -177,7 +177,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "e8e43b010371",
+    "integrity": "e8e43b0103716d19d015c238b0d9fb8aef843aa687ac56697223d38706629abc",
     "path": "examples/receipts/golden/brainrot-aura.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

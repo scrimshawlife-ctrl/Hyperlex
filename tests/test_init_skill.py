@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from hyperlex.init_skill import TARGETS, run_init, run_uninstall, skill_template
+from hyperlex.init_skill import TARGETS, run_init, run_uninstall, skill_template, skill_targets
 
 
 def test_template_has_marker_and_cli():
@@ -19,5 +19,7 @@ def test_init_dry_run_lists_default_hosts():
 
 def test_targets_are_under_home():
     home = str(Path.home())
+    for dest in skill_targets().values():
+        assert str(dest).startswith(home)
     for dest in TARGETS.values():
         assert str(dest).startswith(home)

@@ -170,6 +170,7 @@ def settle_and_log(
     authority_ref: Optional[str] = None,
     authority_note: Optional[str] = None,
     evidence_ref: Optional[str] = None,
+    settle_token: Optional[str] = None,
     path: Optional[Path | str] = None,
 ) -> Dict[str, Any]:
     """
@@ -177,16 +178,11 @@ def settle_and_log(
 
     Returns {settlement, score, settlement_record, score_record}.
     Does not invent Brier if decision is VOID/CONFLICT (score status = NOT_COMPUTABLE).
+    Scored TRUE/FALSE are gated in settle(); a refused gate appends nothing.
     """
     from .settlement import settle
 
-    # Ensure forecast is present in the log so series recompute can join pairs.
-    existing = index_forecasts(read_log(path))
-    forecast_record = None
-    fid = str(forecast.get("forecast_id") or "")
-    if fid and fid not in existing:
-        forecast_record = append_forecast(forecast, path=path)
-
+    # Gate before any log write so a refused scored settle cannot append.
     settlement = settle(
         forecast,
         outcome_value=outcome_value,
@@ -195,7 +191,15 @@ def settle_and_log(
         authority_ref=authority_ref,
         authority_note=authority_note,
         evidence_ref=evidence_ref,
+        settle_token=settle_token,
     )
+
+    # Ensure forecast is present in the log so series recompute can join pairs.
+    existing = index_forecasts(read_log(path))
+    forecast_record = None
+    fid = str(forecast.get("forecast_id") or "")
+    if fid and fid not in existing:
+        forecast_record = append_forecast(forecast, path=path)
     settlement_record = append_settlement(settlement, forecast=forecast, path=path)
     score = score_pair(forecast, settlement)
     score_record = append_score(score, forecast=forecast, settlement=settlement, path=path)

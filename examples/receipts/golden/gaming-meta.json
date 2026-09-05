@@ -182,7 +182,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "74d35f2b5769",
+    "integrity": "74d35f2b57698ea9eb00f05f5723b6d618b8e69011a049438fdfe6fbbfb19354",
     "path": "examples/receipts/golden/gaming-meta.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

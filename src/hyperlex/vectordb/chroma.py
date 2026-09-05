@@ -26,6 +26,8 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from hyperlex.guards import require_cloud_write
+
 try:
     import chromadb
     from chromadb import CloudClient
@@ -116,6 +118,16 @@ def get_chroma_client(
     return CloudClient(**kwargs)
 
 
+def _is_cloud_client(client: Any) -> bool:
+    if client is None:
+        return False
+    name = type(client).__name__
+    if name == "CloudClient":
+        return True
+    module = getattr(type(client), "__module__", "")
+    return "chromadb" in module and "Cloud" in name
+
+
 def _sanitize_meta(meta: Dict[str, Any]) -> Dict[str, Any]:
     """Chroma metadata values must be str/int/float/bool; drop None."""
     out: Dict[str, Any] = {}
@@ -149,6 +161,11 @@ class ChromaVectorStore:
         self.client = client or get_chroma_client(path=self.path, force_cloud=self.force_cloud)
         self.collection_name = collection_name or DEFAULT_COLLECTION
         self._collection = None
+        self._cloud = self.force_cloud or _is_cloud_client(self.client)
+
+    def _require_write(self) -> None:
+        if self._cloud:
+            require_cloud_write()
 
     @property
     def collection(self):
@@ -176,6 +193,7 @@ class ChromaVectorStore:
             "model": model,
             "family_id": family_id,
         }))
+        self._require_write()
         # Chroma expects list of lists for embeddings
         self.collection.upsert(
             ids=[id],
@@ -203,6 +221,7 @@ class ChromaVectorStore:
                 "family_id": r.get("family_id"),
             }))
             metadatas.append(m)
+        self._require_write()
         self.collection.upsert(
             ids=ids,
             embeddings=embeddings,

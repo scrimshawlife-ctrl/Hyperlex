@@ -98,6 +98,10 @@ def index_texts(
     own = store is None
     try:
         store = store or _open_store()
+        if getattr(store, "_cloud", False) or getattr(store, "force_cloud", False):
+            from hyperlex.guards import require_cloud_write
+
+            require_cloud_write()
         texts = [str(r.get("text") or "") for r in rows]
         vecs, info = embed_batch(texts)
         n = 0

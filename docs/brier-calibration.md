@@ -233,6 +233,7 @@ python3 scripts/hyperlex.py extract-forecasts --input out/result.json --append-l
 
 # Operator settles a forecast (TRUE/FALSE/VOID/CONFLICT)
 python3 scripts/hyperlex.py settle --forecast-id <id> --decision TRUE \
+  --authority-ref operator@local --settle-token "$HYPERLEX_SETTLE_TOKEN" \
   --authority-note "human review confirmed family" --export-ledger
 
 # Recompute series + optional mean-shift diagnostic + chain verify

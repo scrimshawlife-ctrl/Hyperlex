@@ -177,7 +177,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "138a57d9b7d1",
+    "integrity": "138a57d9b7d142c72416177191b81674617728b6690e48352b93ac1c85d42c8e",
     "path": "examples/receipts/golden/crypto-degen.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

@@ -182,7 +182,7 @@
     "version": "0.2.5"
   },
   "receipt": {
-    "integrity": "13740d87af49",
+    "integrity": "13740d87af49d5ed6a7d8a8d1ec6a3aaa4a8e37e413b137a6907894b7af6e034",
     "path": "examples/receipts/golden/betting-sharp.json"
   },
   "recommendation": "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN.",

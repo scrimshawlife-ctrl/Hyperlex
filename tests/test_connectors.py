@@ -56,7 +56,13 @@ def test_hyperstition_feedback_from_settled_pairs() -> None:
             "created_at": "2026-08-05T00:00:00+00:00",
             "mapping_version": "v1",
         }
-        st = settle(fc, outcome_value=o, settlement_decision="TRUE" if o == 1 else "FALSE")
+        st = settle(
+            fc,
+            outcome_value=o,
+            settlement_decision="TRUE" if o == 1 else "FALSE",
+            authority_ref="pytest",
+            settle_token="pytest",
+        )
         pairs.append((fc, st))
     series = score_series(pairs)
     fb = hyperstition_feedback_from_series(series)
