@@ -8,4 +8,4 @@
 - [x] T6 Router table `docs/command-router.v1.json` + `hyperlex.command_router`
 - [x] T7 Manifest commands/intents include mutation
 - [x] T9 `hyperlex init` graft-style skill wire
-- [ ] T8 `--human` card (v0.2)
+- [x] T8 `--human` card (v0.2) — owned by `specs/003-mutation-detect-v02/`

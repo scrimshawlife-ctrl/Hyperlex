@@ -67,6 +67,7 @@ pipeline "rizz" | run "rizz"
 ~/.hyperlex/receipts/
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
+~/.hyperlex/mutation_watch.jsonl   # mutation grammar instrumentation (not Brier)
 ~/.hyperlex/cache/
 ~/.hyperlex/vector.db
 ~/.hyperlex/chroma/

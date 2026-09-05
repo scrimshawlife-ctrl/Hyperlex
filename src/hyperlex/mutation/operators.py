@@ -104,3 +104,72 @@ EGGCORN_PHRASES = (
     "eggcorn",
     "for all intensive purposes",
 )
+
+# Civilian game-frame phrases only. Marker alone does not fire GAME_ENCODE.
+GAME_MARKERS = (
+    "in fortnite",
+    "in minecraft",
+    "in roblox",
+    "in among us",
+    "pig latin",
+    "in uwu",
+    "as a haiku",
+)
+
+# Whole-token bilingual particles. Require a slang lexicon hit in the same span.
+CODE_SWITCH_PARTICLES = frozenset({
+    "que",
+    "qué",
+    "el",
+    "très",
+    "c'est",
+    "mucho",
+    "muito",
+    "não",
+    "kein",
+})
+
+_VOWELS = set("aeiouAEIOU")
+_LEET_TABLE = str.maketrans({
+    "0": "o",
+    "1": "i",
+    "3": "e",
+    "4": "a",
+    "5": "s",
+    "7": "t",
+    "@": "a",
+    "$": "s",
+    "!": "i",
+})
+
+
+def vowel_drop(seed: str) -> str | None:
+    """Keep first/last chars; drop internal vowels. Same rule as predict."""
+    if len(seed) < 4 or " " in seed:
+        return None
+    chars = []
+    for i, ch in enumerate(seed):
+        if i > 0 and i < len(seed) - 1 and ch in _VOWELS:
+            continue
+        chars.append(ch)
+    out = "".join(chars)
+    if out.lower() == seed.lower() or len(out) < 2:
+        return None
+    return out.lower()
+
+
+def vowel_drop_map(terms: frozenset[str] | None = None) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for term in terms or SUBSTITUTE_TERMS:
+        warped = vowel_drop(term)
+        if warped and warped not in SUBSTITUTE_TERMS:
+            out[warped] = term
+    return out
+
+
+def leet_decode(token: str) -> str:
+    return token.translate(_LEET_TABLE).lower()
+
+
+def token_has_leet(token: str) -> bool:
+    return any(ch in token for ch in "013457@$!")

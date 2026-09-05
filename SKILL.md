@@ -143,11 +143,15 @@ Mutation (package CLI; prefer this over inventing a second skill):
 
 ```bash
 PYTHONPATH="$HERMES_SKILL_DIR/src" python3 -m hyperlex mutation trace "it's giving mid rizz"
+PYTHONPATH="$HERMES_SKILL_DIR/src" python3 -m hyperlex mutation trace "rzz" --human
+PYTHONPATH="$HERMES_SKILL_DIR/src" python3 -m hyperlex mutation watch
 PYTHONPATH="$HERMES_SKILL_DIR/src" python3 -m hyperlex mutation predict rizz
 ```
 
 `pipeline` / `analyze` attach `analysis.mutation_trace` when operators fire.
-Do not add a wizard step. Do not add `wrap` / `compose` verbs.
+`trace --human` prints a civilian advisory card. `trace --watch-jsonl` appends instrumentation (not probabilities; never auto-fires tools).
+Do not add a wizard step. Do not add `wrap` / `compose` / `asr` verbs.
+Lane is SHADOW / advisory.
 
 Research / advanced: `simulate`, `vector-*`, `archive-export`,
 `lineage-backfill`, `lineage-backprop`, `relay`, `signal`, `diagram`, `ledger-*`.
@@ -278,6 +282,7 @@ Successful packaging:
 - `docs/slang-lineages.md` — family methodology
 - `docs/phase5.md` / `docs/modules/simulation.md` — Phase 5 research simulation
 - `specs/001-mutation-grammar/` — detector grammar + dual-use gate
+- `specs/003-mutation-detect-v02/` — GAME_ENCODE / CODE_SWITCH / PHONETIC_WARP + watch jsonl + `--human` (SHADOW)
 - `schemas/` — ingest, result, receipt, forecast, settlement, brier_series, lineage, mutation_trace
 - `examples/slang-families/` — Mermaid + HTML family diagrams
 - `data/backfill/2026/` — YTD slang packs

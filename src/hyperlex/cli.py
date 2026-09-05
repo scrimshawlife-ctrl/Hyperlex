@@ -124,7 +124,9 @@ def cmd_commands(_: argparse.Namespace) -> int:
         ],
         "research": [
             'mutation trace "<text>"',
+            'mutation trace "<text>" --human',
             "mutation predict <atom>",
+            "mutation watch",
         ],
         "routes": ["offline", "mock", "default", "live", "glossary", "social"],
         "docs": "docs/operator-loop.md · docs/commands.md",
@@ -133,7 +135,7 @@ def cmd_commands(_: argparse.Namespace) -> int:
 
 
 def cmd_mutation_trace(args: argparse.Namespace) -> int:
-    from hyperlex.mutation import parse_mutation_trace
+    from hyperlex.mutation import append_watch, format_human_card, parse_mutation_trace
 
     parts = getattr(args, "query", None) or getattr(args, "text", None) or ""
     if isinstance(parts, list):
@@ -149,7 +151,23 @@ def cmd_mutation_trace(args: argparse.Namespace) -> int:
         source="cli",
         restricted_intent_suspected=bool(getattr(args, "restricted", False)),
     )
+    watch_flag = getattr(args, "watch_jsonl", None)
+    if watch_flag is not None:
+        watch_path = watch_flag if watch_flag else None
+        append_watch(out, path=watch_path)
+    if getattr(args, "human", False):
+        print(format_human_card(out), end="")
+        return 0
     _emit({"ok": True, "command": "mutation-trace", **out})
+    return 0
+
+
+def cmd_mutation_watch(args: argparse.Namespace) -> int:
+    from hyperlex.mutation import watch_summary
+
+    path = getattr(args, "path", None) or None
+    limit = int(getattr(args, "limit", 20) or 20)
+    _emit(watch_summary(path, limit=limit))
     return 0
 
 
@@ -193,7 +211,13 @@ def cmd_mutation(args: argparse.Namespace) -> int:
         return cmd_mutation_trace(args)
     if verb == "predict":
         return cmd_mutation_predict(args)
-    _emit({"ok": False, "error": "usage: mutation trace|predict <text>", "verbs": ["trace", "predict"]})
+    if verb == "watch":
+        return cmd_mutation_watch(args)
+    _emit({
+        "ok": False,
+        "error": "usage: mutation trace|predict|watch",
+        "verbs": ["trace", "predict", "watch"],
+    })
     return 2
 
 
@@ -436,22 +460,37 @@ def build_parser() -> argparse.ArgumentParser:
     cmds = sub.add_parser("commands", help="Simplified command map")
     cmds.set_defaults(func=cmd_commands)
 
-    mut = sub.add_parser("mutation", help="trace (detect) | predict (civilian next-forms)")
+    mut = sub.add_parser("mutation", help="trace (detect) | predict (civilian next-forms) | watch")
     mut_sub = mut.add_subparsers(dest="mutation_verb")
     mut_tr = mut_sub.add_parser("trace", help="Detect operator stacks")
     mut_tr.add_argument("query", nargs="*", default=[])
     mut_tr.add_argument("--restricted", action="store_true")
+    mut_tr.add_argument("--human", action="store_true", help="Civilian advisory card (not JSON)")
+    mut_tr.add_argument(
+        "--watch-jsonl",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="PATH",
+        help="Append instrumentation record (default ~/.hyperlex/mutation_watch.jsonl)",
+    )
     mut_tr.set_defaults(func=cmd_mutation_trace)
     mut_pr = mut_sub.add_parser("predict", help="Civilian next-forms")
     mut_pr.add_argument("query", nargs="?", default="")
     mut_pr.add_argument("--term", default="")
     mut_pr.add_argument("--family", default="")
     mut_pr.set_defaults(func=cmd_mutation_predict)
+    mut_w = mut_sub.add_parser("watch", help="Read watch jsonl (advisory; never auto-fires)")
+    mut_w.add_argument("--path", default="", help="Watch jsonl path")
+    mut_w.add_argument("--limit", type=int, default=20)
+    mut_w.set_defaults(func=cmd_mutation_watch)
     mut.set_defaults(func=cmd_mutation)
 
     mt_alias = sub.add_parser("mutation-trace", help="DEPRECATED alias of mutation trace")
     mt_alias.add_argument("query", nargs="*", default=[])
     mt_alias.add_argument("--restricted", action="store_true")
+    mt_alias.add_argument("--human", action="store_true")
+    mt_alias.add_argument("--watch-jsonl", nargs="?", const="", default=None, metavar="PATH")
     mt_alias.set_defaults(func=cmd_mutation_trace)
 
     mp_alias = sub.add_parser("mutation-predict", help="DEPRECATED alias of mutation predict")

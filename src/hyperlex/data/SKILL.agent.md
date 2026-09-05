@@ -30,6 +30,8 @@ Call the binary on PATH. Do not clone the repo into the skill tree.
 ```bash
 hyperlex pipeline "<term>" --route offline
 hyperlex mutation trace "<attested sentence>"
+hyperlex mutation trace "<attested sentence>" --human
+hyperlex mutation watch
 hyperlex mutation predict <atom>
 hyperlex pending
 hyperlex settle --forecast-id <id> --decision TRUE|FALSE|VOID
@@ -38,6 +40,7 @@ hyperlex commands
 ```
 
 `pipeline` attaches `analysis.mutation_trace` when operators fire.
+`--human` prints a SHADOW advisory card. `watch` reads jsonl instrumentation (never auto-fires).
 Mutation packets keep `brier: null` and `forecast_eligible: false`.
 
 ## Authority
