@@ -4,11 +4,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from typing import List, Optional
 
 from .grammar import parse_mutation_trace
 
 
-def main(argv: Optional[list] = None) -> int:
+def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(prog="python -m hyperlex.mutation")
     p.add_argument("text", nargs="+", help="attested civilian text")
     p.add_argument(
@@ -26,9 +27,6 @@ def main(argv: Optional[list] = None) -> int:
     print(json.dumps({"ok": True, "command": "mutation-trace", **out}, ensure_ascii=False))
     return 0
 
-
-# late import for type
-from typing import Optional  # noqa: E402
 
 if __name__ == "__main__":
     raise SystemExit(main())

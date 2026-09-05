@@ -27,9 +27,7 @@ LAYER_FOR_OP = {
     "COMPOSE": None,
 }
 
-# Historical / predict vocab → detector (documentation + optional tagging)
 LINEAGE_TO_DETECTOR = {
-    "extra-grammatical": "AFFIX",
     "sense_extension": "SUBSTITUTE",
     "irony_inversion": "REGISTER_SHIFT",
     "platform_compression": "PHONETIC_WARP",
@@ -53,7 +51,6 @@ PRODUCTIVE_AFFIXES = (
     "coded",
 )
 
-# Civilian lexicon / algospeak / family seeds. Not a harm list.
 SUBSTITUTE_TERMS = frozenset({
     "unalive",
     "cooked",
