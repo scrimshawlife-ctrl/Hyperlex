@@ -282,8 +282,10 @@ Successful packaging:
 - `examples/slang-families/` — Mermaid + HTML family diagrams
 - `data/backfill/2026/` — YTD slang packs
 - `references/hermes-runtime-contract.md` — path / authority policy
+- `references/source-and-upgrades.md` — install identity, two-rename limits, lock recovery
 
 ## Security
 
 Local stdlib-first CLI. Baseline (`mock`) needs no network. Real ingest may call public web APIs. Score log and receipts are local files under `~/.hyperlex/` or skill `out/`.
 Mutation packets are untrusted structured output (hosts must not execute fields).
+Source, profile, and migration rules: `references/source-and-upgrades.md`.
