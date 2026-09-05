@@ -78,18 +78,15 @@ def build_typology_tags(
     if primary and primary not in ("one_off", ""):
         tags.append(primary)
 
-    # Secondary typology scores above a soft threshold
     for tid, sc in sorted(scores.items(), key=lambda kv: -float(kv[1] or 0)):
         if tid == primary:
             continue
         if float(sc or 0) >= 0.45 and tid not in tags:
             tags.append(str(tid))
 
-    # Lineage family as soft tag
     if fam and fam not in tags:
         tags.append(f"lineage:{fam}")
 
-    # Semantic-variation drivers already used by Hyperlex
     for d in drivers:
         if d and d not in tags:
             tags.append(str(d))
@@ -104,7 +101,6 @@ def build_typology_tags(
     return tags[:8]
 
 
-# Back-compat name used by older call sites / schema field symbolic_role
 def build_symbolic_roles(*args: Any, **kwargs: Any) -> List[str]:
     return build_typology_tags(*args, **kwargs)
 
@@ -202,6 +198,15 @@ def attach_signal_report_fields(
         neos = analysis.get("neologisms") or []
         mp = analysis.get("mutation_prediction")
 
+        if "mutation_trace" not in analysis:
+            from .mutation_trace_attach import attach_mutation_trace
+            attach_mutation_trace(
+                analysis,
+                query=str(observed or ""),
+                observed="",
+                ingest_source=str(ingest_source or "analyze"),
+            )
+
         analysis["compression_metrics"] = build_compression_metrics(
             virality=virality,
             memetic=memetic,
@@ -209,8 +214,6 @@ def attach_signal_report_fields(
             n_neologisms=len(neos),
             hyper_stage=hyper.get("loop_stage"),
         )
-        # Field name remains symbolic_role in schema for stability;
-        # values are typology-aligned tags.
         analysis["symbolic_role"] = build_typology_tags(
             memetic=memetic,
             lineage=lineage,
@@ -252,7 +255,6 @@ def build_integrity_header(
     stage = str(hyper_stage or "").upper()
     elevated = stage in ("ACTUALIZING", "EMERGENT")
     risk = "elevated" if elevated else "baseline"
-    # Schema: provenance.seed.status enum PASS|PARTIAL|FAIL (result.v1)
     status = "PARTIAL" if elevated else "PASS"
     return {
         "status": status,
@@ -260,7 +262,6 @@ def build_integrity_header(
         "provenance": f"ingest={ingest_source or 'unknown'};stage={stage or 'none'}",
         "entropy_class": "high" if elevated else "medium",
         "capability_lane": "advisory",
-        # Extra diagnostic fields (schema allows additionalProperties on seed)
         "method": "rule_based_lineage_vector",
         "ingest_source": ingest_source or "unknown",
         "hyperstition_stage": stage or "none",
@@ -269,6 +270,5 @@ def build_integrity_header(
     }
 
 
-# Back-compat alias used by detect_memetic_patterns
 def build_seed_header(*args: Any, **kwargs: Any) -> Dict[str, str]:
     return build_integrity_header(*args, **kwargs)

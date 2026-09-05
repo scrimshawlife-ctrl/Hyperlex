@@ -23,12 +23,12 @@ HLX="python3 ${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}/scripts/hyperlex
 
 ```text
 pipeline / run / ingest
-        │
-        ▼
+        |
+        v
    resolve route → expand atoms → for each atom:
         analyze → receipt → forecasts → score_log → phase5 risk
-        │
-        ▼
+        |
+        v
    results packet (brier always null until settle)
 ```
 
@@ -36,7 +36,7 @@ pipeline / run / ingest
 
 | Command | Purpose |
 |---------|---------|
-| `pending` | Open (unsettled) forecasts from score log |
+| `pending` | Open (unsettled) forecasts from the score log |
 | `settle --forecast-id ID --decision TRUE\|FALSE\|VOID` | Operator settlement |
 | `score-series --mean-shift --verify-chain` | Brier series from settled pairs |
 
@@ -46,7 +46,7 @@ pipeline / run / ingest
 |---------|---------|
 | `sources` | Catalog + named routes |
 | `sources --route live` | Preview resolve |
-| `ingest "<query>" --route offline` | Ingest only (structured fingerprint) |
+| `ingest "<query>" --route offline` | Ingest only (structured + fingerprint) |
 | `analyze "<query>" --route offline` | Analyze without auto-receipt |
 
 Prefer **`--route offline|live|glossary|social`** over raw adapter names.
@@ -58,7 +58,9 @@ Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai, `live`→com
 |---------|---------|
 | `simulate --term T --mode scenario` | Phase 5 composed scenario |
 | `simulate --mode schedule --tier ELEVATED` | Risk→scan plan |
-| `mutation-predict "rizz"` | Next surface forms (SPECULATIVE · brier null) |
+| `mutation trace "it's giving mid rizz"` | Detect operator stacks (brier null · forecast_eligible false) |
+| `mutation predict "rizz"` | Next civilian surfaces (SPECULATIVE · brier null) |
+| `mutation-predict "rizz"` | Deprecated alias of `mutation predict` |
 | `archive-export --history` | Sanitized Pages run history |
 
 ## Vector DB (sqlite · local chroma · cloud)
@@ -74,7 +76,7 @@ Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai, `live`→com
 | `vector-export -o file.jsonl` | Dump embeddings JSONL |
 | `vector-import -i file.jsonl [--cloud]` | Load dump |
 
-Flow: **seed local → search → sync to cloud**. Secrets: `~/.hermes/.env` (`CHROMA_API_KEY`, …).  
+Flow: **seed local → search → sync to cloud**. Secrets: `~/.hermes/.env` (`CHROMA_API_KEY`, …).
 Docs: [modules/vectordb.md](modules/vectordb.md).
 
 ## Maintenance
@@ -96,6 +98,8 @@ Docs: [modules/vectordb.md](modules/vectordb.md).
                               ↓
                     scan / risk-schedule (cron advisory)
 ```
+
+`analyze` / `pipeline` attach `analysis.mutation_trace` when operators fire.
 
 ## Deferred (do not prioritize)
 

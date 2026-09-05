@@ -122,10 +122,79 @@ def cmd_commands(_: argparse.Namespace) -> int:
             "scan --route offline --receipt --forecasts --append-log",
             "inbox list",
         ],
+        "research": [
+            'mutation trace "<text>"',
+            "mutation predict <atom>",
+        ],
         "routes": ["offline", "mock", "default", "live", "glossary", "social"],
         "docs": "docs/operator-loop.md · docs/commands.md",
     })
     return 0
+
+
+def cmd_mutation_trace(args: argparse.Namespace) -> int:
+    from hyperlex.mutation import parse_mutation_trace
+
+    parts = getattr(args, "query", None) or getattr(args, "text", None) or ""
+    if isinstance(parts, list):
+        seed = " ".join(str(x) for x in parts)
+    else:
+        seed = str(parts)
+    seed = seed.strip()
+    if not seed:
+        _emit({"ok": False, "error": "empty query", "brier": None, "forecast_eligible": False})
+        return 2
+    out = parse_mutation_trace(
+        seed,
+        source="cli",
+        restricted_intent_suspected=bool(getattr(args, "restricted", False)),
+    )
+    _emit({"ok": True, "command": "mutation-trace", **out})
+    return 0
+
+
+def cmd_mutation_predict(args: argparse.Namespace) -> int:
+    from hyperlex.analysis import LINEAGE_REGISTRY, match_lineage, predict_mutations
+
+    seed = (getattr(args, "query", None) or getattr(args, "term", None) or "")
+    if isinstance(seed, list):
+        seed = " ".join(str(x) for x in seed)
+    seed = str(seed).strip()
+    if not seed:
+        _emit({"ok": False, "error": "empty query", "brier": None})
+        return 2
+    family_id = (getattr(args, "family", None) or "").strip() or None
+    family_terms: List[str] = []
+    family_operator = None
+    if not family_id:
+        lin = match_lineage(seed)
+        if lin:
+            family_id = lin.get("family_id")
+            family_operator = lin.get("branch_operator")
+    if family_id:
+        for entry in LINEAGE_REGISTRY:
+            if entry.get("family_id") == family_id:
+                family_terms = list(entry.get("terms") or [])
+                family_operator = family_operator or entry.get("branch_operator")
+                break
+    out = predict_mutations(
+        seed,
+        family_id=family_id,
+        family_terms=family_terms,
+        family_operator=family_operator,
+    )
+    _emit({"ok": True, "command": "mutation-predict", **out})
+    return 0
+
+
+def cmd_mutation(args: argparse.Namespace) -> int:
+    verb = getattr(args, "mutation_verb", None)
+    if verb == "trace":
+        return cmd_mutation_trace(args)
+    if verb == "predict":
+        return cmd_mutation_predict(args)
+    _emit({"ok": False, "error": "usage: mutation trace|predict <text>", "verbs": ["trace", "predict"]})
+    return 2
 
 
 def cmd_relay(args: argparse.Namespace) -> int:
@@ -366,6 +435,30 @@ def build_parser() -> argparse.ArgumentParser:
 
     cmds = sub.add_parser("commands", help="Simplified command map")
     cmds.set_defaults(func=cmd_commands)
+
+    mut = sub.add_parser("mutation", help="trace (detect) | predict (civilian next-forms)")
+    mut_sub = mut.add_subparsers(dest="mutation_verb")
+    mut_tr = mut_sub.add_parser("trace", help="Detect operator stacks")
+    mut_tr.add_argument("query", nargs="*", default=[])
+    mut_tr.add_argument("--restricted", action="store_true")
+    mut_tr.set_defaults(func=cmd_mutation_trace)
+    mut_pr = mut_sub.add_parser("predict", help="Civilian next-forms")
+    mut_pr.add_argument("query", nargs="?", default="")
+    mut_pr.add_argument("--term", default="")
+    mut_pr.add_argument("--family", default="")
+    mut_pr.set_defaults(func=cmd_mutation_predict)
+    mut.set_defaults(func=cmd_mutation)
+
+    mt_alias = sub.add_parser("mutation-trace", help="DEPRECATED alias of mutation trace")
+    mt_alias.add_argument("query", nargs="*", default=[])
+    mt_alias.add_argument("--restricted", action="store_true")
+    mt_alias.set_defaults(func=cmd_mutation_trace)
+
+    mp_alias = sub.add_parser("mutation-predict", help="DEPRECATED alias of mutation predict")
+    mp_alias.add_argument("query", nargs="?", default="")
+    mp_alias.add_argument("--term", default="")
+    mp_alias.add_argument("--family", default="")
+    mp_alias.set_defaults(func=cmd_mutation_predict)
 
     a = sub.add_parser("analyze")
     a.add_argument("query_pos", nargs="?", default="")
