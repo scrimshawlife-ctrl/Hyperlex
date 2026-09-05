@@ -87,7 +87,6 @@ def test_watch_score_bounds():
 
 
 def test_predict_not_used_on_restricted():
-    """Wall: detector must not import-call predict_mutations."""
     import inspect
     from hyperlex.mutation import grammar as g
 
@@ -110,3 +109,13 @@ def test_cli_module_offline():
     assert data.get("brier") is None
     assert data.get("forecast_eligible") is False
     assert "REGISTER_SHIFT" in data.get("operators", [])
+
+
+def test_attach_helper_sets_block():
+    from hyperlex.analysis.mutation_trace_attach import attach_mutation_trace
+
+    analysis: dict = {}
+    attach_mutation_trace(analysis, query="it's giving mid rizz", observed="", ingest_source="mock")
+    mt = analysis.get("mutation_trace")
+    assert mt and mt["brier"] is None
+    assert mt["forecast_eligible"] is False

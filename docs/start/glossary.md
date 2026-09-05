@@ -49,13 +49,20 @@ Cosine-similar terms/receipts from the local vector index (sqlite or chroma).
 Similarity is **not** a probability of virality and **never** Brier.
 See [reading evidence](../demos/reading-evidence.md).
 
+### Mutation trace
+Detector-side operator stack on attested text (`AFFIX`, `SUBSTITUTE`,
+`REGISTER_SHIFT`, `COMPOSE`, …). Attached as `analysis.mutation_trace`.
+Always `brier: null` and `forecast_eligible: false`.
+CLI: `mutation trace "<text>"` (alias `mutation-trace`).
+Does not call `predict_mutations`. Restricted flag redacts `surface_span`.
+
 ### Mutation prediction
 Speculative **next surface forms** of a slang atom (compression, derivation,
 irony templates, family compounds). Attached as `analysis.mutation_prediction`.
-Always `provenance: SPECULATIVE` and `brier: null` — ranking weights are not
-calibrated probabilities. CLI: `mutation-predict "<term>"`.
+Always `provenance: SPECULATIVE` and `brier: null`. CLI: `mutation predict "<term>"`
+(alias `mutation-predict`).
 
-### RUNE.HLX.\*
+### RUNE.HLX.*
 Relay envelope naming for Hyperlex-shaped signals in host systems. Optional
 interop; not required for offline CLI use.
 
