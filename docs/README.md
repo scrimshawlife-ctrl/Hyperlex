@@ -36,5 +36,5 @@ Hyperlex is a **Hermes skill** (Python package repo). Relevant Abraxas wire shap
 ## References
 - [arXiv papers](../references/arxiv_papers.md)
 - [Hermes runtime contract](../references/hermes-runtime-contract.md)
-- [Claude Code runtime contract](../references/claude-runtime-contract.md)
+- [Claude Code runtime contract](claude-runtime-contract.md)
 

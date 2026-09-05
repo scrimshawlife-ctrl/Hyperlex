@@ -88,6 +88,6 @@ phenomenology claims.
 
 ## See also
 
-- [Claude runtime contract](../references/claude-runtime-contract.md)
+- [Claude runtime contract](claude-runtime-contract.md)
 - [Hermes skill model](hermes-skill.md)
 - [Operator loop](operator-loop.md)

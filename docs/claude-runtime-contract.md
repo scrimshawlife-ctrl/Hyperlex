@@ -1,6 +1,7 @@
 # Hyperlex — Claude Code runtime contract
 
-Skill-tree copy. Published docs page: `docs/claude-runtime-contract.md`.
+Published operator contract (MkDocs). The skill-tree copy lives at
+`references/claude-runtime-contract.md`.
 
 ## Identity
 
@@ -69,10 +70,10 @@ Operator data is unchanged (outside the skill tree):
 1. Prefer Bash CLI: `$HLX …` or `bash scripts/claude_hlx.sh …`.
 2. Baseline work uses `--route offline` (no network, no API keys).
 3. Never invent numeric Brier. Open analysis keeps `provenance.brier` null.
-4. Never auto-settle. Ask for TRUE\|FALSE\|VOID\|CONFLICT, then run `settle`.
+4. Never auto-settle. Ask for TRUE|FALSE|VOID|CONFLICT, then run `settle`.
 5. `doctor` reports `CLAUDE_OK` or `CLAUDE_MISSING`. Missing does not fail Hermes.
 
 ## Authority
 
-Same classes as [hermes-runtime-contract.md](hermes-runtime-contract.md):
+Same classes as the Hermes runtime contract (`references/hermes-runtime-contract.md`):
 OBSERVED, INFERRED, SPECULATIVE, NOT_COMPUTABLE, operator settlement.
