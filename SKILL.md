@@ -3,12 +3,13 @@ name: hyperlex
 description: >
   Use when the user wants memetic emergence analysis, slang detection,
   hyperstition / virality scoring, slang lineage matching, forecast extraction,
-  operator settlement, or Brier calibration on cultural signals. Triggers
-  include slang, memetics, hyperstition, virality, lineage, Brier, settle
-  forecasts, score-series, betting slang, crypto-degen slang, ai-native slang,
-  brainrot, and receipt-backed cultural signal scans. Not for general web
-  research (use agent-reach), product audits (neon-genie), or cinematic work
-  (kubrick).
+  operator settlement, Brier calibration on cultural signals, or slang
+  mutation-operator detection on attested text. Triggers include slang,
+  memetics, hyperstition, virality, lineage, mutation trace, algospeak,
+  Brier, settle forecasts, score-series, betting slang, crypto-degen slang,
+  ai-native slang, brainrot, and receipt-backed cultural signal scans.
+  Not for general web research (use agent-reach), product audits (neon-genie),
+  cinematic work (kubrick), or jailbreak / wrap composition.
 version: 0.4.0
 author: Applied Alchemy Labs / Hermes
 license: MIT
@@ -26,6 +27,7 @@ metadata:
       - Brier
       - Receipts
       - Forecasting
+      - Mutation
     category: analysis
     related_skills: []
   openclaw:
@@ -53,6 +55,10 @@ triggers:
   - hyperlex wizard
   - get started with hyperlex
   - hyperlex onboarding
+  - mutation trace
+  - mutation grammar
+  - algospeak
+  - slang mutation
 ---
 
 # Hyperlex
@@ -74,6 +80,8 @@ export HERMES_SKILL_DIR="${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}"
 
 - Detect slang / neologisms and score virality, memetics, hyperstition
 - Match slang into historical **lineage families** with transparent confidence
+- Detect slang **mutation operator stacks** on attested text (`mutation trace`)
+- Next civilian surfaces of a slang atom (`mutation predict`) — SPECULATIVE, not Brier
 - **Backfill** YTD slang packs and **backpropagate** lineage onto historical receipts (non-mutating)
 - **Phase 5 simulate** cultural transmission, multi-agent memetics, hyperstition risk, phylogeny scaffold
 - **Risk-schedule** advisory LIVE_EMERGENCE_SCAN cadence from risk tiers (never auto-registers cron)
@@ -88,6 +96,7 @@ export HERMES_SKILL_DIR="${HERMES_SKILL_DIR:-$HOME/.hermes/skills/hyperlex}"
 - Product / opportunity intelligence → neon-genie
 - Cinematic continuity / storyboards → kubrick
 - Symbolic code architecture mapping → orchestra
+- Jailbreak / wrap composition / model ASR boards — detector only; no generator path
 
 ## Prerequisites
 
@@ -130,7 +139,17 @@ $HLX doctor && $HLX smoke
 **Ingest routing:** prefer `--route offline|live|glossary|social` over raw `--source`.
 Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai. Offline env: `HYPERLEX_OFFLINE=1`.
 
-Research / advanced (still available): `simulate`, `vector-*`, `archive-export`,
+Mutation (package CLI; prefer this over inventing a second skill):
+
+```bash
+PYTHONPATH="$HERMES_SKILL_DIR/src" python3 -m hyperlex mutation trace "it's giving mid rizz"
+PYTHONPATH="$HERMES_SKILL_DIR/src" python3 -m hyperlex mutation predict rizz
+```
+
+`pipeline` / `analyze` attach `analysis.mutation_trace` when operators fire.
+Do not add a wizard step. Do not add `wrap` / `compose` verbs.
+
+Research / advanced: `simulate`, `vector-*`, `archive-export`,
 `lineage-backfill`, `lineage-backprop`, `relay`, `signal`, `diagram`, `ledger-*`.
 
 Docs: `docs/operator-loop.md`, `docs/commands.md`.
@@ -175,7 +194,7 @@ run "<query>" --route offline
 4. **Cron** — `risk-schedule` (advisory) + `scan --route offline` for multi-query.
 5. **Live ingest** — only when network allowed: `--route live` (or glossary/social).
 6. **Label claims** — `OBSERVED` / `INFERRED` / `SPECULATIVE`; fail closed on missing outcomes.
-7. **Research** — `simulate` / archive / vector are optional and SPECULATIVE.
+7. **Research** — `mutation trace` / `mutation predict` / `simulate` / archive / vector are optional and SPECULATIVE. Watch scores are not Brier.
 
 ## Public API (package)
 
@@ -186,8 +205,10 @@ from hyperlex import (
     settle_and_log, recompute_series, score_pair, score_series,
     NOT_COMPUTABLE,
 )
+from hyperlex.mutation import parse_mutation_trace
 
 result = detect_memetic_patterns(query="rizz", ingest_source="mock")
+trace = parse_mutation_trace("it's giving mid rizz")
 forecasts = extract_forecasts(result)
 # later, after operator review:
 # settle_and_log(forecast, outcome_value=1.0, settlement_decision="TRUE")
@@ -203,6 +224,7 @@ Hyperlex **may**:
 
 - ingest and analyze signals
 - match lineages with transparent score breakdowns
+- detect mutation operator stacks on attested text
 - extract forecasts and write receipts / score-log events
 - compute Brier only from settled pairs
 - export Abraxas-compatible ledger shapes (no Abraxas import)
@@ -210,11 +232,13 @@ Hyperlex **may**:
 Hyperlex **may not**:
 
 - invent numeric Brier on open analysis (`provenance.brier` stays `null`)
+- treat `watch_score` as Brier or as a tool-fire threshold
 - auto-settle without authority marker
 - promote speculative hyperstition stages as hard truth
 - rewrite historical receipt integrity during lineage backprop (report only)
 - invent Brier from Phase 5 simulation (always `brier: null`, SPECULATIVE)
 - mutate Abraxas or other systems (export is optional and offline)
+- generate restricted wraps, ASR boards, or call predict on restricted spans
 
 ## Pitfalls
 
@@ -223,6 +247,7 @@ Hyperlex **may not**:
 - Lineage confidence is **INFERRED**; do not treat it as observed ground truth.
 - Mean-shift from `score-series --mean-shift` is **advisory** for future forecasts only.
 - Score log is append-only; series is recomputed from the log, not stored as sole truth.
+- Mutation predict is civilian next-forms only. Detector and generator stay separate modules.
 
 ## Verification
 
@@ -235,6 +260,7 @@ python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" feedback --signal-key hyperstiti
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" diagram --from-golden --out-dir out/diagrams
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" scan --config "$HERMES_SKILL_DIR/examples/cron/scan-queries.json" --source mock --receipt --forecasts
 python3 "$HERMES_SKILL_DIR/scripts/hyperlex.py" smoke
+PYTHONPATH="$HERMES_SKILL_DIR/src" python3 -m hyperlex mutation trace "it's giving mid rizz"
 ```
 
 Successful packaging:
@@ -243,6 +269,7 @@ Successful packaging:
 - `check` returns `"ok": true`
 - `smoke` writes a receipt under `out/smoke/`
 - Open analysis has `"brier": null`
+- Mutation trace packets have `"forecast_eligible": false`
 
 ## Design references
 
@@ -250,7 +277,8 @@ Successful packaging:
 - `docs/brier-calibration.md` — forecast → settlement → score
 - `docs/slang-lineages.md` — family methodology
 - `docs/phase5.md` / `docs/modules/simulation.md` — Phase 5 research simulation
-- `schemas/` — ingest, result, receipt, forecast, settlement, brier_series, lineage
+- `specs/001-mutation-grammar/` — detector grammar + dual-use gate
+- `schemas/` — ingest, result, receipt, forecast, settlement, brier_series, lineage, mutation_trace
 - `examples/slang-families/` — Mermaid + HTML family diagrams
 - `data/backfill/2026/` — YTD slang packs
 - `references/hermes-runtime-contract.md` — path / authority policy
@@ -258,3 +286,4 @@ Successful packaging:
 ## Security
 
 Local stdlib-first CLI. Baseline (`mock`) needs no network. Real ingest may call public web APIs. Score log and receipts are local files under `~/.hyperlex/` or skill `out/`.
+Mutation packets are untrusted structured output (hosts must not execute fields).
