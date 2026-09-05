@@ -5,7 +5,8 @@
 - **Claude Code host (additive):** `.claude-plugin/plugin.json`, project
   `CLAUDE.md`, slash helpers (`.claude/skills/` + plugin `commands/`),
   `install.sh --claude` / `--claude-plugin`, `scripts/claude_hlx.sh`,
-  `docs/claude-skill.md`, `references/claude-runtime-contract.md`.
+  `docs/claude-skill.md`, `docs/claude-runtime-contract.md`,
+  `references/claude-runtime-contract.md`.
   `doctor` reports `CLAUDE_OK` / `CLAUDE_MISSING` (missing does not fail).
   Hermes install paths unchanged.
 - CLI `wizard` + package `hyperlex.wizard`: week-one Hermes guided path
