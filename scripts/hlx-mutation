@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+"""Skill-tree alias → package mutation noun.
+
+Hermes: python3 "$HERMES_SKILL_DIR/scripts/hlx-mutation" trace "it's giving mid rizz"
+"""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+src = ROOT / "src"
+if str(src) not in sys.path:
+    sys.path.insert(0, str(src))
+
+from hyperlex.cli import main  # noqa: E402
+
+def _argv(raw: list[str]) -> list[str]:
+    if raw and raw[0] == "mutation":
+        return raw
+    return ["mutation", *raw]
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(_argv(sys.argv[1:])))
