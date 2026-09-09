@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.route_labels.v0.1",
+  "title": "hyperlex.route_labels.v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "routes_fired", "semantic_claimed", "brier"],
+  "properties": {
+    "schema": { "const": "hyperlex.route_labels.v0.1" },
+    "routes_fired": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["form", "lexical"] }
+    },
+    "semantic_claimed": { "const": false },
+    "brier": { "type": "null" },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["meaning"] },
+      { "required": ["has_meaning"] },
+      { "required": ["comprehension"] },
+      { "required": ["isa_grade"] }
+    ]
+  }
+}
