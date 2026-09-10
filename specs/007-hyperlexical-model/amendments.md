@@ -12,7 +12,8 @@ T1 ≤ 150M. ModernBERT-base became a *legal* T1 trunk.
 
 T1 trunk **is** `answerdotai/ModernBERT-base` (~149M). See `trunk.md`.
 
-Product name after E2: `hyperlex-structure-149m`.
-MiniLM stays T0 / E3 control.
-ModernBERT-large stays teacher-only.
-U1 stub still has no weights.
+## A3 — U3 specify lock (2026-09-09)
+
+**Operator sentence:** `continue as recommended with spec`
+
+Locks C33–C40. Eval schema + dataset-row schema. Does not train. Does not pass E2. Does not open 006.

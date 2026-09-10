@@ -1,7 +1,7 @@
 # Clarify 007 — Hyperlexical model
 
 Locked 2026-09-09. Do not reopen without operator amendment.
-A1: C6/C24 ceiling 150M. A2: trunk frozen ModernBERT-base.
+A1: C6/C24 ceiling 150M. A2: trunk frozen ModernBERT-base. A3: U3 eval/train/name-gate.
 
 | ID | Question | Lock |
 |----|----------|------|
@@ -52,3 +52,16 @@ A1: C6/C24 ceiling 150M. A2: trunk frozen ModernBERT-base.
 | C30 | Tokenizer? | Official ModernBERT BPE. No WordPiece swap. |
 | C31 | Card name after E2? | `hyperlex-structure-149m`. |
 | C32 | MiniLM role? | T0 / E3 control only. Not the T1 trunk. |
+
+## Additive locks — U3 / harvest A3 2026-09-09
+
+| ID | Question | Lock |
+|----|----------|------|
+| C33 | E2 pass rule? | Model swap accuracy **strictly greater** than min(004 positional swap, 004 type_slot swap) on the shared TPR test split. Stub is expected to fail. |
+| C34 | When may train.py run? | `HYPERLEX_ALLOW_TRAIN=1` **and** `HYPERLEX_TRUNK_DIR` is a local ModernBERT-base directory. Else exit 2. No Hub fetch. |
+| C35 | Is current U2 export the name-gate? | No. Gate remains 2k classify + 200 unbind + 200 negatives. Manifest `name_gate=false`. |
+| C36 | Registry / golden / archive class? | INFERRED until an operator settlement id exists. Fixture unbind + dialect seed + prose negatives stay OBSERVED surfaces. Stage stays INFERRED. |
+| C37 | `skill issue` two-family hit? | Hold. Export as `lineage=none`, class INFERRED, until operator picks one family. |
+| C38 | Wiktionary / Common Voice / Gutenberg in this spec cycle? | Harvest ranks only. Not an implement unit. License pull is operator-owned. |
+| C39 | Eval packet? | `hyperlex.hyperlexical.eval_unbind.v0.1`. Brier null. |
+| C40 | May U3 declare Hyperlexical? | No. E2 has not passed. |
