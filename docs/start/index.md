@@ -1,5 +1,7 @@
 # Start here
 
+The Hermes skill is what you run. Spec 007 is the model path (T0 → T1 after E2) — SHADOW, `name_gate` false, not named Hyperlexical. See [Status](../status.md).
+
 | Page | Purpose |
 |------|---------|
 | [Quickstart](quickstart.md) | Offline first success in one command |

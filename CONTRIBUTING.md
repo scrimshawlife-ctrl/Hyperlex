@@ -1,6 +1,6 @@
 # Contribute to Hyperlex
 
-Hyperlex is a **Hermes skill** plus this Python package. You can change specs, the engine, docs, or operator receipts. Keep claims evidence-bound.
+Hyperlex **ships as a Hermes skill** plus this Python package. Spec 007 is the model path (T0 → T1 after E2), still SHADOW. You can change specs, the engine, docs, or operator receipts. Keep claims evidence-bound.
 
 Read [STATUS.md](STATUS.md) before you write a feature sentence. If STATUS says a gate is false, do not flip it in prose.
 

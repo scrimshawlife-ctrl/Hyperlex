@@ -1,8 +1,21 @@
-# SHADOW — Spec 007 Hyperlexical encoder
+# SHADOW — Spec 007 model path
+
+The Hermes skill is the **current operator surface**. This page is the **model path**: a learned encoder that starts as T0 and may become T1 after E2.
 
 Not on Hyperlex `API_V1`. Not a Hugging Face model. Not named **Hyperlexical** until eval gate E2 passes on Spark.
 
 Specify is locked C1–C52 plus A5 milestones. Implement on `main` is the stub, harvest, eval harness, and gated Spark loop.
+
+## Trajectory (T0 → T1)
+
+| Tier | Meaning | Name allowed | State today |
+|------|---------|--------------|-------------|
+| Skill | Hermes CLI + package | Hyperlex (the skill) | Shipping v0.4.0 |
+| T0 | Base encoder + classify heads | `hyperlex-encoder-*` only | Specified. Not Hyperlexical. |
+| T1 | Encoder + unbind heads; E2 vs Spec 004 | `hyperlex-structure-*` / Hyperlexical | **Not earned.** E2 Spark-blocked. |
+| T2 | Separate generative LoRA | out of this cycle | Not an implement target |
+
+`name_gate` stays **false** until E2. Classify volume ready ≠ T1.
 
 ## Honest gates (2026-09-10)
 

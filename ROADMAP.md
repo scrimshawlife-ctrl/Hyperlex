@@ -1,9 +1,11 @@
 # Hyperlex Roadmap
 
 ## Vision
-Hyperlex is a **Hermes skill** backed by this Python package repo. Relevant Abraxas wire capabilities ship as Hyperlex modules (`hyperlex.compat.abraxas`); hosts import *from* Hyperlex.
+Hyperlex **ships today as a Hermes skill** (this Python package). Relevant Abraxas wire capabilities live under `hyperlex.compat.abraxas`; hosts import *from* Hyperlex.
 
-Hyperlex evolves into the canonical engine for detecting, scoring, and acting on emerging memetic signals in real time — grounded in real data, arXiv research, and strict provenance.
+The same project is on a **model path** (Spec 007): T0 encoder baseline, then T1 after eval gate E2. T1 is the first artifact that may be called Hyperlexical. Until E2 passes on Spark, `name_gate` is false and there is no Hub card.
+
+The skill remains the operator surface while the encoder stays SHADOW.
 
 ## Phases
 

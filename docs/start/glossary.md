@@ -67,9 +67,15 @@ Relay envelope naming for Hyperlex-shaped signals in host systems. Optional
 interop; not required for offline CLI use.
 
 ### Hermes skill
-Hyperlex is packaged as a skill installable into Hermes
+The **current operator surface**. Packaged for Hermes
 (`~/.hermes/skills/hyperlex`). The same Python package also runs as a standalone
-CLI via `scripts/hyperlex.py`.
+CLI via `scripts/hyperlex.py`. The model path (Spec 007) does not replace this
+surface until T13 promote — and T13 is not open.
+
+### T0 / T1
+Spec 007 encoder tiers. **T0** is a classify baseline (`hyperlex-encoder-*`).
+**T1** is the first artifact that *may* be called Hyperlexical, and only after
+E2 beats the Spec 004 probe on Spark. Neither tier is a Hub card today.
 
 ### SHADOW
 An advisory lane that is **not** on `API_V1`. Mutation detect v0.2 and Spec 007

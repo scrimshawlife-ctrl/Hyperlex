@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Catch language while it’s still becoming culture.</strong><br>
-  <em>Hermes skill · memetic emergence engine · settled forecasts only</em>
+  <em>Hermes skill today · Spec 007 model path (SHADOW) · settled forecasts only</em>
 </p>
 
 <p align="center">
@@ -16,7 +16,8 @@
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
   <a href="./VERSION"><img src="https://img.shields.io/badge/version-0.4.0-informational" alt="Version 0.4.0"></a>
   <img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white" alt="Python 3.10, 3.11, and 3.12">
-  <img src="https://img.shields.io/badge/hermes-skill-7c3aed" alt="Hermes skill">
+  <img src="https://img.shields.io/badge/hermes-skill%20surface-7c3aed" alt="Hermes skill surface">
+  <img src="https://img.shields.io/badge/007%20model-SHADOW%20T0%E2%86%92T1-64748b" alt="Spec 007 model path SHADOW">
   <img src="https://img.shields.io/badge/claude%20code-skill%20%2B%20plugin-d97706" alt="Claude Code">
   <img src="https://img.shields.io/badge/offline--first-mock%20route-22c55e" alt="Offline-first">
   <img src="https://img.shields.io/badge/Brier-settlement%20required-f59e0b" alt="Brier requires settlement">
@@ -48,9 +49,24 @@ Hyperlex is a **cultural radar for slang**. It watches phrases as they leak out 
 - Is it noise, or is it starting to make itself real (hyperstition)?
 - If you forecast, can you **score yourself later** — only after the world answers?
 
-It runs as a **Hermes skill** (Claude Code is an additional host). Offline-friendly by default. Receipt-backed when you care. One stubborn rule: **no fake accuracy**. Brier scores appear only after a human settles an outcome.
+**Today you run a Hermes skill** (Claude Code is an additional host). Offline-friendly by default. Receipt-backed when you care. One stubborn rule: **no fake accuracy**. Brier scores appear only after a human settles an outcome.
 
-Cool without the con: less “AI vibe report,” more **flight recorder for memetic weather**.
+**The project is also on a model path.** Spec 007 defines a learned encoder (T0 baseline, then T1 after eval gate E2). That path is SHADOW. Nothing is named Hyperlexical yet. `name_gate` is false. There is no Hub card.
+
+Cool without the con: less “AI vibe report,” more **flight recorder for memetic weather** — with a model in the wings, not on the marquee.
+
+---
+
+## Skill now, model next
+
+| Layer | What it is | What you may claim |
+|-------|------------|--------------------|
+| **Hermes skill** (current operator surface) | `SKILL.md` + `scripts/hyperlex.py` + `src/hyperlex/` | Shipping v0.4.0. Offline `demo` / `pipeline`. Settled Brier only. |
+| **T0 encoder** | Small classify baseline (`hyperlex-encoder-*`) | Specified. Not a named Hyperlexical card. |
+| **T1 encoder** | Structure heads; first artifact that *may* take the Hyperlexical name | Only after E2 beats the Spec 004 probe on Spark. **Not there.** |
+| **Hub / `name_gate`** | Operator publish + name wall | **false** / not published |
+
+Classify volume is ready for Spark work. E2 is Spark-blocked. Seed smoke is a harness check, not a model delivery. Details: [SHADOW encoder (007)](./docs/shadow-hyperlexical.md) · [STATUS.md](./STATUS.md).
 
 ---
 
@@ -127,10 +143,11 @@ How the pieces sit together as of **v0.4.0**:
              vector.db · cache                    not the live DB
 
                     ┌──────────────────────────────────────┐
-                    │  SHADOW · Spec 007 Hyperlexical      │
+                    │  MODEL PATH · Spec 007 · SHADOW      │
+                    │  skill surface  →  T0  →  T1 (E2)    │
                     │  scripts/shadow/hyperlexical/        │
-                    │  advisory only · not API_V1          │
-                    │  name_gate = false · E2 Spark-blocked│
+                    │  not API_V1 · name_gate = false      │
+                    │  E2 Spark-blocked · no Hub           │
                     └──────────────────────────────────────┘
 ```
 
@@ -141,7 +158,7 @@ How the pieces sit together as of **v0.4.0**:
 | **Receipt** | Integrity-hashed JSON + append-only ledger under `~/.hyperlex/`. |
 | **Calibration** | `pending` → `settle` → `score-series` (only place Brier is real). |
 | **Research** | Phase 5 transmission, multi-agent, risk, phylogeny — always **SPECULATIVE**. |
-| **SHADOW 007** | Learned encoder harness. Classify volume is ready. `name_gate` stays **false** until E2 passes on Spark. Not named Hyperlexical. No Hub publish. |
+| **Model path (007)** | SHADOW encoder harness. Skill is the operator surface. T0→T1 only after E2. Classify volume ready. `name_gate` **false**. Not named Hyperlexical. No Hub. |
 
 ---
 
@@ -149,7 +166,7 @@ How the pieces sit together as of **v0.4.0**:
 
 1. **Brier requires settlement** — open analysis always has `provenance.brier = null`.
 2. **Phase 5 is SPECULATIVE** — sim packets keep `brier: null`.
-3. **Spec 007 is SHADOW** — advisory packets only. Do not treat stub or Spark seed smoke as a named model.
+3. **Spec 007 is the model path, still SHADOW** — T0 then T1 after E2. Do not treat stub or Spark seed smoke as a named model.
 4. **No Abraxas hard dependency** — hosts may import *from* Hyperlex.
 5. **Local is source of truth** — Pages is sanitized history only.
 6. **Cron is advisory** — `risk-schedule` proposes jobs; operators register them.
@@ -181,10 +198,10 @@ Scan + advisory cron, vector seed, and Phase 5 `simulate` are optional. Command 
 
 | Area | State |
 |------|--------|
-| Skill + offline pipeline + settle loop | Ready |
+| Hermes skill (operator surface) | Ready — offline pipeline + settle loop |
 | Lineage | **8** families + 2026 YTD leaves |
 | Phase 5 research sim | Ready (SPECULATIVE) |
-| Spec 007 encoder | SHADOW on main. Classify volume ready. **`name_gate` false.** E2 Spark-blocked. No Hub. Not named Hyperlexical. |
+| Model path (Spec 007) | SHADOW. T0 specified; T1 after E2. Classify volume ready. **`name_gate` false.** E2 Spark-blocked. No Hub. Not named Hyperlexical. |
 | Public PyPI | Not planned |
 
 Spark bring-up procedure (seed smoke, not a card): [SPARK-BRINGUP.md](./specs/007-hyperlexical-model/SPARK-BRINGUP.md) · [AARON-SPARK-TRAIN.md](./specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md).
@@ -203,7 +220,7 @@ Published site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ct
 | Jargon + constraints | [Glossary](./docs/start/glossary.md) |
 | Commands / burn-in | [Command map](./docs/commands.md) · [Operator loop](./docs/operator-loop.md) |
 | Lineage | [Slang lineages](./docs/slang-lineages.md) |
-| Spec 007 (SHADOW) | [SHADOW encoder](./docs/shadow-hyperlexical.md) · [Spec kit](./specs/README.md) |
+| Model path (007) | [SHADOW encoder](./docs/shadow-hyperlexical.md) · [Spec kit](./specs/README.md) |
 | Architecture spine | [ARCHITECTURE.md](./ARCHITECTURE.md) (historical 0.2.x stamp; current skill is 0.4.0) |
 
 Root files `QUICKSTART.md`, `ARCHITECTURE.md`, `DESIGN.md`, and `SPEC.md` stay as history. Prefer the docs site for navigation.

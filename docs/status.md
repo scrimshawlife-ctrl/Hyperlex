@@ -1,13 +1,25 @@
-# Hyperlex skill status
+# Hyperlex status
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-10  
-**Posture:** Hermes skill (Python package repo)  
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). T0 then T1 after E2.  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
 
 This file is the operator snapshot. The docs site copies it to [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/). Do not treat it as a Hub card or a Brier score.
+
+## Trajectory
+
+| Layer | Role | State |
+|-------|------|--------|
+| Hermes skill | What you run today (`SKILL.md`, CLI, `src/hyperlex/`) | Ready (v0.4.0) |
+| T0 | Encoder baseline; card `hyperlex-encoder-*` | Specified. Not named Hyperlexical. |
+| T1 | First artifact that *may* be called Hyperlexical | Blocked on E2 vs Spec 004 on Spark |
+| `name_gate` | Name + publish wall | **false** |
+| Hub | Operator upload | Not published |
+
+Classify volume is ready. Volume does not flip `name_gate`. Seed smoke ≠ T1.
 
 ## Health
 
@@ -75,7 +87,7 @@ Pages overview: [SHADOW encoder (007)](shadow-hyperlexical.md)
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
 | Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 Hyperlexical encoder | SHADOW · classify volume ready · `name_gate` false · E2 Spark-blocked · no Hub |
+| Spec 007 model path (T0→T1) | SHADOW · classify volume ready · `name_gate` false · E2 Spark-blocked · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |

@@ -10,7 +10,7 @@ mkdocs serve
 
 CI copies `ARCHITECTURE.md`, `DESIGN.md`, `SPEC.md`, `STATUS.md`, `ROADMAP.md`, and `CONTRIBUTING.md` into `docs/`, then runs `mkdocs build --strict`.
 
-Hyperlex is a **Hermes skill** (Python package repo). Relevant Abraxas wire shapes live in `hyperlex.compat.abraxas` (no Abraxas import).
+Hyperlex **ships as a Hermes skill** (Python package repo). Spec 007 is the model path (T0 → T1 after E2), still SHADOW. Relevant Abraxas wire shapes live in `hyperlex.compat.abraxas` (no Abraxas import).
 
 ## Information architecture
 
