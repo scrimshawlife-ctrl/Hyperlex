@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **Docs hygiene:** README / MkDocs IA (Start · Concepts · Operator · Specs · Archive),
+  CONTRIBUTING rewrite, STATUS/ROADMAP honesty for Spec 007 (classify volume ready,
+  `name_gate` false, E2 Spark-blocked). No product-gate changes.
+
 - **P1 fail-closed hardening:** Claude `init` / `install.sh --claude` helpers
   are transactional (symlink refuse, target-keyed backup, staged smoke /
   UNVERIFIED). Unguarded `copy_claude_helpers` removed. Scored `settle()` /

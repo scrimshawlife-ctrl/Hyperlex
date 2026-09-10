@@ -65,18 +65,25 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] **5.3** Risk tiers → scan schedules / operator alerts (advisory Hermes cron envelopes)
 - [x] **5.3** Operator loop docs + simplified ingest routes / command map (`run`, `commands`, `pending`)
 - [x] **5.3** Atomic multi-term seeds (`split_seed_terms`, Phase 5 multi-term, Pages demos)
+- [x] **5.x** Chroma local + Cloud backend; `vector-export` / `import` / `sync` promote path
+- [x] **5.x** Fail-open vector auto-index on ingest/pipeline/receipt (local sqlite/chroma)
+- [ ] **5.x+** Optional post-ingest Cloud promote (`HYPERLEX_VECTOR_PROMOTE`) — off by default
 - [ ] **5.3** ANN backend option if corpus grows past linear scan (**deferred** until corpus pain)
 
-### Spec 007 — Hyperlexical encoder (SHADOW · 2026-09-09)
-- [x] Specify C1–C52
+### Spec 007 — Hyperlexical encoder (SHADOW · 2026-09-10)
+- [x] Specify C1–C52 + A5 milestones / engineering (#33)
 - [x] U1 stub infer + packet walls
 - [x] U2 civilian harvest exporter
 - [x] U3 eval harness vs Spec 004
 - [x] Keepable layout + span aligner + HF skeleton
-- [ ] Spark `--run` (Aaron)
-- [ ] E2 pass
-- [ ] Hub upload (operator)
+- [x] Live-split coerce to lexical train/val/test (#38)
+- [x] 8-family leaf unlock; classify volume ready (harvest receipt 2026-09-10)
+- [x] Spark bring-up runbooks on main (#28)
+- [ ] E2 pass (Spark-blocked; stub expected fail; seed smoke is not a pass)
+- [ ] Hub upload (operator — not started)
 - [ ] T13 promote into `src/hyperlex/`
+
+`name_gate` stays **false** until E2 passes on Spark. Classify volume ≠ a Hyperlexical name. No ninth family.
 
 ## Milestones
 - v0.2.x: Phases 0–4 complete (Hermes skill production track)
@@ -90,14 +97,16 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - v1.0: Stable skill contract + long-horizon archive + optional research contribs
 - 007: `hyperlex-structure-149m` name only after E2
 
-See SPEC.md and DESIGN.md for detailed requirements per phase.
+See [SPEC.md](SPEC.md) and [DESIGN.md](DESIGN.md) for the historical spine. Current operator snapshot: [STATUS.md](STATUS.md).
 
-## Recent (2026-08-05)
-- v0.2.12: YTD backfill + lineage backprop
-- v0.3.0: Phase 5.0 simulation stack (transmission, agents, risk, phylogeny)
-- v0.3.3: Local SQLite vector DB; seed from registry/backfill/receipts
-- v0.3.5: Hybrid lineage re-rank + domain phylogeny packs
-- v0.3.7: Risk-tier → scan/cron schedule (advisory; post-scan advisory on scan)
-- v0.3.8: Operator loop docs; `--route` ingest; `run` / `commands` / `pending`
-- v0.3.9: Atomic multi-term seeds; Pages demos; scan packs atomic
+## Recent
+- 2026-09-10: Spec 007 classify volume ready; `name_gate` false; E2 Spark-blocked. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37).
 - 2026-09-09: Spec 007 SHADOW encoder harness on main (not a Hub card)
+- v0.4.0: automatic backend pipeline (ingest → results)
+- v0.3.9: Atomic multi-term seeds; Pages demos; scan packs atomic
+- v0.3.8: Operator loop docs; `--route` ingest; `run` / `commands` / `pending`
+- v0.3.7: Risk-tier → scan/cron schedule (advisory; post-scan advisory on scan)
+- v0.3.5: Hybrid lineage re-rank + domain phylogeny packs
+- v0.3.3: Local SQLite vector DB; seed from registry/backfill/receipts
+- v0.3.0: Phase 5.0 simulation stack (transmission, agents, risk, phylogeny)
+- v0.2.12: YTD backfill + lineage backprop

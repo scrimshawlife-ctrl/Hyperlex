@@ -1,5 +1,10 @@
 # Hyperlex Technical Specification v0.3
 
+> **Snapshot.** This is the **v0.3 technical spine**. Current skill version is
+> **0.4.0**. Prefer [docs/commands.md](docs/commands.md) and [STATUS.md](STATUS.md)
+> for what ships. Spec 007 is SHADOW — see
+> [docs/shadow-hyperlexical.md](docs/shadow-hyperlexical.md).
+
 **Hermes skill (Python package repo).** No hard dependency on Abraxas. Relevant Abraxas wire
 capabilities are Hyperlex modules under `hyperlex.compat.abraxas`.
 

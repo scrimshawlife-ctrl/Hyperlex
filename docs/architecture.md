@@ -1,6 +1,13 @@
 # Hyperlex Architecture
 
-**Version:** 0.2.x · **Mode:** Hermes skill (Python package repo)
+> **Snapshot.** This file is the **0.2.x spine**. The shipping skill is **0.4.0**
+> (automatic pipeline, Phase 5 research, mutation detect, local vector DB).
+> Spec 007 Hyperlexical encoder is **SHADOW / advisory** under
+> `scripts/shadow/hyperlexical/` — see
+> [docs/shadow-hyperlexical.md](shadow-hyperlexical.md).
+> Prefer [STATUS.md](status.md) for what is ready today.
+
+**Version:** 0.4.0 (spine drafted in 0.2.x) · **Mode:** Hermes skill (Python package repo)
 
 Hyperlex is a pure-function-first memetic engine packaged as a Hermes skill.
 Optional append-only side effects: receipts, score log, receipt ledger.

@@ -2,7 +2,7 @@
 
 Hyperlex is a **Hermes skill** plus this Python package. You can change specs, the engine, docs, or operator receipts. Keep claims evidence-bound.
 
-Read [STATUS.md](STATUS.md) before you write a feature sentence. If STATUS says a gate is false, do not flip it in prose.
+Read [STATUS.md](status.md) before you write a feature sentence. If STATUS says a gate is false, do not flip it in prose.
 
 ## Before you start
 
@@ -26,7 +26,7 @@ python3 scripts/hyperlex.py smoke
 python3 -m pytest -q
 ```
 
-That matches [`.github/workflows/hermes-evals.yml`](.github/workflows/hermes-evals.yml). Shadow 007 tests live under `tests/shadow/` and run in the same pytest invocation.
+That matches [`.github/workflows/hermes-evals.yml`](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/.github/workflows/hermes-evals.yml). Shadow 007 tests live under `tests/shadow/` and run in the same pytest invocation.
 
 Skill-only smoke from a checkout (no install):
 
@@ -63,7 +63,7 @@ Published site: https://scrimshawlife-ctrl.github.io/Hyperlex/
 
 1. Open an issue first for behavior or spec changes that are not obvious fixes.
 2. Keep PRs small. Prefer tests or receipts when behavior changes.
-3. Update [STATUS.md](STATUS.md) and [ROADMAP.md](ROADMAP.md) only when a gate actually moved.
+3. Update [STATUS.md](status.md) and [ROADMAP.md](ROADMAP.md) only when a gate actually moved.
 4. Link the relevant spec (`specs/00N-…`) or roadmap row.
 5. Docs and PR text follow Google developer style. Keep the Hyperlex voice where it already lives; do not invent swagger or features.
 
@@ -81,11 +81,11 @@ Published site: https://scrimshawlife-ctrl.github.io/Hyperlex/
 | File | Role |
 |------|------|
 | [SKILL.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/SKILL.md) | Hermes / Claude behavior contract |
-| [STATUS.md](STATUS.md) | Operator snapshot (copied to the docs site) |
+| [STATUS.md](status.md) | Operator snapshot (copied to the docs site) |
 | [ROADMAP.md](ROADMAP.md) | Phase and 007 checklist (copied to the docs site) |
 | [Docs site](https://scrimshawlife-ctrl.github.io/Hyperlex/) | Operator-facing MkDocs |
 | [specs/](https://github.com/scrimshawlife-ctrl/Hyperlex/tree/main/specs) | Spec kit (000–007). 006 stays reserved. |
-| [ARCHITECTURE.md](ARCHITECTURE.md), [DESIGN.md](DESIGN.md), [SPEC.md](SPEC.md) | Historical spines. Prefer the docs site for navigation. |
+| [ARCHITECTURE.md](architecture.md), [DESIGN.md](design.md), [SPEC.md](spec.md) | Historical spines. Prefer the docs site for navigation. |
 
 ## Style for requirements
 

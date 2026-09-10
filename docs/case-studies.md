@@ -1,6 +1,6 @@
 # Case studies
 
-See the repo folder [`examples/case-studies/`](https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/tree/main/examples/case-studies).
+See the repo folder [`examples/case-studies/`](https://github.com/scrimshawlife-ctrl/Hyperlex/tree/main/examples/case-studies).
 
 ## End-to-end mock scan
 

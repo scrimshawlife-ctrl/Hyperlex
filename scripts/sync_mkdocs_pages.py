@@ -20,6 +20,8 @@ FIXES = {
         ("](./SPEC.md)", "](spec.md)"),
         ("](./docs/api-v1.md)", "](api-v1.md)"),
         ("](./docs/hermes-skill.md)", "](hermes-skill.md)"),
+        ("](./docs/shadow-hyperlexical.md)", "](shadow-hyperlexical.md)"),
+        ("](./STATUS.md)", "](status.md)"),
         ("](./ARCHITECTURE.md)", "](architecture.md)"),
         ("](./DESIGN.md)", "](design.md)"),
     ],
@@ -31,11 +33,15 @@ FIXES = {
         ("](docs/hermes-skill.md)", "](hermes-skill.md)"),
         ("](./docs/hermes-skill.md)", "](hermes-skill.md)"),
         ("](docs/standalone-app.md)", "](hermes-skill.md)"),
+        ("](docs/design.md)", "](design.md)"),
     ],
     "spec.md": [
         ("](docs/api-v1.md)", "](api-v1.md)"),
         ("](./docs/api-v1.md)", "](api-v1.md)"),
         ("](docs/brier-calibration.md)", "](brier-calibration.md)"),
+        ("](docs/commands.md)", "](commands.md)"),
+        ("](docs/shadow-hyperlexical.md)", "](shadow-hyperlexical.md)"),
+        ("](STATUS.md)", "](status.md)"),
     ],
     # STATUS.md is mirrored as docs/status.md; root paths need MkDocs-relative rewrite
     "status.md": [
@@ -57,7 +63,17 @@ FIXES = {
         ("](docs/", "]("),
     ],
     "ROADMAP.md": [
-        ("](../ROADMAP.md)", "](https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/blob/main/ROADMAP.md)"),
+        ("](SPEC.md)", "](spec.md)"),
+        ("](DESIGN.md)", "](design.md)"),
+        ("](STATUS.md)", "](status.md)"),
+    ],
+    "contributing.md": [
+        ("](STATUS.md)", "](status.md)"),
+        ("](ROADMAP.md)", "](ROADMAP.md)"),
+        ("](ARCHITECTURE.md)", "](architecture.md)"),
+        ("](DESIGN.md)", "](design.md)"),
+        ("](SPEC.md)", "](spec.md)"),
+        ("](.github/workflows/hermes-evals.yml)", "](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/.github/workflows/hermes-evals.yml)"),
     ],
     "README.md": [
         ("](../ROADMAP.md)", "](ROADMAP.md)"),

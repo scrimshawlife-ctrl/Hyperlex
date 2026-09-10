@@ -5,7 +5,7 @@
 **Authority**: Danny blanket yes 2026-09-10 — "Yes to whatever we need to do"  
 **Provenance**: `operator-blanket-yes:2026-09-10`  
 **Settle provenance**: `operator-settle:blanket-yes:2026-09-10`  
-**PR**: https://github.com/scrimshawlife-ctrl/Hyperlex/pull/37 (do **not** merge unless parent asks)  
+**PR**: https://github.com/scrimshawlife-ctrl/Hyperlex/pull/37 (written while open; later merged to `main` on 2026-09-10)  
 **Branch**: `007-blanket-yes-leaves-2026-09-10` @ `db1cf7d`  
 **Base**: `main` @ post-merge #34/#35/#36 (`4f79834`)  
 **Do-not honored**: no 9th family, no train/HF, no mock analyze, no paid Firecrawl.

@@ -1,5 +1,7 @@
 # Hyperlex Design Principles
 
+Canonical copy for the docs site: [docs/design.md](design.md). Principles 11–13 (lineage, settled Brier, Phase 5 speculative) still hold. Spec 007 does not change them.
+
 ## 1. Real Over Synthetic
 All analysis must be traceable to real signals. Synthetic data is only for internal unit tests and explicitly marked.
 

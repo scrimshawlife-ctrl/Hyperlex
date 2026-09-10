@@ -1,10 +1,13 @@
-# Hyperlex Skill Status
+# Hyperlex skill status
 
 **Version:** 0.4.0  
+**Observed:** 2026-09-10  
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
-**Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Hallmark desk UI · Spec 007 SHADOW encoder on main
+**Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
+
+This file is the operator snapshot. The docs site copies it to [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/). Do not treat it as a Hub card or a Brier score.
 
 ## Health
 
@@ -15,6 +18,30 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 python -m hyperlex inbox list
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 ```
+
+## Spec 007 — honest gates
+
+SHADOW / advisory. Not on `API_V1`. Do **not** call the artifact Hyperlexical. Do **not** set `name_gate` true.
+
+| Gate | State |
+|------|--------|
+| Classify volume | **Ready** — operator harvest 2026-09-10 (`--include-live`): export family classify **2437**. Store family-labeled **1789** (store stretch 2000 not reached). Receipt: [docs/receipts/blanket-yes-unlock-2026-09-10.md](docs/receipts/blanket-yes-unlock-2026-09-10.md) |
+| `name_gate` | **false** — stays false until E2 passes on Spark. Volume ≠ name. |
+| E2 vs Spec 004 | **FAIL** on the stub (expected). Trained E2 is **Spark-blocked**. Seed smoke is not a pass. |
+| Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
+| T1 name | Not allowed. Card stays `hyperlex-encoder-*` until E2. |
+| Lineage families | **8** only. No ninth family. |
+| Brier | `null` on every 007 packet. |
+
+Spark procedure (bring-up, not a product card):
+
+- [SPARK-BRINGUP.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/SPARK-BRINGUP.md) (#28)
+- [AARON-SPARK-TRAIN.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md)
+- [HERMES-SPARK-RUN.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/HERMES-SPARK-RUN.md)
+- A5 milestones / engineering (#33): [milestones.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/milestones.md)
+- Live-split coerce (#38) is on `main` (`lexical_split` in the export path)
+
+Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 
 ## Surface (ready)
 
@@ -36,7 +63,7 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 | Pages static run history | Ready |
 | Long-term analysis archive | Ready |
 | Governed LLM (echo / openai_compatible) | Opt-in |
-| Phase 5 cultural transmission / multi-agent / risk / phylogeny | Ready |
+| Phase 5 cultural transmission / multi-agent / risk / phylogeny | Ready (SPECULATIVE) |
 | Local vector DB + Chroma promote | Ready |
 | Mutation prediction | Ready (SPECULATIVE) |
 | Hybrid lineage re-rank | Ready |
@@ -45,11 +72,11 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 | Risk → scan/cron schedule | Ready (advisory) |
 | Ingest routes + automatic pipeline | Ready |
 | Atomic multi-term seeds | Ready |
-| **Analysis enrichment** (compression_metrics, typology tags, signal_report, integrity header) | Ready |
-| **Local attractor store** (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
-| **Attractor candidate rune** (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| **Spec 007 Hyperlexical encoder** | SHADOW on main · stub + harvest + eval · Spark train gated · E2 fail · no Hub |
-| **007 live ingest tap** | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
+| Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
+| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
+| Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
+| Spec 007 Hyperlexical encoder | SHADOW · classify volume ready · `name_gate` false · E2 Spark-blocked · no Hub |
+| 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
 
@@ -87,6 +114,6 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Burn-in offline runs + settle path
-2. Live ingest tap → harvest candidates (still below name-gate)
-3. Aaron Spark 007 smoke (`AARON-SPARK-TRAIN.md`)
+1. Burn-in offline runs + settle path (this is how Brier becomes real).
+2. Spark E2 — train on the box per the bring-up runbooks. Until that passes, `name_gate` stays false.
+3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13).

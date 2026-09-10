@@ -28,9 +28,10 @@ flowchart LR
   D --> E[Settle]
   E --> F[Brier score]
   B -.-> G[Phase 5 research]
+  B -.-> H[SHADOW 007]
 ```
 
-Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5).
+Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5). Spec 007 is **SHADOW / advisory**: classify volume is ready; `name_gate` is false; E2 is Spark-blocked. Do not call the encoder Hyperlexical.
 
 | Stage | What you get |
 |-------|----------------|
@@ -39,6 +40,7 @@ Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [gloss
 | **Forecasts** | Open probabilities waiting for settlement |
 | **Settle → score** | Real Brier only after operator outcome |
 | **Phase 5** | Speculative sims — never Brier |
+| **SHADOW 007** | Advisory encoder harness — `name_gate` false |
 
 ## Start here — three actions
 
@@ -106,9 +108,10 @@ Golden receipts, archive snapshots, featured example.
 | **Architecture** | [Architecture](architecture.md) |
 | **Case studies** | [Case studies](case-studies.md) |
 | **Slang lineages** | [Lineages](slang-lineages.md) · [Map](map/index.md) |
-| **Status / telemetry** | [Status](status.md) · [Telemetry desk](telemetry.md) |
-| **Glossary** | [Terms & hard constraints](start/glossary.md) |
+| **Status / specs** | [Status](status.md) · [Spec kit](specs/index.md) · [SHADOW 007](shadow-hyperlexical.md) |
+| **Glossary** | [Terms and hard constraints](start/glossary.md) |
 | **Why settled Brier** | [Settled Brier only](start/settled-brier.md) |
+| **Contribute** | [Contribute](contributing.md) |
 
 </div>
 
@@ -116,6 +119,7 @@ Golden receipts, archive snapshots, featured example.
 
 - **No fabricated Brier** — open analysis always has `brier: null`.
 - **Phase 5 is SPECULATIVE** — research tooling, not measurement.
+- **Spec 007 is SHADOW** — classify volume ready; `name_gate` false until E2 on Spark.
 - **No Abraxas hard import** — hosts may import Hyperlex; not the reverse.
 - **Local-first** — durable state in `~/.hyperlex/`; Pages is static history.
 

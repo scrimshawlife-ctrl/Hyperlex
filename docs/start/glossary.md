@@ -71,12 +71,29 @@ Hyperlex is packaged as a skill installable into Hermes
 (`~/.hermes/skills/hyperlex`). The same Python package also runs as a standalone
 CLI via `scripts/hyperlex.py`.
 
+### SHADOW
+An advisory lane that is **not** on `API_V1`. Mutation detect v0.2 and Spec 007
+live here. Packets stay `brier: null`. Fail-open: omit the block if inference
+fails.
+
+### Hyperlexical (name)
+Reserved for a T1 encoder **after** eval gate E2 beats the Spec 004 probe on
+Spark. Until then the card is `hyperlex-encoder-*`. Do not use the word
+Hyperlexical for the stub, the harvest, or a seed smoke.
+
+### name_gate
+Dataset + eval wall before a T1 may be named. Classify volume can be ready
+while `name_gate` stays **false**. The name-gate does not flip until E2 passes
+on Spark. See [SHADOW encoder](../shadow-hyperlexical.md).
+
 ## Hard constraints
 
 | Rule | Meaning |
 |------|---------|
 | No fabricated Brier | Open runs: `brier: null` |
 | Phase 5 speculative | Research only; not measurement |
+| Spec 007 SHADOW | Classify volume ready; `name_gate` false; no Hub |
+| Eight families only | Do not invent a ninth lineage family |
 | No Abraxas hard import | Hyperlex never imports Abraxas |
 | Local-first storage | `~/.hyperlex/` is the durable store; Pages is static |
 
