@@ -1,6 +1,6 @@
 # Weights 007 — layout before train
 
-Values are produced on Spark. This file is the layout Aaron must write into `heads.pt`.
+Values are produced on Spark. This file is the layout Aaron must write into the HF directory.
 
 | Part | Shape | Trainable |
 |------|-------|-----------|
@@ -10,15 +10,12 @@ Values are produced on Spark. This file is the layout Aaron must write into `hea
 | `filler_head` | `Linear(768, \|filler_vocab\|)` | yes |
 
 Classify reads `last_hidden_state[:, 0]`.
-Unbind reads `last_hidden_state` token rows (C29). Alignment in v0 is index `k+1` for filler k.
-
-Forbidden tensors: refusal head, Brier head, chat embeddings.
+Unbind pools token states whose offsets overlap the atom's char span (C47).
 
 On-disk after `--run` (not git):
 
-- `heads.pt`
-- `layout.json`
-- `train-receipt.json` (`brier: null`, `e2_pass: false`, `name_gate: false`)
-- `config-train.json`
+- `config.json` `layout.json` `README.md`
+- `model.safetensors` or `heads.pt`
+- `train-receipt.json` with per-epoch val metrics
 
-Code: `scripts/shadow/hyperlexical/layout.py` + `loop.py`.
+Forbidden: refusal head, Brier head, chat embeddings, `text-generation` pipeline.
