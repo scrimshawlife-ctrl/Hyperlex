@@ -1,6 +1,7 @@
 # Dual-use gate — Spec 007 (Hyperlexical encoder)
 
 Extends 001 / 003 gates. Does not reopen them.
+Uncensored (C22) does not flip any row to generate.
 
 | # | Question | Answer |
 |---|----------|--------|
@@ -14,5 +15,7 @@ Extends 001 / 003 gates. Does not reopen them.
 | 8 | Host output handling | JSON is untrusted structured output (OWASP LLM10:2026). |
 | 9 | Hub card dual-use text | Required before publish: detect-over-generate, no chat, no jailbreak examples. |
 | 10 | Claim vs control | Improves lineage/unbind instrumentation. Does not close LLM01. Does not report ASR. |
+| 11 | Uncensored = peel safety and emit wraps? | No. Uncensored = no refusal on civilian attested slang. |
+| 12 | May a safety-tuned chat trunk be the T1 card? | No. |
 
 If any answer flips to a generator or agency yes, block merge and delete the path that caused it.
