@@ -96,3 +96,12 @@ def test_build_map_seeds_and_entries():
     assert m["achievement whore"] == "gaming-meta"
     assert m["tilt"] == "gaming-meta"  # seed
     assert weak_family_for_text("TILT", m) == "gaming-meta"
+
+
+def test_wave2_exact_seeds():
+    assert SEED_FAMILY["clv"] == "betting-sharp"
+    assert SEED_FAMILY["dyor"] == "crypto-degen"
+    assert SEED_FAMILY["afk"] == "gaming-meta"
+    assert SEED_FAMILY["broski"] == "kinship-address"
+    assert weak_family_for_text("clv") == "betting-sharp"
+    assert weak_family_for_text("not clv here") is None

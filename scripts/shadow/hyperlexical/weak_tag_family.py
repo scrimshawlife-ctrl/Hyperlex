@@ -149,12 +149,21 @@ SEED_FAMILY: dict[str, str] = {
     "akimbo": "gaming-meta",
     "assrun": "gaming-meta",
     "border gore": "gaming-meta",
-    # crypto greetings (exact)
+    "afk": "gaming-meta",
+    "pwn": "gaming-meta",
+    "pwned": "gaming-meta",
+    # crypto greetings / short CT (exact)
     "gm": "crypto-degen",
     "gn": "crypto-degen",
+    "ath": "crypto-degen",
+    "dyor": "crypto-degen",
+    "lfg": "crypto-degen",
+    # betting short exact
+    "clv": "betting-sharp",
     # kinship
     "fam": "kinship-address",
     "bestie": "kinship-address",
+    "broski": "kinship-address",
 }
 
 

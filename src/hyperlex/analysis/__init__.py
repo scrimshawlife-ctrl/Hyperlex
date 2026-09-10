@@ -28,6 +28,9 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
         "terms": [
             "sharp", "steam", "square", "wiseguy", "hammer", "holler", "revenge", "low block",
             "false nine", "revenge bet", "vig",
+            # diagram / calibration / phylogeny morphs (wave2)
+            "sharp money", "closing line value", "clv", "reverse line movement", "steam move",
+            "public money", "line move", "sharper", "card-sharp",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
@@ -39,6 +42,9 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "hodl", "diamond hands", "paper hands", "rekt", "ape", "degen", "moon", "bagholder",
             "fud", "fomo", "ngmi", "wagmi", "rug", "rugpull", "rug pull", "hopium", "ape in",
             "to the moon",
+            # diagram morphs + distinctive CT leaves (wave2)
+            "rugged", "exit liquidity", "soft rug", "dyor", "lfg", "memecoin", "wen moon",
+            "airdrop", "altcoin", "buy the dip",
         ],
         "branch_operator": "cross_family_borrowing",
         "diagram_ref": "examples/slang-families/crypto-degen-family.mmd",
@@ -50,6 +56,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "hallucinate", "slop", "clanker", "agentic", "glazing", "skill issue",
             "token", "context window", "vibe coding", "vibe code", "prompt injection",
             "hallucination", "jailbreak", "sycophancy", "tool use", "token burn",
+            # diagram morphs (wave2)
+            "ai slop", "slopper", "agentic workflow",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/ai-native-family.mmd",
@@ -72,6 +80,10 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             # dialect / seed expansions (distinctive; still 8-family only)
             "fine shyt", "giga chad", "caught in 4k", "in my bag", "understood the assignment",
             "mid af", "unspoken rizz",
+            # morphs / multiword variants (wave2)
+            "skibidi toilet", "rizzed up", "brainrotted", "looksmaxxer", "gooner",
+            "ate and left no crumbs", "sigma male", "on god", "say less", "fr fr",
+            "took an l", "big w",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
@@ -79,7 +91,11 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
     },
     {
         "family_id": "kinship-address",
-        "terms": ["bro", "sis", "twin", "unc", "cuz", "family", "fam", "bestie"],
+        "terms": [
+            "bro", "sis", "twin", "unc", "cuz", "family", "fam", "bestie",
+            # morphs / multiword address (wave2)
+            "broski", "bruh moment", "lil bro", "big bro",
+        ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/kinship-address.mmd",
         "payload_note": "fictive kinship; community responsibility + platform acceleration",
@@ -89,6 +105,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
         "terms": [
             "based", "redpilled", "blackpilled", "bluepilled", "cope", "copium", "seethe", "dilate",
             "redpill", "blackpill",
+            # pill-discourse morphs (wave2)
+            "bluepill", "whitepill", "whitepilled", "based and redpilled", "cope and seethe",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/political-status-family.mmd",
@@ -101,6 +119,9 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "touch grass", "skill issue", "diff", "int", "feed", "feeding", "smurf", "sus",
             "griefing", "360 noscope", "beast mode", "bunny hopper", "bacon hair",
             "achievement whore",
+            # morphs / multiword status (wave2)
+            "ez clap", "gg ez", "inting", "smurfing", "tryhard", "try hard", "elo hell",
+            "hardstuck", "afk", "pwned", "border gore",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
@@ -112,6 +133,9 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "quiet quitting", "quiet firing", "rto", "return to office", "layoffs",
             "pip", "synergy", "circle back", "bandwidth", "low-hanging fruit",
             "act your wage", "touch base", "deep dive", "move the needle",
+            # morphs / hyphen + managerial cant (wave2)
+            "quiet quit", "quiet fire", "return-to-office", "low hanging fruit", "circle-back",
+            "performance improvement plan", "take offline", "boil the ocean",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",
