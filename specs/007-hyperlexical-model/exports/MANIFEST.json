@@ -1,0 +1,30 @@
+{
+  "brier": null,
+  "counts": {
+    "backfill": 60,
+    "classify": 135,
+    "classify_all": 345,
+    "dialect": 8,
+    "inferred": 101,
+    "live_included": 0,
+    "live_rejected": 0,
+    "n": 450,
+    "name_gate": false,
+    "name_gate_classify_gap": 1865,
+    "name_gate_negative_gap": 0,
+    "name_gate_unbind_gap": 95,
+    "negatives": 210,
+    "observed": 349,
+    "test": 48,
+    "train": 364,
+    "unbind": 105,
+    "unbind_civilian": 60,
+    "unbind_fixture": 45,
+    "val": 38
+  },
+  "file": "civilian.v0.1.jsonl",
+  "note": "Honest accounting: counts.classify = family-labeled only (excludes negatives). unbind_fixture vs unbind_civilian split. Spec004 fixtures at n=24; civilian dual-scheme from golden/registry (no gloss invent). Live optional via --include-live (INFERRED only). Not a T1 name-gate.",
+  "schema": "hyperlex.hyperlexical.dataset.v0.1",
+  "sha256": "1579ee22c4dde1a7dfa6134777f59c66574986894dfaeabcc940bf3aae2a816c",
+  "trunk": "answerdotai/ModernBERT-base"
+}

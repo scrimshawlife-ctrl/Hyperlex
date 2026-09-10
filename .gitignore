@@ -37,6 +37,9 @@ build/
 !docs/map/**/*.json
 !data/backfill/**/*.json
 !data/phylogeny/**/*.json
+!specs/007-hyperlexical-model/exports/**/*.json
+!specs/007-hyperlexical-model/harvest/**/*.json
+!specs/007-hyperlexical-model/harvest/**/*.jsonl
 !.claude-plugin/plugin.json
 !references/claude-sot-cleared.json
 

@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from .packet import RESTRICTED_MARKER, sha256_hex
+from ._negatives_data import NEGATIVES  # ordinary prose; no slang
 
 FAMILIES = (
     "betting-sharp",
@@ -34,28 +35,6 @@ TYPOLOGY = {
     "workplace-corp": ["camouflage"],
 }
 
-NEGATIVES = (
-    "The committee approved the budget amendment.",
-    "Water boils at one hundred degrees Celsius.",
-    "Please find the attached invoice for March.",
-    "The museum opens at ten on weekdays.",
-    "Photosynthesis converts light into chemical energy.",
-    "The train to Sacramento leaves from platform two.",
-    "This warranty covers defects in materials.",
-    "Average rainfall in July was two inches.",
-    "The library card expires in December.",
-    "Sodium chloride is table salt.",
-    "The board meeting is scheduled for Tuesday.",
-    "A rectangle has four right angles.",
-    "Please confirm receipt of this shipment.",
-    "The periodic table lists the elements.",
-    "Oak trees drop acorns in autumn.",
-    "The speed limit on this road is twenty five.",
-    "This paragraph contains no slang tokens.",
-    "The recipe calls for two cups of flour.",
-    "Latitude and longitude specify a point.",
-    "The contract is governed by California law.",
-)
 
 DIALECT = (
     "no cap fr",
@@ -84,6 +63,45 @@ ROW_KEYS = (
 )
 
 COLLISION_HOLD = {"skill issue"}
+
+# Short slang / numeric codes that len≤2 or numeric filters would false-reject.
+# Prefer explicit allowlist over blanket keep of all short/numeric tokens.
+SHORT_SLANG_ALLOWLIST = frozenset(
+    {
+        "w",
+        "l",
+        "ez",
+        "gg",
+        "gm",
+        "gn",
+        "bs",
+        "a+",
+        "ai",
+        "ak",
+        "3p",
+        "ag",
+        "bf",
+        "bj",
+        "bk",
+        "bm",
+        "420",
+        "4/20",
+        "4:20",
+        "100",
+        "404",
+        "5150",
+        "10-4",
+        "304",
+        "143",
+        "007",
+        "411",
+        "730",
+        "10-20",
+    }
+)
+
+# Spec 004 type_slot vocabulary (structural placeholders — not gloss-derived POS).
+TYPE_SLOT_TAGS = ("TOKEN", "SLOT", "MARKER")
 
 
 def repo_root() -> Path:
@@ -271,6 +289,10 @@ def harvest_archive(root: Path) -> list[dict[str, Any]]:
 
 
 def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
+    """Spec 004 fixture gold under both schemes. Honest default n=24 (~45 unique).
+
+    Fixture rows are provenance `004:tpr:*` only — not civilian name-gate gold.
+    """
     sys.path.insert(0, str(repo_root() / "scripts" / "shadow"))
     from recoverable_structure.fixtures import make_spans
 
@@ -310,6 +332,138 @@ def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
     return rows
 
 
+def _structural_type_tags(n: int) -> list[str]:
+    """Assign Spec 004 TOKEN/SLOT/MARKER by index — not gloss/POS invention."""
+    return [TYPE_SLOT_TAGS[i % len(TYPE_SLOT_TAGS)] for i in range(n)]
+
+
+def harvest_civilian_unbind(root: Path) -> list[dict[str, Any]]:
+    """Civilian unbind for multiword atoms under BOTH schemes.
+
+    Fillers = real token atoms from golden/registry/dialect only.
+    type_slot roles = structural TOKEN/SLOT/MARKER (no gloss invent).
+    Collision-hold (`skill issue`) skipped on all paths (C37 / harvest card).
+    """
+    rows: list[dict[str, Any]] = []
+    seen_atom: set[str] = set()
+
+    def _add(text: str, lineage: str, source_tag: str) -> None:
+        atom = text.strip()
+        if not atom or " " not in atom:
+            return
+        key = atom.lower()
+        if key in COLLISION_HOLD or key in seen_atom:
+            return
+        tokens = [t for t in atom.split() if t]
+        if len(tokens) < 2:
+            return
+        if lineage not in FAMILIES and lineage != "none":
+            lineage = "none"
+        seen_atom.add(key)
+        # positional
+        rows.append(
+            _row(
+                text=atom,
+                lineage=lineage,
+                typology=TYPOLOGY.get(lineage, []),
+                stage="circulating",
+                roles=[f"pos_{k}" for k in range(len(tokens))],
+                fillers=tokens,
+                role_scheme="positional",
+                task="unbind",
+                provenance=f"civilian-pos:{source_tag}",
+                **{"class": "OBSERVED"},
+            )
+        )
+        # type_slot — structural tags only (real fillers; no gloss-invented roles)
+        tags = _structural_type_tags(len(tokens))
+        rows.append(
+            _row(
+                text=" ".join(f"{t}:{tok}" for t, tok in zip(tags, tokens)),
+                lineage=lineage,
+                typology=TYPOLOGY.get(lineage, []),
+                stage="circulating",
+                roles=tags,
+                fillers=tokens,
+                role_scheme="type_slot",
+                task="unbind",
+                provenance=f"civilian-type:{source_tag}",
+                **{"class": "OBSERVED"},
+            )
+        )
+
+    gold = root / "examples" / "receipts" / "golden"
+    if gold.is_dir():
+        for path in sorted(gold.glob("*.json")):
+            if path.name == "MANIFEST.json":
+                continue
+            data = json.loads(path.read_text(encoding="utf-8"))
+            lineage = (data.get("analysis") or {}).get("lineage") or {}
+            fam = lineage.get("family_id") or "none"
+            for term in lineage.get("matched_terms") or []:
+                if isinstance(term, str) and " " in term.strip():
+                    _add(term.strip(), fam, f"golden:{path.name}")
+
+    for entry in load_registry(root):
+        fam = entry.get("family_id") or "none"
+        for term in entry.get("terms") or []:
+            if isinstance(term, str) and " " in term.strip():
+                _add(term.strip(), fam, f"registry:{fam}")
+
+    for text in DIALECT:
+        if " " in text:
+            _add(text, "brainrot-aura", "seed:dialect-e6")
+
+    return rows
+
+
+def harvest_inferred_classify_pass(root: Path) -> list[dict[str, Any]]:
+    """Optional INFERRED classify rows from harvest classify-pass artifact.
+
+    Never upgrades class to OBSERVED. Missing file → empty list.
+    """
+    path = root / "specs" / "007-hyperlexical-model" / "harvest" / "inferred_classify_pass.jsonl"
+    if not path.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            raw = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        text = str(raw.get("text") or "").strip()
+        if not text:
+            continue
+        if reject_candidate_text(text):
+            continue
+        fam = raw.get("lineage") or "none"
+        if fam not in FAMILIES and fam != "none":
+            fam = "none"
+        if text.lower() in COLLISION_HOLD:
+            fam = "none"
+        try:
+            rows.append(
+                _row(
+                    text=text,
+                    lineage=fam,
+                    typology=list(raw.get("typology") or TYPOLOGY.get(fam, [])),
+                    stage=raw.get("stage") or "circulating",
+                    task="classify",
+                    provenance=str(raw.get("provenance") or "harvest:classify-pass"),
+                    **{"class": "INFERRED"},
+                    role_scheme=None,
+                    license=str(raw.get("license") or "operator-local; labels INFERRED"),
+                    split=raw.get("split"),
+                )
+            )
+        except ValueError:
+            continue
+    return rows
+
+
 def harvest_dialect() -> list[dict[str, Any]]:
     return [
         _row(
@@ -342,36 +496,184 @@ def harvest_negatives() -> list[dict[str, Any]]:
 
 
 def dedupe(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    seen = set()
-    out = []
+    """Dedupe by (task, text, role_scheme, lineage).
+
+    First-seen order is preserved, but a later row with a stronger ``class``
+    upgrades the kept row (OBSERVED > INFERRED > other). This lets
+    ``--include-live`` settled OBSERVED replace an earlier base INFERRED
+    duplicate without inventing new OBSERVED labels.
+    """
+    rank = {"OBSERVED": 2, "INFERRED": 1, "SPECULATIVE": 0}
+    best: dict[tuple, dict[str, Any]] = {}
+    order: list[tuple] = []
     for row in rows:
         key = (row["task"], row["text"], row.get("role_scheme"), row["lineage"])
-        if key in seen:
+        if key not in best:
+            best[key] = row
+            order.append(key)
             continue
-        seen.add(key)
-        out.append(row)
+        prev = best[key]
+        if rank.get(str(row.get("class")), 0) > rank.get(str(prev.get("class")), 0):
+            best[key] = row
+    return [best[k] for k in order]
+
+
+def reject_candidate_text(text: str) -> str | None:
+    """Return reject reason for junk live candidates, else None.
+
+    Filters: empty/punct-only, len≤2, pure numeric, Unsupported titles.
+    SHORT_SLANG_ALLOWLIST exempts known slang/codes from len/numeric kills.
+    Does not promote or settle labels.
+    """
+    raw = (text or "").strip()
+    if not raw:
+        return "empty"
+    low = raw.lower()
+    if low in SHORT_SLANG_ALLOWLIST:
+        return None
+    alnum = "".join(ch for ch in raw if ch.isalnum())
+    if not alnum:
+        return "punct_only"
+    if alnum.isdigit():
+        return "numeric"
+    # numeric-ish codes with separators (4/20, 10-4) — still reject unless allowlisted
+    if all(ch.isdigit() or ch in "-/:." for ch in raw) and any(ch.isdigit() for ch in raw):
+        return "numeric"
+    if len(raw) <= 2:
+        return "len_le_2"
+    if "unsupported title" in low or low.startswith("unsupported"):
+        return "unsupported_title"
+    return None
+
+
+def load_live_candidates(store: Path) -> list[dict[str, Any]]:
+    """Load SHADOW ingest candidates for --include-live.
+
+    Copies ``class`` from the candidate store (OBSERVED stays OBSERVED).
+    Unset / unknown / SPECULATIVE → INFERRED. Never invents OBSERVED.
+    """
+    if not store.is_file():
+        return []
+    out: list[dict[str, Any]] = []
+    for line in store.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            raw_row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        text = str(raw_row.get("text") or "")
+        if reject_candidate_text(text):
+            continue
+        prov = str(raw_row.get("provenance") or "ingest:store")
+        # Preserve settled OBSERVED; default unset/live crawl to INFERRED.
+        cls = _norm_class(raw_row.get("class"), "INFERRED")
+        label_tag = f"labels {cls}"
+        if prov.startswith("ingest:inbox") or "wiktionary" in prov.lower():
+            license_ = f"CC-BY-SA-4.0+GFDL (Wiktionary text); {label_tag}"
+        elif prov.startswith("ingest:pipeline"):
+            license_ = f"operator-local-crawl; {label_tag}"
+        else:
+            license_ = str(raw_row.get("license") or "operator-local") + f"; {label_tag}"
+        fam = raw_row.get("lineage") or "none"
+        if fam not in FAMILIES and fam not in {"none", "ytd_leaf"}:
+            fam = "none"
+        try:
+            out.append(
+                _row(
+                    text=text,
+                    split=raw_row.get("split"),
+                    lineage=fam,
+                    typology=list(raw_row.get("typology") or TYPOLOGY.get(fam, [])),
+                    stage=raw_row.get("stage") or "circulating",
+                    roles=list(raw_row.get("roles") or []),
+                    fillers=list(raw_row.get("fillers") or []),
+                    role_scheme=raw_row.get("role_scheme"),
+                    task=raw_row.get("task") or "classify",
+                    provenance=prov if prov.endswith(":live") else f"{prov}:live",
+                    **{"class": cls},
+                    license=license_,
+                )
+            )
+        except ValueError:
+            continue
     return out
 
 
-def export_dataset(root: Path | None = None) -> dict[str, Any]:
+def export_dataset(
+    root: Path | None = None,
+    *,
+    include_live: bool = False,
+    live_store: Path | None = None,
+) -> dict[str, Any]:
     root = root or repo_root()
-    rows = dedupe(
+    rows = (
         harvest_dialect()
         + harvest_backfill(root)
         + harvest_registry(root)
         + harvest_receipts(root)
         + harvest_archive(root)
         + harvest_unbind()
+        + harvest_civilian_unbind(root)
         + harvest_negatives()
+        + harvest_inferred_classify_pass(root)
     )
+    live_n = 0
+    live_rejected = 0
+    if include_live:
+        store = live_store or (Path.home() / ".hyperlex" / "hyperlexical" / "ingest_candidates.jsonl")
+        if store.is_file():
+            # count rejects for manifest
+            for line in store.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    raw_row = json.loads(line)
+                except json.JSONDecodeError:
+                    live_rejected += 1
+                    continue
+                if reject_candidate_text(str(raw_row.get("text") or "")):
+                    live_rejected += 1
+            live_rows = load_live_candidates(store)
+            live_n = len(live_rows)
+            rows = rows + live_rows
+    rows = dedupe(rows)
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
     payload = "\n".join(json.dumps(r, sort_keys=True) for r in rows) + "\n"
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    def _is_neg(r: dict[str, Any]) -> bool:
+        return r["lineage"] == "none" and r["task"] == "classify"
+
+    def _is_family_classify(r: dict[str, Any]) -> bool:
+        return r["task"] == "classify" and r["lineage"] != "none"
+
+    def _is_unbind_fixture(r: dict[str, Any]) -> bool:
+        return r["task"] == "unbind" and str(r.get("provenance") or "").startswith("004:")
+
+    def _is_unbind_civilian(r: dict[str, Any]) -> bool:
+        prov = str(r.get("provenance") or "")
+        return r["task"] == "unbind" and (
+            prov.startswith("civilian-pos:") or prov.startswith("civilian-type:")
+        )
+
+    classify_all = sum(1 for r in rows if r["task"] == "classify")
+    classify_family = sum(1 for r in rows if _is_family_classify(r))
+    negatives = sum(1 for r in rows if _is_neg(r))
+    unbind_all = sum(1 for r in rows if r["task"] == "unbind")
+    unbind_fixture = sum(1 for r in rows if _is_unbind_fixture(r))
+    unbind_civilian = sum(1 for r in rows if _is_unbind_civilian(r))
+    # Honesty: classify gate uses family-labeled rows only (negatives are their own 200 bucket).
+    # Unbind gate uses fixture(honest n=24) + civilian dual-scheme — no n=128 padding.
     counts = {
         "n": len(rows),
-        "classify": sum(1 for r in rows if r["task"] == "classify"),
-        "unbind": sum(1 for r in rows if r["task"] == "unbind"),
-        "negatives": sum(1 for r in rows if r["lineage"] == "none" and r["task"] == "classify"),
+        "classify": classify_family,  # EXCLUDES negatives (honest name-gate family quota)
+        "classify_all": classify_all,  # includes negatives; do not use for 2k gate
+        "unbind": unbind_all,
+        "unbind_fixture": unbind_fixture,
+        "unbind_civilian": unbind_civilian,
+        "negatives": negatives,
         "dialect": sum(1 for r in rows if r["provenance"] == "seed:dialect-e6"),
         "backfill": sum(1 for r in rows if str(r["provenance"]).startswith("backfill:")),
         "observed": sum(1 for r in rows if r["class"] == "OBSERVED"),
@@ -379,12 +681,12 @@ def export_dataset(root: Path | None = None) -> dict[str, Any]:
         "train": sum(1 for r in rows if r["split"] == "train"),
         "val": sum(1 for r in rows if r["split"] == "val"),
         "test": sum(1 for r in rows if r["split"] == "test"),
+        "live_included": live_n if include_live else 0,
+        "live_rejected": live_rejected if include_live else 0,
         "name_gate": False,
-        "name_gate_classify_gap": max(0, 2000 - sum(1 for r in rows if r["task"] == "classify")),
-        "name_gate_unbind_gap": max(0, 200 - sum(1 for r in rows if r["task"] == "unbind")),
-        "name_gate_negative_gap": max(
-            0, 200 - sum(1 for r in rows if r["lineage"] == "none" and r["task"] == "classify")
-        ),
+        "name_gate_classify_gap": max(0, 2000 - classify_family),
+        "name_gate_unbind_gap": max(0, 200 - unbind_all),
+        "name_gate_negative_gap": max(0, 200 - negatives),
     }
     return {"rows": rows, "sha256": digest, "counts": counts, "payload": payload}
 
@@ -403,7 +705,13 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                 "counts": bundle["counts"],
                 "brier": None,
                 "trunk": "answerdotai/ModernBERT-base",
-                "note": "Repo harvest including backfill+archive. Not a T1 name-gate. No ledger copy.",
+                "note": (
+                    "Honest accounting: counts.classify = family-labeled only "
+                    "(excludes negatives). unbind_fixture vs unbind_civilian split. "
+                    "Spec004 fixtures at n=24; civilian dual-scheme from golden/registry "
+                    "(no gloss invent). Live optional via --include-live (preserves store class; unset→INFERRED). "
+                    "Not a T1 name-gate."
+                ),
             },
             indent=2,
             sort_keys=True,
@@ -421,10 +729,21 @@ def main(argv=None) -> int:
         default="",
         help="directory; default specs/007-hyperlexical-model/exports",
     )
+    p.add_argument(
+        "--include-live",
+        action="store_true",
+        help="merge ~/.hyperlex/.../ingest_candidates.jsonl; preserve store class (OBSERVED stays OBSERVED; unset→INFERRED; reject junk)",
+    )
+    p.add_argument(
+        "--live-store",
+        default="",
+        help="optional path to ingest_candidates.jsonl",
+    )
     args = p.parse_args(argv)
     root = repo_root()
     dest = Path(args.out) if args.out else root / "specs" / "007-hyperlexical-model" / "exports"
-    bundle = export_dataset(root)
+    store = Path(args.live_store) if args.live_store else None
+    bundle = export_dataset(root, include_live=bool(args.include_live), live_store=store)
     path = write_export(dest, bundle)
     print(json.dumps({"wrote": str(path), "sha256": bundle["sha256"], "counts": bundle["counts"]}, indent=2))
     return 0
