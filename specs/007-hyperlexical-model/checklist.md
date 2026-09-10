@@ -16,7 +16,7 @@
 ## Spec Kit
 
 - [x] spec.md
-- [x] clarify.md C1–C27
+- [x] clarify.md C1–C27 + A1 (C6=150M)
 - [x] plan.md
 - [x] tasks.md
 - [x] dual-use-gate.md
@@ -25,6 +25,7 @@
 - [x] hardware.md + uncensored.md
 - [x] analyze.md + constitution-check.md
 - [x] trunk-candidates.md + model-card.draft.md
+- [x] amendments.md A1
 - [x] T0e written
 - [ ] T0f operator sentence
 - [ ] Implement U1 only after named sentence
@@ -35,4 +36,5 @@
 - [x] Not 006 IsA
 - [x] Not 004 U1 code move into src
 - [x] Not U1b Qwen as T1
-- [x] Not ModernBERT-base as T1 under current C6 (149M > 130M)
+- [x] ModernBERT-base 149M is inside A1 ceiling
+- [x] ModernBERT-large 395M still not T1

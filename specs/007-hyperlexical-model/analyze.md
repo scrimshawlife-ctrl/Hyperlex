@@ -1,13 +1,14 @@
 # Analyze 007 — consistency pass
 
 Date: 2026-09-09. Specify-only. No implement.
+A1 same day: C6/C24 T1 ≤ 150M.
 
 ## Cross-doc locks
 
 | Claim | spec | clarify | schema | dual-use | hardware | uncensored |
 |-------|------|---------|--------|----------|----------|------------|
 | Encoder first | G2, C1 | C1 | no generate keys | row 1 | T1 tiny on Spark | base trunk |
-| T1 ≤130M | tiers | C6, C24 | param_count | — | do not use 200B ceiling | — |
+| T1 ≤150M (A1) | tiers | C6, C24 | param_count | — | do not use 200B ceiling | — |
 | No semantic | G1 | C4 | enum form\|lexical | — | — | — |
 | Brier null | packet | C7 | const null | row 5 | — | — |
 | No wrap verb | N4 | C26 | — | rows 2, 11 | — | forbidden |
@@ -23,15 +24,12 @@ Date: 2026-09-09. Specify-only. No implement.
 
 - No trained weights. E1–E3 cannot run.
 - No 004 fixture import into 007 tests until U1.
-- Trunk id not frozen (see `trunk-candidates.md`). First U3 sentence picks one.
-- ModernBERT-base 149M is over C6. Not a T1 card unless operator amends C6 to 150M.
-- T0e is a written check in `constitution-check.md`. Operator still owns T0f.
+- Trunk id not frozen. A1 makes ModernBERT-base legal. U3 still picks.
+- T0e written. Operator still owns T0f.
 
 ## Conflicts found
 
-None that require reopening C1–C27.
-
-G2 originally said Jetson-class. Amended to Spark. Orin is infer-later (C27).
+None after A1. Old 130M rows updated.
 
 ## Ready for
 

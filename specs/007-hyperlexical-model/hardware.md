@@ -11,14 +11,16 @@
 
 ## What this box is for in 007
 
-T1 is 60–130M. Spark is overkill for the product card. The box is the **operator training and local-serve home**, not a reason to jump to a 7B chat LM.
+T1 is 60–150M (A1). Spark is overkill for the product card. The box is the **operator training and local-serve home**, not a reason to jump to a 7B chat LM.
 
 | Job | Fits Spark? | 007 rule |
 |-----|-------------|----------|
 | U1 stub / pytest | yes, CPU enough | no GPU required in CI |
-| T0 33M / T1 110M train | yes, tiny vs 128 GB | default train target |
+| T0 33M / T1 ≤150M train | yes, tiny vs 128 GB | default train target |
+| ModernBERT-base 149M SFT | yes | legal T1 trunk after A1 |
 | NVFP4 export of T1 | optional, later | not required to name Hyperlexical |
 | Frozen uncensored **base** encoder as teacher (≤7B) | yes in memory | teacher only; not the Hub product name |
+| ModernBERT-large 395M | yes | teacher only |
 | 70B full-parameter SFT | vendor says yes | out of this spec |
 | 200B inference | vendor ceiling | out of this spec |
 
@@ -26,7 +28,7 @@ T1 is 60–130M. Spark is overkill for the product card. The box is the **operat
 
 - Train and serve on aarch64. x86 CI may stub.
 - Do not assume discrete VRAM. Memory is unified. Batch size is a RAM budget, not a 24 GB card budget.
-- Bandwidth is ~273 GB/s, not HBM. Keep T1 small so unbind latency stays library-class.
+- Bandwidth is ~273 GB/s, not HBM. Keep T1 ≤150M so unbind latency stays library-class.
 - Weights live on local NVMe (`~/.hyperlex/models/` or operator path). Git does not hold binaries.
 - Offline: Spark may cache Hub snapshots. Pytest still runs with `HYPERLEX_OFFLINE=1` and stub vectors.
 
