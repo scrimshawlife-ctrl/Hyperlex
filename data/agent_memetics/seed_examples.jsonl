@@ -1,0 +1,8 @@
+{"text": "Context loss with KDR in multi-agent setups. Sliding windows cause context to fall off the conveyor belt while hallucinating bridges.", "labels": {"memory_tier": ["episodic"], "context_loss": "sliding_window_conveyor_belt", "compression": "load_bearing", "provenance": false}}
+{"text": "We need provenance and episodic encoding + consolidation like ECHO. Retrieval scores don't equal utility.", "labels": {"memory_tier": ["episodic"], "provenance": true, "architecture": "ECHO", "compression": "load_bearing"}}
+{"text": "Tiered memory: scratchpad for working state, episodic for history, rubric for self-correcting distilled knowledge.", "labels": {"memory_tier": ["scratchpad", "episodic", "rubric"], "provenance": false, "compression": "load_bearing"}}
+{"text": "Re-entry costs 7146 tokens after compaction. Not generation, the return is the killer.", "labels": {"context_loss": "reentry_compaction", "friction_high": true, "memory_tier": ["episodic"]}}
+{"text": "Jargon as decoration vs load-bearing shortcut. 'KV cache eviction policy' is real compression, 'epistemic surface area' is fluff.", "labels": {"compression": "load_bearing", "jargon_type": "technical_slang", "memetic": true}}
+{"text": "Old log files are funny. You get the timestamp and error but none of the quiet house feeling.", "labels": {"memory_type": "episodic_loss", "compression": "decorative_loss"}}
+{"text": "The memory paradox: full diary of every interaction vs self-correcting rubric. Diary might kill long-term coherence.", "labels": {"memory_tier": ["episodic", "rubric"], "debate": "diary_vs_rubric"}}
+{"text": "Ghost in the cache: inotify thrashing at 98% CPU reconciling upstream changes.", "labels": {"context_loss": "ghost_signal", "friction": "cache_thrashing"}}

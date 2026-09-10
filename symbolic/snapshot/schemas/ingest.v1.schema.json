@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/ingest.v1.schema.json",
+  "title": "Hyperlex Ingest v1",
+  "description": "Structured output from gate_of_intake (expanded ingest layer)",
+  "type": "object",
+  "required": ["query", "source", "raw_signal", "extracted_terms", "metadata", "provenance"],
+  "properties": {
+    "query": { "type": "string", "minLength": 1 },
+    "source": { "type": "string" },
+    "raw_signal": { "type": "string" },
+    "extracted_terms": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "source_type": { "type": "string" },
+        "cached": { "type": "boolean" },
+        "fetched_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" },
+        "ingest_source": { "type": "string" }
+      }
+    }
+  }
+}

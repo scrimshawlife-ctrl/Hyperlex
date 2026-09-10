@@ -1,0 +1,92 @@
+{
+  "framework": "numogram",
+  "secondary_overlay": "chaos-magic",
+  "status": "CURATED",
+  "hyperlex_version": "1.5.0",
+  "purpose": "Symbolic architecture for the Hyperlex memetic emergence engine",
+  "mappings": [
+    {
+      "functional_concern": "intake",
+      "mechanical_name": "intake",
+      "symbolic_name": "gate_of_intake",
+      "symbolic_locus": "Numogram Zone 0-1 (The Edge / Raw Signal)",
+      "strength": "STRONG",
+      "notes": "Real wired ingest enters here. The membrane where external cultural signals cross into the system. Chaos overlay: 'chaos_shift' \u2014 paradigm selection / entering the current.",
+      "overlay_note": "chaos-magic: paradigm engine / choosing the hyperstition current"
+    },
+    {
+      "functional_concern": "analysis",
+      "mechanical_name": "analysis",
+      "symbolic_name": "zone_of_emergence",
+      "symbolic_locus": "Numogram Zone 9 (Generation) + Currents 5-6 (Acceleration)",
+      "strength": "STRONG",
+      "notes": "Core Hyperlex modules live here: detect_neologisms (Zone 9 generation), compute_virality_score (5-6 acceleration), simulate_hyperstition_loop (traversal).",
+      "overlay_note": "chaos-magic: sigil_glyph \u2014 compressing intent into living symbols (slang as sigils)"
+    },
+    {
+      "functional_concern": "synthesis",
+      "mechanical_name": "synthesis",
+      "symbolic_name": "current_of_transmission",
+      "symbolic_locus": "Numogram Currents 7-8 (Transmission / Egregore Formation)",
+      "strength": "ADEQUATE",
+      "notes": "mock_integrate_with_external_signal and downstream pipeline wiring. Where raw memetic scores become actionable signals for Hermes/Orchestra runes.",
+      "overlay_note": "chaos-magic: banishing_clear + results_metric \u2014 clearing old narratives and measuring the new egregore"
+    },
+    {
+      "functional_concern": "receipt",
+      "mechanical_name": "receipt",
+      "symbolic_name": "archive_of_becoming",
+      "symbolic_locus": "Numogram Zone 0 (The Record / Return) + Malkuth correspondence",
+      "strength": "STRONG",
+      "notes": "emit_receipt + canonical_hash + integrity. The place where emergence is fixed into provenance. Every hyperstition loop must return and be recorded.",
+      "overlay_note": "chaos-magic: results_metric + record \u2014 the evaluation gate that makes the fiction real through documentation"
+    }
+  ],
+  "hyperlex_symbolic_flow": "Gate of Intake (0-1) \u2192 Zone of Emergence (9 + 5-6) \u2192 Current of Transmission (7-8) \u2192 Archive of Becoming (0)",
+  "recommended_use": "Use with Abraxas Orchestra to diagram and reorganize the Hyperlex package. Also feeds the Hyperlex-Hermes-Specs repo.",
+  "pragmatic_projection": "The four mechanical concerns were projected onto the strongest available Numogram currents + Chaos Magic operations. FORCED mappings from raw scaffold were manually curated using existing references/numogram.md and chaos-magic.md.",
+  "provenance": {
+    "operator": "orchestra-cli + human curation",
+    "timestamp": "2026-08-05T06:10:00Z",
+    "skill_version": "0.4.0",
+    "source_scaffold": "/tmp/hyperlex-numogram-structure"
+  },
+  "iterated_from_analysis": {
+    "source": "/tmp/hyperlex-analysis/analysis.json",
+    "notes": "Refined after running orchestra analyze on real package. Engine.py is the heart of emergence.",
+    "module_mappings": [
+      {
+        "path": "src/hyperlex/engine.py",
+        "mechanical": "core_analysis_engine",
+        "symbolic_name": "zone_of_emergence",
+        "symbolic_locus": "Numogram Zone 9 (Generation) + Currents 5-6",
+        "strength": "STRONG",
+        "rationale": "Contains detect_memetic_patterns, virality, hyperstition_loop, neologisms \u2014 the emergence heart."
+      },
+      {
+        "path": "src/hyperlex/__main__.py",
+        "mechanical": "cli_entry",
+        "symbolic_name": "gate_of_intake",
+        "symbolic_locus": "Numogram Zone 0-1",
+        "strength": "ADEQUATE",
+        "rationale": "Entry point that calls the engine; maps to intake/synthesis."
+      },
+      {
+        "path": "src/hyperlex/__init__.py",
+        "mechanical": "public_api",
+        "symbolic_name": "archive_of_becoming",
+        "symbolic_locus": "Zone 0 (Record)",
+        "strength": "ADEQUATE",
+        "rationale": "Exposes the public functions (detect..., emit_receipt) \u2014 the fixed interface."
+      },
+      {
+        "path": "tests/test_hyperlex.py",
+        "mechanical": "verification",
+        "symbolic_name": "results_metric",
+        "symbolic_locus": "Chaos overlay evaluation gate",
+        "strength": "ADEQUATE",
+        "rationale": "Tests act as the integrity/receipt verification layer."
+      }
+    ]
+  }
+}
