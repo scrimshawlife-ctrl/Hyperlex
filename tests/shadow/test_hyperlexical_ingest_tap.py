@@ -172,3 +172,44 @@ def test_cli_analyze_and_scan_call_tap(monkeypatch):
     assert ("locked in", "scan", "locked in") in calls
     assert emitted[0]["hyperlexical_tap"]["added"] == 1
     assert emitted[1]["results"][0]["hyperlexical_tap"]["added"] == 1
+
+
+def test_cli_analyze_reuses_existing_tap(monkeypatch):
+    import hyperlex as hyperlex_pkg
+    import hyperlex.cli as cli
+    import hyperlex.pipeline as pipeline
+
+    emitted = []
+
+    def fake_detect_memetic_patterns(**_kwargs):
+        return {
+            "analysis": {
+                "primary_term": "rizz",
+                "lineage": {"family_id": "brainrot-aura", "matched_terms": ["rizz"]},
+            },
+            "hyperlexical_tap": {"ok": True, "added": 0, "brier": None},
+        }
+
+    def fail_attach(*_args, **_kwargs):
+        raise AssertionError("attach_hyperlexical_tap should not run when result already includes a tap report")
+
+    monkeypatch.setattr(cli, "_emit", emitted.append)
+    monkeypatch.setattr(hyperlex_pkg, "detect_memetic_patterns", fake_detect_memetic_patterns)
+    monkeypatch.setattr(pipeline, "attach_hyperlexical_tap", fail_attach)
+
+    analyze_args = Namespace(
+        query_pos=None,
+        query="rizz",
+        source="mock",
+        route="offline",
+        validate=False,
+        command_label=None,
+        receipt=False,
+        receipt_dir=None,
+        forecasts=False,
+        relay=False,
+        out="",
+    )
+
+    assert cli.cmd_analyze(analyze_args) == 0
+    assert emitted[0]["hyperlexical_tap"]["added"] == 0

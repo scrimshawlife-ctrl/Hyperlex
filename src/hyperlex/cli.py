@@ -65,7 +65,11 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         validate=bool(args.validate),
         ingest_route=resolved.get("route"),
     )
-    tap_report = attach_hyperlexical_tap(result, query=query, source="analyze")
+    tap_report = (
+        result.get("hyperlexical_tap")
+        if isinstance(result, dict) and isinstance(result.get("hyperlexical_tap"), dict)
+        else attach_hyperlexical_tap(result, query=query, source="analyze")
+    )
     out: Dict[str, Any] = {
         "ok": True,
         "command": getattr(args, "command_label", None) or "analyze",
@@ -297,7 +301,11 @@ def cmd_scan(args: argparse.Namespace) -> int:
     rows = []
     for q in queries:
         result = detect_memetic_patterns(query=q, ingest_source=args.source)
-        tap_report = attach_hyperlexical_tap(result, query=q, source="scan")
+        tap_report = (
+            result.get("hyperlexical_tap")
+            if isinstance(result, dict) and isinstance(result.get("hyperlexical_tap"), dict)
+            else attach_hyperlexical_tap(result, query=q, source="scan")
+        )
         receipt = None
         if args.receipt:
             receipt = str(emit_receipt(result))
