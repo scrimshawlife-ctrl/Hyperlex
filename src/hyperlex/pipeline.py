@@ -46,11 +46,18 @@ def attach_hyperlexical_tap(
             sys.path.insert(0, shadow_root)
             added_path = True
         try:
-            spec = importlib.util.spec_from_file_location("hyperlexical.ingest_tap", tap_path)
-            if spec is None or spec.loader is None:
-                return {"ok": True, "skipped": True, "brier": None}
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
+            module = sys.modules.get("hyperlexical.ingest_tap")
+            if module is None:
+                spec = importlib.util.spec_from_file_location("hyperlexical.ingest_tap", tap_path)
+                if spec is None or spec.loader is None:
+                    return {"ok": True, "skipped": True, "brier": None}
+                module = importlib.util.module_from_spec(spec)
+                sys.modules["hyperlexical.ingest_tap"] = module
+                try:
+                    spec.loader.exec_module(module)
+                except Exception:
+                    sys.modules.pop("hyperlexical.ingest_tap", None)
+                    raise
             tap = getattr(module, "tap_analysis", None)
             if not callable(tap):
                 return {"ok": True, "skipped": True, "brier": None}
