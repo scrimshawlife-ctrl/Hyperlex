@@ -3,7 +3,8 @@
 **Status**: PLAN drafted with specify pack. Implement not started.  
 **Constitution check**: I–X hold. No API_V1. No Abraxas import. Settled Brier only. Detector over generator. Human gate on Hub / promote.  
 **Home box**: NVIDIA DGX Spark (GB10). See `hardware.md`.  
-**Alignment**: uncensored base encoder. See `uncensored.md`.
+**Alignment**: uncensored base encoder. See `uncensored.md`.  
+**T1 trunk**: `answerdotai/ModernBERT-base` (A2). See `trunk.md`.
 
 ## Approach
 
@@ -13,10 +14,11 @@ Three implement units, each separately mergeable:
 |------|-------|---------------|-----------------|
 | U1 | Schema + stub helper + tests | no | implement 007 U1 |
 | U2 | Dataset exporter from existing fixtures/receipts (civilian) | no | implement 007 U2 |
-| U3 | Training recipe + eval harness vs 004 probe **on Spark** | no | implement 007 U3 |
+| U3 | Training recipe + eval harness vs 004 probe **on Spark** using frozen trunk | no | implement 007 U3 |
 
 U1 is the only unit this plan authorizes without a second operator sentence.
-U3 assumes Spark is the train box. CI stays stub/CPU.
+U1 does **not** download ModernBERT. Stub only.
+U3 assumes Spark is the train box and the A2 trunk.
 
 ## U1 design
 
@@ -49,17 +51,20 @@ Include dialect / informal / vulgar civilian atoms. Exclude restricted how-tos.
 Training lives outside `src/hyperlex/`. Recipe doc + eval script comparing unbind accuracy to Spec 004 probe on shared fixtures.
 
 - Train home: DGX Spark, aarch64, unified 128 GB.
-- Trunk: base encoder, not instruct-chat.
+- Trunk: `answerdotai/ModernBERT-base`. Official tokenizer. Token-state unbind heads.
+- MiniLM only as E3 control.
 - Weights stay out of git. Hub upload is a named operator action.
 - Optional later: NVFP4 export. Not a ship gate.
-- Spark is allowed to host a larger **teacher** base model. Teacher is not the Hyperlexical card.
+- ModernBERT-large may sit on Spark as teacher. Not the card.
 
 ## Risks
 
 | Risk | Mitigation |
 |------|------------|
 | Scope creep into chat LM | C1, C6, C24, N1 |
-| Safety-tuned trunk sneaks in | C22, C23, E6 |
+| Safety-tuned trunk sneaks in | C22, C23, C28, E6 |
+| Silent trunk swap | C28, trunk.md |
+| WordPiece retokenize | C30 |
 | Semantic-route claim | C4, schema enum |
 | Brier leak | schema const + tests |
 | Dual-use generate under "uncensored" | C26, dual-use rows 11–12 |
@@ -69,4 +74,4 @@ Training lives outside `src/hyperlex/`. Recipe doc + eval script comparing unbin
 
 ## Definition of done for this plan cycle
 
-Specify + plan + tasks + schema + hardware + uncensored contract + Notion pages + draft PR. No training.
+Specify + plan + tasks + schema + hardware + uncensored + trunk freeze + Notion + draft PR. No training.

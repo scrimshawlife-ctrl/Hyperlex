@@ -1,7 +1,7 @@
 # Clarify 007 — Hyperlexical model
 
 Locked 2026-09-09. Do not reopen without operator amendment.
-Amendment A1 (same day): C6/C24 ceiling 150M.
+A1: C6/C24 ceiling 150M. A2: trunk frozen ModernBERT-base.
 
 | ID | Question | Lock |
 |----|----------|------|
@@ -42,3 +42,13 @@ Amendment A1 (same day): C6/C24 ceiling 150M.
 | C25 | NVFP4 required to ship T1? | No. Optional export later. |
 | C26 | Dual-use wall removed because uncensored? | No. Detector over generator. No wrap verb. |
 | C27 | Orin Nano as train home this cycle? | No. Infer-later only. |
+
+## Additive locks — trunk freeze A2 2026-09-09
+
+| ID | Question | Lock |
+|----|----------|------|
+| C28 | T1 trunk? | `answerdotai/ModernBERT-base` (~149M). See `trunk.md`. |
+| C29 | Unbind reads? | Last-layer token hidden states (768-d). Not sentence mean-pool. |
+| C30 | Tokenizer? | Official ModernBERT BPE. No WordPiece swap. |
+| C31 | Card name after E2? | `hyperlex-structure-149m`. |
+| C32 | MiniLM role? | T0 / E3 control only. Not the T1 trunk. |
