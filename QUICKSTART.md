@@ -1,5 +1,8 @@
 # Hyperlex Quickstart
 
+Live guide on the docs site: [docs/start/quickstart.md](docs/start/quickstart.md).
+This file stays as a repo-root pointer.
+
 Hermes skill backed by this Python package repo. Full guide: [README.md](./README.md) · [docs/operator-loop.md](./docs/operator-loop.md).
 
 ## Offline first success (no API keys)

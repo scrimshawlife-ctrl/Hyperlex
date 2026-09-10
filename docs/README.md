@@ -1,40 +1,52 @@
-# Hyperlex Documentation
+# Hyperlex documentation
 
-Published via **MkDocs** (`mkdocs.yml` at repo root). Run `pip install -e ".[docs]" && mkdocs serve`.
+Published with **MkDocs** (`mkdocs.yml` at the repo root).
 
+```bash
+pip install -e ".[docs]"
+python3 scripts/sync_mkdocs_pages.py
+mkdocs serve
+```
 
-Hyperlex is a **Hermes skill** (Python package repo). Relevant Abraxas wire shapes live in
-`hyperlex.compat.abraxas` (no Abraxas import).
+CI copies `ARCHITECTURE.md`, `DESIGN.md`, `SPEC.md`, `STATUS.md`, `ROADMAP.md`, and `CONTRIBUTING.md` into `docs/`, then runs `mkdocs build --strict`.
 
-## Core
-- [Hermes skill model](./hermes-skill.md)
-- [Claude Code skill + plugin](./claude-skill.md)
-- [Public API v1 freeze](./api-v1.md)
-- [Brier & Calibration](./brier-calibration.md)
-- [Rune / Signal Relay](./rune-signal-relay.md)
-- [Slang Lineages](./slang-lineages.md)
-- [Cron / LIVE_EMERGENCE_SCAN](./cron-live-emergence.md)
-- [Connectors (market + hyperstition feedback)](./connectors.md)
-- [Diagrams from receipts](./diagrams.md)
-- [Modules / Ingest](./modules/ingest.md)
-- [Modules / Memetics typology](./modules/memetics.md)
-- [Modules / Virality + drivers](./modules/virality.md)
-- [Modules / Governed LLM](./modules/llm.md)
+Hyperlex **ships as a Hermes skill** (Python package repo). Spec 007 is the model path (T0 → T1 after E2), still SHADOW. Relevant Abraxas wire shapes live in `hyperlex.compat.abraxas` (no Abraxas import).
 
-## Root specs
-- [ROADMAP.md](ROADMAP.md) (canonical) · [docs/ROADMAP.md](./ROADMAP.md) (synced)
-- [ARCHITECTURE.md](architecture.md)
-- [DESIGN.md](design.md)
-- [SPEC.md](spec.md)
+## Information architecture
+
+| Section | Purpose |
+|---------|---------|
+| [Start](start/index.md) | First success, glossary, contribute |
+| [Concepts](architecture.md) | Architecture, lineages, Phase 5, modules |
+| [Operator](commands.md) | Daily commands, Hermes, Claude |
+| [Specs](specs/index.md) | Spec kit + SHADOW 007 + status/roadmap |
+| [Archive](archive/index.md) | Run history and historical pages |
+
+## Root files (do not delete)
+
+These stay in git as history. Prefer the site for navigation.
+
+| Root file | Docs copy / pointer |
+|-----------|---------------------|
+| `README.md` | GitHub front door (not this file) |
+| `STATUS.md` | [status.md](status.md) (CI copy) |
+| `ROADMAP.md` | [ROADMAP.md](ROADMAP.md) (CI copy) |
+| `CONTRIBUTING.md` | [contributing.md](contributing.md) (CI copy) |
+| `QUICKSTART.md` | [start/quickstart.md](start/quickstart.md) |
+| `ARCHITECTURE.md` | [architecture.md](architecture.md) |
+| `DESIGN.md` | [design.md](design.md) |
+| `SPEC.md` | [spec.md](spec.md) (v0.3 spine) |
+| `SKILL.md` | Hermes contract (not on Pages) |
 
 ## Examples
+
 - `examples/slang-families/` — Mermaid family trees
 - `examples/calibration/settled_series.v1.json` — golden Brier pairs
 - `examples/receipts/golden/` — golden receipt corpus
 - `examples/cron/` — Hermes cron templates
 
-## References
-- [arXiv papers](../references/arxiv_papers.md)
-- [Hermes runtime contract](../references/hermes-runtime-contract.md)
-- [Claude Code runtime contract](claude-runtime-contract.md)
+## References (repo, not Pages)
 
+- [arXiv papers](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/references/arxiv_papers.md)
+- [Hermes runtime contract](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/references/hermes-runtime-contract.md)
+- [Claude Code runtime contract](claude-runtime-contract.md)

@@ -49,7 +49,7 @@ schema = [
 [project.urls]
 Homepage = "https://github.com/scrimshawlife-ctrl/Hyperlex"
 Repository = "https://github.com/scrimshawlife-ctrl/Hyperlex"
-Documentation = "https://github.com/scrimshawlife-ctrl/Hyperlex#readme"
+Documentation = "https://scrimshawlife-ctrl.github.io/Hyperlex/"
 Issues = "https://github.com/scrimshawlife-ctrl/Hyperlex/issues"
 
 [project.scripts]

@@ -1,7 +1,12 @@
-# Hyperlex Design (Orchestra-aligned)
+# Hyperlex design (Orchestra-aligned)
 
-**Status**: Design surface active  
-**Version target**: 2.0 (full symbolic integration)  
+!!! warning "Historical"
+    This page is an **Orchestra-era design note**. It is not the current
+    operator contract. Prefer [Design principles](design.md), [Architecture](architecture.md),
+    and [Status](status.md). Version target "2.0" below was never a shipping
+    Hyperlex release.
+
+**Status**: Historical design surface  
 **Hosts**: Hermes, OpenClaw
 
 ## Intent
@@ -26,7 +31,7 @@ See `references/` for mappings.
 
 ## Integration with Abraxas-Orchestra
 Hyperlex is intended to be used as:
-- A **signal-forager** component (see examples/signal-forager-skeleton style)
+- A **signal-forager** component (see `examples/memetic-forager-skeleton`)
 - An analysis module that Orchestra can diagram and optimize
 - A source of memetic data for larger symbolic architectures
 
@@ -39,7 +44,7 @@ Hyperlex is intended to be used as:
 Future: full `analyze → map → optimize` pipeline when used inside Orchestra.
 
 ## Related Documents
-- [ROADMAP.md](ROADMAP.md)
-- [SPEC.md](spec.md)
-- [ARCHITECTURE.md](architecture.md)
-- references/agent-posture.md (to be added)
+- [Roadmap](ROADMAP.md)
+- [Technical spec](spec.md)
+- [Architecture](architecture.md)
+- [Agent posture](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/references/agent-posture.md)

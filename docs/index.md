@@ -7,16 +7,29 @@ hide:
 
 <div class="hlx-status" markdown>
 <span><span class="hlx-dot"></span><strong>v0.4.0</strong></span>
-<span>Hermes skill · Python package</span>
+<span>Hermes skill surface · Python package</span>
 <span>Settled Brier only</span>
-<span>Local-first · offline mock ready</span>
+<span>007 model path SHADOW · T0→T1 after E2</span>
 </div>
 
 <p class="hlx-lead hlx-purpose">
 <strong>Hyperlex detects emerging slang and cultural signals, traces their lineage,
 scores virality and hyperstition potential, and emits integrity-hashed receipts.</strong>
 Brier calibration is computed <em>only</em> after outcomes are settled — never invented on open analysis.
+The Hermes skill is the <em>current operator surface</em>. Spec 007 is the
+<em>model path</em> (T0, then T1 after E2) — still SHADOW, not named Hyperlexical.
 </p>
+
+## Skill now, model next
+
+| Layer | State |
+|-------|--------|
+| **Hermes skill** | Shipping v0.4.0 — ingest, 8-family lineage, receipts, settle → Brier |
+| **T0 encoder** | Specified baseline (`hyperlex-encoder-*`). Not a Hyperlexical name. |
+| **T1 encoder** | Allowed to take the Hyperlexical name **only after E2** on Spark. Not there. |
+| **`name_gate` / Hub** | **false** / not published |
+
+Classify volume is ready. E2 is Spark-blocked. [SHADOW encoder (007)](shadow-hyperlexical.md) · [Status](status.md).
 
 ## What happens on a run
 
@@ -28,9 +41,10 @@ flowchart LR
   D --> E[Settle]
   E --> F[Brier score]
   B -.-> G[Phase 5 research]
+  B -.-> H[007 model path]
 ```
 
-Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5).
+Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5). Spec 007 is **SHADOW / advisory**: classify volume is ready; `name_gate` is false; E2 is Spark-blocked. Do not call the encoder Hyperlexical.
 
 | Stage | What you get |
 |-------|----------------|
@@ -39,6 +53,7 @@ Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [gloss
 | **Forecasts** | Open probabilities waiting for settlement |
 | **Settle → score** | Real Brier only after operator outcome |
 | **Phase 5** | Speculative sims — never Brier |
+| **007 model path** | SHADOW T0→T1 — `name_gate` false; not named Hyperlexical |
 
 ## Start here — three actions
 
@@ -106,9 +121,10 @@ Golden receipts, archive snapshots, featured example.
 | **Architecture** | [Architecture](architecture.md) |
 | **Case studies** | [Case studies](case-studies.md) |
 | **Slang lineages** | [Lineages](slang-lineages.md) · [Map](map/index.md) |
-| **Status / telemetry** | [Status](status.md) · [Telemetry desk](telemetry.md) |
-| **Glossary** | [Terms & hard constraints](start/glossary.md) |
+| **Status / specs** | [Status](status.md) · [Spec kit](specs/index.md) · [SHADOW 007](shadow-hyperlexical.md) |
+| **Glossary** | [Terms and hard constraints](start/glossary.md) |
 | **Why settled Brier** | [Settled Brier only](start/settled-brier.md) |
+| **Contribute** | [Contribute](contributing.md) |
 
 </div>
 
@@ -116,6 +132,7 @@ Golden receipts, archive snapshots, featured example.
 
 - **No fabricated Brier** — open analysis always has `brier: null`.
 - **Phase 5 is SPECULATIVE** — research tooling, not measurement.
+- **Spec 007 is the model path, still SHADOW** — T0 then T1 after E2; `name_gate` false; no Hub.
 - **No Abraxas hard import** — hosts may import Hyperlex; not the reverse.
 - **Local-first** — durable state in `~/.hyperlex/`; Pages is static history.
 
@@ -126,5 +143,5 @@ Full glossary: [start/glossary.md](start/glossary.md)
 <p class="hlx-splash-brand-foot">READ DEEPER. THINK WIDER.</p>
 
 <p class="hlx-posture">
-v0.4.0 · Hermes skill · settled Brier only · offline mock default for first success
+v0.4.0 · Hermes skill surface · 007 model path SHADOW · settled Brier only
 </p>
