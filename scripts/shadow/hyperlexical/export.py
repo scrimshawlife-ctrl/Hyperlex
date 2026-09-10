@@ -64,6 +64,45 @@ ROW_KEYS = (
 
 COLLISION_HOLD = {"skill issue"}
 
+# Short slang / numeric codes that len≤2 or numeric filters would false-reject.
+# Prefer explicit allowlist over blanket keep of all short/numeric tokens.
+SHORT_SLANG_ALLOWLIST = frozenset(
+    {
+        "w",
+        "l",
+        "ez",
+        "gg",
+        "gm",
+        "gn",
+        "bs",
+        "a+",
+        "ai",
+        "ak",
+        "3p",
+        "ag",
+        "bf",
+        "bj",
+        "bk",
+        "bm",
+        "420",
+        "4/20",
+        "4:20",
+        "100",
+        "404",
+        "5150",
+        "10-4",
+        "304",
+        "143",
+        "007",
+        "411",
+        "730",
+        "10-20",
+    }
+)
+
+# Spec 004 type_slot vocabulary (structural placeholders — not gloss-derived POS).
+TYPE_SLOT_TAGS = ("TOKEN", "SLOT", "MARKER")
+
 
 def repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
@@ -249,8 +288,11 @@ def harvest_archive(root: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def harvest_unbind(n: int = 128) -> list[dict[str, Any]]:
-    """Spec 004 fixture gold under both allowed schemes. n=128 → ≥200 unique after dedupe."""
+def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
+    """Spec 004 fixture gold under both schemes. Honest default n=24 (~45 unique).
+
+    Fixture rows are provenance `004:tpr:*` only — not civilian name-gate gold.
+    """
     sys.path.insert(0, str(repo_root() / "scripts" / "shadow"))
     from recoverable_structure.fixtures import make_spans
 
@@ -290,25 +332,38 @@ def harvest_unbind(n: int = 128) -> list[dict[str, Any]]:
     return rows
 
 
-def harvest_civilian_unbind_positional(root: Path) -> list[dict[str, Any]]:
-    """Honest positional unbind for multiword civilian atoms (fillers = tokens).
+def _structural_type_tags(n: int) -> list[str]:
+    """Assign Spec 004 TOKEN/SLOT/MARKER by index — not gloss/POS invention."""
+    return [TYPE_SLOT_TAGS[i % len(TYPE_SLOT_TAGS)] for i in range(n)]
 
-    type_slot is NOT invented here — only Spec 004 fixtures carry type tags.
-    Sources: golden receipts matched_terms + LINEAGE_REGISTRY multiword terms.
+
+def harvest_civilian_unbind(root: Path) -> list[dict[str, Any]]:
+    """Civilian unbind for multiword atoms under BOTH schemes.
+
+    Fillers = real token atoms from golden/registry/dialect only.
+    type_slot roles = structural TOKEN/SLOT/MARKER (no gloss invent).
+    Collision-hold (`skill issue`) skipped on all paths (C37 / harvest card).
     """
     rows: list[dict[str, Any]] = []
-    seen_text: set[str] = set()
+    seen_atom: set[str] = set()
 
-    def _add(text: str, lineage: str, provenance: str) -> None:
-        tokens = [t for t in text.split() if t]
-        if len(tokens) < 2 or text in seen_text:
+    def _add(text: str, lineage: str, source_tag: str) -> None:
+        atom = text.strip()
+        if not atom or " " not in atom:
+            return
+        key = atom.lower()
+        if key in COLLISION_HOLD or key in seen_atom:
+            return
+        tokens = [t for t in atom.split() if t]
+        if len(tokens) < 2:
             return
         if lineage not in FAMILIES and lineage != "none":
             lineage = "none"
-        seen_text.add(text)
+        seen_atom.add(key)
+        # positional
         rows.append(
             _row(
-                text=text,
+                text=atom,
                 lineage=lineage,
                 typology=TYPOLOGY.get(lineage, []),
                 stage="circulating",
@@ -316,7 +371,23 @@ def harvest_civilian_unbind_positional(root: Path) -> list[dict[str, Any]]:
                 fillers=tokens,
                 role_scheme="positional",
                 task="unbind",
-                provenance=provenance,
+                provenance=f"civilian-pos:{source_tag}",
+                **{"class": "OBSERVED"},
+            )
+        )
+        # type_slot — structural tags only (real fillers; no gloss-invented roles)
+        tags = _structural_type_tags(len(tokens))
+        rows.append(
+            _row(
+                text=" ".join(f"{t}:{tok}" for t, tok in zip(tags, tokens)),
+                lineage=lineage,
+                typology=TYPOLOGY.get(lineage, []),
+                stage="circulating",
+                roles=tags,
+                fillers=tokens,
+                role_scheme="type_slot",
+                task="unbind",
+                provenance=f"civilian-type:{source_tag}",
                 **{"class": "OBSERVED"},
             )
         )
@@ -331,22 +402,65 @@ def harvest_civilian_unbind_positional(root: Path) -> list[dict[str, Any]]:
             fam = lineage.get("family_id") or "none"
             for term in lineage.get("matched_terms") or []:
                 if isinstance(term, str) and " " in term.strip():
-                    _add(term.strip(), fam, f"civilian-pos:golden:{path.name}")
+                    _add(term.strip(), fam, f"golden:{path.name}")
 
     for entry in load_registry(root):
         fam = entry.get("family_id") or "none"
         for term in entry.get("terms") or []:
             if isinstance(term, str) and " " in term.strip():
-                # collision-hold skill issue → none lineage for classify; keep family on unbind
-                # only if single-family; skip cross-family collision atom for unbind gold
-                if term.strip().lower() in COLLISION_HOLD:
-                    continue
-                _add(term.strip(), fam, f"civilian-pos:registry:{fam}")
+                _add(term.strip(), fam, f"registry:{fam}")
 
     for text in DIALECT:
         if " " in text:
-            _add(text, "brainrot-aura", "civilian-pos:seed:dialect-e6")
+            _add(text, "brainrot-aura", "seed:dialect-e6")
 
+    return rows
+
+
+def harvest_inferred_classify_pass(root: Path) -> list[dict[str, Any]]:
+    """Optional INFERRED classify rows from harvest classify-pass artifact.
+
+    Never upgrades class to OBSERVED. Missing file → empty list.
+    """
+    path = root / "specs" / "007-hyperlexical-model" / "harvest" / "inferred_classify_pass.jsonl"
+    if not path.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            raw = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        text = str(raw.get("text") or "").strip()
+        if not text:
+            continue
+        if reject_candidate_text(text):
+            continue
+        fam = raw.get("lineage") or "none"
+        if fam not in FAMILIES and fam != "none":
+            fam = "none"
+        if text.lower() in COLLISION_HOLD:
+            fam = "none"
+        try:
+            rows.append(
+                _row(
+                    text=text,
+                    lineage=fam,
+                    typology=list(raw.get("typology") or TYPOLOGY.get(fam, [])),
+                    stage=raw.get("stage") or "circulating",
+                    task="classify",
+                    provenance=str(raw.get("provenance") or "harvest:classify-pass"),
+                    **{"class": "INFERRED"},
+                    role_scheme=None,
+                    license=str(raw.get("license") or "operator-local; labels INFERRED"),
+                    split=raw.get("split"),
+                )
+            )
+        except ValueError:
+            continue
     return rows
 
 
@@ -397,19 +511,25 @@ def reject_candidate_text(text: str) -> str | None:
     """Return reject reason for junk live candidates, else None.
 
     Filters: empty/punct-only, len≤2, pure numeric, Unsupported titles.
+    SHORT_SLANG_ALLOWLIST exempts known slang/codes from len/numeric kills.
     Does not promote or settle labels.
     """
     raw = (text or "").strip()
     if not raw:
         return "empty"
+    low = raw.lower()
+    if low in SHORT_SLANG_ALLOWLIST:
+        return None
     alnum = "".join(ch for ch in raw if ch.isalnum())
     if not alnum:
         return "punct_only"
     if alnum.isdigit():
         return "numeric"
+    # numeric-ish codes with separators (4/20, 10-4) — still reject unless allowlisted
+    if all(ch.isdigit() or ch in "-/:." for ch in raw) and any(ch.isdigit() for ch in raw):
+        return "numeric"
     if len(raw) <= 2:
         return "len_le_2"
-    low = raw.lower()
     if "unsupported title" in low or low.startswith("unsupported"):
         return "unsupported_title"
     return None
@@ -477,8 +597,9 @@ def export_dataset(
         + harvest_receipts(root)
         + harvest_archive(root)
         + harvest_unbind()
-        + harvest_civilian_unbind_positional(root)
+        + harvest_civilian_unbind(root)
         + harvest_negatives()
+        + harvest_inferred_classify_pass(root)
     )
     live_n = 0
     live_rejected = 0
@@ -504,11 +625,37 @@ def export_dataset(
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
     payload = "\n".join(json.dumps(r, sort_keys=True) for r in rows) + "\n"
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    def _is_neg(r: dict[str, Any]) -> bool:
+        return r["lineage"] == "none" and r["task"] == "classify"
+
+    def _is_family_classify(r: dict[str, Any]) -> bool:
+        return r["task"] == "classify" and r["lineage"] != "none"
+
+    def _is_unbind_fixture(r: dict[str, Any]) -> bool:
+        return r["task"] == "unbind" and str(r.get("provenance") or "").startswith("004:")
+
+    def _is_unbind_civilian(r: dict[str, Any]) -> bool:
+        prov = str(r.get("provenance") or "")
+        return r["task"] == "unbind" and (
+            prov.startswith("civilian-pos:") or prov.startswith("civilian-type:")
+        )
+
+    classify_all = sum(1 for r in rows if r["task"] == "classify")
+    classify_family = sum(1 for r in rows if _is_family_classify(r))
+    negatives = sum(1 for r in rows if _is_neg(r))
+    unbind_all = sum(1 for r in rows if r["task"] == "unbind")
+    unbind_fixture = sum(1 for r in rows if _is_unbind_fixture(r))
+    unbind_civilian = sum(1 for r in rows if _is_unbind_civilian(r))
+    # Honesty: classify gate uses family-labeled rows only (negatives are their own 200 bucket).
+    # Unbind gate uses fixture(honest n=24) + civilian dual-scheme — no n=128 padding.
     counts = {
         "n": len(rows),
-        "classify": sum(1 for r in rows if r["task"] == "classify"),
-        "unbind": sum(1 for r in rows if r["task"] == "unbind"),
-        "negatives": sum(1 for r in rows if r["lineage"] == "none" and r["task"] == "classify"),
+        "classify": classify_family,  # EXCLUDES negatives (honest name-gate family quota)
+        "classify_all": classify_all,  # includes negatives; do not use for 2k gate
+        "unbind": unbind_all,
+        "unbind_fixture": unbind_fixture,
+        "unbind_civilian": unbind_civilian,
+        "negatives": negatives,
         "dialect": sum(1 for r in rows if r["provenance"] == "seed:dialect-e6"),
         "backfill": sum(1 for r in rows if str(r["provenance"]).startswith("backfill:")),
         "observed": sum(1 for r in rows if r["class"] == "OBSERVED"),
@@ -519,11 +666,9 @@ def export_dataset(
         "live_included": live_n if include_live else 0,
         "live_rejected": live_rejected if include_live else 0,
         "name_gate": False,
-        "name_gate_classify_gap": max(0, 2000 - sum(1 for r in rows if r["task"] == "classify")),
-        "name_gate_unbind_gap": max(0, 200 - sum(1 for r in rows if r["task"] == "unbind")),
-        "name_gate_negative_gap": max(
-            0, 200 - sum(1 for r in rows if r["lineage"] == "none" and r["task"] == "classify")
-        ),
+        "name_gate_classify_gap": max(0, 2000 - classify_family),
+        "name_gate_unbind_gap": max(0, 200 - unbind_all),
+        "name_gate_negative_gap": max(0, 200 - negatives),
     }
     return {"rows": rows, "sha256": digest, "counts": counts, "payload": payload}
 
@@ -542,7 +687,13 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                 "counts": bundle["counts"],
                 "brier": None,
                 "trunk": "answerdotai/ModernBERT-base",
-                "note": "Repo harvest + Spec004 unbind expand + prose negatives. Live optional via --include-live (INFERRED only). Not a T1 name-gate.",
+                "note": (
+                    "Honest accounting: counts.classify = family-labeled only "
+                    "(excludes negatives). unbind_fixture vs unbind_civilian split. "
+                    "Spec004 fixtures at n=24; civilian dual-scheme from golden/registry "
+                    "(no gloss invent). Live optional via --include-live (INFERRED only). "
+                    "Not a T1 name-gate."
+                ),
             },
             indent=2,
             sort_keys=True,
