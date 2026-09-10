@@ -190,6 +190,17 @@ No rejected content is quoted.
 | Reddit, X, OpenSubtitles, and random web slang dumps | **INFERRED / HELD** | Redistribution rights, consent, provenance, and stable licensing are insufficient for the default harvest. |
 | Static registry rows without row-level provenance | **INFERRED / HELD** | Useful inventory but not exportable until U2 attaches source, label method, and license evidence. |
 
+## 6. Live ingest tap (2026-09-10)
+
+Live ingest candidates are now ranked as additional **INFERRED** harvest inputs only.
+They do not promote any surface to **OBSERVED**, and forecast settlement does not
+auto-upgrade a dataset row.
+
+| Rank | Source | Source epistemic class | Locator | Harvest action |
+|---:|---|---|---|---|
+| 10 | Current `pipeline`, `analyze`, and `scan` tap candidates | **INFERRED** | Local Hyperlexical candidate store via `ingest:pipeline`, `ingest:analyze`, and `ingest:scan` provenance | Optional merge for T1 harvest only. Deduplicate before export. Do not copy ledgers into git. |
+| 11 | Current inbox tap candidates | **INFERRED** | Local Hyperlexical candidate store via `ingest:inbox` and `ingest:store` provenance | Harvest as weak current slang evidence only. Preserve compact provenance labels with no home-directory paths. |
+
 ## Verification
 
 - Offline stub command returned packet schema `hyperlex.hyperlexical.inference.v0.1`, `brier: null`, `forecast_eligible: false`, and routes `form`/`lexical`.

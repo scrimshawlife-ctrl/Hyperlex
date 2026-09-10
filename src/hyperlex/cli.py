@@ -64,6 +64,12 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         validate=bool(args.validate),
         ingest_route=resolved.get("route"),
     )
+    try:
+        from hyperlex.pipeline import attach_hyperlexical_tap
+
+        attach_hyperlexical_tap(result, query=query, source="analyze")
+    except Exception:
+        pass
     out: Dict[str, Any] = {
         "ok": True,
         "command": getattr(args, "command_label", None) or "analyze",
@@ -293,6 +299,12 @@ def cmd_scan(args: argparse.Namespace) -> int:
     rows = []
     for q in queries:
         result = detect_memetic_patterns(query=q, ingest_source=args.source)
+        try:
+            from hyperlex.pipeline import attach_hyperlexical_tap
+
+            attach_hyperlexical_tap(result, query=q, source="scan")
+        except Exception:
+            pass
         receipt = None
         if args.receipt:
             receipt = str(emit_receipt(result))

@@ -1,8 +1,10 @@
 import json
 import pathlib
 import sys
+from argparse import Namespace
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
 from hyperlexical.ingest_tap import (
@@ -96,3 +98,74 @@ def test_tap_fail_open():
     assert out["ok"] is True
     assert out.get("skipped") is True
     assert out["brier"] is None
+
+
+def test_attach_hyperlexical_tap_loads_shadow_module(monkeypatch, tmp_path):
+    from hyperlex.pipeline import attach_hyperlexical_tap
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    monkeypatch.setenv("HYPERLEX_HYPERLEXICAL_STORE", str(store))
+    result = {
+        "query": "rizz",
+        "ingest": {"query": "rizz"},
+        "analysis": {
+            "primary_term": "rizz",
+            "lineage": {"family_id": "brainrot-aura", "matched_terms": ["rizz"]},
+        },
+    }
+    report = attach_hyperlexical_tap(result, query="rizz", source="pipeline")
+    assert report["ok"] is True
+    assert report["brier"] is None
+    harvested = harvest_store(store)
+    assert any(row["text"] == "rizz" for row in harvested)
+
+
+def test_run_one_appends_hyperlexical_tap_step(monkeypatch, tmp_path):
+    from hyperlex.pipeline import run_one
+
+    monkeypatch.setenv("HYPERLEX_HYPERLEXICAL_STORE", str(tmp_path / "ingest_candidates.jsonl"))
+    unit = run_one("rizz", route="offline", receipt=False, forecasts=False, phase5=False)
+    assert unit["ok"] is True
+    assert "hyperlexical_tap" in unit["steps"]
+    assert unit["hyperlexical_tap"]["brier"] is None
+
+
+def test_cli_analyze_and_scan_call_tap(monkeypatch):
+    import hyperlex.cli as cli
+    import hyperlex.pipeline as pipeline
+
+    calls = []
+
+    def fake_attach(result, *, query="", source="pipeline"):
+        calls.append((query, source, ((result.get("analysis") or {}).get("primary_term"))))
+        return {"ok": True, "added": 1, "brier": None}
+
+    monkeypatch.setattr(cli, "_emit", lambda _: None)
+    monkeypatch.setattr(pipeline, "attach_hyperlexical_tap", fake_attach)
+
+    analyze_args = Namespace(
+        query_pos=None,
+        query="rizz",
+        source="mock",
+        route="offline",
+        validate=False,
+        command_label=None,
+        receipt=False,
+        receipt_dir=None,
+        forecasts=False,
+        relay=False,
+        out="",
+    )
+    scan_args = Namespace(
+        query=None,
+        queries="rizz,locked in",
+        source="mock",
+        receipt=False,
+        forecasts=False,
+    )
+
+    assert cli.cmd_analyze(analyze_args) == 0
+    assert cli.cmd_scan(scan_args) == 0
+    assert ("rizz", "analyze", "rizz") in calls
+    assert ("rizz", "scan", "rizz") in calls
+    assert ("locked in", "scan", "locked in") in calls

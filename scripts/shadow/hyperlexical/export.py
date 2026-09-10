@@ -341,6 +341,15 @@ def harvest_negatives() -> list[dict[str, Any]]:
     ]
 
 
+def harvest_live() -> list[dict[str, Any]]:
+    try:
+        from .ingest_tap import harvest_store
+
+        return harvest_store()
+    except Exception:
+        return []
+
+
 def dedupe(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     seen = set()
     out = []
@@ -353,9 +362,9 @@ def dedupe(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
-def export_dataset(root: Path | None = None) -> dict[str, Any]:
+def export_dataset(root: Path | None = None, include_live: bool = False) -> dict[str, Any]:
     root = root or repo_root()
-    rows = dedupe(
+    rows = (
         harvest_dialect()
         + harvest_backfill(root)
         + harvest_registry(root)
@@ -364,6 +373,9 @@ def export_dataset(root: Path | None = None) -> dict[str, Any]:
         + harvest_unbind()
         + harvest_negatives()
     )
+    if include_live:
+        rows += harvest_live()
+    rows = dedupe(rows)
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
     payload = "\n".join(json.dumps(r, sort_keys=True) for r in rows) + "\n"
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
@@ -421,10 +433,11 @@ def main(argv=None) -> int:
         default="",
         help="directory; default specs/007-hyperlexical-model/exports",
     )
+    p.add_argument("--include-live", action="store_true", help="merge local ingest candidates before dedupe")
     args = p.parse_args(argv)
     root = repo_root()
     dest = Path(args.out) if args.out else root / "specs" / "007-hyperlexical-model" / "exports"
-    bundle = export_dataset(root)
+    bundle = export_dataset(root, include_live=bool(args.include_live))
     path = write_export(dest, bundle)
     print(json.dumps({"wrote": str(path), "sha256": bundle["sha256"], "counts": bundle["counts"]}, indent=2))
     return 0

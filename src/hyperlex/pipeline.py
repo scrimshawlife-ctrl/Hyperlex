@@ -11,6 +11,8 @@ Never auto-settles. Never invents Brier. Fail-open on optional side effects
 
 from __future__ import annotations
 
+import importlib.util
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
@@ -24,6 +26,47 @@ from .receipt import emit_receipt
 
 
 PIPELINE_SCHEMA = "hyperlex.pipeline_result.v1"
+
+
+def attach_hyperlexical_tap(
+    result: Dict[str, Any],
+    *,
+    query: str = "",
+    source: str = "pipeline",
+) -> Dict[str, Any]:
+    """Fail-open bridge into the shadow Hyperlexical ingest tap."""
+    try:
+        repo_root = Path(__file__).resolve().parents[2]
+        tap_path = repo_root / "scripts" / "shadow" / "hyperlexical" / "ingest_tap.py"
+        if not tap_path.is_file():
+            return {"ok": True, "skipped": True, "brier": None}
+        shadow_root = str(tap_path.parent.parent)
+        added_path = False
+        if shadow_root not in sys.path:
+            sys.path.insert(0, shadow_root)
+            added_path = True
+        try:
+            spec = importlib.util.spec_from_file_location("hyperlexical.ingest_tap", tap_path)
+            if spec is None or spec.loader is None:
+                return {"ok": True, "skipped": True, "brier": None}
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            tap = getattr(module, "tap_analysis", None)
+            if not callable(tap):
+                return {"ok": True, "skipped": True, "brier": None}
+            report = tap(result, query=query, source=source)
+            if isinstance(report, dict):
+                report.setdefault("brier", None)
+                return report
+            return {"ok": True, "brier": None}
+        finally:
+            if added_path:
+                try:
+                    sys.path.remove(shadow_root)
+                except ValueError:
+                    pass
+    except Exception as exc:
+        return {"ok": False, "error": str(exc), "brier": None, "fail_open": True}
 
 
 def _atom_list(query: str, *, expand_terms: bool) -> List[str]:
@@ -82,6 +125,8 @@ def run_one(
                 ((result.get("provenance") or {}).get("source_fingerprint") or {}).get("fingerprint_id")
             ),
         }
+        unit["hyperlexical_tap"] = attach_hyperlexical_tap(result, query=query, source="pipeline")
+        unit["steps"].append("hyperlexical_tap")
     except Exception as exc:
         unit["ok"] = False
         unit["error"] = f"analyze failed: {exc}"

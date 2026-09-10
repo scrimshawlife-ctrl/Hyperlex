@@ -5,7 +5,8 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
-from hyperlexical.export import FAMILIES, export_dataset, lexical_split, write_export
+from hyperlexical.export import FAMILIES, export_dataset, lexical_split, main, write_export
+from hyperlexical.ingest_tap import append_rows, row_from_atom
 
 
 def test_export_minimums():
@@ -55,3 +56,27 @@ def test_no_third_scheme():
     for row in bundle["rows"]:
         if row["role_scheme"] is not None:
             assert row["role_scheme"] in {"positional", "type_slot"}
+
+
+def test_export_include_live_merges_store(monkeypatch, tmp_path):
+    store = tmp_path / "ingest_candidates.jsonl"
+    append_rows([row_from_atom("sigma grindset", family="ai-native", source="pipeline")], store)
+    monkeypatch.setenv("HYPERLEX_HYPERLEXICAL_STORE", str(store))
+
+    base = export_dataset(ROOT)
+    live = export_dataset(ROOT, include_live=True)
+
+    assert "sigma grindset" not in {row["text"] for row in base["rows"]}
+    rows = [row for row in live["rows"] if row["text"] == "sigma grindset"]
+    assert len(rows) == 1
+    assert rows[0]["provenance"] == "ingest:store"
+
+
+def test_export_cli_include_live_flag(monkeypatch, tmp_path):
+    store = tmp_path / "ingest_candidates.jsonl"
+    append_rows([row_from_atom("receipt-maxxing", family="brainrot-aura", source="scan")], store)
+    monkeypatch.setenv("HYPERLEX_HYPERLEXICAL_STORE", str(store))
+
+    assert main(["--out", str(tmp_path), "--include-live"]) == 0
+    payload = (tmp_path / "civilian.v0.1.jsonl").read_text(encoding="utf-8")
+    assert "receipt-maxxing" in payload
