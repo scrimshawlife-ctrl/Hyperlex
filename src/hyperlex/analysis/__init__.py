@@ -35,6 +35,10 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "sharp money revenge", "line movement", "closing line", "steam chase",
             # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
             "the vig", "against the spread", "public side", "sharp side", "steam chaser",
+            # wave5 / attested-w2 (vernacular watchlist + Hyperlex examples + kaikki gambling + harvest caches)
+            "parlay", "reverse line", "chalk eaters", "comeback money", "dark flow",
+            "sucker bet", "morning line", "hot money", "advantage play", "dutch book",
+            "point-shave",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
@@ -53,6 +57,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "rug pulled", "rugging", "diamond handed", "paper handed", "ath",
             # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
             "gm", "gn", "jeet", "jeeting", "frens", "bagholding", "exit liq", "nfa", "probably nothing",
+            # wave5 / attested-w2 (harvest ape_in + kaikki cryptocurrencies)
+            "aped in", "shitcoin", "hodler", "jeetery", "crypto winter",
         ],
         "branch_operator": "cross_family_borrowing",
         "diagram_ref": "examples/slang-families/crypto-degen-family.mmd",
@@ -70,6 +76,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "agentic slop", "context-window",
             # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
             "glaze", "clankers", "jailbroken", "vibe coded", "slopped", "prompt inject", "rlhf", "context stuffed", "sycophantic",
+            # wave5 / attested-w2 (harvest wiktionary AI/ML category caches)
+            "sycophant", "model collapse", "stochastic parrot", "alignment tax",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/ai-native-family.mmd",
@@ -103,6 +111,11 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "chopped doppelganger", "lowkenuinely", "6-7",
             # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
             "bruh", "sheesh", "lowkey", "highkey", "periodt", "iykyk", "mew", "chopped", "mogged", "looksmaxxed", "minus aura", "negative rizz", "sigma grindset", "delulu era", "aura farmed", "no thoughts", "just vibes",
+            # wave5 / attested-w2 (vernacular watchlist + harvest wiktionary + Hyperlex docs/timeline)
+            "-1000 aura", "unrizzed", "rizzless", "crashout", "crashed out",
+            "aura loss", "aura farmer", "goon cave", "gigachad", "no crumbs",
+            "delulu is the solulu", "solulu", "gyatt dayum", "main character syndrome",
+            "it's giving mid",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
@@ -118,6 +131,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "auntie", "lil sis", "big sis", "yo unc",
             # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
             "yo fam", "lil unc", "big unc", "twinning", "my guy", "big dog",
+            # wave5 / attested-w2 (kaikki/harvest address morphs)
+            "bruv", "dawg",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/kinship-address.mmd",
@@ -134,6 +149,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "red pilled", "black pilled", "blue pilled", "based and blackpilled",
             # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
             "doomer", "bloomer", "pinkpilled", "redpilling", "blackpilling", "cope harder", "seething", "based department",
+            # wave5 / attested-w2 (Hyperlex golden political query compression)
+            "cope seethe",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/political-status-family.mmd",
@@ -153,6 +170,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "tryharding", "hard stuck", "360 no-scope", "no scoping", "pwn",
             # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
             "boosted", "cracked", "one trick", "one-tricking", "hardstuck bronze", "touch grassed", "diffed", "outskilled",
+            # wave5 / attested-w2 (harvest wiktionary gaming caches + kaikki)
+            "git gud", "noscope", "smurf account", "tryhards", "quickscope",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
@@ -171,6 +190,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "quiet quitter", "quiet fired", "boiling the ocean", "taken offline", "circleback",
             # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
             "sync up", "put a pin in it", "alignment meeting", "ping me", "quiet quitters", "rto mandate", "return-to-office mandate", "performance managed", "boiling ocean",
+            # wave5 / attested-w2 (harvest employment/business category caches)
+            "circling back", "quiet hiring", "bare minimum monday",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",
