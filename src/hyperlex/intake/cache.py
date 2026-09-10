@@ -39,8 +39,8 @@ SOURCE_MIN_INTERVAL: Dict[str, float] = {
     "reddit": 3.0,
     "urban": 1.5,
     "wikipedia": 1.0,
-    "firecrawl": 5.0,
-    "crawl4ai": 5.0,
+    "firecrawl": 1.0,
+    "crawl4ai": 1.0,
     "x_search": 2.0,
     "combined": 5.0,
 }

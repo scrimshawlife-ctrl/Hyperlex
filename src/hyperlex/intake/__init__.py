@@ -297,9 +297,14 @@ def _fetch_crawl4ai_query(query: str) -> str:
             "Install with `pip install .[runtime]` to enable this source."
         )
 
-    encoded = urllib.parse.quote_plus(f"{query} slang")
-    # DuckDuckGo HTML endpoint is lightweight and often works without JS.
-    url = f"https://duckduckgo.com/html/?q={encoded}"
+    # Prefer Wiktionary lemma page (DDG HTML often blocked / bot-closed).
+    # Override with HYPERLEX_CRAWL4AI_URL_TEMPLATE containing {query} / {encoded}.
+    tmpl = str(os.environ.get("HYPERLEX_CRAWL4AI_URL_TEMPLATE") or "").strip()
+    encoded = urllib.parse.quote(query.replace(" ", "_"))
+    if tmpl:
+        url = tmpl.format(query=query, encoded=encoded)
+    else:
+        url = f"https://en.wiktionary.org/wiki/{encoded}"
     key = _cache_key(url, "crawl4ai")
     cached = _get_cached(key)
     if cached:
