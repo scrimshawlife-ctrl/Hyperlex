@@ -14,8 +14,17 @@ def test_export_minimums():
     # Honest classify = family-labeled only (excludes negatives bucket)
     assert c["classify"] >= 80
     assert c["classify"] == c.get("classify") # family
-    assert c["classify_all"] == c["classify"] + c["negatives"]
+    assert c["classify_all"] == c["classify"] + c["classify_none"]
+    # Negatives = ordinary-prose seed only (not all lineage=none classify)
     assert c["negatives"] >= 200
+    assert c["negatives"] == sum(
+        1
+        for r in bundle["rows"]
+        if r["task"] == "classify"
+        and r["lineage"] == "none"
+        and str(r.get("provenance") or "").startswith("seed:negative-prose")
+    )
+    assert c["classify_none"] >= c["negatives"]
     # Fixtures honest n=24 + civilian dual-scheme — not n=128 padding toward gate
     assert c["unbind_fixture"] >= 40
     assert c["unbind_civilian"] >= 40
@@ -177,3 +186,37 @@ def test_include_live_observed_upgrades_inferred_duplicate(tmp_path):
     assert hit[0]["class"] == "OBSERVED"
     assert "KEEP-93" in hit[0]["provenance"]
 
+
+
+def test_include_live_negatives_ordinary_prose_only(tmp_path):
+    """Live lineage=none must not inflate name-gate negatives bucket."""
+    from hyperlexical.export import export_dataset
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    # Many live none rows (inbox unclassified) + one family row
+    lines = []
+    for i in range(50):
+        lines.append(
+            '{"text": "zzzx_live_none_%d", "lineage": "none", "typology": [], '
+            '"stage": "noise", "roles": [], "fillers": [], "role_scheme": null, '
+            '"task": "classify", "provenance": "ingest:inbox", "class": "INFERRED", '
+            '"license": "operator-local", "split": "train"}' % i
+        )
+    lines.append(
+        '{"text": "zzzx_live_family_atom", "lineage": "brainrot-aura", "typology": ["compression"], '
+        '"stage": "circulating", "roles": [], "fillers": [], "role_scheme": null, '
+        '"task": "classify", "provenance": "ingest:pipeline", "class": "INFERRED", '
+        '"license": "operator-local", "split": "train"}'
+    )
+    store.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    base = export_dataset(ROOT, include_live=False)
+    live = export_dataset(ROOT, include_live=True, live_store=store)
+    # Ordinary-prose negatives unchanged by live none flood
+    assert live["counts"]["negatives"] == base["counts"]["negatives"]
+    assert live["counts"]["negatives"] >= 200
+    # Live none visible under classify_none, not negatives
+    assert live["counts"]["classify_none"] >= base["counts"]["classify_none"] + 50
+    assert live["counts"]["classify_none"] > live["counts"]["negatives"]
+    assert live["counts"]["classify_all"] == live["counts"]["classify"] + live["counts"]["classify_none"]
+    # Family gate still moves with live family row
+    assert live["counts"]["classify"] >= base["counts"]["classify"] + 1
