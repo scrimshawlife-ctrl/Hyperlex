@@ -1,0 +1,16 @@
+{
+  "schema": "hyperlex.hyperlexical.eval_unbind.v0.1",
+  "probe_schema": "abraxas.recoverable_structure.probe.v0.1",
+  "probe_positional_swap": 1.0,
+  "probe_type_slot_swap": 1.0,
+  "probe_swap_min": 1.0,
+  "stub_swap": 0.0,
+  "n_test": 12,
+  "e2_pass": false,
+  "model_id": "stub",
+  "trunk": "answerdotai/ModernBERT-base",
+  "trunk_loaded": false,
+  "brier": null,
+  "forecast_eligible": false,
+  "note": "Example only. Stub is expected to fail E2."
+}
