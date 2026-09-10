@@ -43,6 +43,8 @@ def attach_hyperlexical_tap(
         if not tap_path.is_file():
             return {"ok": True, "skipped": True, "brier": None}
         package_init = tap_path.parent / "__init__.py"
+        if not package_init.is_file():
+            return {"ok": True, "skipped": True, "brier": None}
         with _HYPERLEXICAL_TAP_LOCK:
             package = sys.modules.get("hyperlexical")
             if package is None:
