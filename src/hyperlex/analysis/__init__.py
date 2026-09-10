@@ -25,14 +25,21 @@ from .signal_report import attach_signal_report_fields, build_seed_header
 LINEAGE_REGISTRY: List[Dict[str, Any]] = [
     {
         "family_id": "betting-sharp",
-        "terms": ["sharp", "steam", "square", "wiseguy", "hammer", "holler", "revenge", "low block", "false nine"],
+        "terms": [
+            "sharp", "steam", "square", "wiseguy", "hammer", "holler", "revenge", "low block",
+            "false nine", "revenge bet", "vig",
+        ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
         "payload_note": "professional edge vs public money; line-physics signaling",
     },
     {
         "family_id": "crypto-degen",
-        "terms": ["hodl", "diamond hands", "paper hands", "rekt", "ape", "degen", "moon", "bagholder", "fud", "fomo", "ngmi", "wagmi", "rug"],
+        "terms": [
+            "hodl", "diamond hands", "paper hands", "rekt", "ape", "degen", "moon", "bagholder",
+            "fud", "fomo", "ngmi", "wagmi", "rug", "rugpull", "rug pull", "hopium", "ape in",
+            "to the moon",
+        ],
         "branch_operator": "cross_family_borrowing",
         "diagram_ref": "examples/slang-families/crypto-degen-family.mmd",
         "payload_note": "conviction under volatility; risk identity as honorific",
@@ -41,7 +48,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
         "family_id": "ai-native",
         "terms": [
             "hallucinate", "slop", "clanker", "agentic", "glazing", "skill issue",
-            "token", "context window", "vibe coding",
+            "token", "context window", "vibe coding", "vibe code", "prompt injection",
+            "hallucination", "jailbreak", "sycophancy", "tool use", "token burn",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/ai-native-family.mmd",
@@ -51,13 +59,19 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
         "family_id": "brainrot-aura",
         "terms": [
             # core (pre-2026 trunk)
-            "brainrot", "brain rot", "aura", "aura farming", "mid", "cooked", "let him cook",
+            "brainrot", "brain rot", "aura", "aura farming", "aura farm", "mid", "cooked", "let him cook",
             # 2026 YTD leaves (see data/backfill/2026/)
-            "rizz", "skibidi", "gyatt", "sigma", "delulu", "no cap", "locked in", "crash out",
-            "mewing", "looksmaxxing", "mog", "mogging", "ate", "left no crumbs", "it's giving",
+            "rizz", "rizzler", "skibidi", "gyatt", "sigma", "delulu", "no cap", "no cap fr",
+            "locked in", "crash out",
+            "mewing", "looksmaxxing", "looksmax", "heightmaxxing", "copemaxxing", "mog", "mogging",
+            "ate", "ate that", "left no crumbs", "it's giving",
             "npc", "main character", "main character energy", "fanum tax", "ohio",
             "bussin", "slay", "six seven", "67", "edging", "gooning",
-            "vibe check", "negative aura", "aura points", "yap", "yapping", "chat is this real",
+            "vibe check", "negative aura", "aura points", "plus aura", "yap", "yapping",
+            "chat is this real", "no thoughts just vibes",
+            # dialect / seed expansions (distinctive; still 8-family only)
+            "fine shyt", "giga chad", "caught in 4k", "in my bag", "understood the assignment",
+            "mid af", "unspoken rizz",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
@@ -65,14 +79,17 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
     },
     {
         "family_id": "kinship-address",
-        "terms": ["bro", "sis", "twin", "unc", "cuz", "family"],
+        "terms": ["bro", "sis", "twin", "unc", "cuz", "family", "fam", "bestie"],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/kinship-address.mmd",
         "payload_note": "fictive kinship; community responsibility + platform acceleration",
     },
     {
         "family_id": "political-status",
-        "terms": ["based", "redpilled", "blackpilled", "cope", "seethe", "dilate"],
+        "terms": [
+            "based", "redpilled", "blackpilled", "bluepilled", "cope", "copium", "seethe", "dilate",
+            "redpill", "blackpill",
+        ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/political-status-family.mmd",
         "payload_note": "tribal signaling + emotional routing; high mutation rate",
@@ -80,8 +97,10 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
     {
         "family_id": "gaming-meta",
         "terms": [
-            "nerf", "buff", "meta", "sweaty", "noob", "gg", "ez", "ratio",
-            "touch grass", "skill issue", "diff", "int", "feed", "smurf", "sus",
+            "nerf", "buff", "meta", "sweaty", "noob", "gg", "ez", "ratio", "ratioed",
+            "touch grass", "skill issue", "diff", "int", "feed", "feeding", "smurf", "sus",
+            "griefing", "360 noscope", "beast mode", "bunny hopper", "bacon hair",
+            "achievement whore",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
@@ -92,7 +111,7 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
         "terms": [
             "quiet quitting", "quiet firing", "rto", "return to office", "layoffs",
             "pip", "synergy", "circle back", "bandwidth", "low-hanging fruit",
-            "act your wage",
+            "act your wage", "touch base", "deep dive", "move the needle",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",
