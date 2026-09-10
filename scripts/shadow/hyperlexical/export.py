@@ -83,6 +83,8 @@ ROW_KEYS = (
     "license",
 )
 
+COLLISION_HOLD = {"skill issue"}
+
 
 def repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
@@ -97,10 +99,24 @@ def lexical_split(text: str) -> str:
     return "train"
 
 
+def _norm_class(raw: str | None, default: str) -> str:
+    val = (raw or default).upper()
+    if val not in {"OBSERVED", "INFERRED", "SPECULATIVE"}:
+        return default
+    if val == "SPECULATIVE":
+        return "INFERRED"
+    return val
+
+
 def _row(**kwargs: Any) -> dict[str, Any]:
     text = kwargs["text"]
     if RESTRICTED_MARKER in text:
         raise ValueError("restricted text")
+    if text.lower() in COLLISION_HOLD and kwargs.get("task") == "classify":
+        kwargs = dict(kwargs)
+        kwargs["lineage"] = "none"
+        kwargs["class"] = "INFERRED"
+        kwargs["provenance"] = str(kwargs.get("provenance") or "") + ":collision-hold"
     out = {k: kwargs.get(k) for k in ROW_KEYS}
     out["split"] = kwargs.get("split") or lexical_split(text)
     out["typology"] = list(out.get("typology") or [])
@@ -145,7 +161,7 @@ def harvest_registry(root: Path) -> list[dict[str, Any]]:
                     typology=TYPOLOGY.get(fam, []),
                     task="classify",
                     provenance=f"LINEAGE_REGISTRY:{fam}",
-                    **{"class": "OBSERVED"},
+                    **{"class": "INFERRED"},
                     role_scheme=None,
                 )
             )
@@ -181,7 +197,73 @@ def harvest_receipts(root: Path) -> list[dict[str, Any]]:
                     typology=TYPOLOGY.get(fam, []),
                     task="classify",
                     provenance=f"golden:{path.name}",
-                    **{"class": "OBSERVED"},
+                    **{"class": "INFERRED"},
+                    role_scheme=None,
+                )
+            )
+    return rows
+
+
+def harvest_backfill(root: Path) -> list[dict[str, Any]]:
+    rows = []
+    pack_dir = root / "data" / "backfill" / "2026"
+    if not pack_dir.is_dir():
+        return rows
+    for path in sorted(pack_dir.glob("2026-*.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        default = data.get("provenance_default") or "INFERRED"
+        for item in data.get("terms") or []:
+            term = (item.get("term") or "").strip()
+            if not term:
+                continue
+            fam = item.get("family_id") or "none"
+            if fam not in FAMILIES and fam != "none":
+                fam = "none"
+            rows.append(
+                _row(
+                    text=term,
+                    lineage=fam,
+                    typology=TYPOLOGY.get(fam, []),
+                    task="classify",
+                    provenance=f"backfill:{path.name}",
+                    **{"class": _norm_class(item.get("provenance"), default)},
+                    role_scheme=None,
+                )
+            )
+    return rows
+
+
+def harvest_archive(root: Path) -> list[dict[str, Any]]:
+    rows = []
+    archive = root / "docs" / "archive"
+    if not archive.is_dir():
+        return rows
+    for path in sorted(archive.glob("**/receipts/*.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        lineage = (data.get("analysis") or {}).get("lineage") or {}
+        fam = lineage.get("family_id") or data.get("lineage_family") or "none"
+        if fam not in FAMILIES and fam != "none":
+            fam = "none"
+        terms = list(lineage.get("matched_terms") or [])
+        query = ((data.get("ingest") or {}).get("query") or "").strip()
+        if query:
+            terms.append(query)
+        seen = set()
+        for term in terms:
+            if not term or term in seen:
+                continue
+            seen.add(term)
+            rows.append(
+                _row(
+                    text=term,
+                    lineage=fam,
+                    typology=TYPOLOGY.get(fam, []),
+                    task="classify",
+                    provenance=f"archive:{path.relative_to(root).as_posix()}",
+                    **{"class": "INFERRED"},
                     role_scheme=None,
                 )
             )
@@ -275,8 +357,10 @@ def export_dataset(root: Path | None = None) -> dict[str, Any]:
     root = root or repo_root()
     rows = dedupe(
         harvest_dialect()
+        + harvest_backfill(root)
         + harvest_registry(root)
         + harvest_receipts(root)
+        + harvest_archive(root)
         + harvest_unbind()
         + harvest_negatives()
     )
@@ -289,9 +373,18 @@ def export_dataset(root: Path | None = None) -> dict[str, Any]:
         "unbind": sum(1 for r in rows if r["task"] == "unbind"),
         "negatives": sum(1 for r in rows if r["lineage"] == "none" and r["task"] == "classify"),
         "dialect": sum(1 for r in rows if r["provenance"] == "seed:dialect-e6"),
+        "backfill": sum(1 for r in rows if str(r["provenance"]).startswith("backfill:")),
+        "observed": sum(1 for r in rows if r["class"] == "OBSERVED"),
+        "inferred": sum(1 for r in rows if r["class"] == "INFERRED"),
         "train": sum(1 for r in rows if r["split"] == "train"),
         "val": sum(1 for r in rows if r["split"] == "val"),
         "test": sum(1 for r in rows if r["split"] == "test"),
+        "name_gate": False,
+        "name_gate_classify_gap": max(0, 2000 - sum(1 for r in rows if r["task"] == "classify")),
+        "name_gate_unbind_gap": max(0, 200 - sum(1 for r in rows if r["task"] == "unbind")),
+        "name_gate_negative_gap": max(
+            0, 200 - sum(1 for r in rows if r["lineage"] == "none" and r["task"] == "classify")
+        ),
     }
     return {"rows": rows, "sha256": digest, "counts": counts, "payload": payload}
 
@@ -310,7 +403,7 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                 "counts": bundle["counts"],
                 "brier": None,
                 "trunk": "answerdotai/ModernBERT-base",
-                "note": "Civilian gold from repo fixtures. Not a T1 name-gate. No ledger copy.",
+                "note": "Repo harvest including backfill+archive. Not a T1 name-gate. No ledger copy.",
             },
             indent=2,
             sort_keys=True,
