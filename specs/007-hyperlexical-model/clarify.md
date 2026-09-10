@@ -1,6 +1,7 @@
 # Clarify 007 — Hyperlexical model
 
 Locked 2026-09-09. Do not reopen without operator amendment.
+Amendment A1 (same day): C6/C24 ceiling 150M.
 
 | ID | Question | Lock |
 |----|----------|------|
@@ -9,7 +10,7 @@ Locked 2026-09-09. Do not reopen without operator amendment.
 | C3 | May this spec touch API_V1? | No. |
 | C4 | May open analysis claim `semantic`? | No. Spec 005. `routes_claimed` ⊆ {form, lexical}. |
 | C5 | When is the name Hyperlexical allowed on a Hub card? | Only after eval gate E2 (unbind beats Spec 004 probe). Until then: `hyperlex-encoder-*`. |
-| C6 | Parameter ceiling for v1 product? | T1 ≤ 130M encoder. No 7B product card. T2 decoder not in implement U1. Spark capacity is not a reason to inflate T1. |
+| C6 | Parameter ceiling for v1 product? | T1 ≤ **150M** encoder (A1). No 7B product card. T2 decoder not in implement U1. Spark capacity is not a reason to inflate T1 past 150M. |
 | C7 | Does the model emit Brier? | No. Hard-null. Stage is INFERRED ordinal. |
 | C8 | Role schemes? | Only `positional` and `type_slot` from 004. No third scheme in v0.1. |
 | C9 | Dataset in this repo? | Civilian fixtures + schema + split rules. No weight binaries. No restricted corpora. |
@@ -37,7 +38,7 @@ Locked 2026-09-09. Do not reopen without operator amendment.
 | C21 | Home train/serve box? | NVIDIA DGX Spark (GB10, 128 GB unified, aarch64, `sm_121`). See `hardware.md`. |
 | C22 | Uncensored means? | Base encoder. No chat template. No refusal head on civilian slang. See `uncensored.md`. |
 | C23 | Safety-tuned instruct trunk allowed as T1? | No. Teacher-only if used at all, and not under the Hyperlexical name. |
-| C24 | Use Spark 200B ceiling for the product card? | No. T1 stays ≤130M. |
+| C24 | Use Spark 200B ceiling for the product card? | No. T1 stays ≤**150M** (A1). |
 | C25 | NVFP4 required to ship T1? | No. Optional export later. |
 | C26 | Dual-use wall removed because uncensored? | No. Detector over generator. No wrap verb. |
 | C27 | Orin Nano as train home this cycle? | No. Infer-later only. |
