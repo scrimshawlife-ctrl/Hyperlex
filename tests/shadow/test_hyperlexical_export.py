@@ -139,3 +139,41 @@ def test_include_live_preserves_store_class(tmp_path):
     assert any(r["text"] == "gm" for r in live)  # allowlisted short slang kept
     assert bundle["counts"]["live_rejected"] >= 1
     write_export(tmp_path / "out", bundle)
+
+def test_include_live_observed_upgrades_inferred_duplicate(tmp_path):
+    """Settled OBSERVED live row replaces earlier base INFERRED on same key."""
+    from hyperlexical.export import dedupe, load_live_candidates, _row
+
+    # Simulate base INFERRED + live OBSERVED same (task, text, scheme, lineage).
+    base = [
+        _row(
+            text="zzzx_upgrade_atom",
+            lineage="brainrot-aura",
+            typology=["compression"],
+            stage="circulating",
+            roles=[],
+            fillers=[],
+            role_scheme=None,
+            task="classify",
+            provenance="backfill:test.json",
+            **{"class": "INFERRED"},
+            license="MIT-examples",
+            split="train",
+        )
+    ]
+    store = tmp_path / "ingest_candidates.jsonl"
+    store.write_text(
+        '{"text": "zzzx_upgrade_atom", "lineage": "brainrot-aura", "typology": ["compression"], '
+        '"stage": "circulating", "roles": [], "fillers": [], "role_scheme": null, '
+        '"task": "classify", "provenance": "operator-settle:KEEP-93:2026-09-10", '
+        '"class": "OBSERVED", "license": "operator-local", "split": "val"}\n',
+        encoding="utf-8",
+    )
+    live = load_live_candidates(store)
+    assert live and live[0]["class"] == "OBSERVED"
+    merged = dedupe(base + live)
+    hit = [r for r in merged if r["text"] == "zzzx_upgrade_atom"]
+    assert len(hit) == 1
+    assert hit[0]["class"] == "OBSERVED"
+    assert "KEEP-93" in hit[0]["provenance"]
+

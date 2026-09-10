@@ -496,15 +496,26 @@ def harvest_negatives() -> list[dict[str, Any]]:
 
 
 def dedupe(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    seen = set()
-    out = []
+    """Dedupe by (task, text, role_scheme, lineage).
+
+    First-seen order is preserved, but a later row with a stronger ``class``
+    upgrades the kept row (OBSERVED > INFERRED > other). This lets
+    ``--include-live`` settled OBSERVED replace an earlier base INFERRED
+    duplicate without inventing new OBSERVED labels.
+    """
+    rank = {"OBSERVED": 2, "INFERRED": 1, "SPECULATIVE": 0}
+    best: dict[tuple, dict[str, Any]] = {}
+    order: list[tuple] = []
     for row in rows:
         key = (row["task"], row["text"], row.get("role_scheme"), row["lineage"])
-        if key in seen:
+        if key not in best:
+            best[key] = row
+            order.append(key)
             continue
-        seen.add(key)
-        out.append(row)
-    return out
+        prev = best[key]
+        if rank.get(str(row.get("class")), 0) > rank.get(str(prev.get("class")), 0):
+            best[key] = row
+    return [best[k] for k in order]
 
 
 def reject_candidate_text(text: str) -> str | None:
