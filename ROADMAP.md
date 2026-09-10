@@ -67,6 +67,17 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - [x] **5.3** Atomic multi-term seeds (`split_seed_terms`, Phase 5 multi-term, Pages demos)
 - [ ] **5.3** ANN backend option if corpus grows past linear scan (**deferred** until corpus pain)
 
+### Spec 007 — Hyperlexical encoder (SHADOW · 2026-09-09)
+- [x] Specify C1–C52
+- [x] U1 stub infer + packet walls
+- [x] U2 civilian harvest exporter
+- [x] U3 eval harness vs Spec 004
+- [x] Keepable layout + span aligner + HF skeleton
+- [ ] Spark `--run` (Aaron)
+- [ ] E2 pass
+- [ ] Hub upload (operator)
+- [ ] T13 promote into `src/hyperlex/`
+
 ## Milestones
 - v0.2.x: Phases 0–4 complete (Hermes skill production track)
 - v0.3.0: Phase 5.0 research simulation track
@@ -77,6 +88,7 @@ Hyperlex evolves into the canonical engine for detecting, scoring, and acting on
 - **v0.4.0: automatic backend pipeline (ingest → results)** (current)
 - v0.3.x: Phylogeny libraries + vector hybrid lineage + research export polish
 - v1.0: Stable skill contract + long-horizon archive + optional research contribs
+- 007: `hyperlex-structure-149m` name only after E2
 
 See SPEC.md and DESIGN.md for detailed requirements per phase.
 
@@ -88,3 +100,4 @@ See SPEC.md and DESIGN.md for detailed requirements per phase.
 - v0.3.7: Risk-tier → scan/cron schedule (advisory; post-scan advisory on scan)
 - v0.3.8: Operator loop docs; `--route` ingest; `run` / `commands` / `pending`
 - v0.3.9: Atomic multi-term seeds; Pages demos; scan packs atomic
+- 2026-09-09: Spec 007 SHADOW encoder harness on main (not a Hub card)

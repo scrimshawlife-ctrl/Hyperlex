@@ -2,11 +2,11 @@
 
 **Feature**: Learned recoverable-structure encoder for slang atoms  
 **Date**: 2026-09-09  
-**Status**: SPECIFY locked / SHADOW / implement not started  
+**Status**: SPECIFY locked C1–C52 / SHADOW implement on main / E2 fail / no Hub  
 **Depends on**: constitution v1.0.0 I–X; specs 000, 001, 003, 004; 005 route-labels (do not claim `semantic`)  
 **Does not open**: 006 IsA (reserved)  
-**Clarify**: `clarify.md` (C1–C27 locked; A1 C6=150M)  
-**Companion docs**: `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `dataset-harvest.md`, `hardware.md`, `uncensored.md`, `amendments.md`
+**Clarify**: `clarify.md` + `locks-a4.md` + `locks-a5.md`  
+**Companion docs**: `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `dataset-harvest.md`, `hardware.md`, `uncensored.md`, `amendments.md`, `weights.md`, `AARON-SPARK-TRAIN.md`, `hf-package/`
 **Schema**: `schemas/hyperlexical_inference.v0.1.schema.json`  
 **Lane**: SHADOW / advisory  
 **Home (v0.1)**: `scripts/shadow/hyperlexical/` — never `src/hyperlex/` until T13 promote  
@@ -221,7 +221,7 @@ If E2 fails, the Hub card MUST NOT use the word Hyperlexical. Publish as encoder
 
 ## Success
 
-Specify pack in repo. Notion operator pages exist. Clarifications C1–C27 + A1 recorded. Operator may say **implement 007 U1** (stub helper + schema tests only). Training on Spark and Hub publish stay later cycles.
+Specify pack in repo. Notion operator pages exist. Clarifications C1–C52 recorded. U1–U3 harness on main. Training on Spark and Hub publish stay later cycles.
 
 ## References
 
