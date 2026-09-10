@@ -49,6 +49,7 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 | **Local attractor store** (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
 | **Attractor candidate rune** (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
 | **Spec 007 Hyperlexical encoder** | SHADOW on main · stub + harvest + eval · Spark train gated · E2 fail · no Hub |
+| **007 live ingest tap** | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
 
@@ -56,9 +57,11 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 
 ```text
 pipeline "rizz" | run "rizz"
+  → hyperlexical tap (INFERRED candidates)
   → pending → settle → score-series
   → scan / risk-schedule
   → relay --push-inbox
+  → PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap
   → inbox list
   → vector-seed / vector-sync
   → archive-export
@@ -77,6 +80,7 @@ pipeline "rizz" | run "rizz"
 ~/.hyperlex/vector.db
 ~/.hyperlex/chroma/
 ~/.hyperlex/signals/inbox.jsonl
+~/.hyperlex/hyperlexical/ingest_candidates.jsonl
 ~/.hyperlex/models/   # Spark dumps only; not git
 data/backfill/2026/
 ```
@@ -84,5 +88,5 @@ data/backfill/2026/
 ## Recommended next
 
 1. Burn-in offline runs + settle path
-2. Aaron Spark 007 smoke (`AARON-SPARK-TRAIN.md`)
-3. Optional: enrich `scan` with focus / time_window / min_virality
+2. Live ingest tap → harvest candidates (still below name-gate)
+3. Aaron Spark 007 smoke (`AARON-SPARK-TRAIN.md`)

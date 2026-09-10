@@ -8,7 +8,9 @@ Specify is locked C1–C52. Implement on `main` is the stub + harvest + eval har
 
 ```bash
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap --dry-run
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.export
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.preflight
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.train --offline
@@ -36,3 +38,8 @@ Trunk: `answerdotai/ModernBERT-base`. Local snapshot only. Last 2 layers trainab
 | E6 dialect | PASS |
 
 Brier stays null. `pipeline_tag` is `text-classification`.
+
+## Live ingest tap
+
+Current slang atoms from `pipeline` / `analyze` / `scan` / inbox write INFERRED rows to `~/.hyperlex/hyperlexical/ingest_candidates.jsonl`.
+They do not become OBSERVED and do not mint Brier. Spec: `specs/007-hyperlexical-model/ingest-tap.md`.
