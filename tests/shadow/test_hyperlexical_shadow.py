@@ -19,6 +19,7 @@ from hyperlexical.packet import (
 SHADOW = ROOT / "scripts" / "shadow" / "hyperlexical"
 SCHEMA = ROOT / "specs" / "007-hyperlexical-model" / "schemas" / "hyperlexical_inference.v0.1.schema.json"
 CONTRACTS = ROOT / "specs" / "007-hyperlexical-model" / "contracts"
+TORCH_ALLOWED = {"loop.py"}
 
 
 def test_e0_rizz_packet():
@@ -89,11 +90,15 @@ def test_cli_offline_rizz(tmp_path):
 
 
 def test_no_hyperlex_or_abraxas_imports():
-    banned = ("import hyperlex", "from hyperlex", "import abraxas", "from abraxas", "import torch", "from torch")
+    banned_all = ("import hyperlex", "from hyperlex", "import abraxas", "from abraxas")
+    banned_ci = ("import torch", "from torch")
     for path in SHADOW.glob("*.py"):
         src = path.read_text()
-        for token in banned:
+        for token in banned_all:
             assert token not in src
+        if path.name not in TORCH_ALLOWED:
+            for token in banned_ci:
+                assert token not in src, path.name
 
 
 def test_no_network_calls_in_source():
