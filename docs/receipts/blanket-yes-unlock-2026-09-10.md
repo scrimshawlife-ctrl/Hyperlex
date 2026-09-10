@@ -5,7 +5,8 @@
 **Authority**: Danny blanket yes 2026-09-10 — "Yes to whatever we need to do"  
 **Provenance**: `operator-blanket-yes:2026-09-10`  
 **Settle provenance**: `operator-settle:blanket-yes:2026-09-10`  
-**Branch**: `007-blanket-yes-leaves-2026-09-10`  
+**PR**: https://github.com/scrimshawlife-ctrl/Hyperlex/pull/37 (do **not** merge unless parent asks)  
+**Branch**: `007-blanket-yes-leaves-2026-09-10` @ `db1cf7d`  
 **Base**: `main` @ post-merge #34/#35/#36 (`4f79834`)  
 **Do-not honored**: no 9th family, no train/HF, no mock analyze, no paid Firecrawl.
 
@@ -111,7 +112,7 @@ Precision filters dropped pool noise (`no_family_gate`, denylist shorts, tech gl
 
 ## 5. PR
 
-Open PR for registry expansion on `007-blanket-yes-leaves-2026-09-10` — **do not merge** unless parent already merged (parent authorized push commits / open PR).
+PR **#37** https://github.com/scrimshawlife-ctrl/Hyperlex/pull/37 — OPEN, not merged.
 
 ## 6. Paths
 
