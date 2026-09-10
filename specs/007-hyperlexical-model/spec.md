@@ -5,8 +5,8 @@
 **Status**: SPECIFY locked / SHADOW / implement not started  
 **Depends on**: constitution v1.0.0 I–X; specs 000, 001, 003, 004; 005 route-labels (do not claim `semantic`)  
 **Does not open**: 006 IsA (reserved)  
-**Clarify**: `clarify.md` (C1–C27 locked)  
-**Companion docs**: `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `hardware.md`, `uncensored.md`  
+**Clarify**: `clarify.md` (C1–C27 locked; A1 C6=150M)  
+**Companion docs**: `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `hardware.md`, `uncensored.md`, `amendments.md`  
 **Schema**: `schemas/hyperlexical_inference.v0.1.schema.json`  
 **Lane**: SHADOW / advisory  
 **Home (v0.1)**: `scripts/shadow/hyperlexical/` — never `src/hyperlex/` until T13 promote  
@@ -21,7 +21,7 @@ Hyperlex already matches lineage by registry + local vectors and probes recovera
 
 The model exists to beat bag-of-terms and the Spec 004 linear probe on held-out civilian fixtures. It does not replace receipts, settlement, or API_V1.
 
-Train and serve on the operator DGX Spark. Product card stays T1 ≤130M. Spark capacity is not a license to ship a 7B chat LM under this name.
+Train and serve on the operator DGX Spark. Product card stays T1 ≤150M (A1). Spark capacity is not a license to ship a 7B chat LM under this name.
 
 ## Problem
 
@@ -35,7 +35,7 @@ Train and serve on the operator DGX Spark. Product card stays T1 ≤130M. Spark 
 ## Goals
 
 - G1 Define a frozen inference packet with hard-null Brier and no `semantic` route claim (005).
-- G2 Specify encoder-first architecture and parameter ceilings that train on DGX Spark and infer offline / CPU / Spark. T1 stays ≤130M.
+- G2 Specify encoder-first architecture and parameter ceilings that train on DGX Spark and infer offline / CPU / Spark. T1 stays ≤150M (A1).
 - G3 Specify an unbind eval that must beat Spec 004 linear probe before the word Hyperlexical is used on a Hub card.
 - G4 Keep generation in a separate optional artifact, FORECAST-flagged, dual-use gated.
 - G5 Keep weights, datasets, and Hub publish behind principle VIII operator gates.
@@ -91,13 +91,13 @@ Train and serve on the operator DGX Spark. Product card stays T1 ≤130M. Spark 
 | Tier | Artifact | Params | Ships when | Name allowed |
 |------|----------|--------|------------|--------------|
 | T0 | Frozen public **base** encoder + linear heads | 22–40M | after dataset freeze + classify eval | `hyperlex-encoder-33m` |
-| T1 | Encoder + multi-task + unbind heads | 60–130M | after unbind gate vs 004 probe | `hyperlex-structure-110m` |
-| T2 | Separate decoder LoRA | 135–360M adapter | only if operator says generate | `hyperlex-mutate-135m-lora` |
+| T1 | Encoder + multi-task + unbind heads | 60–150M | after unbind gate vs 004 probe | `hyperlex-structure-149m` (ModernBERT-base class) or `hyperlex-structure-110m` |
+| T2 | Separate decoder LoRA | 151–360M adapter | only if operator says generate | `hyperlex-mutate-135m-lora` |
 | T3 | From-scratch lexical toy | ≤30M | research only | not Hyperlexical |
 
 T1 is the first artifact that may be called Hyperlexical. T0 is a baseline encoder. T2 is not this spec’s implement target.
 
-Teacher models hosted on Spark (any size that fits 128 GB) are not the product card.
+Teacher models hosted on Spark (any size that fits 128 GB, including ModernBERT-large) are not the product card.
 
 ### Heads (T0/T1)
 
@@ -221,7 +221,7 @@ If E2 fails, the Hub card MUST NOT use the word Hyperlexical. Publish as encoder
 
 ## Success
 
-Specify pack in repo. Notion operator pages exist. Clarifications C1–C27 recorded. Operator may say **implement 007 U1** (stub helper + schema tests only). Training on Spark and Hub publish stay later cycles.
+Specify pack in repo. Notion operator pages exist. Clarifications C1–C27 + A1 recorded. Operator may say **implement 007 U1** (stub helper + schema tests only). Training on Spark and Hub publish stay later cycles.
 
 ## References
 
@@ -230,4 +230,5 @@ Specify pack in repo. Notion operator pages exist. Clarifications C1–C27 recor
 - Spec 004 packet `abraxas.recoverable_structure.probe.v0.1` (unbind baseline, not a dependency import)
 - Smolensky TPR (role–filler) as the 004 probe’s conceptual source — citation only
 - NVIDIA DGX Spark / GB10 datasheet — 128 GB unified, aarch64, `sm_121`
+- Warner et al. ModernBERT (arXiv:2412.13663) — citation only; T1-legal after A1
 - OWASP GenAI LLM Top 10 2026 LLM01 / LLM03 / LLM10
