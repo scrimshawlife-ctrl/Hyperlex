@@ -4,13 +4,15 @@
 
 **Operator sentence:** `amend 007 C6 to 150M`
 
-| Before | After |
-|--------|-------|
-| T1 ≤ 130M | T1 ≤ 150M |
-| ModernBERT-base 149M = teacher or amend | ModernBERT-base 149M = legal T1 trunk |
+T1 ≤ 150M. ModernBERT-base became a *legal* T1 trunk.
 
-Still out: 7B product card, ModernBERT-large 395M as T1, Spark 200B ceiling as a size argument (C24).
+## A2 — freeze trunk ModernBERT-base (2026-09-09)
 
-Reason: ModernBERT-base is the better slang-token / MLM unbind trunk vs MiniLM WordPiece. 19M over the old cap. Spark memory is not the reason.
+**Operator sentence:** `continue as recommended with specs` (freeze after A1)
 
-Touches: C6, C24, spec tiers/G2, hardware, trunk-candidates, analyze, checklist, tasks.
+T1 trunk **is** `answerdotai/ModernBERT-base` (~149M). See `trunk.md`.
+
+Product name after E2: `hyperlex-structure-149m`.
+MiniLM stays T0 / E3 control.
+ModernBERT-large stays teacher-only.
+U1 stub still has no weights.
