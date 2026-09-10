@@ -105,3 +105,12 @@ def test_wave2_exact_seeds():
     assert SEED_FAMILY["broski"] == "kinship-address"
     assert weak_family_for_text("clv") == "betting-sharp"
     assert weak_family_for_text("not clv here") is None
+
+
+def test_wave3_exact_seeds():
+    assert SEED_FAMILY["sybau"] == "brainrot-aura"
+    assert SEED_FAMILY["jestermaxxing"] == "brainrot-aura"
+    assert SEED_FAMILY["agentic slop"] == "ai-native"
+    assert SEED_FAMILY["auntie"] == "kinship-address"
+    assert weak_family_for_text("sybau") == "brainrot-aura"
+    assert weak_family_for_text("not sybau here") is None

@@ -31,6 +31,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             # diagram / calibration / phylogeny morphs (wave2)
             "sharp money", "closing line value", "clv", "reverse line movement", "steam move",
             "public money", "line move", "sharper", "card-sharp",
+            # wave3 morphs (diagram / Action-physics leaves)
+            "sharp money revenge", "line movement", "closing line", "steam chase",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
@@ -45,6 +47,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             # diagram morphs + distinctive CT leaves (wave2)
             "rugged", "exit liquidity", "soft rug", "dyor", "lfg", "memecoin", "wen moon",
             "airdrop", "altcoin", "buy the dip",
+            # wave3 morphs (rug/hands inflection + exact CT short)
+            "rug pulled", "rugging", "diamond handed", "paper handed", "ath",
         ],
         "branch_operator": "cross_family_borrowing",
         "diagram_ref": "examples/slang-families/crypto-degen-family.mmd",
@@ -58,6 +62,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "hallucination", "jailbreak", "sycophancy", "tool use", "token burn",
             # diagram morphs (wave2)
             "ai slop", "slopper", "agentic workflow",
+            # wave3 morphs (demos / hyphen)
+            "agentic slop", "context-window",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/ai-native-family.mmd",
@@ -84,6 +90,11 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "skibidi toilet", "rizzed up", "brainrotted", "looksmaxxer", "gooner",
             "ate and left no crumbs", "sigma male", "on god", "say less", "fr fr",
             "took an l", "big w",
+            # wave3 morphs (vernacular slang_seed + maxxing/mog variants)
+            "crashing out", "jestermaxxing", "jestermaxx", "jestergooning",
+            "frame-mogging", "framemogging", "framemogged", "frame mogged",
+            "404 coded", "sybau", "canon event", "choppleganger", "choppelganger",
+            "chopped doppelganger", "lowkenuinely", "6-7",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
@@ -95,6 +106,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "bro", "sis", "twin", "unc", "cuz", "family", "fam", "bestie",
             # morphs / multiword address (wave2)
             "broski", "bruh moment", "lil bro", "big bro",
+            # wave3 morphs (diagram auntie + sis/unc address frames)
+            "auntie", "lil sis", "big sis", "yo unc",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/kinship-address.mmd",
@@ -107,6 +120,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "redpill", "blackpill",
             # pill-discourse morphs (wave2)
             "bluepill", "whitepill", "whitepilled", "based and redpilled", "cope and seethe",
+            # wave3 spacing / parallel pill morphs
+            "red pilled", "black pilled", "blue pilled", "based and blackpilled",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/political-status-family.mmd",
@@ -122,6 +137,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             # morphs / multiword status (wave2)
             "ez clap", "gg ez", "inting", "smurfing", "tryhard", "try hard", "elo hell",
             "hardstuck", "afk", "pwned", "border gore",
+            # wave3 morphs (tryhard/hardstuck/noscope inflection + exact pwn)
+            "tryharding", "hard stuck", "360 no-scope", "no scoping", "pwn",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
@@ -136,6 +153,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             # morphs / hyphen + managerial cant (wave2)
             "quiet quit", "quiet fire", "return-to-office", "low hanging fruit", "circle-back",
             "performance improvement plan", "take offline", "boil the ocean",
+            # wave3 agent/participle morphs
+            "quiet quitter", "quiet fired", "boiling the ocean", "taken offline", "circleback",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",

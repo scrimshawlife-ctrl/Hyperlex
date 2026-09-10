@@ -164,6 +164,25 @@ SEED_FAMILY: dict[str, str] = {
     "fam": "kinship-address",
     "bestie": "kinship-address",
     "broski": "kinship-address",
+    "auntie": "kinship-address",
+    # wave3 vernacular slang_seed exact (INFERRED; multiword also in registry)
+    "sybau": "brainrot-aura",
+    "jestermaxxing": "brainrot-aura",
+    "jestermaxx": "brainrot-aura",
+    "jestergooning": "brainrot-aura",
+    "framemogging": "brainrot-aura",
+    "framemogged": "brainrot-aura",
+    "lowkenuinely": "brainrot-aura",
+    "choppleganger": "brainrot-aura",
+    "choppelganger": "brainrot-aura",
+    "crashing out": "brainrot-aura",
+    "404 coded": "brainrot-aura",
+    "canon event": "brainrot-aura",
+    "frame-mogging": "brainrot-aura",
+    "frame mogged": "brainrot-aura",
+    "chopped doppelganger": "brainrot-aura",
+    "6-7": "brainrot-aura",
+    "agentic slop": "ai-native",
 }
 
 
