@@ -9,16 +9,12 @@ Constitution: `.specify/memory/constitution.md` (v1.0.0, **SHADOW** until operat
 | 002 | Hermes command surface | SPECIFY locked · implement partial | package CLI + `hlx-mutation` + `hyperlex init` |
 | 003 | Mutation detect v0.2 | SPECIFY locked · implement SHADOW | GAME_ENCODE / CODE_SWITCH / PHONETIC_WARP + watch jsonl + `--human` |
 | 004 | Recoverable-structure probe | SPECIFY locked · implement SHADOW | `scripts/shadow/recoverable_structure/` |
-| 005 | Route labels | SPECIFY locked (Notion + branch `005-route-labels`) | not on main |
+| 005 | Route labels | SPECIFY locked (Notion + branch `005-route-labels`) | not on main — PR 18 |
 | 006 | IsA | reserved — do not open from 007 | — |
-| 007 | Hyperlexical model | SPECIFY locked · SHADOW · implement not started | none (specs only) |
+| 007 | Hyperlexical model | SPECIFY locked C1–C52 · SHADOW implement on main | `scripts/shadow/hyperlexical/` + Aaron Spark handoff. E2 fail. No Hub. |
 
-001 extras: `clarify.md`, `threat-model.md`, `owasp-mapping.md`, `checklist.md`, `dual-use-gate.md`, `ux-commands.md`, `schemas/mutation_trace.v0.1.schema.json`
+007 extras: `clarify.md`, `locks-a4.md`, `locks-a5.md`, `weights.md`, `hardware.md`, `uncensored.md`, `trunk.md`, `AARON-SPARK-TRAIN.md`, `hf-package/`, `schemas/`, `contracts/`.
 
-003 extras: `dual-use-gate.md` (L4/L6 detect-only addendum). Packet schema stays `hyperlex.mutation_trace.v0.1`. Constitution stays SHADOW.
-
-007 extras: `clarify.md` C1–C27, `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `hardware.md`, `uncensored.md`, `analyze.md`, `constitution-check.md`, `trunk-candidates.md`, `model-card.draft.md`, `contracts/*.json`, `schemas/hyperlexical_inference.v0.1.schema.json`. Home box: DGX Spark. Uncensored base encoder. Packet hard-nulls Brier. Does not claim `semantic`. Does not open 006.
+Handoff: `specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md` on **main**.
 
 Gate: `specs/runtime-ready.md`
-
-Merged PRs that landed the gate: #6 detector, #7–9 skill alias, #10 wheel, #11 graft-style init.
