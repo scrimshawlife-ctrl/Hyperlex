@@ -81,7 +81,12 @@ def attach_hyperlexical_tap(
         if isinstance(report, dict):
             report.setdefault("brier", None)
             return report
-        return {"ok": True, "brier": None}
+        return {
+            "ok": False,
+            "error": "invalid hyperlexical tap response",
+            "brier": None,
+            "fail_open": True,
+        }
     except Exception as exc:
         return {"ok": False, "error": str(exc), "brier": None, "fail_open": True}
 
