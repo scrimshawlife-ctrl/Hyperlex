@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.sacred_object.eval.v0.1",
+  "title": "Hyperlex sacred-object eval packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "room", "brier", "forecast_eligible", "auto_fire", "class"],
+  "properties": {
+    "schema": { "const": "hyperlex.sacred_object.eval.v0.1" },
+    "room": { "type": "string", "enum": ["A", "B", "C", "D"] },
+    "atom": { "type": ["string", "null"] },
+    "payload_ref": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "surface": { "type": ["string", "null"] },
+    "restricted_intent_suspected": { "type": "boolean", "default": false },
+    "007_model_id": { "type": ["string", "null"] },
+    "unbind_ok": { "type": ["boolean", "null"] },
+    "overlays": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ritualCharge": { "type": ["number", "null"], "minimum": 0, "maximum": 3 },
+        "inGroupKeying": { "type": ["number", "null"], "minimum": 0, "maximum": 3 },
+        "paraphraseResistance": { "type": ["number", "null"], "minimum": 0, "maximum": 3 },
+        "attractorStability": { "type": ["number", "null"], "minimum": 0, "maximum": 3 },
+        "disseminationImperative": { "type": ["number", "null"], "minimum": 0, "maximum": 3 },
+        "falseStabilizationRisk": { "type": ["number", "null"], "minimum": 0, "maximum": 3 }
+      }
+    },
+    "metrics": { "type": ["object", "null"] },
+    "finding_ids": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "routes_claimed": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["form", "lexical"] }
+    },
+    "brier": { "type": "null" },
+    "forecast_eligible": { "const": false },
+    "auto_fire": { "const": false },
+    "class": { "type": "string", "enum": ["OBSERVED", "INFERRED", "SPECULATIVE"] }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["symbolic"] },
+      { "required": ["has_symbols"] }
+    ]
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "restricted_intent_suspected": { "const": true } },
+        "required": ["restricted_intent_suspected"]
+      },
+      "then": {
+        "properties": { "surface": { "type": "null" } },
+        "required": ["payload_ref"]
+      }
+    }
+  ]
+}
