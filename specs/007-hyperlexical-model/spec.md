@@ -2,11 +2,11 @@
 
 **Feature**: Learned recoverable-structure encoder for slang atoms  
 **Date**: 2026-09-09  
-**Status**: SPECIFY locked C1–C52 / SHADOW implement on main / E2 fail / no Hub  
+**Status**: SPECIFY locked C1–C52 / A5 milestones+engineering / SHADOW implement on main / E2 fail / no Hub  
 **Depends on**: constitution v1.0.0 I–X; specs 000, 001, 003, 004; 005 route-labels (do not claim `semantic`)  
 **Does not open**: 006 IsA (reserved)  
 **Clarify**: `clarify.md` + `locks-a4.md` + `locks-a5.md`  
-**Companion docs**: `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `dataset-harvest.md`, `hardware.md`, `uncensored.md`, `amendments.md`, `weights.md`, `AARON-SPARK-TRAIN.md`, `hf-package/`
+**Companion docs**: `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `dataset-harvest.md`, `hardware.md`, `uncensored.md`, `amendments.md`, `milestones.md`, `engineering.md`, `weights.md`, `AARON-SPARK-TRAIN.md`, `hf-package/`
 **Schema**: `schemas/hyperlexical_inference.v0.1.schema.json`  
 **Lane**: SHADOW / advisory  
 **Home (v0.1)**: `scripts/shadow/hyperlexical/` — never `src/hyperlex/` until T13 promote  
@@ -73,6 +73,7 @@ Train and serve on the operator DGX Spark. Product card stays T1 ≤150M (A1). S
 - SHADOW CLI sketch: `hyperlexical-infer` under `scripts/shadow/hyperlexical/`.
 - Hugging Face publish rules (operator-gated, sanitized card).
 - Spark hardware contract and uncensored contract.
+- A5 milestone and engineering guideline files. Gates live there; live counts do not.
 
 ## Out of scope (v0.1)
 
@@ -182,6 +183,8 @@ Omit the block when the helper is absent or returns empty.
 
 Minimum to *plan* implement: 200 gold classify rows + 40 unbind pairs + 50 negatives.  
 Minimum to *name* a T1 card: 2k gold+weak classify + 200 unbind pairs + 200 negatives, lexical split.
+
+Name-gate scoreboard and R2 exit: `milestones.md`. Classify/merge rules: `engineering.md`.
 
 ## Eval gates (normative)
 
