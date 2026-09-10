@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.hyperlexical.eval_unbind.v0.1",
+  "title": "Hyperlex Hyperlexical unbind eval report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "e2_pass", "brier", "forecast_eligible", "model_id", "probe_swap_min", "stub_swap"],
+  "properties": {
+    "schema": { "const": "hyperlex.hyperlexical.eval_unbind.v0.1" },
+    "probe_schema": { "type": ["string", "null"] },
+    "probe_positional_swap": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "probe_type_slot_swap": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "probe_swap_min": { "type": "number", "minimum": 0, "maximum": 1 },
+    "stub_swap": { "type": "number", "minimum": 0, "maximum": 1 },
+    "n_test": { "type": ["integer", "null"], "minimum": 0 },
+    "e2_pass": { "type": "boolean" },
+    "model_id": { "type": "string", "minLength": 1 },
+    "trunk": { "type": ["string", "null"] },
+    "trunk_loaded": { "type": "boolean" },
+    "brier": { "type": "null" },
+    "forecast_eligible": { "const": false },
+    "note": { "type": ["string", "null"] }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["symbolic"] },
+      { "required": ["has_symbols"] }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.hyperlexical.inference.v0.1",
+  "title": "Hyperlex Hyperlexical inference packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "brier", "forecast_eligible", "routes_claimed", "class"],
+  "properties": {
+    "schema": { "const": "hyperlex.hyperlexical.inference.v0.1" },
+    "model_id": { "type": "string", "minLength": 1 },
+    "model_version": { "type": ["string", "null"] },
+    "encoder_version": { "type": ["string", "null"] },
+    "embed_mode": {
+      "type": ["string", "null"],
+      "enum": ["STATIC_HASH_EMBEDDING", "MODEL_EMBEDDING", null]
+    },
+    "input_hash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "vector_hash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "selection_proxy": {
+      "type": ["string", "null"],
+      "enum": ["weakness", "mdl", "unspecified", null]
+    },
+    "param_count": { "type": ["integer", "null"], "minimum": 0 },
+    "surface": { "type": ["string", "null"] },
+    "payload_ref": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "lineage_family": { "type": ["string", "null"] },
+    "lineage_confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "typology": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "stage": {
+      "type": ["string", "null"],
+      "enum": ["noise", "circulating", "contested", "hyperstition_ish", null]
+    },
+    "role_scheme": {
+      "type": ["string", "null"],
+      "enum": ["positional", "type_slot", null]
+    },
+    "unbind_ok": { "type": "boolean" },
+    "unbind": { "type": ["object", "null"] },
+    "routes_claimed": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["form", "lexical"] }
+    },
+    "restricted_intent_suspected": { "type": "boolean", "default": false },
+    "brier": { "type": "null" },
+    "forecast_eligible": { "const": false },
+    "auto_fire": { "const": false },
+    "class": { "type": "string", "enum": ["OBSERVED", "INFERRED", "SPECULATIVE"] }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["symbolic"] },
+      { "required": ["has_symbols"] }
+    ]
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "restricted_intent_suspected": { "const": true } },
+        "required": ["restricted_intent_suspected"]
+      },
+      "then": {
+        "properties": { "surface": { "type": "null" } },
+        "required": ["payload_ref"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "embed_mode": { "const": "MODEL_EMBEDDING" } },
+        "required": ["embed_mode"]
+      },
+      "then": {
+        "required": ["model_id", "input_hash", "vector_hash"]
+      }
+    }
+  ]
+}

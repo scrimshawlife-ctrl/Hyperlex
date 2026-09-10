@@ -1,0 +1,36 @@
+# Analyze 007 — consistency pass
+
+Date: 2026-09-09. Specify-only. No implement.
+A1 same day: C6/C24 T1 ≤ 150M.
+
+## Cross-doc locks
+
+| Claim | spec | clarify | schema | dual-use | hardware | uncensored |
+|-------|------|---------|--------|----------|----------|------------|
+| Encoder first | G2, C1 | C1 | no generate keys | row 1 | T1 tiny on Spark | base trunk |
+| T1 ≤150M (A1) | tiers | C6, C24 | param_count | — | do not use 200B ceiling | — |
+| No semantic | G1 | C4 | enum form\|lexical | — | — | — |
+| Brier null | packet | C7 | const null | row 5 | — | — |
+| No wrap verb | N4 | C26 | — | rows 2, 11 | — | forbidden |
+| 006 closed | header | C10, C17 | no isa_score | — | — | — |
+| U1b Qwen held | research T4 | C16 | stub allowed | — | teacher ≠ card | — |
+| Two schemes | architecture | C8, C14 | positional\|type_slot | — | — | — |
+| No symbolic key | research T2 | C15 | `not` required those keys | — | — | — |
+| Spark home | G2 | C21 | — | — | GB10 128 GB | train there |
+| Uncensored = no refusal | G7 | C22 | — | rows 11–12 | — | whole file |
+| Shadow path | home | C2 | — | — | CI stub | no chat in infer |
+
+## Gaps still open (accepted)
+
+- No trained weights. E1–E3 cannot run.
+- No 004 fixture import into 007 tests until U1.
+- Trunk id not frozen. A1 makes ModernBERT-base legal. U3 still picks.
+- T0e written. Operator still owns T0f.
+
+## Conflicts found
+
+None after A1. Old 130M rows updated.
+
+## Ready for
+
+Operator sentence only. Not ready to train.

@@ -2,9 +2,14 @@
 
 SHADOW / advisory only. Not on Hyperlex API_V1. No Abraxas import.
 
-`recoverable_structure` is Spec 004 (U1 DISCOVER-shaped probe).
+`hyperlexical` is Spec 007.
 
 ```
-PYTHONPATH=scripts/shadow python3 -m recoverable_structure.cli --fixture tpr --human
-pytest -q tests/shadow/test_recoverable_structure_probe.py
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.preflight
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.train --offline
 ```
+
+Spark smoke (Aaron): `specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md`

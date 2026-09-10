@@ -1,0 +1,18 @@
+{
+  "schema": "hyperlex.hyperlexical.inference.v0.1",
+  "model_id": "stub",
+  "embed_mode": "STATIC_HASH_EMBEDDING",
+  "surface": "no cap fr",
+  "lineage_family": "none",
+  "lineage_confidence": 0.0,
+  "typology": ["compression"],
+  "stage": "circulating",
+  "role_scheme": "type_slot",
+  "unbind_ok": false,
+  "routes_claimed": ["lexical"],
+  "restricted_intent_suspected": false,
+  "brier": null,
+  "forecast_eligible": false,
+  "auto_fire": false,
+  "class": "INFERRED"
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.hyperlexical.dataset-row.v0.1",
+  "title": "Hyperlex Hyperlexical dataset row (seed export)",
+  "type": "object",
+  "required": ["text", "split", "lineage", "typology", "stage", "roles", "fillers", "role_scheme", "provenance", "class", "license"],
+  "properties": {
+    "text": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "split": { "enum": ["train", "val", "test"] },
+    "lineage": {
+      "enum": [
+        "betting-sharp", "crypto-degen", "ai-native", "brainrot-aura",
+        "kinship-address", "political-status", "gaming-meta",
+        "workplace-corp", "ytd_leaf", "none"
+      ]
+    },
+    "typology": {
+      "type": "array",
+      "items": {
+        "enum": ["tribal", "compression", "irony_shield", "status", "hook", "ritual", "camouflage"]
+      }
+    },
+    "stage": {
+      "type": ["string", "null"],
+      "enum": ["noise", "circulating", "contested", "hyperstition_ish", null]
+    },
+    "roles": { "type": "array", "items": { "type": "string" } },
+    "fillers": { "type": "array", "items": { "type": "string" } },
+    "role_scheme": {
+      "type": ["string", "null"],
+      "enum": ["positional", "type_slot", null]
+    },
+    "task": { "enum": ["classify", "unbind"] },
+    "provenance": { "type": "string", "minLength": 1 },
+    "class": { "enum": ["OBSERVED", "INFERRED"] },
+    "license": { "type": "string", "minLength": 1 }
+  }
+}
