@@ -4,7 +4,7 @@
 **Posture:** Hermes skill (Python package repo)  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
-**Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Hallmark desk UI
+**Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Hallmark desk UI · Spec 007 SHADOW encoder on main
 
 ## Health
 
@@ -13,6 +13,7 @@ python3 scripts/hyperlex.py doctor
 python3 scripts/release_preflight.py
 python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 python -m hyperlex inbox list
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 ```
 
 ## Surface (ready)
@@ -47,6 +48,7 @@ python -m hyperlex inbox list
 | **Analysis enrichment** (compression_metrics, typology tags, signal_report, integrity header) | Ready |
 | **Local attractor store** (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
 | **Attractor candidate rune** (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
+| **Spec 007 Hyperlexical encoder** | SHADOW on main · stub + harvest + eval · Spark train gated · E2 fail · no Hub |
 | Public PyPI | Not planned |
 | External system hard import | Never |
 
@@ -56,11 +58,13 @@ python -m hyperlex inbox list
 pipeline "rizz" | run "rizz"
   → pending → settle → score-series
   → scan / risk-schedule
-  → relay --push-inbox          # attractor envelope + local store
+  → relay --push-inbox
   → inbox list
   → vector-seed / vector-sync
   → archive-export
 ```
+
+007 Spark (Aaron, not the daily loop): `specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md`
 
 ## Data dirs
 
@@ -68,16 +72,17 @@ pipeline "rizz" | run "rizz"
 ~/.hyperlex/receipts/
 ~/.hyperlex/receipt_ledger.jsonl
 ~/.hyperlex/score_log.jsonl
-~/.hyperlex/mutation_watch.jsonl   # mutation grammar instrumentation (not Brier)
+~/.hyperlex/mutation_watch.jsonl
 ~/.hyperlex/cache/
 ~/.hyperlex/vector.db
 ~/.hyperlex/chroma/
-~/.hyperlex/signals/inbox.jsonl   # high-priority attractor candidates
+~/.hyperlex/signals/inbox.jsonl
+~/.hyperlex/models/   # Spark dumps only; not git
 data/backfill/2026/
 ```
 
 ## Recommended next
 
 1. Burn-in offline runs + settle path
-2. Optional: enrich `scan` with focus / time_window / min_virality
-3. Optional: daily aggregate forage receipt
+2. Aaron Spark 007 smoke (`AARON-SPARK-TRAIN.md`)
+3. Optional: enrich `scan` with focus / time_window / min_virality
