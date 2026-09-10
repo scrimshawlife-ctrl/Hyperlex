@@ -536,7 +536,11 @@ def reject_candidate_text(text: str) -> str | None:
 
 
 def load_live_candidates(store: Path) -> list[dict[str, Any]]:
-    """Load SHADOW ingest candidates. Never upgrades class to OBSERVED."""
+    """Load SHADOW ingest candidates for --include-live.
+
+    Copies ``class`` from the candidate store (OBSERVED stays OBSERVED).
+    Unset / unknown / SPECULATIVE → INFERRED. Never invents OBSERVED.
+    """
     if not store.is_file():
         return []
     out: list[dict[str, Any]] = []
@@ -552,12 +556,15 @@ def load_live_candidates(store: Path) -> list[dict[str, Any]]:
         if reject_candidate_text(text):
             continue
         prov = str(raw_row.get("provenance") or "ingest:store")
+        # Preserve settled OBSERVED; default unset/live crawl to INFERRED.
+        cls = _norm_class(raw_row.get("class"), "INFERRED")
+        label_tag = f"labels {cls}"
         if prov.startswith("ingest:inbox") or "wiktionary" in prov.lower():
-            license_ = "CC-BY-SA-4.0+GFDL (Wiktionary text); labels INFERRED"
+            license_ = f"CC-BY-SA-4.0+GFDL (Wiktionary text); {label_tag}"
         elif prov.startswith("ingest:pipeline"):
-            license_ = "operator-local-crawl; labels INFERRED"
+            license_ = f"operator-local-crawl; {label_tag}"
         else:
-            license_ = str(raw_row.get("license") or "operator-local") + "; labels INFERRED"
+            license_ = str(raw_row.get("license") or "operator-local") + f"; {label_tag}"
         fam = raw_row.get("lineage") or "none"
         if fam not in FAMILIES and fam not in {"none", "ytd_leaf"}:
             fam = "none"
@@ -574,7 +581,7 @@ def load_live_candidates(store: Path) -> list[dict[str, Any]]:
                     role_scheme=raw_row.get("role_scheme"),
                     task=raw_row.get("task") or "classify",
                     provenance=prov if prov.endswith(":live") else f"{prov}:live",
-                    **{"class": "INFERRED"},
+                    **{"class": cls},
                     license=license_,
                 )
             )
@@ -691,7 +698,7 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                     "Honest accounting: counts.classify = family-labeled only "
                     "(excludes negatives). unbind_fixture vs unbind_civilian split. "
                     "Spec004 fixtures at n=24; civilian dual-scheme from golden/registry "
-                    "(no gloss invent). Live optional via --include-live (INFERRED only). "
+                    "(no gloss invent). Live optional via --include-live (preserves store class; unset→INFERRED). "
                     "Not a T1 name-gate."
                 ),
             },
@@ -714,7 +721,7 @@ def main(argv=None) -> int:
     p.add_argument(
         "--include-live",
         action="store_true",
-        help="merge ~/.hyperlex/.../ingest_candidates.jsonl as INFERRED only (reject junk)",
+        help="merge ~/.hyperlex/.../ingest_candidates.jsonl; preserve store class (OBSERVED stays OBSERVED; unset→INFERRED; reject junk)",
     )
     p.add_argument(
         "--live-store",

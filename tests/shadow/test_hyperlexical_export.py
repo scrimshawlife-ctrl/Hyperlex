@@ -97,7 +97,8 @@ def test_reject_candidate_text():
     assert reject_candidate_text("11") == "numeric"
 
 
-def test_include_live_stays_inferred(tmp_path):
+def test_include_live_preserves_store_class(tmp_path):
+    """--include-live copies class from store; unset defaults to INFERRED."""
     from hyperlexical.export import export_dataset, write_export
 
     store = tmp_path / "ingest_candidates.jsonl"
@@ -113,13 +114,27 @@ def test_include_live_stays_inferred(tmp_path):
         '{"text": "gm", "lineage": "gaming-meta", "typology": ["status", "hook"], '
         '"stage": "circulating", "roles": [], "fillers": [], "role_scheme": null, '
         '"task": "classify", "provenance": "ingest:pipeline", "class": "INFERRED", '
+        '"license": "operator-local", "split": "train"}\n'
+        # Settled OBSERVED must stay OBSERVED (do not hardcode INFERRED).
+        '{"text": "zzzx_settled_observed_atom", "lineage": "brainrot-aura", "typology": ["compression"], '
+        '"stage": "circulating", "roles": [], "fillers": [], "role_scheme": null, '
+        '"task": "classify", '
+        '"provenance": "ingest:pipeline;operator-settle:KEEP-93:2026-09-10", '
+        '"class": "OBSERVED", "license": "operator-local", "split": "val"}\n'
+        # Unset class → INFERRED (never invent OBSERVED).
+        '{"text": "zzzx_unset_class_atom", "lineage": "gaming-meta", "typology": ["status"], '
+        '"stage": "circulating", "roles": [], "fillers": [], "role_scheme": null, '
+        '"task": "classify", "provenance": "ingest:pipeline", '
         '"license": "operator-local", "split": "train"}\n',
         encoding="utf-8",
     )
     bundle = export_dataset(ROOT, include_live=True, live_store=store)
     live = [r for r in bundle["rows"] if str(r["provenance"]).endswith(":live")]
     assert live
-    assert all(r["class"] == "INFERRED" for r in live)
+    by_text = {r["text"]: r for r in live}
+    assert by_text["zzzx_live_unique_atom_test"]["class"] == "INFERRED"
+    assert by_text["zzzx_settled_observed_atom"]["class"] == "OBSERVED"
+    assert by_text["zzzx_unset_class_atom"]["class"] == "INFERRED"
     assert all(r["text"] != "ab" for r in live)
     assert any(r["text"] == "gm" for r in live)  # allowlisted short slang kept
     assert bundle["counts"]["live_rejected"] >= 1
