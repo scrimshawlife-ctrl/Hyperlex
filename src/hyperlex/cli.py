@@ -54,6 +54,7 @@ def cmd_check(_: argparse.Namespace) -> int:
 def cmd_analyze(args: argparse.Namespace) -> int:
     from hyperlex import detect_memetic_patterns, extract_forecasts, emit_receipt, relay_from_result
     from hyperlex.intake.sources import pick_source
+    from hyperlex.pipeline import attach_hyperlexical_tap
 
     query = (getattr(args, "query_pos", None) or args.query or "").strip() or "slang emergence"
     source, resolved = pick_source(args.source, route=getattr(args, "route", None) or None)
@@ -64,12 +65,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         validate=bool(args.validate),
         ingest_route=resolved.get("route"),
     )
-    try:
-        from hyperlex.pipeline import attach_hyperlexical_tap
-
-        attach_hyperlexical_tap(result, query=query, source="analyze")
-    except Exception:
-        pass
+    tap_report = attach_hyperlexical_tap(result, query=query, source="analyze")
     out: Dict[str, Any] = {
         "ok": True,
         "command": getattr(args, "command_label", None) or "analyze",
@@ -77,6 +73,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         "source": source,
         "route": resolved.get("route"),
         "result": result,
+        "hyperlexical_tap": tap_report,
     }
     if args.receipt:
         path = emit_receipt(result, out_dir=args.receipt_dir or None)
@@ -290,6 +287,7 @@ def cmd_score_series(args: argparse.Namespace) -> int:
 
 def cmd_scan(args: argparse.Namespace) -> int:
     from hyperlex import detect_memetic_patterns, extract_forecasts, emit_receipt
+    from hyperlex.pipeline import attach_hyperlexical_tap
 
     queries = [q.strip() for q in (args.queries or "").split(",") if q.strip()]
     if args.query:
@@ -299,12 +297,7 @@ def cmd_scan(args: argparse.Namespace) -> int:
     rows = []
     for q in queries:
         result = detect_memetic_patterns(query=q, ingest_source=args.source)
-        try:
-            from hyperlex.pipeline import attach_hyperlexical_tap
-
-            attach_hyperlexical_tap(result, query=q, source="scan")
-        except Exception:
-            pass
+        tap_report = attach_hyperlexical_tap(result, query=q, source="scan")
         receipt = None
         if args.receipt:
             receipt = str(emit_receipt(result))
@@ -315,6 +308,7 @@ def cmd_scan(args: argparse.Namespace) -> int:
             "n_forecasts": len(fcs),
             "brier": result.get("provenance", {}).get("brier"),
             "source_fingerprint": (result.get("provenance") or {}).get("source_fingerprint", {}).get("fingerprint_id"),
+            "hyperlexical_tap": tap_report,
         })
     _emit({"ok": True, "command": "scan", "rune": "LIVE_EMERGENCE_SCAN", "results": rows})
     return 0

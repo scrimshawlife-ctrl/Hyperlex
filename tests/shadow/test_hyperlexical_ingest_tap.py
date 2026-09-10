@@ -135,12 +135,13 @@ def test_cli_analyze_and_scan_call_tap(monkeypatch):
     import hyperlex.pipeline as pipeline
 
     calls = []
+    emitted = []
 
     def fake_attach(result, *, query="", source="pipeline"):
         calls.append((query, source, ((result.get("analysis") or {}).get("primary_term"))))
         return {"ok": True, "added": 1, "brier": None}
 
-    monkeypatch.setattr(cli, "_emit", lambda _: None)
+    monkeypatch.setattr(cli, "_emit", emitted.append)
     monkeypatch.setattr(pipeline, "attach_hyperlexical_tap", fake_attach)
 
     analyze_args = Namespace(
@@ -169,3 +170,5 @@ def test_cli_analyze_and_scan_call_tap(monkeypatch):
     assert ("rizz", "analyze", "rizz") in calls
     assert ("rizz", "scan", "rizz") in calls
     assert ("locked in", "scan", "locked in") in calls
+    assert emitted[0]["hyperlexical_tap"]["added"] == 1
+    assert emitted[1]["results"][0]["hyperlexical_tap"]["added"] == 1

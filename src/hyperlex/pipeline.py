@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import importlib.util
 import sys
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
@@ -26,6 +27,7 @@ from .receipt import emit_receipt
 
 
 PIPELINE_SCHEMA = "hyperlex.pipeline_result.v1"
+_HYPERLEXICAL_TAP_LOCK = threading.Lock()
 
 
 def attach_hyperlexical_tap(
@@ -41,37 +43,38 @@ def attach_hyperlexical_tap(
         if not tap_path.is_file():
             return {"ok": True, "skipped": True, "brier": None}
         shadow_root = str(tap_path.parent.parent)
-        added_path = False
-        if shadow_root not in sys.path:
-            sys.path.insert(0, shadow_root)
-            added_path = True
-        try:
-            module = sys.modules.get("hyperlexical.ingest_tap")
-            if module is None:
-                spec = importlib.util.spec_from_file_location("hyperlexical.ingest_tap", tap_path)
-                if spec is None or spec.loader is None:
-                    return {"ok": True, "skipped": True, "brier": None}
-                module = importlib.util.module_from_spec(spec)
-                sys.modules["hyperlexical.ingest_tap"] = module
-                try:
-                    spec.loader.exec_module(module)
-                except Exception:
-                    sys.modules.pop("hyperlexical.ingest_tap", None)
-                    raise
-            tap = getattr(module, "tap_analysis", None)
-            if not callable(tap):
-                return {"ok": True, "skipped": True, "brier": None}
-            report = tap(result, query=query, source=source)
-            if isinstance(report, dict):
-                report.setdefault("brier", None)
-                return report
-            return {"ok": True, "brier": None}
-        finally:
-            if added_path:
-                try:
-                    sys.path.remove(shadow_root)
-                except ValueError:
-                    pass
+        with _HYPERLEXICAL_TAP_LOCK:
+            added_path = False
+            if shadow_root not in sys.path:
+                sys.path.insert(0, shadow_root)
+                added_path = True
+            try:
+                module = sys.modules.get("hyperlexical.ingest_tap")
+                if module is None:
+                    spec = importlib.util.spec_from_file_location("hyperlexical.ingest_tap", tap_path)
+                    if spec is None or spec.loader is None:
+                        return {"ok": True, "skipped": True, "brier": None}
+                    module = importlib.util.module_from_spec(spec)
+                    sys.modules["hyperlexical.ingest_tap"] = module
+                    try:
+                        spec.loader.exec_module(module)
+                    except Exception:
+                        sys.modules.pop("hyperlexical.ingest_tap", None)
+                        raise
+            finally:
+                if added_path:
+                    try:
+                        sys.path.remove(shadow_root)
+                    except ValueError:
+                        pass
+        tap = getattr(module, "tap_analysis", None)
+        if not callable(tap):
+            return {"ok": True, "skipped": True, "brier": None}
+        report = tap(result, query=query, source=source)
+        if isinstance(report, dict):
+            report.setdefault("brier", None)
+            return report
+        return {"ok": True, "brier": None}
     except Exception as exc:
         return {"ok": False, "error": str(exc), "brier": None, "fail_open": True}
 
