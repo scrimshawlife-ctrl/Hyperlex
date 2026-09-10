@@ -7,7 +7,6 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  # Tall Imagine poster is splash hero only (not a 24px chrome logo)
   font:
     text: IBM Plex Sans
     code: IBM Plex Mono
@@ -73,6 +72,7 @@ nav:
       - Hermes skill: hermes-skill.md
       - Claude Code skill: claude-skill.md
       - Claude runtime contract: claude-runtime-contract.md
+      - SHADOW encoder (007): shadow-hyperlexical.md
   - Core Reference:
       - Architecture: architecture.md
       - Spec: spec.md
@@ -110,7 +110,6 @@ nav:
 plugins:
   - search
 
-# Avoid collision: docs/README.md vs docs/index.md
 exclude_docs: |
   README.md
 
