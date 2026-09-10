@@ -10,6 +10,7 @@
 ```bash
 python3 scripts/hyperlex.py doctor
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap --dry-run
 ```
 
 ## Surface (ready)
@@ -22,6 +23,7 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 | Phase 5 research | Ready (SPECULATIVE) |
 | Vector DB | Ready |
 | **Spec 007 Hyperlexical encoder** | SHADOW on main. Stub + harvest + eval. Spark train gated. E2 fail. No Hub. |
+| **007 live ingest tap** | pipeline/analyze/scan fail-open. INFERRED store only. |
 | Public PyPI | Not planned |
 | Abraxas hard import | Never |
 
@@ -30,4 +32,5 @@ Details: [shadow-hyperlexical.md](shadow-hyperlexical.md) · Aaron runbook on `m
 ## Recommended next
 
 1. Offline burn-in + settle
-2. Aaron Spark 007 smoke
+2. Live ingest tap harvest (INFERRED)
+3. Aaron Spark 007 smoke
