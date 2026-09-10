@@ -643,8 +643,19 @@ def export_dataset(
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
     payload = "\n".join(json.dumps(r, sort_keys=True) for r in rows) + "\n"
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
-    def _is_neg(r: dict[str, Any]) -> bool:
-        return r["lineage"] == "none" and r["task"] == "classify"
+    def _is_ordinary_prose_neg(r: dict[str, Any]) -> bool:
+        """Name-gate negatives bucket = curated ordinary-prose only.
+
+        Live / inbox ``lineage=none`` classify rows are *not* negatives — they are
+        unclassified family-gap inventory. Folding them into ``counts.negatives``
+        inflated the 200-neg quota (e.g. 2766 with ``--include-live``).
+        """
+        if r["task"] != "classify" or r["lineage"] != "none":
+            return False
+        return str(r.get("provenance") or "").startswith("seed:negative-prose")
+
+    def _is_none_classify(r: dict[str, Any]) -> bool:
+        return r["task"] == "classify" and r["lineage"] == "none"
 
     def _is_family_classify(r: dict[str, Any]) -> bool:
         return r["task"] == "classify" and r["lineage"] != "none"
@@ -660,20 +671,23 @@ def export_dataset(
 
     classify_all = sum(1 for r in rows if r["task"] == "classify")
     classify_family = sum(1 for r in rows if _is_family_classify(r))
-    negatives = sum(1 for r in rows if _is_neg(r))
+    classify_none = sum(1 for r in rows if _is_none_classify(r))
+    negatives = sum(1 for r in rows if _is_ordinary_prose_neg(r))
     unbind_all = sum(1 for r in rows if r["task"] == "unbind")
     unbind_fixture = sum(1 for r in rows if _is_unbind_fixture(r))
     unbind_civilian = sum(1 for r in rows if _is_unbind_civilian(r))
-    # Honesty: classify gate uses family-labeled rows only (negatives are their own 200 bucket).
+    # Honesty: classify gate uses family-labeled rows only.
+    # Negatives = ordinary-prose seed only (NOT live lineage=none classify).
     # Unbind gate uses fixture(honest n=24) + civilian dual-scheme — no n=128 padding.
     counts = {
         "n": len(rows),
         "classify": classify_family,  # EXCLUDES negatives (honest name-gate family quota)
-        "classify_all": classify_all,  # includes negatives; do not use for 2k gate
+        "classify_all": classify_all,  # family + none-classify; do not use for 2k gate
+        "classify_none": classify_none,  # all lineage=none classify (incl live inbox)
         "unbind": unbind_all,
         "unbind_fixture": unbind_fixture,
         "unbind_civilian": unbind_civilian,
-        "negatives": negatives,
+        "negatives": negatives,  # ordinary-prose only (seed:negative-prose)
         "dialect": sum(1 for r in rows if r["provenance"] == "seed:dialect-e6"),
         "backfill": sum(1 for r in rows if str(r["provenance"]).startswith("backfill:")),
         "observed": sum(1 for r in rows if r["class"] == "OBSERVED"),
@@ -707,7 +721,9 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                 "trunk": "answerdotai/ModernBERT-base",
                 "note": (
                     "Honest accounting: counts.classify = family-labeled only "
-                    "(excludes negatives). unbind_fixture vs unbind_civilian split. "
+                    "(excludes negatives). counts.negatives = ordinary-prose "
+                    "(seed:negative-prose) only — not live lineage=none classify "
+                    "(see classify_none). unbind_fixture vs unbind_civilian split. "
                     "Spec004 fixtures at n=24; civilian dual-scheme from golden/registry "
                     "(no gloss invent). Live optional via --include-live (preserves store class; unset→INFERRED). "
                     "Not a T1 name-gate."
