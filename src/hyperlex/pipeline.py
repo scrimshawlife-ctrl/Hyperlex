@@ -42,31 +42,36 @@ def attach_hyperlexical_tap(
         tap_path = repo_root / "scripts" / "shadow" / "hyperlexical" / "ingest_tap.py"
         if not tap_path.is_file():
             return {"ok": True, "skipped": True, "brier": None}
-        shadow_root = str(tap_path.parent.parent)
+        package_init = tap_path.parent / "__init__.py"
         with _HYPERLEXICAL_TAP_LOCK:
-            added_path = False
-            if shadow_root not in sys.path:
-                sys.path.insert(0, shadow_root)
-                added_path = True
-            try:
-                module = sys.modules.get("hyperlexical.ingest_tap")
-                if module is None:
-                    spec = importlib.util.spec_from_file_location("hyperlexical.ingest_tap", tap_path)
-                    if spec is None or spec.loader is None:
-                        return {"ok": True, "skipped": True, "brier": None}
-                    module = importlib.util.module_from_spec(spec)
-                    sys.modules["hyperlexical.ingest_tap"] = module
-                    try:
-                        spec.loader.exec_module(module)
-                    except Exception:
-                        sys.modules.pop("hyperlexical.ingest_tap", None)
-                        raise
-            finally:
-                if added_path:
-                    try:
-                        sys.path.remove(shadow_root)
-                    except ValueError:
-                        pass
+            package = sys.modules.get("hyperlexical")
+            if package is None:
+                package_spec = importlib.util.spec_from_file_location(
+                    "hyperlexical",
+                    package_init,
+                    submodule_search_locations=[str(tap_path.parent)],
+                )
+                if package_spec is None or package_spec.loader is None:
+                    return {"ok": True, "skipped": True, "brier": None}
+                package = importlib.util.module_from_spec(package_spec)
+                sys.modules["hyperlexical"] = package
+                try:
+                    package_spec.loader.exec_module(package)
+                except Exception:
+                    sys.modules.pop("hyperlexical", None)
+                    raise
+            module = sys.modules.get("hyperlexical.ingest_tap")
+            if module is None:
+                spec = importlib.util.spec_from_file_location("hyperlexical.ingest_tap", tap_path)
+                if spec is None or spec.loader is None:
+                    return {"ok": True, "skipped": True, "brier": None}
+                module = importlib.util.module_from_spec(spec)
+                sys.modules["hyperlexical.ingest_tap"] = module
+                try:
+                    spec.loader.exec_module(module)
+                except Exception:
+                    sys.modules.pop("hyperlexical.ingest_tap", None)
+                    raise
         tap = getattr(module, "tap_analysis", None)
         if not callable(tap):
             return {"ok": True, "skipped": True, "brier": None}
