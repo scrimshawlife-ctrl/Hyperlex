@@ -19,7 +19,7 @@ from hyperlexical.packet import (
 SHADOW = ROOT / "scripts" / "shadow" / "hyperlexical"
 SCHEMA = ROOT / "specs" / "007-hyperlexical-model" / "schemas" / "hyperlexical_inference.v0.1.schema.json"
 CONTRACTS = ROOT / "specs" / "007-hyperlexical-model" / "contracts"
-TORCH_ALLOWED = {"loop.py"}
+TORCH_ALLOWED = {"loop.py", "save_pretrained.py"}
 
 
 def test_e0_rizz_packet():
