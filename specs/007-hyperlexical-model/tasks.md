@@ -14,6 +14,7 @@ U1 + U2 on branch `007-hyperlexical-model`. Not merged to main.
 ## U2 implement
 
 - [x] T6 Dataset exporter `scripts/shadow/hyperlexical/export.py`
+- [x] T6a Civilian harvest plan `dataset-harvest.md`
 
 ## U3 (blocked)
 

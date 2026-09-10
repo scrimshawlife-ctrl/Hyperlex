@@ -6,7 +6,7 @@
 **Depends on**: constitution v1.0.0 I–X; specs 000, 001, 003, 004; 005 route-labels (do not claim `semantic`)  
 **Does not open**: 006 IsA (reserved)  
 **Clarify**: `clarify.md` (C1–C27 locked; A1 C6=150M)  
-**Companion docs**: `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `hardware.md`, `uncensored.md`, `amendments.md`  
+**Companion docs**: `plan.md`, `tasks.md`, `checklist.md`, `dual-use-gate.md`, `research.md`, `data-model.md`, `dataset-harvest.md`, `hardware.md`, `uncensored.md`, `amendments.md`
 **Schema**: `schemas/hyperlexical_inference.v0.1.schema.json`  
 **Lane**: SHADOW / advisory  
 **Home (v0.1)**: `scripts/shadow/hyperlexical/` — never `src/hyperlex/` until T13 promote  

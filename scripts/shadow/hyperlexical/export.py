@@ -115,10 +115,18 @@ def load_registry(root: Path) -> list[dict[str, Any]]:
     path = root / "src" / "hyperlex" / "analysis" / "__init__.py"
     tree = ast.parse(path.read_text(encoding="utf-8"))
     for node in tree.body:
-        if not isinstance(node, ast.Assign):
+        if isinstance(node, ast.Assign):
+            targets = node.targets
+        elif isinstance(node, ast.AnnAssign):
+            targets = [node.target]
+        else:
             continue
-        for target in node.targets:
-            if isinstance(target, ast.Name) and target.id == "LINEAGE_REGISTRY":
+        for target in targets:
+            if (
+                isinstance(target, ast.Name)
+                and target.id == "LINEAGE_REGISTRY"
+                and node.value is not None
+            ):
                 return ast.literal_eval(node.value)
     raise RuntimeError("LINEAGE_REGISTRY missing")
 
@@ -137,7 +145,7 @@ def harvest_registry(root: Path) -> list[dict[str, Any]]:
                     typology=TYPOLOGY.get(fam, []),
                     task="classify",
                     provenance=f"LINEAGE_REGISTRY:{fam}",
-                    class="OBSERVED",
+                    **{"class": "OBSERVED"},
                     role_scheme=None,
                 )
             )
@@ -173,7 +181,7 @@ def harvest_receipts(root: Path) -> list[dict[str, Any]]:
                     typology=TYPOLOGY.get(fam, []),
                     task="classify",
                     provenance=f"golden:{path.name}",
-                    class="OBSERVED",
+                    **{"class": "OBSERVED"},
                     role_scheme=None,
                 )
             )
@@ -200,7 +208,7 @@ def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
                 role_scheme="positional",
                 task="unbind",
                 provenance=f"004:tpr:positional:{i}",
-                class="OBSERVED",
+                **{"class": "OBSERVED"},
             )
         )
         rows.append(
@@ -214,7 +222,7 @@ def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
                 role_scheme="type_slot",
                 task="unbind",
                 provenance=f"004:tpr:type_slot:{i}",
-                class="OBSERVED",
+                **{"class": "OBSERVED"},
             )
         )
     return rows
@@ -228,7 +236,7 @@ def harvest_dialect() -> list[dict[str, Any]]:
             typology=["compression"],
             task="classify",
             provenance="seed:dialect-e6",
-            class="OBSERVED",
+            **{"class": "OBSERVED"},
             role_scheme=None,
         )
         for text in DIALECT
@@ -244,7 +252,7 @@ def harvest_negatives() -> list[dict[str, Any]]:
             stage="noise",
             task="classify",
             provenance="seed:negative-prose",
-            class="OBSERVED",
+            **{"class": "OBSERVED"},
             role_scheme=None,
         )
         for text in NEGATIVES
@@ -266,10 +274,10 @@ def dedupe(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def export_dataset(root: Path | None = None) -> dict[str, Any]:
     root = root or repo_root()
     rows = dedupe(
-        harvest_registry(root)
+        harvest_dialect()
+        + harvest_registry(root)
         + harvest_receipts(root)
         + harvest_unbind()
-        + harvest_dialect()
         + harvest_negatives()
     )
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
