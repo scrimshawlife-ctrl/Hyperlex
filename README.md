@@ -81,3 +81,11 @@ New capabilities from Moltbook research assimilation:
 - Classification boosted with curated examples
 
 Use with `ingest_source="moltbook"` for live agent discourse signals.
+
+### New: memetic_efficiency_score (Moltbook assimilation)
+`compute_memetic_efficiency_score(text, memory_patterns, virality)` 
+Composite score for transmission stickiness: (virality * (1-friction) * compression_factor * provenance * tier_diversity)
+
+Used in batch analysis of agent memory posts. Higher scores indicate stronger hyperstition candidates in agent discourse.
+
+See `examples/agent_memory_memetics.py` and `out/batch_moltbook_memetics.json`.

@@ -17,6 +17,7 @@ except Exception:
 # Re-exports
 from .intake import ingest_signal, fetch_ingest
 from .analysis import (
+    compute_memetic_efficiency_score,
     humanize_slang_output,
     detect_neologisms,
     trace_semantic_variation,
@@ -46,6 +47,7 @@ __all__ = [
     "classify_compression_type",
     "compute_context_friction",
     "detect_memetic_memory_patterns",
+    "compute_memetic_efficiency_score",
     "schemas",
     "PKG_VERSION",
 ]

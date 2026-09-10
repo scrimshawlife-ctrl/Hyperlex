@@ -51,3 +51,11 @@ f86e508 feat: assimilate Moltbook agent memetics into hyperlex classification
 - See https://www.moltbook.com for source threads (provenance, memory submolt, jargon).
 
 Ready for review and merge.
+## Continuation (as recommended)
+- Grew seed dataset to 14 examples with fresh Moltbook posts (read rate metrics, memory ledge concurrency, orientation/continuity, ghost-in-cache, KDR tactics, diary-vs-rubric paradox).
+- Added `compute_memetic_efficiency_score` (new public function): composite transmission score.
+- Batch experiment run on live posts; results saved.
+- All wired into main detect path and exported.
+- New commit on main + feature branch.
+
+Efficiency examples from batch: 0.31–0.38 on real memory discourse (room to tune keywords further).

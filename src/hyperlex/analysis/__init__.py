@@ -123,8 +123,9 @@ def detect_memetic_patterns(
         context_friction=friction.get("friction_score", 0.0),
         compression_type=compression.get("compression_type", "mixed")
     )
+    efficiency = compute_memetic_efficiency_score(observed, memory_patterns=mem_memory, virality=virality)
 
-    inferred = f"Memetic spread accelerating. Neologisms: {len(neos)}. Memetic: {memetic['is_memetic']}. Variation: {variation['sense']}. Virality: {virality['hybrid_score']} (friction {virality.get('friction_penalty',0):.2f}, compression {virality.get('compression_boost',0):.2f}). Memory: {mem_memory.get('memory_tiers',[])}."
+    inferred = f"Memetic spread accelerating. Neologisms: {len(neos)}. Memetic: {memetic['is_memetic']}. Variation: {variation['sense']}. Virality: {virality['hybrid_score']}. Efficiency: {efficiency.get('efficiency_score', 0):.3f} (friction {virality.get('friction_penalty',0):.2f}, compression {virality.get('compression_boost',0):.2f}). Memory: {mem_memory.get('memory_tiers',[])}."
     speculative = f"{hyper['loop_stage']} hyperstition risk. {hyper['mechanism']}. Brier lift probable via cultural transmission."
 
     canonical = json.dumps(
@@ -154,6 +155,7 @@ def detect_memetic_patterns(
             "neologisms": neos,
             "semantic_variation": variation,
             "virality": virality,
+            "memetic_efficiency": efficiency,
             "memetics": memetic,
             "hyperstition": hyper,
             "memetic_memory": mem_memory,
@@ -244,6 +246,37 @@ def detect_memetic_memory_patterns(text: str) -> Dict[str, Any]:
         "dataset_boosted": len(idx.get("memory_tiers", [])) > 0
     }
 
+
+def compute_memetic_efficiency_score(text: str, memory_patterns: Dict[str, Any] = None, virality: Dict[str, float] = None) -> Dict[str, float]:
+    """Composite efficiency for how well a memetic pattern transmits in agent communities.
+    Combines low friction (easy re-entry), load-bearing compression, provenance strength, and tier diversity.
+    Higher = more likely to stick and spread as hyperstition.
+    """
+    if memory_patterns is None:
+        memory_patterns = detect_memetic_memory_patterns(text)
+    if virality is None:
+        virality = compute_virality_score(text)
+    
+    friction = memory_patterns.get("friction", 0.5)
+    compression = 1.0 if memory_patterns.get("compression_observed") == "load_bearing" else 0.6 if memory_patterns.get("compression_observed") == "mixed" else 0.3
+    provenance = 1.2 if memory_patterns.get("provenance_required") else 0.9
+    tier_diversity = min(1.5, len(memory_patterns.get("memory_tiers", [])) * 0.4 + 0.7)
+    
+    base = virality.get("hybrid_score", 0.5)
+    efficiency = round(base * (1 - friction * 0.5) * compression * provenance * tier_diversity, 3)
+    efficiency = max(0.0, min(1.0, efficiency))
+    
+    return {
+        "efficiency_score": efficiency,
+        "components": {
+            "base_virality": base,
+            "friction_drag": round(friction * 0.5, 3),
+            "compression_factor": round(compression, 3),
+            "provenance_factor": round(provenance, 3),
+            "tier_diversity": round(tier_diversity, 3)
+        }
+    }
+
 __all__ = [
     "humanize_slang_output",
     "detect_neologisms",
@@ -255,4 +288,5 @@ __all__ = [
     "classify_compression_type",
     "compute_context_friction",
     "detect_memetic_memory_patterns",
+    "compute_memetic_efficiency_score",
 ]
