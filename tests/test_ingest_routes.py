@@ -133,3 +133,30 @@ def test_cli_analyze_positional():
     data = json.loads(r.stdout)
     assert data["query"] == "locked in"
     assert data["source"] == "mock"
+
+
+def test_crawl4ai_url_template_override(monkeypatch):
+    from hyperlex.intake import crawl4ai_target_url
+
+    # default: Wiktionary lemma (semantic shift from DDG search)
+    monkeypatch.delenv("HYPERLEX_CRAWL4AI_URL_TEMPLATE", raising=False)
+    assert crawl4ai_target_url("no cap") == "https://en.wiktionary.org/wiki/no_cap"
+    assert crawl4ai_target_url("rizz") == "https://en.wiktionary.org/wiki/rizz"
+
+    monkeypatch.setenv(
+        "HYPERLEX_CRAWL4AI_URL_TEMPLATE",
+        "https://example.test/q={encoded}&raw={query}",
+    )
+    url = crawl4ai_target_url("left no crumbs")
+    assert url == "https://example.test/q=left_no_crumbs&raw=left no crumbs"
+
+
+def test_crawl4ai_min_interval_env(monkeypatch):
+    from hyperlex.intake.cache import min_interval_for, SOURCE_MIN_INTERVAL
+
+    monkeypatch.delenv("HYPERLEX_CRAWL4AI_MIN_INTERVAL", raising=False)
+    monkeypatch.delenv("HYPERLEX_SOURCE_MIN_INTERVAL_CRAWL4AI", raising=False)
+    assert min_interval_for("crawl4ai") == float(SOURCE_MIN_INTERVAL["crawl4ai"])
+
+    monkeypatch.setenv("HYPERLEX_CRAWL4AI_MIN_INTERVAL", "2.5")
+    assert min_interval_for("crawl4ai") == 2.5

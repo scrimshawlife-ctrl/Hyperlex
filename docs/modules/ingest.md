@@ -66,6 +66,17 @@ CLI --route / --source
 - Rate state: `~/.hyperlex/rate_limit.json`
 - Disable rate wait: `HYPERLEX_NO_RATE_LIMIT=1`
 - Offline force: `HYPERLEX_OFFLINE=1`
+- Crawl4ai min interval: `HYPERLEX_CRAWL4AI_MIN_INTERVAL` (default **1.0** s; was 5.0)
+- Firecrawl alias interval: `HYPERLEX_FIRECRAWL_MIN_INTERVAL` (default 1.0 s)
+- Generic per-source: `HYPERLEX_SOURCE_MIN_INTERVAL_<SOURCE>`
+
+### crawl4ai URL / semantics
+
+Default crawl4ai URL is a **Wiktionary lemma page**
+(`https://en.wiktionary.org/wiki/{encoded}`), not DuckDuckGo HTML search.
+This unblocks self-host boxes where DDG is bot-closed, but changes harvest
+semantics from “slang search scan” to “lemma page dump.” Override with
+`HYPERLEX_CRAWL4AI_URL_TEMPLATE` containing `{query}` and/or `{encoded}`.
 
 ## Provenance
 

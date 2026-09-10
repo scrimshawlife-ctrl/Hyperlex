@@ -161,16 +161,50 @@ def _save_rate_state(state: Dict[str, float]) -> None:
         pass
 
 
+def min_interval_for(source: str) -> float:
+    """Return min seconds between live fetches for ``source``.
+
+    Env overrides (first match wins):
+    - ``HYPERLEX_CRAWL4AI_MIN_INTERVAL`` when source is crawl4ai
+    - ``HYPERLEX_FIRECRAWL_MIN_INTERVAL`` when source is firecrawl
+    - ``HYPERLEX_SOURCE_MIN_INTERVAL_<SOURCE>`` (uppercased source id)
+    else ``SOURCE_MIN_INTERVAL`` default (crawl4ai/firecrawl: 1.0s).
+    """
+    src = (source or "").strip().lower()
+    if src == "crawl4ai":
+        env = os.environ.get("HYPERLEX_CRAWL4AI_MIN_INTERVAL", "").strip()
+        if env:
+            try:
+                return max(0.0, float(env))
+            except ValueError:
+                pass
+    if src == "firecrawl":
+        env = os.environ.get("HYPERLEX_FIRECRAWL_MIN_INTERVAL", "").strip()
+        if env:
+            try:
+                return max(0.0, float(env))
+            except ValueError:
+                pass
+    generic = os.environ.get(f"HYPERLEX_SOURCE_MIN_INTERVAL_{src.upper()}", "").strip()
+    if generic:
+        try:
+            return max(0.0, float(generic))
+        except ValueError:
+            pass
+    return float(SOURCE_MIN_INTERVAL.get(src, 1.0))
+
+
 def wait_for_rate_limit(source: str) -> Dict[str, Any]:
     """
     Block until min interval for source has elapsed (sleep).
     Returns diagnostic dict. Env HYPERLEX_NO_RATE_LIMIT=1 disables.
+    Crawl4ai interval: HYPERLEX_CRAWL4AI_MIN_INTERVAL (default 1.0s).
     """
     flag = str(os.environ.get("HYPERLEX_NO_RATE_LIMIT", "")).strip().lower()
     if flag in {"1", "true", "yes", "on"}:
         return {"source": source, "waited": 0.0, "skipped": True}
 
-    min_iv = float(SOURCE_MIN_INTERVAL.get(source, 1.0))
+    min_iv = float(min_interval_for(source))
     if min_iv <= 0:
         return {"source": source, "waited": 0.0, "skipped": True}
 

@@ -286,8 +286,23 @@ def _run_crawl4ai(url: str):
     return asyncio.run(asyncio.wait_for(_runner(), timeout=12.0))
 
 
+def crawl4ai_target_url(query: str) -> str:
+    """Build the crawl4ai fetch URL for ``query``.
+
+    Default is a Wiktionary *lemma* page (not a DDG HTML search). That is a
+    semantic shift: harvest gets dictionary chrome / lemma text rather than
+    search-hit slang scan. Override with HYPERLEX_CRAWL4AI_URL_TEMPLATE using
+    ``{query}`` and/or ``{encoded}`` (space→underscore, percent-encoded).
+    """
+    tmpl = str(os.environ.get("HYPERLEX_CRAWL4AI_URL_TEMPLATE") or "").strip()
+    encoded = urllib.parse.quote(query.replace(" ", "_"))
+    if tmpl:
+        return tmpl.format(query=query, encoded=encoded)
+    return f"https://en.wiktionary.org/wiki/{encoded}"
+
+
 def _fetch_crawl4ai_query(query: str) -> str:
-    """Best-effort crawl using crawl4ai over an external search page."""
+    """Best-effort crawl4ai fetch (default: Wiktionary lemma page)."""
     if _offline_mode():
         return f"[CRAWL4AI_OFFLINE] Crawl-based signals disabled for '{query}'."
 
@@ -297,14 +312,7 @@ def _fetch_crawl4ai_query(query: str) -> str:
             "Install with `pip install .[runtime]` to enable this source."
         )
 
-    # Prefer Wiktionary lemma page (DDG HTML often blocked / bot-closed).
-    # Override with HYPERLEX_CRAWL4AI_URL_TEMPLATE containing {query} / {encoded}.
-    tmpl = str(os.environ.get("HYPERLEX_CRAWL4AI_URL_TEMPLATE") or "").strip()
-    encoded = urllib.parse.quote(query.replace(" ", "_"))
-    if tmpl:
-        url = tmpl.format(query=query, encoded=encoded)
-    else:
-        url = f"https://en.wiktionary.org/wiki/{encoded}"
+    url = crawl4ai_target_url(query)
     key = _cache_key(url, "crawl4ai")
     cached = _get_cached(key)
     if cached:
