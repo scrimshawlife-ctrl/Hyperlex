@@ -8,23 +8,29 @@ sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 from hyperlexical.export import FAMILIES, export_dataset, lexical_split, write_export
 
 
-def test_export_minimums(tmp_path):
+def test_export_minimums():
     bundle = export_dataset(ROOT)
     c = bundle["counts"]
     assert c["classify"] >= 80
     assert c["unbind"] >= 40
     assert c["negatives"] >= 20
     assert c["dialect"] >= 8
+    assert c["backfill"] >= 1
+    assert c["inferred"] >= 1
+    assert c["observed"] >= 20
+    assert c["name_gate"] is False
     families = {r["lineage"] for r in bundle["rows"] if r["task"] == "classify"}
     for fam in FAMILIES:
         assert fam in families
     assert "none" in families
     schemes = {r["role_scheme"] for r in bundle["rows"] if r["task"] == "unbind"}
     assert schemes == {"positional", "type_slot"}
-    assert all(r["class"] == "OBSERVED" for r in bundle["rows"])
-    assert all(r["brier"] if False else True for r in bundle["rows"])
+    assert all(r["class"] in {"OBSERVED", "INFERRED"} for r in bundle["rows"])
     assert all("/home/" not in json.dumps(r) for r in bundle["rows"])
     assert ".hyperlex" not in bundle["payload"]
+    skill = [r for r in bundle["rows"] if r["text"].lower() == "skill issue" and r["task"] == "classify"]
+    families_hit = {r["lineage"] for r in skill}
+    assert not ({"ai-native", "gaming-meta"} <= families_hit)
 
 
 def test_split_stable():
@@ -41,6 +47,7 @@ def test_write_and_hash(tmp_path):
     assert man["sha256"] == bundle["sha256"]
     assert man["brier"] is None
     assert man["trunk"] == "answerdotai/ModernBERT-base"
+    assert man["counts"]["name_gate"] is False
 
 
 def test_no_third_scheme():
