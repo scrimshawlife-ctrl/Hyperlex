@@ -16,3 +16,16 @@ Locked 2026-09-09. Do not reopen without operator amendment.
 | C10 | 006 IsA? | Untouched. This is 007. |
 | C11 | Hugging Face publish? | Operator gate. Specs do not self-upload. |
 | C12 | Analyze integration? | Optional fail-open attachment. Missing weights ≠ analyze crash. |
+
+## Additive locks from research fold 2026-09-09
+
+| ID | Question | Lock |
+|----|----------|------|
+| C13 | NeuSOGA synthesis in 007? | No. DISCOVER-shaped encoder only. |
+| C14 | Third role scheme? | Abort. No success packet. |
+| C15 | `symbolic` / `has_symbols` keys? | Forbidden. |
+| C16 | U1b frozen Qwen dump? | Held. Hash embed is control-only. |
+| C17 | Graded is-a / HyperLex-2016 head? | No. That is 006. Pointer only. |
+| C18 | Sacred overlays as loss or Brier? | No. Optional non-Brier keys only. |
+| C19 | MODEL_EMBEDDING without hashes? | Omit analyze block. Fail-open. |
+| C20 | LLM-generated slang as E2 gold? | No. Wu/Sun misalignment. |
