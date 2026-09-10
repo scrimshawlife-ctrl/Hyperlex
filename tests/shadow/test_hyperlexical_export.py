@@ -220,3 +220,23 @@ def test_include_live_negatives_ordinary_prose_only(tmp_path):
     assert live["counts"]["classify_all"] == live["counts"]["classify"] + live["counts"]["classify_none"]
     # Family gate still moves with live family row
     assert live["counts"]["classify"] >= base["counts"]["classify"] + 1
+
+def test_live_split_live_coerced_to_lexical(tmp_path):
+    """Store split=live must not survive export — Spec 007 lexical split only."""
+    from hyperlexical.export import export_dataset, lexical_split
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    store.write_text(
+        '{"text": "zzzx_split_live_atom", "lineage": "brainrot-aura", "typology": ["compression"], '
+        '"stage": "circulating", "roles": [], "fillers": [], "role_scheme": null, '
+        '"task": "classify", "provenance": "operator-blanket-yes:test", "class": "INFERRED", '
+        '"license": "operator-local", "split": "live"}\n',
+        encoding="utf-8",
+    )
+    bundle = export_dataset(ROOT, include_live=True, live_store=store)
+    hit = [r for r in bundle["rows"] if r["text"] == "zzzx_split_live_atom"]
+    assert len(hit) == 1
+    assert hit[0]["split"] == lexical_split("zzzx_split_live_atom")
+    assert hit[0]["split"] in {"train", "val", "test"}
+    assert all(r["split"] in {"train", "val", "test"} for r in bundle["rows"])
+
