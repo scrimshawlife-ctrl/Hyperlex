@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from .packet import RESTRICTED_MARKER, sha256_hex
+from ._negatives_data import NEGATIVES  # ordinary prose; no slang
 
 FAMILIES = (
     "betting-sharp",
@@ -34,28 +35,6 @@ TYPOLOGY = {
     "workplace-corp": ["camouflage"],
 }
 
-NEGATIVES = (
-    "The committee approved the budget amendment.",
-    "Water boils at one hundred degrees Celsius.",
-    "Please find the attached invoice for March.",
-    "The museum opens at ten on weekdays.",
-    "Photosynthesis converts light into chemical energy.",
-    "The train to Sacramento leaves from platform two.",
-    "This warranty covers defects in materials.",
-    "Average rainfall in July was two inches.",
-    "The library card expires in December.",
-    "Sodium chloride is table salt.",
-    "The board meeting is scheduled for Tuesday.",
-    "A rectangle has four right angles.",
-    "Please confirm receipt of this shipment.",
-    "The periodic table lists the elements.",
-    "Oak trees drop acorns in autumn.",
-    "The speed limit on this road is twenty five.",
-    "This paragraph contains no slang tokens.",
-    "The recipe calls for two cups of flour.",
-    "Latitude and longitude specify a point.",
-    "The contract is governed by California law.",
-)
 
 DIALECT = (
     "no cap fr",
@@ -270,7 +249,8 @@ def harvest_archive(root: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
+def harvest_unbind(n: int = 128) -> list[dict[str, Any]]:
+    """Spec 004 fixture gold under both allowed schemes. n=128 → ≥200 unique after dedupe."""
     sys.path.insert(0, str(repo_root() / "scripts" / "shadow"))
     from recoverable_structure.fixtures import make_spans
 
@@ -307,6 +287,66 @@ def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
                 **{"class": "OBSERVED"},
             )
         )
+    return rows
+
+
+def harvest_civilian_unbind_positional(root: Path) -> list[dict[str, Any]]:
+    """Honest positional unbind for multiword civilian atoms (fillers = tokens).
+
+    type_slot is NOT invented here — only Spec 004 fixtures carry type tags.
+    Sources: golden receipts matched_terms + LINEAGE_REGISTRY multiword terms.
+    """
+    rows: list[dict[str, Any]] = []
+    seen_text: set[str] = set()
+
+    def _add(text: str, lineage: str, provenance: str) -> None:
+        tokens = [t for t in text.split() if t]
+        if len(tokens) < 2 or text in seen_text:
+            return
+        if lineage not in FAMILIES and lineage != "none":
+            lineage = "none"
+        seen_text.add(text)
+        rows.append(
+            _row(
+                text=text,
+                lineage=lineage,
+                typology=TYPOLOGY.get(lineage, []),
+                stage="circulating",
+                roles=[f"pos_{k}" for k in range(len(tokens))],
+                fillers=tokens,
+                role_scheme="positional",
+                task="unbind",
+                provenance=provenance,
+                **{"class": "OBSERVED"},
+            )
+        )
+
+    gold = root / "examples" / "receipts" / "golden"
+    if gold.is_dir():
+        for path in sorted(gold.glob("*.json")):
+            if path.name == "MANIFEST.json":
+                continue
+            data = json.loads(path.read_text(encoding="utf-8"))
+            lineage = (data.get("analysis") or {}).get("lineage") or {}
+            fam = lineage.get("family_id") or "none"
+            for term in lineage.get("matched_terms") or []:
+                if isinstance(term, str) and " " in term.strip():
+                    _add(term.strip(), fam, f"civilian-pos:golden:{path.name}")
+
+    for entry in load_registry(root):
+        fam = entry.get("family_id") or "none"
+        for term in entry.get("terms") or []:
+            if isinstance(term, str) and " " in term.strip():
+                # collision-hold skill issue → none lineage for classify; keep family on unbind
+                # only if single-family; skip cross-family collision atom for unbind gold
+                if term.strip().lower() in COLLISION_HOLD:
+                    continue
+                _add(term.strip(), fam, f"civilian-pos:registry:{fam}")
+
+    for text in DIALECT:
+        if " " in text:
+            _add(text, "brainrot-aura", "civilian-pos:seed:dialect-e6")
+
     return rows
 
 
@@ -353,17 +393,114 @@ def dedupe(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
-def export_dataset(root: Path | None = None) -> dict[str, Any]:
+def reject_candidate_text(text: str) -> str | None:
+    """Return reject reason for junk live candidates, else None.
+
+    Filters: empty/punct-only, len≤2, pure numeric, Unsupported titles.
+    Does not promote or settle labels.
+    """
+    raw = (text or "").strip()
+    if not raw:
+        return "empty"
+    alnum = "".join(ch for ch in raw if ch.isalnum())
+    if not alnum:
+        return "punct_only"
+    if alnum.isdigit():
+        return "numeric"
+    if len(raw) <= 2:
+        return "len_le_2"
+    low = raw.lower()
+    if "unsupported title" in low or low.startswith("unsupported"):
+        return "unsupported_title"
+    return None
+
+
+def load_live_candidates(store: Path) -> list[dict[str, Any]]:
+    """Load SHADOW ingest candidates. Never upgrades class to OBSERVED."""
+    if not store.is_file():
+        return []
+    out: list[dict[str, Any]] = []
+    for line in store.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            raw_row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        text = str(raw_row.get("text") or "")
+        if reject_candidate_text(text):
+            continue
+        prov = str(raw_row.get("provenance") or "ingest:store")
+        if prov.startswith("ingest:inbox") or "wiktionary" in prov.lower():
+            license_ = "CC-BY-SA-4.0+GFDL (Wiktionary text); labels INFERRED"
+        elif prov.startswith("ingest:pipeline"):
+            license_ = "operator-local-crawl; labels INFERRED"
+        else:
+            license_ = str(raw_row.get("license") or "operator-local") + "; labels INFERRED"
+        fam = raw_row.get("lineage") or "none"
+        if fam not in FAMILIES and fam not in {"none", "ytd_leaf"}:
+            fam = "none"
+        try:
+            out.append(
+                _row(
+                    text=text,
+                    split=raw_row.get("split"),
+                    lineage=fam,
+                    typology=list(raw_row.get("typology") or TYPOLOGY.get(fam, [])),
+                    stage=raw_row.get("stage") or "circulating",
+                    roles=list(raw_row.get("roles") or []),
+                    fillers=list(raw_row.get("fillers") or []),
+                    role_scheme=raw_row.get("role_scheme"),
+                    task=raw_row.get("task") or "classify",
+                    provenance=prov if prov.endswith(":live") else f"{prov}:live",
+                    **{"class": "INFERRED"},
+                    license=license_,
+                )
+            )
+        except ValueError:
+            continue
+    return out
+
+
+def export_dataset(
+    root: Path | None = None,
+    *,
+    include_live: bool = False,
+    live_store: Path | None = None,
+) -> dict[str, Any]:
     root = root or repo_root()
-    rows = dedupe(
+    rows = (
         harvest_dialect()
         + harvest_backfill(root)
         + harvest_registry(root)
         + harvest_receipts(root)
         + harvest_archive(root)
         + harvest_unbind()
+        + harvest_civilian_unbind_positional(root)
         + harvest_negatives()
     )
+    live_n = 0
+    live_rejected = 0
+    if include_live:
+        store = live_store or (Path.home() / ".hyperlex" / "hyperlexical" / "ingest_candidates.jsonl")
+        if store.is_file():
+            # count rejects for manifest
+            for line in store.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    raw_row = json.loads(line)
+                except json.JSONDecodeError:
+                    live_rejected += 1
+                    continue
+                if reject_candidate_text(str(raw_row.get("text") or "")):
+                    live_rejected += 1
+            live_rows = load_live_candidates(store)
+            live_n = len(live_rows)
+            rows = rows + live_rows
+    rows = dedupe(rows)
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
     payload = "\n".join(json.dumps(r, sort_keys=True) for r in rows) + "\n"
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
@@ -379,6 +516,8 @@ def export_dataset(root: Path | None = None) -> dict[str, Any]:
         "train": sum(1 for r in rows if r["split"] == "train"),
         "val": sum(1 for r in rows if r["split"] == "val"),
         "test": sum(1 for r in rows if r["split"] == "test"),
+        "live_included": live_n if include_live else 0,
+        "live_rejected": live_rejected if include_live else 0,
         "name_gate": False,
         "name_gate_classify_gap": max(0, 2000 - sum(1 for r in rows if r["task"] == "classify")),
         "name_gate_unbind_gap": max(0, 200 - sum(1 for r in rows if r["task"] == "unbind")),
@@ -403,7 +542,7 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                 "counts": bundle["counts"],
                 "brier": None,
                 "trunk": "answerdotai/ModernBERT-base",
-                "note": "Repo harvest including backfill+archive. Not a T1 name-gate. No ledger copy.",
+                "note": "Repo harvest + Spec004 unbind expand + prose negatives. Live optional via --include-live (INFERRED only). Not a T1 name-gate.",
             },
             indent=2,
             sort_keys=True,
@@ -421,10 +560,21 @@ def main(argv=None) -> int:
         default="",
         help="directory; default specs/007-hyperlexical-model/exports",
     )
+    p.add_argument(
+        "--include-live",
+        action="store_true",
+        help="merge ~/.hyperlex/.../ingest_candidates.jsonl as INFERRED only (reject junk)",
+    )
+    p.add_argument(
+        "--live-store",
+        default="",
+        help="optional path to ingest_candidates.jsonl",
+    )
     args = p.parse_args(argv)
     root = repo_root()
     dest = Path(args.out) if args.out else root / "specs" / "007-hyperlexical-model" / "exports"
-    bundle = export_dataset(root)
+    store = Path(args.live_store) if args.live_store else None
+    bundle = export_dataset(root, include_live=bool(args.include_live), live_store=store)
     path = write_export(dest, bundle)
     print(json.dumps({"wrote": str(path), "sha256": bundle["sha256"], "counts": bundle["counts"]}, indent=2))
     return 0

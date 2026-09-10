@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
-from .export import COLLISION_HOLD, FAMILIES, TYPOLOGY, _row, lexical_split
+from .export import COLLISION_HOLD, FAMILIES, TYPOLOGY, _row, lexical_split, reject_candidate_text
 from .packet import RESTRICTED_MARKER
 
 STORE_SCHEMA = "hyperlex.hyperlexical.ingest_candidate.v0.1"
@@ -115,9 +115,17 @@ def row_from_atom(
         return None
     if RESTRICTED_MARKER in clipped:
         return None
+    if reject_candidate_text(clipped):
+        return None
     fam = _family(family)
     if clipped.lower() in COLLISION_HOLD:
         fam = "none"
+    if source == "inbox":
+        license_ = "CC-BY-SA-4.0+GFDL (Wiktionary text); labels INFERRED"
+    elif source == "pipeline":
+        license_ = "operator-local-crawl; labels INFERRED"
+    else:
+        license_ = "operator-local; labels INFERRED"
     return _row(
         text=clipped,
         lineage=fam,
@@ -128,7 +136,7 @@ def row_from_atom(
         **{"class": "INFERRED"},
         role_scheme=None,
         split=lexical_split(clipped),
-        license="operator-local",
+        license=license_,
     )
 
 

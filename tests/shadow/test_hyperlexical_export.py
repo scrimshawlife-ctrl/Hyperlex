@@ -12,8 +12,8 @@ def test_export_minimums():
     bundle = export_dataset(ROOT)
     c = bundle["counts"]
     assert c["classify"] >= 80
-    assert c["unbind"] >= 40
-    assert c["negatives"] >= 20
+    assert c["unbind"] >= 200
+    assert c["negatives"] >= 200
     assert c["dialect"] >= 8
     assert c["backfill"] >= 1
     assert c["inferred"] >= 1
@@ -55,3 +55,38 @@ def test_no_third_scheme():
     for row in bundle["rows"]:
         if row["role_scheme"] is not None:
             assert row["role_scheme"] in {"positional", "type_slot"}
+
+
+def test_reject_candidate_text():
+    from hyperlexical.export import reject_candidate_text
+
+    assert reject_candidate_text("") == "empty"
+    assert reject_candidate_text("ab") == "len_le_2"
+    assert reject_candidate_text("...") == "punct_only"
+    assert reject_candidate_text("42") == "numeric"
+    assert reject_candidate_text("Unsupported title") == "unsupported_title"
+    assert reject_candidate_text("ordinary phrase here") is None
+
+
+def test_include_live_stays_inferred(tmp_path):
+    from hyperlexical.export import export_dataset, write_export
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    store.write_text(
+        '{"text": "zzzx_live_unique_atom_test", "lineage": "brainrot-aura", "typology": ["compression"], '
+        '"stage": "circulating", "roles": [], "fillers": [], "role_scheme": null, '
+        '"task": "classify", "provenance": "ingest:pipeline", "class": "INFERRED", '
+        '"license": "operator-local", "split": "train"}\n'
+        '{"text": "ab", "lineage": "none", "typology": [], "stage": "noise", '
+        '"roles": [], "fillers": [], "role_scheme": null, "task": "classify", '
+        '"provenance": "ingest:inbox", "class": "INFERRED", "license": "operator-local", '
+        '"split": "train"}\n',
+        encoding="utf-8",
+    )
+    bundle = export_dataset(ROOT, include_live=True, live_store=store)
+    live = [r for r in bundle["rows"] if str(r["provenance"]).endswith(":live")]
+    assert live
+    assert all(r["class"] == "INFERRED" for r in live)
+    assert all(r["text"] != "ab" for r in live)
+    assert bundle["counts"]["live_rejected"] >= 1
+    write_export(tmp_path / "out", bundle)

@@ -23,7 +23,7 @@ def test_row_is_inferred_weak():
     assert row["task"] == "classify"
     assert row["lineage"] == "brainrot-aura"
     assert row["provenance"] == "ingest:pipeline"
-    assert row["license"] == "operator-local"
+    assert row["license"] == "operator-local-crawl; labels INFERRED"
     assert "/home/" not in json.dumps(row)
     assert ".hyperlex" not in json.dumps(row)
 
@@ -96,3 +96,9 @@ def test_tap_fail_open():
     assert out["ok"] is True
     assert out.get("skipped") is True
     assert out["brier"] is None
+
+
+def test_reject_junk_atom():
+    assert row_from_atom("ab", source="inbox") is None
+    assert row_from_atom("12345", source="inbox") is None
+    assert row_from_atom("Unsupported title", source="inbox") is None
