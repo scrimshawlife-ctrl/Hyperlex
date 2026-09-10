@@ -33,6 +33,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "public money", "line move", "sharper", "card-sharp",
             # wave3 morphs (diagram / Action-physics leaves)
             "sharp money revenge", "line movement", "closing line", "steam chase",
+            # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
+            "the vig", "against the spread", "public side", "sharp side", "steam chaser",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
@@ -49,6 +51,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "airdrop", "altcoin", "buy the dip",
             # wave3 morphs (rug/hands inflection + exact CT short)
             "rug pulled", "rugging", "diamond handed", "paper handed", "ath",
+            # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
+            "gm", "gn", "jeet", "jeeting", "frens", "bagholding", "exit liq", "nfa", "probably nothing",
         ],
         "branch_operator": "cross_family_borrowing",
         "diagram_ref": "examples/slang-families/crypto-degen-family.mmd",
@@ -64,6 +68,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "ai slop", "slopper", "agentic workflow",
             # wave3 morphs (demos / hyphen)
             "agentic slop", "context-window",
+            # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
+            "glaze", "clankers", "jailbroken", "vibe coded", "slopped", "prompt inject", "rlhf", "context stuffed", "sycophantic",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/ai-native-family.mmd",
@@ -95,6 +101,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "frame-mogging", "framemogging", "framemogged", "frame mogged",
             "404 coded", "sybau", "canon event", "choppleganger", "choppelganger",
             "chopped doppelganger", "lowkenuinely", "6-7",
+            # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
+            "bruh", "sheesh", "lowkey", "highkey", "periodt", "iykyk", "mew", "chopped", "mogged", "looksmaxxed", "minus aura", "negative rizz", "sigma grindset", "delulu era", "aura farmed", "no thoughts", "just vibes",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
@@ -108,6 +116,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "broski", "bruh moment", "lil bro", "big bro",
             # wave3 morphs (diagram auntie + sis/unc address frames)
             "auntie", "lil sis", "big sis", "yo unc",
+            # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
+            "yo fam", "lil unc", "big unc", "twinning", "my guy", "big dog",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/kinship-address.mmd",
@@ -122,6 +132,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "bluepill", "whitepill", "whitepilled", "based and redpilled", "cope and seethe",
             # wave3 spacing / parallel pill morphs
             "red pilled", "black pilled", "blue pilled", "based and blackpilled",
+            # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
+            "doomer", "bloomer", "pinkpilled", "redpilling", "blackpilling", "cope harder", "seething", "based department",
         ],
         "branch_operator": "irony_inversion",
         "diagram_ref": "examples/slang-families/political-status-family.mmd",
@@ -139,6 +151,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "hardstuck", "afk", "pwned", "border gore",
             # wave3 morphs (tryhard/hardstuck/noscope inflection + exact pwn)
             "tryharding", "hard stuck", "360 no-scope", "no scoping", "pwn",
+            # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
+            "boosted", "cracked", "one trick", "one-tricking", "hardstuck bronze", "touch grassed", "diffed", "outskilled",
         ],
         "branch_operator": "platform_compression",
         "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
@@ -155,6 +169,8 @@ LINEAGE_REGISTRY: List[Dict[str, Any]] = [
             "performance improvement plan", "take offline", "boil the ocean",
             # wave3 agent/participle morphs
             "quiet quitter", "quiet fired", "boiling the ocean", "taken offline", "circleback",
+            # wave4 attested leaves (vernacular/Hyperlex/hermes on-disk)
+            "sync up", "put a pin in it", "alignment meeting", "ping me", "quiet quitters", "rto mandate", "return-to-office mandate", "performance managed", "boiling ocean",
         ],
         "branch_operator": "sense_extension",
         "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",
