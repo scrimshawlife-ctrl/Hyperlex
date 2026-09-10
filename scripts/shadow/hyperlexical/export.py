@@ -136,7 +136,12 @@ def _row(**kwargs: Any) -> dict[str, Any]:
         kwargs["class"] = "INFERRED"
         kwargs["provenance"] = str(kwargs.get("provenance") or "") + ":collision-hold"
     out = {k: kwargs.get(k) for k in ROW_KEYS}
-    out["split"] = kwargs.get("split") or lexical_split(text)
+    # Spec 007 lexical split is train/val/test only. Reject store contamination
+    # (e.g. blanket-yes wrote split="live") so --include-live cannot bypass the hash split.
+    split = kwargs.get("split")
+    if split not in {"train", "val", "test"}:
+        split = lexical_split(text)
+    out["split"] = split
     out["typology"] = list(out.get("typology") or [])
     out["roles"] = list(out.get("roles") or [])
     out["fillers"] = list(out.get("fillers") or [])
