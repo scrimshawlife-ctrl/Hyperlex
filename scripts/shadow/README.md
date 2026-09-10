@@ -9,9 +9,10 @@ PYTHONPATH=scripts/shadow python3 -m recoverable_structure.cli --fixture tpr --h
 pytest -q tests/shadow/test_recoverable_structure_probe.py
 ```
 
-`hyperlexical` is Spec 007 (U1 inference stub). No torch. No Hub download.
+`hyperlexical` is Spec 007.
 
 ```
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
-pytest -q tests/shadow/test_hyperlexical_shadow.py
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export
+pytest -q tests/shadow/test_hyperlexical_shadow.py tests/shadow/test_hyperlexical_export.py
 ```
