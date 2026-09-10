@@ -11,9 +11,9 @@ Constitution: `.specify/memory/constitution.md` (v1.0.0, **SHADOW** until operat
 | 004 | Recoverable-structure probe | SPECIFY locked · implement SHADOW | `scripts/shadow/recoverable_structure/` |
 | 005 | Route labels | SPECIFY locked (Notion + branch `005-route-labels`) | not on main — PR 18 |
 | 006 | IsA | reserved — do not open from 007 | — |
-| 007 | Hyperlexical model | SPECIFY locked C1–C52 · SHADOW implement on main | `scripts/shadow/hyperlexical/` + Aaron Spark handoff. E2 fail. No Hub. |
+| 007 | Hyperlexical model | SPECIFY locked C1–C52 · A5 milestones/engineering · SHADOW implement on main | `scripts/shadow/hyperlexical/` + Aaron Spark handoff. E2 fail. No Hub. |
 
-007 extras: `clarify.md`, `locks-a4.md`, `locks-a5.md`, `weights.md`, `hardware.md`, `uncensored.md`, `trunk.md`, `AARON-SPARK-TRAIN.md`, `hf-package/`, `schemas/`, `contracts/`.
+007 extras: `clarify.md`, `locks-a4.md`, `locks-a5.md`, `weights.md`, `hardware.md`, `uncensored.md`, `trunk.md`, `AARON-SPARK-TRAIN.md`, `milestones.md`, `engineering.md`, `hf-package/`, `schemas/`, `contracts/`.
 
 Handoff: `specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md` on **main**.
 
