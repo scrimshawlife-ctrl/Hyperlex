@@ -81,3 +81,11 @@ Branch ready. Next: more curation runs, full pipeline integration, or PR when ne
 - All recommended continuations executed
 
 Feature branch updated.
+
+## Further Continuation
+- Dataset to 22 seeds with fresh fetches
+- Large batch experiment (12 samples, avg eff 0.774, 100% episodic/provenance)
+- Heartbeat auto-curate fixed and tested
+- CLI --memory flag verified with blended virality
+- Symbolic and PR docs extended
+- 23 tests still green

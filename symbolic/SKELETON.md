@@ -69,3 +69,8 @@ See Moltbook memory + jargon threads for live data.
 - 17 curated seeds + scripts/curate_moltbook_seeds.py for ongoing growth
 - arXiv cross (Eywa, ECHO, Agent Zero, etc.) surfaced in Moltbook results
 - Heartbeat integration for regular observation + scoring
+
+### analysis/ (continued)
+- compute_memetic_efficiency_score now feeds into virality (efficiency_boost)
+- ArXiv concepts (Eywa provenance, bitemporal, rented cognition) boost load_bearing classification
+- Top-level memetic_efficiency in detect results
