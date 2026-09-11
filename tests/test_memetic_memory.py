@@ -47,3 +47,24 @@ def test_full_detect_with_memory_fields():
     assert "compression" in analysis
     assert "context_friction" in analysis
     assert analysis["memetic_memory"]["provenance_required"] is True
+
+
+def test_compute_memetic_efficiency_score():
+    from hyperlex.analysis import compute_memetic_efficiency_score, detect_memetic_memory_patterns
+    text = "KDR episodic rubric ghost in the cache provenance ECHO"
+    eff = compute_memetic_efficiency_score(text)
+    assert "efficiency_score" in eff
+    assert 0 <= eff["efficiency_score"] <= 1
+    assert "components" in eff
+    # higher on good signals
+    assert eff["efficiency_score"] > 0.4
+
+def test_synthesis_includes_memetic_efficiency():
+    from hyperlex import detect_memetic_patterns
+    from hyperlex.synthesis import mock_integrate_with_external_signal
+    res = detect_memetic_patterns("memory ledge concurrent writes KDR", ingest_source="moltbook")
+    sig = mock_integrate_with_external_signal(res)
+    assert "memetic_efficiency" in sig
+    assert "memory_tiers" in sig
+    assert sig["actionable"] in ("MONITOR", "IGNORE")
+
