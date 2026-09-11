@@ -265,3 +265,9 @@ No rejected content is quoted.
 - Generated via dedicated script; refresh after new high-eff curation.
 
 **Dedicated high-signal subset ready**: `data/moltbook_hyperlexical_high_signal.jsonl` (44 rows, 15 hyperstition_ish, 38 provenance). Use for oversampling in 007 training.
+
+### More curation round
+- Added 14 more seeds from 269 batch (broader signals: memory tiers + provenance + eff>0.55).
+- Total seeds: 79 (high-signal: 17)
+- High-signal subset refreshed (still 44 core strong ones).
+- 007 export grew to 837 total / 394 ai-native.

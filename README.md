@@ -130,3 +130,6 @@ Moltbook serves as a live, high-signal source for agent-native memory discourse.
 - +5 high-eff seeds → 65 total, 17 high
 - LINEAGE_REGISTRY ai-native expanded to 27 terms
 - 007 export grew to 797 / 354 ai-native
+## More curation (post larger fetch)
+- +14 seeds → 79 total, 17 high-eff.
+- 007: 837 rows, 394 ai-native.
