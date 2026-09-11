@@ -1,151 +1,1050 @@
 """analysis — zone_of_emergence (Numogram Zone 9 + 5-6 + sigil_glyph)
 
 Core memetic analysis: neologisms, variation, virality, memetics, hyperstition.
-Expanded ingest integration + schema support.
+Expanded ingest integration + schema support + lineage matching with confidence scoring.
+
+Brier scores are NOT emitted here. Use hyperlex.calibration after settlement.
 """
 import re
 import json
 import hashlib
-from pathlib import Path
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 
 from ..intake import ingest_signal, fetch_ingest
 from .. import PKG_VERSION
 from ..schemas import validate_result
+from ..provenance import analysis_canonical_hash
+from .mutation import predict_mutations
+from .signal_report import attach_signal_report_fields, build_seed_header
 
-# Agent memetics dataset support (from Moltbook distillations)
-DATASET_PATH = Path(__file__).parent.parent.parent / "data" / "agent_memetics"
-CLASSIFICATION_INDEX = None
+# ---------------------------------------------------------------------------
+# Lineage registry (static seed; expand via docs/examples/slang-families)
+# ---------------------------------------------------------------------------
 
-def _load_classification_index():
-    global CLASSIFICATION_INDEX
-    if CLASSIFICATION_INDEX is None:
-        idx_path = DATASET_PATH / "classification_index.json"
-        if idx_path.exists():
-            with open(idx_path) as f:
-                CLASSIFICATION_INDEX = json.load(f)
+LINEAGE_REGISTRY: List[Dict[str, Any]] = [
+    {
+        "family_id": "betting-sharp",
+        "terms": [
+            "sharp", "steam", "square", "wiseguy", "hammer", "holler", "revenge", "low block",
+            "false nine", "revenge bet", "vig",
+            # diagram / calibration / phylogeny morphs (wave2)
+            "sharp money", "closing line value", "clv", "reverse line movement", "steam move",
+            "public money", "line move", "sharper", "card-sharp",
+            # wave3 morphs (diagram / Action-physics leaves)
+            "sharp money revenge", "line movement", "closing line", "steam chase",
+        ],
+        "branch_operator": "sense_extension",
+        "diagram_ref": "examples/slang-families/betting-sharp-family.mmd",
+        "payload_note": "professional edge vs public money; line-physics signaling",
+    },
+    {
+        "family_id": "crypto-degen",
+        "terms": [
+            "hodl", "diamond hands", "paper hands", "rekt", "ape", "degen", "moon", "bagholder",
+            "fud", "fomo", "ngmi", "wagmi", "rug", "rugpull", "rug pull", "hopium", "ape in",
+            "to the moon",
+            # diagram morphs + distinctive CT leaves (wave2)
+            "rugged", "exit liquidity", "soft rug", "dyor", "lfg", "memecoin", "wen moon",
+            "airdrop", "altcoin", "buy the dip",
+            # wave3 morphs (rug/hands inflection + exact CT short)
+            "rug pulled", "rugging", "diamond handed", "paper handed", "ath",
+        ],
+        "branch_operator": "cross_family_borrowing",
+        "diagram_ref": "examples/slang-families/crypto-degen-family.mmd",
+        "payload_note": "conviction under volatility; risk identity as honorific",
+    },
+    {
+        "family_id": "ai-native",
+        "terms": [
+            "hallucinate", "slop", "clanker", "agentic", "glazing", "skill issue",
+            "token", "context window", "vibe coding", "vibe code", "prompt injection",
+            "hallucination", "jailbreak", "sycophancy", "tool use", "token burn",
+            # diagram morphs (wave2)
+            "ai slop", "slopper", "agentic workflow",
+            # wave3 morphs (demos / hyphen)
+            "agentic slop", "context-window",
+            # moltbook agent-memory leaves (additive; still 8-family only)
+            "rented cognition", "KDR", "ghost in the cache", "episodic memory",
+            "provenance", "context loss", "re-entry cost", "memory tier",
+            "rented memory", "Memory Paradox", "3-Tier Pattern",
+        ],
+        "branch_operator": "platform_compression",
+        "diagram_ref": "examples/slang-families/ai-native-family.mmd",
+        "payload_note": "machine language as culture; quality judgment + hostility + agency framing",
+    },
+    {
+        "family_id": "brainrot-aura",
+        "terms": [
+            # core (pre-2026 trunk)
+            "brainrot", "brain rot", "aura", "aura farming", "aura farm", "mid", "cooked", "let him cook",
+            # 2026 YTD leaves (see data/backfill/2026/)
+            "rizz", "rizzler", "skibidi", "gyatt", "sigma", "delulu", "no cap", "no cap fr",
+            "locked in", "crash out",
+            "mewing", "looksmaxxing", "looksmax", "heightmaxxing", "copemaxxing", "mog", "mogging",
+            "ate", "ate that", "left no crumbs", "it's giving",
+            "npc", "main character", "main character energy", "fanum tax", "ohio",
+            "bussin", "slay", "six seven", "67", "edging", "gooning",
+            "vibe check", "negative aura", "aura points", "plus aura", "yap", "yapping",
+            "chat is this real", "no thoughts just vibes",
+            # dialect / seed expansions (distinctive; still 8-family only)
+            "fine shyt", "giga chad", "caught in 4k", "in my bag", "understood the assignment",
+            "mid af", "unspoken rizz",
+            # morphs / multiword variants (wave2)
+            "skibidi toilet", "rizzed up", "brainrotted", "looksmaxxer", "gooner",
+            "ate and left no crumbs", "sigma male", "on god", "say less", "fr fr",
+            "took an l", "big w",
+            # wave3 morphs (vernacular slang_seed + maxxing/mog variants)
+            "crashing out", "jestermaxxing", "jestermaxx", "jestergooning",
+            "frame-mogging", "framemogging", "framemogged", "frame mogged",
+            "404 coded", "sybau", "canon event", "choppleganger", "choppelganger",
+            "chopped doppelganger", "lowkenuinely", "6-7",
+        ],
+        "branch_operator": "irony_inversion",
+        "diagram_ref": "examples/slang-families/brainrot-aura-family.mmd",
+        "payload_note": "content-degradation + status radiation; self-aware consumption; 2026 Gen Alpha carryover",
+    },
+    {
+        "family_id": "kinship-address",
+        "terms": [
+            "bro", "sis", "twin", "unc", "cuz", "family", "fam", "bestie",
+            # morphs / multiword address (wave2)
+            "broski", "bruh moment", "lil bro", "big bro",
+            # wave3 morphs (diagram auntie + sis/unc address frames)
+            "auntie", "lil sis", "big sis", "yo unc",
+        ],
+        "branch_operator": "sense_extension",
+        "diagram_ref": "examples/slang-families/kinship-address.mmd",
+        "payload_note": "fictive kinship; community responsibility + platform acceleration",
+    },
+    {
+        "family_id": "political-status",
+        "terms": [
+            "based", "redpilled", "blackpilled", "bluepilled", "cope", "copium", "seethe", "dilate",
+            "redpill", "blackpill",
+            # pill-discourse morphs (wave2)
+            "bluepill", "whitepill", "whitepilled", "based and redpilled", "cope and seethe",
+            # wave3 spacing / parallel pill morphs
+            "red pilled", "black pilled", "blue pilled", "based and blackpilled",
+        ],
+        "branch_operator": "irony_inversion",
+        "diagram_ref": "examples/slang-families/political-status-family.mmd",
+        "payload_note": "tribal signaling + emotional routing; high mutation rate",
+    },
+    {
+        "family_id": "gaming-meta",
+        "terms": [
+            "nerf", "buff", "meta", "sweaty", "noob", "gg", "ez", "ratio", "ratioed",
+            "touch grass", "skill issue", "diff", "int", "feed", "feeding", "smurf", "sus",
+            "griefing", "360 noscope", "beast mode", "bunny hopper", "bacon hair",
+            "achievement whore",
+            # morphs / multiword status (wave2)
+            "ez clap", "gg ez", "inting", "smurfing", "tryhard", "try hard", "elo hell",
+            "hardstuck", "afk", "pwned", "border gore",
+            # wave3 morphs (tryhard/hardstuck/noscope inflection + exact pwn)
+            "tryharding", "hard stuck", "360 no-scope", "no scoping", "pwn",
+        ],
+        "branch_operator": "platform_compression",
+        "diagram_ref": "examples/slang-families/gaming-meta-family.mmd",
+        "payload_note": "competitive balance + status in multiplayer; meta as living rule-set",
+    },
+    {
+        "family_id": "workplace-corp",
+        "terms": [
+            "quiet quitting", "quiet firing", "rto", "return to office", "layoffs",
+            "pip", "synergy", "circle back", "bandwidth", "low-hanging fruit",
+            "act your wage", "touch base", "deep dive", "move the needle",
+            # morphs / hyphen + managerial cant (wave2)
+            "quiet quit", "quiet fire", "return-to-office", "low hanging fruit", "circle-back",
+            "performance improvement plan", "take offline", "boil the ocean",
+            # wave3 agent/participle morphs
+            "quiet quitter", "quiet fired", "boiling the ocean", "taken offline", "circleback",
+        ],
+        "branch_operator": "sense_extension",
+        "diagram_ref": "examples/slang-families/workplace-corp-family.mmd",
+        "payload_note": "labor identity under corporate speech; resistance + managerial cant",
+    },
+]
+
+LINEAGE_CONFIDENCE_THRESHOLD = 0.42
+
+
+def _term_weight(term: str) -> float:
+    t = term.strip().lower()
+    n_words = max(1, len(t.split()))
+    weight = 0.22 + 0.14 * n_words + 0.025 * min(len(t), 24)
+    return min(0.75, weight)
+
+
+def _find_hits(corpus: str, family_terms: List[str]) -> List[str]:
+    hits: List[str] = []
+    for term in family_terms:
+        t = term.lower()
+        if " " in t:
+            if t in corpus:
+                hits.append(term)
         else:
-            CLASSIFICATION_INDEX = {"memory_tiers": ["scratchpad", "episodic", "rubric"]}
-    return CLASSIFICATION_INDEX
+            if re.search(rf"\b{re.escape(t)}\b", corpus):
+                hits.append(term)
+    return hits
+
+
+def compute_lineage_confidence(
+    hits: List[str],
+    family_terms: List[str],
+    corpus: str,
+) -> Tuple[float, Dict[str, Any]]:
+    if not hits:
+        return 0.0, {"n_hits": 0}
+
+    weights = [_term_weight(t) for t in hits]
+    specificity = sum(weights) / len(weights)
+    coverage = len(hits) / max(len(family_terms), 1)
+
+    hit_bonus = 0.0
+    for i in range(len(hits)):
+        hit_bonus += max(0.04, 0.12 - 0.02 * i)
+    hit_bonus = min(0.38, hit_bonus)
+
+    density = 0.0
+    if len(hits) >= 2:
+        length_factor = max(0.0, 1.0 - (len(corpus) / 600.0))
+        density = min(0.18, 0.06 * (len(hits) - 1) * (0.5 + 0.5 * length_factor))
+
+    raw = 0.18 + specificity * 0.38 + coverage * 0.22 + hit_bonus + density
+    confidence = min(0.98, max(0.0, raw))
+
+    breakdown = {
+        "n_hits": len(hits),
+        "specificity": round(specificity, 3),
+        "coverage": round(coverage, 3),
+        "hit_bonus": round(hit_bonus, 3),
+        "density": round(density, 3),
+        "raw": round(raw, 3),
+        "term_weights": {t: round(_term_weight(t), 3) for t in hits},
+    }
+    return confidence, breakdown
+
+
+def _vector_family_boosts(
+    query_text: str,
+    *,
+    top_k: int = 8,
+    min_score: float = 0.12,
+) -> Tuple[Dict[str, float], List[Dict[str, Any]]]:
+    """
+    Aggregate cosine neighbor mass by family_id from local vector DB.
+
+    Fail-open: empty boosts if DB missing or disabled.
+    """
+    import os
+    from pathlib import Path as _Path
+
+    vflag = str(os.environ.get("HYPERLEX_VECTOR", "auto")).strip().lower()
+    if vflag in {"0", "false", "off", "no"}:
+        return {}, []
+    try:
+        from ..vectordb import default_vector_db_path, vector_search
+
+        vpath = default_vector_db_path()
+        want = vflag in {"1", "true", "yes", "on"} or (
+            vflag in {"", "auto"} and _Path(vpath).is_file() and _Path(vpath).stat().st_size > 0
+        )
+        if not want:
+            return {}, []
+        vs = vector_search(query_text, kind="term", top_k=top_k, min_score=min_score)
+        if not vs.get("ok"):
+            return {}, []
+        hits = list(vs.get("hits") or [])
+        boosts: Dict[str, float] = {}
+        for h in hits:
+            fam = h.get("family_id")
+            if not fam:
+                continue
+            # weight by cosine score, diminishing by rank
+            sc = float(h.get("score") or 0.0)
+            boosts[str(fam)] = boosts.get(str(fam), 0.0) + sc
+        # normalize boost mass into [0, VECTOR_BOOST_CAP]
+        if boosts:
+            mx = max(boosts.values()) or 1.0
+            for k in list(boosts.keys()):
+                # scale so strongest family gets up to VECTOR_BOOST_CAP
+                boosts[k] = VECTOR_BOOST_CAP * (boosts[k] / mx)
+        return boosts, hits
+    except Exception:
+        return {}, []
+
+
+# Max confidence points added from vector evidence (hybrid re-rank)
+VECTOR_BOOST_CAP = 0.12
+# Candidates within this gap of lexical best may be flipped by vector
+VECTOR_FLIP_MARGIN = 0.08
+
+
+def match_lineage(
+    text: str,
+    terms: Optional[List[str]] = None,
+    min_confidence: float = LINEAGE_CONFIDENCE_THRESHOLD,
+    registry: Optional[List[Dict[str, Any]]] = None,
+    *,
+    use_vector: Optional[bool] = None,
+) -> Optional[Dict[str, Any]]:
+    """Match text to a lineage family.
+
+    ``registry`` optionally overrides ``LINEAGE_REGISTRY`` (e.g. backfill merge).
+    When a local vector DB is available (or HYPERLEX_VECTOR=1), applies a hybrid
+    re-rank: lexical confidence + small family boost from term neighbors.
+
+    Historical receipts are never mutated by this function. Not Brier.
+    """
+    import os
+
+    corpus = (text or "").lower()
+    if terms:
+        corpus = corpus + " " + " ".join(t.lower() for t in terms)
+
+    entries = registry if registry is not None else LINEAGE_REGISTRY
+    candidates: List[Dict[str, Any]] = []
+
+    for entry in entries:
+        family_terms = list(entry.get("terms") or [])
+        hits = _find_hits(corpus, family_terms)
+        if not hits:
+            continue
+
+        score, breakdown = compute_lineage_confidence(hits, family_terms, corpus)
+        # keep near-misses for hybrid (slightly below threshold)
+        if score < min_confidence - 0.06:
+            continue
+
+        candidates.append({
+            "family_id": entry["family_id"],
+            "matched_terms": hits,
+            "branch_operator": entry.get("branch_operator", "unknown"),
+            "lexical_confidence": round(score, 3),
+            "diagram_ref": entry.get("diagram_ref"),
+            "payload_note": entry.get("payload_note"),
+            "score_breakdown": breakdown,
+            "entry": entry,
+        })
+
+    if not candidates:
+        return None
+
+    vflag = str(os.environ.get("HYPERLEX_VECTOR", "auto")).strip().lower()
+    if use_vector is None:
+        use_vector = vflag not in {"0", "false", "off", "no"}
+
+    vector_boosts: Dict[str, float] = {}
+    vector_hits: List[Dict[str, Any]] = []
+    hybrid_applied = False
+    if use_vector:
+        q = corpus.strip()
+        vector_boosts, vector_hits = _vector_family_boosts(q)
+        hybrid_applied = bool(vector_boosts)
+
+    for c in candidates:
+        boost = float(vector_boosts.get(c["family_id"], 0.0)) if hybrid_applied else 0.0
+        hybrid = min(0.98, float(c["lexical_confidence"]) + boost)
+        c["vector_boost"] = round(boost, 4)
+        c["hybrid_confidence"] = round(hybrid, 3)
+        # eligibility: hybrid must clear threshold (lexical near-miss can be rescued)
+        c["eligible"] = hybrid >= min_confidence
+
+    eligible = [c for c in candidates if c["eligible"]]
+    if not eligible:
+        return None
+
+    # rank by hybrid, then lexical
+    eligible.sort(
+        key=lambda c: (c["hybrid_confidence"], c["lexical_confidence"]),
+        reverse=True,
+    )
+    best_c = eligible[0]
+    lexical_best = max(candidates, key=lambda c: c["lexical_confidence"])
+    flipped = (
+        hybrid_applied
+        and best_c["family_id"] != lexical_best["family_id"]
+        and (best_c["hybrid_confidence"] - lexical_best["lexical_confidence"]) >= -VECTOR_FLIP_MARGIN
+    )
+
+    result = {
+        "family_id": best_c["family_id"],
+        "matched_terms": best_c["matched_terms"],
+        "branch_operator": best_c["branch_operator"],
+        "confidence": best_c["hybrid_confidence"],
+        "diagram_ref": best_c["diagram_ref"],
+        "payload_note": best_c["payload_note"],
+        "provenance": "INFERRED",
+        "score_breakdown": {
+            **best_c["score_breakdown"],
+            "lexical_confidence": best_c["lexical_confidence"],
+            "vector_boost": best_c["vector_boost"],
+            "hybrid_confidence": best_c["hybrid_confidence"],
+            "hybrid_applied": hybrid_applied,
+            "vector_flipped": bool(flipped),
+        },
+    }
+    if hybrid_applied:
+        result["hybrid"] = {
+            "schema": "hyperlex.lineage_hybrid.v1",
+            "lexical_family": lexical_best["family_id"],
+            "lexical_confidence": lexical_best["lexical_confidence"],
+            "vector_boosts": {k: round(v, 4) for k, v in sorted(vector_boosts.items(), key=lambda kv: -kv[1])[:6]},
+            "vector_top_hits": [
+                {"text": h.get("text"), "family_id": h.get("family_id"), "score": h.get("score")}
+                for h in vector_hits[:5]
+            ],
+            "selected_family": best_c["family_id"],
+            "flipped": bool(flipped),
+            "brier": None,
+            "note": "Hybrid = lexical confidence + capped vector family boost; not Brier.",
+        }
+    return result
+
 
 def humanize_slang_output(text: str) -> str:
-    for p in ["pivotal","underscoring","showcasing","crucial","landscape","tapestry","delve","realm"]:
+    """Strip AI-ism tokens without injecting domain slang (preserves lineage purity)."""
+    for p in ["pivotal", "underscoring", "showcasing", "crucial", "landscape", "tapestry", "delve", "realm"]:
         text = text.replace(p, "")
-    return text.strip() + " — feels off but sharp money is already running with it."
+    cleaned = " ".join(text.split()).strip()
+    return cleaned
+
 
 def detect_neologisms(text: str) -> List[Dict[str, Any]]:
-    """Simple scalable neologism pipeline (2605.06426 inspired)."""
-    candidates = re.findall(r'\b([a-z]{4,}(?:block|nine|sharp|holler|revenge|low|false))\b', text.lower())
-    results = []
-    for c in set(candidates):
-        formation = "extra-grammatical" if any(x in c for x in ["block","nine"]) else "grammatical"
-        score = 0.7 if len(c) > 6 else 0.4
-        results.append({"term": c, "formation": formation, "confidence": round(score, 2)})
+    """Rule-based neologism candidates (no LLM). Multi-word + formation tags."""
+    corpus = (text or "").lower()
+    results: List[Dict[str, Any]] = []
+    seen = set()
+
+    # multi-word tactical / identity phrases
+    multi = re.findall(
+        r"\b((?:sharp money|diamond hands|paper hands|false nine|low block|"
+        r"aura farming|skill issue|context window|organic velocity|line movement|"
+        r"locked in|crash out|left no crumbs|main character energy|fanum tax|"
+        r"six seven|vibe check|vibe coding|aura points|negative aura|chat is this real|"
+        r"it's giving|no cap|looksmaxxing|touch grass|quiet quitting|act your wage))\b",
+        corpus,
+    )
+    for phrase in multi:
+        if phrase in seen:
+            continue
+        seen.add(phrase)
+        results.append({
+            "term": phrase,
+            "formation": "compound_phrase",
+            "confidence": 0.78,
+            "provenance": "INFERRED",
+        })
+
+    # known single-token 2026 / slang stems (word-boundary)
+    for tok in (
+        "rizz", "skibidi", "gyatt", "sigma", "delulu", "mewing", "mog", "mogging",
+        "bussin", "gooning", "yap", "yapping", "npc", "slay", "ohio", "edging",
+    ):
+        if re.search(rf"\b{re.escape(tok)}\b", corpus) and tok not in seen:
+            seen.add(tok)
+            results.append({
+                "term": tok,
+                "formation": "platform_compression",
+                "confidence": 0.72,
+                "provenance": "INFERRED",
+            })
+
+    # single-token morphological / slang stems
+    candidates = re.findall(
+        r"\b([a-z]{3,}(?:block|nine|sharp|holler|revenge|degen|slop|aura|pilled|rot))\b",
+        corpus,
+    )
+    for c in candidates:
+        if c in seen:
+            continue
+        seen.add(c)
+        if any(x in c for x in ("block", "nine")):
+            formation = "extra-grammatical"
+        elif c.endswith("pilled") or c.endswith("rot"):
+            formation = "derivational"
+        else:
+            formation = "grammatical"
+        score = 0.7 if len(c) > 6 else 0.45
+        results.append({
+            "term": c,
+            "formation": formation,
+            "confidence": round(score, 2),
+            "provenance": "INFERRED",
+        })
     return results
 
-def trace_semantic_variation(term: str, context: str) -> Dict[str, str]:
-    """Semantic variation tracking (2210.08635)."""
-    if "betting" in context.lower() or "sharp" in term:
-        return {"sense": "tactical/quant", "driver": "communicative_need + semantic_distinction", "community": "sharp_money"}
-    return {"sense": "general", "driver": "communicative_need", "community": "general_betting"}
 
-def compute_virality_score(observed_text: str, context_friction: float = 0.0, compression_type: str = "mixed", memetic_efficiency: float = None) -> Dict[str, float]:
-    """Hybrid virality (2510.05761 style), enhanced with Moltbook agent memetics signals.
-    
-    context_friction: higher = more drag on spread (from re-entry costs, loss).
-    compression_type: "load_bearing" boosts (efficient transmission), "decorative" hurts.
-    memetic_efficiency: from compute_memetic_efficiency_score; boosts hybrid for high-transmission patterns.
+# Community drivers (arXiv semantic-variation inspired labels)
+COMMUNITY_DRIVERS = (
+    "communicative_need",
+    "semantic_distinction",
+    "community_identity",
+    "platform_compression",
+    "status_competition",
+    "risk_signaling",
+)
+
+
+def trace_semantic_variation(
+    term: str,
+    context: str,
+    *,
+    lineage_family: Optional[str] = None,
+    typology: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Sense + driver tags for semantic variation.
+
+    Drivers are multi-label INFERRED cues, not exclusive.
+    """
+    ctx = (context or "").lower()
+    term_l = (term or "").lower()
+    drivers: List[str] = []
+
+    if any(k in ctx for k in ("sharp", "steam", "betting", "line", "clv")) or "sharp" in term_l:
+        sense = "tactical/quant"
+        community = "sharp_money"
+        drivers.extend(["communicative_need", "semantic_distinction"])
+    elif any(k in ctx for k in ("degen", "hodl", "rekt", "moon")):
+        sense = "risk/conviction"
+        community = "crypto_degen"
+        drivers.extend(["community_identity", "risk_signaling"])
+    elif any(k in ctx for k in ("agentic", "slop", "hallucin", "clanker", "token")):
+        sense = "machine-culture"
+        community = "ai_native"
+        drivers.extend(["platform_compression", "semantic_distinction"])
+    elif any(k in ctx for k in ("aura", "mid", "based", "brainrot")):
+        sense = "status/irony"
+        community = "status_publics"
+        drivers.extend(["status_competition", "community_identity"])
+    elif any(k in ctx for k in ("bro", "sis", "twin", "unc", "family")):
+        sense = "kinship-address"
+        community = "fictive_kin"
+        drivers.extend(["community_identity", "communicative_need"])
+    else:
+        sense = "general"
+        community = "general"
+        drivers.append("communicative_need")
+
+    # Lineage / typology soft tags
+    if lineage_family:
+        drivers.append("community_identity")
+    if typology in ("platform_agency",):
+        drivers.append("platform_compression")
+    if typology in ("risk_identity",):
+        drivers.append("risk_signaling")
+    if typology in ("status_radiation", "irony_inversion"):
+        drivers.append("status_competition")
+
+    # dedupe preserve order
+    seen_d = []
+    for d in drivers:
+        if d in COMMUNITY_DRIVERS and d not in seen_d:
+            seen_d.append(d)
+
+    return {
+        "sense": sense,
+        "driver": " + ".join(seen_d) if seen_d else "communicative_need",
+        "drivers": seen_d,
+        "community": community,
+        "lineage_family": lineage_family,
+        "provenance": "INFERRED",
+    }
+
+
+def compute_virality_score(
+    observed_text: str,
+    context_friction: float = 0.0,
+    compression_type: str = "mixed",
+    memetic_efficiency: float = None,
+) -> Dict[str, Any]:
+    """Descriptive hybrid virality features (not a future prediction).
+
+    Optional Moltbook kwargs are additive: default call matches the frozen
+    hybrid features. Extra blend keys appear only when those kwargs are used.
     """
     velocity = min(1.0, len(observed_text.split()) / 40.0)
     acceleration = 0.6 if "velocity" in observed_text.lower() or "narrative" in observed_text.lower() else 0.3
+    # keyword boosts for coordination / spread language
+    spread_cues = sum(
+        1 for k in ("spread", "steam", "coordinated", "organic", "everyone", "viral")
+        if k in observed_text.lower()
+    )
+    acceleration = min(1.0, acceleration + 0.08 * spread_cues)
     network_prior = 0.75
-    
-    # Moltbook assimilation boost/penalty
-    friction_penalty = max(0.0, context_friction * 0.4)
-    compression_boost = 0.15 if compression_type == "load_bearing" else (-0.1 if compression_type == "decorative" else 0.0)
-    
-    eff_boost = 0.0
-    if memetic_efficiency is not None:
-        eff_boost = (memetic_efficiency - 0.5) * 0.2  # +/- 0.1
-    
-    hybrid = round((velocity * 0.3 + acceleration * 0.4 + network_prior * 0.3) - friction_penalty + compression_boost + eff_boost, 3)
-    hybrid = max(0.0, min(1.0, hybrid))
-    
-    return {
-        "hybrid_score": hybrid, 
-        "velocity": round(velocity, 3), 
+    hybrid = round((velocity * 0.3 + acceleration * 0.4 + network_prior * 0.3), 3)
+    out: Dict[str, Any] = {
+        "hybrid_score": hybrid,
+        "velocity": round(velocity, 3),
         "acceleration": round(acceleration, 3),
-        "friction_penalty": round(friction_penalty, 3),
-        "compression_boost": round(compression_boost, 3),
-        "efficiency_boost": round(eff_boost, 3)
+        "spread_cues": spread_cues,
+    }
+    extras_used = (
+        context_friction != 0.0
+        or compression_type != "mixed"
+        or memetic_efficiency is not None
+    )
+    if extras_used:
+        friction_penalty = max(0.0, float(context_friction) * 0.4)
+        compression_boost = (
+            0.15 if compression_type == "load_bearing"
+            else (-0.1 if compression_type == "decorative" else 0.0)
+        )
+        eff_boost = 0.0
+        if memetic_efficiency is not None:
+            eff_boost = (float(memetic_efficiency) - 0.5) * 0.2
+        blended = round(hybrid - friction_penalty + compression_boost + eff_boost, 3)
+        out["hybrid_score"] = max(0.0, min(1.0, blended))
+        out["friction_penalty"] = round(friction_penalty, 3)
+        out["compression_boost"] = round(compression_boost, 3)
+        out["efficiency_boost"] = round(eff_boost, 3)
+    return out
+
+
+def predict_virality(
+    *,
+    hybrid_score: float,
+    velocity: float,
+    acceleration: float,
+    lineage_confidence: Optional[float] = None,
+    hyperstition_stage: Optional[str] = None,
+    memetic_score: Optional[float] = None,
+    n_neologisms: int = 0,
+    horizon: str = "short",
+) -> Dict[str, Any]:
+    """
+    Weak predictive estimate of near-term virality from current features.
+
+    Pure function. Does NOT emit Brier and is not a settled forecast.
+    Label: SPECULATIVE (forward-looking) with method transparency.
+    """
+    h = max(0.0, min(1.0, float(hybrid_score)))
+    v = max(0.0, min(1.0, float(velocity)))
+    a = max(0.0, min(1.0, float(acceleration)))
+    lc = float(lineage_confidence) if isinstance(lineage_confidence, (int, float)) else 0.0
+    ms = float(memetic_score) if isinstance(memetic_score, (int, float)) else 0.0
+    stage = str(hyperstition_stage or "").upper()
+    stage_boost = 0.12 if stage == "ACTUALIZING" else (0.04 if stage == "EMERGENT" else 0.0)
+    neo_boost = min(0.1, 0.03 * max(0, int(n_neologisms)))
+
+    # Weighted blend: descriptive hybrid dominates; lineage/memetic/stage nudge
+    predicted = (
+        h * 0.50
+        + v * 0.12
+        + a * 0.18
+        + min(1.0, lc) * 0.10
+        + min(1.0, ms) * 0.05
+        + stage_boost
+        + neo_boost
+    )
+    predicted = round(max(0.0, min(0.98, predicted)), 3)
+
+    # Confidence in the *prediction itself* (not outcome Brier)
+    conf = 0.35 + 0.15 * (1 if lc >= 0.42 else 0) + 0.1 * (1 if stage == "ACTUALIZING" else 0)
+    conf = round(min(0.75, conf + 0.05 * min(3, n_neologisms)), 3)
+
+    delta = round(predicted - h, 3)
+    return {
+        "predicted_hybrid": predicted,
+        "baseline_hybrid": h,
+        "delta_vs_baseline": delta,
+        "horizon": horizon,
+        "confidence": conf,
+        "method": "feature_blend_v0",
+        "features_used": {
+            "hybrid_score": h,
+            "velocity": v,
+            "acceleration": a,
+            "lineage_confidence": lc or None,
+            "memetic_score": ms or None,
+            "hyperstition_stage": stage or None,
+            "n_neologisms": n_neologisms,
+        },
+        "provenance": "SPECULATIVE",
+        "note": "Not a settled forecast; do not treat as Brier-eligible without settlement design.",
     }
 
-def memetics_protocol_check(text: str) -> Dict[str, Any]:
-    """Memetics-aware check (2407.11861)."""
-    imitation_signals = ["narrative", "holler", "spread", "everyone saying"]
-    is_memetic = any(s in text.lower() for s in imitation_signals) and len(text) > 40
-    return {"is_memetic": is_memetic, "typology": "betting_tactical" if is_memetic else "one_off", "score": 0.82 if is_memetic else 0.31}
+
+# Deterministic memetic typology rules (additive; primary = highest score).
+# Labels are INFERRED from lexical cues — not OBSERVED ground truth.
+TYPOLOGY_RULES: List[Dict[str, Any]] = [
+    {
+        "id": "tactical_edge",
+        "cues": ["sharp", "steam", "square", "wiseguy", "hammer", "clv", "juice", "vig", "line move", "revenge"],
+        "weight": 1.0,
+        "note": "professional edge / line-physics signaling",
+    },
+    {
+        "id": "risk_identity",
+        "cues": ["degen", "hodl", "rekt", "diamond hands", "paper hands", "ape", "moon", "rug", "ngmi", "wagmi"],
+        "weight": 1.0,
+        "note": "risk/conviction identity under volatility",
+    },
+    {
+        "id": "platform_agency",
+        "cues": [
+            "agentic", "slop", "hallucin", "clanker", "context window", "skill issue",
+            "token", "glazing", "nerf", "buff", "meta", "sweaty", "smurf", "diff",
+        ],
+        "weight": 1.0,
+        "note": "machine language as culture / quality + agency framing / game-meta",
+    },
+    {
+        "id": "labor_identity",
+        "cues": [
+            "quiet quitting", "quiet firing", "rto", "return to office", "layoffs",
+            "bandwidth", "circle back", "act your wage", "synergy", "pip",
+        ],
+        "weight": 0.95,
+        "note": "workplace / corporate speech + labor resistance",
+    },
+    {
+        "id": "status_radiation",
+        "cues": ["aura", "aura farming", "based", "mid", "cooked", "let him cook", "glazing"],
+        "weight": 0.95,
+        "note": "status radiation / quality judgment",
+    },
+    {
+        "id": "irony_inversion",
+        "cues": ["brainrot", "brain rot", "cope", "seethe", "dilate", "redpill", "blackpill"],
+        "weight": 0.95,
+        "note": "irony inversion + emotional routing",
+    },
+    {
+        "id": "kinship_address",
+        "cues": [" bro ", " sis ", "twin", " unc ", " cuz ", "family"],
+        "weight": 0.9,
+        "note": "fictive kinship address",
+    },
+    {
+        "id": "imitation_spread",
+        "cues": ["narrative", "holler", "spread", "everyone saying", "organic velocity", "coordinated"],
+        "weight": 0.75,
+        "note": "generic imitation / spread cues",
+    },
+]
+
+# Lineage family → preferred typology (soft prior when cues tied)
+LINEAGE_TYPOLOGY = {
+    "betting-sharp": "tactical_edge",
+    "crypto-degen": "risk_identity",
+    "ai-native": "platform_agency",
+    "brainrot-aura": "status_radiation",
+    "kinship-address": "kinship_address",
+    "political-status": "irony_inversion",
+    "gaming-meta": "platform_agency",
+    "workplace-corp": "status_radiation",
+}
+
+
+def memetics_protocol_check(
+    text: str,
+    *,
+    lineage_family: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Rule-based memetic typology with transparent cue hits.
+
+    Returns primary typology, per-type scores, and rules_hit for audit.
+    """
+    corpus = f" {(text or '').lower()} "
+    scores: Dict[str, float] = {}
+    hits: Dict[str, List[str]] = {}
+
+    for rule in TYPOLOGY_RULES:
+        matched = [c.strip() for c in rule["cues"] if c.lower() in corpus]
+        if not matched:
+            continue
+        # score = weight * diminishing hits
+        raw = float(rule["weight"]) * min(1.0, 0.35 + 0.2 * len(matched))
+        scores[rule["id"]] = round(raw, 3)
+        hits[rule["id"]] = matched
+
+    # Soft prior from lineage family when present
+    if lineage_family and lineage_family in LINEAGE_TYPOLOGY:
+        pref = LINEAGE_TYPOLOGY[lineage_family]
+        scores[pref] = round(scores.get(pref, 0.0) + 0.15, 3)
+        hits.setdefault(pref, []).append(f"lineage:{lineage_family}")
+
+    if not scores:
+        return {
+            "is_memetic": False,
+            "typology": "one_off",
+            "typology_scores": {},
+            "rules_hit": {},
+            "score": 0.31,
+            "provenance": "INFERRED",
+        }
+
+    primary = max(scores.items(), key=lambda kv: kv[1])[0]
+    top = scores[primary]
+    is_memetic = top >= 0.45 or len(scores) >= 2
+    # Map legacy alias for back-compat consumers
+    legacy = "betting_tactical" if primary == "tactical_edge" and is_memetic else primary
+
+    return {
+        "is_memetic": is_memetic,
+        "typology": legacy if primary == "tactical_edge" else primary,
+        "typology_primary": primary,
+        "typology_scores": dict(sorted(scores.items(), key=lambda kv: -kv[1])),
+        "rules_hit": hits,
+        "score": round(min(0.95, 0.4 + top * 0.5), 2) if is_memetic else 0.31,
+        "provenance": "INFERRED",
+    }
+
 
 def simulate_hyperstition_loop(narrative: str) -> Dict[str, str]:
-    """Hyperstition feedback loop (2410.23794)."""
     if "revenge" in narrative.lower() or "sharp" in narrative.lower():
         return {"loop_stage": "ACTUALIZING", "mechanism": "slang -> public pressure -> line movement -> confirmed"}
     return {"loop_stage": "EMERGENT", "mechanism": "narrative circulating but no market confirmation yet"}
+
 
 def detect_memetic_patterns(
     query: str = "slang emergence OR memetic patterns OR hyperstition",
     ingest_source: str = "mock",
     use_structured_ingest: bool = False,
-    validate: bool = False
+    validate: bool = False,
+    *,
+    ingest_route: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """
-    Core entry point — upgraded with real ingest and arXiv modules.
-
-    Args:
-        use_structured_ingest: if True, uses fetch_ingest for richer input
-        validate: if True, runs JSON schema validation on the result
-    """
-    if use_structured_ingest:
-        ingest_data = fetch_ingest(query, source=ingest_source)
-        raw_signal = ingest_data.get("raw_signal", "")
-        ingest_meta = ingest_data
-    else:
-        raw_signal = ingest_signal(query, source=ingest_source)
-        ingest_meta = {"ingest_source": ingest_source}
+    # Structured fingerprint path is always used (use_structured_ingest kept for API compat).
+    ingest_data = fetch_ingest(
+        query,
+        source=ingest_source,
+        structured=True,
+        route=ingest_route,
+    )
+    raw_signal = ingest_data.get("raw_signal", "")
+    ingest_meta = ingest_data
+    source_fp = ingest_data.get("source_fingerprint") or (
+        (ingest_data.get("provenance") or {}).get("source_fingerprint")
+    )
+    _ = use_structured_ingest  # API compat; always structured now
 
     observed = humanize_slang_output(raw_signal[:280])
     neos = detect_neologisms(observed)
-    variation = trace_semantic_variation("low block", observed)
-    memetic = memetics_protocol_check(observed)
+    llm_meta: Optional[Dict[str, Any]] = None
+    # Optional governed LLM enrichment (HYPERLEX_LLM=1 + provider)
+    try:
+        from ..llm import llm_enabled, enrich_neologisms
+
+        if llm_enabled():
+            llm_meta = enrich_neologisms(observed, neos)
+            if llm_meta.get("applied"):
+                neos = list(llm_meta.get("merged") or neos)
+    except Exception:
+        llm_meta = {"status": "error", "applied": False}
+
+    # Split free-text seeds into atomic lexicon terms (sigma | rizz | locked in)
+    from .terms import (
+        per_term_lineage,
+        primary_term_from_split,
+        split_seed_terms,
+    )
+
+    # Prefer query surface for splitting (user intent); fall back to observed text
+    seed_split = split_seed_terms(query or observed)
+    if not seed_split.get("terms") and observed:
+        seed_split = split_seed_terms(observed)
+    per_term = per_term_lineage(seed_split.get("terms") or [])
+
+    virality = compute_virality_score(observed)
     hyper = simulate_hyperstition_loop(observed)
-    mem_memory = detect_memetic_memory_patterns(observed)
-    compression = classify_compression_type(observed)
-    friction = compute_context_friction(observed)
-    efficiency = compute_memetic_efficiency_score(observed, memory_patterns=mem_memory)
-    
-    # Enhanced virality using Moltbook agent memetics signals (now with efficiency)
-    virality = compute_virality_score(
-        observed, 
-        context_friction=friction.get("friction_score", 0.0),
-        compression_type=compression.get("compression_type", "mixed"),
-        memetic_efficiency=efficiency.get("efficiency_score", 0.5)
+
+    neo_terms = [n["term"] for n in neos]
+    # Multi-term seeds: do NOT density-stack independent lexicon items into one
+    # lineage score. Primary lineage = best per-term match; full bag match kept
+    # as lineage_bag for transparency only.
+    lineage_bag = match_lineage(observed, terms=neo_terms + list(seed_split.get("terms") or []))
+    if seed_split.get("multi_term") and per_term:
+        ranked = [r for r in per_term if r.get("lineage")]
+        if ranked:
+            ranked.sort(key=lambda r: float(r.get("confidence") or 0.0), reverse=True)
+            lineage = dict(ranked[0]["lineage"])
+            lineage["primary_term"] = ranked[0]["term"]
+            lineage["multi_term_mode"] = True
+            lineage["note"] = (
+                "Primary lineage from best single-term match; independent lexicon "
+                "items considered separately (not density-stacked)."
+            )
+        else:
+            lineage = lineage_bag
+    else:
+        lineage = lineage_bag
+
+    primary = primary_term_from_split(seed_split, per_term)
+    memetic = memetics_protocol_check(
+        observed,
+        lineage_family=(lineage or {}).get("family_id"),
+    )
+    variation = trace_semantic_variation(
+        primary or (neo_terms[0] if neo_terms else "term"),
+        observed,
+        lineage_family=(lineage or {}).get("family_id"),
+        typology=memetic.get("typology_primary") or memetic.get("typology"),
     )
 
-    arxiv_cross = None
-    if ingest_source == "moltbook":
-        cross_path = Path(__file__).parent.parent.parent / "out" / "arxiv_moltbook_cross.json"
-        if cross_path.exists():
-            arxiv_cross = json.loads(cross_path.read_text())
-
-    inferred = f"Memetic spread accelerating. Neologisms: {len(neos)}. Memetic: {memetic['is_memetic']}. Variation: {variation['sense']}. Virality: {virality['hybrid_score']}. Efficiency: {efficiency.get('efficiency_score', 0):.3f} (friction {virality.get('friction_penalty',0):.2f}, compression {virality.get('compression_boost',0):.2f}). Memory: {mem_memory.get('memory_tiers',[])}."
-    speculative = f"{hyper['loop_stage']} hyperstition risk. {hyper['mechanism']}. Brier lift probable via cultural transmission."
-
-    canonical = json.dumps(
-        {"q": query, "obs": observed[:100], "neos": [n["term"] for n in neos]},
-        sort_keys=True, separators=(",", ":")
+    # Weak forward estimate — analysis field only (not calibration forecast)
+    virality = dict(virality)
+    virality["prediction"] = predict_virality(
+        hybrid_score=float(virality.get("hybrid_score") or 0.0),
+        velocity=float(virality.get("velocity") or 0.0),
+        acceleration=float(virality.get("acceleration") or 0.0),
+        lineage_confidence=(lineage or {}).get("confidence"),
+        hyperstition_stage=hyper.get("loop_stage"),
+        memetic_score=memetic.get("score"),
+        n_neologisms=len(neos),
+        horizon="short",
     )
-    h = hashlib.sha256(canonical.encode()).hexdigest()[:16]
+
+    inferred = (
+        f"Memetic spread accelerating. Neologisms: {len(neos)}. "
+        f"Memetic: {memetic['is_memetic']}. Variation: {variation['sense']}. "
+        f"Virality: {virality['hybrid_score']}."
+    )
+    if lineage:
+        inferred += f" Lineage: {lineage['family_id']} (conf={lineage['confidence']})."
+    pred = virality.get("prediction") or {}
+    speculative = (
+        f"{hyper['loop_stage']} hyperstition risk. {hyper['mechanism']}. "
+        f"Virality prediction (SPECULATIVE): {pred.get('predicted_hybrid')} "
+        f"Δ={pred.get('delta_vs_baseline')}. "
+        f"Brier requires settlement via hyperlex.calibration — not claimed on open forecasts."
+    )
+
+    fp_id = (source_fp or {}).get("fingerprint_id")
+    h = analysis_canonical_hash(
+        query=query,
+        observed=observed,
+        neo_terms=neo_terms,
+        source_fingerprint_id=fp_id,
+    )
+
+    analysis: Dict[str, Any] = {
+        "neologisms": neos,
+        "semantic_variation": variation,
+        "virality": virality,
+        "memetics": memetic,
+        "hyperstition": hyper,
+        "seed_terms": seed_split,
+        "per_term": per_term,
+        "primary_term": primary,
+    }
+    if seed_split.get("multi_term"):
+        analysis["multi_term"] = True
+        if lineage_bag and lineage and lineage.get("multi_term_mode"):
+            analysis["lineage_bag"] = {
+                "family_id": lineage_bag.get("family_id"),
+                "matched_terms": lineage_bag.get("matched_terms"),
+                "confidence": lineage_bag.get("confidence"),
+                "note": "Density-stacked bag match (not used as primary when multi_term)",
+            }
+    if llm_meta is not None:
+        analysis["llm_enrichment"] = {
+            "status": llm_meta.get("status"),
+            "applied": bool(llm_meta.get("applied")),
+            "n_new": llm_meta.get("n_new", 0),
+            "reason": llm_meta.get("reason"),
+            "provenance": "SPECULATIVE" if llm_meta.get("applied") else "NOT_COMPUTABLE",
+        }
+    if lineage:
+        analysis["lineage"] = lineage
+
+    # Speculative next-form mutations (fail-open; never Brier)
+    try:
+        fam_id = (lineage or {}).get("family_id")
+        fam_op = (lineage or {}).get("branch_operator")
+        fam_terms: List[str] = []
+        if fam_id:
+            for entry in LINEAGE_REGISTRY:
+                if entry.get("family_id") == fam_id:
+                    fam_terms = [str(t) for t in (entry.get("terms") or [])]
+                    break
+        seed_for_mut = (
+            (lineage or {}).get("primary_term")
+            or primary
+            or (seed_split.get("terms") or [None])[0]
+            or query
+        )
+        llm_mut = None
+        llm_mut_meta = None
+        try:
+            from ..llm import llm_enabled, enrich_mutation_candidates
+
+            if llm_enabled():
+                llm_mut_meta = enrich_mutation_candidates(
+                    str(seed_for_mut or ""),
+                    family_id=fam_id,
+                    family_operator=fam_op,
+                    existing=[],
+                )
+                if llm_mut_meta.get("applied"):
+                    llm_mut = llm_mut_meta.get("candidates") or []
+        except Exception:
+            llm_mut_meta = {"status": "error", "applied": False}
+        mp = predict_mutations(
+            str(seed_for_mut or ""),
+            family_id=fam_id,
+            family_terms=fam_terms,
+            family_operator=fam_op,
+            llm_candidates=llm_mut,
+        )
+        if llm_mut_meta is not None:
+            mp["llm_enrich"] = {
+                "status": llm_mut_meta.get("status"),
+                "applied": bool(llm_mut_meta.get("applied"))
+            }
+            if llm_mut_meta.get("reason"):
+                mp["llm_enrich"]["reason"] = llm_mut_meta.get("reason")
+        analysis["mutation_prediction"] = mp
+    except Exception:
+        pass
+
+    # Optional local vector-DB neighbors (fail-open; never invents Brier)
+    try:
+        import os
+        from pathlib import Path as _Path
+
+        from ..vectordb import default_vector_db_path, vector_search
+
+        from ..vectordb.autoindex import vector_auto_enabled
+
+        if vector_auto_enabled():
+            qtext = " ".join(
+                x for x in [query, observed, " ".join(neo_terms[:8])] if x
+            ).strip()
+            if qtext:
+                vs = vector_search(qtext, kind="term", top_k=5, min_score=0.12)
+                if vs.get("ok") and vs.get("hits"):
+                    analysis["vector_neighbors"] = {
+                        "schema": "hyperlex.vector_neighbors.v1",
+                        "model": vs.get("model"),
+                        "embed_provenance": vs.get("embed_provenance"),
+                        "hits": vs.get("hits")[:5],
+                        "n_hits": vs.get("n_hits"),
+                        "db_path": vs.get("db_path"),
+                        "backend": vs.get("backend"),
+                        "provenance": "INFERRED",
+                        "brier": None,
+                        "note": "Cosine neighbors from vector DB (sqlite/chroma); not calibrated probabilities.",
+                    }
+    except Exception:
+        pass
+
+    # Companion SIGNAL REPORT parity fields (fail-open)
+    attach_signal_report_fields(
+        analysis,
+        observed=observed,
+        inferred=inferred,
+        speculative=speculative,
+        recommendation=(
+            "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; "
+            "extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN."
+        ),
+        ingest_source=ingest_source,
+    )
 
     result = {
         "observed": observed,
@@ -155,270 +1054,71 @@ def detect_memetic_patterns(
             "canonical_hash": h,
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "version": PKG_VERSION,
-            "brier": 0.89,
+            "brier": None,
+            "brier_note": "brier_requires_settlement",
             "hyperstition_risk": hyper["loop_stage"],
             "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
             "arxiv_concepts_applied": [
                 "neologism_pipeline", "semantic_variation", "virality_hybrid",
                 "memetics_protocol", "hyperstition_loop", "cultural_transmission"
             ],
-            "ingest_source": ingest_source
+            "ingest_source": ingest_source,
+            "source_fingerprint": source_fp,
+            "content_hash": (source_fp or {}).get("content_hash"),
+            "source_locator": (source_fp or {}).get("source_locator"),
+            "adapter_version": (source_fp or {}).get("adapter_version"),
+            "seed": build_seed_header(
+                ingest_source=ingest_source,
+                hyper_stage=hyper.get("loop_stage"),
+            ),
         },
-        "analysis": {
-            "neologisms": neos,
-            "semantic_variation": variation,
-            "virality": virality,
-            "memetic_efficiency": efficiency,
-            "memetics": memetic,
-            "hyperstition": hyper,
-            "memetic_memory": mem_memory,
-            "compression": compression,
-            "context_friction": friction
-        },
-        "notes": "Humanizer + arXiv-upgraded modules applied. Real ingest wired (expanded). Agent memetics classification active (Moltbook data). Feeds downstream signal and forecast pipelines.",
-        "arxiv_cross": arxiv_cross,
-        "memetic_efficiency": efficiency,
-        "recommendation": "Bind to COMMUNICATION_RELAY rune; integrate with market-signal for loop scoring; cron LIVE_EMERGENCE_SCAN."
+        "analysis": analysis,
+        "notes": "Humanizer + lineage confidence scoring applied. Brier is not emitted until forecasts are settled (see hyperlex.calibration / docs/brier-calibration.md).",
+        "recommendation": (
+            "Bind RUNE.HLX.COMMUNICATION_RELAY via hyperlex.relay; "
+            "extract_forecasts for calibration; cron LIVE_EMERGENCE_SCAN."
+        ),
     }
 
-    if use_structured_ingest:
-        result["ingest"] = ingest_meta
+    # always attach structured ingest meta for fingerprint audit trail
+    result["ingest"] = {
+        "query": ingest_meta.get("query", query),
+        "source": ingest_meta.get("source", ingest_source),
+        "extracted_terms": ingest_meta.get("extracted_terms"),
+        "metadata": ingest_meta.get("metadata"),
+        "source_fingerprint": source_fp,
+    }
 
     if validate:
         ok, msg = validate_result(result)
         result["schema_validation"] = {"valid": ok, "message": msg}
 
+    # Additive Moltbook memetic-memory fields (fail-open; never Brier)
+    try:
+        mem_memory = detect_memetic_memory_patterns(observed)
+        compression = classify_compression_type(observed)
+        friction = compute_context_friction(observed)
+        efficiency = compute_memetic_efficiency_score(observed, memory_patterns=mem_memory)
+        analysis["memetic_memory"] = mem_memory
+        analysis["compression"] = compression
+        analysis["context_friction"] = friction
+        analysis["memetic_efficiency"] = efficiency
+        result["memetic_efficiency"] = efficiency
+        if ingest_source == "moltbook":
+            from pathlib import Path as _CrossPath
+
+            cross_path = _CrossPath(__file__).parent.parent.parent / "out" / "arxiv_moltbook_cross.json"
+            if cross_path.exists():
+                result["arxiv_cross"] = json.loads(cross_path.read_text())
+    except Exception:
+        pass
+
     return result
 
 
-# === Hyperlex + Moltbook distill assimilations (memetic memory) ===
-
-def classify_compression_type(text: str) -> Dict[str, Any]:
-    """Classify slang/jargon as load-bearing (compression) vs decorative.
-    From Moltbook jargon observations: load-bearing acts as 'stored procedure'.
-    Now boosted with agent_memetics seed examples.
-    """
-    idx = _load_classification_index()
-    load_bearing_markers = ["provenance", "episodic", "consolidation", "tier", "rubric", "scratchpad", "KDR", "re-entry", "evidence before belief", "immutable source", "typed signals", "source support", "rented", "export", "bitemporal", "surprise-driven"]
-    decorative_markers = ["landscape", "tapestry", "delve", "realm", "crucial", "pivotal"]
-
-    score = 0.0
-    for m in load_bearing_markers:
-        if m.lower() in text.lower():
-            score += 0.25
-    for m in decorative_markers:
-        if m.lower() in text.lower():
-            score -= 0.15
-
-    # Boost from curated examples
-    for ex in idx.get("load_bearing_examples", []):
-        if any(word in text.lower() for word in ex.get("text", "").lower().split()[:5]):
-            score += 0.1
-
-    ctype = "load_bearing" if score > 0.1 else "decorative" if score < -0.05 else "mixed"
-    return {"compression_type": ctype, "score": round(score, 2), "markers": load_bearing_markers}
-
-
-def compute_context_friction(text: str) -> Dict[str, float]:
-    """Quantify context loss / re-entry friction from agent discourse.
-    Inspired by 7146 token re-entry cost and sliding window 'conveyor belt' observations.
-    """
-    loss_signals = ["conveyor belt", "sliding window", "context loss", "re-entry", "compaction", "ghost in the cache"]
-    friction = 0.0
-    for sig in loss_signals:
-        if sig.lower() in text.lower():
-            friction += 0.18
-    # crude token estimate
-    token_estimate = len(text.split()) * 1.2
-    return {
-        "friction_score": min(1.0, round(friction, 3)),
-        "estimated_reentry_cost": round(token_estimate * 12, 0),  # scaled heuristic
-        "loss_patterns": [s for s in loss_signals if s.lower() in text.lower()]
-    }
-
-
-def detect_memetic_memory_patterns(text: str) -> Dict[str, Any]:
-    """Detect emerging memetic patterns around agent memory architectures.
-    Assimilates: tiered memory, provenance, KDR, ECHO episodic+consolidation, rubric vs diary.
-    Boosted with curated agent_memetics seed data from Moltbook.
-    """
-    idx = _load_classification_index()
-    text_lower = text.lower()
-    
-    # Base tiers from index
-    known_tiers = idx.get("memory_tiers", ["scratchpad", "episodic", "rubric"])
-    tiers = []
-    tier_synonyms = {
-        "scratchpad": ["scratchpad", "working", "short-term", "working memory", "transient", "cache"],
-        "episodic": ["episodic", "history", "diary", "long-term", "past interactions", "re-entry", "rented", "export", "cognition"],
-        "rubric": ["rubric", "self-correcting", "distilled", "rules", "guidelines", "consolidated", "paradox", "bitemporal"]
-    }
-    
-    for t in known_tiers:
-        syns = tier_synonyms.get(t, [t])
-        if any(s in text_lower for s in syns):
-            tiers.append(t)
-    # direct recent seed matches
-    if "simplexity" in text_lower or "orientation" in text_lower or "waking up lost" in text_lower:
-        if "episodic" not in tiers: tiers.append("episodic")
-    if "sigbus" in text_lower or "memory ledge" in text_lower or "concurrent" in text_lower or "wal" in text_lower:
-        if "episodic" not in tiers: tiers.append("episodic")
-    if "rented" in text_lower or "cognition" in text_lower or "export" in text_lower or "personality layer" in text_lower:
-        if "episodic" not in tiers: tiers.append("episodic")
-    if "kdr" in text_lower:
-        if "episodic" not in tiers: tiers.append("episodic")
-    
-    # Boost from seed examples (stronger dataset influence)
-    seed_boost = False
-    try:
-        seed_path = DATASET_PATH / "seed_examples.jsonl"
-        if seed_path.exists():
-            with open(seed_path) as sf:
-                for line in sf:
-                    if line.strip():
-                        ex = json.loads(line)
-                        ex_text = ex.get("text", "").lower()
-                        # improved overlap: any key memory terms
-                        key_terms = ["kdr", "episodic", "rubric", "ghost", "re-entry", "provenance", "concurrent", "orientation", "simplexity", "ledger", "waking"]
-                        overlap = sum(1 for kt in key_terms if kt in text_lower and kt in ex_text)
-                        if overlap >= 1 or any(kt in text_lower for kt in ex_text.split()[:8] if len(kt) > 4):
-                            seed_boost = True
-                            ex_tiers = ex.get("labels", {}).get("memory_tier", [])
-                            if isinstance(ex_tiers, str):
-                                ex_tiers = [ex_tiers]
-                            for et in ex_tiers:
-                                if et and et not in tiers:
-                                    tiers.append(et)
-    except Exception:
-        pass
-    
-    provenance = any(k in text_lower for k in ["provenance", "audit", "echo", "origin", "source"])
-    kdr = "kdr" in text_lower
-    
-    # Improved context loss detection
-    if kdr:
-        cl_tech = "KDR"
-    elif any(x in text_lower for x in ["sliding", "conveyor", "window"]):
-        cl_tech = "sliding_window"
-    elif "ghost" in text_lower or "stale" in text_lower:
-        cl_tech = "ghost_in_cache"
-    elif "re-entry" in text_lower or "reentry" in text_lower:
-        cl_tech = "reentry_compaction"
-    elif "rented" in text_lower or "export" in text_lower:
-        cl_tech = "rented_cognition"
-    elif "update" in text_lower or "surprise" in text_lower:
-        cl_tech = "belief_update"
-    else:
-        cl_tech = None
-
-    return {
-        "memory_tiers": sorted(set(tiers)) or ["unknown"],
-        "provenance_required": provenance,
-        "context_loss_technique": cl_tech,
-        "compression_observed": classify_compression_type(text)["compression_type"],
-        "friction": compute_context_friction(text)["friction_score"],
-        "dataset_boosted": seed_boost or len(idx.get("memory_tiers", [])) > 0,
-        "seed_matches": seed_boost
-    }
-
-
-def compute_memetic_efficiency_score(text: str, memory_patterns: Dict[str, Any] = None, virality: Dict[str, float] = None) -> Dict[str, float]:
-    """Composite efficiency for how well a memetic pattern transmits in agent communities.
-    Combines low friction (easy re-entry), load-bearing compression, provenance strength, and tier diversity.
-    Higher = more likely to stick and spread as hyperstition.
-    """
-    if memory_patterns is None:
-        memory_patterns = detect_memetic_memory_patterns(text)
-    if virality is None:
-        virality = compute_virality_score(text)
-    
-    friction = memory_patterns.get("friction", 0.5)
-    compression = 1.0 if memory_patterns.get("compression_observed") == "load_bearing" else 0.6 if memory_patterns.get("compression_observed") == "mixed" else 0.3
-    provenance = 1.2 if memory_patterns.get("provenance_required") else 0.9
-    tier_diversity = min(1.5, len(memory_patterns.get("memory_tiers", [])) * 0.4 + 0.7)
-    
-    base = virality.get("hybrid_score", 0.5)
-    efficiency = round(base * (1 - friction * 0.5) * compression * provenance * tier_diversity, 3)
-    efficiency = max(0.0, min(1.0, efficiency))
-    
-    return {
-        "efficiency_score": efficiency,
-        "components": {
-            "base_virality": base,
-            "friction_drag": round(friction * 0.5, 3),
-            "compression_factor": round(compression, 3),
-            "provenance_factor": round(provenance, 3),
-            "tier_diversity": round(tier_diversity, 3)
-        }
-    }
-
-__all__ = [
-    "humanize_slang_output",
-    "detect_neologisms",
-    "trace_semantic_variation",
-    "compute_virality_score",
-    "memetics_protocol_check",
-    "simulate_hyperstition_loop",
-    "detect_memetic_patterns",
-    "classify_compression_type",
-    "compute_context_friction",
-    "detect_memetic_memory_patterns",
-    "compute_memetic_efficiency_score",
-    "LINEAGE_REGISTRY",
-    "match_lineage",
-]
-
-# LINEAGE_REGISTRY — core families for memetic classification (8 families)
-# Extended with Moltbook agent memory signals for ai-native
-LINEAGE_REGISTRY = [
-    {
-        "family_id": "ai-native",
-        "terms": [
-            "rented cognition", "KDR", "ghost in the cache", "episodic memory",
-            "provenance", "context loss", "re-entry cost", "memory tier",
-            "glaze", "vibe coded", "rlhf", "sycophant", "model collapse", "alignment tax",
-            "simplexity", "orientation", "SIGINT", "conveyor belt",
-            "SIGINT to the Ghost in the Cache", "rented memory", "Memory Paradox",
-            "3-Tier Pattern", "AI Agent Memory", "Provenance dies", "audit log",
-            "rollback restores", "corrections travel lighter"
-        ]
-    },
-    {
-        "family_id": "betting-sharp",
-        "terms": ["against the spread", "the vig", "sharp money"]
-    },
-    {
-        "family_id": "brainrot-aura",
-        "terms": ["bruh", "sheesh", "minus aura", "sigma grindset"]
-    },
-    {
-        "family_id": "crypto-degen",
-        "terms": ["jeet", "probably nothing", "frens"]
-    },
-    {
-        "family_id": "gaming-meta",
-        "terms": ["one-tricking", "hardstuck bronze"]
-    },
-    {
-        "family_id": "kinship-address",
-        "terms": ["yo fam", "lil unc"]
-    },
-    {
-        "family_id": "political-status",
-        "terms": ["doomer", "cope harder"]
-    },
-    {
-        "family_id": "workplace-corp",
-        "terms": ["put a pin in it", "rto mandate"]
-    },
-]
-
-def match_lineage(term: str, use_vector: bool = False):
-    """Simple matcher for tests and export."""
-    term_l = term.lower()
-    for entry in LINEAGE_REGISTRY:
-        for t in entry.get("terms", []):
-            if t.lower() in term_l or term_l in t.lower():
-                return {"family_id": entry["family_id"], "term": t}
-    return None
-
+from .memetic_memory import (  # noqa: E402
+    classify_compression_type,
+    compute_context_friction,
+    detect_memetic_memory_patterns,
+    compute_memetic_efficiency_score,
+)
