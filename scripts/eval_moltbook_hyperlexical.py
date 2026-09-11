@@ -21,14 +21,31 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--batch", default="out/batch_moltbook_memetics.json")
     parser.add_argument("--out", default="out/moltbook_hyperlexical_eval.json")
+    parser.add_argument("--high-signal", action="store_true", help="Eval the dedicated high-signal subset instead of batch")
     args = parser.parse_args()
 
-    batch_path = Path(args.batch)
-    if not batch_path.exists():
-        print("No batch")
-        return
-
-    data = json.loads(batch_path.read_text())
+    if args.high_signal:
+        hs_path = Path("data/moltbook_hyperlexical_high_signal.jsonl")
+        if not hs_path.exists():
+            print("No high-signal file")
+            return
+        hs_rows = [json.loads(l) for l in hs_path.read_text().splitlines() if l.strip()]
+        data = {"batch": []}
+        for r in hs_rows:
+            text = r.get("text", "")
+            prov = r.get("provenance", {})
+            data["batch"].append({
+                "post_id": prov.get("post_id", "hs-" + str(hash(text) % 100000)),
+                "title": text.split(". ")[0] if ". " in text else text[:80],
+                "inferred": text,
+                "efficiency": prov.get("efficiency", 0.7),
+            })
+    else:
+        batch_path = Path(args.batch)
+        if not batch_path.exists():
+            print("No batch")
+            return
+        data = json.loads(batch_path.read_text())
     results = []
     stats = {"total": 0, "hyperstition_ish": 0, "memory_episodic": 0, "provenance": 0, "avg_efficiency": 0.0}
 

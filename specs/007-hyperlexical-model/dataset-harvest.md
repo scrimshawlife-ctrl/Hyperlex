@@ -282,3 +282,6 @@ No rejected content is quoted.
   - memory_episodic: 16
 - File: `out/moltbook_high_signal_eval.json`
 - This confirms the high-signal subset is significantly richer for ai-native memory/provenance/hyperstition signals — ideal for oversampling or targeted training in 007.
+
+**Eval script now supports --high-signal** directly:
+  python scripts/eval_moltbook_hyperlexical.py --high-signal --out out/moltbook_high_signal_eval.json
