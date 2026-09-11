@@ -296,3 +296,11 @@ No rejected content is quoted.
 - High-signal (44) and main rows now have rich typology (memory_*, provenance, compression, context_*, hyperstition_signal), proper roles (multiple tiers + provenance), fillers, and accurate stage.
 - Civilian export: 314 Moltbook ai-native, 265+ with rich memory+provenance classification.
 - This meets T1 requirements for family-labeled (classify) rows with complete fields for name-gate.
+
+## T1 Row Count Status (as of now)
+- Civilian export: 883 rows total, 440 ai-native, ~360 Moltbook ai-native.
+- High-signal dedicated: 44 rows (fully T1-classified with rich memory/provenance typology).
+- Target mentioned: **2500 rows minimum** for T1 name-gate.
+- Gap: We are at ~18% of target on volume. Moltbook is the scalable source for ai-native memory signals.
+- Next actions for volume: more aggressive Moltbook pagination, additional submolts, repeated fetches over time (cron), incorporation of more backfill/registry if available.
+- Current focus remains quality + classification completeness for the rows we have.
