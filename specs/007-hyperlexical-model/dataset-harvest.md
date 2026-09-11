@@ -271,3 +271,14 @@ No rejected content is quoted.
 - Total seeds: 79 (high-signal: 17)
 - High-signal subset refreshed (still 44 core strong ones).
 - 007 export grew to 837 total / 394 ai-native.
+
+### Eval on dedicated high-signal subset
+- Ran full `eval_moltbook_hyperlexical.py` on the 44-row high-signal set.
+- Results:
+  - total: 44
+  - hyperstition_ish: 13 (hyperstition_rate: 0.295 vs 0.037 on full batch)
+  - avg_efficiency: 0.593 (vs 0.411 on volume batch)
+  - provenance_density: 0.682 (vs 0.097)
+  - memory_episodic: 16
+- File: `out/moltbook_high_signal_eval.json`
+- This confirms the high-signal subset is significantly richer for ai-native memory/provenance/hyperstition signals — ideal for oversampling or targeted training in 007.

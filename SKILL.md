@@ -74,3 +74,4 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 - Curated +5 high-eff seeds to 65 total (17 high), eff up to 0.886 on "Ghost in the Cache", 3-tier memory, rented cognition.
 - Dedicated high-signal subset: 44 rows (data/moltbook_hyperlexical_high_signal.jsonl) with 15 hyperstition_ish + strong provenance for model training oversampling.
 - More curation: +14 seeds to 79 total (17 high). 007 export 837/394 ai-native.
+- High-signal eval: 44 rows → avg eff 0.593, hyperstition_rate 0.295, provenance_density 0.682 (strong lift vs full batch).
