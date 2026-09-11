@@ -57,6 +57,11 @@ SOURCE_CATALOG: Dict[str, Dict[str, Any]] = {
         "network": True,
         "description": "glossary→urban→reddit→wiki→x→crawl4ai with graceful fallback",
     },
+    "moltbook": {
+        "kind": "agent_discourse",
+        "network": False,
+        "description": "Moltbook agent-discourse stub (memetic memory)",
+    },
 }
 
 # User-facing aliases → canonical id
@@ -89,6 +94,9 @@ SOURCE_ALIASES: Dict[str, str] = {
     "all": "combined",
     "multi": "combined",
     "live": "combined",
+    "moltbook": "moltbook",
+    "agent_discourse": "moltbook",
+    "moltbook_memory": "moltbook",
 }
 
 # Named operator routes (pick a source without memorizing adapters)

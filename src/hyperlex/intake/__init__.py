@@ -18,6 +18,9 @@ import time
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
 
+from .sources import pick_source
+from ..provenance import source_fingerprint
+
 try:
     import requests
 except ImportError:
@@ -200,10 +203,52 @@ def ingest_signal(query: str, source: str = "mock") -> str:
     source = source.lower().strip()
 
     if source == "mock":
-        return (
-            'X chatter on "low block revenge narrative" + "false nine sharp money signal" '
-            "— organic velocity in betting circles, minor coordinated push."
-        )
+        # Query-aware deterministic mock so lineage/forecast fixtures stay distinct.
+        q = (query or "").strip()
+        ql = q.lower()
+        base = f'Mock channel note on "{q}". Quiet discourse sample.'
+        if any(k in ql for k in ("sharp", "steam", "revenge", "betting", "square", "wiseguy")):
+            base = (
+                f'Mock memetic channel on "{q}": organic velocity, coordinated push. '
+                "sharp steam square revenge wiseguy hammer low block."
+            )
+        elif any(k in ql for k in ("hodl", "degen", "rekt", "moon", "crypto")):
+            base = (
+                f'Mock memetic channel on "{q}": organic velocity. '
+                "hodl diamond hands rekt degen moon bagholder."
+            )
+        elif any(k in ql for k in ("brainrot", "aura", "mid", "cooked", "rizz", "skibidi")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "brainrot aura farming mid cooked let him cook."
+            )
+        elif any(k in ql for k in ("agentic", "slop", "hallucin", "clanker", "token")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "agentic slop skill issue hallucinate clanker context window."
+            )
+        elif any(k in ql for k in ("based", "cope", "seethe", "redpill", "blackpill", "political")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "based redpilled cope seethe dilate blackpilled."
+            )
+        elif any(k in ql for k in ("bro", "sis", "twin", "unc", "cuz", "kinship")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "bro sis twin unc cuz family."
+            )
+        elif any(k in ql for k in ("nerf", "buff", "meta", "sweaty", "noob", "gg", "gaming", "smurf")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "nerf buff meta sweaty noob gg ez ratio touch grass skill issue diff smurf."
+            )
+        elif any(k in ql for k in ("quiet quitting", "rto", "layoff", "bandwidth", "workplace", "corp", "act your wage")):
+            base = (
+                f'Mock memetic channel on "{q}". '
+                "quiet quitting quiet firing rto return to office layoffs pip synergy "
+                "circle back bandwidth low-hanging fruit act your wage."
+            )
+        return base
     elif source in ("real", "glossary", "web"):
         return _fetch_real_betting_glossary(query)
     elif source == "reddit":
@@ -249,28 +294,42 @@ def fetch_ingest(
       - metadata
       - timestamp
     """
+    source, resolved = pick_source(source, route=route)
     raw = ingest_signal(query, source=source)
+    fetched_at = datetime.now(timezone.utc).isoformat()
 
     # Heuristic term extraction
     terms = re.findall(r'\b([a-z]{4,}(?:block|nine|sharp|holler|revenge|low|false|vig|action|chalk))\b', raw.lower())
     terms = list(dict.fromkeys(terms))[:max_terms]  # dedup preserve order
+
+    locator = f"hyperlex://{source}"
+    fp = source_fingerprint(
+        source=source,
+        query=query,
+        raw_signal=raw,
+        source_locator=locator,
+        fetched_at=fetched_at,
+    )
 
     return {
         "query": query,
         "source": source,
         "raw_signal": raw,
         "extracted_terms": terms,
+        "route": resolved,
         "metadata": {
             "source_type": "real" if source in ("real", "glossary", "urban", "reddit", "wikipedia", "moltbook", "agent_discourse", "moltbook_memory") else "synthetic_stub",
             "cached": _cache_key(query, source) in _CACHE,
-            "fetched_at": datetime.now(timezone.utc).isoformat(),
-            "route": route,
+            "fetched_at": fetched_at,
+            "route": resolved.get("route"),
         },
         "provenance": {
             "version": "1.6.0",
             "ingest_source": source,
-            "route": route,
-        }
+            "route": resolved.get("route"),
+            "source_fingerprint": fp,
+        },
+        "source_fingerprint": fp,
     }
 
 def _fetch_moltbook_agent_discourse(query: str) -> str:
