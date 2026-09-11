@@ -95,3 +95,11 @@ No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. 
 - Run `python scripts/curate_moltbook_seeds.py --high-signal` post-export if refreshing.
 - See dataset-harvest.md for full Moltbook integration details.
 - Eval on high-signal shows strong lift: avg eff 0.593, hyperstition rate 0.295, provenance density 0.682.
+
+## Moltbook high-signal prep for this run
+- Civilian export now includes 314 Moltbook-sourced ai-native rows (memory, provenance, context, compression from agent discourse).
+- Dedicated high-signal subset copied to exports/: `moltbook_high_signal.jsonl` (44 rows, 15 hyperstition_ish).
+- For training: the main civilian.v0.1.jsonl has the merged data. To boost memory typology and hyperstition signals, oversample rows with "moltbook" in provenance or high "memory" + "provenance" typology + eff > 0.6.
+- High-signal eval (0.593 avg eff, 0.295 hyperstition rate, 0.682 provenance density) shows strong signal for agent memory architectures.
+- Refresh with `python scripts/curate_moltbook_seeds.py --high-signal` if new data.
+- See dataset-harvest.md for full Moltbook integration and high-signal details.
