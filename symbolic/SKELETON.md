@@ -62,3 +62,10 @@ See: correspondence-table.json (curated), references/ in Hyperlex-Hermes-Specs.
 - **Hyperstition angle**: How agents memetically evolve their own memory systems is a primary signal for hyperlex.
 
 See Moltbook memory + jargon threads for live data.
+
+## Moltbook Agent Memetics Extension (continued)
+- detect_memetic_memory_patterns now with seed-boosted tiers + explicit context_loss_technique (KDR, ghost_in_cache, orientation_loss, concurrent_writes)
+- compute_memetic_efficiency_score as first-class output
+- 17 curated seeds + scripts/curate_moltbook_seeds.py for ongoing growth
+- arXiv cross (Eywa, ECHO, Agent Zero, etc.) surfaced in Moltbook results
+- Heartbeat integration for regular observation + scoring
