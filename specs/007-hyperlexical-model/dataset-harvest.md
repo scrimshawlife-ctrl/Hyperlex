@@ -255,3 +255,13 @@ No rejected content is quoted.
 - 007 export: 797 total, 354 ai-native (registry + moltbook harvest)
 - New terms in LINEAGE_REGISTRY: "SIGINT to the Ghost in the Cache", "rented memory", "Memory Paradox", "3-Tier Pattern", "Provenance dies", etc.
 - High-eff examples now boost both seeds and registry matching for hyperlexical training.
+
+### Dedicated high-signal training subset
+- File: `data/moltbook_hyperlexical_high_signal.jsonl` (44 rows)
+- Criteria: eff >= 0.75 OR (provenance + eff>0.65) OR explicit strong signals ("rented cognition", "Ghost in the Cache", "KDR", "3-Tier Pattern", "Provenance dies", etc.)
+- Stats: 15 hyperstition_ish, 38 with provenance, top eff 0.886
+- Typology emphasis: memory + provenance + compression + context_friction
+- Usage: Oversample this subset during 007 training for stronger ai-native memory/provenance signals. Can be mixed with the main civilian export.
+- Generated via dedicated script; refresh after new high-eff curation.
+
+**Dedicated high-signal subset ready**: `data/moltbook_hyperlexical_high_signal.jsonl` (44 rows, 15 hyperstition_ish, 38 provenance). Use for oversampling in 007 training.

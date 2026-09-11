@@ -504,11 +504,13 @@ def harvest_moltbook(root: Path) -> list[dict[str, Any]]:
     """Moltbook agent discourse → ai-native rows for hyperlexical training.
     Uses pre-classified rows from scripts/moltbook_to_hyperlexical.py
     (memory tiers, efficiency, provenance, context loss).
+    Also loads dedicated high-signal subset when present (for oversampling strong memory/provenance signals).
     """
     rows = []
     for p in [
         root / "data" / "moltbook_hyperlexical_rows.jsonl",
         root / "data" / "moltbook_hyperlexical_high.jsonl",
+        root / "data" / "moltbook_hyperlexical_high_signal.jsonl",
     ]:
         if not p.exists():
             continue

@@ -72,3 +72,4 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 - 007 civilian export: 770 rows / 327 ai-native with Moltbook signals.
 - Avg eff 0.411 on volume; strong signals preserved in high tier.
 - Curated +5 high-eff seeds to 65 total (17 high), eff up to 0.886 on "Ghost in the Cache", 3-tier memory, rented cognition.
+- Dedicated high-signal subset: 44 rows (data/moltbook_hyperlexical_high_signal.jsonl) with 15 hyperstition_ish + strong provenance for model training oversampling.

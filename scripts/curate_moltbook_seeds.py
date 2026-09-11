@@ -106,7 +106,8 @@ if __name__ == "__main__":
     p.add_argument("--min-eff", type=float, default=0.5)
     p.add_argument("--add", type=str)
     p.add_argument("--tiers", type=str)
-    p.add_argument("--to-hyperlexical", action="store_true", help="After scan/add, also export to 007 hyperlexical rows")
+    p.add_argument("--to-hyperlexical", action="store_true", help="Export to 007 hyperlexical rows")
+    p.add_argument("--high-signal", action="store_true", help="Generate dedicated high-signal subset for 007 training")
     args = p.parse_args()
 
     if args.scan:
@@ -117,12 +118,17 @@ if __name__ == "__main__":
     elif args.add:
         tiers = args.tiers.split(",") if args.tiers else None
         add_to_seeds(args.add, tiers)
-    else:
-        print("Use --scan or --add")
-
-    if args.to_hyperlexical:
+    elif args.high_signal:
+        import subprocess
+        from pathlib import Path
+        print("Generating dedicated high-signal subset for 007 training...")
+        subprocess.run([sys.executable, str(Path(__file__).parent / "create_high_signal_subset.py")], check=False)
+        print("High-signal subset ready: data/moltbook_hyperlexical_high_signal.jsonl")
+    elif args.to_hyperlexical:
         import subprocess
         from pathlib import Path
         print("Triggering Moltbook -> hyperlexical export...")
         subprocess.run([sys.executable, str(Path(__file__).parent / "moltbook_to_hyperlexical.py"), "--batch", str(BATCH), "--out", "data/moltbook_hyperlexical_rows.jsonl"], check=False)
         print("Hyperlexical export done.")
+    else:
+        print("Use --scan, --add, --to-hyperlexical or --high-signal")

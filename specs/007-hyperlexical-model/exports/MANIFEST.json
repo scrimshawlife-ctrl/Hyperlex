@@ -31,6 +31,12 @@
   "moltbook_integration": {
     "rows": 354,
     "registry_boost": true,
-    "seeds": 65
+    "seeds": 65,
+    "high_signal_subset": {
+      "file": "data/moltbook_hyperlexical_high_signal.jsonl",
+      "rows": 44,
+      "hyperstition_ish": 15,
+      "provenance": 38
+    }
   }
 }
