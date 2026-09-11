@@ -65,6 +65,7 @@ for a checked-in receipt summary and notes from the offline demo path.
 ## Next
 
 1. [See it work](see-it-work.md) — golden example + archive  
-2. [Operator loop](../operator-loop.md) — settle for real Brier  
+2. [Operator loop](../operator-loop.md) — settle for real Brier; Spec 007 classify & QA from the repo checkout  
+
 3. [Commands](../commands.md) — full map  
 4. [Glossary](glossary.md) — jargon  

@@ -69,6 +69,20 @@ $HLX run "…" --route social
 export HYPERLEX_OFFLINE=1
 ```
 
+## Spec 007 classify & QA (Hermes)
+
+From the **repo checkout** (`scripts/shadow/hyperlexical/`). SoT is local-only: `~/.hyperlex/hyperlexical/ingest_candidates.jsonl`.
+
+Scoreboard (2026-09-10 PT evening): SoT **4333** · classify family **2437** · unbind **1345** · neg **208** · `name_gate` **false**.
+
+```bash
+python -m hyperlex analyze "<seed>" --source firecrawl
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
+```
+
+INFERRED until operator settle. No auto-OBSERVED. Crawl4AI default. 8 families. Full loop: [SKILL.md](./SKILL.md) · [docs/operator-loop.md](./docs/operator-loop.md).
+
 ## Scan + advisory cron
 
 ```bash

@@ -8,7 +8,9 @@
   bar met. Tracked `civilian.v0.1.jsonl` labeled seed/snapshot (not the SoT;
   no 6506-row dump in git). Hermes 913 / “gap to 2500” and 883 / ~360
   Moltbook as global SoT are superseded. Spark handoff trains from local
-  SoT / `--include-live`.
+  SoT / `--include-live`. SKILL.md + QUICKSTART + operator-loop document
+  the Hermes classify & QA loop (`analyze --source firecrawl` → ingest_tap
+  → `export --include-live`).
 
 - **Docs hygiene:** README / MkDocs IA (Start · Concepts · Operator · Specs · Archive),
   CONTRIBUTING rewrite, STATUS/ROADMAP honesty for Spec 007 (classify volume ready,

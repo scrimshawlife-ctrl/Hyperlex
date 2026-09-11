@@ -60,6 +60,31 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 - See specs/007-hyperlexical-model/dataset-harvest.md for ranking and mapping rules.
 - Evaluation domain: agent discourse re-entry, provenance, rented cognition, KDR patterns.
 
+## Spec 007 Hyperlexical — classify & QA (Hermes)
+
+Continue classify + QA from this skill. Run from the **Hyperlex repo checkout**. Shadow modules are `scripts/shadow/hyperlexical/` (ship with a skill install from this repo). Do not commit `~/.hyperlex/**`.
+
+**Scoreboard (2026-09-10 PT evening, Danny-locked):** SoT **4333** · classify family **2437** · unbind **1345** · neg **208** · `name_gate` **false**.
+
+| Step | Command |
+|------|---------|
+| SoT | `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` (local-only; not the 883-row tracked seed) |
+| Live | `python -m hyperlex analyze "<seed>" --source firecrawl` then `PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap` |
+| Classify QA / export | `PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live` |
+
+```bash
+cd /path/to/Hyperlex
+python -m hyperlex analyze "<seed>" --source firecrawl
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
+```
+
+`--source firecrawl` aliases to Crawl4AI (0.9.3 default). No paid Firecrawl without Danny yes.
+
+Honesty: INFERRED until operator settle. No auto-OBSERVED. `name_gate` false until Spark E2. **8** families only. Tracked `exports/civilian.v0.1.jsonl` is a seed, not the SoT.
+
+Gates: `STATUS.md`. Train: `specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md`.
+
 ## Latest continuation (Moltbook -> 007 full wiring)
 
 **Moltbook subset history** — not current global SoT.
