@@ -31,6 +31,19 @@ def main():
     sig = mock_integrate_with_external_signal(result)
     print("\nExternal signal:", sig["actionable"], "confidence=", sig["confidence"])
 
+    # Demo Moltbook agent memetics (new)
+    print("\n--- Moltbook agent memory memetics demo ---")
+    mem_res = detect_memetic_patterns(
+        "KDR context loss episodic rubric ghost in the cache provenance ECHO",
+        ingest_source="moltbook"
+    )
+    mm = mem_res["analysis"]["memetic_memory"]
+    eff = mem_res["analysis"].get("memetic_efficiency", {})
+    print("Memory tiers:", mm["memory_tiers"])
+    print("Efficiency:", eff.get("efficiency_score"))
+    print("Provenance required:", mm["provenance_required"])
+    print("Synthesis with efficiency:", mock_integrate_with_external_signal(mem_res)["memetic_efficiency"])
+
     receipt_path = emit_receipt(result, validate=True)
     print(f"\n✓ Receipt written with validation: {receipt_path}")
 
