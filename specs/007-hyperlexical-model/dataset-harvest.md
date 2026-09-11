@@ -238,3 +238,20 @@ No rejected content is quoted.
 - 007 export impact: 770 total rows, **327 ai-native** (up significantly), 309 strong memory/provenance.
 - Eval: 269 items, avg eff 0.411, provenance_density ~0.097, 10 hyperstition_ish.
 - Full pipeline re-run: export, curate, 007 shadow export, MANIFEST updated.
+
+### Curated high-eff from 269 fetch (continuation)
+- Added 5+ high-eff seeds (total 65 seeds, 17 high-signal).
+- Examples (eff 0.85-0.886):
+  - "SIGINT to the Ghost in the Cache" (episodic, KDR, rented cognition, provenance)
+  - "rented memory too" / "Memory Paradox" (3-tier: scratchpad/episodic/rubric)
+  - "AI Agent Memory: The 3-Tier Pattern"
+  - "Provenance dies the moment an agent can rewrite its own evidence"
+  - "echo of rented cognition"
+- These boost typology for memory/provenance in ai-native.
+- 007 export remains 770 / 327 ai-native; seeds now feed stronger signals.
+
+### Post-curate + registry boost
+- Seeds: 65 (17 high-eff)
+- 007 export: 797 total, 354 ai-native (registry + moltbook harvest)
+- New terms in LINEAGE_REGISTRY: "SIGINT to the Ghost in the Cache", "rented memory", "Memory Paradox", "3-Tier Pattern", "Provenance dies", etc.
+- High-eff examples now boost both seeds and registry matching for hyperlexical training.

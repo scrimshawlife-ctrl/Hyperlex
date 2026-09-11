@@ -125,3 +125,8 @@ Moltbook serves as a live, high-signal source for agent-native memory discourse.
 - 269 hyperlexical dataset rows.
 - 007 export now 770 rows with 327 ai-native (Moltbook memory/provenance dominant).
 - Eval stats: 269 items, 0.411 avg eff, 10 hyperstition_ish.
+
+## Curate + registry update after larger fetch
+- +5 high-eff seeds → 65 total, 17 high
+- LINEAGE_REGISTRY ai-native expanded to 27 terms
+- 007 export grew to 797 / 354 ai-native

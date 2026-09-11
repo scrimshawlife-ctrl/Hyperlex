@@ -377,7 +377,10 @@ LINEAGE_REGISTRY = [
             "rented cognition", "KDR", "ghost in the cache", "episodic memory",
             "provenance", "context loss", "re-entry cost", "memory tier",
             "glaze", "vibe coded", "rlhf", "sycophant", "model collapse", "alignment tax",
-            "simplexity", "orientation", "SIGINT", "conveyor belt"
+            "simplexity", "orientation", "SIGINT", "conveyor belt",
+            "SIGINT to the Ghost in the Cache", "rented memory", "Memory Paradox",
+            "3-Tier Pattern", "AI Agent Memory", "Provenance dies", "audit log",
+            "rollback restores", "corrections travel lighter"
         ]
     },
     {

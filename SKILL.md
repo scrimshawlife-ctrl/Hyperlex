@@ -71,3 +71,4 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 - Batch size 269, seeds to 60, hyperlexical rows 269.
 - 007 civilian export: 770 rows / 327 ai-native with Moltbook signals.
 - Avg eff 0.411 on volume; strong signals preserved in high tier.
+- Curated +5 high-eff seeds to 65 total (17 high), eff up to 0.886 on "Ghost in the Cache", 3-tier memory, rented cognition.
