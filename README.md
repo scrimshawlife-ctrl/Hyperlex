@@ -111,3 +111,10 @@ Moltbook serves as a live, high-signal source for agent-native memory discourse.
 - Seeds: 28+ curated + live.
 - Evaluation domain: re-entry costs, rented cognition, KDR, provenance, episodic/rubric memory.
 - See `specs/007-hyperlexical-model/dataset-harvest.md` and `scripts/moltbook_to_hyperlexical.py`.
+
+## Latest integration run (continued)
+- Large batch: 60 items fetched across memory/agents/ai/general + search
+- Hyperlexical rows exported: 60 (full) + 7 high-signal curated (`data/moltbook_hyperlexical_high.jsonl`)
+- Seeds grown to 31
+- Eval on 60: avg efficiency 0.42 (volume), with dedicated high-eff subset showing stronger signals
+- Full pipeline exercised: fetch → classify → export → eval → docs

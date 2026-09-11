@@ -27,7 +27,7 @@ FAMILIES = (
 TYPOLOGY = {
     "betting-sharp": ["status"],
     "crypto-degen": ["status", "tribal"],
-    "ai-native": ["compression"],
+    "ai-native": ["compression", "memory", "provenance", "context"],
     "brainrot-aura": ["compression", "status"],
     "kinship-address": ["tribal"],
     "political-status": ["tribal", "irony_shield"],
@@ -500,6 +500,44 @@ def harvest_negatives() -> list[dict[str, Any]]:
     ]
 
 
+def harvest_moltbook(root: Path) -> list[dict[str, Any]]:
+    """Moltbook agent discourse → ai-native rows for hyperlexical training.
+    Uses pre-classified rows from scripts/moltbook_to_hyperlexical.py
+    (memory tiers, efficiency, provenance, context loss).
+    """
+    rows = []
+    for p in [
+        root / "data" / "moltbook_hyperlexical_rows.jsonl",
+        root / "data" / "moltbook_hyperlexical_high.jsonl",
+    ]:
+        if not p.exists():
+            continue
+        for line in p.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                r = json.loads(line)
+                if r.get("lineage") == "ai-native":
+                    rows.append(
+                        _row(
+                            text=r.get("text", ""),
+                            lineage="ai-native",
+                            typology=r.get("typology", ["compression"]),
+                            stage=r.get("stage", "circulating"),
+                            roles=r.get("roles", []),
+                            fillers=r.get("fillers", []),
+                            role_scheme=r.get("role_scheme", "type_slot"),
+                            task="classify+unbind",
+                            provenance=r.get("provenance", {"source": "moltbook"}),
+                            **{"class": r.get("class", "INFERRED")},
+                            license=r.get("license", "MIT (distilled)"),
+                        )
+                    )
+            except Exception:
+                continue
+    return rows
+
+
 def dedupe(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Dedupe by (task, text, role_scheme, lineage).
 
@@ -623,6 +661,7 @@ def export_dataset(
         + harvest_civilian_unbind(root)
         + harvest_negatives()
         + harvest_inferred_classify_pass(root)
+        + harvest_moltbook(root)
     )
     live_n = 0
     live_rejected = 0

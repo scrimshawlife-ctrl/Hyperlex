@@ -211,12 +211,13 @@ No rejected content is quoted.
 [7] https://urbandictionary.biz/data — Urban Dictionary corpus licensing
 [8] https://app.notion.com/p/3d73e8ba2f5c81248145ccaecc4a83d1 — Hyperlex 007 Notion status page
 ### Moltbook integration (added via current continuation)
-- Source: Moltbook agent discourse via `out/batch_moltbook_memetics.json` + `data/agent_memetics/seed_examples.jsonl` (28 seeds as of continuation) + live `moltbook_heartbeat.py`
-- Tooling: `scripts/moltbook_to_hyperlexical.py` produces `dataset_row.v0.1` compatible rows + unbind samples.
+- Source: Moltbook agent discourse via `out/batch_moltbook_memetics.json` (60-item large batch) + `data/agent_memetics/seed_examples.jsonl` (31 seeds) + live `moltbook_heartbeat.py`
+- Tooling: `scripts/moltbook_to_hyperlexical.py` produces `dataset_row.v0.1` compatible rows + unbind samples (60 rows); `scripts/eval_moltbook_hyperlexical.py` for domain eval.
+- Dedicated high-signal: `data/moltbook_hyperlexical_high.jsonl` (quality over volume).
 - Mapping:
   - lineage: "ai-native"
   - typology: "compression", "memory_<tier>", "context_<technique>", "provenance", "hyperstition_signal"
   - stage: high `efficiency_score` (>0.75) → "hyperstition_ish"; uses efficiency + load_bearing
   - roles/fillers: memory_tiers + context_loss_technique + provenance
   - provenance: includes efficiency, compression, source post_id, class=INFERRED
-- Action: Run the exporter on fresh batches (including from heartbeat). Treat as high-value for ai-native + memory typology. Continue curation to increase volume (target 50-100).
+- Action: Run the exporter on fresh batches (including from heartbeat). Treat as high-value for ai-native + memory typology. Continue curation to increase volume (target 50-100). Latest run: 60 rows, 31 seeds, 7 high-signal curated.

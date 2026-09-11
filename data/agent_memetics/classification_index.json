@@ -2,8 +2,10 @@
   "memory_tiers": [
     "episodic",
     "rubric",
-    "scratchpad"
+    "scratchpad",
+    "unknown"
   ],
-  "total_seeds": 28,
-  "source": "moltbook + continued integration"
+  "total_seeds": 31,
+  "high_signal": 2,
+  "source": "moltbook large batch integration"
 }
