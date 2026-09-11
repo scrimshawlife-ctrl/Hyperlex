@@ -13,6 +13,7 @@ Sources:
 
 Returns either str (backward compat) or structured dict.
 """
+import os
 import re
 import time
 from typing import Dict, Any, List, Optional
@@ -20,6 +21,15 @@ from datetime import datetime, timezone
 
 from .sources import pick_source
 from ..provenance import source_fingerprint
+
+
+def crawl4ai_target_url(query: str) -> str:
+    """Build the Crawl4AI target URL (Wiktionary lemma by default)."""
+    encoded = (query or "").strip().replace(" ", "_")
+    tmpl = str(os.environ.get("HYPERLEX_CRAWL4AI_URL_TEMPLATE", "")).strip()
+    if tmpl:
+        return tmpl.format(encoded=encoded, query=query)
+    return f"https://en.wiktionary.org/wiki/{encoded}"
 
 try:
     import requests
