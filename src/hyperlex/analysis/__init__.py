@@ -125,6 +125,12 @@ def detect_memetic_patterns(
     )
     efficiency = compute_memetic_efficiency_score(observed, memory_patterns=mem_memory, virality=virality)
 
+    arxiv_cross = None
+    if ingest_source == "moltbook":
+        cross_path = Path(__file__).parent.parent.parent / "out" / "arxiv_moltbook_cross.json"
+        if cross_path.exists():
+            arxiv_cross = json.loads(cross_path.read_text())
+
     inferred = f"Memetic spread accelerating. Neologisms: {len(neos)}. Memetic: {memetic['is_memetic']}. Variation: {variation['sense']}. Virality: {virality['hybrid_score']}. Efficiency: {efficiency.get('efficiency_score', 0):.3f} (friction {virality.get('friction_penalty',0):.2f}, compression {virality.get('compression_boost',0):.2f}). Memory: {mem_memory.get('memory_tiers',[])}."
     speculative = f"{hyper['loop_stage']} hyperstition risk. {hyper['mechanism']}. Brier lift probable via cultural transmission."
 
@@ -163,6 +169,7 @@ def detect_memetic_patterns(
             "context_friction": friction
         },
         "notes": "Humanizer + arXiv-upgraded modules applied. Real ingest wired (expanded). Agent memetics classification active (Moltbook data). Feeds downstream signal and forecast pipelines.",
+        "arxiv_cross": arxiv_cross,
         "recommendation": "Bind to COMMUNICATION_RELAY rune; integrate with market-signal for loop scoring; cron LIVE_EMERGENCE_SCAN."
     }
 
