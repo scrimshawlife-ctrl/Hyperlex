@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Docs: Spec 007 SoT scoreboard (2026-09-10 PT evening).** Local store 4333
+  (402 OBSERVED / 3931 INFERRED); `--include-live` n=6506 / classify 2437 /
+  unbind 1345 / negatives 208 / gaps 0/0/0; `name_gate` false; Danny ~2500
+  bar met. Tracked `civilian.v0.1.jsonl` labeled seed/snapshot (not the SoT;
+  no 6506-row dump in git). Hermes 913 / “gap to 2500” and 883 / ~360
+  Moltbook as global SoT are superseded. Spark handoff trains from local
+  SoT / `--include-live`.
+
 - **Docs hygiene:** README / MkDocs IA (Start · Concepts · Operator · Specs · Archive),
   CONTRIBUTING rewrite, STATUS/ROADMAP honesty for Spec 007 (classify volume ready,
   `name_gate` false, E2 Spark-blocked). Front door reframed as **skill now, model

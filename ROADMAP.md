@@ -102,7 +102,7 @@ The skill remains the operator surface while the encoder stays SHADOW.
 See [SPEC.md](SPEC.md) and [DESIGN.md](DESIGN.md) for the historical spine. Current operator snapshot: [STATUS.md](STATUS.md).
 
 ## Recent
-- 2026-09-10: Spec 007 classify volume ready; `name_gate` false; E2 Spark-blocked. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37).
+- 2026-09-10 PT evening: Spec 007 SoT 4333 / `--include-live` classify 2437; Danny ~2500 bar met; `name_gate` false; E2 Spark-blocked. Hermes 913 / gap-to-2500 superseded. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37).
 - 2026-09-09: Spec 007 SHADOW encoder harness on main (not a Hub card)
 - v0.4.0: automatic backend pipeline (ingest → results)
 - v0.3.9: Atomic multi-term seeds; Pages demos; scan packs atomic

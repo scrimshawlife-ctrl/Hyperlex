@@ -17,11 +17,19 @@ Specify is locked C1–C52 plus A5 milestones. Implement on `main` is the stub, 
 
 `name_gate` stays **false** until E2. Classify volume ready ≠ T1.
 
-## Honest gates (2026-09-10)
+## Honest gates (2026-09-10 PT evening)
+
+| Surface | n | Notes |
+|---------|--:|-------|
+| Local SoT | **4333** | 402 OBSERVED / 3931 INFERRED. Not in git. |
+| `--include-live` export | **6506** | classify **2437** · unbind **1345** · negatives **208** · gaps **0/0/0** |
+| Tracked seed `civilian.v0.1.jsonl` | 883 | Snapshot only. Not the train SoT. |
+
+Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **superseded**. Afternoon store family-labeled **1789** is the [blanket-yes receipt](receipts/blanket-yes-unlock-2026-09-10.md) figure.
 
 | Gate | State |
 |------|--------|
-| Classify volume | **Ready** — operator harvest with `--include-live` reached export family classify **2437**. Store family-labeled **1789**. See [blanket-yes receipt](receipts/blanket-yes-unlock-2026-09-10.md). |
+| Classify volume | **Ready** — operator `--include-live` family classify **2437**. |
 | `name_gate` | **false**. Volume does not name the model. Gate stays false until E2 passes on Spark. |
 | E2 vs Spec 004 | **FAIL** on the stub (expected). A trained E2 is Spark-blocked. Seed smoke is not a pass. |
 | Hub | No upload. Skeleton only. Weights stay on Spark. |
@@ -72,7 +80,9 @@ Trunk: `answerdotai/ModernBERT-base`. Local snapshot only. Last 2 layers trainab
 
 ## Live ingest tap
 
-Current slang atoms from `pipeline` / `analyze` / `scan` / inbox write INFERRED rows to `~/.hyperlex/hyperlexical/ingest_candidates.jsonl`.
-They do not become OBSERVED and do not mint Brier. Spec: [ingest-tap.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/ingest-tap.md).
+Current slang atoms from `pipeline` / `analyze` / `scan` / inbox write INFERRED rows to `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` (local SoT; **4333** rows as of 2026-09-10 PT evening).
+They do not become OBSERVED and do not mint Brier unless an operator settles them. Spec: [ingest-tap.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/ingest-tap.md).
+
+Spark trains from this local store / `--include-live`, not from the tracked 883-row seed.
 
 Live rows with an invalid split are coerced to a lexical train/val/test assignment (#38). That is export hygiene, not an E2 pass.

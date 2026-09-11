@@ -1,5 +1,7 @@
 # Blanket-yes unlock — Spec 007 classify toward 2k — 2026-09-10
 
+**Superseded as current SoT** by the 2026-09-10 PT **evening** Danny-locked stamp (SoT 4333 = 402 OBSERVED / 3931 INFERRED; `--include-live` n=6506 / classify 2437). This receipt is the afternoon unlock. Do not treat its store OBSERVED=152 as current.
+
 **Operator TZ**: America/Los_Angeles (PT)  
 **Finished (UTC)**: 2026-09-10T21:10:59Z ≈ **2:10 PM PT**
 **Authority**: Danny blanket yes 2026-09-10 — "Yes to whatever we need to do"  

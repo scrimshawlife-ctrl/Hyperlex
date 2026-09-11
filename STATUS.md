@@ -35,15 +35,28 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 
 SHADOW / advisory. Not on `API_V1`. Do **not** call the artifact Hyperlexical. Do **not** set `name_gate` true.
 
+Operator scoreboard **2026-09-10 PT evening** (Danny-locked; matches [Notion Operator Hub](https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83)):
+
+| Surface | n | Notes |
+|---------|--:|-------|
+| Local SoT `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` | **4333** | 402 OBSERVED / 3931 INFERRED. **Not in git.** |
+| Export `--include-live` (operator machine) | **6506** | classify family **2437** · unbind **1345** · negatives **208** |
+| Tracked `specs/007-hyperlexical-model/exports/civilian.v0.1.jsonl` | 883 | **Seed/snapshot only.** Do not treat as the train SoT. |
+
+Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **superseded** — not current SoT status. Afternoon store family-labeled **1789** (stretch 2000 not reached) is the [blanket-yes receipt](docs/receipts/blanket-yes-unlock-2026-09-10.md) figure; export classify **2437** is the harvest gate. Moltbook row counts (for example ~360 ai-native) are a **Moltbook subset**, not the global SoT.
+
 | Gate | State |
 |------|--------|
-| Classify volume | **Ready** — operator harvest 2026-09-10 (`--include-live`): export family classify **2437**. Store family-labeled **1789** (store stretch 2000 not reached). Receipt: [docs/receipts/blanket-yes-unlock-2026-09-10.md](docs/receipts/blanket-yes-unlock-2026-09-10.md) |
-| `name_gate` | **false** — stays false until E2 passes on Spark. Volume ≠ name. |
+| Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
+| `name_gate` | **false** — stays false until E2 passes on Spark. Volume ≠ name. Gaps at 0 do not flip the gate. |
 | E2 vs Spec 004 | **FAIL** on the stub (expected). Trained E2 is **Spark-blocked**. Seed smoke is not a pass. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
 | T1 name | Not allowed. Card stays `hyperlex-encoder-*` until E2. |
 | Lineage families | **8** only. No ninth family. |
 | Brier | `null` on every 007 packet. |
+| Crawl | Crawl4AI **0.9.3** default. `--source firecrawl` aliases to `crawl4ai`. No paid Firecrawl without Danny yes. |
+
+Spark trains from the **local SoT** / `export --include-live`, not from the tracked seed alone.
 
 Spark procedure (bring-up, not a product card):
 

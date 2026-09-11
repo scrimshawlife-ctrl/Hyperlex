@@ -6,8 +6,10 @@
 **Hub**: https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83  
 **Locked spec**: `spec.md` — this file does not fork T0/T1/T2
 
-Live classify counts stay on Notion Tasks 007 and local harvest receipts.
+Live classify counts stay on Notion Tasks 007 / Operator Hub and the local store.
 A harvest number moving does not rewrite a gate here.
+
+Operator note **2026-09-10 PT evening** (Danny-locked): local SoT **4333** (402 OBSERVED / 3931 INFERRED); `--include-live` classify **2437** / unbind **1345** / negatives **208**; name_gate gaps **0/0/0**. Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **superseded**. `name_gate` stays **false** until E2 on Spark. Tracked `exports/civilian.v0.1.jsonl` is a seed, not the SoT.
 
 ## Name-gate (dataset wall before T1 train)
 

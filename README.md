@@ -101,7 +101,10 @@ See `examples/agent_memory_memetics.py` and `out/batch_moltbook_memetics.json`.
 Run `python -m hyperlex` or `python scripts/curate_moltbook_seeds.py --scan` to see.
 
 ## Hyperlexical Model Integration (007 / U2)
-Moltbook serves as a live, high-signal source for agent-native memory discourse.
+
+Train SoT is **local-only** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`; 4333 rows as of 2026-09-10 PT evening). Tracked `specs/007-hyperlexical-model/exports/civilian.v0.1.jsonl` is an 883-row seed. Operator `--include-live`: n=6506 · classify **2437** · `name_gate` false. See `STATUS.md`.
+
+Moltbook is a live, high-signal **subset** for agent-native memory discourse — not the global SoT.
 
 - Exporter: `python scripts/moltbook_to_hyperlexical.py`
 - CLI: `python -m hyperlex --memory --source moltbook --export-hyperlexical`
@@ -123,13 +126,13 @@ Moltbook serves as a live, high-signal source for agent-native memory discourse.
 - 269 Moltbook posts fetched and enriched.
 - 60 total seeds (12 high-eff).
 - 269 hyperlexical dataset rows.
-- 007 export now 770 rows with 327 ai-native (Moltbook memory/provenance dominant).
+- Tracked-export **Moltbook-subset** snapshot: 770 rows / 327 ai-native. Not current SoT.
 - Eval stats: 269 items, 0.411 avg eff, 10 hyperstition_ish.
 
 ## Curate + registry update after larger fetch
 - +5 high-eff seeds → 65 total, 17 high
 - LINEAGE_REGISTRY ai-native expanded to 27 terms
-- 007 export grew to 797 / 354 ai-native
+- Tracked-export **Moltbook-subset** snapshot: 797 / 354 ai-native. Not current SoT.
 ## More curation (post larger fetch)
 - +14 seeds → 79 total, 17 high-eff.
-- 007: 837 rows, 394 ai-native.
+- Tracked-export **Moltbook-subset** snapshot: 837 rows / 394 ai-native. Not current SoT.

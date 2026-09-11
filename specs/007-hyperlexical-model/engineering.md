@@ -20,8 +20,9 @@ Detector over generator. Dual-use wall copied from 001/003/007.
 ## Files
 
 - Gold / harvest receipts: local store (`~/.hyperlex/`), not git.
-- Git gets schemas, exporters, tests, hashed civilian export only.
-- `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` is tap, not gold.
+- Git gets schemas, exporters, tests, hashed civilian **seed** only. The 883-row tracked JSONL is not the train SoT.
+- `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` is the local SoT (4333 rows as of 2026-09-10 PT evening). Do not commit it.
+- Spark / T1 train uses that local SoT via `export --include-live`, not the tracked seed alone.
 
 ## Code
 

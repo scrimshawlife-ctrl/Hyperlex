@@ -24,8 +24,37 @@
     "val": 76
   },
   "file": "civilian.v0.1.jsonl",
-  "note": "Honest accounting: counts.classify = family-labeled only (excludes negatives). counts.negatives = ordinary-prose (seed:negative-prose) only \u2014 not live lineage=none classify (see classify_none). unbind_fixture vs unbind_civilian split. Spec004 fixtures at n=24; civilian dual-scheme from golden/registry (no gloss invent). Live optional via --include-live (preserves store class; unset\u2192INFERRED). Not a T1 name-gate.",
+  "name_gate": false,
+  "note": "Git-tracked seed/snapshot only. counts.* describe this file (n=883), not the live SoT. Full train SoT is local-only (~/.hyperlex/hyperlexical/ingest_candidates.jsonl). Operator --include-live 2026-09-10 PT evening is in operator_live. Do not treat seed name_gate_*_gap as current Hyperlex SoT status. name_gate stays false (E2 Spark-blocked). Honest accounting: counts.classify = family-labeled only (excludes negatives). counts.negatives = ordinary-prose (seed:negative-prose) only — not live lineage=none classify (see classify_none).",
+  "operator_live": {
+    "authority": "Danny-locked",
+    "danny_2500_candidate_bar": "met",
+    "export_include_live": {
+      "classify": 2437,
+      "n": 6506,
+      "name_gate_classify_gap": 0,
+      "name_gate_negative_gap": 0,
+      "name_gate_unbind_gap": 0,
+      "negatives": 208,
+      "unbind": 1345
+    },
+    "in_git": false,
+    "name_gate": false,
+    "observed_at": "2026-09-10 PT evening",
+    "store": {
+      "class_inferred": 3931,
+      "class_observed": 402,
+      "n": 4333,
+      "path": "~/.hyperlex/hyperlexical/ingest_candidates.jsonl"
+    },
+    "supersedes": [
+      "Hermes 913 as current SoT",
+      "gap to 2500 as current SoT",
+      "tracked export n=883 as global SoT"
+    ]
+  },
   "schema": "hyperlex.hyperlexical.dataset.v0.1",
+  "scope": "git-tracked-seed",
   "sha256": "c92e909862197c2371fe982dcea164c0144fd3c96a6d5459605881787b36f8a8",
   "trunk": "answerdotai/ModernBERT-base"
 }

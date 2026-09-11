@@ -1,10 +1,24 @@
 # Hyperlex Spec 007 T1 — civilian dataset plan
 
+## Current scoreboard (2026-09-10 PT evening, Danny-locked)
+
+Matches [Notion Operator Hub](https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83). Full train SoT is **local-only**. Do not commit `~/.hyperlex/**` or a 6506-row `--include-live` dump.
+
+| Surface | n | Notes |
+|---------|--:|-------|
+| Local SoT `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` | **4333** | 402 OBSERVED / 3931 INFERRED. Not in git. |
+| Export `--include-live` (operator machine) | **6506** | classify family **2437** · unbind **1345** · negatives **208** · name_gate gaps **0/0/0** |
+| Tracked `exports/civilian.v0.1.jsonl` | 883 | **Seed/snapshot.** Not the global SoT. |
+
+Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **superseded**. `name_gate` stays **false** (E2 Spark-blocked). Moltbook counts below are a **Moltbook subset**, not the civilian T1 harvest path.
+
+Spark trains from the local SoT / `--include-live`, not from the tracked seed alone.
+
 ## Status and decision
 
-U2 is now present on branch `007-hyperlexical-model`. Its first executable export is a seed bundle, not the T1 name-gate dataset. This plan governs the next harvest and U2 hardening work without downloading ModernBERT.
+U2 harvest is on `main`. The first executable export remains a **seed bundle**. The live SoT is the local store plus operator `--include-live`, not the tracked JSONL.
 
-Current U2 verification after fixing its Python keyword/annotated-assignment loading defects: 183 rows total; 138 classify, 45 unbind, 21 negatives, and 8 dialect rows. The remaining name-gate gaps are therefore 1,862 classify, 155 unbind, and 179 negatives.
+Historical U2 seed verification (2026-09-09, pre-live harvest): 183 rows total; 138 classify, 45 unbind, 21 negatives, and 8 dialect rows. Those seed gaps are **not** current Hyperlex SoT status.
 
 ## 1. Ranked sources and harvest list
 
@@ -22,6 +36,8 @@ Current U2 verification after fixing its Python keyword/annotated-assignment loa
 | 9 | Project Gutenberg works explicitly unrestricted in the US | Source text **OBSERVED**; negative label **INFERRED** until settled | Individual works generally unrestricted under US copyright, with Project Gutenberg trademark/redistribution terms and jurisdiction caveats [6] | Project Gutenberg license [6] | Negatives | Secondary negative source only. Select named works with an unrestricted notice, remove headers/boilerplate, keep work ID, and sample short ordinary-prose spans. |
 
 ### Harvest quotas
+
+Operator 2026-09-10 PT evening: Danny ~2500 candidate bar is **met** on SoT + export classify. The bullets below are the original plan floors, not a current gap.
 
 - **Classify:** retain the 138-row U2 seed export, then harvest at least **2,500** candidates to survive dedupe, restriction filtering, license filtering, and operator review. Stop only when the accepted lexical-grouped pool reaches 2,000 and each of the ten closed labels has held-out support.
 - **Unbind:** retain the 45 unique U2 scheme rows, then annotate at least **100 new short civilian atoms under both schemes** (200 scheme rows). This clears the 155-row minimum gap with margin and gives E2 non-symbolic civilian material.
@@ -145,7 +161,7 @@ Exporter invariants:
 
 ## 3. Count gap versus the T1 name-gate
 
-Counts are from a real U2 export on branch head `f55b035421ecd40cb3c4861c9833666162d2ae1d`, before this document/fix commit [1].
+**Historical U2 seed** (branch head `f55b035421ecd40cb3c4861c9833666162d2ae1d`, 2026-09-09). Not current SoT. Current operator `--include-live` classify / unbind / negative gaps are **0 / 0 / 0**; `name_gate` is still false because E2 is Spark-blocked.
 
 | Quota | Existing raw evidence | Gate-countable after exact dedupe | Gap | Notes |
 |---|---:|---:|---:|---|
@@ -224,18 +240,21 @@ No rejected content is quoted.
 - Wired into 007 export: `harvest_moltbook()` in `scripts/shadow/hyperlexical/export.py` (loaded in export_dataset); ai-native TYPOLOGY expanded with memory/provenance/context. Verified 67 rows loadable.
 
 ### Post-wiring notes (this continuation)
+
+**Moltbook subset history** — not the global SoT.
+
 - Large batch fetch executed (60 items across submolts + targeted search).
 - Dedicated high-signal curation: data/moltbook_hyperlexical_high.jsonl (7 items, strong provenance/memory signals).
 - harvest_moltbook now part of the canonical export_dataset() flow for 007 training (AARON-SPARK-TRAIN, shadow export).
 - ai-native now carries memory/provenance/context typology from Moltbook classifiers.
-- Next: run full export with --include-live once other harvests stabilized; feed into SPARK train; grow high-signal via heartbeat auto-curate.
+- Live export path: `export --include-live` on the operator machine. Spark trains from that local SoT, not the tracked seed alone.
 
 ### Larger fetch continuation (269 posts)
 - Fetched 269 unique posts (memory/agents/ai/general/introductions/provenance + targeted searches for memory/provenance/context/KDR/ECHO).
 - Enriched batch: 269 items, 33 high-signal (eff>0.65 or provenance).
 - Hyperlexical rows: 269 (10 hyperstition_ish).
 - Seeds grown: +29 to total **60** (12 high-eff).
-- 007 export impact: 770 total rows, **327 ai-native** (up significantly), 309 strong memory/provenance.
+- 007 **Moltbook-subset** impact (historical, not global SoT): 770 tracked-export rows, **327 ai-native**, 309 strong memory/provenance.
 - Eval: 269 items, avg eff 0.411, provenance_density ~0.097, 10 hyperstition_ish.
 - Full pipeline re-run: export, curate, 007 shadow export, MANIFEST updated.
 
@@ -248,11 +267,11 @@ No rejected content is quoted.
   - "Provenance dies the moment an agent can rewrite its own evidence"
   - "echo of rented cognition"
 - These boost typology for memory/provenance in ai-native.
-- 007 export remains 770 / 327 ai-native; seeds now feed stronger signals.
+- Tracked-export **Moltbook-subset** snapshot at this step: 770 / 327 ai-native. Not current SoT.
 
 ### Post-curate + registry boost
 - Seeds: 65 (17 high-eff)
-- 007 export: 797 total, 354 ai-native (registry + moltbook harvest)
+- Tracked-export **Moltbook-subset** snapshot at this step: 797 total, 354 ai-native (registry + moltbook harvest). Not current SoT.
 - New terms in LINEAGE_REGISTRY: "SIGINT to the Ghost in the Cache", "rented memory", "Memory Paradox", "3-Tier Pattern", "Provenance dies", etc.
 - High-eff examples now boost both seeds and registry matching for hyperlexical training.
 
@@ -270,7 +289,7 @@ No rejected content is quoted.
 - Added 14 more seeds from 269 batch (broader signals: memory tiers + provenance + eff>0.55).
 - Total seeds: 79 (high-signal: 17)
 - High-signal subset refreshed (still 44 core strong ones).
-- 007 export grew to 837 total / 394 ai-native.
+- Tracked-export **Moltbook-subset** snapshot at this step: 837 total / 394 ai-native. Not current SoT.
 
 ### Eval on dedicated high-signal subset
 - Ran full `eval_moltbook_hyperlexical.py` on the 44-row high-signal set.
@@ -295,12 +314,17 @@ No rejected content is quoted.
 - Full re-classification pass using detect_memetic_patterns on all Moltbook rows.
 - High-signal (44) and main rows now have rich typology (memory_*, provenance, compression, context_*, hyperstition_signal), proper roles (multiple tiers + provenance), fillers, and accurate stage.
 - Civilian export: 314 Moltbook ai-native, 265+ with rich memory+provenance classification.
-- This meets T1 requirements for family-labeled (classify) rows with complete fields for name-gate.
+- This completed T1 **field** completeness on the Moltbook subset (rich typology / roles / stage). It did **not** set the global SoT or flip `name_gate`.
 
-## T1 Row Count Status (as of now)
-- Civilian export: 883 rows total, 440 ai-native, ~360 Moltbook ai-native.
-- High-signal dedicated: 44 rows (fully T1-classified with rich memory/provenance typology).
-- Target mentioned: **2500 rows minimum** for T1 name-gate.
-- Gap: We are at ~18% of target on volume. Moltbook is the scalable source for ai-native memory signals.
-- Next actions for volume: more aggressive Moltbook pagination, additional submolts, repeated fetches over time (cron), incorporation of more backfill/registry if available.
-- Current focus remains quality + classification completeness for the rows we have.
+## T1 row count status (2026-09-10 PT evening)
+
+Current civilian T1 harvest path is the **local SoT + `--include-live`**, not the tracked seed and not the Moltbook subset.
+
+| Surface | n | Scope |
+|---------|--:|-------|
+| Local SoT | **4333** (402 OBSERVED / 3931 INFERRED) | Global train store. Not in git. |
+| `--include-live` export | **6506** (classify **2437** / unbind **1345** / negatives **208**) | Operator machine. Gaps 0/0/0. `name_gate` false. |
+| Tracked `civilian.v0.1.jsonl` | 883 | Seed/snapshot only. |
+| Moltbook subset (historical, scoped) | ~360 Moltbook ai-native inside an 883-row tracked snapshot; 44-row high-signal file | **Moltbook subset only.** Not the global SoT. |
+
+Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **superseded**. Do not treat 883 / ~360 Moltbook as current Hyperlex SoT status.

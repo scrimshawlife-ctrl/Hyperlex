@@ -50,7 +50,7 @@ pipeline / run / ingest
 | `analyze "<query>" --route offline` | Analyze without auto-receipt |
 
 Prefer **`--route offline|live|glossary|social`** over raw adapter names.
-Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai, `live`→combined.
+Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai (Crawl4AI 0.9.3 default; no paid Firecrawl without Danny yes), `live`→combined.
 
 ## Research (SPECULATIVE · brier null)
 

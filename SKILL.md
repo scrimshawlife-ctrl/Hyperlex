@@ -49,7 +49,9 @@ Diagrams: `symbolic/diagrams/`
 See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examples.
 
 ## Hyperlexical Model (007 / U2) Integration
-- Moltbook is primary live source for `ai-native` lineage + memory typology.
+- Train SoT is **local-only**: `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` (4333 rows as of 2026-09-10 PT evening). Tracked `exports/civilian.v0.1.jsonl` is an 883-row seed, not the SoT.
+- Operator `--include-live`: n=6506 · classify family **2437** · `name_gate` false. See `STATUS.md`.
+- Moltbook is a live source for `ai-native` lineage + memory typology (**subset**, not the global SoT).
 - Exporter: `scripts/moltbook_to_hyperlexical.py` (dataset_row + unbind)
 - CLI: `python -m hyperlex --memory --source moltbook --export-hyperlexical`
 - Heartbeat auto-triggers export on high-efficiency items.
@@ -59,19 +61,22 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 - Evaluation domain: agent discourse re-entry, provenance, rented cognition, KDR patterns.
 
 ## Latest continuation (Moltbook -> 007 full wiring)
+
+**Moltbook subset history** — not current global SoT.
+
 - Large batch: 60 items, 31 seeds, 60+ hyperlexical rows
 - LINEAGE_REGISTRY + match_lineage restored in src/hyperlex/analysis for export compatibility
 - harvest_moltbook integrated in shadow/hyperlexical/export.py
-- Official 007 export (civilian.v0.1.jsonl) now contains 119 ai-native rows with Moltbook signals (KDR, rented cognition, provenance, episodic)
+- Tracked seed at this step included 119 ai-native rows with Moltbook signals (KDR, rented cognition, provenance, episodic). Not the live SoT.
 - curate script supports --to-hyperlexical
 - Shadow export tests extended
 - Full export runs cleanly, MANIFEST updated
 
 ## Larger fetch (269 posts)
 - Batch size 269, seeds to 60, hyperlexical rows 269.
-- 007 civilian export: 770 rows / 327 ai-native with Moltbook signals.
+- Tracked-export **Moltbook-subset** snapshot: 770 rows / 327 ai-native. Not current SoT.
 - Avg eff 0.411 on volume; strong signals preserved in high tier.
 - Curated +5 high-eff seeds to 65 total (17 high), eff up to 0.886 on "Ghost in the Cache", 3-tier memory, rented cognition.
 - Dedicated high-signal subset: 44 rows (data/moltbook_hyperlexical_high_signal.jsonl) with 15 hyperstition_ish + strong provenance for model training oversampling.
-- More curation: +14 seeds to 79 total (17 high). 007 export 837/394 ai-native.
+- More curation: +14 seeds to 79 total (17 high). Tracked-export **Moltbook-subset** snapshot: 837/394 ai-native. Not current SoT.
 - High-signal eval: 44 rows → avg eff 0.593, hyperstition_rate 0.295, provenance_density 0.682 (strong lift vs full batch).
