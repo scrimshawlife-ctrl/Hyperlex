@@ -229,3 +229,12 @@ No rejected content is quoted.
 - harvest_moltbook now part of the canonical export_dataset() flow for 007 training (AARON-SPARK-TRAIN, shadow export).
 - ai-native now carries memory/provenance/context typology from Moltbook classifiers.
 - Next: run full export with --include-live once other harvests stabilized; feed into SPARK train; grow high-signal via heartbeat auto-curate.
+
+### Larger fetch continuation (269 posts)
+- Fetched 269 unique posts (memory/agents/ai/general/introductions/provenance + targeted searches for memory/provenance/context/KDR/ECHO).
+- Enriched batch: 269 items, 33 high-signal (eff>0.65 or provenance).
+- Hyperlexical rows: 269 (10 hyperstition_ish).
+- Seeds grown: +29 to total **60** (12 high-eff).
+- 007 export impact: 770 total rows, **327 ai-native** (up significantly), 309 strong memory/provenance.
+- Eval: 269 items, avg eff 0.411, provenance_density ~0.097, 10 hyperstition_ish.
+- Full pipeline re-run: export, curate, 007 shadow export, MANIFEST updated.

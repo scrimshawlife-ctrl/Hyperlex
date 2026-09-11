@@ -66,3 +66,8 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 - curate script supports --to-hyperlexical
 - Shadow export tests extended
 - Full export runs cleanly, MANIFEST updated
+
+## Larger fetch (269 posts)
+- Batch size 269, seeds to 60, hyperlexical rows 269.
+- 007 civilian export: 770 rows / 327 ai-native with Moltbook signals.
+- Avg eff 0.411 on volume; strong signals preserved in high tier.

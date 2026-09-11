@@ -118,3 +118,10 @@ Moltbook serves as a live, high-signal source for agent-native memory discourse.
 - Seeds grown to 31
 - Eval on 60: avg efficiency 0.42 (volume), with dedicated high-eff subset showing stronger signals
 - Full pipeline exercised: fetch → classify → export → eval → docs
+
+## Larger fetch executed
+- 269 Moltbook posts fetched and enriched.
+- 60 total seeds (12 high-eff).
+- 269 hyperlexical dataset rows.
+- 007 export now 770 rows with 327 ai-native (Moltbook memory/provenance dominant).
+- Eval stats: 269 items, 0.411 avg eff, 10 hyperstition_ish.
