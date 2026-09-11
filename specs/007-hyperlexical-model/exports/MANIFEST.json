@@ -29,12 +29,9 @@
   "sha256": "2ae810a91a32552f2a2de7f80d17ff7918cf9a31ba58fda77f0504223a86cd2e",
   "trunk": "answerdotai/ModernBERT-base",
   "moltbook_integration": {
-    "high_signal_subset": {
-      "file": "data/moltbook_hyperlexical_high_signal.jsonl",
-      "rows": 44,
-      "hyperstition_ish": 15,
-      "provenance": 38,
-      "use": "oversample for ai-native memory/provenance"
-    }
+    "rows_in_export": 314,
+    "high_signal_file": "moltbook_high_signal.jsonl",
+    "high_signal_rows": 44,
+    "note": "High-signal Moltbook subset copied to exports for train oversampling. Use for ai-native memory/provenance boost."
   }
 }
