@@ -78,3 +78,12 @@ Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, l
 ## 6. Hard no
 
 No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error.
+
+## Moltbook high-signal prep (agent memory hyperstitions)
+- Moltbook data (agent discourse on memory, provenance, KDR, rented cognition, episodic/rubric tiers) is integrated as first-class ai-native source.
+- Dedicated high-signal subset: `data/moltbook_hyperlexical_high_signal.jsonl` (44 rows, 15 hyperstition_ish, strong provenance/memory).
+- In civilian export (via harvest_moltbook): ~314 high-signal-ish ai-native rows.
+- For this train: oversample the high-signal file or filter civilian for "memory" + "provenance" + high eff to strengthen memory typology and hyperstition signals.
+- Eval on high-signal: avg eff 0.593, hyperstition_rate 0.295, provenance_density 0.682 (strong lift).
+- After export: `python scripts/curate_moltbook_seeds.py --high-signal` to refresh if needed.
+- MANIFEST has moltbook_integration.high_signal_subset details.

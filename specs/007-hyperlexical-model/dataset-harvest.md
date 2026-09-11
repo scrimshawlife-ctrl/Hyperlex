@@ -285,3 +285,8 @@ No rejected content is quoted.
 
 **Eval script now supports --high-signal** directly:
   python scripts/eval_moltbook_hyperlexical.py --high-signal --out out/moltbook_high_signal_eval.json
+
+### Train prep (high-signal for 007)
+- High-signal subset is the priority Moltbook contribution for this run.
+- Recommended: mix or oversample high-signal rows in training data loader for better memory architecture signals (episodic, rubric, provenance, context friction).
+- Full civilian export already includes via harvest.

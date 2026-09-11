@@ -27,5 +27,14 @@
   "note": "Honest accounting: counts.classify = family-labeled only (excludes negatives). counts.negatives = ordinary-prose (seed:negative-prose) only \u2014 not live lineage=none classify (see classify_none). unbind_fixture vs unbind_civilian split. Spec004 fixtures at n=24; civilian dual-scheme from golden/registry (no gloss invent). Live optional via --include-live (preserves store class; unset\u2192INFERRED). Not a T1 name-gate.",
   "schema": "hyperlex.hyperlexical.dataset.v0.1",
   "sha256": "2ae810a91a32552f2a2de7f80d17ff7918cf9a31ba58fda77f0504223a86cd2e",
-  "trunk": "answerdotai/ModernBERT-base"
+  "trunk": "answerdotai/ModernBERT-base",
+  "moltbook_integration": {
+    "high_signal_subset": {
+      "file": "data/moltbook_hyperlexical_high_signal.jsonl",
+      "rows": 44,
+      "hyperstition_ish": 15,
+      "provenance": 38,
+      "use": "oversample for ai-native memory/provenance"
+    }
+  }
 }
