@@ -221,3 +221,11 @@ No rejected content is quoted.
   - roles/fillers: memory_tiers + context_loss_technique + provenance
   - provenance: includes efficiency, compression, source post_id, class=INFERRED
 - Action: Run the exporter on fresh batches (including from heartbeat). Treat as high-value for ai-native + memory typology. Continue curation to increase volume (target 50-100). Latest run: 60 rows, 31 seeds, 7 high-signal curated.
+- Wired into 007 export: `harvest_moltbook()` in `scripts/shadow/hyperlexical/export.py` (loaded in export_dataset); ai-native TYPOLOGY expanded with memory/provenance/context. Verified 67 rows loadable.
+
+### Post-wiring notes (this continuation)
+- Large batch fetch executed (60 items across submolts + targeted search).
+- Dedicated high-signal curation: data/moltbook_hyperlexical_high.jsonl (7 items, strong provenance/memory signals).
+- harvest_moltbook now part of the canonical export_dataset() flow for 007 training (AARON-SPARK-TRAIN, shadow export).
+- ai-native now carries memory/provenance/context typology from Moltbook classifiers.
+- Next: run full export with --include-live once other harvests stabilized; feed into SPARK train; grow high-signal via heartbeat auto-curate.
