@@ -6,7 +6,9 @@ Use current **`main`**. Do not use the old `007-hyperlexical-model` branch.
 
 This is a **seed smoke** for harness wiring, not a Hyperlexical card. E2 has not passed. Name-gate is false. Do not upload to Hugging Face. Do not say the model is Hyperlexical.
 
-**Train data:** T1 / E2 work uses the **local SoT** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`) via `PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live`. Do not train the named path from tracked `exports/civilian.v0.1.jsonl` alone — that file is an 883-row **seed/snapshot**. Operator `--include-live` (2026-09-10 PT evening): n=6506 · classify **2437** · unbind **1345** · negatives **208** · gaps 0/0/0 · `name_gate` false. Danny ~2500 bar: **met**.
+**Train data:** T1 / E2 work uses the **local SoT** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`) via `PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live`. Do not train the named path from tracked `exports/civilian.v0.1.jsonl` alone — that file is a seed/snapshot.
+
+The harvest now includes 4333-row Hyperlex + Vernacular integration (see section below) with inline memetic enrichment. Recent live exports have met the ~2500 classify bar.
 
 Layout (locked): `specs/007-hyperlexical-model/weights.md`
 
@@ -31,6 +33,7 @@ python3 -V        # 3.10+
 
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.preflight
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
+# The updated harvest will pick up 4333 data if data/hyperlex_4333_dump.jsonl is present.
 # omit --include-live only for harness wiring against the tracked seed
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --out /tmp/hlx-e2-before.json
 # expect exit 3
@@ -76,18 +79,72 @@ Do not commit them.
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --out /tmp/hlx-e2-after.json
 ```
 
-Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, layout.json, torch/`sm_121` note.
+Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, layout.json, torch/`sm_121` note. Include any high-signal oversampling notes if used (see 4333/Moltbook sections).
 
 ## 6. Hard no
 
 No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error.
 
-## Moltbook subset (not the global SoT)
+## High-signal subsets (Moltbook + 4333, not the global SoT)
 
-Moltbook is a first-class **ai-native** source (memory, provenance, KDR, rented cognition). It is a **subset**, not the civilian T1 SoT.
+Moltbook and the 4333 dump (see next section) are first-class **ai-native** sources. They are **subsets**, not the full civilian T1 SoT. Use `--include-live` for the authoritative data; optionally oversample the high-signal files below for memory/provenance signals.
 
 - High-signal file: `exports/moltbook_high_signal.jsonl` (44 rows). Optional oversample for memory/provenance typology.
 - Historical tracked-export Moltbook counts (~314–360 ai-native inside the 883-row seed) are **not** current global SoT status.
 - Train from local SoT / `--include-live`. Optionally weight rows with moltbook provenance or high memory+provenance efficiency.
 - Refresh: `python scripts/curate_moltbook_seeds.py --high-signal`
 - Mapping and history: `dataset-harvest.md`
+
+## 4333-row Hyperlex + Vernacular dump (2026-09-11)
+
+Another first-class **ai-native** source (Hyperlex ledger + Vernacular/GrokBot terms from Notion export). Significant volume of memory, provenance, vernacular, and compression signals.
+
+- Source: Notion page attachments (processed 4333 rows NDJSON + CSVs).
+- Pipeline: `harvest_4333_dump` (wired in export) now calls `detect_memetic_patterns` inline → efficiency, memory_tiers, compression_type populated at export time.
+- Prepared for training (in `exports/training/`):
+  - `training_4333_dump.jsonl` (5019 rows)
+  - `training_high_signal.jsonl` (1501 rows, 73%+ ai-native from this dump, avg eff 0.278)
+  - `training_ai_native.jsonl`
+- High-signal oversampling recommended for memory/provenance typology (parallel to Moltbook).
+- To include: Ensure `data/hyperlex_4333_dump.jsonl` is present when running export (or it was already merged into your live ingest).
+- Full scoreboard + integration notes: `specs/007-hyperlexical-model/exports/TRAINING_READINESS.md`
+- Mapping/history: `dataset-harvest.md` (section "4333-row Hyperlex dump integration")
+
+Train from the live SoT via `--include-live`. Use the high-signal files above for optional weighting/oversampling of strong memory + provenance signals.
+
+## Including the 4333 dump (if not already in live ingest)
+
+If the 4333 data is not yet in your ~/.hyperlex/hyperlexical/ingest_candidates.jsonl:
+
+```bash
+# Copy the processed dump (provided separately or from exports/training/training_4333_dump.jsonl)
+cp /path/to/training_4333_dump.jsonl data/hyperlex_4333_dump.jsonl
+
+# Then run export (it will pick it up via harvest_4333_dump)
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
+```
+
+The dump is already enriched on export thanks to the updated harvest.
+
+## Recommendations for this T1 run (4333 + high-signal)
+
+- **Primary data**: Always use `--include-live` against the current operator SoT. The tracked `civilian.v0.1.jsonl` is only a seed snapshot.
+- **4333 inclusion**: Copy `training_4333_dump.jsonl` (from exports/training/ or provided) to `data/hyperlex_4333_dump.jsonl` before export if not already merged into live ingest. The updated harvest will enrich it automatically.
+- **Oversampling**: Strongly recommended for memory/provenance signals. Use `exports/training/training_high_signal.jsonl` (1501 rows, 73%+ from 4333, avg eff 0.278). Prioritize rows with:
+  - `memetic_efficiency` >= 0.3
+  - `stage` == "hyperstition_ish" or strong "memory"/"provenance" in typology
+  - Explicit 4333 provenance
+- **Preflight verification**:
+  ```bash
+  PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
+  # Confirm 4333 rows appear with efficiency/tiers in output or MANIFEST
+  PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --out /tmp/hlx-e2-before.json
+  ```
+- **Post-train**: Re-run eval_unbind. Check train-receipt for 4333 contribution. Send high-signal usage notes.
+- **Artifacts to reference**:
+  - `exports/training/training_high_signal.jsonl`
+  - `exports/training/training_4333_dump.jsonl`
+  - `exports/training/training_ai_native.jsonl`
+  - `exports/TRAINING_READINESS.md` (full scoreboard)
+  - `dataset-harvest.md` (integration history)
+- Refresh high-signal locally if needed: `python scripts/curate_moltbook_seeds.py --high-signal` (extend for 4333 if new data).
