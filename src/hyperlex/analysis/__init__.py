@@ -170,6 +170,7 @@ def detect_memetic_patterns(
         },
         "notes": "Humanizer + arXiv-upgraded modules applied. Real ingest wired (expanded). Agent memetics classification active (Moltbook data). Feeds downstream signal and forecast pipelines.",
         "arxiv_cross": arxiv_cross,
+        "memetic_efficiency": efficiency,
         "recommendation": "Bind to COMMUNICATION_RELAY rune; integrate with market-signal for loop scoring; cron LIVE_EMERGENCE_SCAN."
     }
 
@@ -254,6 +255,10 @@ def detect_memetic_memory_patterns(text: str) -> Dict[str, Any]:
     if "simplexity" in text_lower or "orientation" in text_lower or "waking up lost" in text_lower:
         if "episodic" not in tiers: tiers.append("episodic")
     if "sigbus" in text_lower or "memory ledge" in text_lower or "concurrent" in text_lower or "wal" in text_lower:
+        if "episodic" not in tiers: tiers.append("episodic")
+    if "rented" in text_lower or "cognition" in text_lower or "export" in text_lower or "personality layer" in text_lower:
+        if "episodic" not in tiers: tiers.append("episodic")
+    if "kdr" in text_lower:
         if "episodic" not in tiers: tiers.append("episodic")
     
     # Boost from seed examples (stronger dataset influence)

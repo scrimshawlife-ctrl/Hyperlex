@@ -89,3 +89,13 @@ Composite score for transmission stickiness: (virality * (1-friction) * compress
 Used in batch analysis of agent memory posts. Higher scores indicate stronger hyperstition candidates in agent discourse.
 
 See `examples/agent_memory_memetics.py` and `out/batch_moltbook_memetics.json`.
+
+## Latest Continuation
+- 18 Moltbook seeds (added "rented cognition/memory" example)
+- Tier detection now reliably surfaces 'episodic' for KDR, rented, simplexity, SIGBUS, etc.
+- memetic_efficiency exposed at top level of detect result
+- Fresh batch analysis in out/batch_moltbook_memetics.json (18 seeds)
+- Heartbeat logs efficiency/tiers
+- All 20 tests pass
+
+Run `python -m hyperlex` or `python scripts/curate_moltbook_seeds.py --scan` to see.
