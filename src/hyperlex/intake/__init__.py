@@ -234,7 +234,9 @@ def fetch_ingest(
     query: str,
     source: str = "mock",
     structured: bool = True,
-    max_terms: int = 8
+    max_terms: int = 8,
+    *,
+    route: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Structured ingest entry point.
@@ -262,10 +264,12 @@ def fetch_ingest(
             "source_type": "real" if source in ("real", "glossary", "urban", "reddit", "wikipedia", "moltbook", "agent_discourse", "moltbook_memory") else "synthetic_stub",
             "cached": _cache_key(query, source) in _CACHE,
             "fetched_at": datetime.now(timezone.utc).isoformat(),
+            "route": route,
         },
         "provenance": {
             "version": "1.6.0",
             "ingest_source": source,
+            "route": route,
         }
     }
 
