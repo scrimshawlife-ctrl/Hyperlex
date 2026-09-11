@@ -1,31 +1,59 @@
 {
   "brier": null,
   "counts": {
-    "backfill": 60,
-    "classify": 168,
-    "classify_all": 378,
-    "classify_none": 210,
+    "backfill": 56,
+    "classify": 1859,
+    "classify_all": 4607,
+    "classify_none": 2748,
     "dialect": 8,
-    "inferred": 494,
+    "inferred": 4299,
     "live_included": 0,
     "live_rejected": 0,
-    "n": 883,
+    "n": 5065,
     "name_gate": false,
-    "name_gate_classify_gap": 1832,
+    "name_gate_classify_gap": 141,
     "name_gate_negative_gap": 0,
     "name_gate_unbind_gap": 55,
     "negatives": 208,
-    "observed": 389,
-    "test": 79,
-    "train": 728,
+    "observed": 766,
+    "test": 513,
+    "train": 4051,
     "unbind": 145,
     "unbind_civilian": 100,
     "unbind_fixture": 45,
-    "val": 76
+    "val": 501
   },
   "file": "civilian.v0.1.jsonl",
   "note": "Honest accounting: counts.classify = family-labeled only (excludes negatives). counts.negatives = ordinary-prose (seed:negative-prose) only \u2014 not live lineage=none classify (see classify_none). unbind_fixture vs unbind_civilian split. Spec004 fixtures at n=24; civilian dual-scheme from golden/registry (no gloss invent). Live optional via --include-live (preserves store class; unset\u2192INFERRED). Not a T1 name-gate.",
   "schema": "hyperlex.hyperlexical.dataset.v0.1",
-  "sha256": "c92e909862197c2371fe982dcea164c0144fd3c96a6d5459605881787b36f8a8",
-  "trunk": "answerdotai/ModernBERT-base"
+  "sha256": "9701b100fd4896b540ab028b747365afbe58ba1a06ad67b35ddd4e9c6b5966dd",
+  "trunk": "answerdotai/ModernBERT-base",
+  "training_prep": {
+    "civilian_rows": 5857,
+    "high_signal": 1501,
+    "ai_native": 1101,
+    "from_4333_dump": 5019,
+    "artifacts": [
+      "civilian.v0.1.jsonl",
+      "training_high_signal.jsonl",
+      "training_ai_native.jsonl",
+      "training_4333_dump.jsonl"
+    ],
+    "note": "Full enrichment via updated harvest_4333_dump + detect_memetic_patterns. Ready for T1."
+  },
+  "last_eval": {
+    "high_signal": {
+      "total": 1501,
+      "avg_efficiency": 0.278,
+      "ai_native": 1101,
+      "ai_native_rate": 0.734,
+      "from_4333": 1135,
+      "from_4333_rate": 0.756,
+      "hyperstition_ish": 18,
+      "hyperstition_rate": 0.012,
+      "unbind_ready": 328,
+      "unbind_rate": 0.219
+    },
+    "note": "After harvest update and re-export"
+  }
 }

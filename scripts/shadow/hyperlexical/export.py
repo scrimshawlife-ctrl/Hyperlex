@@ -663,7 +663,7 @@ def export_dataset(
         + harvest_civilian_unbind(root)
         + harvest_negatives()
         + harvest_inferred_classify_pass(root)
-        + harvest_moltbook(root)
+        + harvest_moltbook(root) + harvest_4333_dump(root)
     )
     live_n = 0
     live_rejected = 0
@@ -809,6 +809,83 @@ def main(argv=None) -> int:
     path = write_export(dest, bundle)
     print(json.dumps({"wrote": str(path), "sha256": bundle["sha256"], "counts": bundle["counts"]}, indent=2))
     return 0
+
+
+
+def harvest_4333_dump(root: Path) -> list[dict[str, Any]]:
+    """4333-row Hyperlex + Vernacular export (GrokBot/vernacular corpus from Notion).
+    Pre-classified rows. Maps brainrot-aura and other lineages into ai-native
+    with enriched typology, efficiency, memory tiers, etc.
+    Now wires detect_memetic_patterns for efficiency/tiers on the fly.
+    """
+    rows = []
+    dump_file = root / "data" / "hyperlex_4333_dump.jsonl"
+    if not dump_file.exists():
+        print("[harvest_4333_dump] no dump file, skipping")
+        return rows
+
+    # Lazy import to avoid circulars
+    try:
+        sys.path.insert(0, str(root / "src"))
+        from hyperlex import detect_memetic_patterns
+    except Exception:
+        detect_memetic_patterns = None
+
+    for line in dump_file.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            r = json.loads(line)
+            text = (r.get("text") or r.get("term") or "").strip()
+            if not text or len(text) < 2:
+                continue
+
+            lineage = r.get("lineage", "ai-native")
+            if lineage in ("brainrot-aura", "ai-native"):
+                lineage = "ai-native"
+
+            typology = r.get("typology", ["compression", "status"])
+            if lineage == "ai-native":
+                typology = list(set(typology + ["compression", "memory", "provenance", "context", "vernacular"]))
+
+            row = _row(
+                text=text,
+                lineage=lineage,
+                typology=typology,
+                stage=r.get("stage", "circulating"),
+                roles=r.get("roles", ["slang", "memetic"]),
+                fillers=r.get("fillers", []),
+                role_scheme=r.get("role_scheme", "type_slot"),
+                task="classify",
+                provenance={
+                    "source": "notion",
+                    "page": "Hyperlex-Vernacular-export-2026-09-10",
+                    "original_provenance": r.get("provenance"),
+                    "reclassify_pass": r.get("reclassify_pass"),
+                    "settle_note": r.get("settle_note"),
+                },
+                **{"class": r.get("class", "INFERRED")},
+                license=r.get("license", "operator-local"),
+            )
+
+            # Enrich with memetic analysis if available
+            if detect_memetic_patterns:
+                try:
+                    analysis = detect_memetic_patterns(text, ingest_source="notion")
+                    if analysis.get("memetic_efficiency"):
+                        row["memetic_efficiency"] = analysis["memetic_efficiency"]
+                    if analysis.get("memory_tiers"):
+                        row["memory_tiers"] = analysis.get("memory_tiers")
+                    if analysis.get("compression_type"):
+                        row["compression_type"] = analysis.get("compression_type")
+                except Exception:
+                    pass
+
+            rows.append(row)
+        except Exception:
+            continue
+    print(f"[harvest_4333_dump] loaded {len(rows)} rows")
+    return rows
 
 
 if __name__ == "__main__":
