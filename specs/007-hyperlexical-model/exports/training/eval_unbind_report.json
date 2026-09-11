@@ -1,0 +1,16 @@
+{
+  "brier": null,
+  "e2_pass": false,
+  "forecast_eligible": false,
+  "model_id": "stub",
+  "n_test": 12,
+  "note": "E2 requires a trained T1 to beat the 004 probe. Stub is expected to fail.",
+  "probe_positional_swap": 1.0,
+  "probe_schema": "abraxas.recoverable_structure.probe.v0.1",
+  "probe_swap_min": 0.5,
+  "probe_type_slot_swap": 0.5,
+  "schema": "hyperlex.hyperlexical.eval_unbind.v0.1",
+  "stub_swap": 0.0,
+  "trunk": "answerdotai/ModernBERT-base",
+  "trunk_loaded": false
+}

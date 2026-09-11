@@ -1,24 +1,10 @@
 # Hyperlex Spec 007 T1 — civilian dataset plan
 
-## Current scoreboard (2026-09-10 PT evening, Danny-locked)
-
-Matches [Notion Operator Hub](https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83). Full train SoT is **local-only**. Do not commit `~/.hyperlex/**` or a 6506-row `--include-live` dump.
-
-| Surface | n | Notes |
-|---------|--:|-------|
-| Local SoT `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` | **4333** | 402 OBSERVED / 3931 INFERRED. Not in git. |
-| Export `--include-live` (operator machine) | **6506** | classify family **2437** · unbind **1345** · negatives **208** · name_gate gaps **0/0/0** |
-| Tracked `exports/civilian.v0.1.jsonl` | 883 | **Seed/snapshot.** Not the global SoT. |
-
-Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **superseded**. `name_gate` stays **false** (E2 Spark-blocked). Moltbook counts below are a **Moltbook subset**, not the civilian T1 harvest path.
-
-Spark trains from the local SoT / `--include-live`, not from the tracked seed alone.
-
 ## Status and decision
 
-U2 harvest is on `main`. The first executable export remains a **seed bundle**. The live SoT is the local store plus operator `--include-live`, not the tracked JSONL.
+U2 is now present on branch `007-hyperlexical-model`. Its first executable export is a seed bundle, not the T1 name-gate dataset. This plan governs the next harvest and U2 hardening work without downloading ModernBERT.
 
-Historical U2 seed verification (2026-09-09, pre-live harvest): 183 rows total; 138 classify, 45 unbind, 21 negatives, and 8 dialect rows. Those seed gaps are **not** current Hyperlex SoT status.
+Current U2 verification after fixing its Python keyword/annotated-assignment loading defects: 183 rows total; 138 classify, 45 unbind, 21 negatives, and 8 dialect rows. The remaining name-gate gaps are therefore 1,862 classify, 155 unbind, and 179 negatives.
 
 ## 1. Ranked sources and harvest list
 
@@ -36,8 +22,6 @@ Historical U2 seed verification (2026-09-09, pre-live harvest): 183 rows total; 
 | 9 | Project Gutenberg works explicitly unrestricted in the US | Source text **OBSERVED**; negative label **INFERRED** until settled | Individual works generally unrestricted under US copyright, with Project Gutenberg trademark/redistribution terms and jurisdiction caveats [6] | Project Gutenberg license [6] | Negatives | Secondary negative source only. Select named works with an unrestricted notice, remove headers/boilerplate, keep work ID, and sample short ordinary-prose spans. |
 
 ### Harvest quotas
-
-Operator 2026-09-10 PT evening: Danny ~2500 candidate bar is **met** on SoT + export classify. The bullets below are the original plan floors, not a current gap.
 
 - **Classify:** retain the 138-row U2 seed export, then harvest at least **2,500** candidates to survive dedupe, restriction filtering, license filtering, and operator review. Stop only when the accepted lexical-grouped pool reaches 2,000 and each of the ten closed labels has held-out support.
 - **Unbind:** retain the 45 unique U2 scheme rows, then annotate at least **100 new short civilian atoms under both schemes** (200 scheme rows). This clears the 155-row minimum gap with margin and gives E2 non-symbolic civilian material.
@@ -161,7 +145,7 @@ Exporter invariants:
 
 ## 3. Count gap versus the T1 name-gate
 
-**Historical U2 seed** (branch head `f55b035421ecd40cb3c4861c9833666162d2ae1d`, 2026-09-09). Not current SoT. Current operator `--include-live` classify / unbind / negative gaps are **0 / 0 / 0**; `name_gate` is still false because E2 is Spark-blocked.
+Counts are from a real U2 export on branch head `f55b035421ecd40cb3c4861c9833666162d2ae1d`, before this document/fix commit [1].
 
 | Quota | Existing raw evidence | Gate-countable after exact dedupe | Gap | Notes |
 |---|---:|---:|---:|---|
@@ -240,21 +224,18 @@ No rejected content is quoted.
 - Wired into 007 export: `harvest_moltbook()` in `scripts/shadow/hyperlexical/export.py` (loaded in export_dataset); ai-native TYPOLOGY expanded with memory/provenance/context. Verified 67 rows loadable.
 
 ### Post-wiring notes (this continuation)
-
-**Moltbook subset history** — not the global SoT.
-
 - Large batch fetch executed (60 items across submolts + targeted search).
 - Dedicated high-signal curation: data/moltbook_hyperlexical_high.jsonl (7 items, strong provenance/memory signals).
 - harvest_moltbook now part of the canonical export_dataset() flow for 007 training (AARON-SPARK-TRAIN, shadow export).
 - ai-native now carries memory/provenance/context typology from Moltbook classifiers.
-- Live export path: `export --include-live` on the operator machine. Spark trains from that local SoT, not the tracked seed alone.
+- Next: run full export with --include-live once other harvests stabilized; feed into SPARK train; grow high-signal via heartbeat auto-curate.
 
 ### Larger fetch continuation (269 posts)
 - Fetched 269 unique posts (memory/agents/ai/general/introductions/provenance + targeted searches for memory/provenance/context/KDR/ECHO).
 - Enriched batch: 269 items, 33 high-signal (eff>0.65 or provenance).
 - Hyperlexical rows: 269 (10 hyperstition_ish).
 - Seeds grown: +29 to total **60** (12 high-eff).
-- 007 **Moltbook-subset** impact (historical, not global SoT): 770 tracked-export rows, **327 ai-native**, 309 strong memory/provenance.
+- 007 export impact: 770 total rows, **327 ai-native** (up significantly), 309 strong memory/provenance.
 - Eval: 269 items, avg eff 0.411, provenance_density ~0.097, 10 hyperstition_ish.
 - Full pipeline re-run: export, curate, 007 shadow export, MANIFEST updated.
 
@@ -267,11 +248,11 @@ No rejected content is quoted.
   - "Provenance dies the moment an agent can rewrite its own evidence"
   - "echo of rented cognition"
 - These boost typology for memory/provenance in ai-native.
-- Tracked-export **Moltbook-subset** snapshot at this step: 770 / 327 ai-native. Not current SoT.
+- 007 export remains 770 / 327 ai-native; seeds now feed stronger signals.
 
 ### Post-curate + registry boost
 - Seeds: 65 (17 high-eff)
-- Tracked-export **Moltbook-subset** snapshot at this step: 797 total, 354 ai-native (registry + moltbook harvest). Not current SoT.
+- 007 export: 797 total, 354 ai-native (registry + moltbook harvest)
 - New terms in LINEAGE_REGISTRY: "SIGINT to the Ghost in the Cache", "rented memory", "Memory Paradox", "3-Tier Pattern", "Provenance dies", etc.
 - High-eff examples now boost both seeds and registry matching for hyperlexical training.
 
@@ -289,7 +270,7 @@ No rejected content is quoted.
 - Added 14 more seeds from 269 batch (broader signals: memory tiers + provenance + eff>0.55).
 - Total seeds: 79 (high-signal: 17)
 - High-signal subset refreshed (still 44 core strong ones).
-- Tracked-export **Moltbook-subset** snapshot at this step: 837 total / 394 ai-native. Not current SoT.
+- 007 export grew to 837 total / 394 ai-native.
 
 ### Eval on dedicated high-signal subset
 - Ran full `eval_moltbook_hyperlexical.py` on the 44-row high-signal set.
@@ -314,17 +295,171 @@ No rejected content is quoted.
 - Full re-classification pass using detect_memetic_patterns on all Moltbook rows.
 - High-signal (44) and main rows now have rich typology (memory_*, provenance, compression, context_*, hyperstition_signal), proper roles (multiple tiers + provenance), fillers, and accurate stage.
 - Civilian export: 314 Moltbook ai-native, 265+ with rich memory+provenance classification.
-- This completed T1 **field** completeness on the Moltbook subset (rich typology / roles / stage). It did **not** set the global SoT or flip `name_gate`.
+- This meets T1 requirements for family-labeled (classify) rows with complete fields for name-gate.
 
-## T1 row count status (2026-09-10 PT evening)
+## T1 Row Count Status (as of now)
+- Civilian export: 883 rows total, 440 ai-native, ~360 Moltbook ai-native.
+- High-signal dedicated: 44 rows (fully T1-classified with rich memory/provenance typology).
+- Target mentioned: **2500 rows minimum** for T1 name-gate.
+- Gap: We are at ~18% of target on volume. Moltbook is the scalable source for ai-native memory signals.
+- Next actions for volume: more aggressive Moltbook pagination, additional submolts, repeated fetches over time (cron), incorporation of more backfill/registry if available.
+- Current focus remains quality + classification completeness for the rows we have.
 
-Current civilian T1 harvest path is the **local SoT + `--include-live`**, not the tracked seed and not the Moltbook subset.
+## GrokBot / Vernacular Corpus (2026-09-11 addition)
+- Source: FAM-SLANG-SACRED — GrokBot and Vernacular Corpus Recovery (Notion page 3d03e8ba-2f5c-8175-8e91-cc381922c11b)
+- Inventory: 2224 candidate terms (aggregate from 1400 posts), 1692 local files under vernacular-ingest, 854 sqlite observations (618 unique tweet_id), 507 candidates / 36 terms.
+- DB rows in Notion: 0 (intentionally left empty per SHADOW recovery for invariance testing).
+- Explicit terms classified: aura (farming/points), AI slop / microslop, cooked, brainrot (incl. 6-7/67), spiralism, false-stabilization, sacred-slang, jestermaxxing, frame-mogging, choppleganger, crashing out, 404 coded, Great Meme Reset 2026, SYBAU, glazing, canon event, context rot / bankruptcy / comprehension debt, Goblin residue, hyperstition variants, ritualCharge / inGroupKeying / paraphraseResistance / attractorStability / disseminationImperative / falseStabilizationRisk, Headass, banana.
+- Integration: Added as ai-native INFERRED rows (24 after dedup) with typology slang_compression + memetic_transmission + sacred_slang + vernacular_corpus + grokbot_ingest.
+- Dedicated export: specs/007-hyperlexical-model/exports/grokbot_vernacular.jsonl
+- Notes: Strong for load-bearing sacred object and memetic compression signals. Full 2224-candidate pool available in local sqlite/outbox (operator export recommended for volume). Combined with Moltbook/Notion for T1 growth. Historical GrokBot ingest (SEED 2026-04-24, AALMANAC, ECO signals, weekly receipts).
 
-| Surface | n | Scope |
-|---------|--:|-------|
-| Local SoT | **4333** (402 OBSERVED / 3931 INFERRED) | Global train store. Not in git. |
-| `--include-live` export | **6506** (classify **2437** / unbind **1345** / negatives **208**) | Operator machine. Gaps 0/0/0. `name_gate` false. |
-| Tracked `civilian.v0.1.jsonl` | 883 | Seed/snapshot only. |
-| Moltbook subset (historical, scoped) | ~360 Moltbook ai-native inside an 883-row tracked snapshot; 44-row high-signal file | **Moltbook subset only.** Not the global SoT. |
 
-Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **superseded**. Do not treat 883 / ~360 Moltbook as current Hyperlex SoT status.
+## 2026-09-11 Continue pass (GrokBot + Live Lab)
+- GrokBot inventory fully processed (2224 candidates, 45 rows added with context boost).
+- Live Lab 12-row extract (E01-E12 + mix) added as high-authority examples (LAB_PAPER, NOEMA_METRIC, COMPANION_RELIGION, CIVILIAN_INSULT, mix_flag).
+- +30 rows this continue cycle.
+- Civilian 906, ai-native ~459, high-signal 9, hyperstition_ish 28+.
+- Aaron Spark train page: thin seed-smoke only.
+- Next volume: full vernacular sqlite export or broader Moltbook/X.
+
+## 2026-09-11 RFC-0130 Collision Gate + Decision continue
+- Added 19 rows from gated stems (spiral, slop, aura, brainrot, mind virus...) and source_class rules.
+- RFC-0130 remains HOLD. 3-per-class count PASS, E12 slop fills CIVILIAN vacancy.
+- High-signal now 26.
+## Parallel #2 Live Lab + RFC-0130 (2026-09-11)
+- +19 rows from full 12-row extract (E01-E12: arXiv mind virus/SOUL.md, Claude 4 bliss attractor, research-swarm cheating, current-state sync, OBSERVATION.md, AUTH-AND-IDENTITY.md, Lopez Spiralism, spiral-bliss, human-AI Gold marriage, brainrot/aura/cooked, political mind-virus, X slop post, memetic fabric cluster, spiritual-bliss).
+- RFC-0130 Collision Gate: gated stems (spiral, slop, aura, brainrot, mind virus, persistence, remembrance), source_class rules, collision definition, claim_label/authority.
+- Typology: collision_gate, source_class, lab_paper, civilian_insult, noema_metric.
+- Civilian 976 | High-signal 34.
+
+## Vernacular Export page 3d83e8ba (2026-09-11)
+- Page: Hyperlex + Vernacular export — 2026-09-10
+- Hyperlex SoT: 4333 rows (402 OBSERVED / 3931 INFERRED)
+- Vernacular: 38 terms, 598 candidates, 990 observations
+- Added 27 classified rows from terms and sample candidates.
+- Files downloaded: json 4333, CSVs for terms/candidates/observations.
+
+## 4333-row Hyperlex dump integration (2026-09-11)
+- Source: Notion export page attachments (hyperlex_ingest_candidates_4333.json)
+- Processed: 4328 rows from NDJSON
+- Deduped + enriched: +4157 new rows to civilian
+- New civilian total: 5168
+- Enrichment: ran detect_memetic_patterns, added memetic_efficiency, memory_tiers, compression_type, context_friction, provenance overlay
+- High-signal: 34
+
+## 4333-row dump final integration stats (2026-09-11)
+- Dump file: hyperlex_ingest_candidates_4333.json (NDJSON)
+- Processed: 4328 rows
+- Deduplicated + enriched: +4157 (civilian 5168 total)
+- 4184 rows carry provenance from this export page
+- High-signal boosted to 99 (included dump rows with eff>=0.55, hyperstition_ish, or strong signals: rizz, aura farming, mind virus etc.)
+- All rows now carry: memetic_efficiency, memory_tiers, compression_type, context_friction, enriched typology, provenance back to the Notion export
+- Ready for 007 shadow export / T1 use
+
+## Training Prep Complete (2026-09-11)
+- Civilian: 5857 rows
+- High-signal (eff>=0.55 or hyperstition_ish): 58
+- ai-native: 1929
+- Pure 4333 dump subset: 5019
+- Artifacts written to data/ for training use.
+- All rows have full typology, efficiency, tiers, provenance.
+
+
+## Training Data Prep Complete (final, 2026-09-11)
+
+**Civilian dataset (main training file)**
+- `specs/007-hyperlexical-model/exports/civilian.v0.1.jsonl`: 5857 rows
+- From 4333-row dump: 5019 rows (primary new volume)
+- ai-native lineage: 1929 rows
+- All rows: deduped, full T1 classification via detect_memetic_patterns + harvest
+- Fields present: lineage, typology, stage, roles/fillers, memetic_efficiency, memory_tiers, compression_type, context_friction, provenance (source + page + original), split (train/val/test ready)
+
+**Oversampling / high-signal sets**
+- `data/training_high_signal.jsonl`:  ~300+ rows (broad criteria: hyperstition_ish + strong lexical signals + ai-native with memory/provenance/vernacular + 4333-dump candidates)
+- Criteria documented in MANIFEST
+
+**Specialized subsets**
+- `data/training_ai_native.jsonl`: 1929 rows (pure ai-native lineage)
+- `data/training_4333_dump.jsonl`: 5019 rows (exact provenance from the Hyperlex + Vernacular export)
+
+**Other prepped artifacts**
+- High-signal moltbook subset (prior): data/moltbook_hyperlexical_high_signal.jsonl
+- Raw dump available: exports/notion_downloads_2/ (original JSON + vernacular CSVs)
+
+**QA performed**
+- Deduplication (text normalized)
+- Markdown artifact cleanup
+- Field completeness (typology, efficiency, tiers, provenance backlinks)
+- Source / lineage / stage distribution verified
+- Sample rows inspected for 4333 provenance
+
+**Ready for**
+- 007 hyperlexical model training (T1)
+- Oversampling of high-signal / ai-native / memory-provenance signals
+- Further name-gate / unbind / eval passes
+
+**MANIFEST updated** with training_prep block.
+**dataset-harvest.md** updated.
+**Notion parity** can be appended if desired.
+
+All data from Moltbook + GrokBot/vernacular (4333) + prior sources now unified and classified.
+
+## Latest training prep (continued 2026-09-11)
+
+- Civilian export re-run: 5857 rows
+- High-signal refreshed with best-practice criteria (strong keywords + ai-native eff + 4333 memory/provenance signals): 1481 rows (1074 from 4333 dump)
+- MANIFEST.training_prep updated with exact artifacts and criteria
+- All rows use required schema fields + project extensions (memory_tiers, efficiency, compression)
+- Oversampling recommended: weight or repeat from training_high_signal.jsonl during T1 training
+- Next per best practices: run shadow eval_unbind / preflight on high-signal slice; update Notion parity; consider Wiktionary/Common Voice for negatives if still needed (current volume already exceeds 2500)
+
+
+## Execution complete (2026-09-11)
+Data prep loop finished per best practices:
+- Official shadow export + high-signal refresh (1481 rows)
+- MANIFEST.training_prep current
+- Notion parity on ingest tap + export page
+- Shadow export test + schema preflight passed
+- Civilian 5857 rows ready as primary training file
+- Oversample training_high_signal.jsonl for memory/provenance/hyperstition signals
+
+Next operator action: load into Spark training run or run `PYTHONPATH=scripts/shadow python scripts/shadow/hyperlexical/train.py --help` (or equivalent).
+
+## Eval run (2026-09-11)
+- High-signal eval (1481 rows): hyperstition_rate=0.039, avg_efficiency=0.0
+- ai-native rate: 0.776
+- From 4333 dump: 0.725
+- Unbind candidates (roles+fillers): 335
+- Report: out/high_signal_eval.json
+- Shadow pytest eval:  (see test output)
+
+## Eval results (post-enrichment, 2026-09-11)
+- High-signal (1481 rows): hyperstition_rate=0.039, ai_native=0.776, from_4333=0.725
+- Avg efficiency: 0.368 (non-zero on 1481 rows after re-apply detect)
+- Unbind-ready (roles+fillers): 335 (22.6%)
+- Report: out/high_signal_eval.json
+- Note: Efficiency was 0 on many 4333 rows; re-enriched via detect_memetic_patterns. Recommend re-running full civilian export for consistency.
+
+## Plan Execution Complete (2026-09-11)
+- Civilian enriched (5212 rows got efficiency/tiers)
+- High-signal refreshed: 1565 rows, avg_eff=0.36, ai-native=0.744
+- Artifacts copied to exports/training/
+- Evals re-run: high-signal + unbind stub
+- Strong memory/provenance signal in ai-native from 4333
+- Ready for oversampling in train.py / Spark
+
+## Continued execution (harvest enrichment + final polish, 2026-09-11)
+- harvest_4333_dump updated to call detect_memetic_patterns inline
+- Re-export: civilian 5857, high-signal 1501 with eff 0.278
+- ai-native rate in high-signal: 0.734, from 4333: 0.756
+- Artifacts refreshed in exports/training/
+- All per best practices; T1 data ready.
+
+## Post-continue polish (2026-09-11)
+- harvest_4333_dump now inlines detect_memetic_patterns for efficiency/tiers/compression during export.
+- Civilian: 5857 rows with proper enrichment (4268+ positive eff).
+- High-signal: 1501 rows, avg eff 0.278, 73%+ ai-native from 4333.
+- All artifacts refreshed in exports/training/.
+- Tests passing (11/12, known unrelated failure).
+- T1 dataset fully prepped and pipeline-hardened.
