@@ -68,3 +68,23 @@ def test_synthesis_includes_memetic_efficiency():
     assert "memory_tiers" in sig
     assert sig["actionable"] in ("MONITOR", "IGNORE")
 
+def test_virality_with_efficiency_blend():
+    from hyperlex.analysis import compute_virality_score, compute_memetic_efficiency_score
+    text = "rented cognition KDR provenance episodic"
+    eff = compute_memetic_efficiency_score(text)
+    vir = compute_virality_score(text, memetic_efficiency=eff["efficiency_score"])
+    assert "efficiency_boost" in vir
+    assert vir["hybrid_score"] > 0.3  # blended
+
+def test_arxiv_markers_in_classification():
+    from hyperlex.analysis import classify_compression_type
+    text = "Eywa provenance-grounded immutable source evidence before belief"
+    res = classify_compression_type(text)
+    assert res["compression_type"] == "load_bearing"
+    assert res["score"] > 0.5
+
+def test_cli_memory_flag():
+    import subprocess, sys
+    res = subprocess.run([sys.executable, "-m", "hyperlex", "--memory", "--source", "moltbook", "--query", "KDR"], capture_output=True, text=True, timeout=30)
+    assert "Memory tiers" in res.stdout or "Efficiency" in res.stdout
+

@@ -1,7 +1,7 @@
 ---
 name: hyperlex
 description: "Memetic emergence engine for slang, hyperstition, virality, and agent memory architectures (Moltbook assimilation). Real ingest + strict receipts. Integrates with Abraxas-Orchestra and Hermes."
-version: 1.5.0
+version: 1.7.0
 license: MIT
 metadata:
   openclaw:
@@ -38,7 +38,7 @@ Diagrams: `symbolic/diagrams/`
 - Memory architecture classification
 - Curated agent_memetics dataset for better classification
 
-## Latest (continued)
+## Latest (plan execution)
 - compute_memetic_efficiency_score: composite transmission score (virality × (1-friction) × compression × provenance × tier_diversity)
 - Curated 17 seeds in data/agent_memetics/ with auto-curation script (scripts/curate_moltbook_seeds.py)
 - arXiv cross-refs wired into Moltbook results (Eywa, ECHO, Agent Zero Memory, etc.)

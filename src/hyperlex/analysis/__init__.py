@@ -50,21 +50,26 @@ def trace_semantic_variation(term: str, context: str) -> Dict[str, str]:
         return {"sense": "tactical/quant", "driver": "communicative_need + semantic_distinction", "community": "sharp_money"}
     return {"sense": "general", "driver": "communicative_need", "community": "general_betting"}
 
-def compute_virality_score(observed_text: str, context_friction: float = 0.0, compression_type: str = "mixed") -> Dict[str, float]:
+def compute_virality_score(observed_text: str, context_friction: float = 0.0, compression_type: str = "mixed", memetic_efficiency: float = None) -> Dict[str, float]:
     """Hybrid virality (2510.05761 style), enhanced with Moltbook agent memetics signals.
     
     context_friction: higher = more drag on spread (from re-entry costs, loss).
     compression_type: "load_bearing" boosts (efficient transmission), "decorative" hurts.
+    memetic_efficiency: from compute_memetic_efficiency_score; boosts hybrid for high-transmission patterns.
     """
     velocity = min(1.0, len(observed_text.split()) / 40.0)
     acceleration = 0.6 if "velocity" in observed_text.lower() or "narrative" in observed_text.lower() else 0.3
     network_prior = 0.75
     
     # Moltbook assimilation boost/penalty
-    friction_penalty = max(0.0, context_friction * 0.4)  # up to 0.4 drag
+    friction_penalty = max(0.0, context_friction * 0.4)
     compression_boost = 0.15 if compression_type == "load_bearing" else (-0.1 if compression_type == "decorative" else 0.0)
     
-    hybrid = round((velocity * 0.3 + acceleration * 0.4 + network_prior * 0.3) - friction_penalty + compression_boost, 3)
+    eff_boost = 0.0
+    if memetic_efficiency is not None:
+        eff_boost = (memetic_efficiency - 0.5) * 0.2  # +/- 0.1
+    
+    hybrid = round((velocity * 0.3 + acceleration * 0.4 + network_prior * 0.3) - friction_penalty + compression_boost + eff_boost, 3)
     hybrid = max(0.0, min(1.0, hybrid))
     
     return {
@@ -72,7 +77,8 @@ def compute_virality_score(observed_text: str, context_friction: float = 0.0, co
         "velocity": round(velocity, 3), 
         "acceleration": round(acceleration, 3),
         "friction_penalty": round(friction_penalty, 3),
-        "compression_boost": round(compression_boost, 3)
+        "compression_boost": round(compression_boost, 3),
+        "efficiency_boost": round(eff_boost, 3)
     }
 
 def memetics_protocol_check(text: str) -> Dict[str, Any]:
@@ -116,14 +122,15 @@ def detect_memetic_patterns(
     mem_memory = detect_memetic_memory_patterns(observed)
     compression = classify_compression_type(observed)
     friction = compute_context_friction(observed)
+    efficiency = compute_memetic_efficiency_score(observed, memory_patterns=mem_memory)
     
-    # Enhanced virality using Moltbook agent memetics signals
+    # Enhanced virality using Moltbook agent memetics signals (now with efficiency)
     virality = compute_virality_score(
         observed, 
         context_friction=friction.get("friction_score", 0.0),
-        compression_type=compression.get("compression_type", "mixed")
+        compression_type=compression.get("compression_type", "mixed"),
+        memetic_efficiency=efficiency.get("efficiency_score", 0.5)
     )
-    efficiency = compute_memetic_efficiency_score(observed, memory_patterns=mem_memory, virality=virality)
 
     arxiv_cross = None
     if ingest_source == "moltbook":
@@ -192,7 +199,7 @@ def classify_compression_type(text: str) -> Dict[str, Any]:
     Now boosted with agent_memetics seed examples.
     """
     idx = _load_classification_index()
-    load_bearing_markers = ["provenance", "episodic", "consolidation", "tier", "rubric", "scratchpad", "KDR", "re-entry"]
+    load_bearing_markers = ["provenance", "episodic", "consolidation", "tier", "rubric", "scratchpad", "KDR", "re-entry", "evidence before belief", "immutable source", "typed signals", "source support", "rented", "export", "bitemporal", "surprise-driven"]
     decorative_markers = ["landscape", "tapestry", "delve", "realm", "crucial", "pivotal"]
 
     score = 0.0
@@ -242,9 +249,9 @@ def detect_memetic_memory_patterns(text: str) -> Dict[str, Any]:
     known_tiers = idx.get("memory_tiers", ["scratchpad", "episodic", "rubric"])
     tiers = []
     tier_synonyms = {
-        "scratchpad": ["scratchpad", "working", "short-term", "working memory", "transient"],
-        "episodic": ["episodic", "history", "diary", "long-term", "past interactions", "re-entry"],
-        "rubric": ["rubric", "self-correcting", "distilled", "rules", "guidelines", "consolidated", "paradox"]
+        "scratchpad": ["scratchpad", "working", "short-term", "working memory", "transient", "cache"],
+        "episodic": ["episodic", "history", "diary", "long-term", "past interactions", "re-entry", "rented", "export", "cognition"],
+        "rubric": ["rubric", "self-correcting", "distilled", "rules", "guidelines", "consolidated", "paradox", "bitemporal"]
     }
     
     for t in known_tiers:
@@ -297,6 +304,10 @@ def detect_memetic_memory_patterns(text: str) -> Dict[str, Any]:
         cl_tech = "ghost_in_cache"
     elif "re-entry" in text_lower or "reentry" in text_lower:
         cl_tech = "reentry_compaction"
+    elif "rented" in text_lower or "export" in text_lower:
+        cl_tech = "rented_cognition"
+    elif "update" in text_lower or "surprise" in text_lower:
+        cl_tech = "belief_update"
     else:
         cl_tech = None
 

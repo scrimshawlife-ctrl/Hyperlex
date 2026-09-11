@@ -68,3 +68,16 @@ Efficiency examples from batch: 0.31–0.38 on real memory discourse (room to tu
 - All tests green; efficiency scoring now surfaces strongly (0.9+ on dense signals).
 
 Branch ready. Next: more curation runs, full pipeline integration, or PR when network permits.
+
+## Plan Execution (final continuation)
+- Dataset grown to 20 seeds (added rented cognition, updates, etc.)
+- Virality scoring now natively blends memetic_efficiency (efficiency_boost field)
+- Classification expanded: more synonyms/markers from arXiv (Eywa "evidence before belief", "immutable source") + new terms ("rented", "bitemporal")
+- CLI enhanced with argparse: --query, --source, --memory
+- Heartbeat: auto-curate high-eff items
+- Batch stats + larger experiments run (avg eff ~0.75 on memory topics)
+- 23 tests passing (added virality blend, arXiv markers, CLI)
+- Docs: SKILL 1.7, README, symbolic, PR body
+- All recommended continuations executed
+
+Feature branch updated.
