@@ -4,7 +4,9 @@ Owner of this run: Aaron on the DGX Spark.
 Owner of the spec: Danny.  
 Use current **`main`**. Do not use the old `007-hyperlexical-model` branch.
 
-This is a **seed smoke**, not a Hyperlexical card. E2 has not passed. Name-gate is false. Do not upload to Hugging Face. Do not say the model is Hyperlexical.
+This is a **seed smoke** for harness wiring, not a Hyperlexical card. E2 has not passed. Name-gate is false. Do not upload to Hugging Face. Do not say the model is Hyperlexical.
+
+**Train data:** T1 / E2 work uses the **local SoT** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`) via `PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live`. Do not train the named path from tracked `exports/civilian.v0.1.jsonl` alone — that file is an 883-row **seed/snapshot**. Operator `--include-live` (2026-09-10 PT evening): n=6506 · classify **2437** · unbind **1345** · negatives **208** · gaps 0/0/0 · `name_gate` false. Danny ~2500 bar: **met**.
 
 Layout (locked): `specs/007-hyperlexical-model/weights.md`
 
@@ -28,7 +30,8 @@ uname -m          # expect aarch64
 python3 -V        # 3.10+
 
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.preflight
-PYTHONPATH=scripts/shadow python3 -m hyperlexical.export
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
+# omit --include-live only for harness wiring against the tracked seed
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --out /tmp/hlx-e2-before.json
 # expect exit 3
 ```
@@ -79,27 +82,12 @@ Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, l
 
 No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error.
 
-## Moltbook high-signal prep (agent memory hyperstitions)
-- Moltbook data (agent discourse on memory, provenance, KDR, rented cognition, episodic/rubric tiers) is integrated as first-class ai-native source.
-- Dedicated high-signal subset: `data/moltbook_hyperlexical_high_signal.jsonl` (44 rows, 15 hyperstition_ish, strong provenance/memory).
-- In civilian export (via harvest_moltbook): ~314 high-signal-ish ai-native rows.
-- For this train: oversample the high-signal file or filter civilian for "memory" + "provenance" + high eff to strengthen memory typology and hyperstition signals.
-- Eval on high-signal: avg eff 0.593, hyperstition_rate 0.295, provenance_density 0.682 (strong lift).
-- After export: `python scripts/curate_moltbook_seeds.py --high-signal` to refresh if needed.
-- MANIFEST has moltbook_integration.high_signal_subset details.
+## Moltbook subset (not the global SoT)
 
-## Moltbook high-signal for this train
-- High-signal file now in exports/: `moltbook_high_signal.jsonl` (44 rows, 15 hyperstition_ish, strong agent memory/provenance from Moltbook).
-- Civilian export already merges Moltbook data (314+ ai-native rows with memory typology).
-- For training: the civilian.v0.1.jsonl has the data; oversample or weight rows matching "moltbook" provenance or "memory" + "provenance" typology + high efficiency to boost the memory architecture signals in the model.
-- Run `python scripts/curate_moltbook_seeds.py --high-signal` post-export if refreshing.
-- See dataset-harvest.md for full Moltbook integration details.
-- Eval on high-signal shows strong lift: avg eff 0.593, hyperstition rate 0.295, provenance density 0.682.
+Moltbook is a first-class **ai-native** source (memory, provenance, KDR, rented cognition). It is a **subset**, not the civilian T1 SoT.
 
-## Moltbook high-signal prep for this run
-- Civilian export now includes 314 Moltbook-sourced ai-native rows (memory, provenance, context, compression from agent discourse).
-- Dedicated high-signal subset copied to exports/: `moltbook_high_signal.jsonl` (44 rows, 15 hyperstition_ish).
-- For training: the main civilian.v0.1.jsonl has the merged data. To boost memory typology and hyperstition signals, oversample rows with "moltbook" in provenance or high "memory" + "provenance" typology + eff > 0.6.
-- High-signal eval (0.593 avg eff, 0.295 hyperstition rate, 0.682 provenance density) shows strong signal for agent memory architectures.
-- Refresh with `python scripts/curate_moltbook_seeds.py --high-signal` if new data.
-- See dataset-harvest.md for full Moltbook integration and high-signal details.
+- High-signal file: `exports/moltbook_high_signal.jsonl` (44 rows). Optional oversample for memory/provenance typology.
+- Historical tracked-export Moltbook counts (~314–360 ai-native inside the 883-row seed) are **not** current global SoT status.
+- Train from local SoT / `--include-live`. Optionally weight rows with moltbook provenance or high memory+provenance efficiency.
+- Refresh: `python scripts/curate_moltbook_seeds.py --high-signal`
+- Mapping and history: `dataset-harvest.md`

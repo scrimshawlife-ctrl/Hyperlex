@@ -36,6 +36,8 @@ local candidate store so T1 harvest can use *current* data without copying
 `~/.hyperlex/hyperlexical/ingest_candidates.jsonl`  
 Override: `HYPERLEX_HYPERLEXICAL_STORE`
 
+Operator stamp **2026-09-10 PT evening**: **4333** rows (402 OBSERVED / 3931 INFERRED). Local-only. Not the 883-row tracked seed.
+
 ## Operator loop
 
 ```text

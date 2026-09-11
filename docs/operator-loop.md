@@ -62,6 +62,20 @@ $HLX ingest "rizz" --route offline
 $HLX analyze "rizz" --route offline
 ```
 
+## Spec 007 Hyperlexical — classify & QA (Hermes)
+
+From the **Hyperlex repo checkout**. Shadow modules: `scripts/shadow/hyperlexical/`. SoT: `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` (local-only; do not commit).
+
+Scoreboard (2026-09-10 PT evening): SoT **4333** · classify family **2437** · unbind **1345** · neg **208** · `name_gate` **false**.
+
+```bash
+python -m hyperlex analyze "<seed>" --source firecrawl   # Crawl4AI default
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
+```
+
+INFERRED until operator settle. No auto-OBSERVED. `name_gate` false until Spark E2. 8 families only. Skill contract: [SKILL.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/SKILL.md).
+
 ## Calibration path (where Brier appears)
 
 ```bash

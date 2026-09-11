@@ -48,7 +48,7 @@ Uncensored in the Hyperlex sense: no refusal head on civilian dialect. Dual-use 
 
 ## Training data
 
-Seed export `civilian.v0.1.jsonl` from Hyperlex fixtures, dialect atoms, registry (INFERRED), golden (INFERRED), archive (INFERRED). Lexical split. Name-gate counts are **not** met.
+Git-tracked seed `civilian.v0.1.jsonl` is an 883-row snapshot from fixtures, dialect atoms, registry (INFERRED), golden (INFERRED), and archive (INFERRED). It is **not** the train SoT. T1 train uses the local store / `--include-live` (operator 2026-09-10 PT evening: classify 2437). `name_gate` stays false until E2.
 
 Do not treat INFERRED typology/stage as gold.
 

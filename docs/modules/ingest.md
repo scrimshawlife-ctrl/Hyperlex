@@ -31,7 +31,7 @@ API: `resolve_source`, `pick_source`, `list_sources`, `ROUTE_PRESETS` in
 | urban | yes | Urban Dictionary API |
 | wikipedia | yes | REST summary |
 | x_search | optional | Bearer token → xurl → structured stub |
-| crawl4ai | optional | Crawl4AI (alias: firecrawl) |
+| crawl4ai | optional | Crawl4AI **0.9.3** default. `--source firecrawl` aliases here. No paid Firecrawl without Danny yes. |
 | combined | yes | Ordered multi-source merge |
 
 ### Aliases

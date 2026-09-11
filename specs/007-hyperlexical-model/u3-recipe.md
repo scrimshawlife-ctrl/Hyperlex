@@ -14,12 +14,15 @@ Local snapshot only. `local_files_only=True`. Abort if cache missing.
 
 ## Data
 
+Tracked `exports/civilian.v0.1.jsonl` is an 883-row **seed/snapshot**. It is not the train SoT.
+
 ```
-PYTHONPATH=scripts/shadow python3 -m hyperlexical.export
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
 ```
 
-Use `specs/007-hyperlexical-model/exports/civilian.v0.1.jsonl`.
-Name-gate is still false. Train may run on the seed for harness wiring. The word Hyperlexical stays off the card until E2 beats 004 on shared fixtures **and** civilian unbind rows exist.
+T1 / E2 trains from the **local SoT** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`) via `--include-live`. Omit `--include-live` only for harness wiring against the tracked seed. Operator `--include-live` (2026-09-10 PT evening): n=6506 · classify 2437 · unbind 1345 · negatives 208 · gaps 0/0/0.
+
+Name-gate is still false (E2 Spark-blocked). The word Hyperlexical stays off the card until E2 beats 004 on shared fixtures **and** civilian unbind rows exist.
 
 Do not train on `split=reject`. Do not treat INFERRED typology/stage as OBSERVED gold.
 
