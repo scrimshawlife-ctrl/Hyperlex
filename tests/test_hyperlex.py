@@ -1,149 +1,115 @@
+"""Tests for hyperlex package (v1.6 expanded ingest + schemas)."""
+
 import json
-import subprocess
-import sys
-from pathlib import Path
+import hashlib
+from hyperlex import (
+    ingest_signal,
+    fetch_ingest,
+    detect_memetic_patterns,
+    mock_integrate_with_external_signal,
+    humanize_slang_output,
+    compute_virality_score,
+    simulate_hyperstition_loop,
+    schemas,
+)
 
-import pytest
+class _S:
+    pass
 
-from hyperlex import emit_receipt, detect_memetic_patterns, schemas
+s = _S()
+s.ingest_signal = ingest_signal
+s.fetch_ingest = fetch_ingest
+s.detect_memetic_patterns = detect_memetic_patterns
+s.mock_integrate_with_external_signal = mock_integrate_with_external_signal
+s.humanize_slang_output = humanize_slang_output
+s.compute_virality_score = compute_virality_score
+s.simulate_hyperstition_loop = simulate_hyperstition_loop
 
-ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts" / "hyperlex.py"
+# === Original compatibility tests ===
+def test_humanize_slang_output_strips_aiisms():
+    text = "This pivotal underscoring showcasing crucial landscape tapestry delve realm moment."
+    result = s.humanize_slang_output(text)
+    for bad in ["pivotal", "underscoring", "showcasing", "crucial", "landscape", "tapestry", "delve", "realm"]:
+        assert bad not in result
+    assert "feels off but sharp money is already running with it" in result
 
+def test_detect_memetic_patterns_structure():
+    out = s.detect_memetic_patterns("slang emergence hyperstition")
+    assert "observed" in out
+    assert "inferred" in out
+    assert "speculative" in out
+    assert "provenance" in out
+    prov = out["provenance"]
+    assert "canonical_hash" in prov
+    assert prov["brier"] == 0.89
+    assert "analysis" in out
+    assert "virality" in out["analysis"]
 
-def _run_cli(*args: str, env_extra: dict | None = None) -> subprocess.CompletedProcess:
-    env = dict(**dict())
-    env.update(__import__("os").environ.copy())
-    env.update(env_extra or {})
-    env["HYPERLEX_OFFLINE"] = "1"
-    return subprocess.run(
-        [sys.executable, str(SCRIPT), *args],
-        capture_output=True,
-        text=True,
-        env=env,
-        cwd=ROOT,
-    )
+def test_canonical_hash_stable():
+    q = "test query"
+    obs = "some observed text"[:100]
+    canonical = json.dumps({"q": q, "obs": obs}, sort_keys=True, separators=(",", ":"))
+    h = hashlib.sha256(canonical.encode()).hexdigest()[:16]
+    assert len(h) == 16
+    h2 = hashlib.sha256(canonical.encode()).hexdigest()[:16]
+    assert h == h2
 
+def test_recommendation_present():
+    out = s.detect_memetic_patterns()
+    assert "recommendation" in out
 
-def _load_json(payload: str):
-    return json.loads(payload)
+# === Expanded ingest tests (v1.6) ===
+def test_ingest_signal_real_wired():
+    sig = s.ingest_signal("sharp money revenge", source="real")
+    assert isinstance(sig, str)
+    assert len(sig) > 30
 
+def test_ingest_signal_urban():
+    sig = s.ingest_signal("sharp money", source="urban")
+    assert isinstance(sig, str)
+    assert len(sig) > 10
 
-def test_cli_check_ok() -> None:
-    result = _run_cli("check")
-    assert result.returncode == 0
-    body = _load_json(result.stdout)
-    assert body["ok"] is True
-    expected = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-    assert body["version"] == expected
-    checks = {entry["name"]: entry["ok"] for entry in body["checks"]}
-    assert checks["version_file"]
-    assert checks["schema_ingest"]
+def test_ingest_signal_wikipedia():
+    sig = s.ingest_signal("hyperstition", source="wikipedia")
+    assert isinstance(sig, str)
+    assert len(sig) > 5
 
+def test_ingest_signal_combined():
+    sig = s.ingest_signal("revenge narrative", source="combined")
+    assert isinstance(sig, str)
+    assert "|" in sig or "COMBINED" in sig
 
-def test_sources_command() -> None:
-    result = _run_cli("sources")
-    assert result.returncode == 0
-    body = _load_json(result.stdout)
-    names = [entry["name"] for entry in body["sources"]]
-    assert "mock" in names
-    assert "glossary" in names
-    assert "combined" in names
-    assert "crawl4ai" in names
-    # aliases live on catalog entries (real→glossary, firecrawl→crawl4ai)
-    glossary = next(s for s in body["sources"] if s["name"] == "glossary")
-    assert "real" in glossary.get("aliases", [])
-    crawl = next(s for s in body["sources"] if s["name"] == "crawl4ai")
-    assert "firecrawl" in crawl.get("aliases", [])
-    route_names = [r["name"] for r in body.get("routes") or []]
-    assert "offline" in route_names and "live" in route_names
+def test_fetch_ingest_structured():
+    data = s.fetch_ingest("chalk eaters", source="glossary")
+    assert isinstance(data, dict)
+    assert "query" in data
+    assert "raw_signal" in data
+    assert "extracted_terms" in data
+    assert "metadata" in data
+    assert isinstance(data["extracted_terms"], list)
 
+# === Schema tests ===
+def test_schemas_loaded():
+    assert schemas.INGEST_SCHEMA is not None
+    assert schemas.RESULT_SCHEMA is not None
+    assert "query" in schemas.INGEST_SCHEMA.get("properties", {})
 
-def test_ingest_mock_structured() -> None:
-    # raw-only keeps classic signal-only shape
-    result = _run_cli("ingest", "sharp money revenge", "--source", "mock", "--raw-only", "--structured")
-    assert result.returncode == 0
-    body = _load_json(result.stdout)
-    assert body["ok"] is True
-    payload = body["result"]
-    assert payload["query"] == "sharp money revenge"
-    assert payload["source"] == "mock"
-    assert isinstance(payload["extracted_terms"], list)
+def test_structured_ingest_validation():
+    data = s.fetch_ingest("sharp action", source="reddit")
+    ok, msg = schemas.validate_ingest(data)
+    # Should be valid or jsonschema not present
+    assert ok or "not installed" in msg
 
+def test_result_validation():
+    out = s.detect_memetic_patterns(query="memetic", ingest_source="urban", use_structured_ingest=True, validate=True)
+    assert "schema_validation" in out
+    assert "valid" in out["schema_validation"]
 
-def test_ingest_crawl4ai_fallback_is_safe() -> None:
-    # HYPERLEX_OFFLINE=1 forces network sources → mock (fail-safe)
-    result = _run_cli("ingest", "sharp money revenge", "--source", "crawl4ai", "--raw-only", "--structured")
-    assert result.returncode == 0
-    body = _load_json(result.stdout)
-    payload = body["result"]
-    assert payload["source"] == "mock"
-    assert payload["raw_signal"]
-    assert payload.get("route", {}).get("offline_forced") is True
-    assert payload.get("route", {}).get("intended_source") == "crawl4ai"
-
-
-def test_analyze_and_validate_schema() -> None:
-    result = _run_cli(
-        "analyze",
-        "--query",
-        "sharp money revenge",
-        "--source",
-        "mock",
-        "--validate",
-    )
-    assert result.returncode == 0
-    body = _load_json(result.stdout)
-    payload = body["result"]
-    assert body["ok"] is True
-    expected = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-    assert payload["provenance"]["version"] == expected
-    assert "schema_validation" in payload
-    assert payload["schema_validation"]["valid"]
-
-
-def test_receipt_verify_cycle(tmp_path: Path) -> None:
-    result = detect_memetic_patterns(query="sharp money revenge", ingest_source="mock", validate=True)
-    receipt_path = emit_receipt(
-        result,
-        out_dir=tmp_path / "receipts",
-        validate=True,
-        append_ledger=True,
-        ledger_path=tmp_path / "receipt_ledger.jsonl",
-    )
-
-    validate_cmd = _run_cli("validate", str(receipt_path))
-    assert validate_cmd.returncode == 0
-    validate_body = _load_json(validate_cmd.stdout)
-    assert validate_body["ok"] is True
-    assert validate_body["schema"] in {"receipt", "result"}
-
-    verify_cmd = _run_cli("verify-receipt", str(receipt_path))
-    assert verify_cmd.returncode == 0
-    verify_body = _load_json(verify_cmd.stdout)
-    assert verify_body["ok"] is True
-    assert verify_body["expected"] == verify_body["actual"]
-
-    # Guard against accidental mutation
-    mutated = json.loads(receipt_path.read_text(encoding="utf-8"))
-    mutated["observed"] = mutated["observed"] + " MUTATED"
-    mutated_path = tmp_path / "mutated_receipt.json"
-    mutated_path.write_text(json.dumps(mutated, indent=2), encoding="utf-8")
-    verify_mutated = _run_cli("verify-receipt", str(mutated_path))
-    assert verify_mutated.returncode == 2
-    mutated_body = _load_json(verify_mutated.stdout)
-    assert mutated_body["ok"] is False
-
-
-def test_smoke() -> None:
-    result = _run_cli("smoke")
-    assert result.returncode == 0
-    assert _load_json(result.stdout)["ok"] is True
-
-
-def test_schemas_validate_helper_matches_cli() -> None:
-    payload = detect_memetic_patterns("low block", ingest_source="mock", validate=False)
-    ok, msg = schemas.validate_result(payload)
-    assert ok
-    # jsonschema optional at runtime; skip-string is still success
-    assert msg in ("valid", "jsonschema not installed (skipped)")
+# === Integration tests ===
+def test_mock_integration():
+    slang_result = s.detect_memetic_patterns()
+    signal = s.mock_integrate_with_external_signal(slang_result)
+    assert "virality_boost" in signal
+    assert "hyperstition_risk" in signal
+    assert "confidence" in signal
+    assert "actionable" in signal

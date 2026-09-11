@@ -4,67 +4,41 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hyperlex"
-dynamic = ["version"]
-description = "Standalone memetic emergence engine for slang detection, hyperstition, virality, lineage, settled Brier calibration, and slang mutation-operator detection."
+version = "1.6.0"
+description = "Standalone memetic emergence engine for slang, hyperstition, virality. Real ingest + arXiv-distilled analysis + symbolic architecture (numogram+chaos)."
 authors = [
-    {name = "Applied Alchemy Labs", email = "scrimshawlife@gmail.com"}
+    {name = "Hermes / Abraxas systems"}
 ]
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
-keywords = ["memetics", "slang", "hyperstition", "virality", "brier", "hermes", "forecasting"]
+dependencies = [
+    "requests>=2.0",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Engineering :: Information Analysis",
-    "Topic :: Text Processing :: Linguistic",
 ]
-dependencies = []
 
 [project.optional-dependencies]
-runtime = [
-    "requests>=2.0",
-    "crawl4ai",
-    "chromadb>=0.5.0",
-]
 dev = [
     "pytest>=7.0",
     "jsonschema>=4.0",
-    "build>=1.0",
-    "twine>=5.0",
-]
-docs = [
-    "mkdocs>=1.5",
-    "mkdocs-material>=9.0",
 ]
 schema = [
     "jsonschema>=4.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/scrimshawlife-ctrl/Hyperlex"
-Repository = "https://github.com/scrimshawlife-ctrl/Hyperlex"
-Documentation = "https://scrimshawlife-ctrl.github.io/Hyperlex/"
-Issues = "https://github.com/scrimshawlife-ctrl/Hyperlex/issues"
+Homepage = "https://github.com/scrimshawlife/hyperlex"
+Repository = "https://github.com/scrimshawlife/hyperlex"
 
 [project.scripts]
-hyperlex = "hyperlex.entrypoint:main"
-hlx = "hyperlex.entrypoint:main"
-
-[tool.setuptools.dynamic]
-version = {file = "VERSION"}
+hyperlex = "hyperlex.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools.package-data]
-hyperlex = [
-    "schemas/*.json",
-    "data/*.json",
-    "data/*.md",
-]

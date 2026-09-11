@@ -3,19 +3,62 @@
   "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/receipt.v1.schema.json",
   "title": "Hyperlex Receipt v1",
   "type": "object",
-  "required": ["observed", "inferred", "provenance", "receipt"],
+  "required": [
+    "observed",
+    "inferred",
+    "provenance",
+    "receipt"
+  ],
   "properties": {
-    "observed": { "type": "string" },
-    "inferred": { "type": "string" },
-    "provenance": { "type": "object" },
-    "analysis": { "type": "object" },
+    "observed": {
+      "type": "string"
+    },
+    "inferred": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "episodic_consolidation": {
+          "type": "boolean"
+        },
+        "reentry_cost": {
+          "type": "number"
+        },
+        "memory_architecture": {
+          "type": "string"
+        }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "memory_tiers": {
+          "type": "array"
+        },
+        "context_friction": {
+          "type": "object"
+        },
+        "compression_type": {
+          "type": "object"
+        }
+      }
+    },
     "receipt": {
       "type": "object",
-      "required": ["path", "integrity"],
+      "required": [
+        "path",
+        "integrity"
+      ],
       "properties": {
-        "path": { "type": "string" },
-        "integrity": { "type": "string" }
+        "path": {
+          "type": "string"
+        },
+        "integrity": {
+          "type": "string"
+        }
       }
     }
-  }
+  },
+  "additionalProperties": true
 }

@@ -1,0 +1,46 @@
+{
+  "observed": "Real betting slang from glossary for 'sharp money revenge narrative': Kalshi Refer, DotCheck, QjnO, Fsports, World, DOES. Active community terms: chalk eaters, sharp money, vig, action. \u2014 feels off but sharp money is already running with it.",
+  "inferred": "Memetic spread accelerating. Neologisms: 0. Memetic: True. Variation: tactical/quant. Virality: 0.743.",
+  "speculative": "ACTUALIZING hyperstition risk. slang -> public pressure -> line movement -> confirmed. Brier lift probable via cultural transmission.",
+  "provenance": {
+    "canonical_hash": "8962707409bf4d8d",
+    "timestamp": "2026-08-05T05:54:20.040961+00:00",
+    "version": "SlangEmergence.v1.4-arxiv-upgraded",
+    "brier": 0.89,
+    "hyperstition_risk": "ACTUALIZING",
+    "memclaw": "agent_id=hermes-governed-operator, type=projection, weight=0.92",
+    "arxiv_concepts_applied": [
+      "neologism_pipeline",
+      "semantic_variation",
+      "virality_hybrid",
+      "memetics_protocol",
+      "hyperstition_loop",
+      "cultural_transmission"
+    ],
+    "ingest_source": "real"
+  },
+  "analysis": {
+    "neologisms": [],
+    "semantic_variation": {
+      "sense": "tactical/quant",
+      "driver": "communicative_need + semantic_distinction",
+      "community": "sharp_money"
+    },
+    "virality": {
+      "hybrid_score": 0.743,
+      "velocity": 0.925,
+      "acceleration": 0.6
+    },
+    "memetics": {
+      "is_memetic": true,
+      "typology": "betting_tactical",
+      "score": 0.82
+    },
+    "hyperstition": {
+      "loop_stage": "ACTUALIZING",
+      "mechanism": "slang -> public pressure -> line movement -> confirmed"
+    }
+  },
+  "notes": "Humanizer + arXiv-upgraded modules applied. Real ingest wired. Feeds downstream signal and forecast pipelines.",
+  "recommendation": "Bind to COMMUNICATION_RELAY rune; integrate with market-signal for loop scoring; cron LIVE_EMERGENCE_SCAN."
+}

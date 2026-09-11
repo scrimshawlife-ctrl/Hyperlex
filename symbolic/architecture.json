@@ -1,0 +1,133 @@
+{
+  "schema": "orchestra-diagram.v1",
+  "framework": "numogram",
+  "secondary_overlay": "chaos-magic",
+  "nodes": [
+    {
+      "id": "potential",
+      "mechanical": "potential",
+      "symbolic": "zone_0",
+      "label": "potential \u00b7 zone_0",
+      "note": "Void / pure potential",
+      "order": 0,
+      "overlay": "overlay:chaos-magic/chaos_shift (Paradigm engine / framework select)"
+    },
+    {
+      "id": "init",
+      "mechanical": "init",
+      "symbolic": "zone_1",
+      "label": "init \u00b7 zone_1",
+      "note": "First differentiation",
+      "order": 1,
+      "overlay": "overlay:chaos-magic/sigil_glyph (Compressed intent token)"
+    },
+    {
+      "id": "structure",
+      "mechanical": "structure",
+      "symbolic": "zone_4",
+      "label": "structure \u00b7 zone_4",
+      "note": "Stable order",
+      "order": 2,
+      "overlay": "overlay:chaos-magic/banishing_clear (Session / context banishing)"
+    },
+    {
+      "id": "threshold",
+      "mechanical": "threshold",
+      "symbolic": "zone_5",
+      "label": "threshold \u00b7 zone_5",
+      "note": "Tipping / intensive peak",
+      "order": 3,
+      "overlay": "overlay:chaos-magic/results_metric (Results eval gate)"
+    },
+    {
+      "id": "feedback",
+      "mechanical": "feedback",
+      "symbolic": "zone_6",
+      "label": "feedback \u00b7 zone_6",
+      "note": "Resonance / amplify",
+      "order": 4,
+      "overlay": "overlay:chaos-magic/alphabet_desire (Project-local symbolic encoding)"
+    },
+    {
+      "id": "completion",
+      "mechanical": "completion",
+      "symbolic": "zone_9",
+      "label": "completion \u00b7 zone_9",
+      "note": "Return / final intensity",
+      "order": 5,
+      "overlay": "overlay:chaos-magic/\u2014"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-potential-init",
+      "from": "potential",
+      "to": "init",
+      "kind": "sequence"
+    },
+    {
+      "id": "e-init-structure",
+      "from": "init",
+      "to": "structure",
+      "kind": "sequence"
+    },
+    {
+      "id": "e-structure-threshold",
+      "from": "structure",
+      "to": "threshold",
+      "kind": "sequence"
+    },
+    {
+      "id": "e-threshold-feedback",
+      "from": "threshold",
+      "to": "feedback",
+      "kind": "sequence"
+    },
+    {
+      "id": "e-feedback-completion",
+      "from": "feedback",
+      "to": "completion",
+      "kind": "sequence"
+    }
+  ],
+  "flows": [
+    {
+      "id": "primary",
+      "name": "numogram primary path",
+      "steps": [
+        "potential",
+        "init",
+        "structure",
+        "threshold",
+        "feedback",
+        "completion"
+      ]
+    },
+    {
+      "id": "core",
+      "name": "numogram core collapse",
+      "steps": [
+        "init",
+        "threshold",
+        "completion"
+      ]
+    },
+    {
+      "id": "overlay-chaos-magic",
+      "name": "overlay \u00b7 chaos-magic",
+      "steps": [
+        "potential",
+        "init",
+        "structure",
+        "threshold",
+        "feedback",
+        "completion"
+      ]
+    }
+  ],
+  "provenance": {
+    "operator": "orchestra-cli",
+    "timestamp": "2026-08-05T06:10:06Z",
+    "skill_version": "0.4.0"
+  }
+}

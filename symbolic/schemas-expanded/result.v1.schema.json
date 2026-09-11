@@ -54,12 +54,6 @@
         },
         "ingest_source": {
           "type": "string"
-        },
-        "episodic_consolidation": {
-          "type": "boolean"
-        },
-        "context_chain": {
-          "type": "array"
         }
       }
     },
@@ -81,24 +75,12 @@
         "hyperstition": {
           "type": "object"
         },
-        "memory_tiers": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "context_friction": {
-          "type": "object"
-        },
-        "compression": {
-          "type": "object"
-        },
-        "memetic_memory": {
-          "type": "object"
-        },
         "memetic_efficiency": {
           "type": "object",
           "description": "Composite transmission efficiency from Moltbook agent memetics"
+        },
+        "memetic_memory": {
+          "type": "object"
         }
       }
     },
@@ -111,6 +93,5 @@
     "memetic_efficiency": {
       "type": "object"
     }
-  },
-  "additionalProperties": true
+  }
 }

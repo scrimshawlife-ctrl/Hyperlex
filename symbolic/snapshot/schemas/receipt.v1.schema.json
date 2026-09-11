@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs/schemas/receipt.v1.schema.json",
+  "title": "Hyperlex Receipt v1",
+  "type": "object",
+  "required": ["observed", "inferred", "provenance", "receipt"],
+  "properties": {
+    "observed": { "type": "string" },
+    "inferred": { "type": "string" },
+    "provenance": { "type": "object" },
+    "analysis": { "type": "object" },
+    "receipt": {
+      "type": "object",
+      "required": ["path", "integrity"],
+      "properties": {
+        "path": { "type": "string" },
+        "integrity": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+Hyperlex v1.6 Snapshot — 2026-08-05
+
+Schemas (exported to specs root):
+- ingest.v1.schema.json
+- result.v1.schema.json  
+- receipt.v1.schema.json
+
+Key symbolic:
+- numogram-chaos-correspondence.json
+
+Full source snapshot not included here (see local src/hyperlex/).
+
+See HANDOFF.md for full status and plan.
