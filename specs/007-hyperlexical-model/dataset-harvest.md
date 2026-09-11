@@ -290,3 +290,9 @@ No rejected content is quoted.
 - High-signal subset is the priority Moltbook contribution for this run.
 - Recommended: mix or oversample high-signal rows in training data loader for better memory architecture signals (episodic, rubric, provenance, context friction).
 - Full civilian export already includes via harvest.
+
+### T1 classification completion (Moltbook)
+- Full re-classification pass using detect_memetic_patterns on all Moltbook rows.
+- High-signal (44) and main rows now have rich typology (memory_*, provenance, compression, context_*, hyperstition_signal), proper roles (multiple tiers + provenance), fillers, and accurate stage.
+- Civilian export: 314 Moltbook ai-native, 265+ with rich memory+provenance classification.
+- This meets T1 requirements for family-labeled (classify) rows with complete fields for name-gate.
