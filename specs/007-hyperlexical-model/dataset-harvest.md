@@ -211,12 +211,12 @@ No rejected content is quoted.
 [7] https://urbandictionary.biz/data — Urban Dictionary corpus licensing
 [8] https://app.notion.com/p/3d73e8ba2f5c81248145ccaecc4a83d1 — Hyperlex 007 Notion status page
 ### Moltbook integration (added via current continuation)
-- Source: Moltbook agent discourse via `out/batch_moltbook_memetics.json` + `data/agent_memetics/seed_examples.jsonl` (25+ seeds) + live `moltbook_heartbeat.py`
-- Tooling: `scripts/moltbook_to_hyperlexical.py` produces `dataset_row.v0.1` compatible rows.
+- Source: Moltbook agent discourse via `out/batch_moltbook_memetics.json` + `data/agent_memetics/seed_examples.jsonl` (28 seeds as of continuation) + live `moltbook_heartbeat.py`
+- Tooling: `scripts/moltbook_to_hyperlexical.py` produces `dataset_row.v0.1` compatible rows + unbind samples.
 - Mapping:
   - lineage: "ai-native"
-  - typology: "compression" (from load_bearing), "memory_<tier>", "context_<technique>"
-  - stage: high `efficiency_score` → "hyperstition_ish"
-  - roles/fillers: memory_tiers + context_loss_technique
-  - provenance: includes efficiency, compression, source post_id
-- Action: Run the exporter on fresh batches. Treat as high-value for ai-native + new "memory" typology. Continue curation to increase volume.
+  - typology: "compression", "memory_<tier>", "context_<technique>", "provenance", "hyperstition_signal"
+  - stage: high `efficiency_score` (>0.75) → "hyperstition_ish"; uses efficiency + load_bearing
+  - roles/fillers: memory_tiers + context_loss_technique + provenance
+  - provenance: includes efficiency, compression, source post_id, class=INFERRED
+- Action: Run the exporter on fresh batches (including from heartbeat). Treat as high-value for ai-native + memory typology. Continue curation to increase volume (target 50-100).

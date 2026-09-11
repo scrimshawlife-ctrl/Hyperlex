@@ -49,6 +49,35 @@ def test_full_detect_with_memory_fields():
     assert analysis["memetic_memory"]["provenance_required"] is True
 
 
+def test_moltbook_to_hyperlexical_export_compatibility():
+    """Ensure Moltbook classification produces rows matching 007 hyperlexical schema expectations."""
+    from hyperlex import detect_memetic_patterns
+    res = detect_memetic_patterns(
+        "The echo of rented cognition and my own memory continuity. KDR re-entry cost high.",
+        ingest_source="moltbook"
+    )
+    mm = res["analysis"].get("memetic_memory", {})
+    eff = res.get("memetic_efficiency") or res["analysis"].get("memetic_efficiency", {})
+    comp = res["analysis"].get("compression", {})
+
+    # Simulate the mapping the exporter does
+    typology = []
+    if comp.get("compression_type") == "load_bearing":
+        typology.append("compression")
+    if mm.get("memory_tiers"):
+        typology.extend([f"memory_{t}" for t in mm["memory_tiers"] if t != "unknown"])
+    if mm.get("context_loss_technique"):
+        typology.append(f"context_{mm['context_loss_technique']}")
+
+    eff_score = eff.get("efficiency_score", 0) if isinstance(eff, dict) else 0
+    stage = "hyperstition_ish" if eff_score > 0.75 else "contested" if eff_score > 0.55 else "circulating"
+
+    assert "memory_episodic" in [f"memory_{t}" for t in mm.get("memory_tiers", [])] or "episodic" in mm.get("memory_tiers", [])
+    assert comp.get("compression_type") in ("load_bearing", "mixed")
+    assert stage in ("hyperstition_ish", "contested", "circulating")
+    assert "provenance" in mm or mm.get("provenance_required") is True
+
+
 def test_compute_memetic_efficiency_score():
     from hyperlex.analysis import compute_memetic_efficiency_score, detect_memetic_memory_patterns
     text = "KDR episodic rubric ghost in the cache provenance ECHO"

@@ -16,6 +16,7 @@ def main():
     parser.add_argument("--query", default="agent memory context provenance", help="Query for analysis")
     parser.add_argument("--source", default="moltbook", choices=["moltbook", "urban", "combined"], help="Ingest source")
     parser.add_argument("--memory", action="store_true", help="Focus on memetic memory/efficiency")
+    parser.add_argument("--export-hyperlexical", action="store_true", help="Export Moltbook batch to 007 hyperlexical dataset rows")
     args = parser.parse_args()
 
     print(f"=== Hyperlex {PKG_VERSION} — Memetic Emergence Scanner (numogram+chaos) ===")
@@ -49,6 +50,20 @@ def main():
 
     print("\n--- Schema access ---")
     print("Ingest schema keys:", list(schemas.get_ingest_schema().keys())[:3])
+
+    if args.export_hyperlexical:
+        print("\n--- Exporting to 007 hyperlexical format ---")
+        try:
+            import subprocess
+            from pathlib import Path
+            batch = Path("out/batch_moltbook_memetics.json")
+            if batch.exists():
+                subprocess.run([sys.executable, "scripts/moltbook_to_hyperlexical.py", "--batch", str(batch), "--out", "data/moltbook_hyperlexical_rows.jsonl"], check=False, timeout=30)
+                print("Exported Moltbook → hyperlexical rows (ai-native + memory typology)")
+            else:
+                print("No batch found for export. Run with --memory --source moltbook first.")
+        except Exception as e:
+            print(f"Export error: {e}")
 
 if __name__ == "__main__":
     main()

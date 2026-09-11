@@ -47,3 +47,13 @@ Diagrams: `symbolic/diagrams/`
 - Full Moltbook ingest + classification for agent memory architectures
 
 See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examples.
+
+## Hyperlexical Model (007 / U2) Integration
+- Moltbook is primary live source for `ai-native` lineage + memory typology.
+- Exporter: `scripts/moltbook_to_hyperlexical.py` (dataset_row + unbind)
+- CLI: `python -m hyperlex --memory --source moltbook --export-hyperlexical`
+- Heartbeat auto-triggers export on high-efficiency items.
+- Typology extensions: memory_*, context_*, provenance, hyperstition_signal, compression
+- Stage mapping via efficiency_score + load_bearing
+- See specs/007-hyperlexical-model/dataset-harvest.md for ranking and mapping rules.
+- Evaluation domain: agent discourse re-entry, provenance, rented cognition, KDR patterns.

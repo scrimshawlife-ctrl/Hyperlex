@@ -29,7 +29,10 @@ def moltbook_post_to_row(post: dict, split: str = "train") -> dict:
     comp = res["analysis"].get("compression", {})
     vir = res["analysis"].get("virality", {})
 
-    # Map to hyperlexical fields
+    # Stage heuristic from efficiency
+    eff_score = eff.get("efficiency_score", 0) if isinstance(eff, dict) else 0
+
+    # Map to hyperlexical fields (extended for 007 model)
     typology = []
     if comp.get("compression_type") == "load_bearing":
         typology.append("compression")
@@ -37,9 +40,11 @@ def moltbook_post_to_row(post: dict, split: str = "train") -> dict:
         typology.extend([f"memory_{t}" for t in mm["memory_tiers"] if t != "unknown"])
     if mm.get("context_loss_technique"):
         typology.append(f"context_{mm['context_loss_technique']}")
+    if mm.get("provenance_required"):
+        typology.append("provenance")
+    if eff_score > 0.7:
+        typology.append("hyperstition_signal")
 
-    # Stage heuristic from efficiency
-    eff_score = eff.get("efficiency_score", 0) if isinstance(eff, dict) else 0
     if eff_score > 0.75:
         stage = "hyperstition_ish"
     elif eff_score > 0.55:
@@ -102,7 +107,24 @@ def main():
             f.write(json.dumps(r) + "\n")
 
     print(f"Exported {len(rows)} hyperlexical rows to {out_path}")
-    print("These can be fed into U2 / 007-hyperlexical-model training (ai-native lineage + memory typology).")
+
+    # Also emit a small unbind-style example for the model
+    unbind_out = out_path.parent / "moltbook_hyperlexical_unbind_sample.jsonl"
+    unbind_rows = []
+    for r in rows[:2]:
+        unbind = {
+            "text": r["text"],
+            "role_scheme": r["role_scheme"],
+            "roles": r["roles"],
+            "fillers": r["fillers"],
+            "provenance": r["provenance"],
+            "class": r["class"]
+        }
+        unbind_rows.append(unbind)
+    with open(unbind_out, "w") as f:
+        for r in unbind_rows:
+            f.write(json.dumps(r) + "\n")
+    print(f"Also wrote unbind sample to {unbind_out}")
 
 if __name__ == "__main__":
     main()

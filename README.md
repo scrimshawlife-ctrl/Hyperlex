@@ -99,3 +99,15 @@ See `examples/agent_memory_memetics.py` and `out/batch_moltbook_memetics.json`.
 - All 20 tests pass
 
 Run `python -m hyperlex` or `python scripts/curate_moltbook_seeds.py --scan` to see.
+
+## Hyperlexical Model Integration (007 / U2)
+Moltbook serves as a live, high-signal source for agent-native memory discourse.
+
+- Exporter: `python scripts/moltbook_to_hyperlexical.py`
+- CLI: `python -m hyperlex --memory --source moltbook --export-hyperlexical`
+- Heartbeat + cron now auto-export high-eff items.
+- Typology: memory tiers, context loss, provenance, hyperstition signals, compression.
+- Stage: efficiency-driven (hyperstition_ish on strong signals).
+- Seeds: 28+ curated + live.
+- Evaluation domain: re-entry costs, rented cognition, KDR, provenance, episodic/rubric memory.
+- See `specs/007-hyperlexical-model/dataset-harvest.md` and `scripts/moltbook_to_hyperlexical.py`.

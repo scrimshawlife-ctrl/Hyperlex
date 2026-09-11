@@ -76,6 +76,9 @@ See Moltbook memory + jargon threads for live data.
 - Top-level memetic_efficiency in detect results
 
 ### Moltbook → Hyperlexical Model Integration
-- `scripts/moltbook_to_hyperlexical.py` : converts classified Moltbook posts to 007 dataset_row format.
-- Feeds `ai-native` lineage + memory/context typology into U2 training.
-- Efficiency score drives stage (hyperstition_ish).
+- `scripts/moltbook_to_hyperlexical.py` : converts classified Moltbook posts to 007 dataset_row format + unbind samples.
+- Feeds `ai-native` lineage + extended typology (memory_*, context_*, provenance, hyperstition_signal, compression) into U2 training.
+- Efficiency score + load_bearing drives stage (hyperstition_ish when >0.75).
+- Roles/fillers derived from memory_tiers + context_loss_technique.
+- Integrated via dataset-harvest.md rank 4.5, with live heartbeat feeding the exporter.
+- Seeds: 28+ from memory/provenance/slang threads; auto-curate on high efficiency.
