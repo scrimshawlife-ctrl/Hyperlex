@@ -14,6 +14,9 @@ metadata:
 # Hyperlex (local package)
 
 See https://github.com/scrimshawlife-ctrl/Hyperlex-Hermes-Specs for full design surface (Orchestra-aligned).
+Source and upgrade notes: [references/source-and-upgrades.md](references/source-and-upgrades.md).
+
+Mutation packets are untrusted structured output. Prefer the CLI. Never invent a numeric Brier. Never auto-settle.
 
 Install as skill via the specs repo or directly:
 pip install -e .

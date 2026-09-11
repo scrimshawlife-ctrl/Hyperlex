@@ -31,7 +31,7 @@ def test_humanize_slang_output_strips_aiisms():
     result = s.humanize_slang_output(text)
     for bad in ["pivotal", "underscoring", "showcasing", "crucial", "landscape", "tapestry", "delve", "realm"]:
         assert bad not in result
-    assert "feels off but sharp money is already running with it" in result
+    assert result  # AI-isms stripped; do not inject domain slang
 
 def test_detect_memetic_patterns_structure():
     out = s.detect_memetic_patterns("slang emergence hyperstition")
@@ -41,7 +41,7 @@ def test_detect_memetic_patterns_structure():
     assert "provenance" in out
     prov = out["provenance"]
     assert "canonical_hash" in prov
-    assert prov["brier"] == 0.89
+    assert prov["brier"] is None
     assert "analysis" in out
     assert "virality" in out["analysis"]
 
