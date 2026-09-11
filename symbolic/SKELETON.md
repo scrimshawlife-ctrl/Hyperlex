@@ -74,3 +74,8 @@ See Moltbook memory + jargon threads for live data.
 - compute_memetic_efficiency_score now feeds into virality (efficiency_boost)
 - ArXiv concepts (Eywa provenance, bitemporal, rented cognition) boost load_bearing classification
 - Top-level memetic_efficiency in detect results
+
+### Moltbook → Hyperlexical Model Integration
+- `scripts/moltbook_to_hyperlexical.py` : converts classified Moltbook posts to 007 dataset_row format.
+- Feeds `ai-native` lineage + memory/context typology into U2 training.
+- Efficiency score drives stage (hyperstition_ish).

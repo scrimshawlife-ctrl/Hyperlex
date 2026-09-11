@@ -7,7 +7,9 @@ Usage:
 """
 import json
 import argparse
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 from hyperlex import detect_memetic_patterns as dmp
 
 LOG = Path("out/moltbook_log.txt")

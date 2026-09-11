@@ -14,6 +14,7 @@ Current U2 verification after fixing its Python keyword/annotated-assignment loa
 | 2 | Hyperlex golden receipts | **OBSERVED** under the 007 prompt, with a required reconciliation note because archived copies still say lineage `INFERRED` | Repository MIT; audit third-party origins before redistribution | `examples/receipts/golden/` on branch [2] | E1, negatives | U2 currently exports matched terms plus aggregate receipt queries. Before a name-gate freeze, do not treat split-out aggregate atoms as independently OBSERVED unless an operator settles them. |
 | 3 | Spec 004 recoverable-structure fixtures | **OBSERVED** fixture gold | Repository MIT | `scripts/shadow/recoverable_structure/fixtures.py` [2] | E2 | U2 materializes 24 spans under both allowed schemes: 48 raw rows and 45 after exact dedupe. Preserve case and add civilian annotations rather than inflating duplicates. |
 | 4 | 2026 backfill packs | **MIXED: 30 OBSERVED, 37 INFERRED** | Repository MIT; preserve each row’s provenance | `data/backfill/2026/*.json` [2] | E1; E6 candidates | Export all 67 atoms. Never upgrade the 37 weak labels. Family mix is highly skewed: 39/67 are `brainrot-aura`; use sampling weights, not duplication. |
+|| 4.5 | Moltbook agent discourse (memory, agents, ai submolts + jargon threads) | **MIXED: mostly INFERRED weak labels from our classifiers, some OBSERVED via high-karma settled threads** | Repository MIT (our distillation); original platform terms apply | `out/batch_moltbook_memetics.json`, `data/agent_memetics/`, live via moltbook_heartbeat | E1 (weak), E6 (agent-native), new typology candidates | Highest-signal source for **ai-native** lineage + new typology "memory", "context_friction", "provenance". Use `detect_memetic_memory_patterns` + `compute_memetic_efficiency_score` as weak labelers. Export atoms with memory_tiers as roles/fillers where they bind structure. Continue growing `seed_examples.jsonl` (currently 25). Map high `efficiency_score` + `load_bearing` to stage `hyperstition_ish`. |
 | 5 | Sanitized archive receipts not already represented by golden receipt surfaces | **INFERRED** | Repository MIT; sanitized archive only | `docs/archive/**/receipts/*.json` [2] | E1 weak, stage weak | Export 16 additional unique surfaces. Do not use Phase 5 fields. Stage remains INFERRED. |
 | 6 | Static `LINEAGE_REGISTRY` atoms not covered by backfill | **INFERRED / HOLD until U2 assigns row provenance** | Repository MIT | `src/hyperlex/analysis/__init__.py` [2] | E1 weak | Inventory shows 107 unique registry atoms, 66 overlapping backfill, 41 registry-only, plus one backfill-only atom. Resolve the cross-family `skill issue` collision before export; never duplicate it across splits or labels. |
 | 7 | English Wiktionary via Kaikki JSONL | Source text/tags **OBSERVED**; derived lineage/typology/stage **INFERRED** until operator-settled | Wiktionary text is dual-licensed CC BY-SA 4.0 and GFDL [3]; Kaikki distributes under the same licenses [4] | Kaikki English JSONL [4] | E1, E6 | Filter English entries/senses tagged slang, informal, vulgar, dialectal, or regional. Keep lemma, form, tags, revision/dump date, and attribution. Gloss may support adjudication but is not unbind gold. |
@@ -209,3 +210,13 @@ No rejected content is quoted.
 [6] https://www.gutenberg.org/policy/license.html — Project Gutenberg license
 [7] https://urbandictionary.biz/data — Urban Dictionary corpus licensing
 [8] https://app.notion.com/p/3d73e8ba2f5c81248145ccaecc4a83d1 — Hyperlex 007 Notion status page
+### Moltbook integration (added via current continuation)
+- Source: Moltbook agent discourse via `out/batch_moltbook_memetics.json` + `data/agent_memetics/seed_examples.jsonl` (25+ seeds) + live `moltbook_heartbeat.py`
+- Tooling: `scripts/moltbook_to_hyperlexical.py` produces `dataset_row.v0.1` compatible rows.
+- Mapping:
+  - lineage: "ai-native"
+  - typology: "compression" (from load_bearing), "memory_<tier>", "context_<technique>"
+  - stage: high `efficiency_score` → "hyperstition_ish"
+  - roles/fillers: memory_tiers + context_loss_technique
+  - provenance: includes efficiency, compression, source post_id
+- Action: Run the exporter on fresh batches. Treat as high-value for ai-native + new "memory" typology. Continue curation to increase volume.
