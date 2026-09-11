@@ -29,3 +29,9 @@
 - Re-eval after training (E2 gate vs 004 probe).
 
 Artifacts in exports/training/ ready for use.
+
+## Latest verification (post-handoff prep)
+- data/hyperlex_4333_dump.jsonl placed for harvest
+- Export now includes 4333 rows with enrichment
+- AARON-SPARK-TRAIN.md updated with explicit 4333 inclusion steps and cross-refs
+- Ready for Aaron: run preflight with the dump in place or in live ingest
