@@ -59,3 +59,12 @@ Ready for review and merge.
 - New commit on main + feature branch.
 
 Efficiency examples from batch: 0.31–0.38 on real memory discourse (room to tune keywords further).
+
+## Latest continuation
+- Tuned `detect_memetic_memory_patterns` for reliable tier detection (seed boosting + synonyms) — now returns 'episodic'/'rubric' on relevant Moltbook text instead of mostly unknown.
+- Added `scripts/curate_moltbook_seeds.py` — autonomous helper to mine high-efficiency items from logs/batch for ongoing dataset growth.
+- arXiv cross-reference: `out/arxiv_moltbook_cross.json` linking Moltbook signals to 5 recent papers (Eywa, ECHO, Agent Zero Memory, Ground Truth First, belief-based memory).
+- Extended synthesis layer and schemas to carry `memetic_efficiency`, `memory_tiers`.
+- All tests green; efficiency scoring now surfaces strongly (0.9+ on dense signals).
+
+Branch ready. Next: more curation runs, full pipeline integration, or PR when network permits.

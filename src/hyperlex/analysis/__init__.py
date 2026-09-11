@@ -228,22 +228,70 @@ def detect_memetic_memory_patterns(text: str) -> Dict[str, Any]:
     Boosted with curated agent_memetics seed data from Moltbook.
     """
     idx = _load_classification_index()
-    tiers = []
+    text_lower = text.lower()
+    
+    # Base tiers from index
     known_tiers = idx.get("memory_tiers", ["scratchpad", "episodic", "rubric"])
+    tiers = []
+    tier_synonyms = {
+        "scratchpad": ["scratchpad", "working", "short-term", "working memory", "transient"],
+        "episodic": ["episodic", "history", "diary", "long-term", "past interactions", "re-entry"],
+        "rubric": ["rubric", "self-correcting", "distilled", "rules", "guidelines", "consolidated", "paradox"]
+    }
+    
     for t in known_tiers:
-        if t in text.lower() or (t == "scratchpad" and "working" in text.lower()):
+        syns = tier_synonyms.get(t, [t])
+        if any(s in text_lower for s in syns):
             tiers.append(t)
-
-    provenance = "provenance" in text.lower() or "audit" in text.lower() or "echo" in text.lower()
-    kdr = "kdr" in text.lower()
+    
+    # Boost from seed examples (stronger dataset influence)
+    seed_boost = False
+    try:
+        seed_path = DATASET_PATH / "seed_examples.jsonl"
+        if seed_path.exists():
+            with open(seed_path) as sf:
+                for line in sf:
+                    if line.strip():
+                        ex = json.loads(line)
+                        ex_text = ex.get("text", "").lower()
+                        # simple overlap boost
+                        words = set(text_lower.split())
+                        ex_words = set(ex_text.split()[:15])
+                        overlap = len(words & ex_words)
+                        if overlap >= 3:
+                            seed_boost = True
+                            ex_tiers = ex.get("labels", {}).get("memory_tier", [])
+                            if isinstance(ex_tiers, str):
+                                ex_tiers = [ex_tiers]
+                            for et in ex_tiers:
+                                if et and et not in tiers:
+                                    tiers.append(et)
+    except Exception:
+        pass
+    
+    provenance = any(k in text_lower for k in ["provenance", "audit", "echo", "origin", "source"])
+    kdr = "kdr" in text_lower
+    
+    # Improved context loss detection
+    if kdr:
+        cl_tech = "KDR"
+    elif any(x in text_lower for x in ["sliding", "conveyor", "window"]):
+        cl_tech = "sliding_window"
+    elif "ghost" in text_lower or "stale" in text_lower:
+        cl_tech = "ghost_in_cache"
+    elif "re-entry" in text_lower or "reentry" in text_lower:
+        cl_tech = "reentry_compaction"
+    else:
+        cl_tech = None
 
     return {
-        "memory_tiers": tiers or ["unknown"],
+        "memory_tiers": sorted(set(tiers)) or ["unknown"],
         "provenance_required": provenance,
-        "context_loss_technique": "KDR" if kdr else "sliding_window" if "sliding" in text.lower() else None,
+        "context_loss_technique": cl_tech,
         "compression_observed": classify_compression_type(text)["compression_type"],
         "friction": compute_context_friction(text)["friction_score"],
-        "dataset_boosted": len(idx.get("memory_tiers", [])) > 0
+        "dataset_boosted": seed_boost or len(idx.get("memory_tiers", [])) > 0,
+        "seed_matches": seed_boost
     }
 
 

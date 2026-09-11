@@ -95,6 +95,10 @@
         },
         "memetic_memory": {
           "type": "object"
+        },
+        "memetic_efficiency": {
+          "type": "object",
+          "description": "Composite transmission efficiency from Moltbook agent memetics"
         }
       }
     },
@@ -103,6 +107,9 @@
     },
     "recommendation": {
       "type": "string"
+    },
+    "memetic_efficiency": {
+      "type": "object"
     }
   },
   "additionalProperties": true
