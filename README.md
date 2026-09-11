@@ -1,138 +1,131 @@
-# hyperlex
+# Hyperlex
 
-Standalone, installable Python package for **HYPERLEX (Memetic Emergence)** — memetic pattern detection, hyperstition tracking, virality scoring, and symbolic forecasting.
+<p align="center">
+  <img src="assets/hyperlex-imagine-hero.jpg" alt="Hyperlex hero — memetic emergence atlas" width="100%" />
+</p>
 
-## Features
-- Wired real ingest (`source="real"`, `"reddit"`, etc.)
-- ArXiv-distilled modules (neologism pipeline, semantic variation, hybrid virality, memetics protocol, hyperstition loops)
-- Strict JSON output with OBSERVED / INFERRED / SPECULATIVE + provenance + Brier
-- Generic external signal integration (feeds virality + hyperstition into any pipeline)
-- Fully decoupled (no Hollersports/Abraxas hard dependencies)
+**Memetic emergence** skill + SHADOW encoder path for the Abraxas model stack.
+Catch language while it’s still becoming culture — slang lineage, receipts, settled Brier only.
 
-## Installation
+Hermes skill is what you **run today**. Spec 007 Hyperlexical encoder is **SHADOW / advisory**.
 
-### Editable (recommended for development)
+| | |
+|---|---|
+| **Owns** | memetic ingest · classify · receipts · virality / hyperstition signals · Spec 007 encoder specify |
+| **Honesty** | `OBSERVED` / `INFERRED` / `SPECULATIVE` (+ provenance; settled Brier only where calibrated) |
+| **Shape** | Hermes skill **live** (v0.4.0). Spec 007 T0→T1 **gated**. Not a chatbot mind. |
+| **Anti** | Efficacy theater · inventing Brier · naming artifacts **Hyperlexical** before E2 · Hub without `ALLOW_HUB` |
+| **Lane** | Skill ready · encoder SHADOW · `name_gate` **false** · Hub not published |
+| **Version** | `0.4.0` — prefer [`STATUS.md`](STATUS.md) |
+
+Docs site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.github.io/Hyperlex/) · status mirror: [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/).
+
+## What ships / what does not
+
+| Ships now | Does **not** ship |
+|-----------|-------------------|
+| Hermes skill install + CLI (`install.sh`, `scripts/hyperlex.py`) | Artifact named **Hyperlexical** |
+| Spec 007 SHADOW encoder code path | `name_gate` true / Hub publish |
+| Local SoT classify volume (operator machine) | Full SoT in git |
+| Pages static run history / Phase 5 research hooks | Paid Firecrawl by default (Crawl4AI is default) |
+
+## Current state (OBSERVED 2026-09-10/11 PT)
+
+Snapshot — full scoreboard in [`STATUS.md`](STATUS.md).
+
+| Area | State |
+|------|-------|
+| Hermes skill | Ready **v0.4.0** |
+| Spec 007 | SHADOW on main · T0 specified · T1 blocked on Spark E2 |
+| `name_gate` | **false** (volume ≠ name) |
+| Hub | Not published |
+| Local SoT | `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` — **4333** (**not in git**) |
+| Export classify (include-live) | **2437** family-labeled (harvest gate) |
+| Tracked seed export | `specs/007-…/exports/civilian.v0.1.jsonl` — seed/snapshot only |
+| Scrape default | Crawl4AI **0.9.3** (paid Firecrawl needs Danny yes) |
+
+## Pipeline
+
+```
+query + source → intake → analyze → receipt / score log
+                              ↓
+                    Spec 007 shadow infer (advisory)
+                              ↓
+              T0 card → T1 only after Spark E2 + name_gate
+```
+
+No hard Abraxas import. Compat shapes live under `hyperlex.compat.abraxas` when needed.
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) (spine note) and [`docs/shadow-hyperlexical.md`](docs/shadow-hyperlexical.md).
+
+## Specs / model path
+
+| Path | Role |
+|------|------|
+| Hermes `SKILL.md` | Operator surface |
+| Spec 007 | [`specs/007-hyperlexical-model/`](specs/007-hyperlexical-model/) |
+| Shadow encoder | `scripts/shadow/hyperlexical/` |
+| Aaron Spark handoff | look under `specs/007-…` / STATUS links (train on Spark) |
+
+## Quick links
+
+| Doc | Path |
+|-----|------|
+| Status | [`STATUS.md`](STATUS.md) |
+| Architecture | [`ARCHITECTURE.md`](ARCHITECTURE.md) |
+| Shadow Hyperlexical | [`docs/shadow-hyperlexical.md`](docs/shadow-hyperlexical.md) |
+| Commands | [`docs/commands.md`](docs/commands.md) |
+| Brier calibration | [`docs/brier-calibration.md`](docs/brier-calibration.md) |
+| Contributing | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+| Changelog | [`CHANGELOG.md`](CHANGELOG.md) |
+
+## Install (Hermes skill)
+
 ```bash
-cd /path/to/hyperlex
+bash install.sh
+# optional Claude host:
+bash install.sh --claude
+```
+
+Editable package (dev):
+
+```bash
 pip install -e ".[dev]"
+python3 scripts/hyperlex.py doctor
+python3 scripts/release_preflight.py
+python3 scripts/hyperlex.py simulate --term rizz --mode scenario
+pytest -q
 ```
 
-### Normal install
+SHADOW infer (advisory):
+
 ```bash
-pip install hyperlex
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 ```
 
-## Quick Usage
+## Local data
 
-```python
-from hyperlex import detect_memetic_patterns, mock_integrate_with_external_signal
+| Layer | Where | In git? |
+|-------|-------|---------|
+| Operator SoT | `~/.hyperlex/…` | **No** |
+| Receipts / score log | `~/.hyperlex/` | **No** |
+| Tracked seed export | `specs/007-…/exports/` | Yes (seed only) |
 
-# Real data
-result = detect_memetic_patterns(
-    query="sharp money revenge narrative",
-    ingest_source="real"
-)
-print(result["analysis"]["virality"])
-print(result["analysis"]["hyperstition"])
+Spark trains from **local SoT** / `export --include-live`, not from the tracked seed alone.
 
-# Feed into downstream signal
-signal = mock_integrate_with_external_signal(result)
-print(signal["actionable"], signal["confidence"])
-```
+## Fail-closed gates
 
-### CLI
-```bash
-hyperlex
-# or
-python -m hyperlex
-```
+Do **not** without Danny/operator yes:
 
-## Run Tests
-```bash
-pytest
-```
+- Call an artifact **Hyperlexical** or flip `name_gate`
+- Publish to Hub (`ALLOW_HUB`)
+- Commit the 4333 SoT into git
+- Invent Brier scores (settled calibration only)
+- Paid Firecrawl cloud when Crawl4AI works
 
-## Core Functions
-- `ingest_signal(query, source="mock"|"real"|"reddit"|"x_search"|"firecrawl")`
-- `detect_memetic_patterns(...)`
-- `mock_integrate_with_external_signal(result)`
-- `compute_virality_score(text)`
-- `simulate_hyperstition_loop(narrative)`
+## Peers
 
-See `src/hyperlex/engine.py` for full details and the original arXiv references.
+**Hyperlex (form / lexical)** · Athanor (tradition structure) · Semion (sign relation) · Yggdrasil (route classifier) · VIRAL / VERNACULAR (collective seats)
 
-## Moltbook + Agent Memory Integration (2026-09)
-Hyperlex now ingests from Moltbook (AI agent network) for memetic patterns around:
-- Tiered memory architectures (scratchpad/episodic/rubric)
-- Context loss & re-entry costs
-- Provenance / auditable memory (ECHO-style)
-- Slang as load-bearing compression
+## License
 
-Use `ingest_source="moltbook"` or `"agent_discourse"`.
-
-See symbolic/SKELETON.md for the updated memetic memory mapping.
-
-## Agent Memetics Classification (Moltbook + Hyperlex)
-New capabilities from Moltbook research assimilation:
-- `classify_compression_type()`: load_bearing vs decorative jargon/slang
-- `compute_context_friction()`: re-entry costs, sliding window loss
-- `detect_memetic_memory_patterns()`: tiered memory, provenance, KDR/ECHO patterns
-- Seed dataset in `data/agent_memetics/seed_examples.jsonl`
-- Classification boosted with curated examples
-
-Use with `ingest_source="moltbook"` for live agent discourse signals.
-
-### New: memetic_efficiency_score (Moltbook assimilation)
-`compute_memetic_efficiency_score(text, memory_patterns, virality)` 
-Composite score for transmission stickiness: (virality * (1-friction) * compression_factor * provenance * tier_diversity)
-
-Used in batch analysis of agent memory posts. Higher scores indicate stronger hyperstition candidates in agent discourse.
-
-See `examples/agent_memory_memetics.py` and `out/batch_moltbook_memetics.json`.
-
-## Latest Continuation
-- 18 Moltbook seeds (added "rented cognition/memory" example)
-- Tier detection now reliably surfaces 'episodic' for KDR, rented, simplexity, SIGBUS, etc.
-- memetic_efficiency exposed at top level of detect result
-- Fresh batch analysis in out/batch_moltbook_memetics.json (18 seeds)
-- Heartbeat logs efficiency/tiers
-- All 20 tests pass
-
-Run `python -m hyperlex` or `python scripts/curate_moltbook_seeds.py --scan` to see.
-
-## Hyperlexical Model Integration (007 / U2)
-
-Train SoT is **local-only** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`; 4333 rows as of 2026-09-10 PT evening). Tracked `specs/007-hyperlexical-model/exports/civilian.v0.1.jsonl` is an 883-row seed. Operator `--include-live`: n=6506 · classify **2437** · `name_gate` false. See `STATUS.md`.
-
-Moltbook is a live, high-signal **subset** for agent-native memory discourse — not the global SoT.
-
-- Exporter: `python scripts/moltbook_to_hyperlexical.py`
-- CLI: `python -m hyperlex --memory --source moltbook --export-hyperlexical`
-- Heartbeat + cron now auto-export high-eff items.
-- Typology: memory tiers, context loss, provenance, hyperstition signals, compression.
-- Stage: efficiency-driven (hyperstition_ish on strong signals).
-- Seeds: 28+ curated + live.
-- Evaluation domain: re-entry costs, rented cognition, KDR, provenance, episodic/rubric memory.
-- See `specs/007-hyperlexical-model/dataset-harvest.md` and `scripts/moltbook_to_hyperlexical.py`.
-
-## Latest integration run (continued)
-- Large batch: 60 items fetched across memory/agents/ai/general + search
-- Hyperlexical rows exported: 60 (full) + 7 high-signal curated (`data/moltbook_hyperlexical_high.jsonl`)
-- Seeds grown to 31
-- Eval on 60: avg efficiency 0.42 (volume), with dedicated high-eff subset showing stronger signals
-- Full pipeline exercised: fetch → classify → export → eval → docs
-
-## Larger fetch executed
-- 269 Moltbook posts fetched and enriched.
-- 60 total seeds (12 high-eff).
-- 269 hyperlexical dataset rows.
-- Tracked-export **Moltbook-subset** snapshot: 770 rows / 327 ai-native. Not current SoT.
-- Eval stats: 269 items, 0.411 avg eff, 10 hyperstition_ish.
-
-## Curate + registry update after larger fetch
-- +5 high-eff seeds → 65 total, 17 high
-- LINEAGE_REGISTRY ai-native expanded to 27 terms
-- Tracked-export **Moltbook-subset** snapshot: 797 / 354 ai-native. Not current SoT.
-## More curation (post larger fetch)
-- +14 seeds → 79 total, 17 high-eff.
-- Tracked-export **Moltbook-subset** snapshot: 837 rows / 394 ai-native. Not current SoT.
+See repo `LICENSE` / package metadata. Corpus and scrape receipts carry their own provenance — do not treat PD-adjacent web text as automatically redistributable.
