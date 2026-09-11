@@ -106,6 +106,7 @@ if __name__ == "__main__":
     p.add_argument("--min-eff", type=float, default=0.5)
     p.add_argument("--add", type=str)
     p.add_argument("--tiers", type=str)
+    p.add_argument("--to-hyperlexical", action="store_true", help="After scan/add, also export to 007 hyperlexical rows")
     args = p.parse_args()
 
     if args.scan:
@@ -118,3 +119,10 @@ if __name__ == "__main__":
         add_to_seeds(args.add, tiers)
     else:
         print("Use --scan or --add")
+
+    if args.to_hyperlexical:
+        import subprocess
+        from pathlib import Path
+        print("Triggering Moltbook -> hyperlexical export...")
+        subprocess.run([sys.executable, str(Path(__file__).parent / "moltbook_to_hyperlexical.py"), "--batch", str(BATCH), "--out", "data/moltbook_hyperlexical_rows.jsonl"], check=False)
+        print("Hyperlexical export done.")

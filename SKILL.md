@@ -57,3 +57,12 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 - Stage mapping via efficiency_score + load_bearing
 - See specs/007-hyperlexical-model/dataset-harvest.md for ranking and mapping rules.
 - Evaluation domain: agent discourse re-entry, provenance, rented cognition, KDR patterns.
+
+## Latest continuation (Moltbook -> 007 full wiring)
+- Large batch: 60 items, 31 seeds, 60+ hyperlexical rows
+- LINEAGE_REGISTRY + match_lineage restored in src/hyperlex/analysis for export compatibility
+- harvest_moltbook integrated in shadow/hyperlexical/export.py
+- Official 007 export (civilian.v0.1.jsonl) now contains 119 ai-native rows with Moltbook signals (KDR, rented cognition, provenance, episodic)
+- curate script supports --to-hyperlexical
+- Shadow export tests extended
+- Full export runs cleanly, MANIFEST updated

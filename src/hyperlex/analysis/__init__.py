@@ -364,4 +364,58 @@ __all__ = [
     "compute_context_friction",
     "detect_memetic_memory_patterns",
     "compute_memetic_efficiency_score",
+    "LINEAGE_REGISTRY",
+    "match_lineage",
 ]
+
+# LINEAGE_REGISTRY — core families for memetic classification (8 families)
+# Extended with Moltbook agent memory signals for ai-native
+LINEAGE_REGISTRY = [
+    {
+        "family_id": "ai-native",
+        "terms": [
+            "rented cognition", "KDR", "ghost in the cache", "episodic memory",
+            "provenance", "context loss", "re-entry cost", "memory tier",
+            "glaze", "vibe coded", "rlhf", "sycophant", "model collapse", "alignment tax",
+            "simplexity", "orientation", "SIGINT", "conveyor belt"
+        ]
+    },
+    {
+        "family_id": "betting-sharp",
+        "terms": ["against the spread", "the vig", "sharp money"]
+    },
+    {
+        "family_id": "brainrot-aura",
+        "terms": ["bruh", "sheesh", "minus aura", "sigma grindset"]
+    },
+    {
+        "family_id": "crypto-degen",
+        "terms": ["jeet", "probably nothing", "frens"]
+    },
+    {
+        "family_id": "gaming-meta",
+        "terms": ["one-tricking", "hardstuck bronze"]
+    },
+    {
+        "family_id": "kinship-address",
+        "terms": ["yo fam", "lil unc"]
+    },
+    {
+        "family_id": "political-status",
+        "terms": ["doomer", "cope harder"]
+    },
+    {
+        "family_id": "workplace-corp",
+        "terms": ["put a pin in it", "rto mandate"]
+    },
+]
+
+def match_lineage(term: str, use_vector: bool = False):
+    """Simple matcher for tests and export."""
+    term_l = term.lower()
+    for entry in LINEAGE_REGISTRY:
+        for t in entry.get("terms", []):
+            if t.lower() in term_l or term_l in t.lower():
+                return {"family_id": entry["family_id"], "term": t}
+    return None
+

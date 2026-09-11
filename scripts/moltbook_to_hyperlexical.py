@@ -58,7 +58,7 @@ def moltbook_post_to_row(post: dict, split: str = "train") -> dict:
         "text": text,
         "split": split,
         "lineage": lineage,
-        "typology": sorted(set(typology)) or ["agent_slang"],
+        "typology": sorted(set(typology)) or ["memory", "provenance"],
         "stage": stage,
         "roles": mm.get("memory_tiers", []) + (["provenance"] if mm.get("provenance_required") else []),
         "fillers": [mm.get("context_loss_technique") or "general"] if mm.get("context_loss_technique") else ["general"],

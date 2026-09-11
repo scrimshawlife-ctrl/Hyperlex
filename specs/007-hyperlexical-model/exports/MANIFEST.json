@@ -2,29 +2,39 @@
   "brier": null,
   "counts": {
     "backfill": 60,
-    "classify": 135,
-    "classify_all": 345,
+    "classify": 159,
+    "classify_all": 369,
+    "classify_none": 210,
     "dialect": 8,
-    "inferred": 101,
+    "inferred": 191,
     "live_included": 0,
     "live_rejected": 0,
-    "n": 450,
+    "n": 562,
     "name_gate": false,
-    "name_gate_classify_gap": 1865,
+    "name_gate_classify_gap": 1841,
     "name_gate_negative_gap": 0,
-    "name_gate_unbind_gap": 95,
-    "negatives": 210,
-    "observed": 349,
-    "test": 48,
-    "train": 364,
-    "unbind": 105,
-    "unbind_civilian": 60,
+    "name_gate_unbind_gap": 73,
+    "negatives": 208,
+    "observed": 371,
+    "test": 54,
+    "train": 460,
+    "unbind": 127,
+    "unbind_civilian": 82,
     "unbind_fixture": 45,
-    "val": 38
+    "val": 48
   },
   "file": "civilian.v0.1.jsonl",
-  "note": "Honest accounting: counts.classify = family-labeled only (excludes negatives). unbind_fixture vs unbind_civilian split. Spec004 fixtures at n=24; civilian dual-scheme from golden/registry (no gloss invent). Live optional via --include-live (INFERRED only). Not a T1 name-gate.",
+  "note": "Honest accounting: counts.classify = family-labeled only (excludes negatives). counts.negatives = ordinary-prose (seed:negative-prose) only \u2014 not live lineage=none classify (see classify_none). unbind_fixture vs unbind_civilian split. Spec004 fixtures at n=24; civilian dual-scheme from golden/registry (no gloss invent). Live optional via --include-live (preserves store class; unset\u2192INFERRED). Not a T1 name-gate. Moltbook ai-native memory signals (KDR, rented cognition, provenance, episodic) now wired via harvest_moltbook + 67 rows included from Moltbook ingestion.",
   "schema": "hyperlex.hyperlexical.dataset.v0.1",
-  "sha256": "1579ee22c4dde1a7dfa6134777f59c66574986894dfaeabcc940bf3aae2a816c",
-  "trunk": "answerdotai/ModernBERT-base"
+  "sha256": "9335bce1a999991f24306e06a37682396e83771c5f88f142359607f3ee4f586d",
+  "trunk": "answerdotai/ModernBERT-base",
+  "moltbook_integration": {
+    "rows": 67,
+    "source": "moltbook_to_hyperlexical + harvest_moltbook",
+    "typology_enhanced": [
+      "memory",
+      "provenance",
+      "context"
+    ]
+  }
 }
