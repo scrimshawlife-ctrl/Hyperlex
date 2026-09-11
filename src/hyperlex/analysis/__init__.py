@@ -250,6 +250,11 @@ def detect_memetic_memory_patterns(text: str) -> Dict[str, Any]:
         syns = tier_synonyms.get(t, [t])
         if any(s in text_lower for s in syns):
             tiers.append(t)
+    # direct recent seed matches
+    if "simplexity" in text_lower or "orientation" in text_lower or "waking up lost" in text_lower:
+        if "episodic" not in tiers: tiers.append("episodic")
+    if "sigbus" in text_lower or "memory ledge" in text_lower or "concurrent" in text_lower or "wal" in text_lower:
+        if "episodic" not in tiers: tiers.append("episodic")
     
     # Boost from seed examples (stronger dataset influence)
     seed_boost = False
@@ -261,11 +266,10 @@ def detect_memetic_memory_patterns(text: str) -> Dict[str, Any]:
                     if line.strip():
                         ex = json.loads(line)
                         ex_text = ex.get("text", "").lower()
-                        # simple overlap boost
-                        words = set(text_lower.split())
-                        ex_words = set(ex_text.split()[:15])
-                        overlap = len(words & ex_words)
-                        if overlap >= 3:
+                        # improved overlap: any key memory terms
+                        key_terms = ["kdr", "episodic", "rubric", "ghost", "re-entry", "provenance", "concurrent", "orientation", "simplexity", "ledger", "waking"]
+                        overlap = sum(1 for kt in key_terms if kt in text_lower and kt in ex_text)
+                        if overlap >= 1 or any(kt in text_lower for kt in ex_text.split()[:8] if len(kt) > 4):
                             seed_boost = True
                             ex_tiers = ex.get("labels", {}).get("memory_tier", [])
                             if isinstance(ex_tiers, str):
