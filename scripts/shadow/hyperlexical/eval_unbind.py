@@ -1,16 +1,25 @@
-"""U3 eval harness. Stub vs Spec 004 probe. No torch. No Hub."""
+"""U3 eval harness. Stub/digest vs Spec 004 probe. Trunk-forward is opt-in."""
 
 from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import sys
 from pathlib import Path
 
 HEAD_NAMES = ("heads.json", "model.safetensors", "heads.pt")
+FORWARD_WEIGHT_NAMES = ("model.safetensors", "heads.pt")
 DEFAULT_TRAIN_OUT = Path.home() / ".hyperlex" / "models" / "hyperlex-encoder-modernbert-base-seed"
+DEFAULT_TRAIN_OUT_LIVE = Path.home() / ".hyperlex" / "models" / "hyperlex-encoder-modernbert-base-seed-live"
+DEFAULT_TRUNK = Path.home() / ".hyperlex" / "models" / "trunks" / "ModernBERT-base"
+TYPE_SLOT_TAGS = ("TOKEN", "SLOT", "MARKER")
+
+
+class TrunkForwardError(RuntimeError):
+    """Fail-closed trunk-forward E2. Not a stub miss."""
 
 
 def _shadow() -> Path:
@@ -45,19 +54,75 @@ def model_swap(spans: list[dict], seed: bytes) -> float:
     return hit / max(1, len(spans))
 
 
+def spans_to_unbind_rows(spans: list[dict]) -> list[dict]:
+    """Export-shaped 004 rows: positional + type_slot only."""
+    rows = []
+    for sp in spans:
+        items = list(sp["item_ids"])
+        tags = list(sp.get("type_tags") or [])
+        if len(tags) != len(items):
+            tags = [TYPE_SLOT_TAGS[k % len(TYPE_SLOT_TAGS)] for k in range(len(items))]
+        rows.append(
+            {
+                "text": " ".join(items),
+                "fillers": items,
+                "roles": [f"pos_{k}" for k in range(len(items))],
+                "role_scheme": "positional",
+            }
+        )
+        rows.append(
+            {
+                "text": " ".join(f"{t}:{it}" for t, it in zip(tags, items)),
+                "fillers": items,
+                "roles": tags,
+                "role_scheme": "type_slot",
+            }
+        )
+    return rows
+
+
+def want_trunk_forward(cli_flag: bool = False) -> bool:
+    return bool(cli_flag) or os.environ.get("HYPERLEX_E2_TRUNK_FORWARD") == "1"
+
+
+def resolve_trunk_dir() -> Path:
+    env = os.environ.get("HYPERLEX_TRUNK_DIR", "").strip()
+    return Path(env) if env else DEFAULT_TRUNK
+
+
+def trunk_ready(trunk: Path) -> bool:
+    return trunk.is_dir() and (trunk / "config.json").is_file()
+
+
+def torch_importable() -> bool:
+    try:
+        return importlib.util.find_spec("torch") is not None
+    except (ImportError, ValueError, ModuleNotFoundError):
+        return False
+
+
 def resolve_model_dir(explicit: str | Path | None = None) -> Path | None:
     if explicit not in (None, ""):
         return Path(explicit)
     env = os.environ.get("HYPERLEX_TRAIN_OUT", "").strip()
     if env:
         return Path(env)
-    if DEFAULT_TRAIN_OUT.is_dir():
-        return DEFAULT_TRAIN_OUT
+    for candidate in (DEFAULT_TRAIN_OUT_LIVE, DEFAULT_TRAIN_OUT):
+        if candidate.is_dir():
+            return candidate
     return None
 
 
 def find_weight_file(model_dir: Path) -> Path | None:
     for name in HEAD_NAMES:
+        path = model_dir / name
+        if path.is_file() and path.stat().st_size > 0:
+            return path
+    return None
+
+
+def find_forward_weight_file(model_dir: Path) -> Path | None:
+    for name in FORWARD_WEIGHT_NAMES:
         path = model_dir / name
         if path.is_file() and path.stat().st_size > 0:
             return path
@@ -111,23 +176,49 @@ def _probe_report() -> tuple[dict, list[dict], float, float, float, float]:
     return rec, test_spans, stub_acc, probe_acc, float(pos["swap_accuracy"]), float(typ["swap_accuracy"])
 
 
-def run_eval(model_dir: str | Path | None = None) -> dict:
-    rec, test_spans, stub_acc, probe_acc, pos_acc, typ_acc = _probe_report()
+def require_trunk_forward(model_dir: str | Path | None = None) -> tuple[Path, Path, Path]:
+    if not torch_importable():
+        raise TrunkForwardError("trunk-forward requested but torch is not importable")
+    trunk = resolve_trunk_dir()
+    if not trunk_ready(trunk):
+        raise TrunkForwardError(
+            f"trunk-forward requested but trunk is missing or has no config.json: {trunk}"
+        )
     directory = resolve_model_dir(model_dir)
-    weight = find_weight_file(directory) if directory is not None else None
-    base = {
+    if directory is None:
+        raise TrunkForwardError(
+            "trunk-forward requested but no train out dir "
+            "(--model-dir / HYPERLEX_TRAIN_OUT / "
+            "~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-live|seed)"
+        )
+    weight = find_forward_weight_file(directory)
+    if weight is None:
+        raise TrunkForwardError(
+            f"trunk-forward requested but no model.safetensors or heads.pt in {directory}"
+        )
+    return trunk, directory, weight
+
+
+def _base_report(rec: dict, stub_acc: float, probe_acc: float, pos_acc: float, typ_acc: float, n_test: int) -> dict:
+    return {
         "schema": "hyperlex.hyperlexical.eval_unbind.v0.1",
         "probe_schema": rec.get("schema"),
         "probe_positional_swap": pos_acc,
         "probe_type_slot_swap": typ_acc,
         "probe_swap_min": probe_acc,
         "stub_swap": stub_acc,
-        "n_test": len(test_spans),
+        "n_test": n_test,
         "trunk": "answerdotai/ModernBERT-base",
         "trunk_loaded": False,
         "brier": None,
         "forecast_eligible": False,
     }
+
+
+def _digest_or_stub(model_dir: str | Path | None, rec, test_spans, stub_acc, probe_acc, pos_acc, typ_acc) -> dict:
+    directory = resolve_model_dir(model_dir)
+    weight = find_weight_file(directory) if directory is not None else None
+    base = _base_report(rec, stub_acc, probe_acc, pos_acc, typ_acc, len(test_spans))
     if weight is None:
         base.update(
             {
@@ -157,6 +248,47 @@ def run_eval(model_dir: str | Path | None = None) -> dict:
     return base
 
 
+def run_eval(model_dir: str | Path | None = None, trunk_forward: bool = False) -> dict:
+    if want_trunk_forward(trunk_forward):
+        trunk, directory, weight = require_trunk_forward(model_dir)
+        rec, test_spans, stub_acc, probe_acc, pos_acc, typ_acc = _probe_report()
+        from .eval_forward import run_unbind_exact
+
+        scored = run_unbind_exact(
+            trunk_dir=trunk,
+            model_dir=directory,
+            weight_path=weight,
+            spans=test_spans,
+        )
+        model_acc = float(scored["unbind_exact"])
+        meta = load_heads_meta(weight)
+        report = _base_report(rec, stub_acc, probe_acc, pos_acc, typ_acc, len(test_spans))
+        report.update(
+            {
+                "e2_pass": model_acc > probe_acc,
+                "model_id": meta["model_id"],
+                "heads_loaded": True,
+                "weight_file": meta["weight_file"],
+                "model_swap": model_acc,
+                "unbind_exact": model_acc,
+                "n_unbind_eval": scored["n_unbind_eval"],
+                "trunk_loaded": True,
+                "trunk_forward": True,
+                "trunk_dir": str(trunk),
+                "model_dir": str(directory),
+                "name_gate": False,
+                "device": scored.get("device"),
+                "note": (
+                    f"Trunk-forward unbind_exact from {weight} vs 004 probe_swap_min. "
+                    "name_gate stays false. Encoder is the local trunk snapshot; heads from train out."
+                ),
+            }
+        )
+        return report
+    rec, test_spans, stub_acc, probe_acc, pos_acc, typ_acc = _probe_report()
+    return _digest_or_stub(model_dir, rec, test_spans, stub_acc, probe_acc, pos_acc, typ_acc)
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="hyperlexical-eval-unbind")
     p.add_argument("--out", default="")
@@ -165,8 +297,30 @@ def main(argv=None) -> int:
         default="",
         help="train out dir with heads.json / heads.pt / model.safetensors",
     )
+    p.add_argument(
+        "--trunk-forward",
+        action="store_true",
+        help="load local ModernBERT + trained heads and score real unbind_exact (Spark)",
+    )
     args = p.parse_args(argv)
-    report = run_eval(model_dir=args.model_dir or None)
+    try:
+        report = run_eval(model_dir=args.model_dir or None, trunk_forward=args.trunk_forward)
+    except TrunkForwardError as exc:
+        print(
+            json.dumps(
+                {
+                    "abort": True,
+                    "error": str(exc),
+                    "brier": None,
+                    "e2_pass": False,
+                    "trunk_loaded": False,
+                    "name_gate": False,
+                },
+                indent=2,
+            ),
+            file=sys.stderr,
+        )
+        return 2
     text = json.dumps(report, indent=2, sort_keys=True)
     if args.out:
         Path(args.out).write_text(text + "\n", encoding="utf-8")

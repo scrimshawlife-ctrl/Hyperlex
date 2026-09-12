@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Spec 007 E2 trunk-forward:** `eval_unbind --trunk-forward` /
+  `HYPERLEX_E2_TRUNK_FORWARD=1` loads the local ModernBERT trunk plus
+  trained heads and scores real `unbind_exact` against the Spec 004
+  probe. Missing torch, trunk, or weights fails closed. Default/CI stays
+  the torch-free stub/digest path (no Hub, no trunk download).
+  `name_gate` stays false. `brier` stays null.
+
 - **Spec 007 harness:** `hyperlexical.train --include-live` / `HYPERLEX_INCLUDE_LIVE=1`
   passes `include_live=True` into `export_dataset` (same path as
   `python -m hyperlexical.export --include-live`). Default stays the

@@ -87,9 +87,19 @@ Do not commit them.
 ## 5. After
 
 ```bash
-# Loads heads from $HYPERLEX_TRAIN_OUT (or ~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed)
+# Torch-free digest/stub (CI). Loads head bytes if present; trunk_loaded stays false.
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --out /tmp/hlx-e2-after.json
 ```
+
+Real E2 on Spark (trained unbind_exact vs the Spec 004 probe). Fail-closed if torch, trunk, or weights are missing. Does not flip `name_gate`. `brier` stays null.
+
+```bash
+export HYPERLEX_E2_TRUNK_FORWARD=1
+export HYPERLEX_TRUNK_DIR=$HOME/.hyperlex/models/trunks/ModernBERT-base
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --model-dir $HYPERLEX_TRAIN_OUT --out /tmp/hlx-e2-after.json
+```
+
+`--model-dir` may be omitted when `HYPERLEX_TRAIN_OUT` is set, or when the default seed-live / seed out dir exists (`~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-live` then `...-seed`). Same as `--trunk-forward` on the CLI.
 
 Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, layout.json, torch/`sm_121` note. Include any high-signal oversampling notes if used (see 4333/Moltbook sections).
 
