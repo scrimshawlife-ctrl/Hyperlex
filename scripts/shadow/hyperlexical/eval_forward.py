@@ -106,7 +106,7 @@ def apply_encoder_trainable(encoder, tensors: dict) -> dict:
 
 def _resolve_encoder_key(raw: str, sd_keys: set) -> str | None:
     if raw.startswith("encoder."):
-        candidates = (raw[len("encoder.") :], raw)
+        candidates = (raw, raw[len("encoder.") :])
     else:
         candidates = (raw, f"encoder.{raw}")
     for key in candidates:
