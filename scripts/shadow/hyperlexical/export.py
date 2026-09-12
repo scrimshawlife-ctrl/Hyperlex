@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .packet import RESTRICTED_MARKER, sha256_hex
+from .packet import RESTRICTED_MARKER, SCHEMES, sha256_hex
 from ._negatives_data import NEGATIVES  # ordinary prose; no slang
 
 FAMILIES = (
@@ -126,6 +126,17 @@ def _norm_class(raw: str | None, default: str) -> str:
     return val
 
 
+def _norm_role_scheme(raw: Any) -> str | None:
+    """Fail-closed: recoverable_structure allows positional|type_slot only.
+
+    Dump / harvest leftovers such as ``civilian`` are not a third scheme.
+    Classify rows with an unknown label drop to None (no unbind gold).
+    """
+    if raw in SCHEMES:
+        return str(raw)
+    return None
+
+
 def _row(**kwargs: Any) -> dict[str, Any]:
     text = kwargs["text"]
     if RESTRICTED_MARKER in text:
@@ -147,6 +158,7 @@ def _row(**kwargs: Any) -> dict[str, Any]:
     out["fillers"] = list(out.get("fillers") or [])
     out["license"] = out.get("license") or "MIT-examples"
     out["stage"] = out.get("stage") or "circulating"
+    out["role_scheme"] = _norm_role_scheme(out.get("role_scheme"))
     return out
 
 
@@ -528,7 +540,7 @@ def harvest_moltbook(root: Path) -> list[dict[str, Any]]:
                             stage=r.get("stage", "circulating"),
                             roles=r.get("roles", []),
                             fillers=r.get("fillers", []),
-                            role_scheme=r.get("role_scheme", "type_slot"),
+                            role_scheme=r.get("role_scheme"),
                             task="classify+unbind",
                             provenance=r.get("provenance", {"source": "moltbook"}),
                             **{"class": r.get("class", "INFERRED")},
@@ -813,23 +825,17 @@ def main(argv=None) -> int:
 
 
 def harvest_4333_dump(root: Path) -> list[dict[str, Any]]:
-    """4333-row Hyperlex + Vernacular export (GrokBot/vernacular corpus from Notion).
-    Pre-classified rows. Maps brainrot-aura and other lineages into ai-native
-    with enriched typology, efficiency, memory tiers, etc.
-    Now wires detect_memetic_patterns for efficiency/tiers on the fly.
+    """4333-row Notion vernacular dump. Pre-classified rows only.
+
+    Fail-closed: no hyperlex/abraxas import. Dump fields only.
+    Unknown ``role_scheme`` values (including leftover ``civilian``) drop to
+    None — recoverable_structure allows positional|type_slot.
     """
     rows = []
     dump_file = root / "data" / "hyperlex_4333_dump.jsonl"
     if not dump_file.exists():
         print("[harvest_4333_dump] no dump file, skipping")
         return rows
-
-    # Lazy import to avoid circulars
-    try:
-        sys.path.insert(0, str(root / "src"))
-        from hyperlex import detect_memetic_patterns
-    except Exception:
-        detect_memetic_patterns = None
 
     for line in dump_file.read_text(encoding="utf-8").splitlines():
         if not line.strip():
@@ -848,40 +854,27 @@ def harvest_4333_dump(root: Path) -> list[dict[str, Any]]:
             if lineage == "ai-native":
                 typology = list(set(typology + ["compression", "memory", "provenance", "context", "vernacular"]))
 
-            row = _row(
-                text=text,
-                lineage=lineage,
-                typology=typology,
-                stage=r.get("stage", "circulating"),
-                roles=r.get("roles", ["slang", "memetic"]),
-                fillers=r.get("fillers", []),
-                role_scheme=r.get("role_scheme", "type_slot"),
-                task="classify",
-                provenance={
-                    "source": "notion",
-                    "page": "Hyperlex-Vernacular-export-2026-09-10",
-                    "original_provenance": r.get("provenance"),
-                    "reclassify_pass": r.get("reclassify_pass"),
-                    "settle_note": r.get("settle_note"),
-                },
-                **{"class": r.get("class", "INFERRED")},
-                license=r.get("license", "operator-local"),
+            rows.append(
+                _row(
+                    text=text,
+                    lineage=lineage,
+                    typology=typology,
+                    stage=r.get("stage", "circulating"),
+                    roles=r.get("roles", ["slang", "memetic"]),
+                    fillers=r.get("fillers", []),
+                    role_scheme=r.get("role_scheme"),
+                    task="classify",
+                    provenance={
+                        "source": "notion",
+                        "page": "Hyperlex-Vernacular-export-2026-09-10",
+                        "original_provenance": r.get("provenance"),
+                        "reclassify_pass": r.get("reclassify_pass"),
+                        "settle_note": r.get("settle_note"),
+                    },
+                    **{"class": r.get("class", "INFERRED")},
+                    license=r.get("license", "operator-local"),
+                )
             )
-
-            # Enrich with memetic analysis if available
-            if detect_memetic_patterns:
-                try:
-                    analysis = detect_memetic_patterns(text, ingest_source="notion")
-                    if analysis.get("memetic_efficiency"):
-                        row["memetic_efficiency"] = analysis["memetic_efficiency"]
-                    if analysis.get("memory_tiers"):
-                        row["memory_tiers"] = analysis.get("memory_tiers")
-                    if analysis.get("compression_type"):
-                        row["compression_type"] = analysis.get("compression_type")
-                except Exception:
-                    pass
-
-            rows.append(row)
         except Exception:
             continue
     print(f"[harvest_4333_dump] loaded {len(rows)} rows")
