@@ -121,9 +121,41 @@ export HYPERLEX_TRAIN_LR=2e-5
 # margin leftovers are additive aux at fixed λ=0.25 (receipt field
 # unbind_slot_ce_aux_lambda). Not a search. Receipt also shows
 # unbind_slot_ce_armed and unbind_primary.
+# Optional residual dump of val misses (default off). Themes + gold/pred
+# JSONL for Spark operators climbing morph14 → 0.45 ladder:
+# export HYPERLEX_UNBIND_RESIDUAL_DUMP=/tmp/hlx-morph15-residual.jsonl
 # Next train sentence (live SoT). Omit for seed smoke. Fail-closed if the store is missing.
 # export HYPERLEX_INCLUDE_LIVE=1
 ```
+
+### morph15 card (after morph14 BEST ≈0.3857)
+
+Pin `seed-morph14`. Climb toward civilian `unbind_exact` **0.45**. Combine
+already-landed levers — do not search aux λ. Example:
+
+```bash
+export HYPERLEX_ALLOW_TRAIN=1
+export HYPERLEX_TRUNK_DIR="$HOME/.hyperlex/models/trunks/ModernBERT-base"
+export HYPERLEX_OFFLINE=1
+export HYPERLEX_INCLUDE_LIVE=1
+export HYPERLEX_TRAIN_OUT="$HOME/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph15"
+export HYPERLEX_TRAIN_EPOCHS=6
+export HYPERLEX_TRAIN_BATCH=8
+export HYPERLEX_TRAIN_LR=2e-5
+export HYPERLEX_UNBIND_PRIMARY=slot_ce
+export HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=2
+export HYPERLEX_UNBIND_INFERRED_WEIGHT=0.5
+export HYPERLEX_UNBIND_CURRICULUM=1
+export HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS=2
+export HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS=1
+export HYPERLEX_UNBIND_HARD_ATOMS_PATH=/home/morpheus/hlx/hard_atoms_train.jsonl
+export HYPERLEX_UNBIND_HARD_UPSAMPLE=3
+export HYPERLEX_UNBIND_RESIDUAL_DUMP=/tmp/hlx-morph15-residual.jsonl
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.train --offline --run --include-live
+```
+
+Send Danny the residual summary themes with the usual receipt bundle.
+`name_gate` stays false.
 
 ## 4. Train smoke
 
@@ -152,7 +184,7 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --model-dir $HYPER
 
 `--model-dir` may be omitted when `HYPERLEX_TRAIN_OUT` is set, or when the default seed-live / seed out dir exists (`~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-live` then `...-seed`). Same as `--trunk-forward` on the CLI.
 
-Civilian `unbind_exact` requires the full filler list to match, so partial slot hits do not move the number. That number stays the operator ladder even when `HYPERLEX_UNBIND_PRIMARY=slot_ce` (or `HYPERLEX_UNBIND_SLOT_CE=1`) makes per-slot filler CE the train signal. Train val / receipt `val` now also emit `unbind_token_f1` (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact on positional / type_slot roles), plus optional token precision/recall. Operator ladder on exact is **0.45 / 0.55 / 0.65**; watch `unbind_token_f1` so progress is not invisible. seed-morph14 BEST is observed (`unbind_exact`≈0.3857, slot/token F1≈0.659, classify≈0.438, E2 PASS) — not new SoT gold. Stub/digest `eval_unbind` leaves the F1 fields null (004 probe swap has no civilian filler lists); trunk-forward fills them when those lists exist. Do not flip `name_gate`.
+Civilian `unbind_exact` requires the full filler list to match, so partial slot hits do not move the number. That number stays the operator ladder even when `HYPERLEX_UNBIND_PRIMARY=slot_ce` (or `HYPERLEX_UNBIND_SLOT_CE=1`) makes per-slot filler CE the train signal. Train val / receipt `val` now also emit `unbind_token_f1` (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact on positional / type_slot roles), plus optional token precision/recall. Operator ladder on exact is **0.45 / 0.55 / 0.65**; watch `unbind_token_f1` so progress is not invisible. seed-morph14 BEST is observed (`unbind_exact`≈0.3857, slot/token F1≈0.659, classify≈0.438, E2 PASS) — not new SoT gold. Optional `HYPERLEX_UNBIND_RESIDUAL_DUMP` writes val misses + theme summary for the morph15 climb. Stub/digest `eval_unbind` leaves the F1 fields null (004 probe swap has no civilian filler lists); trunk-forward fills them when those lists exist. Do not flip `name_gate`.
 
 Re-train after this encoder-persist fix (old `…-seed-live` lacks `encoder.*` tensors); then trunk-forward E2.
 
@@ -160,7 +192,7 @@ Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, l
 
 ## 6. Hard no
 
-No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph3`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum/INFERRED-weight/hard-atom/slot-CE-primary recipe (loop multiplicity + epoch phase selection + sample weight + loss composition only). Do not commit the operator hard-atoms JSONL.
+No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph14`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum/INFERRED-weight/hard-atom/slot-CE-primary/residual-dump recipe (loop multiplicity + epoch phase selection + sample weight + loss composition + miss dump only). Do not commit the operator hard-atoms JSONL.
 
 ## High-signal subsets (Moltbook + 4333, not the global SoT)
 
