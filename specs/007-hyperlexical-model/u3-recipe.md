@@ -28,7 +28,12 @@ Do not train on `split=reject`. Do not treat INFERRED typology/stage as OBSERVED
 
 ## Unbind recipe (data shape, not a new harvest)
 
-Civilian val unbind plateaued ~0.23. Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` hurt.
+Civilian val unbind plateaued ~0.23 on live5. Morph1 (OBSERVED dump, not
+new SoT gold) is **0.321** (115/358): positional 185 / 135 fail, type_slot
+173 / 108 fail. Themes: `positional_head_filler_miss` dominant, type_slot
+TOKEN miss, residual morph bleed (looksmaxxed↔looksmaxxing, rizzless↔rizz),
+status-vocab distractors (bum/bolt/burn/mid) across lineages, many INFERRED
+type_slot rows are proper-noun noise. Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` hurt.
 This recipe is Hyperlexical train-loop only. ne0l0gist harvest / export SoT
 rows stay as-is (no invented OBSERVED gold).
 
@@ -37,17 +42,37 @@ rows stay as-is (no invented OBSERVED gold).
 | `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE` | 1 | Repeat OBSERVED unbind **train** rows (1 = identity) |
 | `HYPERLEX_UNBIND_INFERRED_CAP` | 0 | Cap INFERRED unbind **train** rows (0 = off). First-seen order. |
 | `HYPERLEX_UNBIND_MORPH_MARGIN` | 0.5 | Ranking margin vs a near-morph sibling filler |
+| `HYPERLEX_UNBIND_CURRICULUM` | 0 | `1` = scheme-split phases; `0` = full mix every epoch |
+| `HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS` | 1 | When on: exclusive positional / non-type_slot epochs |
+| `HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS` | 1 | When on: exclusive type_slot (TOKEN:/SLOT) epochs; remainder = joint |
+| `HYPERLEX_UNBIND_FILLER_DENYLIST` | empty | JSON `{lineage: [surface, …]}` for hard-neg / CE distractors only |
+| `HYPERLEX_UNBIND_FILLER_DENYLIST_PATH` | unset | Same JSON on disk. Missing/invalid fails closed. |
 
 Hard-negatives come from fillers **already on** unbind train rows: an explicit
 map (aped↔aping, looksmaxxing variants, fanum*, aura*) plus a conservative
-same-stem auto pair. Missing sibling surfaces are not invented.
+same-stem auto pair. Missing sibling surfaces are not invented. The optional
+denylist only drops distractors already in that set — it does not mint slang.
+
+Curriculum is Hyperlexical-loop only and composes with `shape_unbind_train`
+(morph hard-negs stay on). Classify batches stay the full train set every
+epoch. An empty exclusive phase falls back to the full mix so unbind steps
+are not skipped.
+
+Morph1 order lock: **positional → type_slot → joint**. Default phase
+lengths stay 1/1 so a 2-epoch smoke still hits both schemes. Longer Spark
+cards should spend more early epochs on positional (135/185 fail vs
+108/173). `HYPERLEX_UNBIND_INFERRED_CAP` stays **0** (off) unless the
+operator opts in — Morph1 INFERRED type_slot noise is not auto-dropped
+and is not promoted to OBSERVED gold. Status-vocab bleed is the optional
+denylist (`bum` / `bolt` / `burn` / `mid` as distractors only).
 
 `lexical_split` is a frozen text hash. Adding settled rows mid-experiment
 must not reshuffle val — do not change the hash, modulus, or bucket edges.
 
 Receipt fields: `n_unbind_observed`, `n_unbind_inferred`,
-`unbind_observed_upsample`, `n_unbind_morph_negatives`. `name_gate` stays
-false. BEST checkpoint stays operator-side (`seed-live5`).
+`unbind_observed_upsample`, `n_unbind_morph_negatives`,
+`unbind_curriculum`, phase boundaries, n rows per phase.
+`name_gate` stays false. BEST checkpoint stays operator-side (`seed-morph1`).
 
 ## Heads
 

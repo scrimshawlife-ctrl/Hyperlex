@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+- **Spec 007 data/recipe shape PR #2:** env-gated scheme-split unbind
+  curriculum inside the Hyperlexical loop (`HYPERLEX_UNBIND_CURRICULUM`
+  default 0 = identity). When on: positional / non-type_slot epochs, then
+  type_slot (TOKEN:/SLOT) epochs, remainder joint full mix. Phase lengths
+  `HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS` / `_TYPE_EPOCHS` (default 1/1
+  when on). Composes with `shape_unbind_train` (morph hard-negs + OBSERVED
+  upsample from #53). Empty exclusive subset falls back to full mix.
+  Classify path unchanged. Optional per-lineage filler denylist
+  (`HYPERLEX_UNBIND_FILLER_DENYLIST` / `_PATH`, empty default) filters
+  hard-neg / CE distractors only — no invented slang atoms. Receipt:
+  curriculum on/off, phase boundaries, n rows per phase.
+  `lexical_split` frozen. Export JSONL stays SoT-shaped. Flat
+  `HYPERLEX_UNBIND_LOSS_WEIGHT=2` is not this lever. BEST stays
+  operator-side (`seed-morph1`). `name_gate` stays false.
+  Morph1 OBSERVED val dump baked into recipe notes only (not SoT gold):
+  unbind_exact 0.321 (115/358); positional 185/135 fail, type_slot
+  173/108 fail; positional-first then type_slot then joint; residual
+  morph pair rizzless↔rizz gated to existing fillers; INFERRED cap
+  stays default-off; status-vocab denylist (bum/bolt/burn/mid) opt-in.
+
 - **Spec 007 data/recipe shape:** Hyperlexical loop generates near-morph
   hard-negatives from existing unbind train fillers (explicit map seeded
   from aped/aping, looksmaxxing variants, fanum*, aura* + conservative
