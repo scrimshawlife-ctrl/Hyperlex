@@ -117,15 +117,18 @@ export HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS=2
 export HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS=1
 export HYPERLEX_UNBIND_HARD_ATOMS_PATH=/home/morpheus/hlx/hard_atoms_train.jsonl
 export HYPERLEX_UNBIND_HARD_UPSAMPLE=3
+export HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT=2
 export HYPERLEX_UNBIND_RESIDUAL_DUMP=/tmp/hlx-morph15-residual.jsonl
 # optional status-vocab denylist (Morph1 bleed) — operator opt-in only
+# preflight (torch-free): PYTHONPATH=scripts/shadow python3 -m hyperlexical.morph15_recipe
 ```
 
 Watch `unbind_exact` (ladder 0.45 / 0.55 / 0.65) and residual themes.
 Token/slot F1 at morph14 ≈0.659 means many near-misses — residual dump
-shows whether head-slot / morph_bleed / order still dominate. Hold
-`MORPH_CLUSTERS` churn (Morph5 map expand was 0.346). Hold hard
-`INFERRED_CAP`.
+shows whether head-slot / morph_bleed / order still dominate. Head-slot
+weight 2 scales position-0 filler CE only (fail-closed in (0, 4];
+default 1.0). Hold `MORPH_CLUSTERS` churn (Morph5 map expand was 0.346).
+Hold hard `INFERRED_CAP`.
 
 Receipt fields: `n_unbind_observed`, `n_unbind_inferred`,
 `unbind_observed_upsample`, `unbind_inferred_weight`,
@@ -134,7 +137,8 @@ n rows per phase, `unbind_hard_atoms_path` (basename),
 `unbind_hard_upsample`, `n_unbind_hard_atoms_matched`,
 `n_unbind_hard_extra_copies`, `unbind_primary`, `unbind_slot_ce_armed`,
 `unbind_slot_ce_aux_lambda` (0.25 when armed, else null),
-`unbind_residual_dump`, `n_unbind_residual`, `unbind_residual_themes`.
+`unbind_head_slot_weight`, `unbind_residual_dump`, `n_unbind_residual`,
+`unbind_residual_themes`.
 `name_gate` stays false. BEST checkpoint stays operator-side
 (`seed-morph14`).
 
