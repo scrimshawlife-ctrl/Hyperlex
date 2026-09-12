@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **Spec 007 data/recipe shape PR #3:** expand `MORPH_CLUSTERS` from Morph3
+  residual near-morphs (rizzed/rizzing, fanum taxed + gated tax/taxed,
+  quiet quit*, mew*, crash/crashout). Pairing stays fail-closed to fillers
+  already on unbind rows — no invented slang atoms. `tax`/`taxed` pair
+  only when gold is fanum* lineage. Morph4 hard
+  `HYPERLEX_UNBIND_INFERRED_CAP=1000` rejected (val 0.229, morph_negs
+  305→187); expand the map instead of defaulting a cap. Hard low caps
+  can starve morph-negs. Curriculum / denylist / upsample defaults
+  unchanged. `name_gate` stays false. BEST stays operator-side
+  (`seed-morph3`).
+
 - **Spec 007 data/recipe shape PR #2:** env-gated scheme-split unbind
   curriculum inside the Hyperlexical loop (`HYPERLEX_UNBIND_CURRICULUM`
   default 0 = identity). When on: positional / non-type_slot epochs, then

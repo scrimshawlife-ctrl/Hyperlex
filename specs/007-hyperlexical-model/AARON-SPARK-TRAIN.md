@@ -78,6 +78,7 @@ export HYPERLEX_TRAIN_LR=2e-5
 # Flat UNBIND_LOSS_WEIGHT=2 plateaued civilian val — prefer the data-shape gates:
 # export HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=2
 # export HYPERLEX_UNBIND_INFERRED_CAP=200
+# Morph4 hard INFERRED_CAP=1000 rejected (0.229; morph_negs 305→187) — expand the morph map, do not default a cap. Hard low caps starve morph-negs.
 # export HYPERLEX_UNBIND_MORPH_MARGIN=0.5
 # optional scheme-split unbind curriculum (default 0 = identity / full mix).
 # Morph1 OBSERVED val dump (seed-morph1 BEST, not new gold): unbind_exact 0.321
@@ -91,7 +92,8 @@ export HYPERLEX_TRAIN_LR=2e-5
 # remainder of HYPERLEX_TRAIN_EPOCHS is joint.
 # INFERRED cap stays 0 (off) — uncomment HYPERLEX_UNBIND_INFERRED_CAP above
 # only if you want to drop INFERRED train rows. Morph1: many INFERRED
-# type_slot rows are proper-noun noise. Opt in; do not invent OBSERVED gold.
+# type_slot rows are proper-noun noise. Morph4 CAP=1000 lost; keep default
+# off. Opt in; do not invent OBSERVED gold. Hard low caps starve morph-negs.
 # optional hard-neg / CE distractor denylist (empty default; no invented atoms).
 # Morph1 status-vocab bleed (bum/bolt/burn/mid) is operator-opt-in:
 # export HYPERLEX_UNBIND_FILLER_DENYLIST='{"brainrot-aura":["bum","bolt","burn","mid"],"gaming-meta":["bum","bolt","burn","mid"]}'
@@ -132,7 +134,7 @@ Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, l
 
 ## 6. Hard no
 
-No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph1`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum recipe (loop multiplicity + epoch phase selection only).
+No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph3`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum recipe (loop multiplicity + epoch phase selection only).
 
 ## High-signal subsets (Moltbook + 4333, not the global SoT)
 

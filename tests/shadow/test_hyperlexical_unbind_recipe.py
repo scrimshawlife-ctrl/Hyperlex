@@ -83,6 +83,91 @@ def test_explicit_morph_pairs_seeded_from_failures():
     assert hard_negatives_for("aura", known) == []
 
 
+def test_morph3_cluster_pairs_when_both_exist():
+    """Morph3 residual near-morphs. Pair only if both fillers already exist."""
+    rizz_known = {"rizz", "rizzed", "rizzless", "rizzing"}
+    assert set(hard_negatives_for("rizz", rizz_known)) == {"rizzed", "rizzless", "rizzing"}
+    assert set(hard_negatives_for("rizzed", rizz_known)) == {"rizz", "rizzless", "rizzing"}
+    assert set(hard_negatives_for("rizzless", rizz_known)) == {"rizz", "rizzed", "rizzing"}
+
+    quiet_known = {"quiet quit", "quiet quitter", "quiet quitting"}
+    assert set(hard_negatives_for("quiet quitter", quiet_known)) == {
+        "quiet quit",
+        "quiet quitting",
+    }
+    assert set(hard_negatives_for("quiet quitting", quiet_known)) == {
+        "quiet quit",
+        "quiet quitter",
+    }
+
+    mew_known = {"mew", "mewing", "mewed"}
+    assert set(hard_negatives_for("mewing", mew_known)) == {"mew", "mewed"}
+    assert set(hard_negatives_for("mewed", mew_known)) == {"mew", "mewing"}
+
+    crash_known = {"crash", "crashed", "crashout"}
+    assert set(hard_negatives_for("crash", crash_known)) == {"crashed", "crashout"}
+    assert set(hard_negatives_for("crashout", crash_known)) == {"crash", "crashed"}
+
+    fanum_known = {"fanum", "fanum tax", "fanumtax", "fanum taxed", "taxed"}
+    assert "taxed" in hard_negatives_for("fanum", fanum_known)
+    assert "taxed" in hard_negatives_for("fanumtax", fanum_known)
+    assert "fanumtax" in hard_negatives_for("fanum taxed", fanum_known)
+    assert "looksmaxxing" in hard_negatives_for(
+        "looksmaxxed", {"looksmaxxed", "looksmaxxing"}
+    )
+
+
+def test_morph3_does_not_invent_atoms():
+    assert hard_negatives_for("rizzed", {"rizzed"}) == []
+    assert hard_negatives_for("rizzless", {"rizzless"}) == []
+    assert hard_negatives_for("quiet quitter", {"quiet quitter"}) == []
+    assert hard_negatives_for("mewing", {"mewing"}) == []
+    assert hard_negatives_for("crashout", {"crashout"}) == []
+    assert hard_negatives_for("fanum taxed", {"fanum taxed"}) == []
+    assert "rizzing" not in hard_negatives_for("rizz", {"rizz", "aped"})
+    assert "quiet quitting" not in hard_negatives_for(
+        "quiet quitter", {"quiet quitter", "rizz"}
+    )
+
+
+def test_taxed_pairs_only_when_gold_is_fanum_lineage():
+    """tax/taxed alone are too broad. Pair with fanum* only from fanum gold."""
+    mixed = {"fanum", "fanum tax", "fanumtax", "fanum taxed", "tax", "taxed", "rizz"}
+    assert "taxed" in hard_negatives_for("fanum", mixed)
+    assert "tax" in hard_negatives_for("fanum taxed", mixed)
+    assert "fanumtax" in hard_negatives_for("fanum", mixed)
+    fanum_from_taxed = set(hard_negatives_for("taxed", mixed))
+    assert fanum_from_taxed.isdisjoint({"fanum", "fanum tax", "fanumtax", "fanum taxed"})
+    assert "tax" in fanum_from_taxed
+    fanum_from_tax = set(hard_negatives_for("tax", mixed))
+    assert fanum_from_tax.isdisjoint({"fanum", "fanum tax", "fanumtax", "fanum taxed"})
+    assert hard_negatives_for("taxed", {"taxed", "fanum"}) == []
+    assert hard_negatives_for("tax", {"tax", "fanumtax"}) == []
+
+
+def test_mewing_does_not_pair_with_me():
+    """jawline mewing↔me is stem bleed, not a near-morph."""
+    assert hard_negatives_for("mewing", {"mewing", "me"}) == []
+    assert "me" not in hard_negatives_for("mewing", {"mewing", "mew", "mewed", "me"})
+
+
+def test_cooked_is_not_a_morph_of_vibe_coded():
+    """vibe coded↔cooked is not inflection / productive slang. Skip."""
+    known = {"vibe coded", "coded", "cooked", "cook", "vibe"}
+    assert hard_negatives_for("vibe coded", known) == []
+    assert "cooked" not in hard_negatives_for("coded", known)
+    assert "cooked" not in hard_negatives_for("vibe", known)
+
+
+def test_quiet_quitter_does_not_pair_standalone_quitting():
+    """Standalone quitting is too broad, like taxed without fanum* gold."""
+    assert hard_negatives_for("quiet quitter", {"quiet quitter", "quitting"}) == []
+    assert hard_negatives_for("quitting", {"quiet quitting", "quitting"}) == []
+    assert set(hard_negatives_for("quiet quitter", {"quiet quitter", "quiet quitting"})) == {
+        "quiet quitting"
+    }
+
+
 def test_auto_same_stem_does_not_invent_atoms():
     known = {"aped"}
     assert hard_negatives_for("aped", known) == []
@@ -108,6 +193,25 @@ def test_morph_pairs_only_from_existing_unbind_fillers():
     assert all(p["source"] in {"explicit", "auto"} for p in pairs)
     assert not any(p["gold"] == "rizz" or p["neg"] == "rizz" for p in pairs)
     assert not any(p["neg"] == "looksmaxxing" for p in pairs)
+
+
+def test_morph3_pairs_from_rows_do_not_invent_atoms():
+    rows = [
+        _unbind_row("he rizzed", ["rizzed"]),
+        _unbind_row("no rizz", ["rizz"]),
+        _unbind_row("fanum taxed me", ["fanum taxed"]),
+        _unbind_row("just taxed", ["taxed"]),
+        _unbind_row("quiet quitter", ["quiet quitter"]),
+    ]
+    pairs = morph_pairs_for_rows(rows)
+    gold_neg = {(p["gold"], p["neg"]) for p in pairs}
+    assert ("rizzed", "rizz") in gold_neg
+    assert ("rizz", "rizzed") in gold_neg
+    assert ("fanum taxed", "taxed") in gold_neg
+    assert ("taxed", "fanum taxed") not in gold_neg
+    assert not any(p["gold"] == "quiet quitter" for p in pairs)
+    assert not any(p["neg"] == "rizzless" for p in pairs)
+    assert not any(p["neg"] == "mewing" for p in pairs)
 
 
 def test_shape_defaults_are_identity(monkeypatch):

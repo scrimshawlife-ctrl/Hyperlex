@@ -40,7 +40,7 @@ rows stay as-is (no invented OBSERVED gold).
 | Env | Default | Effect |
 |-----|--------:|--------|
 | `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE` | 1 | Repeat OBSERVED unbind **train** rows (1 = identity) |
-| `HYPERLEX_UNBIND_INFERRED_CAP` | 0 | Cap INFERRED unbind **train** rows (0 = off). First-seen order. |
+| `HYPERLEX_UNBIND_INFERRED_CAP` | 0 | Cap INFERRED unbind **train** rows (0 = off). First-seen order. Hard low caps can starve morph-negs — do not default a cap. |
 | `HYPERLEX_UNBIND_MORPH_MARGIN` | 0.5 | Ranking margin vs a near-morph sibling filler |
 | `HYPERLEX_UNBIND_CURRICULUM` | 0 | `1` = scheme-split phases; `0` = full mix every epoch |
 | `HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS` | 1 | When on: exclusive positional / non-type_slot epochs |
@@ -49,9 +49,11 @@ rows stay as-is (no invented OBSERVED gold).
 | `HYPERLEX_UNBIND_FILLER_DENYLIST_PATH` | unset | Same JSON on disk. Missing/invalid fails closed. |
 
 Hard-negatives come from fillers **already on** unbind train rows: an explicit
-map (aped↔aping, looksmaxxing variants, fanum*, aura*) plus a conservative
-same-stem auto pair. Missing sibling surfaces are not invented. The optional
-denylist only drops distractors already in that set — it does not mint slang.
+map (aped↔aping, looksmax*, rizz*, fanum* + gated tax/taxed, quiet quit*,
+mew*, crash/crashout, aura*) plus a conservative same-stem auto pair.
+Missing sibling surfaces are not invented. `tax`/`taxed` pair only when
+gold is fanum* lineage. The optional denylist only drops distractors
+already in that set — it does not mint slang.
 
 Curriculum is Hyperlexical-loop only and composes with `shape_unbind_train`
 (morph hard-negs stay on). Classify batches stay the full train set every
@@ -63,8 +65,11 @@ lengths stay 1/1 so a 2-epoch smoke still hits both schemes. Longer Spark
 cards should spend more early epochs on positional (135/185 fail vs
 108/173). `HYPERLEX_UNBIND_INFERRED_CAP` stays **0** (off) unless the
 operator opts in — Morph1 INFERRED type_slot noise is not auto-dropped
-and is not promoted to OBSERVED gold. Status-vocab bleed is the optional
-denylist (`bum` / `bolt` / `burn` / `mid` as distractors only).
+and is not promoted to OBSERVED gold. Morph4 hard `INFERRED_CAP=1000`
+rejected (unbind 0.229; morph_negs 305→187); expand `MORPH_CLUSTERS`
+instead. Hard low caps can starve morph-negs. Status-vocab bleed is the
+optional denylist (`bum` / `bolt` / `burn` / `mid` as distractors only).
+BEST checkpoint stays operator-side (`seed-morph3`, unbind≈0.358).
 
 `lexical_split` is a frozen text hash. Adding settled rows mid-experiment
 must not reshuffle val — do not change the hash, modulus, or bucket edges.
@@ -72,7 +77,7 @@ must not reshuffle val — do not change the hash, modulus, or bucket edges.
 Receipt fields: `n_unbind_observed`, `n_unbind_inferred`,
 `unbind_observed_upsample`, `n_unbind_morph_negatives`,
 `unbind_curriculum`, phase boundaries, n rows per phase.
-`name_gate` stays false. BEST checkpoint stays operator-side (`seed-morph1`).
+`name_gate` stays false. BEST checkpoint stays operator-side (`seed-morph3`).
 
 ## Heads
 
