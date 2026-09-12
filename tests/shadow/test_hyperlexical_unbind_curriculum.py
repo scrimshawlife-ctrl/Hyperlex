@@ -406,6 +406,7 @@ def test_filler_denylist_fail_closed(monkeypatch, tmp_path):
 
 def test_export_counts_curriculum_default_off(monkeypatch):
     monkeypatch.delenv("HYPERLEX_UNBIND_CURRICULUM", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_WEIGHT", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST_PATH", raising=False)
     bundle = export_dataset(ROOT)
@@ -414,6 +415,7 @@ def test_export_counts_curriculum_default_off(monkeypatch):
     assert c["unbind_curriculum_pos_epochs"] == 0
     assert c["unbind_curriculum_type_epochs"] == 0
     assert c["unbind_filler_denylist_lineages"] == 0
+    assert c["unbind_inferred_weight"] == 1.0
     assert c["name_gate"] is False
     unbind = [r for r in bundle["rows"] if r["task"] == "unbind"]
     assert all("hard_neg_fillers" not in r for r in unbind)
