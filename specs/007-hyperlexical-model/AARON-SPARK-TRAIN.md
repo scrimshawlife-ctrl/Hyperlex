@@ -121,6 +121,9 @@ export HYPERLEX_TRAIN_LR=2e-5
 # margin leftovers are additive aux at fixed λ=0.25 (receipt field
 # unbind_slot_ce_aux_lambda). Not a search. Receipt also shows
 # unbind_slot_ce_armed and unbind_primary.
+# Optional head-slot (position-0) filler CE upweight. Default 1.0 (identity).
+# Fail-closed finite in (0, 4]. Morph15 card uses 2 for positional_head misses.
+# export HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT=2
 # Optional residual dump of val misses (default off). Themes + gold/pred
 # JSONL for Spark operators climbing morph14 → 0.45 ladder:
 # export HYPERLEX_UNBIND_RESIDUAL_DUMP=/tmp/hlx-morph15-residual.jsonl
@@ -150,10 +153,15 @@ export HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS=2
 export HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS=1
 export HYPERLEX_UNBIND_HARD_ATOMS_PATH=/home/morpheus/hlx/hard_atoms_train.jsonl
 export HYPERLEX_UNBIND_HARD_UPSAMPLE=3
+export HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT=2
 export HYPERLEX_UNBIND_RESIDUAL_DUMP=/tmp/hlx-morph15-residual.jsonl
+# Or: bash scripts/spark/morph15-unbind.sh
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.morph15_recipe
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.train --offline --run --include-live
 ```
 
+Head-slot weight 2 upweights position-0 filler CE
+(`positional_head_filler_miss`). Default unset is identity 1.0.
 Send Danny the residual summary themes with the usual receipt bundle.
 `name_gate` stays false.
 
