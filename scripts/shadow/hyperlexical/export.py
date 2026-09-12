@@ -357,6 +357,7 @@ def _structural_type_tags(n: int) -> list[str]:
 
 LIVE_UNBIND_MAX_LEN = 80
 LIVE_UNBIND_MAX_TOKENS = 6
+OBSERVED_MW_HARVEST_NAME = "harvest_unbind_observed_mw.jsonl"
 
 
 def _unbind_dual_scheme_rows(
@@ -768,10 +769,122 @@ def load_live_candidates(store: Path) -> list[dict[str, Any]]:
     return out
 
 
+def _iter_jsonl_dicts(path: Path) -> list[dict[str, Any]]:
+    if not path.is_file():
+        return []
+    out: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            raw = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(raw, dict):
+            out.append(raw)
+    return out
+
+
+def resolve_observed_mw_harvest(
+    live_store: Path,
+    explicit: Path | None = None,
+) -> Path | None:
+    """Wave A OBSERVED sidecar next to the live store (Spark path).
+
+    Sibling ``harvest_unbind_observed_mw.jsonl``, or ``HYPERLEX_LIVE_UNBIND_OBSERVED``.
+    Missing file → None. Filename does not invent OBSERVED labels.
+    """
+    if explicit is not None:
+        path = Path(explicit)
+        return path if path.is_file() else None
+    env = os.environ.get("HYPERLEX_LIVE_UNBIND_OBSERVED", "").strip()
+    if env:
+        path = Path(env)
+        return path if path.is_file() else None
+    sibling = Path(live_store).expanduser().resolve().parent / OBSERVED_MW_HARVEST_NAME
+    return sibling if sibling.is_file() else None
+
+
+def _atom_key_from_unbind_row(row: dict[str, Any]) -> str:
+    if row.get("role_scheme") == "positional":
+        return str(row.get("text") or "").strip().lower()
+    fillers = [str(t).strip() for t in (row.get("fillers") or []) if str(t).strip()]
+    return " ".join(fillers).lower()
+
+
+def _formed_unbind_row(raw: dict[str, Any]) -> dict[str, Any] | None:
+    """Adopt an already-built unbind row. Never upgrades missing class to OBSERVED."""
+    task = raw.get("task")
+    if task not in (None, "unbind"):
+        return None
+    scheme = _norm_role_scheme(raw.get("role_scheme"))
+    if scheme not in SCHEMES:
+        return None
+    text = str(raw.get("text") or "").strip()
+    fillers = [str(t) for t in (raw.get("fillers") or []) if str(t).strip()]
+    roles = [str(t) for t in (raw.get("roles") or []) if str(t).strip()]
+    if not text or not fillers or len(roles) != len(fillers):
+        return None
+    epistemic = _live_unbind_epistemic(raw)
+    lineage = _live_unbind_lineage(raw)
+    stage = str(raw.get("stage") or "").strip() or "circulating"
+    license_ = raw.get("license")
+    if not isinstance(license_, str) or not license_.strip():
+        license_ = "operator-local"
+    prefix = "live-pos:" if scheme == "positional" else "live-type:"
+    prov = str(raw.get("provenance") or "")
+    if not prov.startswith(("live-pos:", "live-type:")):
+        prov = f"{prefix}{epistemic}"
+    try:
+        return _row(
+            text=text,
+            lineage=lineage,
+            typology=list(raw.get("typology") or TYPOLOGY.get(lineage, [])),
+            stage=stage,
+            roles=roles,
+            fillers=fillers,
+            role_scheme=scheme,
+            task="unbind",
+            provenance=prov,
+            **{"class": epistemic},
+            license=license_,
+        )
+    except ValueError:
+        return None
+
+
+def _phrase_unbind_rows(raw: dict[str, Any]) -> list[dict[str, Any]]:
+    parsed = _phrase_like_atom(str(raw.get("text") or ""))
+    if parsed is None:
+        return []
+    atom, tokens = parsed
+    epistemic = _live_unbind_epistemic(raw)
+    lineage = _live_unbind_lineage(raw)
+    stage = str(raw.get("stage") or "").strip() or "circulating"
+    license_ = raw.get("license")
+    if not isinstance(license_, str) or not license_.strip():
+        license_ = "operator-local"
+    try:
+        return _unbind_dual_scheme_rows(
+            atom,
+            tokens,
+            lineage=lineage,
+            stage=stage,
+            epistemic=epistemic,
+            pos_provenance=f"live-pos:{epistemic}",
+            type_provenance=f"live-type:{epistemic}",
+            license=license_,
+        )
+    except ValueError:
+        return []
+
+
 def harvest_live_unbind(
     live_store: Path,
     *,
     skip_atoms: set[str] | None = None,
+    observed_harvest: Path | None = None,
 ) -> list[dict[str, Any]]:
     """Live SoT phrase-like atoms → dual-scheme unbind rows.
 
@@ -780,7 +893,13 @@ def harvest_live_unbind(
     atoms when ``skip_atoms`` is omitted. Epistemic is copied from the row
     (``epistemic`` then ``class``); missing/None → INFERRED. Never upgraded
     to OBSERVED. Fillers are the real tokens — no gloss invention.
-    Missing store → empty list (export_dataset fail-closes include-live).
+
+    When a Wave A sidecar ``harvest_unbind_observed_mw.jsonl`` sits next to
+    the live store (Spark OBSERVED set, 229 atoms × dual scheme), those rows
+    are adopted with their stored class. Filename does not invent OBSERVED.
+    Live-store leftovers stay INFERRED unless the store row is already
+    OBSERVED. Missing store → empty list (export_dataset fail-closes
+    include-live).
     """
     store = Path(live_store)
     if not store.is_file():
@@ -788,45 +907,43 @@ def harvest_live_unbind(
     held = set(skip_atoms) if skip_atoms is not None else _default_held_unbind_atoms()
     rows: list[dict[str, Any]] = []
     seen: set[str] = set()
-    for line in store.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            raw = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        if not isinstance(raw, dict):
-            continue
-        parsed = _phrase_like_atom(str(raw.get("text") or ""))
-        if parsed is None:
-            continue
-        atom, tokens = parsed
-        key = atom.lower()
-        if key in seen or key in held:
-            continue
+    seen_pairs: set[tuple[str, str]] = set()
+
+    def _take(raw: dict[str, Any], *, apply_held: bool) -> None:
+        formed = _formed_unbind_row(raw)
+        if formed is not None:
+            key = _atom_key_from_unbind_row(formed)
+            if not key or key in COLLISION_HOLD:
+                return
+            if apply_held and key in held:
+                return
+            pair = (key, str(formed.get("role_scheme") or ""))
+            if pair in seen_pairs:
+                return
+            seen_pairs.add(pair)
+            seen.add(key)
+            rows.append(formed)
+            return
+        emitted = _phrase_unbind_rows(raw)
+        if not emitted:
+            return
+        key = _atom_key_from_unbind_row(emitted[0])
+        if not key or key in COLLISION_HOLD or key in seen:
+            return
+        if apply_held and key in held:
+            return
         seen.add(key)
-        epistemic = _live_unbind_epistemic(raw)
-        lineage = _live_unbind_lineage(raw)
-        stage = str(raw.get("stage") or "").strip() or "circulating"
-        license_ = raw.get("license")
-        if not isinstance(license_, str) or not license_.strip():
-            license_ = "operator-local"
-        try:
-            rows.extend(
-                _unbind_dual_scheme_rows(
-                    atom,
-                    tokens,
-                    lineage=lineage,
-                    stage=stage,
-                    epistemic=epistemic,
-                    pos_provenance=f"live-pos:{epistemic}",
-                    type_provenance=f"live-type:{epistemic}",
-                    license=license_,
-                )
-            )
-        except ValueError:
-            continue
+        for row in emitted:
+            seen_pairs.add((key, str(row.get("role_scheme") or "")))
+        rows.extend(emitted)
+
+    sidecar = resolve_observed_mw_harvest(store, explicit=observed_harvest)
+    if sidecar is not None:
+        # Operator-settled Wave A set — do not drop civilian overlap; do not upgrade.
+        for raw in _iter_jsonl_dicts(sidecar):
+            _take(raw, apply_held=False)
+    for raw in _iter_jsonl_dicts(store):
+        _take(raw, apply_held=True)
     return rows
 
 
@@ -914,10 +1031,17 @@ def export_dataset(
     unbind_fixture = sum(1 for r in rows if _is_unbind_fixture(r))
     unbind_civilian = sum(1 for r in rows if _is_unbind_civilian(r))
     unbind_live = sum(1 for r in rows if _is_unbind_live(r))
+    unbind_live_observed = sum(
+        1 for r in rows if _is_unbind_live(r) and r.get("class") == "OBSERVED"
+    )
+    unbind_live_inferred = sum(
+        1 for r in rows if _is_unbind_live(r) and r.get("class") == "INFERRED"
+    )
     # Honesty: classify gate uses family-labeled rows only.
     # Negatives = ordinary-prose seed only (NOT live lineage=none classify).
     # Unbind = fixture(honest n=24) + civilian dual-scheme + optional live phrases.
-    # include_live does not flip name_gate.
+    # Live OBSERVED vs INFERRED are counted separately — no class upgrade.
+    # include_live does not flip name_gate. E2 stays on Spec 004 fixtures.
     counts = {
         "n": len(rows),
         "classify": classify_family,  # EXCLUDES negatives (honest name-gate family quota)
@@ -927,6 +1051,8 @@ def export_dataset(
         "unbind_fixture": unbind_fixture,
         "unbind_civilian": unbind_civilian,
         "unbind_live": unbind_live,
+        "unbind_live_observed": unbind_live_observed,
+        "unbind_live_inferred": unbind_live_inferred,
         "negatives": negatives,  # ordinary-prose only (seed:negative-prose)
         "dialect": sum(1 for r in rows if r["provenance"] == "seed:dialect-e6"),
         "backfill": sum(1 for r in rows if str(r["provenance"]).startswith("backfill:")),
@@ -963,11 +1089,13 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                     "Honest accounting: counts.classify = family-labeled only "
                     "(excludes negatives). counts.negatives = ordinary-prose "
                     "(seed:negative-prose) only — not live lineage=none classify "
-                    "(see classify_none). unbind_fixture / unbind_civilian / unbind_live. "
+                    "(see classify_none). unbind_fixture / unbind_civilian / unbind_live "
+                    "(unbind_live_observed vs unbind_live_inferred). "
                     "Spec004 fixtures at n=24; civilian dual-scheme from golden/registry "
                     "(no gloss invent). Live optional via --include-live (preserves store class; "
-                    "unset→INFERRED; phrase-like atoms also harvest as unbind). "
-                    "Not a T1 name-gate."
+                    "unset→INFERRED; phrase-like atoms also harvest as unbind; Wave A sidecar "
+                    "harvest_unbind_observed_mw.jsonl is adopted, not upgraded). "
+                    "E2 stays on Spec 004 fixtures. Not a T1 name-gate."
                 ),
             },
             indent=2,

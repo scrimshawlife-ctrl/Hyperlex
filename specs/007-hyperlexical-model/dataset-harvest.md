@@ -30,7 +30,9 @@ Current U2 verification after fixing its Python keyword/annotated-assignment loa
 
 ### Live SoT multiword unbind (Wave A)
 
-`--include-live` also runs `harvest_live_unbind` on the local ingest store. Phrase-like atoms (2–6 whitespace tokens, `len(text)≤80`, not `COLLISION_HOLD`, not already civilian/fixture gold) emit both `positional` and `type_slot` rows. Epistemic is copied from the store (`epistemic`, else `class`); missing/None → `INFERRED`. Never upgraded to `OBSERVED`. Counted as `counts.unbind_live`. Fillers are the real tokens only — no gloss invention. Does not flip `name_gate`.
+`--include-live` also runs `harvest_live_unbind` on the local ingest store. Phrase-like atoms (2–6 whitespace tokens, `len(text)≤80`, not `COLLISION_HOLD`, not already civilian/fixture gold) emit both `positional` and `type_slot` rows. Epistemic is copied from the store (`epistemic`, else `class`); missing/None → `INFERRED`. Never upgraded to `OBSERVED`.
+
+If `~/.hyperlex/hyperlexical/harvest_unbind_observed_mw.jsonl` sits next to the live store (Spark Wave A: 229 atoms × dual scheme = 458 OBSERVED rows), those rows are adopted with their stored class. Filename does not invent OBSERVED. Remaining live multiword atoms stay `INFERRED`. Counts: `unbind_live`, `unbind_live_observed`, `unbind_live_inferred`. Fillers are the real tokens only. Does not flip `name_gate`. E2 stays on Spec 004 fixtures (`n_unbind_eval=24`); Wave B retrains then scores both.
 
 ## 2. Target hardened JSONL row schema
 

@@ -29,6 +29,9 @@ def test_export_minimums():
     assert c["unbind_fixture"] >= 40
     assert c["unbind_civilian"] >= 40
     assert c["unbind_live"] == 0
+    assert c["unbind_live_observed"] == 0
+    assert c["unbind_live_inferred"] == 0
+    assert c["unbind_live"] == c["unbind_live_observed"] + c["unbind_live_inferred"]
     assert c["unbind"] == c["unbind_fixture"] + c["unbind_civilian"] + c["unbind_live"]
     assert c["dialect"] >= 8
     assert c["backfill"] >= 1
@@ -81,7 +84,11 @@ def test_write_and_hash(tmp_path):
     assert man["counts"]["name_gate"] is False
     assert "unbind_fixture" in man["counts"]
     assert "unbind_live" in man["counts"]
+    assert "unbind_live_observed" in man["counts"]
+    assert "unbind_live_inferred" in man["counts"]
     assert man["counts"]["unbind_live"] == 0
+    assert man["counts"]["unbind_live_observed"] == 0
+    assert man["counts"]["unbind_live_inferred"] == 0
     assert "classify_all" in man["counts"]
 
 
@@ -393,11 +400,18 @@ def test_export_include_live_false_skips_live_unbind(tmp_path):
     )
     base = export_dataset(ROOT, include_live=False)
     assert base["counts"]["unbind_live"] == 0
+    assert base["counts"]["unbind_live_observed"] == 0
+    assert base["counts"]["unbind_live_inferred"] == 0
     assert base["counts"]["name_gate"] is False
     assert not any(r.get("text") == phrase and r["task"] == "unbind" for r in base["rows"])
     live = export_dataset(ROOT, include_live=True, live_store=store)
     assert live["counts"]["name_gate"] is False
     assert live["counts"]["unbind_live"] >= 2
+    assert live["counts"]["unbind_live_inferred"] >= 2
+    assert live["counts"]["unbind_live_observed"] == 0
+    assert live["counts"]["unbind_live"] == (
+        live["counts"]["unbind_live_observed"] + live["counts"]["unbind_live_inferred"]
+    )
     assert live["counts"]["unbind"] == (
         live["counts"]["unbind_fixture"]
         + live["counts"]["unbind_civilian"]
@@ -411,6 +425,83 @@ def test_export_include_live_false_skips_live_unbind(tmp_path):
     ]
     assert {r["role_scheme"] for r in live_unbind} == {"positional", "type_slot"}
     assert any(r["text"] == phrase for r in live_unbind)
+
+
+def test_harvest_live_unbind_observed_sidecar_counts_separately(tmp_path):
+    """Spark Wave A sidecar stays OBSERVED; live leftovers stay INFERRED."""
+    from hyperlexical.export import export_dataset, harvest_live_unbind
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    sidecar = tmp_path / "harvest_unbind_observed_mw.jsonl"
+    _write_live_jsonl(
+        sidecar,
+        [
+            {
+                "text": "zzzx wavea observed atom",
+                "class": "OBSERVED",
+                "lineage": "brainrot-aura",
+                "stage": "circulating",
+                "roles": ["pos_0", "pos_1", "pos_2", "pos_3"],
+                "fillers": ["zzzx", "wavea", "observed", "atom"],
+                "role_scheme": "positional",
+                "task": "unbind",
+            },
+            {
+                "text": "TOKEN:zzzx SLOT:wavea MARKER:observed TOKEN:atom",
+                "class": "OBSERVED",
+                "lineage": "brainrot-aura",
+                "stage": "circulating",
+                "roles": ["TOKEN", "SLOT", "MARKER", "TOKEN"],
+                "fillers": ["zzzx", "wavea", "observed", "atom"],
+                "role_scheme": "type_slot",
+                "task": "unbind",
+            },
+        ],
+    )
+    _write_live_jsonl(
+        store,
+        [
+            {
+                "text": "zzzx wavea observed atom",
+                "class": "INFERRED",
+                "lineage": "brainrot-aura",
+                "task": "classify",
+            },
+            {
+                "text": "zzzx leftover inferred phrase",
+                "class": "INFERRED",
+                "lineage": "gaming-meta",
+                "task": "classify",
+            },
+        ],
+    )
+    rows = harvest_live_unbind(store, skip_atoms=set())
+    pos = [r for r in rows if r["role_scheme"] == "positional"]
+    by_text = {r["text"]: r for r in pos}
+    assert by_text["zzzx wavea observed atom"]["class"] == "OBSERVED"
+    assert by_text["zzzx leftover inferred phrase"]["class"] == "INFERRED"
+    assert {r["class"] for r in rows if r["text"].startswith("TOKEN:zzzx SLOT:wavea")} == {"OBSERVED"}
+    bundle = export_dataset(ROOT, include_live=True, live_store=store)
+    assert bundle["counts"]["unbind_live_observed"] == 2
+    assert bundle["counts"]["unbind_live_inferred"] >= 2
+    assert bundle["counts"]["unbind_live"] == (
+        bundle["counts"]["unbind_live_observed"] + bundle["counts"]["unbind_live_inferred"]
+    )
+    assert bundle["counts"]["name_gate"] is False
+
+
+def test_observed_mw_filename_does_not_invent_observed(tmp_path):
+    from hyperlexical.export import harvest_live_unbind
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    sidecar = tmp_path / "harvest_unbind_observed_mw.jsonl"
+    _write_live_jsonl(store, [{"text": "zzzx store unlabeled phrase"}])
+    _write_live_jsonl(sidecar, [{"text": "zzzx sidecar unlabeled phrase"}])
+    rows = harvest_live_unbind(store, skip_atoms=set())
+    assert rows
+    assert all(r["class"] == "INFERRED" for r in rows)
+    assert any(r["text"] == "zzzx sidecar unlabeled phrase" for r in rows)
+    assert any(r["text"] == "zzzx store unlabeled phrase" for r in rows)
 
 
 def test_moltbook_harvest_in_export():
