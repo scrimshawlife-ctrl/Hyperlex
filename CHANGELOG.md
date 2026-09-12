@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Spec 007 Wave A:** `harvest_live_unbind` turns phrase-like live SoT atoms
+  (2–6 tokens, ≤80 chars) into dual-scheme unbind rows when `--include-live`
+  is set. Epistemic is copied (`epistemic` / `class`; unset→INFERRED). Spark
+  sidecar `harvest_unbind_observed_mw.jsonl` is adopted as stored OBSERVED
+  (not invented). Counted as `unbind_live` / `unbind_live_observed` /
+  `unbind_live_inferred`. E2 stays on Spec 004 fixtures. `name_gate` stays false.
+
 - **Spec 007 E2 trunk-forward:** `eval_unbind --trunk-forward` /
   `HYPERLEX_E2_TRUNK_FORWARD=1` loads the local ModernBERT trunk plus
   trained heads and scores real `unbind_exact` against the Spec 004
