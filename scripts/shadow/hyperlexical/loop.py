@@ -32,6 +32,11 @@ from .unbind_recipe import (
     shape_unbind_train,
     unbind_row_sample_weight,
 )
+from .unbind_slot_ce import (
+    UNBIND_SLOT_CE_AUX_LAMBDA,
+    combine_unbind_train_terms,
+    resolve_unbind_primary_mode,
+)
 
 UNBIND_LOSS_WEIGHT_ENV = "HYPERLEX_UNBIND_LOSS_WEIGHT"
 UNBIND_EVERY_N_ENV = "HYPERLEX_UNBIND_EVERY_N"
@@ -161,6 +166,8 @@ def run_loop(
     unbind_every_n = resolve_unbind_every_n()
     morph_margin = resolve_unbind_morph_margin()
     inferred_weight = resolve_unbind_inferred_weight()
+    slot_ce_mode = resolve_unbind_primary_mode()
+    unbind_primary = slot_ce_mode["unbind_primary"]
     curriculum = resolve_curriculum_schedule()
     curriculum_plan = plan_unbind_curriculum(unbind_tr, epochs, curriculum)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -182,15 +189,18 @@ def run_loop(
         out = encoder(**encode_texts([row["text"]]))
         states = out.last_hidden_state[0]
         offs = _offsets(tok, row["text"])
-        floss = states.new_zeros(())
-        n = 0
+        slot_ces = []
+        aux_terms = []
         for k, fill in enumerate(fillers):
             idxs = pool_indices(states.size(0), atom_token_index(row["text"], fill, offs))
             h = states[idxs].mean(0)
             gold_f = maps["filler_of"].get(fill, maps["filler_of"][UNK])
             logits = filler_head(h)
-            floss = floss + nn.functional.cross_entropy(logits.unsqueeze(0), torch.tensor([gold_f], device=device))
-            n += 1
+            slot_ces.append(
+                nn.functional.cross_entropy(
+                    logits.unsqueeze(0), torch.tensor([gold_f], device=device)
+                )
+            )
             hard = [nf for nf in (row.get("hard_neg_fillers") or []) if nf]
             if hard:
                 gold_logit = logits[gold_f]
@@ -202,13 +212,20 @@ def run_loop(
                     neg_vals.append(logits[ni])
                 if neg_vals:
                     stacked = torch.stack(neg_vals)
-                    floss = floss + torch.relu(stacked + morph_margin - gold_logit).sum()
-                    n += 1
+                    aux_terms.append(torch.relu(stacked + morph_margin - gold_logit).sum())
             if k < len(roles):
                 gold_r = maps["role_of"].get(roles[k], maps["role_of"][UNK])
-                floss = floss + nn.functional.cross_entropy(role_head(h).unsqueeze(0), torch.tensor([gold_r], device=device))
-                n += 1
-        return floss / max(1, n)
+                aux_terms.append(
+                    nn.functional.cross_entropy(
+                        role_head(h).unsqueeze(0), torch.tensor([gold_r], device=device)
+                    )
+                )
+        return combine_unbind_train_terms(
+            slot_ces,
+            aux_terms,
+            primary=unbind_primary,
+            aux_lambda=UNBIND_SLOT_CE_AUX_LAMBDA,
+        )
 
     def step_unbind(row) -> None:
         if unbind_loss_weight == 0:
@@ -316,6 +333,9 @@ def run_loop(
         "last_trainable": last_trainable_used,
         "unbind_loss_weight": unbind_loss_weight,
         "unbind_every_n": unbind_every_n,
+        "unbind_primary": slot_ce_mode["unbind_primary"],
+        "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
+        "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
         "n_unbind_observed": unbind_recipe["n_unbind_observed"],
         "n_unbind_inferred": unbind_recipe["n_unbind_inferred"],
         "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
@@ -361,6 +381,9 @@ def run_loop(
                 "last_trainable": last_trainable_used,
                 "unbind_loss_weight": unbind_loss_weight,
                 "unbind_every_n": unbind_every_n,
+                "unbind_primary": slot_ce_mode["unbind_primary"],
+                "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
+                "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
                 "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
                 "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
                 "unbind_inferred_weight": inferred_weight,

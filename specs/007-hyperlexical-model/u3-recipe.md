@@ -50,6 +50,8 @@ rows stay as-is (no invented OBSERVED gold).
 | `HYPERLEX_UNBIND_FILLER_DENYLIST_PATH` | unset | Same JSON on disk. Missing/invalid fails closed. |
 | `HYPERLEX_UNBIND_HARD_ATOMS_PATH` | unset | Operator JSONL (`text` per line). Env path only — do not commit the file. Missing/unreadable/invalid fails closed. |
 | `HYPERLEX_UNBIND_HARD_UPSAMPLE` | 1 | Extra copies of matching already-OBSERVED train unbind rows after the normal OBSERVED upsample. 1 = identity. Try **3–4** after the morph3 plateau. |
+| `HYPERLEX_UNBIND_PRIMARY` | mixed | Unset / `mixed` = historical mean (filler CE + role CE + morph-margin share one divisor). `slot_ce` = per-position filler CE is the primary train signal. |
+| `HYPERLEX_UNBIND_SLOT_CE` | 0 | Alias gate. `1` arms `slot_ce`. `0` = off. Conflicts with an opposite `HYPERLEX_UNBIND_PRIMARY` fail closed. |
 
 Hard-negatives come from fillers **already on** unbind train rows: an explicit
 map (aped↔aping, looksmax*, rizz*, fanum* + gated tax/taxed, quiet quit*,
@@ -87,12 +89,22 @@ pool. The recipe does not invent gold and does not upgrade INFERRED.
 `lexical_split` is a frozen text hash. Adding settled rows mid-experiment
 must not reshuffle val — do not change the hash, modulus, or bucket edges.
 
+When you arm slot-CE primary (`HYPERLEX_UNBIND_PRIMARY=slot_ce` or
+`HYPERLEX_UNBIND_SLOT_CE=1`), mean per-position filler CE is the train
+signal. Existing list / margin leftovers stay as additive aux at fixed
+λ=0.25 (`unbind_slot_ce_aux_lambda` on the receipt — not a search).
+Default unset keeps the mixed mean so prior morphs are unchanged.
+Civilian `unbind_exact` stays the ladder metric. Token/slot F1 still
+emit. seed-morph14 BEST is observed (unbind_exact≈0.3857, slot/token
+F1≈0.659, classify≈0.438, E2 PASS) — not new SoT gold.
+
 Receipt fields: `n_unbind_observed`, `n_unbind_inferred`,
 `unbind_observed_upsample`, `unbind_inferred_weight`,
 `n_unbind_morph_negatives`, `unbind_curriculum`, phase boundaries,
 n rows per phase, `unbind_hard_atoms_path` (basename),
 `unbind_hard_upsample`, `n_unbind_hard_atoms_matched`,
-`n_unbind_hard_extra_copies`.
+`n_unbind_hard_extra_copies`, `unbind_primary`, `unbind_slot_ce_armed`,
+`unbind_slot_ce_aux_lambda` (0.25 when armed, else null).
 `name_gate` stays false. BEST checkpoint stays operator-side (`seed-morph3`).
 
 ## Heads
