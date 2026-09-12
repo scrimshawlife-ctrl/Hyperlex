@@ -1109,7 +1109,7 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                     "E2 stays on Spec 004 fixtures. Not a T1 name-gate. "
                     "n_unbind_observed / n_unbind_inferred plus recipe env "
                     "(HYPERLEX_UNBIND_OBSERVED_UPSAMPLE default 1, "
-                    "HYPERLEX_UNBIND_INFERRED_CAP 0=off, unbind_morph_negatives, "
+                    "HYPERLEX_UNBIND_INFERRED_CAP 0=off (hard low caps can starve morph-negs), unbind_morph_negatives, "
                     "HYPERLEX_UNBIND_CURRICULUM default 0) "
                     "are counts only — loop applies train multiplicity / hard-negs / "
                     "scheme-split curriculum; "

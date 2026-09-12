@@ -285,7 +285,7 @@ def test_morph1_dump_justifies_positional_first_then_type_slot_then_joint():
 
 
 def test_inferred_cap_stays_default_off(monkeypatch):
-    """Morph1 INFERRED type_slot proper-noun noise is operator-opt-in, not default."""
+    """Morph4 hard INFERRED_CAP=1000 lost and starved morph-negs. Default stays 0."""
     monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_CAP", raising=False)
     assert UNBIND_INFERRED_CAP_DEFAULT == 0
     assert resolve_unbind_inferred_cap() == 0
@@ -301,6 +301,11 @@ def test_residual_morph_bleed_pairs_only_when_both_exist():
     }
     assert set(hard_negatives_for("rizz", {"rizz", "rizzless"})) == {"rizzless"}
     assert set(hard_negatives_for("rizzless", {"rizz", "rizzless"})) == {"rizz"}
+    assert set(hard_negatives_for("rizz", {"rizz", "rizzed", "rizzless", "rizzing"})) == {
+        "rizzed",
+        "rizzless",
+        "rizzing",
+    }
     assert hard_negatives_for("rizz", {"rizz"}) == []
     assert hard_negatives_for("rizzless", {"rizzless"}) == []
 

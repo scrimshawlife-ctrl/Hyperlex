@@ -17,18 +17,24 @@ UNBIND_MORPH_MARGIN_ENV = "HYPERLEX_UNBIND_MORPH_MARGIN"
 UNBIND_FILLER_DENYLIST_ENV = "HYPERLEX_UNBIND_FILLER_DENYLIST"
 UNBIND_FILLER_DENYLIST_PATH_ENV = "HYPERLEX_UNBIND_FILLER_DENYLIST_PATH"
 UNBIND_OBSERVED_UPSAMPLE_DEFAULT = 1
+# 0 = off. Hard low caps starve morph-negs (do not default a cap).
 UNBIND_INFERRED_CAP_DEFAULT = 0
 UNBIND_MORPH_MARGIN_DEFAULT = 0.5
 
-# Seeded from civilian unbind failure themes (live5 + Morph1 dump).
+# Seeded from civilian unbind failure themes (live5 + Morph1 + Morph3 dump).
 # Surfaces only — pairing is gated to fillers already present on unbind
-# rows (no new slang atoms). Morph1 residual bleed: looksmaxxed↔looksmaxxing
-# (already in the looksmax* cluster) and rizzless↔rizz.
+# rows (no new slang atoms). Merge, do not duplicate, existing clusters.
+# Morph3 residual bleed: aped↔aping, fanum taxed↔tax/fanumtax, looksmaxxed↔
+# looksmaxxing, rizzed↔rizz/rizzless, quiet quitter↔quitting, mewing↔mew*.
+# vibe coded↔cooked is not a morph — do not pair.
 MORPH_CLUSTERS: tuple[frozenset[str], ...] = (
     frozenset({"aped", "aping"}),
     frozenset({"looksmax", "looksmaxx", "looksmaxxing", "looksmaxxed", "looksmaxxer"}),
-    frozenset({"rizz", "rizzless"}),
-    frozenset({"fanum", "fanum tax", "fanumtax"}),
+    frozenset({"rizz", "rizzed", "rizzless", "rizzing"}),
+    frozenset({"fanum", "fanum tax", "fanumtax", "fanum taxed", "tax", "taxed"}),
+    frozenset({"quiet quit", "quiet quitter", "quiet quitting"}),
+    frozenset({"mew", "mewing", "mewed"}),
+    frozenset({"crash", "crashed", "crashout"}),
     frozenset(
         {
             "aura",
@@ -42,6 +48,10 @@ MORPH_CLUSTERS: tuple[frozenset[str], ...] = (
         }
     ),
 )
+
+# ``tax`` / ``taxed`` sit on the fanum cluster so gold-is-fanum* can take
+# them as siblings. Gold ``tax`` / ``taxed`` must not pull fanum* — too broad.
+_FANUM_BROAD_ONLY: frozenset[str] = frozenset({"tax", "taxed"})
 
 # Longest-first inflectional / productive slang suffixes.
 _AUTO_SUFFIXES = (
@@ -90,7 +100,11 @@ def resolve_unbind_observed_upsample(raw: str | int | None = None) -> int:
 
 
 def resolve_unbind_inferred_cap(raw: str | int | None = None) -> int:
-    """Max INFERRED unbind train rows. 0 = off. Fail-closed."""
+    """Max INFERRED unbind train rows. 0 = off. Fail-closed.
+
+    Hard low caps can starve morph-negs by dropping INFERRED rows that
+    carry sibling fillers. Default stays off; do not ship a hard cap.
+    """
     if raw is None:
         raw = os.environ.get(UNBIND_INFERRED_CAP_ENV)
     if raw is None or (isinstance(raw, str) and not raw.strip()):
@@ -195,12 +209,20 @@ def known_fillers(unbind_rows: Iterable[dict[str, Any]]) -> set[str]:
     return out
 
 
+def _is_fanum_lineage_surface(surface: str) -> bool:
+    return _norm_surface(surface).startswith("fanum")
+
+
 def _explicit_siblings(surface: str) -> set[str]:
     hit = _norm_surface(surface)
     out: set[str] = set()
     for cluster in MORPH_CLUSTERS:
         if hit in cluster:
             out.update(cluster)
+    # Pair taxed only when gold is fanum* lineage. Standalone tax/taxed
+    # must not pull fanum / fanum tax / fanumtax.
+    if hit in _FANUM_BROAD_ONLY and not _is_fanum_lineage_surface(hit):
+        out = {s for s in out if not _is_fanum_lineage_surface(s)}
     out.discard(hit)
     return out
 
@@ -223,7 +245,10 @@ def _auto_siblings(surface: str, known: set[str]) -> set[str]:
 
 
 def hard_negatives_for(filler: str, known: Iterable[str]) -> list[str]:
-    """Near-morph siblings that already exist as fillers. Never invents atoms."""
+    """Near-morph siblings that already exist as fillers. Never invents atoms.
+
+    ``tax`` / ``taxed`` pair with fanum* only when gold is a fanum* surface.
+    """
     known_set = {_norm_surface(x) for x in known if _norm_surface(x)}
     hit = _norm_surface(filler)
     if not hit or hit not in known_set:
