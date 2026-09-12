@@ -25,6 +25,8 @@ export HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS="${HYPERLEX_UNBIND_CURRICULUM_POS_E
 export HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS="${HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS:-1}"
 export HYPERLEX_UNBIND_HARD_ATOMS_PATH="${HYPERLEX_UNBIND_HARD_ATOMS_PATH:-/home/morpheus/hlx/hard_atoms_train.jsonl}"
 export HYPERLEX_UNBIND_HARD_UPSAMPLE="${HYPERLEX_UNBIND_HARD_UPSAMPLE:-3}"
+# Head filler CE upweight (positional_head_filler_miss at morph14). Identity 1.0 if unset.
+export HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT="${HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT:-2}"
 export HYPERLEX_UNBIND_RESIDUAL_DUMP="${HYPERLEX_UNBIND_RESIDUAL_DUMP:-/tmp/hlx-morph15-residual.jsonl}"
 
 export HYPERLEX_ALLOW_TRAIN HYPERLEX_TRUNK_DIR HYPERLEX_OFFLINE HYPERLEX_INCLUDE_LIVE
@@ -41,6 +43,7 @@ test -f "$HYPERLEX_UNBIND_HARD_ATOMS_PATH" || {
   exit 2
 }
 
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.morph15_recipe
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.preflight
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
 
