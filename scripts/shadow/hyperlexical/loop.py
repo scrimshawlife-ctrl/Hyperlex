@@ -333,6 +333,10 @@ def run_loop(
         "n_unbind_curriculum_type_slot": curriculum_plan["n_unbind_type_slot"],
         "n_unbind_curriculum_joint": curriculum_plan["n_unbind_joint"],
         "unbind_filler_denylist_lineages": unbind_recipe.get("unbind_filler_denylist_lineages", 0),
+        "unbind_hard_atoms_path": unbind_recipe.get("unbind_hard_atoms_path", ""),
+        "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
+        "n_unbind_hard_atoms_matched": unbind_recipe.get("n_unbind_hard_atoms_matched", 0),
+        "n_unbind_hard_extra_copies": unbind_recipe.get("n_unbind_hard_extra_copies", 0),
         "last_loss": losses[-1] if losses else None,
         "val": last,
         "epoch_metrics": epoch_metrics,
@@ -369,6 +373,14 @@ def run_loop(
                 "unbind_curriculum_type_epochs": curriculum_plan["type_epochs"],
                 "unbind_filler_denylist_lineages": unbind_recipe.get(
                     "unbind_filler_denylist_lineages", 0
+                ),
+                "unbind_hard_atoms_path": unbind_recipe.get("unbind_hard_atoms_path", ""),
+                "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
+                "n_unbind_hard_atoms_matched": unbind_recipe.get(
+                    "n_unbind_hard_atoms_matched", 0
+                ),
+                "n_unbind_hard_extra_copies": unbind_recipe.get(
+                    "n_unbind_hard_extra_copies", 0
                 ),
             },
             indent=2,

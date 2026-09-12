@@ -102,6 +102,15 @@ export HYPERLEX_TRAIN_LR=2e-5
 # optional hard-neg / CE distractor denylist (empty default; no invented atoms).
 # Morph1 status-vocab bleed (bum/bolt/burn/mid) is operator-opt-in:
 # export HYPERLEX_UNBIND_FILLER_DENYLIST='{"brainrot-aura":["bum","bolt","burn","mid"],"gaming-meta":["bum","bolt","burn","mid"]}'
+# Targeted extra upsample of already-OBSERVED hard train phrases (default 1 = no extra).
+# Operator JSONL lives on Spark — do not commit it:
+#   /home/morpheus/hlx/hard_atoms_train.jsonl  (59 rows, text field)
+# After morph3 plateau (val unbind≈0.358; SETTLE×5 left n_unbind_observed=885),
+# try HARD_UPSAMPLE=3–4. Copies only rows already class==OBSERVED in the
+# train unbind pool. Unmatched ignored. INFERRED is never promoted.
+# Missing/invalid path fails closed.
+# export HYPERLEX_UNBIND_HARD_ATOMS_PATH=/home/morpheus/hlx/hard_atoms_train.jsonl
+# export HYPERLEX_UNBIND_HARD_UPSAMPLE=3
 # Next train sentence (live SoT). Omit for seed smoke. Fail-closed if the store is missing.
 # export HYPERLEX_INCLUDE_LIVE=1
 ```
@@ -139,7 +148,7 @@ Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, l
 
 ## 6. Hard no
 
-No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph3`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum/INFERRED-weight recipe (loop multiplicity + epoch phase selection + sample weight only).
+No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph3`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum/INFERRED-weight/hard-atom recipe (loop multiplicity + epoch phase selection + sample weight only). Do not commit the operator hard-atoms JSONL.
 
 ## High-signal subsets (Moltbook + 4333, not the global SoT)
 
