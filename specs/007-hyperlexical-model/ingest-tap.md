@@ -1,5 +1,7 @@
 # Spec 007 — live ingest tap (SHADOW)
 
+**Product voice:** **ne0l0gist** ingest. Writes candidates for the **Hyperlexical** train/eval path. `name_gate` stays false.
+
 **Date**: 2026-09-10  
 **Lane**: SHADOW / advisory  
 **Does not open**: API_V1, T13 promote, Hub, Brier, OBSERVED promotion
@@ -7,7 +9,7 @@
 ## Intent
 
 Current slang ingest already runs `pipeline` / `analyze` / `scan` / `relay --push-inbox`.
-Those atoms were not entering the Hyperlexical dataset. This tap writes them into a
+Those atoms were not entering the Hyperlexical dataset. This **ne0l0gist** tap writes them into a
 local candidate store so T1 harvest can use *current* data without copying
 `~/.hyperlex` ledgers into git.
 

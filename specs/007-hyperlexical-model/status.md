@@ -1,5 +1,7 @@
 # Status 007 — 2026-09-10 PT evening
 
+**Naming:** this file is the **Hyperlexical** model path. Harvest / live ingest is **ne0l0gist**. Repo **Hyperlex** is the transitional shell. `name_gate` remains false.
+
 Specify is locked through C52 + A5. Implement U1–U3 harness is on `main`. SHADOW / advisory.
 
 Operator scoreboard (Danny-locked; matches [Notion Operator Hub](https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83)):

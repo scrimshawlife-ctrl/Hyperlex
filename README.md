@@ -20,6 +20,18 @@ Hermes skill is what you **run today**. Spec 007 Hyperlexical encoder is **SHADO
 
 Docs site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.github.io/Hyperlex/) · status mirror: [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/).
 
+## Naming
+
+Repo **Hyperlex** is the transitional monorepo shell. Do not use bare public **Hyperlex** as a product name — it collides with French legaltech CLM / DiliTrust.
+
+| Name | Role |
+|------|------|
+| **Hyperlexical** | Spec 007 model / train / eval / E2 / `name_gate` product claim |
+| **ne0l0gist** | Slang ingest tool: Crawl4AI harvest, `ingest_tap`, export/settle, civilian and live phrase harvest |
+| **Hyperlex** (repo) | Transitional monorepo shell. GitHub repo name, `~/.hyperlex` paths, `HYPERLEX_*` env vars, and the `hyperlexical` Python package stay as-is |
+
+`name_gate` stays **false**. This split does not name a trained artifact Hyperlexical-gated-true.
+
 ## What ships / what does not
 
 | Ships now | Does **not** ship |

@@ -64,6 +64,8 @@ $HLX analyze "rizz" --route offline
 
 ## Spec 007 Hyperlexical — classify & QA (Hermes)
 
+**Voice:** live harvest / `ingest_tap` / export-settle is **ne0l0gist**. Train / eval is **Hyperlexical**. Checkout is the Hyperlex repo (transitional shell). `name_gate` stays false.
+
 From the **Hyperlex repo checkout**. Shadow modules: `scripts/shadow/hyperlexical/`. SoT: `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` (local-only; do not commit).
 
 Scoreboard (2026-09-10 PT evening): SoT **4333** · classify family **2437** · unbind **1345** · neg **208** · `name_gate` **false**.

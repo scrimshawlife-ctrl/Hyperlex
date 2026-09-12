@@ -1,5 +1,7 @@
 # Aaron — Spark train handoff (007)
 
+**Naming:** this handoff trains the **Hyperlexical** path. Harvest / live-store ingest is **ne0l0gist**. Repo **Hyperlex** is the transitional shell. Do not treat this smoke as Hyperlexical-gated-true.
+
 Owner of this run: Aaron on the DGX Spark.  
 Owner of the spec: Danny.  
 Use current **`main`**. Do not use the old `007-hyperlexical-model` branch.

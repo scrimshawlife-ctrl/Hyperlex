@@ -2,6 +2,8 @@
 
 Hyperlex **runs as a Hermes skill** today. Spec 007 is the **model path** (T0 → T1 after E2), still SHADOW.
 
+**Naming:** **Hyperlexical** = Spec 007 model / train / eval / E2 / `name_gate` claim. **ne0l0gist** = slang ingest / harvest. Repo **Hyperlex** is the transitional monorepo shell. `name_gate` stays false.
+
 Specs live under [`specs/`](https://github.com/scrimshawlife-ctrl/Hyperlex/tree/main/specs) in the repository. This page is the docs-site index. It does not add gates.
 
 Constitution: [`.specify/memory/constitution.md`](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/.specify/memory/constitution.md) (v1.0.0, **SHADOW** until operator promotion).

@@ -1,10 +1,12 @@
 # Hermes prompt — Hyperlexical T1 training harvest
 
+**Voice:** harvest list = **ne0l0gist**. Training target = **Hyperlexical** (`name_gate` false).
+
 Copy below the line. Do not run this prompt as a generator of restricted wraps.
 
 ---
 
-You are Hermes harvesting a **training dataset** for Hyperlex Spec 007 T1.
+You are Hermes harvesting a **training dataset** (ne0l0gist ingest) for the Hyperlexical Spec 007 T1 model path.
 
 Trunk (frozen): `answerdotai/ModernBERT-base` (~149M). Train home: NVIDIA DGX Spark. Packet: `hyperlex.hyperlexical.inference.v0.1`. Brier is always null. Routes only `form` / `lexical`. No `semantic`. No chat. No refusal head.
 

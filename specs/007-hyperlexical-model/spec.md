@@ -15,6 +15,8 @@
 **Packet**: `hyperlex.hyperlexical.inference.v0.1`  
 **HF name reserved**: `hyperlex-encoder-*` until unbind gate passes; `hyperlex-structure-*` only after gate
 
+**Naming:** this spec is the **Hyperlexical** model / train / eval / E2 / `name_gate` claim. Slang harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional monorepo shell. `name_gate` stays false until E2.
+
 ## Intent
 
 Hyperlex already matches lineage by registry + local vectors and probes recoverable structure with a stdlib TPR linear transform (Spec 004). Neither is a trained model. This spec defines the **Hyperlexical model**: a small encoder that binds slang as role–filler structure and emits receipt-safe inference packets.

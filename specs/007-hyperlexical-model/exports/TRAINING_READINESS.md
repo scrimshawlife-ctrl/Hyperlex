@@ -1,5 +1,7 @@
 # 007 Hyperlexical T1 Training Readiness
 
+**Voice:** readiness for **Hyperlexical** train/eval. Source harvest is **ne0l0gist**. `name_gate` stays false.
+
 **Date**: 2026-09-11
 **Civilian**: 5857 rows (specs/007-hyperlexical-model/exports/civilian.v0.1.jsonl)
 **High-signal oversample**: 1501 rows (exports/training/training_high_signal.jsonl)
