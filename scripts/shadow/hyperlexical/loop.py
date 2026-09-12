@@ -25,6 +25,7 @@ from .unbind_curriculum import (
     resolve_curriculum_schedule,
     select_unbind_for_epoch,
 )
+from .unbind_metrics import mapped_filler, mapped_pred, summarize_unbind_pairs
 from .unbind_recipe import (
     resolve_unbind_inferred_weight,
     resolve_unbind_morph_margin,
@@ -234,7 +235,7 @@ def run_loop(
             gold = maps["family_of"].get(row["lineage"], maps["family_of"]["none"])
             hit += int(pred == gold)
             tot += 1
-        uhit = utot = 0
+        pairs: list[tuple[list[str], list[str]]] = []
         for row in unbind_va or unbind_tr[:8]:
             fillers = list(row.get("fillers") or [])
             if not fillers:
@@ -242,24 +243,21 @@ def run_loop(
             out = encoder(**encode_texts([row["text"]]))
             states = out.last_hidden_state[0]
             offs = _offsets(tok, row["text"])
-            ok = True
-            for k, fill in enumerate(fillers):
+            gold_strs: list[str] = []
+            pred_strs: list[str] = []
+            for fill in fillers:
                 idxs = pool_indices(states.size(0), atom_token_index(row["text"], fill, offs))
                 pred = int(filler_head(states[idxs].mean(0)).argmax())
-                gold = maps["filler_of"].get(fill, maps["filler_of"][UNK])
-                if pred != gold:
-                    ok = False
-            uhit += int(ok)
-            utot += 1
+                gold_strs.append(mapped_filler(maps, fill))
+                pred_strs.append(mapped_pred(maps, pred))
+            pairs.append((gold_strs, pred_strs))
         encoder.train()
         classify.train()
         filler_head.train()
-        return {
-            "classify_acc": hit / max(1, tot),
-            "unbind_exact": uhit / max(1, utot),
-            "n_classify_eval": tot,
-            "n_unbind_eval": utot,
-        }
+        metrics = summarize_unbind_pairs(pairs)
+        metrics["classify_acc"] = hit / max(1, tot)
+        metrics["n_classify_eval"] = tot
+        return metrics
 
     for ep in range(epochs):
         phase_rows, phase_meta = select_unbind_for_epoch(unbind_tr, ep, curriculum)

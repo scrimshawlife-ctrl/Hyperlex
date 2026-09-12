@@ -7,8 +7,9 @@ from pathlib import Path
 from typing import NoReturn
 
 from .align import atom_token_index, offsets_from_tokenizer, pool_indices
-from .layout import HIDDEN, MAX_LEN, TRUNK, UNK
+from .layout import HIDDEN, MAX_LEN, TRUNK
 from .save_pretrained import flatten_weight_tensors, split_weight_tensors
+from .unbind_metrics import mapped_filler, mapped_pred, summarize_unbind_pairs
 
 
 def _error(message: str, cause: Exception | None = None) -> NoReturn:
@@ -178,11 +179,11 @@ def _offsets(tok, text: str):
         return None
 
 
-def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> tuple[float, int]:
-    """Same per-row exact filler metric as train val `unbind_exact`."""
+def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> dict:
+    """Same per-row exact filler metric as train val, plus token/slot F1."""
     encoder.eval()
     filler_head.eval()
-    uhit = utot = 0
+    pairs: list[tuple[list[str], list[str]]] = []
     for row in rows:
         fillers = list(row.get("fillers") or [])
         if not fillers:
@@ -197,16 +198,15 @@ def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> tuple[f
         enc = {k: v.to(device) for k, v in enc.items()}
         states = encoder(**enc).last_hidden_state[0]
         offs = _offsets(tok, row["text"])
-        ok = True
+        gold_strs: list[str] = []
+        pred_strs: list[str] = []
         for fill in fillers:
             idxs = pool_indices(states.size(0), atom_token_index(row["text"], fill, offs))
             pred = int(filler_head(states[idxs].mean(0)).argmax())
-            gold = maps["filler_of"].get(fill, maps["filler_of"][UNK])
-            if pred != gold:
-                ok = False
-        uhit += int(ok)
-        utot += 1
-    return uhit / max(1, utot), utot
+            gold_strs.append(mapped_filler(maps, fill))
+            pred_strs.append(mapped_pred(maps, pred))
+        pairs.append((gold_strs, pred_strs))
+    return summarize_unbind_pairs(pairs)
 
 
 def run_unbind_exact(
@@ -235,10 +235,9 @@ def run_unbind_exact(
     rows = spans_to_unbind_rows(spans)
     if not rows:
         _error("trunk-forward requested but no unbind test spans")
-    acc, n_eval = score_unbind_exact(encoder, filler_head, tok, maps, rows, device)
+    scored = score_unbind_exact(encoder, filler_head, tok, maps, rows, device)
     return {
-        "unbind_exact": acc,
-        "n_unbind_eval": n_eval,
+        **scored,
         "device": str(device),
         "cuda": bool(torch.cuda.is_available()),
         "encoder_trainable_loaded": applied["loaded"],

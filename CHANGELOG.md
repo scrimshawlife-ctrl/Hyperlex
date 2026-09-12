@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Spec 007 eval/metrics:** val unbind now emits `unbind_token_f1`
+  (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact,
+  positional / type_slot alignment) beside unchanged `unbind_exact`.
+  Optional `unbind_token_precision` / `unbind_token_recall`. Same
+  gold/pred length alignment the train val loop already uses. Receipt
+  `val` and per-epoch metrics carry the fields. Trunk-forward
+  `eval_unbind` fills them from civilian-style filler lists; stub/digest
+  004 probe swap leaves them null (no filler lists). Operator ladder on
+  exact is 0.45 / 0.55 / 0.65 — watch token_f1 so partial slot hits are
+  visible. seed-morph8 BEST is observed (unbind_exact≈0.3715,
+  classify≈0.563, E2 PASS 1.0), not new SoT gold. No train. `name_gate`
+  stays false.
+
 - **Spec 007 data/recipe shape PR #5:** targeted extra upsample of
   already-OBSERVED hard train phrases (`HYPERLEX_UNBIND_HARD_ATOMS_PATH`
   + `HYPERLEX_UNBIND_HARD_UPSAMPLE`, int ≥1, default 1 = identity). Path

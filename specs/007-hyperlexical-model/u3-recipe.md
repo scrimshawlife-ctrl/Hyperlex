@@ -121,6 +121,17 @@ Compares stub unbind to Spec 004 probe on the same TPR fixtures.
 E2 pass = stub/model swap accuracy **strictly greater** than 004 probe swap accuracy on the shared test split.
 Current stub is expected to **lose**. That is the gate working.
 
+Civilian `unbind_exact` is all-or-nothing on the full filler list, so a
+near-miss looks like a plateau. Val receipts now also emit
+`unbind_token_f1` (micro bag-of-filler F1) and `unbind_slot_f1`
+(per-position exact, positional / type_slot alignment), plus optional
+token precision/recall. Operator ladder on exact is **0.45 / 0.55 / 0.65**;
+watch `unbind_token_f1` too. seed-morph8 BEST is observed civilian val
+`unbind_exact`≈0.3715 / classify≈0.563 / E2 PASS 1.0 — not new SoT gold.
+Stub/digest `eval_unbind` leaves the F1 fields **null** (004 probe swap
+has no civilian filler lists). Trunk-forward fills them from the same
+aligned lists as exact. `name_gate` stays false.
+
 ## Not this unit
 
 Hub upload. NVFP4. MiniLM as trunk. 7B. 006 IsA.

@@ -30,6 +30,10 @@ def test_eval_stub_loses_to_004(tmp_path, monkeypatch):
     assert report["model_id"] == "stub"
     assert report["e2_pass"] is False
     assert report["probe_swap_min"] >= report["stub_swap"]
+    assert report["unbind_token_f1"] is None
+    assert report["unbind_slot_f1"] is None
+    assert report["unbind_token_precision"] is None
+    assert report["unbind_token_recall"] is None
 
 
 def test_eval_loads_fixture_heads_without_hyperlex(tmp_path, monkeypatch):
@@ -153,6 +157,8 @@ def test_stub_path_unchanged_when_trunk_forward_flag_off(tmp_path, monkeypatch):
     assert report.get("trunk_forward") in (None, False)
     assert report["brier"] is None
     assert "name_gate" not in report or report["name_gate"] is False
+    assert report["unbind_token_f1"] is None
+    assert report["unbind_slot_f1"] is None
 
 
 def test_trunk_forward_without_trunk_fails_closed(tmp_path, monkeypatch, capsys):
