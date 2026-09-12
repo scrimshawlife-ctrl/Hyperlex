@@ -142,6 +142,8 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --model-dir $HYPER
 
 `--model-dir` may be omitted when `HYPERLEX_TRAIN_OUT` is set, or when the default seed-live / seed out dir exists (`~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-live` then `...-seed`). Same as `--trunk-forward` on the CLI.
 
+Civilian `unbind_exact` requires the full filler list to match, so partial slot hits do not move the number. Train val / receipt `val` now also emit `unbind_token_f1` (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact on positional / type_slot roles), plus optional token precision/recall. Operator ladder on exact is **0.45 / 0.55 / 0.65**; watch `unbind_token_f1` so progress is not invisible. seed-morph8 BEST is observed (`unbind_exact`≈0.3715, classify≈0.563, E2 PASS 1.0) — not new SoT gold. Stub/digest `eval_unbind` leaves the F1 fields null (004 probe swap has no civilian filler lists); trunk-forward fills them when those lists exist. Do not flip `name_gate`.
+
 Re-train after this encoder-persist fix (old `…-seed-live` lacks `encoder.*` tensors); then trunk-forward E2.
 
 Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, layout.json, torch/`sm_121` note. Include any high-signal oversampling notes if used (see 4333/Moltbook sections).

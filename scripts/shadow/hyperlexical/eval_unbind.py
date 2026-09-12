@@ -1,4 +1,9 @@
-"""U3 eval harness. Stub/digest vs Spec 004 probe. Trunk-forward is opt-in."""
+"""U3 eval harness. Stub/digest vs Spec 004 probe. Trunk-forward is opt-in.
+
+Stub/digest swap has no civilian filler lists, so unbind_token_f1 /
+unbind_slot_f1 stay null. Trunk-forward scores the same aligned filler
+lists as train val and fills those fields. name_gate stays false.
+"""
 
 from __future__ import annotations
 
@@ -9,6 +14,8 @@ import json
 import os
 import sys
 from pathlib import Path
+
+from .unbind_metrics import null_unbind_secondary
 
 HEAD_NAMES = ("heads.json", "model.safetensors", "heads.pt")
 FORWARD_WEIGHT_NAMES = ("model.safetensors", "heads.pt")
@@ -212,6 +219,7 @@ def _base_report(rec: dict, stub_acc: float, probe_acc: float, pos_acc: float, t
         "trunk_loaded": False,
         "brier": None,
         "forecast_eligible": False,
+        **null_unbind_secondary(),
     }
 
 
@@ -227,7 +235,11 @@ def _digest_or_stub(model_dir: str | Path | None, rec, test_spans, stub_acc, pro
                 "heads_loaded": False,
                 "weight_file": None,
                 "model_swap": None,
-                "note": "E2 requires a trained T1 to beat the 004 probe. Stub is expected to fail.",
+                "note": (
+                    "E2 requires a trained T1 to beat the 004 probe. Stub is "
+                    "expected to fail. unbind_token_f1/unbind_slot_f1 are null "
+                    "(004 probe swap has no civilian filler lists)."
+                ),
             }
         )
         return base
@@ -241,7 +253,9 @@ def _digest_or_stub(model_dir: str | Path | None, rec, test_spans, stub_acc, pro
             "weight_file": meta["weight_file"],
             "model_swap": model_acc,
             "note": (
-                f"Loaded heads from {weight}. E2 still requires beating the 004 probe."
+                f"Loaded heads from {weight}. E2 still requires beating the 004 probe. "
+                "unbind_token_f1/unbind_slot_f1 stay null (digest path has no "
+                "civilian filler lists)."
             ),
         }
     )
@@ -272,6 +286,10 @@ def run_eval(model_dir: str | Path | None = None, trunk_forward: bool = False) -
                 "model_swap": model_acc,
                 "unbind_exact": model_acc,
                 "n_unbind_eval": scored["n_unbind_eval"],
+                "unbind_token_f1": scored.get("unbind_token_f1"),
+                "unbind_token_precision": scored.get("unbind_token_precision"),
+                "unbind_token_recall": scored.get("unbind_token_recall"),
+                "unbind_slot_f1": scored.get("unbind_slot_f1"),
                 "trunk_loaded": True,
                 "trunk_forward": True,
                 "trunk_dir": str(trunk),
@@ -281,8 +299,9 @@ def run_eval(model_dir: str | Path | None = None, trunk_forward: bool = False) -
                 "encoder_trainable_loaded": scored.get("encoder_trainable_loaded", 0),
                 "encoder_trainable_present": scored.get("encoder_trainable_present", 0),
                 "note": (
-                    f"Trunk-forward unbind_exact from {weight} vs 004 probe_swap_min. "
-                    "name_gate stays false. "
+                    f"Trunk-forward unbind_exact + token/slot F1 from {weight} vs 004 "
+                    "probe_swap_min. Stub/digest leaves F1 null (no civilian filler "
+                    "lists). name_gate stays false. "
                     + scored.get(
                         "encoder_note",
                         "Encoder is the local trunk snapshot; heads from train out.",
