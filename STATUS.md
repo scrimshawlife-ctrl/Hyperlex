@@ -100,7 +100,7 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Ingest routes + automatic pipeline | Ready |
 | Atomic multi-term seeds | Ready |
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
-| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
+| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
 | Spec 007 model path (T0→T1) | SHADOW · classify volume ready · `name_gate` false · E2 Spark-blocked · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
