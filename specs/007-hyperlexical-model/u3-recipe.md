@@ -26,6 +26,29 @@ Name-gate is still false (E2 Spark-blocked). The word Hyperlexical stays off the
 
 Do not train on `split=reject`. Do not treat INFERRED typology/stage as OBSERVED gold.
 
+## Unbind recipe (data shape, not a new harvest)
+
+Civilian val unbind plateaued ~0.23. Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` hurt.
+This recipe is Hyperlexical train-loop only. ne0l0gist harvest / export SoT
+rows stay as-is (no invented OBSERVED gold).
+
+| Env | Default | Effect |
+|-----|--------:|--------|
+| `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE` | 1 | Repeat OBSERVED unbind **train** rows (1 = identity) |
+| `HYPERLEX_UNBIND_INFERRED_CAP` | 0 | Cap INFERRED unbind **train** rows (0 = off). First-seen order. |
+| `HYPERLEX_UNBIND_MORPH_MARGIN` | 0.5 | Ranking margin vs a near-morph sibling filler |
+
+Hard-negatives come from fillers **already on** unbind train rows: an explicit
+map (aped↔aping, looksmaxxing variants, fanum*, aura*) plus a conservative
+same-stem auto pair. Missing sibling surfaces are not invented.
+
+`lexical_split` is a frozen text hash. Adding settled rows mid-experiment
+must not reshuffle val — do not change the hash, modulus, or bucket edges.
+
+Receipt fields: `n_unbind_observed`, `n_unbind_inferred`,
+`unbind_observed_upsample`, `n_unbind_morph_negatives`. `name_gate` stays
+false. BEST checkpoint stays operator-side (`seed-live5`).
+
 ## Heads
 
 - classify: linear on pooled 768 (train/val only)

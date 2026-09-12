@@ -74,9 +74,11 @@ export HYPERLEX_TRAIN_BATCH=8
 export HYPERLEX_TRAIN_LR=2e-5
 # optional recipe bump (default 2, clamp 1..min(encoder layers, 8)):
 # export HYPERLEX_LAST_TRAINABLE=4
-# optional unbind rebalance (defaults 1.0 / 1 = current schedule; no extra epoch):
-# export HYPERLEX_UNBIND_LOSS_WEIGHT=2.0
-# export HYPERLEX_UNBIND_EVERY_N=4
+# optional unbind rebalance (defaults 1.0 / 1 = current schedule; no extra epoch).
+# Flat UNBIND_LOSS_WEIGHT=2 plateaued civilian val — prefer the data-shape gates:
+# export HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=2
+# export HYPERLEX_UNBIND_INFERRED_CAP=200
+# export HYPERLEX_UNBIND_MORPH_MARGIN=0.5
 # Next train sentence (live SoT). Omit for seed smoke. Fail-closed if the store is missing.
 # export HYPERLEX_INCLUDE_LIVE=1
 ```
@@ -114,7 +116,7 @@ Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, l
 
 ## 6. Hard no
 
-No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error.
+No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-live5`). ne0l0gist harvest is unchanged by the unbind upsample/morph recipe (loop multiplicity only).
 
 ## High-signal subsets (Moltbook + 4333, not the global SoT)
 

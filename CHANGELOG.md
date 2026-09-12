@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Spec 007 data/recipe shape:** Hyperlexical loop generates near-morph
+  hard-negatives from existing unbind train fillers (explicit map seeded
+  from aped/aping, looksmaxxing variants, fanum*, aura* + conservative
+  same-stem auto rule; no invented slang atoms). Extra filler margin
+  term pushes away from the wrong morph. `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE`
+  (int, default 1) and `HYPERLEX_UNBIND_INFERRED_CAP` (int, 0=off) shape
+  train only. Receipt/export counts: `n_unbind_observed`,
+  `n_unbind_inferred`, upsample factor, `n_unbind_morph_negatives`.
+  `lexical_split` stays frozen (settle must not reshuffle val). Export
+  JSONL stays SoT-shaped — no invented OBSERVED gold. ne0l0gist harvest
+  unchanged. Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` is not this lever.
+  BEST stays operator-side (seed-live5). `name_gate` stays false.
+
 - **Naming lock (2026-09-12 PT):** Public product split — **Hyperlexical**
   (Spec 007 model / train / eval / E2 / `name_gate` claim) vs **ne0l0gist**
   (slang ingest: Crawl4AI harvest, `ingest_tap`, export/settle, civilian/live

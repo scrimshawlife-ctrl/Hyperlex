@@ -13,6 +13,7 @@ from typing import Any
 
 from .packet import RESTRICTED_MARKER, SCHEMES, sha256_hex
 from ._negatives_data import NEGATIVES  # ordinary prose; no slang
+from .unbind_recipe import recipe_env_counts
 
 FAMILIES = (
     "betting-sharp",
@@ -110,6 +111,11 @@ def repo_root() -> Path:
 
 
 def lexical_split(text: str) -> str:
+    """Frozen hash split. Do not change the hash, modulus, or bucket edges.
+
+    Settle may add rows mid-experiment. A new text gets a bucket from *its*
+    hash only. Existing texts keep their split — val must not reshuffle.
+    """
     n = int(sha256_hex(text.lower())[:8], 16) % 10
     if n == 0:
         return "test"
@@ -1068,6 +1074,10 @@ def export_dataset(
         "name_gate_unbind_gap": max(0, 200 - unbind_all),
         "name_gate_negative_gap": max(0, 200 - negatives),
     }
+    # Recipe gates are documented here; the Hyperlexical loop applies
+    # upsample/cap + morph hard-negs. Export rows stay SoT-shaped.
+    unbind_only = [r for r in rows if r["task"] == "unbind"]
+    counts.update(recipe_env_counts(unbind_only))
     return {"rows": rows, "sha256": digest, "counts": counts, "payload": payload}
 
 
@@ -1095,7 +1105,12 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                     "(no gloss invent). Live optional via --include-live (preserves store class; "
                     "unset→INFERRED; phrase-like atoms also harvest as unbind; Wave A sidecar "
                     "harvest_unbind_observed_mw.jsonl is adopted, not upgraded). "
-                    "E2 stays on Spec 004 fixtures. Not a T1 name-gate."
+                    "E2 stays on Spec 004 fixtures. Not a T1 name-gate. "
+                    "n_unbind_observed / n_unbind_inferred plus recipe env "
+                    "(HYPERLEX_UNBIND_OBSERVED_UPSAMPLE default 1, "
+                    "HYPERLEX_UNBIND_INFERRED_CAP 0=off, unbind_morph_negatives) "
+                    "are counts only — loop applies train multiplicity / hard-negs; "
+                    "export does not invent OBSERVED SoT gold. lexical_split is frozen."
                 ),
             },
             indent=2,
