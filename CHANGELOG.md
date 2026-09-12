@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Spec 007 train knob:** env-gated per-slot filler CE as the primary
+  unbind train signal (`HYPERLEX_UNBIND_PRIMARY=slot_ce` or
+  `HYPERLEX_UNBIND_SLOT_CE=1`). Default unset is OFF — historical mixed
+  mean of filler CE + role CE + morph-margin, so prior morphs are
+  unchanged. When armed, mean per-position filler CE is primary;
+  existing list/margin leftovers are additive aux at fixed λ=0.25
+  (receipt `unbind_slot_ce_aux_lambda`, not a search). Receipt also
+  shows `unbind_slot_ce_armed` and `unbind_primary`. Civilian
+  `unbind_exact` stays the ladder metric; `unbind_token_f1` /
+  `unbind_slot_f1` still emit. seed-morph14 BEST is observed
+  (unbind_exact≈0.3857, slot/token F1≈0.659, classify≈0.438, E2 PASS),
+  not new SoT gold. No name_gate flip. No Spec 008 / Genesis.
+
 - **Spec 007 eval/metrics:** val unbind now emits `unbind_token_f1`
   (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact,
   positional / type_slot alignment) beside unchanged `unbind_exact`.

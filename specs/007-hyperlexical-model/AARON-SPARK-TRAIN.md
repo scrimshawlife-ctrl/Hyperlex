@@ -111,6 +111,16 @@ export HYPERLEX_TRAIN_LR=2e-5
 # Missing/invalid path fails closed.
 # export HYPERLEX_UNBIND_HARD_ATOMS_PATH=/home/morpheus/hlx/hard_atoms_train.jsonl
 # export HYPERLEX_UNBIND_HARD_UPSAMPLE=3
+# optional: per-slot filler CE as the primary unbind train signal.
+# Default OFF (mixed mean of filler CE + role CE + morph-margin). Prior
+# morphs stay unchanged when unset. Civilian unbind_exact stays the
+# ladder metric; unbind_token_f1 / unbind_slot_f1 still emit.
+# export HYPERLEX_UNBIND_PRIMARY=slot_ce
+# or: export HYPERLEX_UNBIND_SLOT_CE=1
+# When armed, mean per-position filler CE is primary. Existing list /
+# margin leftovers are additive aux at fixed λ=0.25 (receipt field
+# unbind_slot_ce_aux_lambda). Not a search. Receipt also shows
+# unbind_slot_ce_armed and unbind_primary.
 # Next train sentence (live SoT). Omit for seed smoke. Fail-closed if the store is missing.
 # export HYPERLEX_INCLUDE_LIVE=1
 ```
@@ -142,7 +152,7 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --model-dir $HYPER
 
 `--model-dir` may be omitted when `HYPERLEX_TRAIN_OUT` is set, or when the default seed-live / seed out dir exists (`~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-live` then `...-seed`). Same as `--trunk-forward` on the CLI.
 
-Civilian `unbind_exact` requires the full filler list to match, so partial slot hits do not move the number. Train val / receipt `val` now also emit `unbind_token_f1` (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact on positional / type_slot roles), plus optional token precision/recall. Operator ladder on exact is **0.45 / 0.55 / 0.65**; watch `unbind_token_f1` so progress is not invisible. seed-morph8 BEST is observed (`unbind_exact`≈0.3715, classify≈0.563, E2 PASS 1.0) — not new SoT gold. Stub/digest `eval_unbind` leaves the F1 fields null (004 probe swap has no civilian filler lists); trunk-forward fills them when those lists exist. Do not flip `name_gate`.
+Civilian `unbind_exact` requires the full filler list to match, so partial slot hits do not move the number. That number stays the operator ladder even when `HYPERLEX_UNBIND_PRIMARY=slot_ce` (or `HYPERLEX_UNBIND_SLOT_CE=1`) makes per-slot filler CE the train signal. Train val / receipt `val` now also emit `unbind_token_f1` (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact on positional / type_slot roles), plus optional token precision/recall. Operator ladder on exact is **0.45 / 0.55 / 0.65**; watch `unbind_token_f1` so progress is not invisible. seed-morph14 BEST is observed (`unbind_exact`≈0.3857, slot/token F1≈0.659, classify≈0.438, E2 PASS) — not new SoT gold. Stub/digest `eval_unbind` leaves the F1 fields null (004 probe swap has no civilian filler lists); trunk-forward fills them when those lists exist. Do not flip `name_gate`.
 
 Re-train after this encoder-persist fix (old `…-seed-live` lacks `encoder.*` tensors); then trunk-forward E2.
 
@@ -150,7 +160,7 @@ Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, l
 
 ## 6. Hard no
 
-No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph3`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum/INFERRED-weight/hard-atom recipe (loop multiplicity + epoch phase selection + sample weight only). Do not commit the operator hard-atoms JSONL.
+No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph3`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum/INFERRED-weight/hard-atom/slot-CE-primary recipe (loop multiplicity + epoch phase selection + sample weight + loss composition only). Do not commit the operator hard-atoms JSONL.
 
 ## High-signal subsets (Moltbook + 4333, not the global SoT)
 
