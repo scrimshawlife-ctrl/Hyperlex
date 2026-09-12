@@ -1,5 +1,7 @@
 # SHADOW — Spec 007 model path
 
+**Naming:** this page is **Hyperlexical** (model / train / eval / E2 / `name_gate` claim). Harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional shell. The earned Hub name still requires E2 (`name_gate` is **false**).
+
 The Hermes skill is the **current operator surface**. This page is the **model path**: a learned encoder that starts as T0 and may become T1 after E2.
 
 Not on Hyperlex `API_V1`. Not a Hugging Face model. Not named **Hyperlexical** until eval gate E2 passes on Spark.

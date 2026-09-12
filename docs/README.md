@@ -1,5 +1,7 @@
 # Hyperlex documentation
 
+**Naming:** repo **Hyperlex** is the transitional monorepo shell. Public products: **Hyperlexical** (Spec 007 model) and **ne0l0gist** (slang ingest). See the [README Naming](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/README.md#naming) section.
+
 Published with **MkDocs** (`mkdocs.yml` at the repo root).
 
 ```bash

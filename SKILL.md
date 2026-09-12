@@ -52,6 +52,9 @@ Diagrams: `symbolic/diagrams/`
 See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examples.
 
 ## Hyperlexical Model (007 / U2) Integration
+
+**Naming:** train / eval = **Hyperlexical**. Live harvest / `ingest_tap` = **ne0l0gist**. Repo **Hyperlex** is the transitional shell. `name_gate` stays false.
+
 - Train SoT is **local-only**: `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` (4333 rows as of 2026-09-10 PT evening). Tracked `exports/civilian.v0.1.jsonl` is an 883-row seed, not the SoT.
 - Operator `--include-live`: n=6506 · classify family **2437** · `name_gate` false. See `STATUS.md`.
 - Moltbook is a live source for `ai-native` lineage + memory typology (**subset**, not the global SoT).
@@ -65,7 +68,7 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 
 ## Spec 007 Hyperlexical — classify & QA (Hermes)
 
-Continue classify + QA from this skill. Run from the **Hyperlex repo checkout**. Shadow modules are `scripts/shadow/hyperlexical/` (ship with a skill install from this repo). Do not commit `~/.hyperlex/**`.
+Continue classify + QA from this skill. Run from the **Hyperlex repo checkout** (transitional shell). Live harvest / `ingest_tap` is **ne0l0gist**; train / eval is **Hyperlexical**. Shadow modules are `scripts/shadow/hyperlexical/` (ship with a skill install from this repo). Do not commit `~/.hyperlex/**`.
 
 **Scoreboard (2026-09-10 PT evening, Danny-locked):** SoT **4333** · classify family **2437** · unbind **1345** · neg **208** · `name_gate` **false**.
 

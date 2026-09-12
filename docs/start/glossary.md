@@ -66,6 +66,16 @@ Always `provenance: SPECULATIVE` and `brier: null`. CLI: `mutation predict "<ter
 Relay envelope naming for Hyperlex-shaped signals in host systems. Optional
 interop; not required for offline CLI use.
 
+### Hyperlex (repo)
+Transitional monorepo shell. Not the public product name — that string
+collides with French legaltech CLM / DiliTrust. Paths (`~/.hyperlex/`),
+`HYPERLEX_*` env vars, and the `hyperlexical` Python package stay as-is.
+
+### ne0l0gist
+Slang **ingest** tool: Crawl4AI harvest, `ingest_tap`, export/settle,
+civilian and live phrase harvest. Feeds the Hyperlexical train/eval path.
+Not the model product.
+
 ### Hermes skill
 The **current operator surface**. Packaged for Hermes
 (`~/.hermes/skills/hyperlex`). The same Python package also runs as a standalone
@@ -83,9 +93,10 @@ live here. Packets stay `brier: null`. Fail-open: omit the block if inference
 fails.
 
 ### Hyperlexical (name)
-Reserved for a T1 encoder **after** eval gate E2 beats the Spec 004 probe on
-Spark. Until then the card is `hyperlex-encoder-*`. Do not use the word
-Hyperlexical for the stub, the harvest, or a seed smoke.
+Public **model** product claim for Spec 007 (train / eval / E2 / `name_gate`).
+The earned Hub name still requires E2 on Spark (`name_gate` is **false**).
+Until then the card is `hyperlex-encoder-*`. Do not call a stub, harvest dump,
+or seed smoke Hyperlexical-gated-true. Harvest / ingest is **ne0l0gist**.
 
 ### name_gate
 Dataset + eval wall before a T1 may be named. Classify volume can be ready
@@ -99,6 +110,7 @@ on Spark. See [SHADOW encoder](../shadow-hyperlexical.md).
 | No fabricated Brier | Open runs: `brier: null` |
 | Phase 5 speculative | Research only; not measurement |
 | Spec 007 SHADOW | Classify volume ready; `name_gate` false; no Hub |
+| Naming split | **Hyperlexical** = model claim; **ne0l0gist** = ingest; repo **Hyperlex** is the shell |
 | Eight families only | Do not invent a ninth lineage family |
 | No Abraxas hard import | Hyperlex never imports Abraxas |
 | Local-first storage | `~/.hyperlex/` is the durable store; Pages is static |

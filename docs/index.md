@@ -18,6 +18,9 @@ scores virality and hyperstition potential, and emits integrity-hashed receipts.
 Brier calibration is computed <em>only</em> after outcomes are settled — never invented on open analysis.
 The Hermes skill is the <em>current operator surface</em>. Spec 007 is the
 <em>model path</em> (T0, then T1 after E2) — still SHADOW, not named Hyperlexical.
+Repo <strong>Hyperlex</strong> is the transitional monorepo shell. Public products:
+<strong>Hyperlexical</strong> (model / train / eval) and <strong>ne0l0gist</strong> (slang ingest).
+<code>name_gate</code> stays false.
 </p>
 
 ## Skill now, model next

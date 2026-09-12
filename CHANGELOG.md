@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Naming lock (2026-09-12 PT):** Public product split — **Hyperlexical**
+  (Spec 007 model / train / eval / E2 / `name_gate` claim) vs **ne0l0gist**
+  (slang ingest: Crawl4AI harvest, `ingest_tap`, export/settle, civilian/live
+  phrase harvest). Repo **Hyperlex** is the transitional monorepo shell.
+  Identifiers unchanged (`~/.hyperlex`, `HYPERLEX_*`, package `hyperlexical`).
+  `name_gate` stays false. Avoid bare public “Hyperlex” (French legaltech CLM /
+  DiliTrust collision).
+
 - **Spec 007 Wave A:** `harvest_live_unbind` turns phrase-like live SoT atoms
   (2–6 tokens, ≤80 chars) into dual-scheme unbind rows when `--include-live`
   is set. Epistemic is copied (`epistemic` / `class`; unset→INFERRED). Spark

@@ -1,5 +1,7 @@
 # Hyperlex Quickstart
 
+**Naming:** repo **Hyperlex** is the transitional monorepo shell. Public products: **Hyperlexical** (Spec 007 model) and **ne0l0gist** (slang ingest). See [README Naming](./README.md#naming).
+
 Live guide on the docs site: [docs/start/quickstart.md](docs/start/quickstart.md).
 This file stays as a repo-root pointer.
 

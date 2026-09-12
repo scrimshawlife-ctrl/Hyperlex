@@ -15,6 +15,8 @@ Constitution: `.specify/memory/constitution.md` (v1.0.0, **SHADOW** until operat
 
 007 extras: `clarify.md`, `locks-a4.md`, `locks-a5.md`, `weights.md`, `hardware.md`, `uncensored.md`, `trunk.md`, `AARON-SPARK-TRAIN.md`, `milestones.md`, `engineering.md`, `hf-package/`, `schemas/`, `contracts/`.
 
+Naming (2026-09-12): **Hyperlexical** = Spec 007 model / train / eval / E2 / `name_gate` claim. **ne0l0gist** = slang ingest / harvest. Repo **Hyperlex** is the transitional monorepo shell. `name_gate` stays false.
+
 Handoff: `specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md` on **main**.
 
 Gate: `specs/runtime-ready.md`

@@ -1,5 +1,7 @@
 # Hyperlex Spec 007 T1 — civilian dataset plan
 
+**Voice:** harvest / ingest / live phrase harvest = **ne0l0gist**. Train / eval / E2 / `name_gate` claim = **Hyperlexical**. Repo **Hyperlex** is the transitional monorepo shell. Paths and package names are unchanged. `name_gate` stays false.
+
 ## Status and decision
 
 U2 is now present on branch `007-hyperlexical-model`. Its first executable export is a seed bundle, not the T1 name-gate dataset. This plan governs the next harvest and U2 hardening work without downloading ModernBERT.
@@ -21,14 +23,14 @@ Current U2 verification after fixing its Python keyword/annotated-assignment loa
 | 8 | Common Voice Spontaneous Speech 4.0 English transcripts | Utterance/metadata **OBSERVED**; task labels **INFERRED** until settled | CC0-1.0; retain the dataset’s no-speaker-identification condition [5] | Mozilla Data Collective [5] | E6, negatives, E1 `none` | Use transcript text only—no audio pipeline or ASR recipes. Select short, validated civilian utterances; strip speaker identifiers; operator-settle `none` and E6 tags. |
 | 9 | Project Gutenberg works explicitly unrestricted in the US | Source text **OBSERVED**; negative label **INFERRED** until settled | Individual works generally unrestricted under US copyright, with Project Gutenberg trademark/redistribution terms and jurisdiction caveats [6] | Project Gutenberg license [6] | Negatives | Secondary negative source only. Select named works with an unrestricted notice, remove headers/boilerplate, keep work ID, and sample short ordinary-prose spans. |
 
-### Harvest quotas
+### Harvest quotas (ne0l0gist)
 
 - **Classify:** retain the 138-row U2 seed export, then harvest at least **2,500** candidates to survive dedupe, restriction filtering, license filtering, and operator review. Stop only when the accepted lexical-grouped pool reaches 2,000 and each of the ten closed labels has held-out support.
 - **Unbind:** retain the 45 unique U2 scheme rows, then annotate at least **100 new short civilian atoms under both schemes** (200 scheme rows). This clears the 155-row minimum gap with margin and gives E2 non-symbolic civilian material.
 - **Negatives:** retain the 21 U2 negatives, harvest at least 300 short Common Voice transcript spans and 100 Gutenberg spans, and accept at least 179 new unique negatives after review.
 - **Dialect/E6:** U2 exports eight OBSERVED seed rows, but the spec gives no numeric name-gate. Adopt an explicit operational floor of **200 OBSERVED unique atoms**, with at least 50 examples carrying each of `dialect`, `informal`, `vulgar`, and `identity_routing` provenance tags; tags may overlap. This floor is a proposal, not a normative 007 count.
 
-### Live SoT multiword unbind (Wave A)
+### Live SoT multiword unbind (Wave A, ne0l0gist)
 
 `--include-live` also runs `harvest_live_unbind` on the local ingest store. Phrase-like atoms (2–6 whitespace tokens, `len(text)≤80`, not `COLLISION_HOLD`, not already civilian/fixture gold) emit both `positional` and `type_slot` rows. Epistemic is copied from the store (`epistemic`, else `class`); missing/None → `INFERRED`. Never upgraded to `OBSERVED`.
 
@@ -363,7 +365,7 @@ No rejected content is quoted.
 - All rows now carry: memetic_efficiency, memory_tiers, compression_type, context_friction, enriched typology, provenance back to the Notion export
 - Ready for 007 shadow export / T1 use
 
-## Training Prep Complete (2026-09-11)
+## Training Prep Complete (2026-09-11, Hyperlexical)
 - Civilian: 5857 rows
 - High-signal (eff>=0.55 or hyperstition_ish): 58
 - ai-native: 1929
@@ -372,7 +374,7 @@ No rejected content is quoted.
 - All rows have full typology, efficiency, tiers, provenance.
 
 
-## Training Data Prep Complete (final, 2026-09-11)
+## Training Data Prep Complete (final, 2026-09-11, Hyperlexical)
 
 **Civilian dataset (main training file)**
 - `specs/007-hyperlexical-model/exports/civilian.v0.1.jsonl`: 5857 rows
