@@ -11,7 +11,8 @@
 1. **Sync operator pins** to morph14 (Notion Hub, BEST-CHECKPOINT, STATUS notes).
 2. **Run morph15 Spark card** (see `u3-recipe.md` / `AARON-SPARK-TRAIN.md`):
    - `slot_ce` + OBSERVED upsample 2 + INFERRED_WEIGHT 0.5
-   - curriculum 2+1+remainder · hard_upsample 3 · residual dump on
+   - curriculum 2+1+remainder · hard_upsample 3 · `HEAD_SLOT_WEIGHT=2` · residual dump on
+   - preflight: `python3 -m hyperlexical.morph15_recipe` (or `bash scripts/spark/morph15-unbind.sh`)
    - OUT `…-seed-morph15`
 3. **Read residual themes** (`HYPERLEX_UNBIND_RESIDUAL_DUMP`) — head-slot vs morph_bleed vs order.
 4. **Hold** MORPH_CLUSTERS churn and hard INFERRED_CAP (Morph4/5 lessons).
