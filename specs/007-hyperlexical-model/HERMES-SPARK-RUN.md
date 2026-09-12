@@ -508,13 +508,13 @@ docker run --name "hlx-$$-$(date +%s)" \
 REMOTE
 ```
 
-No `--gpus`, no trunk, no train env. `eval_unbind` imports no torch.
+No `--gpus` on this default command. CI stays on the torch-free stub/digest path (`trunk_loaded: false`). That path does not download ModernBERT.
 
-**Done:** exit 3, and the file is **byte-identical to `hlx-e2-before.json`**.
+On Spark after train, B4 **may** use trunk-forward (real local ModernBERT + trained heads, `unbind_exact` vs the 004 `probe_swap_min`). Add `-e HYPERLEX_E2_TRUNK_FORWARD=1 -e HYPERLEX_TRUNK_DIR="$HOME/.hyperlex/models/trunks/ModernBERT-base" -e HYPERLEX_TRAIN_OUT="$HOME/.hyperlex/models/hyperlex-encoder-modernbert-base-seed"` (or the seed-live out dir). Missing torch, trunk `config.json`, or `model.safetensors`/`heads.pt` fails closed. Do not flip `name_gate`. `brier` stays null.
 
-That is not a bug and not a failed run. `eval_unbind` never loads the trained heads — it reports `trunk_loaded: false`, `model_id: "stub"`, and compares a sha256-derived stub against a seed-7 probe. Both sides are deterministic, so training cannot move it. Verified byte-identical across repeat runs.
+**Done (CI / stub):** exit 3, `trunk_loaded: false`. Digest-seeded `model_swap` may differ from B2 if heads are on disk; that is not a trunk forward.
 
-**Do not** attempt to make "after" differ from "before". Nothing in this unit wires the trained model into E2. Record the identity as a finding and move on.
+**Done (Spark trunk-forward):** receipt has `trunk_loaded: true` and an honest `e2_pass` (trained metric strictly greater than `probe_swap_min`). Exit 3 if the trained model does not beat the probe.
 
 ## Slice B5 — evidence
 
@@ -607,7 +607,7 @@ print("\n`e2_pass` and `name_gate` are false by design. This is a seed smoke, no
 print("\nWeights, receipts and exports stay on the Spark under `~/.hyperlex/` and are not in this PR.\n")
 print("## Open for the spec owner\n")
 print("- `unbind_exact` val is computed over **one** row; the metric can only be 0.0 or 1.0.")
-print("- `eval_unbind` never loads the trained heads, so E2 before/after cannot differ as the harness stands.")
+print("- Default `eval_unbind` is stub/digest (`trunk_loaded: false`). Spark B4 may set `HYPERLEX_E2_TRUNK_FORWARD=1` for real unbind_exact. Do not flip `name_gate`.")
 print("- `docs/remotes.md` states the org twin is a 404; it is live and public, and `push-org.sh` cannot fast-forward onto it.\n")
 print("🤖 Generated with [Claude Code](https://claude.com/claude-code)")
 PY
