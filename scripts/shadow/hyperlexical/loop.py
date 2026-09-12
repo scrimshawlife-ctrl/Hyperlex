@@ -32,6 +32,11 @@ from .unbind_recipe import (
     shape_unbind_train,
     unbind_row_sample_weight,
 )
+from .unbind_residual import (
+    residual_row_record,
+    resolve_unbind_residual_dump_path,
+    write_residual_dump,
+)
 from .unbind_slot_ce import (
     UNBIND_SLOT_CE_AUX_LAMBDA,
     combine_unbind_train_terms,
@@ -240,8 +245,12 @@ def run_loop(
         opt.step()
         losses.append(float(scaled.detach().cpu()))
 
+    residual_dump_path = resolve_unbind_residual_dump_path()
+    last_residual_records: list[dict] = []
+
     @torch.no_grad()
     def score():
+        nonlocal last_residual_records
         encoder.eval()
         classify.eval()
         filler_head.eval()
@@ -253,6 +262,7 @@ def run_loop(
             hit += int(pred == gold)
             tot += 1
         pairs: list[tuple[list[str], list[str]]] = []
+        residual_records: list[dict] = []
         for row in unbind_va or unbind_tr[:8]:
             fillers = list(row.get("fillers") or [])
             if not fillers:
@@ -268,6 +278,16 @@ def run_loop(
                 gold_strs.append(mapped_filler(maps, fill))
                 pred_strs.append(mapped_pred(maps, pred))
             pairs.append((gold_strs, pred_strs))
+            if residual_dump_path:
+                rec = residual_row_record(
+                    text=str(row.get("text") or ""),
+                    gold=gold_strs,
+                    pred=pred_strs,
+                    row=row,
+                )
+                if rec is not None:
+                    residual_records.append(rec)
+        last_residual_records = residual_records
         encoder.train()
         classify.train()
         filler_head.train()
@@ -318,6 +338,13 @@ def run_loop(
     write_skeleton(out_dir, maps=maps)
     weight_file = save_heads(out_dir, state)
     last = epoch_metrics[-1] if epoch_metrics else {}
+    residual_receipt: dict = {
+        "unbind_residual_dump": "",
+        "n_unbind_residual": 0,
+        "unbind_residual_themes": {},
+    }
+    if residual_dump_path:
+        residual_receipt = write_residual_dump(residual_dump_path, last_residual_records)
     receipt = {
         "schema": "hyperlex.hyperlexical.train_receipt.v0.1",
         "model_id": MODEL_ID_SEED,
@@ -355,6 +382,12 @@ def run_loop(
         "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
         "n_unbind_hard_atoms_matched": unbind_recipe.get("n_unbind_hard_atoms_matched", 0),
         "n_unbind_hard_extra_copies": unbind_recipe.get("n_unbind_hard_extra_copies", 0),
+        "unbind_residual_dump": residual_receipt.get("unbind_residual_dump", ""),
+        "n_unbind_residual": residual_receipt.get("n_unbind_residual", 0),
+        "unbind_residual_themes": residual_receipt.get("unbind_residual_themes", {}),
+        "unbind_residual_by_scheme": residual_receipt.get("unbind_residual_by_scheme", {}),
+        "unbind_residual_by_class": residual_receipt.get("unbind_residual_by_class", {}),
+        "unbind_residual_summary": residual_receipt.get("unbind_residual_summary", ""),
         "last_loss": losses[-1] if losses else None,
         "val": last,
         "epoch_metrics": epoch_metrics,
