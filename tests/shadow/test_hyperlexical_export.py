@@ -28,7 +28,8 @@ def test_export_minimums():
     # Fixtures honest n=24 + civilian dual-scheme — not n=128 padding toward gate
     assert c["unbind_fixture"] >= 40
     assert c["unbind_civilian"] >= 40
-    assert c["unbind"] == c["unbind_fixture"] + c["unbind_civilian"]
+    assert c["unbind_live"] == 0
+    assert c["unbind"] == c["unbind_fixture"] + c["unbind_civilian"] + c["unbind_live"]
     assert c["dialect"] >= 8
     assert c["backfill"] >= 1
     assert c["inferred"] >= 1
@@ -79,6 +80,8 @@ def test_write_and_hash(tmp_path):
     assert man["trunk"] == "answerdotai/ModernBERT-base"
     assert man["counts"]["name_gate"] is False
     assert "unbind_fixture" in man["counts"]
+    assert "unbind_live" in man["counts"]
+    assert man["counts"]["unbind_live"] == 0
     assert "classify_all" in man["counts"]
 
 
@@ -239,6 +242,175 @@ def test_live_split_live_coerced_to_lexical(tmp_path):
     assert hit[0]["split"] == lexical_split("zzzx_split_live_atom")
     assert hit[0]["split"] in {"train", "val", "test"}
     assert all(r["split"] in {"train", "val", "test"} for r in bundle["rows"])
+
+
+def _write_live_jsonl(path, rows):
+    path.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+
+
+def test_harvest_live_unbind_keeps_observed(tmp_path):
+    from hyperlexical.export import harvest_live_unbind
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    _write_live_jsonl(
+        store,
+        [
+            {
+                "text": "zzzx observed live phrase",
+                "epistemic": "OBSERVED",
+                "lineage": "brainrot-aura",
+                "stage": "contested",
+            }
+        ],
+    )
+    rows = harvest_live_unbind(store, skip_atoms=set())
+    assert len(rows) == 2
+    assert {r["class"] for r in rows} == {"OBSERVED"}
+    assert {r["role_scheme"] for r in rows} == {"positional", "type_slot"}
+    assert {r["task"] for r in rows} == {"unbind"}
+    pos = next(r for r in rows if r["role_scheme"] == "positional")
+    typ = next(r for r in rows if r["role_scheme"] == "type_slot")
+    assert pos["text"] == "zzzx observed live phrase"
+    assert pos["fillers"] == ["zzzx", "observed", "live", "phrase"]
+    assert pos["roles"] == ["pos_0", "pos_1", "pos_2", "pos_3"]
+    assert pos["provenance"] == "live-pos:OBSERVED"
+    assert pos["lineage"] == "brainrot-aura"
+    assert pos["stage"] == "contested"
+    assert typ["provenance"] == "live-type:OBSERVED"
+    assert typ["fillers"] == pos["fillers"]
+    assert typ["roles"] == ["TOKEN", "SLOT", "MARKER", "TOKEN"]
+    assert typ["text"] == "TOKEN:zzzx SLOT:observed MARKER:live TOKEN:phrase"
+    # store class=OBSERVED without epistemic is also preserved (SoT field)
+    store2 = tmp_path / "class_observed.jsonl"
+    _write_live_jsonl(store2, [{"text": "zzzx class observed phrase", "class": "OBSERVED"}])
+    class_rows = harvest_live_unbind(store2, skip_atoms=set())
+    assert class_rows and all(r["class"] == "OBSERVED" for r in class_rows)
+
+
+def test_harvest_live_unbind_none_defaults_inferred(tmp_path):
+    from hyperlexical.export import harvest_live_unbind
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    _write_live_jsonl(
+        store,
+        [
+            {"text": "zzzx missing epistemic phrase"},
+            {"text": "zzzx null epistemic phrase", "epistemic": None},
+            {"text": "zzzx empty class phrase", "class": None},
+            {
+                "text": "zzzx inferred not upgraded",
+                "epistemic": "INFERRED",
+                "class": "OBSERVED",
+            },
+        ],
+    )
+    rows = harvest_live_unbind(store, skip_atoms=set())
+    by_text = {r["text"]: r for r in rows if r["role_scheme"] == "positional"}
+    assert by_text["zzzx missing epistemic phrase"]["class"] == "INFERRED"
+    assert by_text["zzzx null epistemic phrase"]["class"] == "INFERRED"
+    assert by_text["zzzx empty class phrase"]["class"] == "INFERRED"
+    assert by_text["zzzx inferred not upgraded"]["class"] == "INFERRED"
+    assert all(r["class"] == "INFERRED" for r in rows)
+    assert all(str(r["provenance"]).endswith(":INFERRED") for r in rows)
+
+
+def test_harvest_live_unbind_skips_collision_hold(tmp_path):
+    from hyperlexical.export import harvest_live_unbind
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    _write_live_jsonl(
+        store,
+        [
+            {"text": "skill issue", "epistemic": "OBSERVED", "lineage": "gaming-meta"},
+            {"text": "Skill Issue", "class": "INFERRED"},
+            {"text": "zzzx keep after hold", "lineage": "none"},
+        ],
+    )
+    rows = harvest_live_unbind(store, skip_atoms=set())
+    texts = {r["text"].lower() for r in rows}
+    assert not any("skill issue" in t for t in texts)
+    assert any(r["text"] == "zzzx keep after hold" for r in rows)
+
+
+def test_harvest_live_unbind_both_schemes_and_filters(tmp_path):
+    from hyperlexical.export import harvest_live_unbind
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    long_ok = " ".join(["zzzx"] + ["tok"] * 5)  # 6 tokens
+    too_many = "zzzx " + " ".join(f"tok{i}" for i in range(6))  # 7 tokens
+    too_long = "zzzx " + ("x" * 80)  # >80 chars, 2 tokens
+    store.write_text(
+        json.dumps({"text": "zzzx both schemes atom", "family": "ai-native"}) + "\n"
+        + json.dumps({"text": "zzzx both schemes atom", "epistemic": "OBSERVED"}) + "\n"
+        + json.dumps({"text": "single"}) + "\n"
+        + json.dumps({"text": too_many}) + "\n"
+        + json.dumps({"text": too_long}) + "\n"
+        + json.dumps({"text": long_ok, "lineage": "none"}) + "\n"
+        + "{not-json\n",
+        encoding="utf-8",
+    )
+    rows = harvest_live_unbind(store, skip_atoms=set())
+    pos = [r for r in rows if r["role_scheme"] == "positional"]
+    typ = [r for r in rows if r["role_scheme"] == "type_slot"]
+    assert len(pos) == 2 and len(typ) == 2
+    texts = {r["text"] for r in pos}
+    assert "zzzx both schemes atom" in texts
+    assert long_ok in texts
+    assert too_many not in texts
+    assert too_long not in texts
+    assert "single" not in texts
+    hit = next(r for r in pos if r["text"] == "zzzx both schemes atom")
+    assert hit["lineage"] == "ai-native"
+    assert hit["class"] == "INFERRED"  # first-seen; later OBSERVED does not rewrite
+    skipped = harvest_live_unbind(store, skip_atoms={"zzzx both schemes atom"})
+    assert all(r["text"] != "zzzx both schemes atom" for r in skipped)
+    assert harvest_live_unbind(tmp_path / "absent.jsonl") == []
+
+
+def test_export_include_live_false_skips_live_unbind(tmp_path):
+    from hyperlexical.export import export_dataset
+
+    store = tmp_path / "ingest_candidates.jsonl"
+    phrase = "zzzx unique live unbind pair"
+    _write_live_jsonl(
+        store,
+        [
+            {
+                "text": phrase,
+                "lineage": "brainrot-aura",
+                "typology": ["compression"],
+                "stage": "circulating",
+                "roles": [],
+                "fillers": [],
+                "role_scheme": None,
+                "task": "classify",
+                "provenance": "ingest:pipeline",
+                "class": "INFERRED",
+                "license": "operator-local",
+                "split": "train",
+            }
+        ],
+    )
+    base = export_dataset(ROOT, include_live=False)
+    assert base["counts"]["unbind_live"] == 0
+    assert base["counts"]["name_gate"] is False
+    assert not any(r.get("text") == phrase and r["task"] == "unbind" for r in base["rows"])
+    live = export_dataset(ROOT, include_live=True, live_store=store)
+    assert live["counts"]["name_gate"] is False
+    assert live["counts"]["unbind_live"] >= 2
+    assert live["counts"]["unbind"] == (
+        live["counts"]["unbind_fixture"]
+        + live["counts"]["unbind_civilian"]
+        + live["counts"]["unbind_live"]
+    )
+    assert live["counts"]["unbind"] > base["counts"]["unbind"]
+    live_unbind = [
+        r
+        for r in live["rows"]
+        if r["task"] == "unbind" and str(r.get("provenance") or "").startswith(("live-pos:", "live-type:"))
+    ]
+    assert {r["role_scheme"] for r in live_unbind} == {"positional", "type_slot"}
+    assert any(r["text"] == phrase for r in live_unbind)
 
 
 def test_moltbook_harvest_in_export():

@@ -28,6 +28,10 @@ Current U2 verification after fixing its Python keyword/annotated-assignment loa
 - **Negatives:** retain the 21 U2 negatives, harvest at least 300 short Common Voice transcript spans and 100 Gutenberg spans, and accept at least 179 new unique negatives after review.
 - **Dialect/E6:** U2 exports eight OBSERVED seed rows, but the spec gives no numeric name-gate. Adopt an explicit operational floor of **200 OBSERVED unique atoms**, with at least 50 examples carrying each of `dialect`, `informal`, `vulgar`, and `identity_routing` provenance tags; tags may overlap. This floor is a proposal, not a normative 007 count.
 
+### Live SoT multiword unbind (Wave A)
+
+`--include-live` also runs `harvest_live_unbind` on the local ingest store. Phrase-like atoms (2–6 whitespace tokens, `len(text)≤80`, not `COLLISION_HOLD`, not already civilian/fixture gold) emit both `positional` and `type_slot` rows. Epistemic is copied from the store (`epistemic`, else `class`); missing/None → `INFERRED`. Never upgraded to `OBSERVED`. Counted as `counts.unbind_live`. Fillers are the real tokens only — no gloss invention. Does not flip `name_gate`.
+
 ## 2. Target hardened JSONL row schema
 
 U2 currently emits the requested top-level fields plus `task`, uses `val` as the validation split, and stores provenance as a compact string. The schema below is the harvest target: it expands provenance so source class, license evidence, lexical grouping, and settlement can be audited. Adopting it is a follow-on schema change, not a description of the current seed export.

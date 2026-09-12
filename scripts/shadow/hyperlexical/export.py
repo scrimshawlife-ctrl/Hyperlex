@@ -355,6 +355,116 @@ def _structural_type_tags(n: int) -> list[str]:
     return [TYPE_SLOT_TAGS[i % len(TYPE_SLOT_TAGS)] for i in range(n)]
 
 
+LIVE_UNBIND_MAX_LEN = 80
+LIVE_UNBIND_MAX_TOKENS = 6
+
+
+def _unbind_dual_scheme_rows(
+    atom: str,
+    tokens: list[str],
+    *,
+    lineage: str,
+    stage: str,
+    epistemic: str,
+    pos_provenance: str,
+    type_provenance: str,
+    license: str | None = None,
+) -> list[dict[str, Any]]:
+    """Emit positional + type_slot unbind rows. Fillers = real tokens only."""
+    if lineage not in FAMILIES and lineage != "none":
+        lineage = "none"
+    extra: dict[str, Any] = {}
+    if license:
+        extra["license"] = license
+    pos = _row(
+        text=atom,
+        lineage=lineage,
+        typology=TYPOLOGY.get(lineage, []),
+        stage=stage,
+        roles=[f"pos_{k}" for k in range(len(tokens))],
+        fillers=tokens,
+        role_scheme="positional",
+        task="unbind",
+        provenance=pos_provenance,
+        **{"class": epistemic},
+        **extra,
+    )
+    tags = _structural_type_tags(len(tokens))
+    typ = _row(
+        text=" ".join(f"{t}:{tok}" for t, tok in zip(tags, tokens)),
+        lineage=lineage,
+        typology=TYPOLOGY.get(lineage, []),
+        stage=stage,
+        roles=tags,
+        fillers=tokens,
+        role_scheme="type_slot",
+        task="unbind",
+        provenance=type_provenance,
+        **{"class": epistemic},
+        **extra,
+    )
+    return [pos, typ]
+
+
+def _positional_unbind_atoms(rows: list[dict[str, Any]]) -> set[str]:
+    out: set[str] = set()
+    for row in rows:
+        if row.get("task") != "unbind" or row.get("role_scheme") != "positional":
+            continue
+        text = str(row.get("text") or "").strip()
+        if text:
+            out.add(text.lower())
+    return out
+
+
+def _phrase_like_atom(text: str) -> tuple[str, list[str]] | None:
+    """Return (stripped atom, tokens) for short multiword SoT phrases, else None."""
+    atom = (text or "").strip()
+    if not atom or " " not in atom:
+        return None
+    if len(atom) > LIVE_UNBIND_MAX_LEN:
+        return None
+    if atom.lower() in COLLISION_HOLD:
+        return None
+    tokens = [t for t in atom.split() if t]
+    if len(tokens) < 2 or len(tokens) > LIVE_UNBIND_MAX_TOKENS:
+        return None
+    if reject_candidate_text(atom):
+        return None
+    return atom, tokens
+
+
+def _live_unbind_epistemic(raw: dict[str, Any]) -> str:
+    """Copy store epistemic. Missing/None → INFERRED. Never invent OBSERVED."""
+    for key in ("epistemic", "class"):
+        if key not in raw:
+            continue
+        val = raw.get(key)
+        if val is None or (isinstance(val, str) and not val.strip()):
+            continue
+        return _norm_class(str(val), "INFERRED")
+    return "INFERRED"
+
+
+def _live_unbind_lineage(raw: dict[str, Any]) -> str:
+    for key in ("lineage", "family", "family_id", "lineage_family"):
+        val = raw.get(key)
+        if not val:
+            continue
+        fam = str(val).strip()
+        if fam in FAMILIES or fam == "none":
+            return fam
+    return "none"
+
+
+def _default_held_unbind_atoms() -> set[str]:
+    """Civilian + fixture positional atoms. Fail-open if inventory cannot load."""
+    try:
+        return _positional_unbind_atoms(harvest_unbind() + harvest_civilian_unbind(repo_root()))
+    except Exception:
+        return set()
+
+
 def harvest_civilian_unbind(root: Path) -> list[dict[str, Any]]:
     """Civilian unbind for multiword atoms under BOTH schemes.
 
@@ -375,38 +485,16 @@ def harvest_civilian_unbind(root: Path) -> list[dict[str, Any]]:
         tokens = [t for t in atom.split() if t]
         if len(tokens) < 2:
             return
-        if lineage not in FAMILIES and lineage != "none":
-            lineage = "none"
         seen_atom.add(key)
-        # positional
-        rows.append(
-            _row(
-                text=atom,
+        rows.extend(
+            _unbind_dual_scheme_rows(
+                atom,
+                tokens,
                 lineage=lineage,
-                typology=TYPOLOGY.get(lineage, []),
                 stage="circulating",
-                roles=[f"pos_{k}" for k in range(len(tokens))],
-                fillers=tokens,
-                role_scheme="positional",
-                task="unbind",
-                provenance=f"civilian-pos:{source_tag}",
-                **{"class": "OBSERVED"},
-            )
-        )
-        # type_slot — structural tags only (real fillers; no gloss-invented roles)
-        tags = _structural_type_tags(len(tokens))
-        rows.append(
-            _row(
-                text=" ".join(f"{t}:{tok}" for t, tok in zip(tags, tokens)),
-                lineage=lineage,
-                typology=TYPOLOGY.get(lineage, []),
-                stage="circulating",
-                roles=tags,
-                fillers=tokens,
-                role_scheme="type_slot",
-                task="unbind",
-                provenance=f"civilian-type:{source_tag}",
-                **{"class": "OBSERVED"},
+                epistemic="OBSERVED",
+                pos_provenance=f"civilian-pos:{source_tag}",
+                type_provenance=f"civilian-type:{source_tag}",
             )
         )
 
@@ -680,6 +768,68 @@ def load_live_candidates(store: Path) -> list[dict[str, Any]]:
     return out
 
 
+def harvest_live_unbind(
+    live_store: Path,
+    *,
+    skip_atoms: set[str] | None = None,
+) -> list[dict[str, Any]]:
+    """Live SoT phrase-like atoms → dual-scheme unbind rows.
+
+    Selects stripped multiword text (2–6 whitespace tokens, len≤80, not
+    collision-hold). Dedupes by lowercased atom and skips civilian/fixture
+    atoms when ``skip_atoms`` is omitted. Epistemic is copied from the row
+    (``epistemic`` then ``class``); missing/None → INFERRED. Never upgraded
+    to OBSERVED. Fillers are the real tokens — no gloss invention.
+    Missing store → empty list (export_dataset fail-closes include-live).
+    """
+    store = Path(live_store)
+    if not store.is_file():
+        return []
+    held = set(skip_atoms) if skip_atoms is not None else _default_held_unbind_atoms()
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for line in store.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            raw = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(raw, dict):
+            continue
+        parsed = _phrase_like_atom(str(raw.get("text") or ""))
+        if parsed is None:
+            continue
+        atom, tokens = parsed
+        key = atom.lower()
+        if key in seen or key in held:
+            continue
+        seen.add(key)
+        epistemic = _live_unbind_epistemic(raw)
+        lineage = _live_unbind_lineage(raw)
+        stage = str(raw.get("stage") or "").strip() or "circulating"
+        license_ = raw.get("license")
+        if not isinstance(license_, str) or not license_.strip():
+            license_ = "operator-local"
+        try:
+            rows.extend(
+                _unbind_dual_scheme_rows(
+                    atom,
+                    tokens,
+                    lineage=lineage,
+                    stage=stage,
+                    epistemic=epistemic,
+                    pos_provenance=f"live-pos:{epistemic}",
+                    type_provenance=f"live-type:{epistemic}",
+                    license=license_,
+                )
+            )
+        except ValueError:
+            continue
+    return rows
+
+
 def export_dataset(
     root: Path | None = None,
     *,
@@ -717,7 +867,9 @@ def export_dataset(
                 live_rejected += 1
         live_rows = load_live_candidates(store)
         live_n = len(live_rows)
-        rows = rows + live_rows
+        held = _positional_unbind_atoms(rows)
+        live_unbind = harvest_live_unbind(store, skip_atoms=held)
+        rows = rows + live_rows + live_unbind
     rows = dedupe(rows)
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
     payload = "\n".join(json.dumps(r, sort_keys=True) for r in rows) + "\n"
@@ -748,6 +900,12 @@ def export_dataset(
             prov.startswith("civilian-pos:") or prov.startswith("civilian-type:")
         )
 
+    def _is_unbind_live(r: dict[str, Any]) -> bool:
+        prov = str(r.get("provenance") or "")
+        return r["task"] == "unbind" and (
+            prov.startswith("live-pos:") or prov.startswith("live-type:")
+        )
+
     classify_all = sum(1 for r in rows if r["task"] == "classify")
     classify_family = sum(1 for r in rows if _is_family_classify(r))
     classify_none = sum(1 for r in rows if _is_none_classify(r))
@@ -755,9 +913,11 @@ def export_dataset(
     unbind_all = sum(1 for r in rows if r["task"] == "unbind")
     unbind_fixture = sum(1 for r in rows if _is_unbind_fixture(r))
     unbind_civilian = sum(1 for r in rows if _is_unbind_civilian(r))
+    unbind_live = sum(1 for r in rows if _is_unbind_live(r))
     # Honesty: classify gate uses family-labeled rows only.
     # Negatives = ordinary-prose seed only (NOT live lineage=none classify).
-    # Unbind gate uses fixture(honest n=24) + civilian dual-scheme — no n=128 padding.
+    # Unbind = fixture(honest n=24) + civilian dual-scheme + optional live phrases.
+    # include_live does not flip name_gate.
     counts = {
         "n": len(rows),
         "classify": classify_family,  # EXCLUDES negatives (honest name-gate family quota)
@@ -766,6 +926,7 @@ def export_dataset(
         "unbind": unbind_all,
         "unbind_fixture": unbind_fixture,
         "unbind_civilian": unbind_civilian,
+        "unbind_live": unbind_live,
         "negatives": negatives,  # ordinary-prose only (seed:negative-prose)
         "dialect": sum(1 for r in rows if r["provenance"] == "seed:dialect-e6"),
         "backfill": sum(1 for r in rows if str(r["provenance"]).startswith("backfill:")),
@@ -802,9 +963,10 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                     "Honest accounting: counts.classify = family-labeled only "
                     "(excludes negatives). counts.negatives = ordinary-prose "
                     "(seed:negative-prose) only — not live lineage=none classify "
-                    "(see classify_none). unbind_fixture vs unbind_civilian split. "
+                    "(see classify_none). unbind_fixture / unbind_civilian / unbind_live. "
                     "Spec004 fixtures at n=24; civilian dual-scheme from golden/registry "
-                    "(no gloss invent). Live optional via --include-live (preserves store class; unset→INFERRED). "
+                    "(no gloss invent). Live optional via --include-live (preserves store class; "
+                    "unset→INFERRED; phrase-like atoms also harvest as unbind). "
                     "Not a T1 name-gate."
                 ),
             },
