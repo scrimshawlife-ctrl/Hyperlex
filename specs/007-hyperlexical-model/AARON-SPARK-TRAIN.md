@@ -79,6 +79,13 @@ export HYPERLEX_TRAIN_LR=2e-5
 # export HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=2
 # export HYPERLEX_UNBIND_INFERRED_CAP=200
 # export HYPERLEX_UNBIND_MORPH_MARGIN=0.5
+# optional scheme-split unbind curriculum (default 0 = identity / full mix):
+# export HYPERLEX_UNBIND_CURRICULUM=1
+# export HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS=1
+# export HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS=1
+# remainder of HYPERLEX_TRAIN_EPOCHS is joint. Classify path unchanged.
+# optional hard-neg / CE distractor denylist (empty default; no invented atoms):
+# export HYPERLEX_UNBIND_FILLER_DENYLIST='{"political-status":["goat"]}'
 # Next train sentence (live SoT). Omit for seed smoke. Fail-closed if the store is missing.
 # export HYPERLEX_INCLUDE_LIVE=1
 ```
@@ -116,7 +123,7 @@ Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, l
 
 ## 6. Hard no
 
-No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-live5`). ne0l0gist harvest is unchanged by the unbind upsample/morph recipe (loop multiplicity only).
+No Hub upload. No `hyperlex-structure-149m`. No chat template. No refusal head. No Brier. No `semantic`. No 7B. No Orin as this box. No 006 labels. No wrap rows. No weight binaries in git. No CPU-only named encoder if `sm_121` fails — stop and return the error. Do not flip `name_gate`. Do not reshuffle `lexical_split` when settle adds rows. BEST stays operator-side (`seed-morph1`). ne0l0gist harvest is unchanged by the unbind upsample/morph/curriculum recipe (loop multiplicity + epoch phase selection only).
 
 ## High-signal subsets (Moltbook + 4333, not the global SoT)
 

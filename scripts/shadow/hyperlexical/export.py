@@ -1075,7 +1075,8 @@ def export_dataset(
         "name_gate_negative_gap": max(0, 200 - negatives),
     }
     # Recipe gates are documented here; the Hyperlexical loop applies
-    # upsample/cap + morph hard-negs. Export rows stay SoT-shaped.
+    # upsample/cap + morph hard-negs + optional scheme curriculum.
+    # Export rows stay SoT-shaped.
     unbind_only = [r for r in rows if r["task"] == "unbind"]
     counts.update(recipe_env_counts(unbind_only))
     return {"rows": rows, "sha256": digest, "counts": counts, "payload": payload}
@@ -1108,8 +1109,10 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                     "E2 stays on Spec 004 fixtures. Not a T1 name-gate. "
                     "n_unbind_observed / n_unbind_inferred plus recipe env "
                     "(HYPERLEX_UNBIND_OBSERVED_UPSAMPLE default 1, "
-                    "HYPERLEX_UNBIND_INFERRED_CAP 0=off, unbind_morph_negatives) "
-                    "are counts only — loop applies train multiplicity / hard-negs; "
+                    "HYPERLEX_UNBIND_INFERRED_CAP 0=off, unbind_morph_negatives, "
+                    "HYPERLEX_UNBIND_CURRICULUM default 0) "
+                    "are counts only — loop applies train multiplicity / hard-negs / "
+                    "scheme-split curriculum; "
                     "export does not invent OBSERVED SoT gold. lexical_split is frozen."
                 ),
             },

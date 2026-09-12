@@ -20,6 +20,11 @@ from .layout import (
     resolve_last_trainable,
 )
 from .save_pretrained import collect_encoder_trainable, save_heads, write_skeleton
+from .unbind_curriculum import (
+    plan_unbind_curriculum,
+    resolve_curriculum_schedule,
+    select_unbind_for_epoch,
+)
 from .unbind_recipe import (
     resolve_unbind_morph_margin,
     shape_unbind_train,
@@ -152,6 +157,8 @@ def run_loop(
     unbind_loss_weight = resolve_unbind_loss_weight()
     unbind_every_n = resolve_unbind_every_n()
     morph_margin = resolve_unbind_morph_margin()
+    curriculum = resolve_curriculum_schedule()
+    curriculum_plan = plan_unbind_curriculum(unbind_tr, epochs, curriculum)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     for mod in (encoder, classify, role_head, filler_head):
         mod.to(device)
@@ -250,8 +257,9 @@ def run_loop(
             "n_unbind_eval": utot,
         }
 
-    unbind_cycle = 0
     for ep in range(epochs):
+        phase_rows, phase_meta = select_unbind_for_epoch(unbind_tr, ep, curriculum)
+        unbind_cycle = 0
         classify_batch_i = 0
         for i in range(0, len(classify_tr), batch):
             chunk = classify_tr[i : i + batch]
@@ -262,14 +270,17 @@ def run_loop(
             loss.backward()
             opt.step()
             losses.append(float(loss.detach().cpu()))
-            if should_interleave_unbind(classify_batch_i, unbind_every_n) and unbind_tr:
-                step_unbind(unbind_tr[unbind_cycle % len(unbind_tr)])
+            if should_interleave_unbind(classify_batch_i, unbind_every_n) and phase_rows:
+                step_unbind(phase_rows[unbind_cycle % len(phase_rows)])
                 unbind_cycle += 1
             classify_batch_i += 1
-        for row in unbind_tr:
+        for row in phase_rows:
             step_unbind(row)
         metrics = score()
         metrics["epoch"] = ep
+        metrics["unbind_phase"] = phase_meta["phase"]
+        metrics["n_unbind_phase"] = phase_meta["n_rows"]
+        metrics["unbind_phase_fallback_full_mix"] = phase_meta["fallback_full_mix"]
         epoch_metrics.append(metrics)
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -309,6 +320,14 @@ def run_loop(
         "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
         "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
         "unbind_morph_margin": morph_margin,
+        "unbind_curriculum": curriculum_plan["enabled"],
+        "unbind_curriculum_pos_epochs": curriculum_plan["pos_epochs"],
+        "unbind_curriculum_type_epochs": curriculum_plan["type_epochs"],
+        "unbind_curriculum_phases": curriculum_plan["phases"],
+        "n_unbind_curriculum_positional": curriculum_plan["n_unbind_positional"],
+        "n_unbind_curriculum_type_slot": curriculum_plan["n_unbind_type_slot"],
+        "n_unbind_curriculum_joint": curriculum_plan["n_unbind_joint"],
+        "unbind_filler_denylist_lineages": unbind_recipe.get("unbind_filler_denylist_lineages", 0),
         "last_loss": losses[-1] if losses else None,
         "val": last,
         "epoch_metrics": epoch_metrics,
@@ -339,6 +358,12 @@ def run_loop(
                 "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
                 "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
                 "unbind_morph_margin": morph_margin,
+                "unbind_curriculum": curriculum_plan["enabled"],
+                "unbind_curriculum_pos_epochs": curriculum_plan["pos_epochs"],
+                "unbind_curriculum_type_epochs": curriculum_plan["type_epochs"],
+                "unbind_filler_denylist_lineages": unbind_recipe.get(
+                    "unbind_filler_denylist_lineages", 0
+                ),
             },
             indent=2,
         )
