@@ -6,9 +6,17 @@ Use current **`main`**. Do not use the old `007-hyperlexical-model` branch.
 
 This is a **seed smoke** for harness wiring, not a Hyperlexical card. E2 has not passed. Name-gate is false. Do not upload to Hugging Face. Do not say the model is Hyperlexical.
 
-**Train data:** T1 / E2 work uses the **local SoT** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`) via `PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live`. Do not train the named path from tracked `exports/civilian.v0.1.jsonl` alone — that file is a seed/snapshot.
+**Train data:** T1 / E2 work uses the **local SoT** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`). Export it with `PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live`. Train the same rows with an explicit opt-in — default remains the tracked/seed export (smoke-safe):
 
-The harvest now includes 4333-row Hyperlex + Vernacular integration (see section below) with inline memetic enrichment. Recent live exports have met the ~2500 classify bar.
+```bash
+export HYPERLEX_INCLUDE_LIVE=1
+# or: python3 -m hyperlexical.train --offline --run --include-live
+# optional: HYPERLEX_LIVE_STORE=/path/to/ingest_candidates.jsonl
+```
+
+If the flag/env is set and the live store is missing, train exits non-zero. Do not train the named path from tracked `exports/civilian.v0.1.jsonl` alone — that file is a seed/snapshot.
+
+The harvest includes the 4333-row dump when `data/hyperlex_4333_dump.jsonl` is present (dump fields only). Shadow stays import-isolated — no `from hyperlex` enrichment. Recent live exports have met the ~2500 classify bar.
 
 Layout (locked): `specs/007-hyperlexical-model/weights.md`
 
@@ -33,10 +41,10 @@ python3 -V        # 3.10+
 
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.preflight
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
-# The updated harvest will pick up 4333 data if data/hyperlex_4333_dump.jsonl is present.
+# harvest_4333_dump picks up dump fields if data/hyperlex_4333_dump.jsonl is present.
 # omit --include-live only for harness wiring against the tracked seed
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --out /tmp/hlx-e2-before.json
-# expect exit 3
+# expect exit 3 (no trained heads yet → stub path)
 ```
 
 If `eval_unbind` exits 0 on the stub, stop and ping Danny.
@@ -62,12 +70,15 @@ export HYPERLEX_TRAIN_OUT="$HOME/.hyperlex/models/hyperlex-encoder-modernbert-ba
 export HYPERLEX_TRAIN_EPOCHS=2
 export HYPERLEX_TRAIN_BATCH=8
 export HYPERLEX_TRAIN_LR=2e-5
+# Next train sentence (live SoT). Omit for seed smoke. Fail-closed if the store is missing.
+# export HYPERLEX_INCLUDE_LIVE=1
 ```
 
 ## 4. Train smoke
 
 ```bash
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.train --offline --run
+# live SoT: add --include-live (or HYPERLEX_INCLUDE_LIVE=1). Default is seed export.
 ```
 
 Writes outside git: `heads.pt`, `layout.json`, `train-receipt.json`, `config-train.json`.
@@ -76,6 +87,7 @@ Do not commit them.
 ## 5. After
 
 ```bash
+# Loads heads from $HYPERLEX_TRAIN_OUT (or ~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed)
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --out /tmp/hlx-e2-after.json
 ```
 
@@ -100,7 +112,7 @@ Moltbook and the 4333 dump (see next section) are first-class **ai-native** sour
 Another first-class **ai-native** source (Hyperlex ledger + Vernacular/GrokBot terms from Notion export). Significant volume of memory, provenance, vernacular, and compression signals.
 
 - Source: Notion page attachments (processed 4333 rows NDJSON + CSVs).
-- Pipeline: `harvest_4333_dump` (wired in export) now calls `detect_memetic_patterns` inline → efficiency, memory_tiers, compression_type populated at export time.
+- Pipeline: `harvest_4333_dump` (wired in export) copies dump fields only. No `from hyperlex` / `detect_memetic_patterns` import — shadow stays isolated.
 - Prepared for training (in `exports/training/`):
   - `training_4333_dump.jsonl` (5019 rows)
   - `training_high_signal.jsonl` (1501 rows, 73%+ ai-native from this dump, avg eff 0.278)
@@ -124,12 +136,12 @@ cp /path/to/training_4333_dump.jsonl data/hyperlex_4333_dump.jsonl
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
 ```
 
-The dump is already enriched on export thanks to the updated harvest.
+The dump is included on export when the file is present (fields as stored; no inline memetic enrichment).
 
 ## Recommendations for this T1 run (4333 + high-signal)
 
 - **Primary data**: Always use `--include-live` against the current operator SoT. The tracked `civilian.v0.1.jsonl` is only a seed snapshot.
-- **4333 inclusion**: Copy `training_4333_dump.jsonl` (from exports/training/ or provided) to `data/hyperlex_4333_dump.jsonl` before export if not already merged into live ingest. The updated harvest will enrich it automatically.
+- **4333 inclusion**: Copy `training_4333_dump.jsonl` (from exports/training/ or provided) to `data/hyperlex_4333_dump.jsonl` before export if not already merged into live ingest. Harvest copies dump fields only.
 - **Oversampling**: Strongly recommended for memory/provenance signals. Use `exports/training/training_high_signal.jsonl` (1501 rows, 73%+ from 4333, avg eff 0.278). Prioritize rows with:
   - `memetic_efficiency` >= 0.3
   - `stage` == "hyperstition_ish" or strong "memory"/"provenance" in typology
