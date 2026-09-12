@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Spec 007 head-slot CE upweight + morph15 recipe preflight:**
+  `HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT` (default 1.0, fail-closed in
+  (0, 4]) scales position-0 filler CE before `combine_unbind_train_terms`.
+  Targets `positional_head_filler_miss` without inventing gold. Receipt /
+  `config-train.json` carry `unbind_head_slot_weight`. Torch-free
+  `python3 -m hyperlexical.morph15_recipe` resolves the morph15 card
+  knobs (exit 2 bad env, exit 3 hard-atoms missing when upsample>1).
+  Spark `morph15-unbind.sh` defaults head weight **2** and runs recipe
+  preflight. `name_gate` stays false.
+
 - **Spec 007 residual dump + morph15 card:** env-gated civilian val
   residual JSONL (`HYPERLEX_UNBIND_RESIDUAL_DUMP=/path.jsonl`, default
   off). Misses only; themes
@@ -11,7 +21,7 @@
   BEST `seed-morph14` (unbind_exact≈0.3857, slot/token F1≈0.659,
   classify≈0.438, E2 PASS) and climb toward ladder **0.45** with
   `slot_ce` + hard_upsample 3–4 + INFERRED_WEIGHT 0.4–0.5 + POS-heavy
-  curriculum + residual dump. `name_gate` stays false.
+  curriculum + residual dump + head-slot weight 2. `name_gate` stays false.
 
 - **Spec 007 train knob:** env-gated per-slot filler CE as the primary
   unbind train signal (`HYPERLEX_UNBIND_PRIMARY=slot_ce` or
