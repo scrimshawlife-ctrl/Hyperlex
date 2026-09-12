@@ -100,7 +100,7 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Ingest routes + automatic pipeline | Ready |
 | Atomic multi-term seeds | Ready |
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
-| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
+| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
 | Spec 007 model path (T0→T1) | SHADOW · classify volume ready · `name_gate` false · E2 Spark-blocked · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
@@ -141,9 +141,9 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Burn-in offline runs + settle path (this is how Brier becomes real).
-2. Spark E2 — train on the box per the bring-up runbooks. Until that passes, `name_gate` stays false.
-3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13).
+1. Spark morph15 card — pin `seed-morph14` (unbind≈0.3857); climb toward ladder 0.45 with `slot_ce` + hard upsample + soft INFERRED + residual dump (`NEXT_MOVES_007.md` / `u3-recipe.md`).
+2. Burn-in offline runs + settle path (this is how Brier becomes real).
+3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
 ## README
 
