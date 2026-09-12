@@ -20,6 +20,10 @@ from .layout import (
     resolve_last_trainable,
 )
 from .save_pretrained import collect_encoder_trainable, save_heads, write_skeleton
+from .unbind_recipe import (
+    resolve_unbind_morph_margin,
+    shape_unbind_train,
+)
 
 UNBIND_LOSS_WEIGHT_ENV = "HYPERLEX_UNBIND_LOSS_WEIGHT"
 UNBIND_EVERY_N_ENV = "HYPERLEX_UNBIND_EVERY_N"
@@ -62,6 +66,14 @@ def should_interleave_unbind(classify_batch_index: int, every_n: int) -> bool:
     if every_n <= 1:
         return False
     return (classify_batch_index + 1) % every_n == 0
+
+
+def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
+    """Train recipe only. Val list is untouched (frozen lexical split)."""
+    train = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "train"]
+    val = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "val"]
+    shaped, stats = shape_unbind_train(train)
+    return shaped, val, stats
 
 
 def _require_local_model(trunk: Path):
@@ -116,8 +128,7 @@ def run_loop(
     write_export(root / "specs" / "007-hyperlexical-model" / "exports", bundle)
     classify_tr = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "train"]
     classify_va = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "val"]
-    unbind_tr = [r for r in bundle["rows"] if r["task"] == "unbind" and r["split"] == "train"]
-    unbind_va = [r for r in bundle["rows"] if r["task"] == "unbind" and r["split"] == "val"]
+    unbind_tr, unbind_va, unbind_recipe = prepare_unbind_splits(bundle["rows"])
     if len(classify_tr) < 8:
         raise RuntimeError("not enough classify train rows")
 
@@ -140,6 +151,7 @@ def run_loop(
     batch = int(os.environ.get("HYPERLEX_TRAIN_BATCH", "8"))
     unbind_loss_weight = resolve_unbind_loss_weight()
     unbind_every_n = resolve_unbind_every_n()
+    morph_margin = resolve_unbind_morph_margin()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     for mod in (encoder, classify, role_head, filler_head):
         mod.to(device)
@@ -165,8 +177,22 @@ def run_loop(
             idxs = pool_indices(states.size(0), atom_token_index(row["text"], fill, offs))
             h = states[idxs].mean(0)
             gold_f = maps["filler_of"].get(fill, maps["filler_of"][UNK])
-            floss = floss + nn.functional.cross_entropy(filler_head(h).unsqueeze(0), torch.tensor([gold_f], device=device))
+            logits = filler_head(h)
+            floss = floss + nn.functional.cross_entropy(logits.unsqueeze(0), torch.tensor([gold_f], device=device))
             n += 1
+            hard = [nf for nf in (row.get("hard_neg_fillers") or []) if nf]
+            if hard:
+                gold_logit = logits[gold_f]
+                neg_vals = []
+                for nf in hard:
+                    ni = maps["filler_of"].get(nf)
+                    if ni is None or ni == gold_f:
+                        continue
+                    neg_vals.append(logits[ni])
+                if neg_vals:
+                    stacked = torch.stack(neg_vals)
+                    floss = floss + torch.relu(stacked + morph_margin - gold_logit).sum()
+                    n += 1
             if k < len(roles):
                 gold_r = maps["role_of"].get(roles[k], maps["role_of"][UNK])
                 floss = floss + nn.functional.cross_entropy(role_head(h).unsqueeze(0), torch.tensor([gold_r], device=device))
@@ -277,6 +303,12 @@ def run_loop(
         "last_trainable": last_trainable_used,
         "unbind_loss_weight": unbind_loss_weight,
         "unbind_every_n": unbind_every_n,
+        "n_unbind_observed": unbind_recipe["n_unbind_observed"],
+        "n_unbind_inferred": unbind_recipe["n_unbind_inferred"],
+        "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
+        "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
+        "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
+        "unbind_morph_margin": morph_margin,
         "last_loss": losses[-1] if losses else None,
         "val": last,
         "epoch_metrics": epoch_metrics,
@@ -303,6 +335,10 @@ def run_loop(
                 "last_trainable": last_trainable_used,
                 "unbind_loss_weight": unbind_loss_weight,
                 "unbind_every_n": unbind_every_n,
+                "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
+                "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
+                "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
+                "unbind_morph_margin": morph_margin,
             },
             indent=2,
         )
