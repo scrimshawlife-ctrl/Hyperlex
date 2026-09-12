@@ -206,6 +206,8 @@ REMOTE
 
 `.git/info/exclude`, not `.gitignore` — local only, no diff for Danny to review.
 
+**This slice is now largely vestigial and that is expected.** As of main `e3425ab`, ten files under `specs/007-hyperlexical-model/exports/` are **tracked** upstream. `.git/info/exclude` only suppresses *untracked* paths, so it cannot hide changes to those. B3 regenerates them via `write_export`, and they will show as modified. Keep the exclude for any genuinely new file the exporter emits; expect the tracked ones to go dirty regardless. See B5.
+
 **Done:** the `exports/` line appears exactly once. Safe to re-run — the append is guarded.
 
 ## Slice A3 — fetch the trunk
@@ -378,7 +380,13 @@ REMOTE
 
 **Stop if:** exit 2 — the gate is closed. Read `reason` in the JSON. Do not set env vars the spec did not list to force it open.
 
-Expected `data_counts`: 138 classify, 45 unbind, 22 negatives, `data_sha256` beginning `0d6a3e34`. A different sha means the data moved — report it, do not proceed silently.
+Expected `data_counts` as of main `e3425ab` (2026-09-11): **classify 1922, unbind 437, negatives 208**, `data_sha256` beginning `637f800b`.
+
+`classify` deliberately **excludes** negatives — it is the honest family quota for the 2,000 name-gate. `classify_all` is the larger number and is *not* the gate figure. Do not substitute one for the other.
+
+Name-gate gaps now: classify **78**, unbind **0**, negatives **0**. Two of three are closed.
+
+A different sha means the dataset moved again — report the new value and its counts, then continue. It is no longer a stop: this dataset is under active harvest and `0d6a3e34` (183 rows) is the retired seed snapshot.
 
 ## Slice B2 — E2 before
 
@@ -466,7 +474,11 @@ REMOTE
 
 Re-dispatch B3b until `status=exited`. Do not launch B3a a second time — that starts a competing trainer against the same memory cap.
 
-Trains on: classify 110 train / 13 val, unbind 39 train / **1** val. `MAX_LEN` 64, batch 8.
+Trains on roughly **4,375 train / 541 val / 551 test** rows at main `e3425ab` — about 29× the retired seed. `MAX_LEN` 64, batch 8.
+
+Two consequences. Runtime is now minutes rather than seconds, so B3b may need several polls; that is expected, not a hang. And the val-metric caveat is **gone** — unbind val is ~64 rows, not 1, so `unbind_exact` is finally a real measurement.
+
+Per the updated `AARON-SPARK-TRAIN.md`, the operator SoT is the primary source. If the run should train against live candidates rather than the tracked snapshot, that is `--include-live`, and it is the spec owner's call — do not add the flag on your own initiative.
 
 **Done:** `status=exited exit=0`, and the receipt in `train-stdout.json` shows `cuda: true`, `device: "cuda"`, `name_gate: false`, `e2_pass: false`, `brier: null`, and `n_unfrozen_encoder` > 0.
 
@@ -538,7 +550,26 @@ ls -la ~/hlx-evidence/
 
 Weights stay on the Spark. Do **not** copy `model.safetensors` or `heads.pt` to the Mac — `~/.hyperlex/models/` is the Spark dump location and no weight binary travels.
 
-**Done:** the Spark output dir holds `config.json`, `layout.json`, `train-receipt.json`, `config-train.json`, and one of `model.safetensors` / `heads.pt`. `git status --short` is empty. Free memory is back to ~5.2 / 130.7. Six files are in `~/hlx-evidence/` on the Mac and the `diff` reported identical.
+**Done:** the Spark output dir holds `config.json`, `layout.json`, `train-receipt.json`, `config-train.json`, and one of `model.safetensors` / `heads.pt`. Free memory is back to baseline. Six files are in `~/hlx-evidence/` on the Mac and the `diff` reported identical.
+
+**On `git status`: a dirty tree here is expected, not a failure.** B3 calls `write_export`, which regenerates the ten tracked files under `specs/007-hyperlexical-model/exports/`. They will appear as modified. The check is that *nothing outside that directory* changed:
+
+```bash
+ssh spark bash -s <<'REMOTE'
+set -euo pipefail
+cd ~/Hyperlex
+echo "--- modified ---"; git status --short
+OUTSIDE=$(git status --porcelain | awk '{print $2}' | grep -v '^specs/007-hyperlexical-model/exports/' || true)
+if [ -n "$OUTSIDE" ]; then echo "UNEXPECTED changes outside exports/:"; echo "$OUTSIDE"; exit 1; fi
+echo "EXPORTS_ONLY_OK"
+REMOTE
+```
+
+**Done:** prints `EXPORTS_ONLY_OK`.
+
+**Stop if:** anything outside `exports/` is modified. Report the paths — the run touched something it should not have.
+
+Do **not** commit the regenerated exports, and do **not** `git checkout --` them away. They are the spec owner's artifacts; leave them as they lie and record the `data_sha256` from the receipt instead.
 
 ## Slice C1 — open the PR
 
@@ -667,6 +698,7 @@ Added for an autonomous executor:
 5. The torch note for Danny: version, CUDA, capability, and that it ran under a 3.9 GB cap beside a live SGLang server.
 6. Free device memory before the run and after, showing the trainer released everything.
 7. The PR URL from C1, and confirmation it shows exactly two changed files.
+8. **The `--include-live` divergence, stated plainly.** `AARON-SPARK-TRAIN.md` says to train from the live SoT via `--include-live`. This run did not, for two reasons: `run_loop` calls `export_dataset(root)` with no `include_live` parameter and `train.py` exposes no flag or env var for it, so it is not expressible; and the Spark has no live store (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl` does not exist), so it would have contributed zero rows. The tracked export was the complete dataset on this box. Report this as a known, deliberate divergence — not as an oversight, and not as a defect.
 8. Anything that stopped a slice, verbatim, with no attempt at a fix.
 
 Every number you return is OBSERVED or it does not go in. No INFERRED metrics. `brier` stays null.
