@@ -142,3 +142,7 @@ data/backfill/2026/
 1. Burn-in offline runs + settle path (this is how Brier becomes real).
 2. Spark E2 — train on the box per the bring-up runbooks. Until that passes, `name_gate` stays false.
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13).
+
+## README
+
+Operator front door expanded for stack parity with Athanor / Semion / Yggdrasil (2026-09-11). Changelog-style dumps stay in CHANGELOG / receipts — not the main page.

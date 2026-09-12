@@ -19,4 +19,10 @@ def attach_mutation_trace(
         if mt.get("operators"):
             analysis["mutation_trace"] = mt
     except Exception:
+        pass
+    try:
+        from .routes import attach_route_labels
+
+        attach_route_labels(analysis)
+    except Exception:
         return
