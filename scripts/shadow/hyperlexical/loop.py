@@ -21,6 +21,48 @@ from .layout import (
 )
 from .save_pretrained import collect_encoder_trainable, save_heads, write_skeleton
 
+UNBIND_LOSS_WEIGHT_ENV = "HYPERLEX_UNBIND_LOSS_WEIGHT"
+UNBIND_EVERY_N_ENV = "HYPERLEX_UNBIND_EVERY_N"
+UNBIND_LOSS_WEIGHT_DEFAULT = 1.0
+UNBIND_EVERY_N_DEFAULT = 1
+
+
+def resolve_unbind_loss_weight(raw: str | float | int | None = None) -> float:
+    """Scale on unbind loss before backward. Default 1.0. Fail-closed if invalid."""
+    if raw is None:
+        raw = os.environ.get(UNBIND_LOSS_WEIGHT_ENV)
+    if raw is None or (isinstance(raw, str) and not raw.strip()):
+        return UNBIND_LOSS_WEIGHT_DEFAULT
+    try:
+        weight = float(str(raw).strip())
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{UNBIND_LOSS_WEIGHT_ENV} must be a finite number >= 0, got {raw!r}") from exc
+    if weight < 0 or weight != weight or weight == float("inf"):
+        raise ValueError(f"{UNBIND_LOSS_WEIGHT_ENV} must be a finite number >= 0, got {raw!r}")
+    return weight
+
+
+def resolve_unbind_every_n(raw: str | int | None = None) -> int:
+    """Classify-batch stride for an extra unbind step. Default 1 = epoch-end only."""
+    if raw is None:
+        raw = os.environ.get(UNBIND_EVERY_N_ENV)
+    if raw is None or (isinstance(raw, str) and not raw.strip()):
+        return UNBIND_EVERY_N_DEFAULT
+    try:
+        n = int(str(raw).strip(), 10)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{UNBIND_EVERY_N_ENV} must be a positive int, got {raw!r}") from exc
+    if n < 1:
+        raise ValueError(f"{UNBIND_EVERY_N_ENV} must be a positive int, got {n}")
+    return n
+
+
+def should_interleave_unbind(classify_batch_index: int, every_n: int) -> bool:
+    """True after classify batch `index` (0-based) when every_n > 1."""
+    if every_n <= 1:
+        return False
+    return (classify_batch_index + 1) % every_n == 0
+
 
 def _require_local_model(trunk: Path):
     from transformers import AutoModel, AutoTokenizer
@@ -96,6 +138,8 @@ def run_loop(
     opt = AdamW(trainable, lr=float(os.environ.get("HYPERLEX_TRAIN_LR", "2e-5")))
     epochs = int(os.environ.get("HYPERLEX_TRAIN_EPOCHS", "2"))
     batch = int(os.environ.get("HYPERLEX_TRAIN_BATCH", "8"))
+    unbind_loss_weight = resolve_unbind_loss_weight()
+    unbind_every_n = resolve_unbind_every_n()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     for mod in (encoder, classify, role_head, filler_head):
         mod.to(device)
@@ -128,6 +172,18 @@ def run_loop(
                 floss = floss + nn.functional.cross_entropy(role_head(h).unsqueeze(0), torch.tensor([gold_r], device=device))
                 n += 1
         return floss / max(1, n)
+
+    def step_unbind(row) -> None:
+        if unbind_loss_weight == 0:
+            return
+        uloss = unbind_loss(row)
+        if uloss is None:
+            return
+        scaled = uloss * unbind_loss_weight
+        opt.zero_grad()
+        scaled.backward()
+        opt.step()
+        losses.append(float(scaled.detach().cpu()))
 
     @torch.no_grad()
     def score():
@@ -168,7 +224,9 @@ def run_loop(
             "n_unbind_eval": utot,
         }
 
+    unbind_cycle = 0
     for ep in range(epochs):
+        classify_batch_i = 0
         for i in range(0, len(classify_tr), batch):
             chunk = classify_tr[i : i + batch]
             y = torch.tensor([maps["family_of"].get(c["lineage"], maps["family_of"]["none"]) for c in chunk], device=device)
@@ -178,14 +236,12 @@ def run_loop(
             loss.backward()
             opt.step()
             losses.append(float(loss.detach().cpu()))
+            if should_interleave_unbind(classify_batch_i, unbind_every_n) and unbind_tr:
+                step_unbind(unbind_tr[unbind_cycle % len(unbind_tr)])
+                unbind_cycle += 1
+            classify_batch_i += 1
         for row in unbind_tr:
-            uloss = unbind_loss(row)
-            if uloss is None:
-                continue
-            opt.zero_grad()
-            uloss.backward()
-            opt.step()
-            losses.append(float(uloss.detach().cpu()))
+            step_unbind(row)
         metrics = score()
         metrics["epoch"] = ep
         epoch_metrics.append(metrics)
@@ -219,6 +275,8 @@ def run_loop(
         "n_unfrozen_encoder": n_unfrozen,
         "n_encoder_tensors": len(encoder_state),
         "last_trainable": last_trainable_used,
+        "unbind_loss_weight": unbind_loss_weight,
+        "unbind_every_n": unbind_every_n,
         "last_loss": losses[-1] if losses else None,
         "val": last,
         "epoch_metrics": epoch_metrics,
@@ -243,6 +301,8 @@ def run_loop(
                 "batch": batch,
                 "max_len": MAX_LEN,
                 "last_trainable": last_trainable_used,
+                "unbind_loss_weight": unbind_loss_weight,
+                "unbind_every_n": unbind_every_n,
             },
             indent=2,
         )

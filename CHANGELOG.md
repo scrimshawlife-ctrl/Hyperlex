@@ -10,6 +10,11 @@
   `name_gate` stays false. Avoid bare public “Hyperlex” (French legaltech CLM /
   DiliTrust collision).
 
+- **Spec 007 harness:** `HYPERLEX_UNBIND_LOSS_WEIGHT` (default 1.0) scales
+  unbind loss before backward; optional `HYPERLEX_UNBIND_EVERY_N` (default 1
+  = epoch-end only) interleaves one unbind step every N classify batches.
+  Effective values land in `train-receipt.json`. `name_gate` stays false.
+
 - **Spec 007 harness:** `HYPERLEX_LAST_TRAINABLE` overrides last-N unfrozen
   encoder layers (default `LAST_TRAINABLE=2`, positive int, clamp to
   `min(encoder layers, 8)`). `freeze_encoder` and `train-receipt.json`
