@@ -16,6 +16,11 @@
   `lexical_split` frozen. Export JSONL stays SoT-shaped. Flat
   `HYPERLEX_UNBIND_LOSS_WEIGHT=2` is not this lever. BEST stays
   operator-side (`seed-morph1`). `name_gate` stays false.
+  Morph1 OBSERVED val dump baked into recipe notes only (not SoT gold):
+  unbind_exact 0.321 (115/358); positional 185/135 fail, type_slot
+  173/108 fail; positional-first then type_slot then joint; residual
+  morph pair rizzless↔rizz gated to existing fillers; INFERRED cap
+  stays default-off; status-vocab denylist (bum/bolt/burn/mid) opt-in.
 
 - **Spec 007 data/recipe shape:** Hyperlexical loop generates near-morph
   hard-negatives from existing unbind train fillers (explicit map seeded

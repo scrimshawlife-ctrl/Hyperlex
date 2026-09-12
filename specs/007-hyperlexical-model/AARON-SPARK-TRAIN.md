@@ -79,13 +79,22 @@ export HYPERLEX_TRAIN_LR=2e-5
 # export HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=2
 # export HYPERLEX_UNBIND_INFERRED_CAP=200
 # export HYPERLEX_UNBIND_MORPH_MARGIN=0.5
-# optional scheme-split unbind curriculum (default 0 = identity / full mix):
+# optional scheme-split unbind curriculum (default 0 = identity / full mix).
+# Morph1 OBSERVED val dump (seed-morph1 BEST, not new gold): unbind_exact 0.321
+# (115/358). positional 185 / 135 fail; type_slot 173 / 108 fail.
+# positional_head_filler_miss dominant → spend early epochs on positional,
+# then type_slot, then joint. Keep morph hard-negs. Classify path unchanged.
 # export HYPERLEX_UNBIND_CURRICULUM=1
-# export HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS=1
+# 2-epoch smoke still hits both schemes at the 1/1 defaults. Longer card:
+# export HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS=2
 # export HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS=1
-# remainder of HYPERLEX_TRAIN_EPOCHS is joint. Classify path unchanged.
-# optional hard-neg / CE distractor denylist (empty default; no invented atoms):
-# export HYPERLEX_UNBIND_FILLER_DENYLIST='{"political-status":["goat"]}'
+# remainder of HYPERLEX_TRAIN_EPOCHS is joint.
+# INFERRED cap stays 0 (off) — uncomment HYPERLEX_UNBIND_INFERRED_CAP above
+# only if you want to drop INFERRED train rows. Morph1: many INFERRED
+# type_slot rows are proper-noun noise. Opt in; do not invent OBSERVED gold.
+# optional hard-neg / CE distractor denylist (empty default; no invented atoms).
+# Morph1 status-vocab bleed (bum/bolt/burn/mid) is operator-opt-in:
+# export HYPERLEX_UNBIND_FILLER_DENYLIST='{"brainrot-aura":["bum","bolt","burn","mid"],"gaming-meta":["bum","bolt","burn","mid"]}'
 # Next train sentence (live SoT). Omit for seed smoke. Fail-closed if the store is missing.
 # export HYPERLEX_INCLUDE_LIVE=1
 ```

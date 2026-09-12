@@ -3,6 +3,19 @@
 Default OFF. Existing trains stay identity (full mix every epoch).
 Classify rows are out of scope — this module never sees them.
 ne0l0gist harvest / export SoT unchanged. name_gate stays false.
+
+Morph1 OBSERVED civilian val dump (operator BEST ``seed-morph1``).
+Not SoT gold. Do not invent rows from these counts.
+
+* unbind_exact 0.321 (115/358)
+* scheme totals positional 185 / type_slot 173
+* scheme failures positional 135 / type_slot 108
+* themes: positional_head_filler_miss dominant; type_slot TOKEN miss;
+  residual morph bleed; status-vocab distractors (bum/bolt/burn/mid)
+  across lineages; many INFERRED type_slot rows are proper-noun noise
+
+Spend early epochs on positional, then type_slot, then joint. Keep
+morph hard-negs. INFERRED cap stays default-off (operator Spark card).
 """
 
 from __future__ import annotations
@@ -15,8 +28,21 @@ UNBIND_CURRICULUM_POS_EPOCHS_ENV = "HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS"
 UNBIND_CURRICULUM_TYPE_EPOCHS_ENV = "HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS"
 UNBIND_CURRICULUM_DEFAULT = 0
 # Used only when curriculum is on. Remainder of HYPERLEX_TRAIN_EPOCHS is joint.
+# 1/1 so a 2-epoch smoke still hits both schemes. Longer Spark cards should
+# spend more early epochs on positional (Morph1 fail 135/185 vs 108/173).
 UNBIND_CURRICULUM_POS_EPOCHS_DEFAULT = 1
 UNBIND_CURRICULUM_TYPE_EPOCHS_DEFAULT = 1
+
+# OBSERVED seed-morph1 val dump. Documentation only — not train gold.
+MORPH1_VAL_UNBIND_EXACT = 0.321
+MORPH1_VAL_HIT = 115
+MORPH1_VAL_N = 358
+MORPH1_VAL_POSITIONAL_N = 185
+MORPH1_VAL_TYPE_SLOT_N = 173
+MORPH1_VAL_POSITIONAL_FAIL = 135
+MORPH1_VAL_TYPE_SLOT_FAIL = 108
+# Operator-optional distractor denylist surfaces (empty default).
+MORPH1_STATUS_VOCAB_DISTRACTORS = ("bum", "bolt", "burn", "mid")
 
 PHASE_POSITIONAL = "positional"
 PHASE_TYPE_SLOT = "type_slot"

@@ -20,11 +20,14 @@ UNBIND_OBSERVED_UPSAMPLE_DEFAULT = 1
 UNBIND_INFERRED_CAP_DEFAULT = 0
 UNBIND_MORPH_MARGIN_DEFAULT = 0.5
 
-# Seeded from civilian unbind failure themes. Surfaces only — pairing is
-# gated to fillers already present on unbind rows (no new slang atoms).
+# Seeded from civilian unbind failure themes (live5 + Morph1 dump).
+# Surfaces only — pairing is gated to fillers already present on unbind
+# rows (no new slang atoms). Morph1 residual bleed: looksmaxxed↔looksmaxxing
+# (already in the looksmax* cluster) and rizzless↔rizz.
 MORPH_CLUSTERS: tuple[frozenset[str], ...] = (
     frozenset({"aped", "aping"}),
     frozenset({"looksmax", "looksmaxx", "looksmaxxing", "looksmaxxed", "looksmaxxer"}),
+    frozenset({"rizz", "rizzless"}),
     frozenset({"fanum", "fanum tax", "fanumtax"}),
     frozenset(
         {

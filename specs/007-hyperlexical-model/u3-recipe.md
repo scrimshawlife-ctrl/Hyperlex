@@ -28,7 +28,12 @@ Do not train on `split=reject`. Do not treat INFERRED typology/stage as OBSERVED
 
 ## Unbind recipe (data shape, not a new harvest)
 
-Civilian val unbind plateaued ~0.23. Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` hurt.
+Civilian val unbind plateaued ~0.23 on live5. Morph1 (OBSERVED dump, not
+new SoT gold) is **0.321** (115/358): positional 185 / 135 fail, type_slot
+173 / 108 fail. Themes: `positional_head_filler_miss` dominant, type_slot
+TOKEN miss, residual morph bleed (looksmaxxed↔looksmaxxing, rizzless↔rizz),
+status-vocab distractors (bum/bolt/burn/mid) across lineages, many INFERRED
+type_slot rows are proper-noun noise. Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` hurt.
 This recipe is Hyperlexical train-loop only. ne0l0gist harvest / export SoT
 rows stay as-is (no invented OBSERVED gold).
 
@@ -48,9 +53,18 @@ map (aped↔aping, looksmaxxing variants, fanum*, aura*) plus a conservative
 same-stem auto pair. Missing sibling surfaces are not invented. The optional
 denylist only drops distractors already in that set — it does not mint slang.
 
-Curriculum is Hyperlexical-loop only and composes with `shape_unbind_train`.
-Classify batches stay the full train set every epoch. An empty exclusive
-phase falls back to the full mix so unbind steps are not skipped.
+Curriculum is Hyperlexical-loop only and composes with `shape_unbind_train`
+(morph hard-negs stay on). Classify batches stay the full train set every
+epoch. An empty exclusive phase falls back to the full mix so unbind steps
+are not skipped.
+
+Morph1 order lock: **positional → type_slot → joint**. Default phase
+lengths stay 1/1 so a 2-epoch smoke still hits both schemes. Longer Spark
+cards should spend more early epochs on positional (135/185 fail vs
+108/173). `HYPERLEX_UNBIND_INFERRED_CAP` stays **0** (off) unless the
+operator opts in — Morph1 INFERRED type_slot noise is not auto-dropped
+and is not promoted to OBSERVED gold. Status-vocab bleed is the optional
+denylist (`bum` / `bolt` / `burn` / `mid` as distractors only).
 
 `lexical_split` is a frozen text hash. Adding settled rows mid-experiment
 must not reshuffle val — do not change the hash, modulus, or bucket edges.

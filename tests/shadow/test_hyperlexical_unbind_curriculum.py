@@ -1,4 +1,10 @@
-"""Spec 007 data/recipe shape PR #2: scheme-split unbind curriculum."""
+"""Spec 007 data/recipe shape PR #2: scheme-split unbind curriculum.
+
+Morph1 OBSERVED val dump (seed-morph1, not SoT gold): unbind_exact 0.321
+(115/358); positional 185 / 135 fail; type_slot 173 / 108 fail. Curriculum
+order is positional → type_slot → joint because positional_head_filler_miss
+dominates. INFERRED cap and status-vocab denylist stay default-off.
+"""
 
 from pathlib import Path
 import json
@@ -12,10 +18,20 @@ sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 from hyperlexical.export import export_dataset
 from hyperlexical.loop import prepare_unbind_splits
 from hyperlexical.unbind_curriculum import (
+    MORPH1_STATUS_VOCAB_DISTRACTORS,
+    MORPH1_VAL_HIT,
+    MORPH1_VAL_N,
+    MORPH1_VAL_POSITIONAL_FAIL,
+    MORPH1_VAL_POSITIONAL_N,
+    MORPH1_VAL_TYPE_SLOT_FAIL,
+    MORPH1_VAL_TYPE_SLOT_N,
+    MORPH1_VAL_UNBIND_EXACT,
     PHASE_JOINT,
     PHASE_POSITIONAL,
     PHASE_TYPE_SLOT,
     UNBIND_CURRICULUM_DEFAULT,
+    UNBIND_CURRICULUM_POS_EPOCHS_DEFAULT,
+    UNBIND_CURRICULUM_TYPE_EPOCHS_DEFAULT,
     filter_rows_for_phase,
     phase_name_for_epoch,
     plan_unbind_curriculum,
@@ -26,8 +42,11 @@ from hyperlexical.unbind_curriculum import (
     select_unbind_for_epoch,
 )
 from hyperlexical.unbind_recipe import (
+    UNBIND_INFERRED_CAP_DEFAULT,
     distractor_fillers_for,
+    hard_negatives_for,
     resolve_filler_denylist,
+    resolve_unbind_inferred_cap,
     shape_unbind_train,
 )
 
@@ -242,6 +261,66 @@ def test_curriculum_does_not_touch_classify_or_val(monkeypatch):
     pos, _ = select_unbind_for_epoch(train, 0, sched)
     assert all(r.get("task") == "unbind" for r in pos)
     assert all(r["role_scheme"] == "positional" for r in pos)
+
+
+def test_morph1_dump_justifies_positional_first_then_type_slot_then_joint():
+    """OBSERVED Morph1 counts only. Does not mint SoT gold."""
+    assert MORPH1_VAL_HIT / MORPH1_VAL_N == pytest.approx(MORPH1_VAL_UNBIND_EXACT, abs=0.001)
+    assert MORPH1_VAL_POSITIONAL_N + MORPH1_VAL_TYPE_SLOT_N == MORPH1_VAL_N
+    assert MORPH1_VAL_POSITIONAL_FAIL + MORPH1_VAL_TYPE_SLOT_FAIL == MORPH1_VAL_N - MORPH1_VAL_HIT
+    assert MORPH1_VAL_POSITIONAL_FAIL / MORPH1_VAL_POSITIONAL_N > (
+        MORPH1_VAL_TYPE_SLOT_FAIL / MORPH1_VAL_TYPE_SLOT_N
+    )
+    # Defaults stay 1/1 so a 2-epoch smoke still reaches type_slot.
+    assert UNBIND_CURRICULUM_POS_EPOCHS_DEFAULT == 1
+    assert UNBIND_CURRICULUM_TYPE_EPOCHS_DEFAULT == 1
+    # Longer Spark card: more early positional, then type_slot, then joint.
+    sched = {"enabled": True, "pos_epochs": 2, "type_epochs": 1}
+    assert [phase_name_for_epoch(i, sched) for i in range(4)] == [
+        PHASE_POSITIONAL,
+        PHASE_POSITIONAL,
+        PHASE_TYPE_SLOT,
+        PHASE_JOINT,
+    ]
+
+
+def test_inferred_cap_stays_default_off(monkeypatch):
+    """Morph1 INFERRED type_slot proper-noun noise is operator-opt-in, not default."""
+    monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_CAP", raising=False)
+    assert UNBIND_INFERRED_CAP_DEFAULT == 0
+    assert resolve_unbind_inferred_cap() == 0
+
+
+def test_residual_morph_bleed_pairs_only_when_both_exist():
+    """Morph1 residual bleed. Missing sibling is not invented."""
+    assert set(hard_negatives_for("looksmaxxed", {"looksmaxxed", "looksmaxxing"})) == {
+        "looksmaxxing"
+    }
+    assert set(hard_negatives_for("looksmaxxing", {"looksmaxxed", "looksmaxxing"})) == {
+        "looksmaxxed"
+    }
+    assert set(hard_negatives_for("rizz", {"rizz", "rizzless"})) == {"rizzless"}
+    assert set(hard_negatives_for("rizzless", {"rizz", "rizzless"})) == {"rizz"}
+    assert hard_negatives_for("rizz", {"rizz"}) == []
+    assert hard_negatives_for("rizzless", {"rizzless"}) == []
+
+
+def test_status_vocab_denylist_is_operator_opt_in(monkeypatch):
+    """Morph1 bum/bolt/burn/mid bleed. Empty default. Distractors only."""
+    monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST_PATH", raising=False)
+    assert resolve_filler_denylist() == {}
+    assert MORPH1_STATUS_VOCAB_DISTRACTORS == ("bum", "bolt", "burn", "mid")
+    deny = resolve_filler_denylist(
+        {"brainrot-aura": list(MORPH1_STATUS_VOCAB_DISTRACTORS)}
+    )
+    assert deny["brainrot-aura"] == frozenset(MORPH1_STATUS_VOCAB_DISTRACTORS)
+    known = {"aped", "aping", *MORPH1_STATUS_VOCAB_DISTRACTORS}
+    negs = distractor_fillers_for(
+        "aped", known, lineage="brainrot-aura", denylist=deny
+    )
+    assert negs == ["aping"]
+    assert not set(MORPH1_STATUS_VOCAB_DISTRACTORS) & set(negs)
 
 
 def test_filter_rejects_unknown_phase():
