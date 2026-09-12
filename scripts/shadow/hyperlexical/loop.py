@@ -11,13 +11,13 @@ from .export import export_dataset, repo_root, write_export
 from .layout import (
     FAMILIES,
     HIDDEN,
-    LAST_TRAINABLE,
     MAX_LEN,
     MODEL_ID_SEED,
     TRUNK,
     UNK,
     describe,
     label_maps,
+    resolve_last_trainable,
 )
 from .save_pretrained import collect_encoder_trainable, save_heads, write_skeleton
 
@@ -39,18 +39,20 @@ def _layers(encoder):
     return None
 
 
-def freeze_encoder(encoder, last_trainable: int = LAST_TRAINABLE) -> int:
+def freeze_encoder(encoder, last_trainable: int | None = None) -> tuple[int, int]:
+    layers = _layers(encoder)
+    n_layers = len(list(layers)) if layers is not None else None
+    used = resolve_last_trainable(last_trainable, layer_count=n_layers)
     for p in encoder.parameters():
         p.requires_grad = False
-    layers = _layers(encoder)
     n = 0
     if layers is None:
-        return 0
-    for block in list(layers)[-last_trainable:]:
+        return 0, used
+    for block in list(layers)[-used:]:
         for p in block.parameters():
             p.requires_grad = True
             n += p.numel()
-    return n
+    return n, used
 
 
 def _offsets(tok, text: str):
@@ -86,7 +88,7 @@ def run_loop(
     hidden = int(getattr(encoder.config, "hidden_size", HIDDEN))
     if hidden != HIDDEN:
         raise RuntimeError(f"hidden {hidden} != {HIDDEN}")
-    n_unfrozen = freeze_encoder(encoder)
+    n_unfrozen, last_trainable_used = freeze_encoder(encoder)
     classify = nn.Linear(hidden, len(FAMILIES))
     role_head = nn.Linear(hidden, len(maps["role_vocab"]))
     filler_head = nn.Linear(hidden, len(maps["filler_vocab"]))
@@ -190,6 +192,7 @@ def run_loop(
 
     out_dir.mkdir(parents=True, exist_ok=True)
     layout = describe(maps)
+    layout["last_trainable"] = last_trainable_used
     layout["aligner"] = "char_span + offset_mapping"
     encoder_state = collect_encoder_trainable(encoder)
     state = {
@@ -215,7 +218,7 @@ def run_loop(
         "n_train_unbind": len(unbind_tr),
         "n_unfrozen_encoder": n_unfrozen,
         "n_encoder_tensors": len(encoder_state),
-        "last_trainable": LAST_TRAINABLE,
+        "last_trainable": last_trainable_used,
         "last_loss": losses[-1] if losses else None,
         "val": last,
         "epoch_metrics": epoch_metrics,
@@ -233,7 +236,17 @@ def run_loop(
     (out_dir / "layout.json").write_text(json.dumps(layout, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (out_dir / "train-receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (out_dir / "config-train.json").write_text(
-        json.dumps({"lr": os.environ.get("HYPERLEX_TRAIN_LR", "2e-5"), "epochs": epochs, "batch": batch, "max_len": MAX_LEN}, indent=2) + "\n",
+        json.dumps(
+            {
+                "lr": os.environ.get("HYPERLEX_TRAIN_LR", "2e-5"),
+                "epochs": epochs,
+                "batch": batch,
+                "max_len": MAX_LEN,
+                "last_trainable": last_trainable_used,
+            },
+            indent=2,
+        )
+        + "\n",
         encoding="utf-8",
     )
     return receipt

@@ -72,6 +72,8 @@ export HYPERLEX_TRAIN_OUT="$HOME/.hyperlex/models/hyperlex-encoder-modernbert-ba
 export HYPERLEX_TRAIN_EPOCHS=2
 export HYPERLEX_TRAIN_BATCH=8
 export HYPERLEX_TRAIN_LR=2e-5
+# optional recipe bump (default 2, clamp 1..min(encoder layers, 8)):
+# export HYPERLEX_LAST_TRAINABLE=4
 # Next train sentence (live SoT). Omit for seed smoke. Fail-closed if the store is missing.
 # export HYPERLEX_INCLUDE_LIVE=1
 ```

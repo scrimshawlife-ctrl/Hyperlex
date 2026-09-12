@@ -10,6 +10,11 @@
   `name_gate` stays false. Avoid bare public “Hyperlex” (French legaltech CLM /
   DiliTrust collision).
 
+- **Spec 007 harness:** `HYPERLEX_LAST_TRAINABLE` overrides last-N unfrozen
+  encoder layers (default `LAST_TRAINABLE=2`, positive int, clamp to
+  `min(encoder layers, 8)`). `freeze_encoder` and `train-receipt.json`
+  record the effective value. `name_gate` stays false.
+
 - **Spec 007 Wave A:** `harvest_live_unbind` turns phrase-like live SoT atoms
   (2–6 tokens, ≤80 chars) into dual-scheme unbind rows when `--include-live`
   is set. Epistemic is copied (`epistemic` / `class`; unset→INFERRED). Spark
