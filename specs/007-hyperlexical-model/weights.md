@@ -15,7 +15,7 @@ Unbind pools token states whose offsets overlap the atom's char span (C47).
 On-disk after `--run` (not git):
 
 - `config.json` `layout.json` `README.md`
-- `model.safetensors` or `heads.pt`
+- `model.safetensors` or `heads.pt` (heads + `encoder.<hf_path>` last-N layers; old head-only dumps may diverge on trunk-forward)
 - `train-receipt.json` with per-epoch val metrics
 
 Forbidden: refusal head, Brier head, chat embeddings, `text-generation` pipeline.

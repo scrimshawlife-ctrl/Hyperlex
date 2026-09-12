@@ -101,6 +101,8 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.eval_unbind --model-dir $HYPER
 
 `--model-dir` may be omitted when `HYPERLEX_TRAIN_OUT` is set, or when the default seed-live / seed out dir exists (`~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-live` then `...-seed`). Same as `--trunk-forward` on the CLI.
 
+Re-train after this encoder-persist fix (old `…-seed-live` lacks `encoder.*` tensors); then trunk-forward E2.
+
 Send Danny: preflight JSON, MANIFEST sha, e2 before/after, train-receipt.json, layout.json, torch/`sm_121` note. Include any high-signal oversampling notes if used (see 4333/Moltbook sections).
 
 ## 6. Hard no

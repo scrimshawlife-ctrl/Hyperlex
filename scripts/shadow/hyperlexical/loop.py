@@ -19,7 +19,7 @@ from .layout import (
     describe,
     label_maps,
 )
-from .save_pretrained import save_heads, write_skeleton
+from .save_pretrained import collect_encoder_trainable, save_heads, write_skeleton
 
 
 def _require_local_model(trunk: Path):
@@ -191,10 +191,12 @@ def run_loop(
     out_dir.mkdir(parents=True, exist_ok=True)
     layout = describe(maps)
     layout["aligner"] = "char_span + offset_mapping"
+    encoder_state = collect_encoder_trainable(encoder)
     state = {
         "classify": classify.state_dict(),
         "role_head": role_head.state_dict(),
         "filler_head": filler_head.state_dict(),
+        "encoder": encoder_state,
         "maps": {k: v for k, v in maps.items() if k not in {"family_of", "role_of", "filler_of"}},
         "layout": layout,
     }
@@ -212,6 +214,7 @@ def run_loop(
         "n_train_classify": len(classify_tr),
         "n_train_unbind": len(unbind_tr),
         "n_unfrozen_encoder": n_unfrozen,
+        "n_encoder_tensors": len(encoder_state),
         "last_trainable": LAST_TRAINABLE,
         "last_loss": losses[-1] if losses else None,
         "val": last,

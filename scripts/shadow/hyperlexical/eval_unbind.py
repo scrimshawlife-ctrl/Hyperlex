@@ -278,9 +278,15 @@ def run_eval(model_dir: str | Path | None = None, trunk_forward: bool = False) -
                 "model_dir": str(directory),
                 "name_gate": False,
                 "device": scored.get("device"),
+                "encoder_trainable_loaded": scored.get("encoder_trainable_loaded", 0),
+                "encoder_trainable_present": scored.get("encoder_trainable_present", 0),
                 "note": (
                     f"Trunk-forward unbind_exact from {weight} vs 004 probe_swap_min. "
-                    "name_gate stays false. Encoder is the local trunk snapshot; heads from train out."
+                    "name_gate stays false. "
+                    + scored.get(
+                        "encoder_note",
+                        "Encoder is the local trunk snapshot; heads from train out.",
+                    )
                 ),
             }
         )

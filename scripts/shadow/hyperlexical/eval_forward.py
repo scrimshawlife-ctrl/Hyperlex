@@ -8,6 +8,7 @@ from typing import NoReturn
 
 from .align import atom_token_index, offsets_from_tokenizer, pool_indices
 from .layout import HIDDEN, MAX_LEN, TRUNK, UNK
+from .save_pretrained import flatten_weight_tensors, split_weight_tensors
 
 
 def _error(message: str, cause: Exception | None = None) -> NoReturn:
@@ -71,25 +72,70 @@ def _torch_load(torch, path: Path, device):
         return torch.load(str(path), map_location=device)
 
 
-def _filler_state(weight_path: Path, torch) -> tuple[dict, dict | None]:
+def encoder_forward_note(*, loaded: int, present: int) -> str:
+    if present == 0:
+        return (
+            "No encoder.* tensors in artifact; last trainable layers stay at "
+            "trunk snapshot — unbind_exact may diverge from train val."
+        )
+    if loaded == 0:
+        return (
+            "encoder.* tensors present but none matched trunk keys; "
+            "unbind_exact may diverge from train val."
+        )
+    return f"Applied {loaded} saved encoder trainable tensors."
+
+
+def apply_encoder_trainable(encoder, tensors: dict) -> dict:
+    """Overlay saved encoder.* tensors. Unexpected keys ignored. Empty is a no-op."""
+    if not tensors:
+        return {"loaded": 0, "unexpected": [], "present": 0}
+    sd_keys = set(encoder.state_dict().keys())
+    mapped = {}
+    unexpected = []
+    for raw, value in tensors.items():
+        dest = _resolve_encoder_key(str(raw), sd_keys)
+        if dest is None:
+            unexpected.append(raw)
+            continue
+        mapped[dest] = value
+    if mapped:
+        encoder.load_state_dict(mapped, strict=False)
+    return {"loaded": len(mapped), "unexpected": unexpected, "present": len(tensors)}
+
+
+def _resolve_encoder_key(raw: str, sd_keys: set) -> str | None:
+    if raw.startswith("encoder."):
+        candidates = (raw[len("encoder.") :], raw)
+    else:
+        candidates = (raw, f"encoder.{raw}")
+    for key in candidates:
+        if key in sd_keys:
+            return key
+    return None
+
+
+def _weight_parts(weight_path: Path, torch) -> tuple[dict, dict, dict | None]:
+    """filler_head state, encoder tensors (encoder.* keys), optional heads.pt blob."""
     if weight_path.name == "model.safetensors":
         try:
             from safetensors.torch import load_file
         except ImportError as exc:
             _error("trunk-forward requested but safetensors is not importable", exc)
-        tensors = load_file(str(weight_path), device="cpu")
-        state = {
-            k.split(".", 1)[1]: v
-            for k, v in tensors.items()
-            if k.startswith("filler_head.")
-        }
-        if "weight" not in state:
+        split = split_weight_tensors(load_file(str(weight_path), device="cpu"))
+        if "weight" not in split["filler_head"]:
             _error("model.safetensors missing filler_head.weight")
-        return state, None
+        return split["filler_head"], split["encoder"], None
     blob = _torch_load(torch, weight_path, "cpu")
     if not isinstance(blob, dict) or "filler_head" not in blob:
         _error(f"{weight_path.name} missing filler_head")
-    return blob["filler_head"], blob
+    encoder = blob.get("encoder") if isinstance(blob.get("encoder"), dict) else {}
+    encoder = {
+        k: v
+        for k, v in flatten_weight_tensors({"encoder": encoder}).items()
+        if k.startswith("encoder.")
+    }
+    return blob["filler_head"], encoder, blob
 
 
 def _load_filler_head(nn, hidden: int, state: dict, maps: dict):
@@ -172,12 +218,15 @@ def run_unbind_exact(
 ) -> dict:
     torch, nn = _import_torch()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    filler_state, heads_blob = _filler_state(weight_path, torch)
+    filler_state, encoder_tensors, heads_blob = _weight_parts(weight_path, torch)
     maps = _load_maps(model_dir, heads_blob)
     tok, encoder = _load_trunk(trunk_dir, model_dir)
     hidden = int(getattr(encoder.config, "hidden_size", HIDDEN))
     if hidden != HIDDEN:
         _error(f"hidden {hidden} != {HIDDEN}")
+    applied = apply_encoder_trainable(encoder, encoder_tensors)
+    if applied["present"] and applied["loaded"] == 0:
+        _error("encoder trainable tensors present but none matched trunk keys")
     filler_head = _load_filler_head(nn, hidden, filler_state, maps)
     encoder.to(device)
     filler_head.to(device)
@@ -192,4 +241,9 @@ def run_unbind_exact(
         "n_unbind_eval": n_eval,
         "device": str(device),
         "cuda": bool(torch.cuda.is_available()),
+        "encoder_trainable_loaded": applied["loaded"],
+        "encoder_trainable_present": applied["present"],
+        "encoder_note": encoder_forward_note(
+            loaded=applied["loaded"], present=applied["present"]
+        ),
     }
