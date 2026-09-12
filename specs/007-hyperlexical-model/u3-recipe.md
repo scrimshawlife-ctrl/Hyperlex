@@ -40,7 +40,8 @@ rows stay as-is (no invented OBSERVED gold).
 | Env | Default | Effect |
 |-----|--------:|--------|
 | `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE` | 1 | Repeat OBSERVED unbind **train** rows (1 = identity) |
-| `HYPERLEX_UNBIND_INFERRED_CAP` | 0 | Cap INFERRED unbind **train** rows (0 = off). First-seen order. Hard low caps can starve morph-negs — do not default a cap. |
+| `HYPERLEX_UNBIND_INFERRED_CAP` | 0 | Cap INFERRED unbind **train** rows (0 = off). First-seen order. Hard low caps can starve morph-negs — do not default a cap. Morph4 `CAP=1000` rejected. |
+| `HYPERLEX_UNBIND_INFERRED_WEIGHT` | 1.0 | Soft scale on unbind CE + morph-margin for `class != OBSERVED`. Finite (0, 2]. Default 1.0 = identity. Try **0.4–0.5** on Spark. Does not drop rows. |
 | `HYPERLEX_UNBIND_MORPH_MARGIN` | 0.5 | Ranking margin vs a near-morph sibling filler |
 | `HYPERLEX_UNBIND_CURRICULUM` | 0 | `1` = scheme-split phases; `0` = full mix every epoch |
 | `HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS` | 1 | When on: exclusive positional / non-type_slot epochs |
@@ -66,8 +67,10 @@ cards should spend more early epochs on positional (135/185 fail vs
 108/173). `HYPERLEX_UNBIND_INFERRED_CAP` stays **0** (off) unless the
 operator opts in — Morph1 INFERRED type_slot noise is not auto-dropped
 and is not promoted to OBSERVED gold. Morph4 hard `INFERRED_CAP=1000`
-rejected (unbind 0.229; morph_negs 305→187); expand `MORPH_CLUSTERS`
-instead. Hard low caps can starve morph-negs. Status-vocab bleed is the
+rejected (unbind 0.229; morph_negs 305→187). Prefer
+`HYPERLEX_UNBIND_INFERRED_WEIGHT=0.4`–`0.5` so sibling fillers stay in
+the train pool. Morph5 map expand (#55) was 0.346 — hold map churn.
+Hard low caps can starve morph-negs. Status-vocab bleed is the
 optional denylist (`bum` / `bolt` / `burn` / `mid` as distractors only).
 BEST checkpoint stays operator-side (`seed-morph3`, unbind≈0.358).
 
@@ -75,8 +78,9 @@ BEST checkpoint stays operator-side (`seed-morph3`, unbind≈0.358).
 must not reshuffle val — do not change the hash, modulus, or bucket edges.
 
 Receipt fields: `n_unbind_observed`, `n_unbind_inferred`,
-`unbind_observed_upsample`, `n_unbind_morph_negatives`,
-`unbind_curriculum`, phase boundaries, n rows per phase.
+`unbind_observed_upsample`, `unbind_inferred_weight`,
+`n_unbind_morph_negatives`, `unbind_curriculum`, phase boundaries,
+n rows per phase.
 `name_gate` stays false. BEST checkpoint stays operator-side (`seed-morph3`).
 
 ## Heads

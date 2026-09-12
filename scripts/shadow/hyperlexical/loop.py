@@ -26,8 +26,10 @@ from .unbind_curriculum import (
     select_unbind_for_epoch,
 )
 from .unbind_recipe import (
+    resolve_unbind_inferred_weight,
     resolve_unbind_morph_margin,
     shape_unbind_train,
+    unbind_row_sample_weight,
 )
 
 UNBIND_LOSS_WEIGHT_ENV = "HYPERLEX_UNBIND_LOSS_WEIGHT"
@@ -157,6 +159,7 @@ def run_loop(
     unbind_loss_weight = resolve_unbind_loss_weight()
     unbind_every_n = resolve_unbind_every_n()
     morph_margin = resolve_unbind_morph_margin()
+    inferred_weight = resolve_unbind_inferred_weight()
     curriculum = resolve_curriculum_schedule()
     curriculum_plan = plan_unbind_curriculum(unbind_tr, epochs, curriculum)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -212,7 +215,8 @@ def run_loop(
         uloss = unbind_loss(row)
         if uloss is None:
             return
-        scaled = uloss * unbind_loss_weight
+        row_w = unbind_row_sample_weight(row, inferred_weight)
+        scaled = uloss * unbind_loss_weight * row_w
         opt.zero_grad()
         scaled.backward()
         opt.step()
@@ -318,6 +322,7 @@ def run_loop(
         "n_unbind_inferred": unbind_recipe["n_unbind_inferred"],
         "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
         "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
+        "unbind_inferred_weight": inferred_weight,
         "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
         "unbind_morph_margin": morph_margin,
         "unbind_curriculum": curriculum_plan["enabled"],
@@ -356,6 +361,7 @@ def run_loop(
                 "unbind_every_n": unbind_every_n,
                 "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
                 "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
+                "unbind_inferred_weight": inferred_weight,
                 "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
                 "unbind_morph_margin": morph_margin,
                 "unbind_curriculum": curriculum_plan["enabled"],

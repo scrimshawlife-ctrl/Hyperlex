@@ -319,6 +319,7 @@ def test_morph_margin_loss_pushes_away_from_neg():
 def test_export_counts_unbind_class_and_recipe_defaults(monkeypatch):
     monkeypatch.delenv("HYPERLEX_UNBIND_OBSERVED_UPSAMPLE", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_CAP", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_WEIGHT", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_CURRICULUM", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST_PATH", raising=False)
@@ -333,6 +334,7 @@ def test_export_counts_unbind_class_and_recipe_defaults(monkeypatch):
     )
     assert c["unbind_observed_upsample"] == 1
     assert c["unbind_inferred_cap"] == 0
+    assert c["unbind_inferred_weight"] == 1.0
     assert c["unbind_morph_negatives"] >= 0
     assert c["unbind_curriculum"] == 0
     assert c["unbind_filler_denylist_lineages"] == 0

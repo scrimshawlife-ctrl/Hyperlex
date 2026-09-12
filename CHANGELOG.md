@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Spec 007 data/recipe shape PR #4:** soft INFERRED unbind sample weight
+  (`HYPERLEX_UNBIND_INFERRED_WEIGHT`, float, default 1.0 = identity,
+  fail-closed finite in (0, 2]). When <1, scales unbind CE + morph-margin
+  for `class != OBSERVED` (INFERRED and any non-OBSERVED). Does not drop
+  rows — Morph4 hard `HYPERLEX_UNBIND_INFERRED_CAP=1000` rejected (val
+  0.229, morph_negs 305→187). Try 0.4–0.5 on Spark. Composes with
+  `shape_unbind_train` / curriculum / morph hard-negs / denylist.
+  Receipt field `unbind_inferred_weight`. Export JSONL stays SoT-shaped.
+  Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` is not this lever. Morph5 map
+  expand (#55) held (0.346). `name_gate` stays false. BEST stays
+  operator-side (`seed-morph3`, unbind≈0.358).
+
 - **Spec 007 data/recipe shape PR #3:** expand `MORPH_CLUSTERS` from Morph3
   residual near-morphs (rizzed/rizzing, fanum taxed + gated tax/taxed,
   quiet quit*, mew*, crash/crashout). Pairing stays fail-closed to fillers

@@ -1,24 +1,30 @@
 """Hyperlexical unbind train recipe: morph hard-negs + OBSERVED upsample.
 
-Train-loop multiplicity only. Does not invent OBSERVED gold in the SoT.
-ne0l0gist harvest is unchanged. name_gate stays false.
+Train-loop multiplicity / sample weights only. Does not invent OBSERVED
+gold in the SoT. ne0l0gist harvest is unchanged. name_gate stays false.
 """
 
 from __future__ import annotations
 
 import json
+import math
 import os
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 UNBIND_OBSERVED_UPSAMPLE_ENV = "HYPERLEX_UNBIND_OBSERVED_UPSAMPLE"
 UNBIND_INFERRED_CAP_ENV = "HYPERLEX_UNBIND_INFERRED_CAP"
+UNBIND_INFERRED_WEIGHT_ENV = "HYPERLEX_UNBIND_INFERRED_WEIGHT"
 UNBIND_MORPH_MARGIN_ENV = "HYPERLEX_UNBIND_MORPH_MARGIN"
 UNBIND_FILLER_DENYLIST_ENV = "HYPERLEX_UNBIND_FILLER_DENYLIST"
 UNBIND_FILLER_DENYLIST_PATH_ENV = "HYPERLEX_UNBIND_FILLER_DENYLIST_PATH"
 UNBIND_OBSERVED_UPSAMPLE_DEFAULT = 1
 # 0 = off. Hard low caps starve morph-negs (do not default a cap).
 UNBIND_INFERRED_CAP_DEFAULT = 0
+# Soft scale on unbind loss for class != OBSERVED. 1.0 = identity.
+# Prefer this over a hard INFERRED_CAP (Morph4 CAP=1000 lost).
+UNBIND_INFERRED_WEIGHT_DEFAULT = 1.0
+UNBIND_INFERRED_WEIGHT_MAX = 2.0
 UNBIND_MORPH_MARGIN_DEFAULT = 0.5
 
 # Seeded from civilian unbind failure themes (live5 + Morph1 + Morph3 dump).
@@ -197,6 +203,42 @@ def resolve_unbind_morph_margin(raw: str | float | int | None = None) -> float:
     if margin < 0 or margin != margin or margin == float("inf"):
         raise ValueError(f"{UNBIND_MORPH_MARGIN_ENV} must be a finite number >= 0, got {raw!r}")
     return margin
+
+
+def resolve_unbind_inferred_weight(raw: str | float | int | None = None) -> float:
+    """Soft unbind loss scale for class != OBSERVED. Default 1.0. Fail-closed.
+
+    Finite and in (0, 2]. Does not drop rows. Try 0.4–0.5 on Spark instead
+    of a hard ``HYPERLEX_UNBIND_INFERRED_CAP`` (Morph4 CAP=1000 rejected).
+    """
+    if raw is None:
+        raw = os.environ.get(UNBIND_INFERRED_WEIGHT_ENV)
+    if raw is None or (isinstance(raw, str) and not raw.strip()):
+        return UNBIND_INFERRED_WEIGHT_DEFAULT
+    try:
+        weight = float(str(raw).strip())
+    except (TypeError, ValueError) as exc:
+        raise ValueError(
+            f"{UNBIND_INFERRED_WEIGHT_ENV} must be a finite number in (0, 2], got {raw!r}"
+        ) from exc
+    if not math.isfinite(weight) or weight <= 0 or weight > UNBIND_INFERRED_WEIGHT_MAX:
+        raise ValueError(
+            f"{UNBIND_INFERRED_WEIGHT_ENV} must be a finite number in (0, 2], got {raw!r}"
+        )
+    return weight
+
+
+def unbind_row_sample_weight(
+    row: Mapping[str, Any],
+    inferred_weight: float,
+) -> float:
+    """Per-row unbind scale. OBSERVED stays 1.0. Non-OBSERVED gets ``inferred_weight``.
+
+    Scales CE + morph-margin for that row. Does not drop the row.
+    """
+    if row.get("class") == "OBSERVED":
+        return 1.0
+    return inferred_weight
 
 
 def known_fillers(unbind_rows: Iterable[dict[str, Any]]) -> set[str]:
@@ -384,7 +426,7 @@ def morph_margin_loss(
     return total
 
 
-def recipe_env_counts(unbind_rows: Iterable[dict[str, Any]]) -> dict[str, int]:
+def recipe_env_counts(unbind_rows: Iterable[dict[str, Any]]) -> dict[str, Any]:
     """Export-facing counts. Does not mutate rows or invent OBSERVED gold."""
     from .unbind_curriculum import curriculum_env_counts
 
@@ -397,6 +439,7 @@ def recipe_env_counts(unbind_rows: Iterable[dict[str, Any]]) -> dict[str, int]:
         "n_unbind_inferred": n_inf,
         "unbind_observed_upsample": resolve_unbind_observed_upsample(),
         "unbind_inferred_cap": resolve_unbind_inferred_cap(),
+        "unbind_inferred_weight": resolve_unbind_inferred_weight(),
         "unbind_morph_negatives": len(morph_pairs_for_rows(train)),
         "unbind_filler_denylist_lineages": len(resolve_filler_denylist()),
     }
