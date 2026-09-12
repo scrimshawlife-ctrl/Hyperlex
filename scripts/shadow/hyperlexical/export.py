@@ -6,6 +6,7 @@ import argparse
 import ast
 import hashlib
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -603,6 +604,27 @@ def reject_candidate_text(text: str) -> str | None:
     return None
 
 
+class LiveStoreMissing(FileNotFoundError):
+    """include-live was requested but the candidate store is not on disk."""
+
+
+def default_live_store() -> Path:
+    override = os.environ.get("HYPERLEX_LIVE_STORE", "").strip()
+    if override:
+        return Path(override)
+    return Path.home() / ".hyperlex" / "hyperlexical" / "ingest_candidates.jsonl"
+
+
+def resolve_live_store(live_store: Path | None = None, *, required: bool = False) -> Path:
+    store = Path(live_store) if live_store is not None else default_live_store()
+    if required and not store.is_file():
+        raise LiveStoreMissing(
+            f"include-live requested but live store missing: {store}. "
+            "Write ingest_candidates.jsonl or unset --include-live / HYPERLEX_INCLUDE_LIVE."
+        )
+    return store
+
+
 def load_live_candidates(store: Path) -> list[dict[str, Any]]:
     """Load SHADOW ingest candidates for --include-live.
 
@@ -680,23 +702,22 @@ def export_dataset(
     live_n = 0
     live_rejected = 0
     if include_live:
-        store = live_store or (Path.home() / ".hyperlex" / "hyperlexical" / "ingest_candidates.jsonl")
-        if store.is_file():
-            # count rejects for manifest
-            for line in store.read_text(encoding="utf-8").splitlines():
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    raw_row = json.loads(line)
-                except json.JSONDecodeError:
-                    live_rejected += 1
-                    continue
-                if reject_candidate_text(str(raw_row.get("text") or "")):
-                    live_rejected += 1
-            live_rows = load_live_candidates(store)
-            live_n = len(live_rows)
-            rows = rows + live_rows
+        store = resolve_live_store(live_store, required=True)
+        # count rejects for manifest
+        for line in store.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                raw_row = json.loads(line)
+            except json.JSONDecodeError:
+                live_rejected += 1
+                continue
+            if reject_candidate_text(str(raw_row.get("text") or "")):
+                live_rejected += 1
+        live_rows = load_live_candidates(store)
+        live_n = len(live_rows)
+        rows = rows + live_rows
     rows = dedupe(rows)
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
     payload = "\n".join(json.dumps(r, sort_keys=True) for r in rows) + "\n"
@@ -817,7 +838,11 @@ def main(argv=None) -> int:
     root = repo_root()
     dest = Path(args.out) if args.out else root / "specs" / "007-hyperlexical-model" / "exports"
     store = Path(args.live_store) if args.live_store else None
-    bundle = export_dataset(root, include_live=bool(args.include_live), live_store=store)
+    try:
+        bundle = export_dataset(root, include_live=bool(args.include_live), live_store=store)
+    except LiveStoreMissing as exc:
+        print(json.dumps({"abort": True, "error": str(exc), "brier": None}, indent=2), file=sys.stderr)
+        return 2
     path = write_export(dest, bundle)
     print(json.dumps({"wrote": str(path), "sha256": bundle["sha256"], "counts": bundle["counts"]}, indent=2))
     return 0

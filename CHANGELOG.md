@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Spec 007 harness:** `hyperlexical.train --include-live` / `HYPERLEX_INCLUDE_LIVE=1`
+  passes `include_live=True` into `export_dataset` (same path as
+  `python -m hyperlexical.export --include-live`). Default stays the
+  tracked/seed export. Missing live store fails closed (non-zero).
+  `eval_unbind` loads heads from `HYPERLEX_TRAIN_OUT` or the documented
+  seed out dir (`heads.json` / `heads.pt` / `model.safetensors`); no
+  weights keeps the stub path (exit 3). `name_gate` stays false.
+
 - **Docs: Spec 007 SoT scoreboard (2026-09-10 PT evening).** Local store 4333
   (402 OBSERVED / 3931 INFERRED); `--include-live` n=6506 / classify 2437 /
   unbind 1345 / negatives 208 / gaps 0/0/0; `name_gate` false; Danny ~2500

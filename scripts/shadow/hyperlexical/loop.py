@@ -60,13 +60,15 @@ def _offsets(tok, text: str):
         return None
 
 
-def run_loop(trunk: Path, out_dir: Path) -> dict:
-    import torch
-    from torch import nn
-    from torch.optim import AdamW
-
+def run_loop(
+    trunk: Path,
+    out_dir: Path,
+    *,
+    include_live: bool = False,
+    live_store: Path | None = None,
+) -> dict:
     root = repo_root()
-    bundle = export_dataset(root)
+    bundle = export_dataset(root, include_live=include_live, live_store=live_store)
     write_export(root / "specs" / "007-hyperlexical-model" / "exports", bundle)
     classify_tr = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "train"]
     classify_va = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "val"]
@@ -74,6 +76,10 @@ def run_loop(trunk: Path, out_dir: Path) -> dict:
     unbind_va = [r for r in bundle["rows"] if r["task"] == "unbind" and r["split"] == "val"]
     if len(classify_tr) < 8:
         raise RuntimeError("not enough classify train rows")
+
+    import torch
+    from torch import nn
+    from torch.optim import AdamW
 
     maps = label_maps(unbind_tr + unbind_va)
     tok, encoder = _require_local_model(trunk)
@@ -213,6 +219,8 @@ def run_loop(trunk: Path, out_dir: Path) -> dict:
         "weight_file": weight_file,
         "aligner": "char_span + offset_mapping",
         "data_sha256": bundle["sha256"],
+        "include_live": include_live,
+        "live_included": bundle["counts"].get("live_included", 0),
         "name_gate": False,
         "e2_pass": False,
         "brier": None,

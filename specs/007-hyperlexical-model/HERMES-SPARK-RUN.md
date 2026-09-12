@@ -478,7 +478,7 @@ Trains on roughly **4,375 train / 541 val / 551 test** rows at main `e3425ab` �
 
 Two consequences. Runtime is now minutes rather than seconds, so B3b may need several polls; that is expected, not a hang. And the val-metric caveat is **gone** — unbind val is ~64 rows, not 1, so `unbind_exact` is finally a real measurement.
 
-Per the updated `AARON-SPARK-TRAIN.md`, the operator SoT is the primary source. If the run should train against live candidates rather than the tracked snapshot, that is `--include-live`, and it is the spec owner's call — do not add the flag on your own initiative.
+Per the updated `AARON-SPARK-TRAIN.md`, the operator SoT is the primary source. If the run should train against live candidates rather than the tracked snapshot, that is `--include-live` or `HYPERLEX_INCLUDE_LIVE=1` on `hyperlexical.train` (fail-closed if the live store is missing). Do not add the flag on your own initiative.
 
 **Done:** `status=exited exit=0`, and the receipt in `train-stdout.json` shows `cuda: true`, `device: "cuda"`, `name_gate: false`, `e2_pass: false`, `brier: null`, and `n_unfrozen_encoder` > 0.
 
@@ -698,7 +698,7 @@ Added for an autonomous executor:
 5. The torch note for Danny: version, CUDA, capability, and that it ran under a 3.9 GB cap beside a live SGLang server.
 6. Free device memory before the run and after, showing the trainer released everything.
 7. The PR URL from C1, and confirmation it shows exactly two changed files.
-8. **The `--include-live` divergence, stated plainly.** `AARON-SPARK-TRAIN.md` says to train from the live SoT via `--include-live`. This run did not, for two reasons: `run_loop` calls `export_dataset(root)` with no `include_live` parameter and `train.py` exposes no flag or env var for it, so it is not expressible; and the Spark has no live store (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl` does not exist), so it would have contributed zero rows. The tracked export was the complete dataset on this box. Report this as a known, deliberate divergence — not as an oversight, and not as a defect.
+8. **The `--include-live` divergence, stated plainly.** `AARON-SPARK-TRAIN.md` says to train from the live SoT via `--include-live`. Train now accepts `--include-live` and `HYPERLEX_INCLUDE_LIVE=1` (fail-closed if `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` is missing). This seed smoke still omits the flag unless the spec owner sets it. Report omission as a known, deliberate divergence — not as an oversight, and not as a defect.
 8. Anything that stopped a slice, verbatim, with no attempt at a fix.
 
 Every number you return is OBSERVED or it does not go in. No INFERRED metrics. `brier` stays null.
