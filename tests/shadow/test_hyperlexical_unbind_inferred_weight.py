@@ -126,6 +126,8 @@ def test_inferred_weight_does_not_drop_train_rows(monkeypatch):
 def test_export_sot_unchanged_when_inferred_weight_set(monkeypatch):
     monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_WEIGHT", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_CAP", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_ATOMS_PATH", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_UPSAMPLE", raising=False)
     baseline = export_dataset(ROOT)
     monkeypatch.setenv("HYPERLEX_UNBIND_INFERRED_WEIGHT", "0.5")
     weighted = export_dataset(ROOT)

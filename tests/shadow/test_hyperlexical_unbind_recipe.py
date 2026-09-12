@@ -43,6 +43,8 @@ def _unbind_row(text, fillers, *, cls="OBSERVED", split="train", roles=None):
 def test_resolve_upsample_and_cap_defaults(monkeypatch):
     monkeypatch.delenv("HYPERLEX_UNBIND_OBSERVED_UPSAMPLE", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_CAP", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_ATOMS_PATH", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_UPSAMPLE", raising=False)
     assert UNBIND_OBSERVED_UPSAMPLE_DEFAULT == 1
     assert UNBIND_INFERRED_CAP_DEFAULT == 0
     assert resolve_unbind_observed_upsample() == 1
@@ -217,6 +219,8 @@ def test_morph3_pairs_from_rows_do_not_invent_atoms():
 def test_shape_defaults_are_identity(monkeypatch):
     monkeypatch.delenv("HYPERLEX_UNBIND_OBSERVED_UPSAMPLE", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_CAP", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_ATOMS_PATH", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_UPSAMPLE", raising=False)
     rows = [
         _unbind_row("obs a", ["aped"], cls="OBSERVED"),
         _unbind_row("inf a", ["aura"], cls="INFERRED"),
@@ -225,6 +229,10 @@ def test_shape_defaults_are_identity(monkeypatch):
     shaped, stats = shape_unbind_train(rows)
     assert stats["unbind_observed_upsample"] == 1
     assert stats["unbind_inferred_cap"] == 0
+    assert stats["unbind_hard_upsample"] == 1
+    assert stats["unbind_hard_atoms_path"] == ""
+    assert stats["n_unbind_hard_atoms_matched"] == 0
+    assert stats["n_unbind_hard_extra_copies"] == 0
     assert stats["n_unbind_observed"] == 1
     assert stats["n_unbind_inferred"] == 2
     assert [r["text"] for r in shaped] == [r["text"] for r in rows]
@@ -234,6 +242,8 @@ def test_shape_defaults_are_identity(monkeypatch):
 def test_shape_upsample_observed_only(monkeypatch):
     monkeypatch.setenv("HYPERLEX_UNBIND_OBSERVED_UPSAMPLE", "2")
     monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_CAP", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_ATOMS_PATH", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_UPSAMPLE", raising=False)
     rows = [
         _unbind_row("obs a", ["aura"], cls="OBSERVED"),
         _unbind_row("inf a", ["rizz"], cls="INFERRED"),
@@ -323,6 +333,8 @@ def test_export_counts_unbind_class_and_recipe_defaults(monkeypatch):
     monkeypatch.delenv("HYPERLEX_UNBIND_CURRICULUM", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST_PATH", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_ATOMS_PATH", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_UPSAMPLE", raising=False)
     bundle = export_dataset(ROOT)
     c = bundle["counts"]
     assert c["n_unbind_observed"] + c["n_unbind_inferred"] == c["unbind"]
@@ -335,6 +347,10 @@ def test_export_counts_unbind_class_and_recipe_defaults(monkeypatch):
     assert c["unbind_observed_upsample"] == 1
     assert c["unbind_inferred_cap"] == 0
     assert c["unbind_inferred_weight"] == 1.0
+    assert c["unbind_hard_upsample"] == 1
+    assert c["unbind_hard_atoms_path"] == ""
+    assert c["n_unbind_hard_atoms_matched"] == 0
+    assert c["n_unbind_hard_extra_copies"] == 0
     assert c["unbind_morph_negatives"] >= 0
     assert c["unbind_curriculum"] == 0
     assert c["unbind_filler_denylist_lineages"] == 0

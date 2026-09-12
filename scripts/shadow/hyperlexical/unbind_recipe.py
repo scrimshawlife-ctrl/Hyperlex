@@ -18,7 +18,12 @@ UNBIND_INFERRED_WEIGHT_ENV = "HYPERLEX_UNBIND_INFERRED_WEIGHT"
 UNBIND_MORPH_MARGIN_ENV = "HYPERLEX_UNBIND_MORPH_MARGIN"
 UNBIND_FILLER_DENYLIST_ENV = "HYPERLEX_UNBIND_FILLER_DENYLIST"
 UNBIND_FILLER_DENYLIST_PATH_ENV = "HYPERLEX_UNBIND_FILLER_DENYLIST_PATH"
+UNBIND_HARD_ATOMS_PATH_ENV = "HYPERLEX_UNBIND_HARD_ATOMS_PATH"
+UNBIND_HARD_UPSAMPLE_ENV = "HYPERLEX_UNBIND_HARD_UPSAMPLE"
 UNBIND_OBSERVED_UPSAMPLE_DEFAULT = 1
+# Extra copies of already-OBSERVED hard phrases after the normal upsample.
+# 1 = identity (no extra). Operator JSONL is env-path only — not SoT gold.
+UNBIND_HARD_UPSAMPLE_DEFAULT = 1
 # 0 = off. Hard low caps starve morph-negs (do not default a cap).
 UNBIND_INFERRED_CAP_DEFAULT = 0
 # Soft scale on unbind loss for class != OBSERVED. 1.0 = identity.
@@ -103,6 +108,130 @@ def resolve_unbind_observed_upsample(raw: str | int | None = None) -> int:
     if n < 1:
         raise ValueError(f"{UNBIND_OBSERVED_UPSAMPLE_ENV} must be a positive int, got {n}")
     return n
+
+
+def resolve_unbind_hard_upsample(raw: str | int | None = None) -> int:
+    """Extra copies of matched OBSERVED hard atoms. Default 1 = none. Fail-closed."""
+    if raw is None:
+        raw = os.environ.get(UNBIND_HARD_UPSAMPLE_ENV)
+    if raw is None or (isinstance(raw, str) and not raw.strip()):
+        return UNBIND_HARD_UPSAMPLE_DEFAULT
+    try:
+        n = int(str(raw).strip(), 10)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{UNBIND_HARD_UPSAMPLE_ENV} must be an int >= 1, got {raw!r}") from exc
+    if n < 1:
+        raise ValueError(f"{UNBIND_HARD_UPSAMPLE_ENV} must be an int >= 1, got {n}")
+    return n
+
+
+def resolve_unbind_hard_atoms_path(raw: str | Path | None = None) -> str:
+    """Operator JSONL path. Empty default. Does not invent a file."""
+    if raw is None:
+        raw = os.environ.get(UNBIND_HARD_ATOMS_PATH_ENV)
+    if raw is None or (isinstance(raw, str) and not str(raw).strip()):
+        return ""
+    return str(raw).strip()
+
+
+def hard_atoms_receipt_path(path: str | Path | None) -> str:
+    """Basename when a path is set; empty string otherwise."""
+    token = str(path or "").strip()
+    if not token:
+        return ""
+    return Path(token).name
+
+
+def unbind_row_hard_atom_keys(row: Mapping[str, Any]) -> set[str]:
+    """Normalized row text plus joined filler atom text. No invented surfaces."""
+    keys: set[str] = set()
+    text = _norm_surface(str(row.get("text") or ""))
+    if text:
+        keys.add(text)
+    fillers = [str(item).strip() for item in (row.get("fillers") or []) if str(item).strip()]
+    if fillers:
+        joined = _norm_surface(" ".join(fillers))
+        if joined:
+            keys.add(joined)
+    return keys
+
+
+def unbind_row_matches_hard_atoms(row: Mapping[str, Any], atoms: Iterable[str]) -> bool:
+    atom_set = {_norm_surface(str(item)) for item in atoms if _norm_surface(str(item))}
+    if not atom_set:
+        return False
+    return bool(unbind_row_hard_atom_keys(row) & atom_set)
+
+
+def load_hard_atom_texts(path: str | Path | None = None) -> frozenset[str]:
+    """Load normalized ``text`` fields from operator JSONL. Fail-closed if set.
+
+    Unset / empty path → empty set (identity). A configured path that is
+    missing, unreadable, or invalid raises. Does not invent OBSERVED gold.
+    """
+    raw = resolve_unbind_hard_atoms_path(path)
+    if not raw:
+        return frozenset()
+    p = Path(raw)
+    if not p.is_file():
+        raise ValueError(f"{UNBIND_HARD_ATOMS_PATH_ENV} is not a file: {p}")
+    try:
+        body = p.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(f"{UNBIND_HARD_ATOMS_PATH_ENV} is unreadable: {p}") from exc
+    atoms: set[str] = set()
+    for index, line in enumerate(body.splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            obj = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"{UNBIND_HARD_ATOMS_PATH_ENV} line {index} is not valid JSON") from exc
+        if not isinstance(obj, dict):
+            raise ValueError(
+                f"{UNBIND_HARD_ATOMS_PATH_ENV} line {index} must be a JSON object "
+                "with a string text field"
+            )
+        if "text" not in obj:
+            raise ValueError(
+                f"{UNBIND_HARD_ATOMS_PATH_ENV} line {index} is missing required field 'text'"
+            )
+        raw_text = obj.get("text")
+        if not isinstance(raw_text, str):
+            raise ValueError(
+                f"{UNBIND_HARD_ATOMS_PATH_ENV} line {index} field 'text' must be a string, "
+                f"got {type(raw_text).__name__}"
+            )
+        norm = _norm_surface(raw_text)
+        if not norm:
+            raise ValueError(f"{UNBIND_HARD_ATOMS_PATH_ENV} line {index} has an empty text field")
+        atoms.add(norm)
+    return frozenset(atoms)
+
+
+def hard_atom_upsample_stats(
+    unbind_rows: Iterable[Mapping[str, Any]],
+    *,
+    hard_upsample: int,
+    atoms: Iterable[str],
+    path: str = "",
+) -> dict[str, Any]:
+    """Receipt counts. Only class==OBSERVED rows already in ``unbind_rows``."""
+    atom_set = {_norm_surface(str(item)) for item in atoms if _norm_surface(str(item))}
+    observed = [r for r in unbind_rows if r.get("class") == "OBSERVED"]
+    matched_rows = [r for r in observed if unbind_row_matches_hard_atoms(r, atom_set)]
+    hit_atoms: set[str] = set()
+    for row in matched_rows:
+        hit_atoms.update(unbind_row_hard_atom_keys(row) & atom_set)
+    extra = 0
+    if atom_set and hard_upsample > 1:
+        extra = (hard_upsample - 1) * len(matched_rows)
+    return {
+        "unbind_hard_atoms_path": hard_atoms_receipt_path(path),
+        "unbind_hard_upsample": hard_upsample,
+        "n_unbind_hard_atoms_matched": len(hit_atoms),
+        "n_unbind_hard_extra_copies": extra,
+    }
 
 
 def resolve_unbind_inferred_cap(raw: str | int | None = None) -> int:
@@ -379,14 +508,20 @@ def shape_unbind_train(
     inferred_cap: int | str | None = None,
     known: Iterable[str] | None = None,
     denylist: Mapping[str, Iterable[str]] | None = None,
-) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    hard_upsample: int | str | None = None,
+    hard_atoms_path: str | Path | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Train-only recipe. Callers must not pass val/test rows.
 
     OBSERVED copies are loop multiplicity, not new SoT gold. INFERRED cap
     keeps first-seen order (no reshuffle). Hard-negs attach in memory.
+    Hard-atom extras copy already-OBSERVED train rows only.
     """
     factor = resolve_unbind_observed_upsample(upsample)
     cap = resolve_unbind_inferred_cap(inferred_cap)
+    hard_factor = resolve_unbind_hard_upsample(hard_upsample)
+    path = resolve_unbind_hard_atoms_path(hard_atoms_path)
+    atoms = load_hard_atom_texts(path)
     rows = list(unbind_rows)
     observed = [r for r in rows if r.get("class") == "OBSERVED"]
     inferred = [r for r in rows if r.get("class") != "OBSERVED"]
@@ -396,6 +531,14 @@ def shape_unbind_train(
     for _ in range(factor):
         shaped.extend(observed)
     shaped.extend(inferred)
+    hard_stats = hard_atom_upsample_stats(
+        observed, hard_upsample=hard_factor, atoms=atoms, path=path
+    )
+    if hard_stats["n_unbind_hard_extra_copies"]:
+        matched = [r for r in observed if unbind_row_matches_hard_atoms(r, atoms)]
+        extra_rounds = hard_factor - 1
+        for _ in range(extra_rounds):
+            shaped.extend(dict(row) for row in matched)
     pool = known if known is not None else known_fillers(rows)
     deny = denylist if denylist is not None else resolve_filler_denylist()
     attached, _n_row_negs = attach_hard_neg_fillers(shaped, pool, denylist=deny)
@@ -409,6 +552,7 @@ def shape_unbind_train(
         "n_train_unbind": len(attached),
         "unbind_filler_denylist_lineages": len(deny),
     }
+    stats.update(hard_stats)
     return attached, stats
 
 
@@ -434,6 +578,9 @@ def recipe_env_counts(unbind_rows: Iterable[dict[str, Any]]) -> dict[str, Any]:
     n_obs = sum(1 for r in rows if r.get("class") == "OBSERVED")
     n_inf = sum(1 for r in rows if r.get("class") != "OBSERVED")
     train = [r for r in rows if r.get("split") == "train"]
+    path = resolve_unbind_hard_atoms_path()
+    atoms = load_hard_atom_texts(path)
+    hard_factor = resolve_unbind_hard_upsample()
     counts = {
         "n_unbind_observed": n_obs,
         "n_unbind_inferred": n_inf,
@@ -443,5 +590,13 @@ def recipe_env_counts(unbind_rows: Iterable[dict[str, Any]]) -> dict[str, Any]:
         "unbind_morph_negatives": len(morph_pairs_for_rows(train)),
         "unbind_filler_denylist_lineages": len(resolve_filler_denylist()),
     }
+    counts.update(
+        hard_atom_upsample_stats(
+            [r for r in train if r.get("class") == "OBSERVED"],
+            hard_upsample=hard_factor,
+            atoms=atoms,
+            path=path,
+        )
+    )
     counts.update(curriculum_env_counts())
     return counts

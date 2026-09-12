@@ -1111,9 +1111,12 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                     "(HYPERLEX_UNBIND_OBSERVED_UPSAMPLE default 1, "
                     "HYPERLEX_UNBIND_INFERRED_CAP 0=off (hard low caps can starve morph-negs), "
                     "HYPERLEX_UNBIND_INFERRED_WEIGHT default 1.0, unbind_morph_negatives, "
-                    "HYPERLEX_UNBIND_CURRICULUM default 0) "
+                    "HYPERLEX_UNBIND_CURRICULUM default 0, "
+                    "HYPERLEX_UNBIND_HARD_ATOMS_PATH unset, "
+                    "HYPERLEX_UNBIND_HARD_UPSAMPLE default 1) "
                     "are counts only — loop applies train multiplicity / hard-negs / "
-                    "scheme-split curriculum / INFERRED sample weight; "
+                    "scheme-split curriculum / INFERRED sample weight / "
+                    "targeted OBSERVED hard-atom extras; "
                     "export does not invent OBSERVED SoT gold. lexical_split is frozen."
                 ),
             },

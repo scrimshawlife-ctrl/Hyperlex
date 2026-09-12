@@ -409,6 +409,8 @@ def test_export_counts_curriculum_default_off(monkeypatch):
     monkeypatch.delenv("HYPERLEX_UNBIND_INFERRED_WEIGHT", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST", raising=False)
     monkeypatch.delenv("HYPERLEX_UNBIND_FILLER_DENYLIST_PATH", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_ATOMS_PATH", raising=False)
+    monkeypatch.delenv("HYPERLEX_UNBIND_HARD_UPSAMPLE", raising=False)
     bundle = export_dataset(ROOT)
     c = bundle["counts"]
     assert c["unbind_curriculum"] == 0

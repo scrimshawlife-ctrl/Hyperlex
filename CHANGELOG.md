@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Spec 007 data/recipe shape PR #5:** targeted extra upsample of
+  already-OBSERVED hard train phrases (`HYPERLEX_UNBIND_HARD_ATOMS_PATH`
+  + `HYPERLEX_UNBIND_HARD_UPSAMPLE`, int ≥1, default 1 = identity). Path
+  is operator JSONL (`text` required per line); missing/unreadable/invalid
+  fails closed. When upsample >1, after normal OBSERVED×factor the loop
+  appends `(HARD_UPSAMPLE - 1)` extra copies of matching `class==OBSERVED`
+  train unbind rows only. Unmatched texts are ignored. INFERRED is never
+  promoted. No invented rows. Receipt: `unbind_hard_atoms_path` (basename),
+  `unbind_hard_upsample`, `n_unbind_hard_atoms_matched`,
+  `n_unbind_hard_extra_copies`. After morph3 plateau try hard_upsample
+  3–4 with the Spark operator list. Do not commit that file.
+  `name_gate` stays false. BEST stays operator-side (`seed-morph3`,
+  unbind≈0.358).
+
 - **Spec 007 data/recipe shape PR #4:** soft INFERRED unbind sample weight
   (`HYPERLEX_UNBIND_INFERRED_WEIGHT`, float, default 1.0 = identity,
   fail-closed finite in (0, 2]). When <1, scales unbind CE + morph-margin

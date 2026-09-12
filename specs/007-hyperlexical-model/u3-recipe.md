@@ -48,6 +48,8 @@ rows stay as-is (no invented OBSERVED gold).
 | `HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS` | 1 | When on: exclusive type_slot (TOKEN:/SLOT) epochs; remainder = joint |
 | `HYPERLEX_UNBIND_FILLER_DENYLIST` | empty | JSON `{lineage: [surface, …]}` for hard-neg / CE distractors only |
 | `HYPERLEX_UNBIND_FILLER_DENYLIST_PATH` | unset | Same JSON on disk. Missing/invalid fails closed. |
+| `HYPERLEX_UNBIND_HARD_ATOMS_PATH` | unset | Operator JSONL (`text` per line). Env path only — do not commit the file. Missing/unreadable/invalid fails closed. |
+| `HYPERLEX_UNBIND_HARD_UPSAMPLE` | 1 | Extra copies of matching already-OBSERVED train unbind rows after the normal OBSERVED upsample. 1 = identity. Try **3–4** after the morph3 plateau. |
 
 Hard-negatives come from fillers **already on** unbind train rows: an explicit
 map (aped↔aping, looksmax*, rizz*, fanum* + gated tax/taxed, quiet quit*,
@@ -74,13 +76,23 @@ Hard low caps can starve morph-negs. Status-vocab bleed is the
 optional denylist (`bum` / `bolt` / `burn` / `mid` as distractors only).
 BEST checkpoint stays operator-side (`seed-morph3`, unbind≈0.358).
 
+SETTLE×5 promoted class but train `n_unbind_observed` stayed 885. Soft
+INFERRED weight (#56) and POS-heavy curriculum did not beat morph3.
+After that plateau, set `HYPERLEX_UNBIND_HARD_ATOMS_PATH` to the Spark
+operator JSONL (`/home/morpheus/hlx/hard_atoms_train.jsonl`, 59 `text`
+rows) and try `HYPERLEX_UNBIND_HARD_UPSAMPLE=3` or `4`. Extra copies are
+loop multiplicity of rows already `class==OBSERVED` in the train unbind
+pool. The recipe does not invent gold and does not upgrade INFERRED.
+
 `lexical_split` is a frozen text hash. Adding settled rows mid-experiment
 must not reshuffle val — do not change the hash, modulus, or bucket edges.
 
 Receipt fields: `n_unbind_observed`, `n_unbind_inferred`,
 `unbind_observed_upsample`, `unbind_inferred_weight`,
 `n_unbind_morph_negatives`, `unbind_curriculum`, phase boundaries,
-n rows per phase.
+n rows per phase, `unbind_hard_atoms_path` (basename),
+`unbind_hard_upsample`, `n_unbind_hard_atoms_matched`,
+`n_unbind_hard_extra_copies`.
 `name_gate` stays false. BEST checkpoint stays operator-side (`seed-morph3`).
 
 ## Heads
