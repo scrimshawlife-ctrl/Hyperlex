@@ -298,9 +298,30 @@ a real rights memo before any confirm flags may be set. Private workbench:
   `best_overwrite=false`; `training_ready`/`name_gate` still false.
 - Receipt: `~/hlx-private/p1-spark-smoke-20260913/SMOKE_SUMMARY.json` (private).
 
+
+### Spark GPU morph smoke blocked (2026-09-13)
+
+- Attempted follow-on GPU trunk/morph smoke under `~/hlx/guard.py` memory
+  fraction. Second CUDA context **OOM** while resident `qwen38-27b` (sglang) +
+  ComfyUI hold the GB10 (~96% util; host Mem available ~9 Gi / free ~2.6 Gi).
+- `torch.cuda.mem_get_info()` fails in a sibling container before any alloc;
+  cannot safely load ModernBERT trunk alongside Qwen without operator pause or
+  shrink. BEST/morph19 left untouched.
+- Private blocker receipt: `~/hlx-private/p1-spark-gpu-blocked-20260913/BLOCKER_SUMMARY.json`.
+- To unblock: free ≥~5 Gi stable headroom (SPARK-BRINGUP), then trunk-forward
+  `eval_unbind` / bounded morph seed into a **new** out dir under guard 0.03 —
+  never BEST overwrite without explicit approval.
+
+### P1 structure first-25 worksheet (2026-09-13)
+
+- Private easy slice for human gold spans (shortest family-reviewed / structure-empty
+  rows): `/tmp/hlx-p1-structure-first25-20260913` and Spark copy
+  `~/hlx-private/p1-structure-first25-20260913` (25 rows, `confirm_*=false`).
+- Still does not invent spans. Full 383 worksheet remains available.
+
 Remaining ordered execution tasks:
-1. Human structure gold spans on P1 worksheet (or subset) → re-prepare → structure
-   head train. Do not invent spans.
+1. Human structure gold spans — start with first-25 easy slice, then expand →
+   re-prepare → structure head train. Do not invent spans.
 2. Expand rights/review beyond P1 only with explicit operator policy; do not
    auto-approve `operator-local` bulk (P3 workbench is triage-only). Dump SHA-256
    `b6867a4f441197b78dbfea71a8936894c62f8fa3b4343dc093043e6069e67d7e` (5019 lines).
