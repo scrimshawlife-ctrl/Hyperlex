@@ -13,7 +13,8 @@ from scripts.shadow.hyperlexical.training_routing import route_rows
 
 
 def row(task="classify+unbind", split="train", **extra):
-    return {"task": task, "split": split, "text": "fixture", "lineage": "none", **extra}
+    return {"task": task, "split": split, "text": "fixture", "lineage": "none",
+            "fillers": ["fixture"], "roles": ["pos_0"], **extra}
 
 
 def test_combined_accounted_once_assigned_twice():
@@ -83,3 +84,25 @@ def test_run_masked_classify_fails_minimum_before_model(monkeypatch, tmp_path):
     monkeypatch.setattr(loop, "shape_unbind_train", lambda rows: (rows, {}))
     with pytest.raises(RuntimeError, match="not enough classify"):
         loop.run_loop(Path("unused"), tmp_path)
+
+
+@pytest.mark.parametrize("extra", [
+    {"fillers": ["general"]}, {"fillers": []}, {"fillers": None},
+    {"roles": []}, {"roles": [""]}, {"fillers": [1]},
+    {"text": "fixture fixture"}, {"fillers": ["fixture", "fixture"], "roles": ["a", "b"]},
+])
+@pytest.mark.parametrize("split", ["train", "val"])
+def test_unsafe_combined_unbind_excluded_but_classify_retained(extra, split):
+    r = row(split=split, **extra)
+    selected, stats = route_rows([r])
+    assert selected["unbind"][split] == []
+    assert selected["classify"][split] == [r]
+    assert stats["combined_unbind_suppressed"] == 1
+
+
+def test_invalid_combined_with_classify_masked_has_explicit_exclusion():
+    r = row(fillers=["general"], loss_masks={"family": False, "structure": True})
+    selected, stats = route_rows([r])
+    assert not selected["unbind"]["train"]
+    assert not selected["classify"]["train"]
+    assert stats["row_outcomes"] == {"invalid_combined_unbind_targets": 1}

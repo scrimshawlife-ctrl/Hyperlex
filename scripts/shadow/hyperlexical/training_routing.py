@@ -12,6 +12,20 @@ TASKS = {"classify": ("classify",), "unbind": ("unbind",),
 HEADS = {"classify": "family", "unbind": "structure"}
 
 
+def combined_surface_targets(row):
+    """Only activate new combined unbind rows with unambiguous literal targets.
+
+    Semantic tags, missing targets and repeated occurrences need separate review
+    or occurrence-aware alignment. Never send them to token-1 fallback.
+    """
+    text, fillers, roles = row.get("text"), row.get("fillers"), row.get("roles")
+    return (isinstance(text, str) and isinstance(fillers, list) and bool(fillers)
+            and isinstance(roles, list) and len(roles) == len(fillers)
+            and all(isinstance(r, str) and r.strip() for r in roles)
+            and all(isinstance(f, str) and f.strip() and text.count(f) == 1 for f in fillers)
+            and len(set(fillers)) == len(fillers))
+
+
 def route_rows(rows):
     """Preserve input order and rows; missing masks retain declared legacy tasks.
 
@@ -23,6 +37,7 @@ def route_rows(rows):
     reasons = Counter()
     task_counts = Counter()
     explicit = 0
+    suppressed_unbind = 0
     for row in rows:
         if not isinstance(row, dict) or row.get("task") not in TASKS:
             raise ValueError("unsupported task declaration")
@@ -38,10 +53,15 @@ def route_rows(rows):
         if masks is not None and any(masks[HEADS[t]] and t not in declared for t in HEADS):
             raise ValueError("active mask has no declared task")
         active = [t for t in declared if masks is None or masks[HEADS[t]]]
+        invalid_combined = (row["task"] == "classify+unbind" and "unbind" in active
+                            and not combined_surface_targets(row))
+        if invalid_combined:
+            active.remove("unbind")
+            suppressed_unbind += 1
         if row["split"] == "test":
             reasons["reserved_test"] += 1
         elif not active:
-            reasons["all_declared_heads_masked"] += 1
+            reasons["invalid_combined_unbind_targets" if invalid_combined else "all_declared_heads_masked"] += 1
         else:
             reasons["selected"] += 1
             for task in active:
@@ -50,6 +70,7 @@ def route_rows(rows):
     accounting = {
         "input_rows": len(rows), "row_outcomes": dict(reasons),
         "task_assignments": dict(task_counts), "explicit_mask_rows": explicit,
+        "combined_unbind_suppressed": suppressed_unbind,
         "legacy_declared_rows": len(rows) - explicit,
         "input_sha256": hashlib.sha256(json.dumps(rows, sort_keys=True, separators=(",", ":"),
                                                  ensure_ascii=True, allow_nan=False).encode()).hexdigest(),

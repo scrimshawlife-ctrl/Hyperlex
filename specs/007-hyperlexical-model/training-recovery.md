@@ -66,6 +66,13 @@ Happy path: validate declarations, preserve order, route selected tasks, then
 shape only selected unbind training rows. Emit task_accounting in the run receipt.
 Alternates: missing masks retain legacy task declarations, counted separately;
 false masks disable supervision, never synthesize a negative family label.
+Combined unbind activation additionally requires nonempty aligned role/filler
+lists and each distinct filler occurring exactly once, case-sensitively, in text.
+Missing semantic targets and ambiguous repeated occurrences suppress only that
+unbind assignment; an active classifier remains selected. Count suppression in
+combined_unbind_suppressed; if no task remains, record invalid_combined_unbind_targets.
+This check addresses PR 62 review 3998854610; it does not prove tokenizer coverage
+or semantic annotation truth and does not change legacy unbind-only validation.
 Failures: unsupported tasks/splits, malformed masks or active undeclared tasks
 raise before export writes or model load. No partial selection returned.
 States: EXPORTED_IN_MEMORY -> ROUTING -> REJECTED | SELECTED_FOR_RECIPE.
