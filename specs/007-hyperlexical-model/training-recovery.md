@@ -196,7 +196,7 @@ unknown IDs must never count as exact recovery. Literal reserved <unk> targets
 are rejected. No validation or test target extends the training vocabulary.
 
 Tokenization sidecar has exactly `dataset_sha256`, `tokenizer_revision`,
-`offset_unit="unicode_codepoint"`, and `examples` mapping every active structure
+`offset_unit=\u0022unicode_codepoint\u0022`, and `examples` mapping every active structure
 example ID (including held-out IDs) to ordered [start,end] offsets. Only [0,0]
 marks ignored special/padding tokens. Non-special offsets must be monotonic and
 non-overlapping; partial tokens crossing a gold occurrence are conservatively
@@ -307,7 +307,7 @@ a real rights memo before any confirm flags may be set. Private workbench:
 - `torch.cuda.mem_get_info()` fails in a sibling container before any alloc;
   cannot safely load ModernBERT trunk alongside Qwen without operator pause or
   shrink. BEST/morph19 left untouched.
-- Private blocker receipt: `~/hlx-private/p1-spark-gpu-blocked-20260913/BLOCKER_SUMMARY.json`.
+- Private blocker receipt: `~/hlx-private/p1-spark-gpu-blocked-20160913/BLOCKER_SUMMARY.json`.
 - To unblock: free ≥~5 Gi stable headroom (SPARK-BRINGUP), then trunk-forward
   `eval_unbind` / bounded morph seed into a **new** out dir under guard 0.03 —
   never BEST overwrite without explicit approval.
@@ -398,7 +398,7 @@ a real rights memo before any confirm flags may be set. Private workbench:
 
 ### Operator-authorized structure annotate → intake → prepare → reviewed train (2026-09-13)
 
-- Operator said **\"you can handle this\"** — agent annotated positional whitespace
+- Operator said **\u0022you can handle this\u0022** — agent annotated positional whitespace
   structure gold (no Danny wait) under SHADOW / `name_gate=false`.
 - Annotated package (private): `~/hlx-private/p1-structure-annotated-20260913/`
   (`structure_annotated.jsonl`, n=33 = 25 train multitoken + 8 val multitoken;
@@ -413,7 +413,7 @@ a real rights memo before any confirm flags may be set. Private workbench:
   `PACKAGE_VERIFIED`, status `PREPARED_NOT_RUNNABLE`, blockers `[]`,
   structure selected train=25 / val=8
   (family train=320 / val=38).
-- Reviewed trainer smoke (CPU container, `CUDA_VISIBLE_DEVICES=\"\"`, tiny hash-embed
+- Reviewed trainer smoke (CPU container, `CUDA_VISIBLE_DEVICES=\u0022\u0022`, tiny hash-embed
   model — **not** ModernBERT morph): `~/hlx-private/p1-structure-train-20260913/`
   - resume integrity `weights_equal=true`
   - status `RAN_REVIEWED_TRAINER`, `best_overwrite=false`, BEST `hyperlex-encoder-modernbert-base-seed-morph19` path+mtime unchanged
@@ -429,7 +429,7 @@ a real rights memo before any confirm flags may be set. Private workbench:
 
 ### Occurrence-aware ModernBERT structure seed (2026-09-13)
 
-- Operator **\"continue as recommended\"** after reviewed toy smoke: ran ModernBERT
+- Operator **\u0022continue as recommended\u0022** after reviewed toy smoke: ran ModernBERT
   structure(+family) train from verified prepare into **new** out
   `~/hlx-private/p1-structure-modernbert-20260913/out`.
 - Align path: ModernBERT `offset_mapping` + `align_occurrences_modernbert` allowing
@@ -446,6 +446,6 @@ Remaining ordered execution tasks:
 2. Optional longer ModernBERT structure climb / holdout probe into a **new** out dir.
 3. Decide SoT OBSERVED `partial_slot_miss` policy (default hold).
 
-Provenance: operator \"continue as recommended\" + prepare
+Provenance: operator \u0022continue as recommended\u0022 + prepare
 `dataset_sha256=a39c40d4787129ba09c657b57dc7cebdfa20d2795d702153b09af7596158b706` +
 ModernBERT `SMOKE_SUMMARY.json` on Spark 2026-09-13.
