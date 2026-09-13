@@ -370,16 +370,39 @@ a real rights memo before any confirm flags may be set. Private workbench:
   (`best_overwrite=false`, `best_untouched=true`, `name_gate=false`).
 - Private bundle: `~/hlx-private/p1-spark-morph34-climb-20260913/SMOKE_SUMMARY.json`.
 
+### Structure first-25 reselection + fail-closed intake (2026-09-13)
+
+- Prior first-25 easy slice was almost all 1-token slang (`foom`/`gyat`/…); too short
+  for honest role/filler spans. Reselected **multi-token train** rows
+  (deduped text, shortest first, structure inactive) into private package
+  `~/hlx-private/p1-structure-first25-multitoken-20260913/` (`structure_first25.jsonl`,
+  `FILL_GUIDE.md`, `MANIFEST.json`). All `confirm_*=false`. No spans invented.
+- Added fail-closed intake module
+  `scripts/shadow/hyperlexical/structure_worksheet_intake.py` (+ tests): promotes
+  only rows with `confirm_labels=true`, `confirm_rights=true`, reviewed structure,
+  and spans that exactly match unicode codepoint substrings. Writes a **new**
+  out dir; refuses overwrite; never touches BEST.
+- Operator path after human fill: intake → prepare/verify into another **new**
+  dir → structure-head train. Do not overwrite BEST/morph19.
+
+### SoT OBSERVED `partial_slot_miss` review pack (2026-09-13)
+
+- Exported residual morph19 **OBSERVED** `partial_slot_miss` surfaces (n=25) to
+  `~/hlx-private/observed-partial-slot-miss-review-20260913/` with
+  `confirm_policy_include=false` and a draft policy note.
+- These are existing SoT residual surfaces, **not** new gold. morph30 hard-atom
+  expand of residual OBSERVED was already REJECTED vs BEST — do not auto-arm.
+- Operator must explicitly choose: hold / eval-only cohort / targeted upsample
+  subset / prefer structure path instead.
+
 Remaining ordered execution tasks:
-1. Human structure gold spans — start with first-25 easy slice, then expand →
+1. Human structure gold on the **multi-token** first-25 worksheet → intake →
    re-prepare → structure head train. Do not invent spans.
 2. Expand rights/review beyond P1 only with explicit operator policy; do not
-   auto-approve `operator-local` bulk (P3 workbench is triage-only). Dump SHA-256
-   `b6867a4f441197b78dbfea71a8936894c62f8fa3b4343dc093043e6069e67d7e` (5019 lines).
-3. Env/loss-index knobs on the morph19 envelope remain exhausted (morph22–32 +
-   morph34 replication under BEST). Next climb needs a lever beyond those knobs
-   (e.g. SoT OBSERVED gold for `partial_slot_miss`) — still never BEST overwrite
-   without explicit approval. morph33 2-epoch seed + morph34 6-epoch climb done.
+   auto-approve `operator-local` bulk (P3 workbench is triage-only).
+3. Decide SoT OBSERVED `partial_slot_miss` policy on the review pack (default
+   hold). Env/loss-index knobs remain exhausted; still never BEST overwrite
+   without explicit approval.
 
 Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash:
-82f06ced605fe029b92ca93965eb2c0e684655a2 (morph33 recovery tip before this note).
+e72b7251aa6f23fa1d07bf738a7a3324746eb5e0 (morph34 recovery tip before this note).
