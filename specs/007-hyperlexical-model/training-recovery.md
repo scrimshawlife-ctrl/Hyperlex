@@ -395,14 +395,43 @@ a real rights memo before any confirm flags may be set. Private workbench:
 - Operator must explicitly choose: hold / eval-only cohort / targeted upsample
   subset / prefer structure path instead.
 
-Remaining ordered execution tasks:
-1. Human structure gold on the **multi-token** first-25 worksheet → intake →
-   re-prepare → structure head train. Do not invent spans.
-2. Expand rights/review beyond P1 only with explicit operator policy; do not
-   auto-approve `operator-local` bulk (P3 workbench is triage-only).
-3. Decide SoT OBSERVED `partial_slot_miss` policy on the review pack (default
-   hold). Env/loss-index knobs remain exhausted; still never BEST overwrite
-   without explicit approval.
 
-Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash:
-e72b7251aa6f23fa1d07bf738a7a3324746eb5e0 (morph34 recovery tip before this note).
+### Operator-authorized structure annotate → intake → prepare → reviewed train (2026-09-13)
+
+- Operator said **"you can handle this"** — agent annotated positional whitespace
+  structure gold (no Danny wait) under SHADOW / `name_gate=false`.
+- Annotated package (private): `~/hlx-private/p1-structure-annotated-20260913/`
+  (`structure_annotated.jsonl`, n=33 = 25 train multitoken + 8 val multitoken;
+  `confirm_labels=true`, `confirm_rights=true` reusing existing approved P1
+  Source-Use memo; scheme=`pos_i` whitespace unicode spans; reviewer=`cursor-agent`).
+- Intake: `structure_worksheet_intake` → `~/hlx-private/p1-structure-intake-20260913/`
+  (**33/33 PROMOTED**; `best_overwrite=false`).
+- Tokenization sidecar: `whitespace-unicode-codepoint-v1` offsets bound to adapted
+  `dataset_sha256=a39c40d4787129ba09c657b57dc7cebdfa20d2795d702153b09af7596158b706`
+  (`tokenization_sha256=b0199afa1df006eaf6303001c782486c6b7fc0ec8f17119da1d6d59d49e6aa57`).
+- Prepare/verify: `~/hlx-private/p1-structure-prepare-20260913/` →
+  `PACKAGE_VERIFIED`, status `PREPARED_NOT_RUNNABLE`, blockers `[]`,
+  structure selected train=25 / val=8
+  (family train=320 / val=38).
+- Reviewed trainer smoke (CPU container, `CUDA_VISIBLE_DEVICES=""`, tiny hash-embed
+  model — **not** ModernBERT morph): `~/hlx-private/p1-structure-train-20260913/`
+  - resume integrity `weights_equal=true`
+  - status `RAN_REVIEWED_TRAINER`, `best_overwrite=false`, BEST `hyperlex-encoder-modernbert-base-seed-morph19` path+mtime unchanged
+  - val metrics (toy embedder): `family_exact≈0.658`, `structure_exact=0.0`
+    (pipeline gate only; not civilian ladder / not BEST pin)
+- Private operator card: `~/hlx-private/p1-structure-pipeline-20260913/OPERATOR_CARD.json`
+- OBSERVED `partial_slot_miss` pack remains **policy hold** (not armed for train).
+- Do **not** treat positional `pos_i` spans as semantic role ontology; next human
+  gate is whether to keep positional gold, upgrade to semantic roles, or feed a
+  ModernBERT structure head into a **new** out dir. Never overwrite BEST without
+  explicit approval.
+
+Remaining ordered execution tasks:
+1. Danny review of positional scheme vs semantic role gold (optional upgrade).
+2. If structure head on ModernBERT is desired: train into a **new** out dir from
+   the verified prepare package; compare without BEST pin unless exact clears ladder.
+3. Decide SoT OBSERVED `partial_slot_miss` policy (default hold). Envelope morphs
+   remain exhausted.
+
+Provenance: operator authorization "you can handle this" + prepare
+`dataset_sha256=a39c40d4787129ba09c657b57dc7cebdfa20d2795d702153b09af7596158b706` + train smoke on Spark 2026-09-13.
