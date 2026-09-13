@@ -52,6 +52,7 @@ rows stay as-is (no invented OBSERVED gold).
 | `HYPERLEX_UNBIND_HARD_UPSAMPLE` | 1 | Extra copies of matching already-OBSERVED train unbind rows after the normal OBSERVED upsample. 1 = identity. Try **3–4** after the morph3 plateau. |
 | `HYPERLEX_UNBIND_PRIMARY` | mixed | Unset / `mixed` = historical mean (filler CE + role CE + morph-margin share one divisor). `slot_ce` = per-position filler CE is the primary train signal. |
 | `HYPERLEX_UNBIND_SLOT_CE` | 0 | Alias gate. `1` arms `slot_ce`. `0` = off. Conflicts with an opposite `HYPERLEX_UNBIND_PRIMARY` fail closed. |
+| `HYPERLEX_UNBIND_RESIDUAL_DUMP` | unset | Path to JSONL of val rows that miss `unbind_exact` (themes + gold/pred). Default off. Sibling `.summary.json` + receipt theme counters. |
 
 Hard-negatives come from fillers **already on** unbind train rows: an explicit
 map (aped↔aping, looksmax*, rizz*, fanum* + gated tax/taxed, quiet quit*,
@@ -98,14 +99,48 @@ Civilian `unbind_exact` stays the ladder metric. Token/slot F1 still
 emit. seed-morph14 BEST is observed (unbind_exact≈0.3857, slot/token
 F1≈0.659, classify≈0.438, E2 PASS) — not new SoT gold.
 
+### morph15 card (climb toward 0.45)
+
+Pin BEST **`seed-morph14`**. Do not reshuffle `lexical_split`. Do not
+flip `name_gate`. On Spark, combine levers that already landed (do not
+search λ):
+
+```bash
+export HYPERLEX_INCLUDE_LIVE=1
+export HYPERLEX_TRAIN_OUT="$HOME/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph15"
+export HYPERLEX_TRAIN_EPOCHS=6
+export HYPERLEX_UNBIND_PRIMARY=slot_ce
+export HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=2
+export HYPERLEX_UNBIND_INFERRED_WEIGHT=0.5
+export HYPERLEX_UNBIND_CURRICULUM=1
+export HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS=2
+export HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS=1
+export HYPERLEX_UNBIND_HARD_ATOMS_PATH=/home/morpheus/hlx/hard_atoms_train.jsonl
+export HYPERLEX_UNBIND_HARD_UPSAMPLE=3
+export HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT=2
+export HYPERLEX_UNBIND_RESIDUAL_DUMP=/tmp/hlx-morph15-residual.jsonl
+# optional status-vocab denylist (Morph1 bleed) — operator opt-in only
+# preflight (torch-free): PYTHONPATH=scripts/shadow python3 -m hyperlexical.morph15_recipe
+```
+
+Watch `unbind_exact` (ladder 0.45 / 0.55 / 0.65) and residual themes.
+Token/slot F1 at morph14 ≈0.659 means many near-misses — residual dump
+shows whether head-slot / morph_bleed / order still dominate. Head-slot
+weight 2 scales position-0 filler CE only (fail-closed in (0, 4];
+default 1.0). Hold `MORPH_CLUSTERS` churn (Morph5 map expand was 0.346).
+Hold hard `INFERRED_CAP`.
+
 Receipt fields: `n_unbind_observed`, `n_unbind_inferred`,
 `unbind_observed_upsample`, `unbind_inferred_weight`,
 `n_unbind_morph_negatives`, `unbind_curriculum`, phase boundaries,
 n rows per phase, `unbind_hard_atoms_path` (basename),
 `unbind_hard_upsample`, `n_unbind_hard_atoms_matched`,
 `n_unbind_hard_extra_copies`, `unbind_primary`, `unbind_slot_ce_armed`,
-`unbind_slot_ce_aux_lambda` (0.25 when armed, else null).
-`name_gate` stays false. BEST checkpoint stays operator-side (`seed-morph3`).
+`unbind_slot_ce_aux_lambda` (0.25 when armed, else null),
+`unbind_head_slot_weight`, `unbind_residual_dump`, `n_unbind_residual`,
+`unbind_residual_themes`.
+`name_gate` stays false. BEST checkpoint stays operator-side
+(`seed-morph14`).
 
 ## Heads
 

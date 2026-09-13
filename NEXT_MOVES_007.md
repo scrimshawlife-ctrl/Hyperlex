@@ -1,46 +1,30 @@
-# 007 Hyperlexical T1 Data Prep - Next Moves Plan (2026-09-11)
+# 007 Hyperlexical — pickup after morph14 (2026-09-12)
 
 ## Current State
-- Civilian: 5857 rows (exceeds 2500)
-- High-signal: 1481 (enriched eff=0.368)
-- Heavy 4333-dump (ai-native, memory/provenance)
-- Efficiency missing in main civilian export
-- Eval done (high-signal + unbind stub baseline)
-- Docs/MANIFEST/Notion updated
+- **BEST (observed):** `seed-morph14` · civilian val `unbind_exact≈0.3857` · slot/token F1≈0.659 · classify≈0.438 · E2 PASS
+- Ladder on exact: **0.45 / 0.55 / 0.65** (gap to first rung ≈0.064)
+- Latest harness on `main`: `HYPERLEX_UNBIND_PRIMARY=slot_ce` (default off) + token/slot F1 + morph/curriculum/INFERRED-weight/hard-atoms recipe
+- `name_gate=false`. Do not Hub. Do not invent OBSERVED gold.
+- Notion Operator Hub was stale on morph3 (0.358) — sync to morph14.
 
 ## Prioritized Plan (execute in order)
-1. **Enrich full civilian** with memetic_efficiency + memory_tiers (post-process via detect_memetic_patterns on rows missing it).
-2. **Refresh high-signal** from enriched civilian (apply same filters).
-3. **Re-run official export** (to ensure clean pipeline output if harvest can be improved, but primarily validate).
-4. **Copy training artifacts to exports/** (high-signal, ai-native, 4333 subset, eval report).
-5. **Run full evals**:
-   - High-signal metrics (post-refresh)
-   - eval_unbind harness
-   - Shadow pytest (export + eval)
-   - Preflight check
-6. **Update docs**:
-   - MANIFEST.json (training_prep + last_eval)
-   - dataset-harvest.md (plan execution + new numbers)
-   - AARON-SPARK-TRAIN.md if needed for training notes
-7. **Update Notion parity** on key pages.
-8. **Verify**:
-   - Splits (train/val/test)
-   - Quotas vs harvest.md (classify volume, unbind readiness)
-   - Schema completeness (roles/fillers, provenance, efficiency)
-9. **Final readiness**:
-   - Note for Spark train (oversample high-signal for memory signals)
-   - Any remaining gaps (e.g., more unbind atoms if possible)
-10. **Cleanup** (optional): prune temp, commit summary if git.
+1. **Sync operator pins** to morph14 (Notion Hub, BEST-CHECKPOINT, STATUS notes).
+2. **Run morph15 Spark card** (see `u3-recipe.md` / `AARON-SPARK-TRAIN.md`):
+   - `slot_ce` + OBSERVED upsample 2 + INFERRED_WEIGHT 0.5
+   - curriculum 2+1+remainder · hard_upsample 3 · `HEAD_SLOT_WEIGHT=2` · residual dump on
+   - preflight: `python3 -m hyperlexical.morph15_recipe` (or `bash scripts/spark/morph15-unbind.sh`)
+   - OUT `…-seed-morph15`
+3. **Read residual themes** (`HYPERLEX_UNBIND_RESIDUAL_DUMP`) — head-slot vs morph_bleed vs order.
+4. **Hold** MORPH_CLUSTERS churn and hard INFERRED_CAP (Morph4/5 lessons).
+5. If exact ≥0.45: pin new BEST, keep `name_gate` false until Danny says otherwise.
+6. Spec 008 draft (#31) stays hold — not this lane.
 
 ## Success Criteria
-- Civilian has efficiency/tiers on 100% ai-native/memory rows
-- High-signal >=1400 with avg eff >0.3
-- Exports/ has all training artifacts
-- Docs reflect exact counts
-- Evals show strong ai-native/memory signal
-- Ready to hand to train.py / Spark
+- morph15 receipt + residual summary returned to Danny
+- `unbind_exact` moves toward 0.45 without classify collapse
+- `name_gate` still false
+- No weights / hard-atoms JSONL in git
 
 ## Risks/Notes
-- 4333 rows are mostly INFERRED; preserve as-is.
-- Unbind readiness low (~22%); that's data reality for slang atoms.
-- Re-export may be needed if harvest_4333_dump updated to call analysis.
+- This cloud box has no Spark / no local SoT — train stays on DGX Spark.
+- F1≈0.659 with exact≈0.386 means near-misses dominate; residual dump is the next signal, not another flat loss weight.

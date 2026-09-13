@@ -141,10 +141,11 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Burn-in offline runs + settle path (this is how Brier becomes real).
-2. Spark E2 — train on the box per the bring-up runbooks. Until that passes, `name_gate` stays false.
-3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13).
+1. Spark morph15 card — pin `seed-morph14` (unbind≈0.3857); climb toward ladder 0.45 with `slot_ce` + hard upsample + soft INFERRED + head-slot weight 2 + residual dump (`NEXT_MOVES_007.md` / `u3-recipe.md` / `scripts/spark/morph15-unbind.sh`).
+2. Burn-in offline runs + settle path (this is how Brier becomes real).
+3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
 ## README
 
 Operator front door expanded for stack parity with Athanor / Semion / Yggdrasil (2026-09-11). Changelog-style dumps stay in CHANGELOG / receipts — not the main page.
+

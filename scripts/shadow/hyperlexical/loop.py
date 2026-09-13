@@ -32,6 +32,15 @@ from .unbind_recipe import (
     shape_unbind_train,
     unbind_row_sample_weight,
 )
+from .unbind_head_slot import (
+    apply_head_slot_weight,
+    resolve_unbind_head_slot_weight,
+)
+from .unbind_residual import (
+    residual_row_record,
+    resolve_unbind_residual_dump_path,
+    write_residual_dump,
+)
 from .unbind_slot_ce import (
     UNBIND_SLOT_CE_AUX_LAMBDA,
     combine_unbind_train_terms,
@@ -168,6 +177,7 @@ def run_loop(
     inferred_weight = resolve_unbind_inferred_weight()
     slot_ce_mode = resolve_unbind_primary_mode()
     unbind_primary = slot_ce_mode["unbind_primary"]
+    head_slot_weight = resolve_unbind_head_slot_weight()
     curriculum = resolve_curriculum_schedule()
     curriculum_plan = plan_unbind_curriculum(unbind_tr, epochs, curriculum)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -220,8 +230,9 @@ def run_loop(
                         role_head(h).unsqueeze(0), torch.tensor([gold_r], device=device)
                     )
                 )
+        weighted_slots = apply_head_slot_weight(slot_ces, head_slot_weight)
         return combine_unbind_train_terms(
-            slot_ces,
+            weighted_slots,
             aux_terms,
             primary=unbind_primary,
             aux_lambda=UNBIND_SLOT_CE_AUX_LAMBDA,
@@ -240,8 +251,12 @@ def run_loop(
         opt.step()
         losses.append(float(scaled.detach().cpu()))
 
+    residual_dump_path = resolve_unbind_residual_dump_path()
+    last_residual_records: list[dict] = []
+
     @torch.no_grad()
     def score():
+        nonlocal last_residual_records
         encoder.eval()
         classify.eval()
         filler_head.eval()
@@ -253,6 +268,7 @@ def run_loop(
             hit += int(pred == gold)
             tot += 1
         pairs: list[tuple[list[str], list[str]]] = []
+        residual_records: list[dict] = []
         for row in unbind_va or unbind_tr[:8]:
             fillers = list(row.get("fillers") or [])
             if not fillers:
@@ -268,6 +284,16 @@ def run_loop(
                 gold_strs.append(mapped_filler(maps, fill))
                 pred_strs.append(mapped_pred(maps, pred))
             pairs.append((gold_strs, pred_strs))
+            if residual_dump_path:
+                rec = residual_row_record(
+                    text=str(row.get("text") or ""),
+                    gold=gold_strs,
+                    pred=pred_strs,
+                    row=row,
+                )
+                if rec is not None:
+                    residual_records.append(rec)
+        last_residual_records = residual_records
         encoder.train()
         classify.train()
         filler_head.train()
@@ -318,6 +344,13 @@ def run_loop(
     write_skeleton(out_dir, maps=maps)
     weight_file = save_heads(out_dir, state)
     last = epoch_metrics[-1] if epoch_metrics else {}
+    residual_receipt: dict = {
+        "unbind_residual_dump": "",
+        "n_unbind_residual": 0,
+        "unbind_residual_themes": {},
+    }
+    if residual_dump_path:
+        residual_receipt = write_residual_dump(residual_dump_path, last_residual_records)
     receipt = {
         "schema": "hyperlex.hyperlexical.train_receipt.v0.1",
         "model_id": MODEL_ID_SEED,
@@ -336,6 +369,7 @@ def run_loop(
         "unbind_primary": slot_ce_mode["unbind_primary"],
         "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
         "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
+        "unbind_head_slot_weight": head_slot_weight,
         "n_unbind_observed": unbind_recipe["n_unbind_observed"],
         "n_unbind_inferred": unbind_recipe["n_unbind_inferred"],
         "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
@@ -355,6 +389,12 @@ def run_loop(
         "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
         "n_unbind_hard_atoms_matched": unbind_recipe.get("n_unbind_hard_atoms_matched", 0),
         "n_unbind_hard_extra_copies": unbind_recipe.get("n_unbind_hard_extra_copies", 0),
+        "unbind_residual_dump": residual_receipt.get("unbind_residual_dump", ""),
+        "n_unbind_residual": residual_receipt.get("n_unbind_residual", 0),
+        "unbind_residual_themes": residual_receipt.get("unbind_residual_themes", {}),
+        "unbind_residual_by_scheme": residual_receipt.get("unbind_residual_by_scheme", {}),
+        "unbind_residual_by_class": residual_receipt.get("unbind_residual_by_class", {}),
+        "unbind_residual_summary": residual_receipt.get("unbind_residual_summary", ""),
         "last_loss": losses[-1] if losses else None,
         "val": last,
         "epoch_metrics": epoch_metrics,
@@ -384,6 +424,7 @@ def run_loop(
                 "unbind_primary": slot_ce_mode["unbind_primary"],
                 "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
                 "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
+                "unbind_head_slot_weight": head_slot_weight,
                 "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
                 "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
                 "unbind_inferred_weight": inferred_weight,
