@@ -333,14 +333,30 @@ a real rights memo before any confirm flags may be set. Private workbench:
 - Private receipt: `~/hlx-private/p1-spark-gpu-smoke-20260913/SMOKE_SUMMARY.json`.
   Prior co-tenant OOM blocker still documented above for operator memory.
 
+
+### Spark morph33 bounded seed (2026-09-13)
+
+- Next recommended step after GPU trunk-forward: **2-epoch** guarded train
+  (`mem_frac=0.03`) with live SoT + morph levers (`slot_ce`, observed upsample 2,
+  hard-atom upsample 3, head-slot weight 2) into **new** out dir
+  `~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph33-bounded`.
+- Receipt: `cuda=true`, `name_gate=false`, val civilian `unbind_exact≈0.047`,
+  `unbind_token_f1≈0.27`, `classify_acc≈0.57` (2 epochs only — not a ladder claim).
+- Trunk-forward `eval_unbind` on the new out: probe `e2_pass=true` /
+  `unbind_exact=1.0` (n=24). That is the 004 probe path, **not** civilian ladder
+  promotion and **not** a BEST pin.
+- BEST/morph19 path + mtime unchanged. Private bundle:
+  `~/hlx-private/p1-spark-morph33-bounded-20260913/SMOKE_SUMMARY.json`.
+
 Remaining ordered execution tasks:
 1. Human structure gold spans — start with first-25 easy slice, then expand →
    re-prepare → structure head train. Do not invent spans.
 2. Expand rights/review beyond P1 only with explicit operator policy; do not
    auto-approve `operator-local` bulk (P3 workbench is triage-only). Dump SHA-256
    `b6867a4f441197b78dbfea71a8936894c62f8fa3b4343dc093043e6069e67d7e` (5019 lines).
-3. Optional longer morph climb / train seed into a NEW out dir under guard —
-   still never BEST overwrite without explicit approval. GPU trunk-forward smoke done.
+3. Optional longer morph climb (6+ epochs) from morph33-bounded or morph19 into a
+   NEW out dir under guard — still never BEST overwrite without explicit approval.
+   Bounded 2-epoch morph33 seed + GPU trunk-forward smoke done.
 
 Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash:
 e1414f86e7a0d5494404af27d9c616302268b182 (post-#64 recovery tip before this note).
