@@ -281,14 +281,31 @@ a real rights memo before any confirm flags may be set. Private workbench:
   P3 triage workbench `/tmp/hlx-p3-workbench-20260913` (190 rows, policy block
   against auto-approving `operator-local`). Notion MCP still `needsAuth` here.
 
+
+### Spark Option A smoke on verified P1 (2026-09-13)
+
+- Reachability: `ssh spark` (Cloudflare tunnel → `morpheus@spark-bf46`) works; this
+  cloud VM has no local Apache/`SPARK_HOME` — Spark means the DGX host.
+- Isolated worktree `~/Hyperlex-reviewed-smoke` at `main` (`005d45d`); morph19
+  checkout left alone.
+- Verified private P1-383 `prepare_clean` copied to
+  `~/hlx-private/p1-confirmed-20260913-full/prepare_clean` (outside git).
+- Bounded reviewed-trainer smoke via Spark docker torch stack
+  (`lmsysorg/sglang:…`, torch 2.13+cu130). First GPU attempt OOM'd against resident
+  Qwen VRAM; reran with `CUDA_VISIBLE_DEVICES=` empty so the toy trainer does not
+  init CUDA. Resume `weights_equal=true`; val `family_exact`≈0.66; structure null.
+- BEST/morph19 untouched: path + `model.safetensors` mtime unchanged;
+  `best_overwrite=false`; `training_ready`/`name_gate` still false.
+- Receipt: `~/hlx-private/p1-spark-smoke-20260913/SMOKE_SUMMARY.json` (private).
+
 Remaining ordered execution tasks:
 1. Human structure gold spans on P1 worksheet (or subset) → re-prepare → structure
    head train. Do not invent spans.
 2. Expand rights/review beyond P1 only with explicit operator policy; do not
    auto-approve `operator-local` bulk (P3 workbench is triage-only). Dump SHA-256
    `b6867a4f441197b78dbfea71a8936894c62f8fa3b4343dc093043e6069e67d7e` (5019 lines).
-3. Approved bounded Spark/morph smoke on a verified package only — never BEST
-   overwrite without explicit approval.
+3. Optional: GPU morph/trunk smoke with explicit VRAM budget (Qwen resident) —
+   still never BEST overwrite without explicit approval. Reviewed-path Spark smoke done.
 
 Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash:
 e1414f86e7a0d5494404af27d9c616302268b182 (post-#64 recovery tip before this note).
