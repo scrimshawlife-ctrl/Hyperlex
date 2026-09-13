@@ -173,7 +173,7 @@ Exit 0 means only these data/byte checks passed. Never use it as a train launch 
   Public stdout contains aggregates, not source text. Private plan contains raw text.
 - Acceptance: PREP-001 hash-bound deterministic package and no overwrite;
   PREP-002 every input accounted; PREP-003 repeated/Unicode/multiword occurrences;
-  PREP-004 truncation, malformed offsets and stale sidecar rejection;
+  PREP-004 truncation, whitespace offsets and stale sidecar rejection;
   PREP-005 reserved tests and missing-supervision blockers.
 - Dependencies: WF-001 contracts, WF-002 review intake, reviewed adapter and merged
   PR #62 legacy combined-target guard, which remains unchanged.
@@ -245,6 +245,15 @@ because val fillers are intentionally unknown under train-only vocabularies.
 - Dump review package remains private (`QUEUE_BUILT`, `training_ready=false`); no dump rows were auto-approved.
 - Tooling path proven on synthetic-only rows: review apply → intake → prepare/verify → reviewed trainer resume (`weights_equal=true`).
 - Next real gate: human P1 (`observed` + `operator-attested`) decisions with authoritative rights references, then prepare on that subset only.
+
+### P1 provenance gate (2026-09-13)
+
+P1 dump rows (`OBSERVED` + `operator-attested`, n=383) carry Notion provenance
+pointing at `Hyperlex-Vernacular-export-2026-09-10` with `operator-blanket-yes`
+settle notes. Those notes are **not** authoritative `rights_reference` values.
+Notion MCP auth (Cursor desktop) is required to inspect the export page and mint
+a real rights memo before any confirm flags may be set. Private workbench:
+`/tmp/hlx-p1-workbench-20260913` (family-only starter; zero gold spans).
 
 Remaining ordered execution tasks (not completed by this slice):
 1. Review real source use and annotations through WF-002; freeze grouped splits.
