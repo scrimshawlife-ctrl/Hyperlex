@@ -1,1 +1,1 @@
-PLACEHOLDER_LOAD_FROM_FILE
+file:///tmp/to_push/scripts/shadow/hyperlexical/training_review_queue.py
