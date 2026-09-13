@@ -441,11 +441,26 @@ a real rights memo before any confirm flags may be set. Private workbench:
 - Still positional `pos_i` gold — not semantic role ontology. OBSERVED
   `partial_slot_miss` remains policy hold. Envelope morphs remain exhausted.
 
+
+### type_slot structure upgrade + ModernBERT seed (2026-09-13)
+
+- Operator **"go ahead and continue"** after recommend-to-upgrade: remapped the
+  same 33 multitoken spans from positional `pos_i` to Spec-locked **type_slot**
+  tags (`TOKEN`/`SLOT` by index). Span offsets unchanged. Free-form gloss roles
+  not invented (schemes locked: `positional` | `type_slot`).
+- Rights: `confirm_rights=true` still reuses existing approved P1 Source-Use memo.
+- Intake **33/33** → prepare `PACKAGE_VERIFIED` → ModernBERT train into **new**
+  `~/hlx-private/p1-structure-typeslot-modernbert-20260913/out`.
+- Val: `family_exact≈0.763`, `structure_exact=0.5` (n_structure=8). Prior
+  positional ModernBERT seed was `structure_exact=0.625` — drop expected under
+  non-redundant TOKEN/SLOT labels.
+- `best_overwrite=false`; BEST morph19 path+mtime unchanged; `name_gate=false`.
+- OBSERVED `partial_slot_miss` remains policy hold. Envelope morphs exhausted.
+
 Remaining ordered execution tasks:
-1. Danny review of positional scheme vs semantic role gold (optional upgrade).
-2. Optional longer ModernBERT structure climb / holdout probe into a **new** out dir.
+1. Optional longer type_slot ModernBERT climb / holdout probe into a **new** out dir.
+2. Optional dual-scheme (positional + type_slot) gold if unbind curriculum needs both.
 3. Decide SoT OBSERVED `partial_slot_miss` policy (default hold).
 
-Provenance: operator "continue as recommended" + prepare
-`dataset_sha256=a39c40d4787129ba09c657b57dc7cebdfa20d2795d702153b09af7596158b706` +
+Provenance: operator "go ahead and continue" + typeslot prepare package +
 ModernBERT `SMOKE_SUMMARY.json` on Spark 2026-09-13.
