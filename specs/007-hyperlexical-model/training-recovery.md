@@ -240,6 +240,12 @@ Local CPU synthetic smoke (2026-09-13): resume weights_equal=true; consumption a
 passed; family_exact=1.0 on held-out family head; structure_exact_known_only=null
 because val fillers are intentionally unknown under train-only vocabularies.
 
+### Private queue + synthetic pipeline proof (2026-09-13)
+
+- Dump review package remains private (`QUEUE_BUILT`, `training_ready=false`); no dump rows were auto-approved.
+- Tooling path proven on synthetic-only rows: review apply → intake → prepare/verify → reviewed trainer resume (`weights_equal=true`).
+- Next real gate: human P1 (`observed` + `operator-attested`) decisions with authoritative rights references, then prepare on that subset only.
+
 Remaining ordered execution tasks (not completed by this slice):
 1. Review real source use and annotations through WF-002; freeze grouped splits.
    Local/Spark dump probe: training_4333_dump.jsonl SHA-256
