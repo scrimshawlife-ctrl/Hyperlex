@@ -157,6 +157,8 @@ def run_loop(
 ) -> dict:
     root = repo_root()
     bundle = export_dataset(root, include_live=include_live, live_store=live_store)
+    if any(r.get("role_scheme") == "reviewed_occurrences" for r in bundle["rows"]):
+        raise ValueError("reviewed occurrences require occurrence-aware loop alignment")
     routed, task_accounting = route_rows(bundle["rows"])
     write_export(root / "specs" / "007-hyperlexical-model" / "exports", bundle)
     classify_tr = routed["classify"]["train"]

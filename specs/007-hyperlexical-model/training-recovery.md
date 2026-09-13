@@ -51,6 +51,33 @@ the dataset or explicitly choose a new baseline, then request runtime smoke chec
 
 ## Contracts, data and architecture
 
+### WF-003 extension: reviewed contract adapter
+
+Purpose: translate declared reviewed supervision into an explicit task selection
+without replacing unknown labels with negatives. Actors: engineer, reviewer,
+pure adapter. Trigger: validated source/annotation/split bundle is available.
+Preconditions: caller declares the expected ontology version; existing operator
+and source-review boundaries hold. Inputs: dataset and expected ontology version.
+Happy path: validate joins and groups, require reviewed status for every active
+head, validate family vocabulary/cardinality, preserve occurrence IDs and offsets,
+map dev to val explicitly, and produce rows plus exhaustive accounting.
+Alternates: no active supported supervision excludes the example with a reason.
+Failures: active typology/stage, weak active labels, ontology mismatch or invalid
+family labels reject the batch. No partial results, files, network or training.
+States: VALIDATED -> ADAPTING -> REJECTED | ADAPTED_NOT_RUNNABLE. These are terminals.
+Invariants: test partitions remain test; raw text and span array order are retained;
+no OBSERVED promotion, inferred family, new license or approval declaration.
+Permissions: pure local engineering. Audit: dataset/rows hashes, example-level
+exclusions, selected task counts and remaining runtime blockers.
+Acceptance: ADP-001 complete accounting; ADP-002 explicit reviewed masks;
+ADP-003 unchanged occurrence identity; ADP-004 unsupported supervision rejection.
+Dependencies: WF-001/002 and routing. Unresolved: reviewer/source truth is external;
+the legacy loop still searches first text occurrence and cannot consume these
+spans safely. Adapter rows use role_scheme=reviewed_occurrences and must not be
+passed to the legacy loop until occurrence-aware alignment is integrated and tested.
+Structure labels retain their original metadata; span roles/fillers supply the
+prospective targets. This does not certify structure-label ontology semantics.
+
 ### WF-003 extension: legacy loop task routing
 
 REC-005: account for every exported row once as selected, masked, or reserved
@@ -111,6 +138,84 @@ Historical mode adds --historical-bundle PRIVATE_BUNDLE.json --checkpoint CHECKP
 Exit 0 means only these data/byte checks passed. Never use it as a train launch gate.
 
 ## Acceptance, traceability, tasks and verification
+
+### WF-003 extension: private preparation and occurrence alignment
+
+- Purpose: compose WF-002 intake and reviewed adaptation into one auditable local
+  package, without falsely declaring a runnable trainer or approved dataset.
+- Actors: operator, source/annotation reviewer, preparation tool, offline validator.
+- Trigger: explicit preparation request; tokenization is optional diagnostic input.
+- Preconditions: Python + jsonschema; authorized private input; existing output
+  parent; new output directory; explicit expected ontology. No GPU or network.
+- Inputs: JSONL (or one explicitly named ZIP member), optional digest-keyed review
+  metadata, optional dataset-bound codepoint tokenization sidecar.
+- Happy path: validate intake and grouped joins; adapt reviewed supported heads;
+  align explicit occurrences; preserve test rows; emit hash-bound files and receipt.
+- Alternate paths: absent review metadata produces quarantine, never synthesized
+  approval. Missing offsets block structure while retaining reviewed family selection.
+- Failure paths: invalid/duplicate JSON, ontology mismatch, stale tokenization hash,
+  missing/extra tokenization example, overlapping/out-of-range offsets, boundary
+  spillover and truncated non-whitespace coverage fail closed. Existing outputs
+  are refused. Partial directories without receipt.json are incomplete.
+- State transitions: REQUESTED -> INTAKE -> ADAPTING -> DATA_BLOCKED |
+  PREPARED_NOT_RUNNABLE; invalid input/output -> PREPARATION_FAILED.
+- Terminal states: DATA_BLOCKED (exit 3), PREPARED_NOT_RUNNABLE (exit 0),
+  PREPARATION_FAILED (exit 2). None is training authority.
+- Side effects: preview stdout only; explicit export creates fixed private files,
+  preserves original bytes and writes the receipt last. ZIP members are not extracted.
+- Invariants: all input records reconcile to quarantine + adapted + excluded;
+  unknown is not none; test never enters selected train/val IDs; repeated fillers
+  retain distinct occurrence IDs and token positions; name_gate/training_ready=false.
+- Permissions: authorized local read/new-directory write; OS ACLs are operator-owned.
+  No trainer launch, remote upload, checkpoint creation or promotion.
+- Observability/audit: input/container/metadata/dataset/rows/tokenization hashes,
+  selected IDs by head/partition, exclusions, blocked alignments and reason counts.
+  Public stdout contains aggregates, not source text. Private plan contains raw text.
+- Acceptance: PREP-001 hash-bound deterministic package and no overwrite;
+  PREP-002 every input accounted; PREP-003 repeated/Unicode/multiword occurrences;
+  PREP-004 truncation, malformed offsets and stale sidecar rejection;
+  PREP-005 reserved tests and missing-supervision blockers.
+- Dependencies: WF-001 contracts, WF-002 review intake, reviewed adapter and merged
+  PR #62 legacy combined-target guard, which remains unchanged.
+- Unresolved items: actual rights/reviewer evidence, near-duplicate group completeness,
+  frozen production split ID, real tokenizer identity/compatibility, trainer loading,
+  evaluation and resumable Spark runtime proof. Tokenization declarations are not
+  independently reproduced tokenizer evidence. This does not govern or activate.
+
+The new pure `prepare_reviewed` path does not use the legacy text-uniqueness guard
+for its occurrence-aware head selection. It records legacy routing separately as
+`legacy_routing_diagnostic`. `run_loop` still rejects reviewed_occurrences before
+writes or model loading. No reviewed row can reach first-occurrence fallback.
+Aligned spans are gold-span diagnostic supervision, not surface-only inference
+or proof of recovery from a bound vector. Token offsets must refer to the exact
+encoding used later; no whitespace-tokenizer substitute is silently introduced.
+Role/filler vocabularies are sorted and built only from selected structure training
+rows. Family IDs retain the existing ontology order. Held-out unknown targets keep
+their raw values and explicit target_known masks alongside ID zero; matching two
+unknown IDs must never count as exact recovery. Literal reserved <unk> targets
+are rejected. No validation or test target extends the training vocabulary.
+
+Tokenization sidecar has exactly `dataset_sha256`, `tokenizer_revision`,
+`offset_unit="unicode_codepoint"`, and `examples` mapping every active structure
+example ID (including held-out IDs) to ordered [start,end] offsets. Only [0,0]
+marks ignored special/padding tokens. Non-special offsets must be monotonic and
+non-overlapping; partial tokens crossing a gold occurrence are conservatively
+rejected. Subword whitespace gaps are allowed, uncovered non-whitespace is not.
+
+Private exports: original.jsonl, optional metadata.json/tokenization.json,
+dataset.json, plan.json, quarantine.json, review_queue.json, receipt.json.
+The final receipt hashes all other emitted files. It is not a signature or a
+transactional/tamper-proof store. Intake split ID remains staging-only.
+
+```text
+python -m scripts.shadow.hyperlexical.training_prepare --input PRIVATE.jsonl --ontology EXPECTED_VERSION --out-dir NEW_PRIVATE_DIRECTORY
+python -m scripts.shadow.hyperlexical.training_prepare --input PRIVATE.jsonl --metadata REVIEWED.json --tokenization OFFSETS.json --ontology EXPECTED_VERSION --out-dir ANOTHER_NEW_DIRECTORY
+```
+
+PREP-001..005 -> tests/shadow/test_training_prepare.py; ADP-001..004 ->
+tests/shadow/test_training_adapter.py. No source reviewer decisions are generated
+by this implementation. Preparation infrastructure completion is distinct from
+real dataset eligibility and trainer integration.
 
 REC-001 -> WF-003 -> test_contract_rejection, test_clean_no_mutation_or_authority.
 REC-002 -> WF-003 -> test_missing_train_signal, test_missing_dev_signal, test_missing_test.
