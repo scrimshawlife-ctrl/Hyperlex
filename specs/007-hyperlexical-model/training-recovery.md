@@ -319,14 +319,28 @@ a real rights memo before any confirm flags may be set. Private workbench:
   `~/hlx-private/p1-structure-first25-20260913` (25 rows, `confirm_*=false`).
 - Still does not invent spans. Full 383 worksheet remains available.
 
+
+### Spark GPU trunk-forward smoke (2026-09-13)
+
+- Headroom restored after Qwen stop (~119 Gi CUDA free). Ran ModernBERT
+  trunk-forward `eval_unbind` under `mem_frac=0.03` (~3.9 Gi cap) in the sglang
+  torch container against a **private read-only snapshot** of morph19 weights
+  (`~/hlx-private/p1-spark-gpu-smoke-20260913/model_snapshot_ro`) — not a write
+  to BEST.
+- Result: `device=cuda`, `trunk_loaded=true`, `e2_pass=true`, `unbind_exact=1.0`
+  (n=24 probe), `name_gate=false`, elapsed ~9 s. BEST path + `model.safetensors`
+  mtime unchanged (`best_overwrite=false`).
+- Private receipt: `~/hlx-private/p1-spark-gpu-smoke-20260913/SMOKE_SUMMARY.json`.
+  Prior co-tenant OOM blocker still documented above for operator memory.
+
 Remaining ordered execution tasks:
 1. Human structure gold spans — start with first-25 easy slice, then expand →
    re-prepare → structure head train. Do not invent spans.
 2. Expand rights/review beyond P1 only with explicit operator policy; do not
    auto-approve `operator-local` bulk (P3 workbench is triage-only). Dump SHA-256
    `b6867a4f441197b78dbfea71a8936894c62f8fa3b4343dc093043e6069e67d7e` (5019 lines).
-3. Optional: GPU morph/trunk smoke with explicit VRAM budget (Qwen resident) —
-   still never BEST overwrite without explicit approval. Reviewed-path Spark smoke done.
+3. Optional longer morph climb / train seed into a NEW out dir under guard —
+   still never BEST overwrite without explicit approval. GPU trunk-forward smoke done.
 
 Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash:
 e1414f86e7a0d5494404af27d9c616302268b182 (post-#64 recovery tip before this note).
