@@ -1,1 +1,1 @@
-@/tmp/hlx-docs/tr_merged.md
+file:///tmp/hlx-docs/tr_merged.md
