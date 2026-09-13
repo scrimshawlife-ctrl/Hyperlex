@@ -36,6 +36,10 @@ from .unbind_head_slot import (
     apply_head_slot_weight,
     resolve_unbind_head_slot_weight,
 )
+from .unbind_second_slot import (
+    apply_second_slot_weight,
+    resolve_unbind_second_slot_weight,
+)
 from .unbind_residual import (
     residual_row_record,
     resolve_unbind_residual_dump_path,
@@ -178,6 +182,7 @@ def run_loop(
     slot_ce_mode = resolve_unbind_primary_mode()
     unbind_primary = slot_ce_mode["unbind_primary"]
     head_slot_weight = resolve_unbind_head_slot_weight()
+    second_slot_weight = resolve_unbind_second_slot_weight()
     curriculum = resolve_curriculum_schedule()
     curriculum_plan = plan_unbind_curriculum(unbind_tr, epochs, curriculum)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -231,6 +236,7 @@ def run_loop(
                     )
                 )
         weighted_slots = apply_head_slot_weight(slot_ces, head_slot_weight)
+        weighted_slots = apply_second_slot_weight(weighted_slots, second_slot_weight)
         return combine_unbind_train_terms(
             weighted_slots,
             aux_terms,
@@ -370,6 +376,7 @@ def run_loop(
         "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
         "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
         "unbind_head_slot_weight": head_slot_weight,
+        "unbind_second_slot_weight": second_slot_weight,
         "n_unbind_observed": unbind_recipe["n_unbind_observed"],
         "n_unbind_inferred": unbind_recipe["n_unbind_inferred"],
         "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
@@ -425,6 +432,7 @@ def run_loop(
                 "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
                 "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
                 "unbind_head_slot_weight": head_slot_weight,
+                "unbind_second_slot_weight": second_slot_weight,
                 "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
                 "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
                 "unbind_inferred_weight": inferred_weight,
