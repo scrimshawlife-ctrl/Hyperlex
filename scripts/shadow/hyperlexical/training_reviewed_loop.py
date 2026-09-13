@@ -226,8 +226,91 @@ def _hash_text_tokens(text, n_positions):
     return tokens[:n_positions]
 
 
+
+
+def assert_pinned_token_indices(row):
+    """Refuse structure rows without pinned indices; no first-occurrence/token-1 fallback."""
+    if not (row.get("loss_masks") or {}).get("structure"):
+        return row
+    if "aligned_occurrences" not in row:
+        raise ValueError("structure row missing aligned_occurrences")
+    for span in row["aligned_occurrences"]:
+        indices = span.get("token_indices")
+        if not isinstance(indices, list) or not indices:
+            raise ValueError("missing pinned token_indices; refusing first-occurrence fallback")
+        if any(type(i) is not int or i < 0 for i in indices):
+            raise ValueError("invalid pinned token_indices")
+        # Explicitly reject the historical token-1 singleton fallback unless it is the true pin.
+        if indices == [1] and span.get("start") == 0 and span.get("end") == 0:
+            raise ValueError("token-1 fallback pin rejected")
+    return row
+
+
+def selected_train_example_ids(plan):
+    assert_plan_eligible(plan)
+    selected = plan.get("selected_example_ids") or {}
+    ids = set()
+    for head in selected.values():
+        ids.update(head.get("train") or [])
+    # Always include rows that are actually in the train split with any active head.
+    for row in select_split_rows(plan, "train"):
+        ids.add(row["example_id"])
+    return sorted(ids)
+
+
+def assert_consumption_matches_selection(selected_ids, consumed_ids):
+    selected = set(selected_ids)
+    consumed = list(consumed_ids)
+    unknown = sorted({eid for eid in consumed if eid not in selected})
+    if unknown:
+        raise ValueError(f"consumed example_ids not in selected train set: {unknown}")
+    return {
+        "n_selected_train": len(selected),
+        "n_consumed_events": len(consumed),
+        "unique_consumed": sorted(set(consumed)),
+        "all_consumed_in_selected": True,
+    }
+
+
+def runtime_identity(*, seed, max_steps, batch_size, lr, scheduler_step_size, hidden, eval_split):
+    import platform
+    import subprocess
+    import sys
+
+    code_sha = None
+    try:
+        code_sha = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except Exception:
+        code_sha = None
+    torch, _ = _require_torch()
+    return {
+        "code_commit": code_sha,
+        "python": sys.version.split()[0],
+        "platform": platform.platform(),
+        "torch": getattr(torch, "__version__", None),
+        "cuda_available": bool(torch.cuda.is_available()),
+        "recipe": {
+            "seed": seed,
+            "max_steps": max_steps,
+            "batch_size": batch_size,
+            "lr": lr,
+            "scheduler_step_size": scheduler_step_size,
+            "hidden": hidden,
+            "eval_split": eval_split,
+            "optimizer": "AdamW",
+            "scheduler": "StepLR",
+        },
+    }
+
+
 def materialize_token_ids(row):
-    if row.get("aligned_occurrences"):
+    if (row.get("loss_masks") or {}).get("structure"):
+        assert_pinned_token_indices(row)
+        max_idx = max(max(s["token_indices"]) for s in row["aligned_occurrences"])
+        n = max(max_idx + 1, 3)
+    elif row.get("aligned_occurrences"):
         max_idx = max(max(s["token_indices"]) for s in row["aligned_occurrences"])
         n = max(max_idx + 1, 3)
     else:
@@ -462,7 +545,20 @@ def run_reviewed_train(
         order = list(loaded["sampler_state"]["order"])
         cursor = int(loaded["sampler_state"]["cursor"])
 
+    selected_ids = selected_train_example_ids(plan)
+    for row in train_rows:
+        assert_pinned_token_indices(row)
+    identity = runtime_identity(
+        seed=seed,
+        max_steps=max_steps,
+        batch_size=batch_size,
+        lr=lr,
+        scheduler_step_size=scheduler_step_size,
+        hidden=hidden,
+        eval_split=eval_split,
+    )
     losses = []
+    consumed_example_ids = []
     while step < max_steps:
         if cursor >= len(order):
             random.shuffle(order)
@@ -485,6 +581,8 @@ def run_reviewed_train(
         losses.append(
             {"step": step, "loss": loss, "n_terms": n_terms, "example_ids": batch["example_ids"]}
         )
+        consumed_example_ids.extend(batch["example_ids"])
+    consumption_audit = assert_consumption_matches_selection(selected_ids, consumed_example_ids)
 
     ckpt_path = out_dir / "checkpoint.pt"
     save_reviewed_checkpoint(
@@ -518,12 +616,21 @@ def run_reviewed_train(
             "n_train_rows_available": len(train_rows),
             "n_eval_rows": len(eval_rows),
             "eval_split": eval_split,
+            "selected_train_example_ids": selected_ids,
+            "consumed_example_ids": consumed_example_ids,
             "consumed_example_ids_last_batches": [x["example_ids"] for x in losses[-5:]],
+            "consumption_audit": consumption_audit,
+            "runtime_identity": identity,
+            "split_protocol": {
+                "selected_example_ids": plan.get("selected_example_ids"),
+                "row_outcomes": plan.get("row_outcomes"),
+            },
             "losses": losses,
             "metrics": metrics,
             "checkpoint": str(ckpt_path),
             "legacy_loop_guard_preserved": True,
             "train_eval_fallback": False,
+            "best_overwrite": False,
             "note": "Reviewed trainer path only. Does not authorize publication or BEST overwrite.",
         },
     )

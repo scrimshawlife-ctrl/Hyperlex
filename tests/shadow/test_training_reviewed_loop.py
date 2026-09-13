@@ -12,12 +12,15 @@ from scripts.shadow.hyperlexical import loop
 from scripts.shadow.hyperlexical.training_adapter import prepare_reviewed
 from scripts.shadow.hyperlexical.training_contracts import digest
 from scripts.shadow.hyperlexical.training_reviewed_loop import (
+    assert_consumption_matches_selection,
+    assert_pinned_token_indices,
     assert_plan_eligible,
     collate_reviewed_batch,
     compare_uninterrupted_vs_resumed,
     gold_span_diagnostics,
     run_reviewed_train,
     select_split_rows,
+    selected_train_example_ids,
     structure_exact_match,
 )
 from test_training_contracts import fixture
@@ -177,3 +180,41 @@ def test_consumption_receipt_and_no_name_gate(tmp_path):
     assert receipt["rows_sha256"] == plan["rows_sha256"]
     assert receipt["n_train_rows_available"] == 1
     assert receipt["n_eval_rows"] == 1
+
+
+def test_pinned_indices_required_no_first_occurrence_fallback():
+    plan = eligible_plan()
+    row = copy.deepcopy(select_split_rows(plan, "train")[0])
+    assert_pinned_token_indices(row)
+    row["aligned_occurrences"][0]["token_indices"] = []
+    with pytest.raises(ValueError, match="pinned token_indices"):
+        assert_pinned_token_indices(row)
+    del row["aligned_occurrences"]
+    with pytest.raises(ValueError, match="aligned_occurrences"):
+        assert_pinned_token_indices(row)
+
+
+def test_selected_example_ids_match_actual_consumption(tmp_path):
+    plan = eligible_plan()
+    selected = selected_train_example_ids(plan)
+    out = run_reviewed_train(plan, out_dir=tmp_path / "consume", seed=5, max_steps=5, batch_size=1)
+    receipt = out["receipt"]
+    assert receipt["selected_train_example_ids"] == selected
+    assert set(receipt["consumed_example_ids"]) <= set(selected)
+    assert receipt["consumption_audit"]["all_consumed_in_selected"] is True
+    # Injecting an alien id must fail the audit helper.
+    with pytest.raises(ValueError, match="not in selected"):
+        assert_consumption_matches_selection(selected, receipt["consumed_example_ids"] + ["alien"])
+
+
+def test_receipt_records_identities_and_refuses_best_overwrite(tmp_path):
+    plan = eligible_plan()
+    out = run_reviewed_train(plan, out_dir=tmp_path / "ident", seed=9, max_steps=3, batch_size=1)
+    receipt = out["receipt"]
+    identity = receipt["runtime_identity"]
+    assert identity["recipe"]["seed"] == 9
+    assert identity["recipe"]["max_steps"] == 3
+    assert receipt["tokenizer_revision"] == plan["tokenizer_revision"]
+    assert receipt["dataset_sha256"] == plan["dataset_sha256"]
+    assert receipt["best_overwrite"] is False
+    assert receipt["split_protocol"]["selected_example_ids"] == plan["selected_example_ids"]
