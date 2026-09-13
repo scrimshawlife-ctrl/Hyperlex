@@ -1,1 +1,1 @@
-PLACEHOLDER_LOAD_FROM_DISK
+{{file:/tmp/hlx-docs/tr_merged.md}}
