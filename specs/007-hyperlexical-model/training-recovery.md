@@ -227,13 +227,25 @@ REC-002 -> WF-003 -> test_missing_train_signal, test_missing_dev_signal, test_mi
 REC-003 -> WF-003 -> test_historical_bytes_and_negative_controls.
 REC-004 -> WF-003 -> test_cli, test_clean_no_mutation_or_authority.
 
-Implemented: read-only recovery diagnostic and synthetic controls.
+Implemented: read-only recovery diagnostic and synthetic controls; occurrence-aware
+preparation (#63); explicit reviewed trainer path (`training_reviewed_loop.py`) that
+consumes `PREPARED_NOT_RUNNABLE` plans only, preserves occurrence IDs / pinned
+`token_indices` / train-only vocabularies, refuses train-set eval fallback, emits
+consumption receipts, and checks uninterrupted-vs-resumed weight equality. Legacy
+`run_loop` still rejects `role_scheme=reviewed_occurrences` before write/model load.
+
 Remaining ordered execution tasks (not completed by this slice):
 1. Review real source use and annotations through WF-002; freeze grouped splits.
-2. Integrate contracts into exporter/loader; account for combined tasks and masks.
-3. Correct repeated occurrence alignment and seed ordering/sampling.
-4. Record exact code, environment, inputs, recipe and resumable checkpoint state.
-5. Verify tiny overfit, uninterrupted/resumed equivalence and task-safe evaluation
-   on Spark under an approved compute budget; then run the bounded baseline.
+   Local dump probe: 5019/5019 records quarantined for MISSING_REVIEW_METADATA
+   (OBSERVED labels do not establish rights or per-head review). Residual morph19
+   198 rows remain development-only (31 OBSERVED / 167 INFERRED).
+2. Supply authoritative review sidecars (source-rights refs, per-head decisions,
+   ontology, occurrence spans, group-aware split ID) and pinned tokenizer offsets.
+3. Record exact code, environment, inputs, recipe and resumable checkpoint state
+   for a bounded Spark smoke once eligible data exists.
+4. Verify tiny overfit, uninterrupted/resumed equivalence and task-safe evaluation
+   on Spark under an approved compute budget; then run the corrected supervised
+   baseline. Do not overwrite BEST (morph19).
 
-Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash: b3eee725054c1ed1dae16fad3464af005edad0cc (base).
+Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash:
+264a0b35143a6920aaeb1872581550847b54fd12 (#63 base).
