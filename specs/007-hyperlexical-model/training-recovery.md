@@ -173,7 +173,7 @@ Exit 0 means only these data/byte checks passed. Never use it as a train launch 
   Public stdout contains aggregates, not source text. Private plan contains raw text.
 - Acceptance: PREP-001 hash-bound deterministic package and no overwrite;
   PREP-002 every input accounted; PREP-003 repeated/Unicode/multiword occurrences;
-  PREP-004 truncation, malformed offsets and stale sidecar rejection;
+  PREP-004 truncation, whitespace offsets and stale sidecar rejection;
   PREP-005 reserved tests and missing-supervision blockers.
 - Dependencies: WF-001 contracts, WF-002 review intake, reviewed adapter and merged
   PR #62 legacy combined-target guard, which remains unchanged.
@@ -227,13 +227,54 @@ REC-002 -> WF-003 -> test_missing_train_signal, test_missing_dev_signal, test_mi
 REC-003 -> WF-003 -> test_historical_bytes_and_negative_controls.
 REC-004 -> WF-003 -> test_cli, test_clean_no_mutation_or_authority.
 
-Implemented: read-only recovery diagnostic and synthetic controls.
+Implemented: read-only recovery diagnostic and synthetic controls; occurrence-aware
+preparation (#63); explicit reviewed trainer path (`training_reviewed_loop.py`) that
+consumes `PREPARED_NOT_RUNNABLE` plans only, preserves occurrence IDs / pinned
+`token_indices` / train-only vocabularies, refuses train-set eval fallback, audits
+that consumed example IDs ⊆ selected train IDs, records runtime/recipe identity in
+consumption receipts, refuses BEST overwrite claims, and checks uninterrupted-vs-
+resumed weight equality on synthetic eligible plans. Legacy `run_loop` still rejects
+`role_scheme=reviewed_occurrences` before write/model load.
+
+Local CPU synthetic smoke (2026-09-13): resume weights_equal=true; consumption audit
+passed; family_exact=1.0 on held-out family head; structure_exact_known_only=null
+because val fillers are intentionally unknown under train-only vocabularies.
+
+### Private queue + synthetic pipeline proof (2026-09-13)
+
+- Dump review package remains private (`QUEUE_BUILT`, `training_ready=false`); no dump rows were auto-approved.
+- Tooling path proven on synthetic-only rows: review apply → intake → prepare/verify → reviewed trainer resume (`weights_equal=true`).
+- Next real gate: human P1 (`observed` + `operator-attested`) decisions with authoritative rights references, then prepare on that subset only.
+
+### P1 provenance gate (2026-09-13)
+
+P1 dump rows (`OBSERVED` + `operator-attested`, n=383) carry Notion provenance
+pointing at `Hyperlex-Vernacular-export-2026-09-10` with `operator-blanket-yes`
+settle notes. Those notes are **not** authoritative `rights_reference` values.
+Notion MCP auth (Cursor desktop) is required to inspect the export page and mint
+a real rights memo before any confirm flags may be set. Private workbench:
+`/tmp/hlx-p1-workbench-20260913` (family-only starter; zero gold spans).
+
 Remaining ordered execution tasks (not completed by this slice):
 1. Review real source use and annotations through WF-002; freeze grouped splits.
-2. Integrate contracts into exporter/loader; account for combined tasks and masks.
-3. Correct repeated occurrence alignment and seed ordering/sampling.
-4. Record exact code, environment, inputs, recipe and resumable checkpoint state.
-5. Verify tiny overfit, uninterrupted/resumed equivalence and task-safe evaluation
-   on Spark under an approved compute budget; then run the bounded baseline.
+   Local/Spark dump probe: training_4333_dump.jsonl SHA-256
+   b6867a4f441197b78dbfea71a8936894c62f8fa3b4343dc093043e6069e67d7e has 5019 lines;
+   prepare quarantines 5019/5019 for MISSING_REVIEW_METADATA. No container.zip /
+   review sidecar / rights package found on this host or Spark under searched paths.
+   Residual morph19: 198 rows development-only (31 OBSERVED / 167 INFERRED).
+   Helper: `training_review_queue.py` builds a private digest-keyed worksheet
+   (`QUEUE_BUILT`, training_ready=false) and materializes an intake sidecar only
+   from decisions with confirm_rights=true and confirm_labels=true plus an
+   authoritative rights_reference (operator-local / OBSERVED never auto-approve).
+   Dump triage: operator-local 4057, operator-attested 534, operator-attested+OBSERVED
+   366, other operator-* 62. Queue package stays outside the repo.
+2. Supply authoritative review sidecars (source-rights refs, per-head decisions,
+   ontology, occurrence spans, group-aware split ID) and pinned real-tokenizer offsets.
+   Do not invent metadata to pass validators.
+3. After eligible data exists: regenerate incomplete packages into fresh directories,
+   verify with verify_preparation, then run the approved bounded Spark smoke.
+   Do not overwrite BEST (morph19). Historical morph19 ledger remains not
+   independently re-verified this session.
 
-Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash: b3eee725054c1ed1dae16fad3464af005edad0cc (base).
+Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash:
+264a0b35143a6920aaeb1872581550847b54fd12 (#63 base).
