@@ -1,4 +1,8 @@
-"""Spark train loop. Gate only."""
+"""Spark train loop. Gate only.
+
+Routing change provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A
++ Hash: b3eee725054c1ed1dae16fad3464af005edad0cc (base).
+"""
 
 from __future__ import annotations
 
@@ -20,6 +24,7 @@ from .layout import (
     resolve_last_trainable,
 )
 from .save_pretrained import collect_encoder_trainable, save_heads, write_skeleton
+from .training_routing import route_rows
 from .unbind_curriculum import (
     plan_unbind_curriculum,
     resolve_curriculum_schedule,
@@ -96,8 +101,9 @@ def should_interleave_unbind(classify_batch_index: int, every_n: int) -> bool:
 
 def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
     """Train recipe only. Val list is untouched (frozen lexical split)."""
-    train = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "train"]
-    val = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "val"]
+    routed, _ = route_rows(rows)
+    train = routed["unbind"]["train"]
+    val = routed["unbind"]["val"]
     shaped, stats = shape_unbind_train(train)
     return shaped, val, stats
 
@@ -151,9 +157,10 @@ def run_loop(
 ) -> dict:
     root = repo_root()
     bundle = export_dataset(root, include_live=include_live, live_store=live_store)
+    routed, task_accounting = route_rows(bundle["rows"])
     write_export(root / "specs" / "007-hyperlexical-model" / "exports", bundle)
-    classify_tr = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "train"]
-    classify_va = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "val"]
+    classify_tr = routed["classify"]["train"]
+    classify_va = routed["classify"]["val"]
     unbind_tr, unbind_va, unbind_recipe = prepare_unbind_splits(bundle["rows"])
     if len(classify_tr) < 8:
         raise RuntimeError("not enough classify train rows")
@@ -366,6 +373,7 @@ def run_loop(
         "cuda": bool(torch.cuda.is_available()),
         "epochs": epochs,
         "n_train_classify": len(classify_tr),
+        "task_accounting": task_accounting,
         "n_train_unbind": len(unbind_tr),
         "n_unfrozen_encoder": n_unfrozen,
         "n_encoder_tensors": len(encoder_state),
