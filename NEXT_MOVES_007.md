@@ -1,22 +1,30 @@
-# Spec 007 — status after morph34 + structure intake unblock
+# Spec 007 — status after structure pipeline smoke (post morph34)
 
 **Authority:** Spec 007 only. `name_gate` stays false. No Hub. No invented OBSERVED gold.
-**BEST:** `seed-morph19` — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
+**BEST:** `hyperlex-encoder-modernbert-base-seed-morph19` — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
 
 ## Done this turn
 
-- morph34 6-epoch envelope climb: **REJECT** (exact≈0.383 < BEST); BEST untouched.
-- Reselected P1 structure **multi-token** first-25 worksheet (1-token slice retired).
-- Landed fail-closed `structure_worksheet_intake` (tests green).
-- Parked SoT OBSERVED `partial_slot_miss` review pack (n=25, policy include=false).
+- Operator **"you can handle this"**: annotated positional whitespace structure gold
+  (25 train + 8 val), fail-closed intake **33/33**, prepare `PACKAGE_VERIFIED`,
+  reviewed-trainer smoke `RAN_REVIEWED_TRAINER` into **new** private out dirs.
+- Resume integrity `weights_equal=true`; `best_overwrite=false`; BEST untouched.
+- Toy embedder val: `family_exact≈0.658`, `structure_exact=0.0` (pipeline only —
+  not ModernBERT / not ladder).
+- morph34 envelope climb remains **REJECT**; envelope knobs remain exhausted.
+- SoT OBSERVED `partial_slot_miss` pack still policy hold.
 
-## Exhausted on morph19 envelope
+## Private paths (Spark)
 
-Weight / schedule / capacity / hard-atom expand / second-slot / 6-epoch replication.
+- annotate `~/hlx-private/p1-structure-annotated-20260913/`
+- intake `~/hlx-private/p1-structure-intake-20260913/`
+- prepare `~/hlx-private/p1-structure-prepare-20260913/`
+- train `~/hlx-private/p1-structure-train-20260913/`
+- card `~/hlx-private/p1-structure-pipeline-20260913/OPERATOR_CARD.json`
 
-## Next (Danny)
+## Next
 
-1. **Annotate** `~/hlx-private/p1-structure-first25-multitoken-20260913/` (honest spans only).
-2. Run intake → prepare/verify → structure-head train into a **new** out dir.
-3. Optionally decide OBSERVED `partial_slot_miss` policy on the review pack (default hold).
+1. Danny: accept or upgrade positional `pos_i` gold → semantic roles (optional).
+2. Optional ModernBERT structure-head train from verified prepare into a **new** out dir.
+3. OBSERVED `partial_slot_miss` policy decision (default hold).
 Hold further envelope-only morphs. Never overwrite BEST without explicit approval.
