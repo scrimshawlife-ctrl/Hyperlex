@@ -204,6 +204,11 @@ rejected. Subword whitespace gaps are allowed, uncovered non-whitespace is not.
 
 Private exports: original.jsonl, optional metadata.json/tokenization.json,
 dataset.json, plan.json, quarantine.json, review_queue.json, receipt.json.
+Archive input also retains container.zip. Verification checks its byte hash and
+the uniquely named member against original.jsonl. Receipt fields must match the
+exact recomputed key set; extra claims are rejected. Older archive receipts that
+did not retain the container must be regenerated into a new directory, not
+silently marked verified by this stricter verifier.
 The final receipt hashes all other emitted files. It is not a signature or a
 transactional/tamper-proof store. Intake split ID remains staging-only.
 

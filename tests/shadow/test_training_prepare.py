@@ -155,7 +155,7 @@ def test_cli_successful_adaptation_and_duplicate_json_rejection(tmp_path, capsys
     assert "private" not in capsys.readouterr().out
 
 
-@pytest.mark.parametrize("kind", ["bytes", "receipt", "extra", "traversal", "forged_artifact"])
+@pytest.mark.parametrize("kind", ["bytes", "receipt", "extra", "traversal", "forged_artifact", "forged_claim"])
 def test_verify_package_negative_controls(tmp_path, kind):
     payload, metadata, tokens = reviewed_inputs()
     result = prepare(payload, metadata, ontology="proposal-v1", tokenization=tokens)
@@ -171,6 +171,8 @@ def test_verify_package_negative_controls(tmp_path, kind):
         (out / "extra.json").write_text('{}')
     elif kind == "traversal":
         receipt["files_sha256"]["../escape"] = "0" * 64
+    elif kind == "forged_claim":
+        receipt["rights_independently_verified"] = True
     else:
         (out / "plan.json").write_text('{}')
         receipt["files_sha256"]["plan.json"] = hashlib.sha256(b'{}').hexdigest()
@@ -200,3 +202,19 @@ def test_training_vocab_excludes_heldout_and_reserved_target():
     tokens["dataset_sha256"] = digest(d)
     with pytest.raises(ValueError, match="reserved unknown"):
         prepare_reviewed(d, expected_ontology="proposal-v1", tokenization=tokens)
+
+
+@pytest.mark.parametrize("field,value", [("container_sha256", "0" * 64), ("zip_member", "absent"), ("invented", True)])
+def test_cli_archive_identity_is_recomputed(tmp_path, capsys, field, value):
+    src, out = tmp_path / "source.zip", tmp_path / "out"
+    with zipfile.ZipFile(src, "w") as archive:
+        archive.writestr("rows.jsonl", '{"text":"private"}')
+    assert main(["--input", str(src), "--zip-member", "rows.jsonl", "--ontology", "test-v1", "--out-dir", str(out)]) == 3
+    capsys.readouterr()
+    assert verify_package(out)["status"] == "PACKAGE_VERIFIED"
+    assert (out / "container.zip").read_bytes() == src.read_bytes()
+    receipt = json.loads((out / "receipt.json").read_text())
+    receipt[field] = value
+    (out / "receipt.json").write_text(json.dumps(receipt))
+    with pytest.raises(ValueError):
+        verify_package(out)

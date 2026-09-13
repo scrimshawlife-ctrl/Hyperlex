@@ -1,6 +1,7 @@
 """Verify a local preparation package without model loading. Provenance: WF-003."""
 import argparse
 import json
+import zipfile
 from pathlib import Path
 
 from .training_prepare import verify_package
@@ -12,7 +13,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         report = verify_package(args.directory)
-    except (OSError, ValueError, TypeError, KeyError):
+    except (OSError, ValueError, TypeError, KeyError, zipfile.BadZipFile):
         print(json.dumps({"status": "PACKAGE_INVALID", "training_ready": False}))
         return 2
     print(json.dumps(report, sort_keys=True))
