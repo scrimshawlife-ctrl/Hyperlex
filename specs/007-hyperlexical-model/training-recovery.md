@@ -255,26 +255,25 @@ Notion MCP auth (Cursor desktop) is required to inspect the export page and mint
 a real rights memo before any confirm flags may be set. Private workbench:
 `/tmp/hlx-p1-workbench-20260913` (family-only starter; zero gold spans).
 
-Remaining ordered execution tasks (not completed by this slice):
-1. Review real source use and annotations through WF-002; freeze grouped splits.
-   Local/Spark dump probe: training_4333_dump.jsonl SHA-256
-   b6867a4f441197b78dbfea71a8936894c62f8fa3b4343dc093043e6069e67d7e has 5019 lines;
-   prepare quarantines 5019/5019 for MISSING_REVIEW_METADATA. No container.zip /
-   review sidecar / rights package found on this host or Spark under searched paths.
-   Residual morph19: 198 rows development-only (31 OBSERVED / 167 INFERRED).
-   Helper: `training_review_queue.py` builds a private digest-keyed worksheet
-   (`QUEUE_BUILT`, training_ready=false) and materializes an intake sidecar only
-   from decisions with confirm_rights=true and confirm_labels=true plus an
-   authoritative rights_reference (operator-local / OBSERVED never auto-approve).
-   Dump triage: operator-local 4057, operator-attested 534, operator-attested+OBSERVED
-   366, other operator-* 62. Queue package stays outside the repo.
-2. Supply authoritative review sidecars (source-rights refs, per-head decisions,
-   ontology, occurrence spans, group-aware split ID) and pinned real-tokenizer offsets.
-   Do not invent metadata to pass validators.
-3. After eligible data exists: regenerate incomplete packages into fresh directories,
-   verify with verify_preparation, then run the approved bounded Spark smoke.
-   Do not overwrite BEST (morph19). Historical morph19 ledger remains not
-   independently re-verified this session.
+### Merged reviewed trainer + continued P1 CPU pretrain (2026-09-13)
+
+- PR [#64](https://github.com/scrimshawlife-ctrl/Hyperlex/pull/64) squash-merged to
+  `main` (`fcca166`): reviewed trainer + review-queue validate/operator-* bans.
+- Private P1-383 prepare package verified locally (`PREPARED_NOT_RUNNABLE`,
+  blockers `[]`); dump/memo packages stay outside git.
+- Family-only CPU reviewed pretrain resumed from step 200 → 2000 on that package
+  (`best_overwrite=false`, `training_ready`/`name_gate` still false). Val
+  `family_exact` plateaued ~0.66 on the toy hash-embedding trainer; structure
+  supervision still blocked (zero gold spans). Spark Option A not available on
+  this host (`SPARK_HOME` unset). Do not overwrite BEST (morph19).
+
+Remaining ordered execution tasks:
+1. Expand rights/review beyond P1 only with explicit operator policy; do not
+   auto-approve `operator-local` bulk. Dump SHA-256
+   `b6867a4f441197b78dbfea71a8936894c62f8fa3b4343dc093043e6069e67d7e` (5019 lines).
+2. Structure gold spans + pinned offsets before structure head training.
+3. Approved bounded Spark/morph smoke on a verified package only — never BEST
+   overwrite without explicit approval.
 
 Provenance: Notion Sprint 001 Hub NOT_COMPUTABLE + Loop 805 Slice N/A + Hash:
-264a0b35143a6920aaeb1872581550847b54fd12 (#63 base).
+fcca166de0b32db84c1266b6409d0b8faf67c8d4 (#64 merge).
