@@ -398,7 +398,7 @@ a real rights memo before any confirm flags may be set. Private workbench:
 
 ### Operator-authorized structure annotate → intake → prepare → reviewed train (2026-09-13)
 
-- Operator said **"you can handle this"** — agent annotated positional whitespace
+- Operator said **\"you can handle this\"** — agent annotated positional whitespace
   structure gold (no Danny wait) under SHADOW / `name_gate=false`.
 - Annotated package (private): `~/hlx-private/p1-structure-annotated-20260913/`
   (`structure_annotated.jsonl`, n=33 = 25 train multitoken + 8 val multitoken;
@@ -413,7 +413,7 @@ a real rights memo before any confirm flags may be set. Private workbench:
   `PACKAGE_VERIFIED`, status `PREPARED_NOT_RUNNABLE`, blockers `[]`,
   structure selected train=25 / val=8
   (family train=320 / val=38).
-- Reviewed trainer smoke (CPU container, `CUDA_VISIBLE_DEVICES=""`, tiny hash-embed
+- Reviewed trainer smoke (CPU container, `CUDA_VISIBLE_DEVICES=\"\"`, tiny hash-embed
   model — **not** ModernBERT morph): `~/hlx-private/p1-structure-train-20260913/`
   - resume integrity `weights_equal=true`
   - status `RAN_REVIEWED_TRAINER`, `best_overwrite=false`, BEST `hyperlex-encoder-modernbert-base-seed-morph19` path+mtime unchanged
@@ -426,12 +426,26 @@ a real rights memo before any confirm flags may be set. Private workbench:
   ModernBERT structure head into a **new** out dir. Never overwrite BEST without
   explicit approval.
 
+
+### Occurrence-aware ModernBERT structure seed (2026-09-13)
+
+- Operator **\"continue as recommended\"** after reviewed toy smoke: ran ModernBERT
+  structure(+family) train from verified prepare into **new** out
+  `~/hlx-private/p1-structure-modernbert-20260913/out`.
+- Align path: ModernBERT `offset_mapping` + `align_occurrences_modernbert` allowing
+  whitespace-only BPE leading-space overhang (content spillover still fail-closed).
+- Receipt: status `RAN_STRUCTURE_MODERNBERT`; val `family_exact≈0.763`,
+  `structure_exact=0.625` (n_structure=8); `best_overwrite=false`; BEST morph19
+  path+mtime unchanged; `name_gate=false`.
+- Private card: `~/hlx-private/p1-structure-modernbert-20260913/OPERATOR_CARD.json`.
+- Still positional `pos_i` gold — not semantic role ontology. OBSERVED
+  `partial_slot_miss` remains policy hold. Envelope morphs remain exhausted.
+
 Remaining ordered execution tasks:
 1. Danny review of positional scheme vs semantic role gold (optional upgrade).
-2. If structure head on ModernBERT is desired: train into a **new** out dir from
-   the verified prepare package; compare without BEST pin unless exact clears ladder.
-3. Decide SoT OBSERVED `partial_slot_miss` policy (default hold). Envelope morphs
-   remain exhausted.
+2. Optional longer ModernBERT structure climb / holdout probe into a **new** out dir.
+3. Decide SoT OBSERVED `partial_slot_miss` policy (default hold).
 
-Provenance: operator authorization "you can handle this" + prepare
-`dataset_sha256=a39c40d4787129ba09c657b57dc7cebdfa20d2795d702153b09af7596158b706` + train smoke on Spark 2026-09-13.
+Provenance: operator \"continue as recommended\" + prepare
+`dataset_sha256=a39c40d4787129ba09c657b57dc7cebdfa20d2795d702153b09af7596158b706` +
+ModernBERT `SMOKE_SUMMARY.json` on Spark 2026-09-13.
