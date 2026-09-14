@@ -1,1 +1,1 @@
-sha256:75e6e520de5cc0ca697cfdc591bea063c297c22ba811a888a7cbdb9195a013e8
+cursor://workspace/.training-recovery-push.md
