@@ -1,37 +1,39 @@
-# Spec 007 — status after expanded structure gold + dual holdout
+# Spec 007 — accept6 gold in; famcls10 rejected; weights stay famcls9
 
-**Authority:** Spec 007 only. `name_gate` stays false. No Hub. No invented OBSERVED gold.
-**BEST:** morph19 pin — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
+**Authority:** Spec 007 only. `name_gate` false. No Hub. No invented OBSERVED gold.
+**BEST:** morph19 — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
 
-## Done this turn
+## Pins
 
-- Operator **"continue as recommended"** after holdout miss: **expanded structure gold**
-  (+40 multitoken bases → **62** total), dual-scheme prepare (positional + type_slot),
-  12-base holdout, ModernBERT 12-ep train into **new**
-  `~/hlx-private/p1-structure-dual-expanded-20260914/out`.
-- Val: `structure_exact=0.125` (n=16), `family_exact≈0.686` (n=35).
-- Holdout: `structure_exact=0.0` (n=24), `family_exact≈0.676` (n=37).
-  Expansion alone did **not** create holdout structure signal.
-- `best_overwrite=false`; `best_unchanged=true`; BEST morph19 path+mtime unchanged.
-- OBSERVED `partial_slot_miss` still policy hold. Envelope morphs remain exhausted.
+| pin | path | note |
+|-----|------|------|
+| **weight joint (family-line)** | `~/hlx-private/p1-structure-unbind-famcls9-20260914/` | KEEP; structure-frozen head on accept5 |
+| **data pin** | `~/hlx-private/p1-classify-accept6-20260914/prepare` | accept5 + **+171** targeted weak-family lexicon |
+| structure reference | `~/hlx-private/p1-structure-unbind-famsel-20260914/` | prior structure-line keep |
+| freeze source | `~/hlx-private/p1-structure-unbind-famcls-20260914/` | under famcls9 freeze |
 
-## Compare
+## This pass
 
-| run | bases | structure val | structure holdout |
-|-----|-------|---------------|-------------------|
-| dual merge 12ep | 33 | 0.625 | — |
-| dual holdout 12ep | 33 | 0.625 | 0.0 |
-| **dual expanded** | **62** | **0.125** | **0.0** |
+1. Famcls9 confusion on accept5: brainrot→gaming magnet; crypto mixups; thin workplace/political/none
+2. **accept6:** +171 agent-targeted surfaces across brainrot/crypto/betting/kinship/workplace/political/gaming/none/ai
+3. **famcls10** frozen-head from famcls9 on accept6:
 
-## Private paths (Spark)
+| ckpt | structure | role | pointer | family |
+|------|-----------|------|---------|--------|
+| famcls9 baseline | 1.0 | 1.0 | 1.0 | **0.481** |
+| famcls10 | 1.0 | 1.0 | 1.0 | 0.463 |
 
-- annotated expanded `~/hlx-private/p1-structure-annotated-expanded-20260914/`
-- intake expanded `~/hlx-private/p1-structure-intake-expanded-20260914/`
-- prepare `~/hlx-private/p1-structure-dual-expanded-prepare-20260914/`
-- out `~/hlx-private/p1-structure-dual-expanded-20260914/`
+**REJECT** famcls10 (family regress). Structure hold succeeded.
 
-## Next
+## Policy
 
-1. **Change structure recipe** (not more whitespace-`pos_i` gold / not more epochs on this recipe).
-2. OBSERVED `partial_slot_miss` policy decision (default hold).
-3. Hold further envelope-only morphs. Never overwrite BEST without explicit approval.
+1. OBSERVED `partial_slot_miss`: **hold**
+2. No BEST overwrite
+3. Keep **famcls9** weights; keep **accept6** data
+4. Pause further inv-freq frozen-head climbs on near-duplicate lexicon
+5. Agent may still classify; prefer qualitatively different gold or a new pre-registered recipe
+
+## Next unlock
+
+- Harder reviewed gold (adversarial brainrot-vs-gaming pairs, workplace/political density), **or**
+- New pre-registered recipe (not another inv-freq family-head clone)
