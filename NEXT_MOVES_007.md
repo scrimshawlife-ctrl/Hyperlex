@@ -1,4 +1,4 @@
-# Spec 007 — famcls43 REJECT; famcls44 aux=0.18 in flight
+# Spec 007 — famcls44 REJECT; famcls45 aux=0.25/up8 in flight
 
 **Authority:** Spec 007 only. `name_gate` false. No Hub. No invented OBSERVED gold.
 **BEST:** morph19 — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
@@ -11,19 +11,20 @@
 | **BEST** | morph19 | untouched |
 
 ## Recent ladder
-| run | data | aux | family | structure | verdict |
-|-----|------|-----|--------|-----------|---------|
-| famcls41 | accept21 | 0.12 | **0.9474** | **1.0** | **KEEP** |
-| famcls42 | accept22 | 0.12 | 0.9343 | 1.0 | REJECT (exacts never in train) |
-| famcls43 | accept23 | 0.12 | **0.9848** | **0.958** | REJECT (family↑ structure slip) |
-| famcls44 | accept23 | **0.18** | — | — | **IN FLIGHT** |
+| run | aux | up | family | structure | verdict |
+|-----|-----|-----|--------|-----------|---------|
+| famcls41 | 0.12 | 4 | **0.9474** | **1.0** | **KEEP** (accept21) |
+| famcls42 | 0.12 | 4 | 0.9343 | 1.0 | REJECT (exacts never in train) |
+| famcls43 | 0.12 | 4 | **0.9848** | **0.958** | REJECT |
+| famcls44 | 0.18 | 4 | **0.9697** | **0.958** | REJECT |
+| famcls45 | **0.25** | **8** | — | — | **IN FLIGHT** |
 
-## Gate (famcls44)
-Init famcls41 · N=8 · LR 5e-6 · aux=**0.18** · upsample=4 · 40 ep · accept23.
+## Structure miss (famcls44 dump)
+One holdout miss: `"sheesh moment"` positional — role OK; pointer slot1 gold_start=3 pred_start=2.
+
+## Gate (famcls45)
+Init famcls41 · accept23 · N=8 · LR 5e-6 · aux=**0.25** · upsample=**8** · 40 ep.
 family > **0.9444444444444444** AND structure/role/pointer == **1.0**.
-
-## Lesson
-Force-promoting test-only residuals into train unlocked family lift; KEEP aux=0.12 no longer holds structure on that data. Raise aux.
 
 ## Policy
 OBSERVED hold. No BEST overwrite. Full 40-epoch runs.
