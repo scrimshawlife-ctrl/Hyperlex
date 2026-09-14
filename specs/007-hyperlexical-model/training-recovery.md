@@ -1,1 +1,1 @@
-__LOAD_FROM_FILE__:/tmp/hlx-docs/training_recovery.md
+file:///tmp/hlx-docs/training_recovery.md
