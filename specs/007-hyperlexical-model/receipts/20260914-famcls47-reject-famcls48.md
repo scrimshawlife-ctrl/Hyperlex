@@ -1,14 +1,13 @@
-# Receipt — famcls47 REJECT → famcls48
+# Receipt — famcls47 REJECT → famcls48 aux=0.35
 
 ## famcls47 REJECT
 - Init famcls46 · accept25 · N=8 · LR 5e-6 · aux=0.25 · upsample=8 · 40 ep (best 8)
-- family **0.9949** > 0.98989898989899 PASS
-- structure/pointer **0.9583** FAIL (23/24); role 1.0
-- Single miss: `"sheesh moment"` positional pointer off-by-one (slot1 gold_start 3 → pred 2)
+- family **0.9949494949494949** > baseline 0.98989898989899 PASS
+- structure **0.9583** FAIL · pointer **0.9583** FAIL · role 1.0
+- `best_unchanged=true`; BEST morph19 untouched
+- Structure miss: `sheesh moment` positional pointer slot1 (3→2)
+- Dump: `~/hlx-private/p1-classify-accept25-20260914/famcls47_accept25_structure_misses.json`
 
-## Weight pin
-Stays **famcls46** (KEEP). Data stays accept25. BEST untouched.
-
-## famcls48 (in flight)
-- Same init/data/baseline; **aux=0.35** · **upsample=12** (raised after structure slip)
-- Do not clone identical 0.25/8 recipe
+## Next
+- famcls48: same init/data; **aux=0.35** upsample=8; gate family > 0.98989898989899 + structure/role/pointer 1.0
+- Weight pin remains famcls46 until a KEEP clears structure again
