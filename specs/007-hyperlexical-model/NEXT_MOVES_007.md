@@ -1,35 +1,30 @@
-# Spec 007 — status after family representation probe
+# Spec 007 — merged status (famsel keep)
 
 **Authority:** Spec 007 only. `name_gate` stays false. No Hub. No invented OBSERVED gold.
 **BEST:** morph19 pin — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
 
-## Plan → execute
+## Merge
 
-1. **OBSERVED `partial_slot_miss`:** confirmed **hold** (no invented gold).
-2. **Family gold expansion:** blocked — 356/356 already human-reviewed; no leftover reviewed rows.
-3. **Executed:** frozen-structure family representation climb
-   MLP(CLS||mean-pool) + class-balanced CE from famsel
-   (`~/hlx-private/p1-structure-unbind-famrepr-20260914/`).
-
-## Result
-
-| run | structure | role | pointer | family |
-|-----|-----------|------|---------|--------|
-| **famsel (keep)** | **1.0** | **1.0** | **1.0** | **≈0.676** |
-| famhead (reject) | 1.0 | 1.0 | 1.0 | ≈0.676 |
-| famrepr (reject) | 1.0 | 1.0 | 1.0 | ≈0.649 |
-
-- Structure/role/pointer held under freeze.
-- Family holdout **missed majority**; val-only lift did not generalize.
-- `promotion.keep=false`; BEST unchanged.
-
-## Working joint
+Operator **ok merge**. Structure line closed on the **famsel** joint:
 
 `~/hlx-private/p1-structure-unbind-famsel-20260914/`
 
-## Next (stop thrashing)
+| metric | holdout |
+|--------|---------|
+| structure_exact | **1.0** |
+| role_exact | **1.0** |
+| filler_pointer_exact | **1.0** |
+| family_exact | ≈0.676 (majority baseline) |
 
-1. **OBSERVED:** remain **hold** until explicit operator policy change.
-2. **Family:** needs **new human-reviewed family gold** (rebalance beyond ai-native majority) before another train climb.
-3. **No BEST overwrite.** Envelope-only morphs stay exhausted.
-4. Do **not** re-run family-CE / family-repr climbs on the same gold.
+Rejected / not merged: ptrbal, famclimb, famhead, famrepr.
+
+## Policy locks
+
+1. OBSERVED `partial_slot_miss`: **hold**
+2. No BEST overwrite
+3. No more family CE/repr climbs on current gold without new human-reviewed family labels
+
+## Next (blocked on humans)
+
+- New reviewed family gold (rebalance past ai-native majority), **or**
+- Explicit OBSERVED policy change
