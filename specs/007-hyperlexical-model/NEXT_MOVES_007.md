@@ -1,35 +1,32 @@
-# Spec 007 — status after family-climb probe
+# Spec 007 — status after frozen family-head probe
 
 **Authority:** Spec 007 only. `name_gate` stays false. No Hub. No invented OBSERVED gold.
 **BEST:** morph19 pin — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
 
-## Done this turn
+## Plan → execute
 
-- Operator **continue** after famsel keep: family climb under structure floor
-  (family CE×3, structure_floor=0.75, 24 ep, seed 35).
-  Out `~/hlx-private/p1-structure-unbind-famclimb-20260914/out`.
-- Holdout: structure≈0.833, role=1.0, pointer≈0.833, family≈0.676.
-- Vs famsel keep (structure/role/pointer=1.0, family≈0.676): family flat;
-  structure/pointer **regressed**.
-- **Verdict: reject.** Working joint remains famsel.
-- `best_overwrite=false`; `best_unchanged=true`; BEST morph19 unchanged.
-- OBSERVED `partial_slot_miss` still policy hold.
+1. **Fact:** famsel family holdout ≈0.676 == majority baseline (ai-native 25/37).
+2. **Prior reject:** joint family-CE×N (structure regressed; family flat).
+3. **Executed:** structure-frozen class-balanced family-head finetune from famsel
+   (`~/hlx-private/p1-structure-unbind-famhead-20260914/`).
 
-## Compare
+## Result
 
-| run | structure holdout | role | pointer | family |
-|-----|-------------------|------|---------|--------|
+| run | structure | role | pointer | family |
+|-----|-----------|------|---------|--------|
 | **famsel (keep)** | **1.0** | **1.0** | **1.0** | **≈0.676** |
-| famclimb (reject) | ≈0.833 | 1.0 | ≈0.833 | ≈0.676 |
+| famhead (reject) | 1.0 | 1.0 | 1.0 | ≈0.676 |
 
-## Private paths (Spark)
+- Structure/role/pointer held under freeze.
+- Family holdout did **not** beat majority; val-only lift (≈0.714) failed to generalize.
+- `promotion.keep=false`; BEST unchanged; OBSERVED still hold.
 
-- **working joint** `~/hlx-private/p1-structure-unbind-famsel-20260914/`
-- famclimb reject `~/hlx-private/p1-structure-unbind-famclimb-20260914/`
-- prepare (reused) `~/hlx-private/p1-structure-dual-expanded-prepare-20260914/`
+## Working joint
 
-## Next
+`~/hlx-private/p1-structure-unbind-famsel-20260914/`
 
-1. OBSERVED `partial_slot_miss` policy decision (default **hold**).
-2. Hold envelope-only morphs. Never overwrite BEST without explicit approval.
-3. Do not re-litigate family CE upweight without a new recipe or gold change — holdout family plateaus while structure pays.
+## Next (do not thrash)
+
+1. **OBSERVED `partial_slot_miss`:** policy remains **hold** (no invented gold).
+2. **Family:** needs new reviewed family gold and/or a representation change — not more family-head CE or joint CE upweight.
+3. **BEST / envelope morphs:** no overwrite; envelope-only morphs stay exhausted.
