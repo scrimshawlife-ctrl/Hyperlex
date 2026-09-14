@@ -27,7 +27,6 @@ Single miss: **`sheesh moment`** positional — pointer slot1 gold_start=3 pred_
 
 ## Gate (famcls48) — IN FLIGHT
 Init famcls46 · accept25 · N=8 · LR 5e-6 · **aux=0.35** · **upsample=12** · 40 ep.  
-(Duplicate aux=0.35/up=8 container stopped; single clean up=12 run.)  
 family > **0.98989898989899** AND structure/role/pointer == **1.0**.
 
 ## Non-promotion

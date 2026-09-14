@@ -1,4 +1,4 @@
-# Spec 007 — famcls47 REJECT; famcls48 aux=0.35 in flight; BEST unchanged
+# Spec 007 — famcls47 REJECT; famcls48 aux=0.35/up=12 in flight; BEST unchanged
 
 **Authority:** Spec 007 only. `name_gate` false. No Hub. No invented OBSERVED gold.
 **BEST:** morph19 — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
@@ -18,7 +18,7 @@
 | famcls45 | accept23 | 0.25 / 8 | **0.9545** | **1.0** | KEEP (climb) | **no — preserved** |
 | famcls46 | accept24 | 0.25 / 8 | **0.9899** | **1.0** | KEEP (climb) | **no** |
 | famcls47 | accept25 | 0.25 / 8 | **0.9949** | **0.958** | **REJECT** | no |
-| famcls48 | accept25 | **0.35** / 8 | — | — | **IN FLIGHT** | — |
+| famcls48 | accept25 | **0.35** / **12** | — | — | **IN FLIGHT** | — |
 
 ## famcls47 REJECT
 Init famcls46 · aux=0.25 · up=8 · 40 ep (best 8).  
@@ -26,7 +26,7 @@ family **0.9949** > 0.9899 PASS; structure/pointer **0.958** FAIL; role 1.0; `be
 Single miss: **`sheesh moment`** positional — pointer slot1 gold_start=3 pred_start=2 (same hole as 43/44).
 
 ## Gate (famcls48) — IN FLIGHT
-Init famcls46 · accept25 · N=8 · LR 5e-6 · **aux=0.35** · upsample=8 · 40 ep.  
+Init famcls46 · accept25 · N=8 · LR 5e-6 · **aux=0.35** · **upsample=12** · 40 ep.  
 family > **0.98989898989899** AND structure/role/pointer == **1.0**.
 
 ## Non-promotion
