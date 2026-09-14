@@ -1,4 +1,4 @@
-# Receipt — famcls47 REJECT → famcls48 aux=0.35
+# Receipt — famcls47 REJECT → famcls48 aux=0.35/up=12
 
 ## famcls47 REJECT
 - Init famcls46 · accept25 · N=8 · LR 5e-6 · aux=0.25 · upsample=8 · 40 ep (best 8)
@@ -9,5 +9,6 @@
 - Dump: `~/hlx-private/p1-classify-accept25-20260914/famcls47_accept25_structure_misses.json`
 
 ## Next
-- famcls48: same init/data; **aux=0.35** upsample=8; gate family > 0.98989898989899 + structure/role/pointer 1.0
+- famcls48: same init/data; **aux=0.35** · **upsample=12**; gate family > 0.98989898989899 + structure/role/pointer 1.0
 - Weight pin remains famcls46 until a KEEP clears structure again
+- Note: brief duplicate famcls48 (up=8) was stopped; authoritative run is up=12
