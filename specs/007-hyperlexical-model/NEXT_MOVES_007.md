@@ -1,4 +1,4 @@
-# Spec 007 — accept7 gold in; famcls11 hard-neg rejected; weights stay famcls9
+# Spec 007 — accept7 MERGED; famcls12 KEEP (last-N encoder)
 
 **Authority:** Spec 007 only. `name_gate` false. No Hub. No invented OBSERVED gold.
 **BEST:** morph19 — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
@@ -7,35 +7,35 @@
 
 | pin | path | note |
 |-----|------|------|
-| **weight joint (family-line)** | `~/hlx-private/p1-structure-unbind-famcls9-20260914/` | KEEP; structure-frozen head on accept5 |
-| **data pin** | `~/hlx-private/p1-classify-accept7-20260914/prepare` | accept6 + **+211** adversarial contrastive surfaces |
+| **weight joint (family-line)** | `~/hlx-private/p1-structure-unbind-famcls12-20260914/` | **KEEP**; last-N encoder + family head on accept7 |
+| **data pin** | `~/hlx-private/p1-classify-accept7-20260914/prepare` | **MERGED** adversarial contrastive gold |
+| prior keep (init) | `~/hlx-private/p1-structure-unbind-famcls9-20260914/` | freeze ancestry |
 | structure reference | `~/hlx-private/p1-structure-unbind-famsel-20260914/` | prior structure-line keep |
-| freeze source | `~/hlx-private/p1-structure-unbind-famcls-20260914/` | under famcls9 freeze |
 
 ## This pass
 
-1. Hyperlex docs for accept6 / famcls10 REJECT pushed to `main`.
-2. Famcls9 dump on accept6-test: family **0.481**, 28 mistakes — `brainrot-aura → gaming-meta` still dominant.
-3. **accept7:** +211 adversarial contrastive surfaces (brainrot↔gaming twins, crypto/betting/gaming disambiguators, workplace density, political vs brainrot, framed kinship).
-4. Fair famcls9 on accept7-test: family **0.452**, structure/role/pointer **1.0**.
-5. **famcls11** NEW hard-neg margin recipe (not inv-freq CE clone):
+1. Merged accept7 as official data pin (post famcls10/11 head-only REJECT).
+2. **famcls12** recommended unlock: last N=2 encoder layers + family head; structure heads frozen.
 
 | ckpt | structure | role | pointer | family |
 |------|-----------|------|---------|--------|
-| famcls9 baseline | 1.0 | 1.0 | 1.0 | **0.452** |
-| famcls11 | 1.0 | 1.0 | 1.0 | 0.435 |
+| famcls9 baseline | 1.0 | 1.0 | 1.0 | 0.452 |
+| **famcls12** | **1.0** | **1.0** | **1.0** | **0.516** |
 
-**REJECT** famcls11 (family regress). Structure hold succeeded.
+Pre-registered gate PASSED (family Δ +0.065; absolute structure hold).
+
+## Rejected context
+
+famcls10 inv-freq CE head-only and famcls11 hard-neg head-only both missed the fair gate.
 
 ## Policy
 
 1. OBSERVED `partial_slot_miss`: **hold**
 2. No BEST overwrite
-3. Keep **famcls9** weights; keep **accept7** data
-4. Pause further **family-head-only** climbs (inv-freq CE **or** hard-neg) without a recipe that can move encoder representations
-5. Agent may still classify; prefer harder contrastive gold or encoder-touching recipes under a new pre-registered gate
+3. Prefer structure-holding encoder-touching recipes when family stalls
+4. Agent may still classify; do not invent OBSERVED structure gold
 
-## Next unlock
+## Next
 
-- Encoder-last-N / joint recipe with structure hold pre-registered, **or**
-- Harder reviewed contrastive pairs with human review — not more head-only thrash
+1. Confusion dump of famcls12 on accept7-test for remaining misses
+2. Hold envelope morphs / BEST overwrite until ladder 0.55 has a real plan
