@@ -1,4 +1,4 @@
-# Spec 007 — famcls25 KEEP (last-N=8); accept17 data pin
+# Spec 007 — famcls29 REJECT; famcls30 mid-LR climb in flight
 
 **Authority:** Spec 007 only. `name_gate` false. No Hub. No invented OBSERVED gold.
 **BEST:** morph19 — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
@@ -7,35 +7,32 @@
 
 | pin | path | note |
 |-----|------|------|
-| **weight joint (family-line)** | `~/hlx-private/p1-structure-unbind-famcls25-20260914/` | **KEEP**; last-N=8 encoder on accept17 |
-| **data pin** | `~/hlx-private/p1-classify-accept17-20260914/prepare` | residual-miss after famcls23 |
-| prior keep (init) | `~/hlx-private/p1-structure-unbind-famcls23-20260914/` | last-N=6 ancestry |
-| reject (do not init) | `~/hlx-private/p1-structure-unbind-famcls24-20260914/` | N=6 plateau + structure slip |
+| **weight joint (family-line)** | `~/hlx-private/p1-structure-unbind-famcls25-20260914/` | last KEEP; last-N=8 on accept17 |
+| **data pin** | `~/hlx-private/p1-classify-accept19-20260914/prepare` | residual after deepen fail |
+| reject (do not init) | famcls24,26,27,28,29 | see receipts |
+| **BEST** | morph19 | untouched |
 
-## This pass
+## Recent gates
 
-1. Merged famcls23 KEEP on accept16 (family 0.853).
-2. Confusion dump → accept17 residual-miss gold (+261 promoted).
-3. Fair famcls23 on accept17-test: family **0.8608**, structure/role/pointer **1.0**.
-4. **famcls24** last-N=6, full 40 ep → **REJECT** (family tie; structure/pointer 0.958).
-5. Protocol deepen **N=6→8**; **famcls25** full 40 ep → **KEEP**:
+| run | recipe | data | fair baseline | family | structure | verdict |
+|-----|--------|------|---------------|--------|-----------|---------|
+| famcls25 | N=8, init famcls23 | accept17 | 0.8608 | **0.9304** | 1.0 | **KEEP** |
+| famcls26 | N=8, init famcls25 | accept18 | 0.9337 | 0.9277 | 1.0 | REJECT |
+| famcls27 | N=10, init famcls25 | accept18 | 0.9337 | 0.8434 | 1.0 | REJECT |
+| famcls28 | N=8 LR 1e-5, init famcls25 | accept19 | 0.9368 | **0.9598** | **0.958** | REJECT |
+| famcls29 | N=8 LR 5e-6, init famcls25 | accept19 | 0.9368 | **0.9195** | 1.0 | REJECT |
+| famcls30 | N=8 LR **7.5e-6**, init famcls25 | accept19 | 0.9368 | — | — | **IN FLIGHT** |
 
-| ckpt | structure | role | pointer | family |
-|------|-----------|------|---------|--------|
-| famcls23 baseline | 1.0 | 1.0 | 1.0 | 0.861 |
-| famcls24 (N=6) | 0.958 | 1.0 | 0.958 | 0.861 |
-| **famcls25 (N=8)** | **1.0** | **1.0** | **1.0** | **0.930** |
+## Bracket lesson
+Encoder LR 1e-5 lifts family but slips structure; 5e-6 holds structure but under-trains family. Mid **7.5e-6** is the authorized protocol probe.
 
 ## Policy
-
 1. OBSERVED `partial_slot_miss`: **hold**
 2. No BEST overwrite
-3. Prefer recipe changes when same-N climbs plateau (deepen N)
-4. Agent may still classify; do not invent OBSERVED structure gold
-5. Training runs must complete all 40 epochs
+3. Full 40-epoch runs required
+4. Agent-owned classification OK; do not invent OBSERVED structure gold
+5. Do not deepen N blindly (N=10 hurt)
 
 ## Next
-
-1. Confusion dump of famcls25 on accept17-test for remaining misses
-2. accept18 residual-miss gold + fair famcls25 baseline + famcls26 climb (full 40 ep)
-3. Hold envelope morphs / BEST overwrite until ladder 0.55 has a real plan
+1. Finish famcls30 gate (KEEP → pin + dump + accept20; REJECT → next protocol)
+2. Hold envelope morphs / BEST overwrite until ladder 0.55 has a real plan
