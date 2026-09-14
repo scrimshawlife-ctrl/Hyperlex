@@ -1,4 +1,4 @@
-# Spec 007 — famcls22 KEEP (last-N=6); accept15 data pin
+# Spec 007 — famcls23 KEEP (last-N=6); accept16 data pin
 
 **Authority:** Spec 007 only. `name_gate` false. No Hub. No invented OBSERVED gold.
 **BEST:** morph19 — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
@@ -7,24 +7,24 @@
 
 | pin | path | note |
 |-----|------|------|
-| **weight joint (family-line)** | `~/hlx-private/p1-structure-unbind-famcls22-20260914/` | **KEEP**; last-N=6 encoder on accept15 |
-| **data pin** | `~/hlx-private/p1-classify-accept15-20260914/prepare` | residual-miss after famcls21 |
-| prior keep (init) | `~/hlx-private/p1-structure-unbind-famcls21-20260914/` | last-N=6 ancestry |
+| **weight joint (family-line)** | `~/hlx-private/p1-structure-unbind-famcls23-20260914/` | **KEEP**; last-N=6 encoder on accept16 |
+| **data pin** | `~/hlx-private/p1-classify-accept16-20260914/prepare` | residual-miss after famcls22 |
+| prior keep (init) | `~/hlx-private/p1-structure-unbind-famcls22-20260914/` | last-N=6 ancestry |
 | structure reference | `~/hlx-private/p1-structure-unbind-famsel-20260914/` | prior structure-line keep |
 
 ## This pass
 
-1. Merged famcls21 KEEP on accept14 (family 0.800).
-2. Confusion dump → accept15 residual-miss gold (+79 promoted).
-3. Fair famcls21 on accept15-test: family **0.8169**, structure/role/pointer **1.0**.
-4. **famcls22** same last-N=6 recipe, init famcls21:
+1. Merged famcls22 KEEP on accept15 (family 0.831).
+2. Confusion dump → accept16 residual-miss gold (+70 promoted).
+3. Fair famcls22 on accept16-test: family **0.8400**, structure/role/pointer **1.0**.
+4. **famcls23** same last-N=6 recipe, init famcls22:
 
 | ckpt | structure | role | pointer | family |
 |------|-----------|------|---------|--------|
-| famcls21 baseline | 1.0 | 1.0 | 1.0 | 0.817 |
-| **famcls22 (N=6)** | **1.0** | **1.0** | **1.0** | **0.831** |
+| famcls22 baseline | 1.0 | 1.0 | 1.0 | 0.840 |
+| **famcls23 (N=6)** | **1.0** | **1.0** | **1.0** | **0.853** |
 
-Pre-registered gate PASSED (family Δ +0.014; absolute structure hold).
+Pre-registered gate PASSED (family Δ +0.013; absolute structure hold).
 
 ## Policy
 
@@ -35,6 +35,6 @@ Pre-registered gate PASSED (family Δ +0.014; absolute structure hold).
 
 ## Next
 
-1. Confusion dump of famcls22 on accept15-test for remaining misses
-2. accept16 residual-miss gold + fair famcls22 baseline + famcls23 climb
+1. Confusion dump of famcls23 on accept16-test for remaining misses
+2. accept17 residual-miss gold + fair famcls23 baseline + famcls24 climb
 3. Hold envelope morphs / BEST overwrite until ladder 0.55 has a real plan
