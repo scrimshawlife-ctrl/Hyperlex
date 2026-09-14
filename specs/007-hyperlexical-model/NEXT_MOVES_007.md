@@ -1,4 +1,4 @@
-# Spec 007 — pass-2 labels in; famcls5 rejected; hard pause
+# Spec 007 — accept3 labels in; famcls6 rejected; pause on thrash
 
 **Authority:** Spec 007 only. `name_gate` false. No Hub. No invented OBSERVED gold.
 **BEST:** morph19 — `unbind_exact≈0.4545`. Ladder **0.45 cleared**; **0.55 not reached**.
@@ -8,35 +8,35 @@
 | pin | path | note |
 |-----|------|------|
 | **weight joint** | `~/hlx-private/p1-structure-unbind-famcls-20260914/` | structure/role/pointer **1.0** |
-| **data pin** | `~/hlx-private/p1-classify-accept2-20260914/prepare` | accept + pass-2 kinship/gaming (+15) |
+| **data pin** | `~/hlx-private/p1-classify-accept3-20260914/prepare` | accept2 + **+115** agent labels |
 | structure reference | `~/hlx-private/p1-structure-unbind-famsel-20260914/` | prior structure-line keep |
 
-Accept2-test famcls baseline family **≈0.644** (structure 1.0).
+Accept3-test famcls baseline family **≈0.612** (structure 1.0).
 
-## Pass-2 label decisions
+## Agent classification (unlocked)
 
-**Accepted:** kinship `fam, homie, bestie, yo unc, big bro, big sis, big unc, lil bro`; gaming `gg ez, debuff, diffed, feeder, inting, ez clap, feeding`.
+Operator: agent may handle all classification jobs.
 
-**Rejected:** all pass-2 `none` (joke euphemisms, not non-slang controls); gaming `point`.
+**Accepted:** clean kinship/gaming lexicon from inferred queue + remaining inferred_pass (`agentic slop`, `token burn`, `hallucination`, `revenge bet`, `sharp money`, `organic velocity`, `copemaxxing`).
+
+**Rejected:** all inferred `none` (still joke slang); wiki/declension/prose; weak pass items (`tokens`, `middle`, joke idioms).
 
 ## Rejected resumes
 
 | run | fair family vs baseline | structure |
 |-----|-------------------------|-----------|
-| famcls2 | — | regress |
-| famcls3 | 0.636 < 0.659 | hold |
-| famcls4 | 0.591 < 0.659 | hold |
-| **famcls5** | **0.622 < 0.644** | hold |
+| famcls2–5 | prior rejects | see prior receipts |
+| **famcls6** | **0.633 > 0.612** | **0.875 (FAIL hold)** |
 
 ## Policy
 
 1. OBSERVED `partial_slot_miss`: **hold**
 2. No BEST overwrite
-3. **Hard pause** on CE/sampler/head climbs — current gold exhausted for family gains
-4. Next progress needs **true non-slang `none` controls** or other high-quality reviewed labels from outside the joke-slang dump
+3. Pause CE/sampler/head climbs — need better gold (esp. true `none` controls), not more thrash
+4. Agent may keep classifying when new queues appear; do not invent OBSERVED structure gold
 
-## Next (operator)
+## Next
 
-1. Supply real `none`/control surfaces (or other reviewed family gold)
-2. Only then rebuild prepare and resume with gate family > accept2 baseline + structure hold
+1. Supply real non-slang `none`/control surfaces (or other reviewed minority gold)
+2. Only then rebuild prepare and resume with gate family > accept3 baseline **and** structure/role/pointer hold at 1.0
 3. Hold envelope morphs / BEST overwrite
