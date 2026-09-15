@@ -1,0 +1,97 @@
+{
+  "schema": "hyperlex.spec007.climb_vs_best_civilian.v0.1",
+  "as_of": "2026-09-15T01:55:00Z",
+  "name_gate": false,
+  "best_untouched": true,
+  "best_path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph19",
+  "climb_keep": "famcls52",
+  "climb_ckpt": "/home/morpheus/hlx-private/p1-structure-unbind-famcls52-20260914/out/checkpoint.pt",
+  "val_surface": {
+    "source": "export_dataset(include_live=True) unbind split=val",
+    "n_unbind_eval": 363,
+    "same_rows": true
+  },
+  "scoring_note": {
+    "morph19": "BEST encoder.* + filler_head from model.safetensors",
+    "famcls52": "climb checkpoint encoder.* + morph19 filler_head (transfer probe; native climb heads are family/role/pointer, not civilian filler)"
+  },
+  "climb_holdout_accept29": {
+    "family_exact": 1.0,
+    "structure_exact": 1.0,
+    "role_exact": 1.0,
+    "filler_pointer_exact": 1.0,
+    "all_1_0": true,
+    "source": "famcls52 SMOKE_SUMMARY.json holdout_test"
+  },
+  "morph19_pin_reference": {
+    "unbind_exact": 0.45454545454545453,
+    "unbind_token_f1": 0.6976495726495726,
+    "unbind_slot_f1": 0.6965811965811965,
+    "classify_acc": 0.572265625,
+    "n_unbind_eval": 363
+  },
+  "morph19_civilian": {
+    "unbind_exact": 0.45454545454545453,
+    "n_unbind_eval": 363,
+    "unbind_token_f1": 0.6976495726495726,
+    "unbind_token_precision": 0.6976495726495726,
+    "unbind_token_recall": 0.6976495726495726,
+    "unbind_slot_f1": 0.6965811965811965,
+    "unbind_residual_themes": {
+      "positional_head_filler_miss": 36,
+      "full_miss": 28,
+      "type_slot_token_miss": 81,
+      "partial_slot_miss": 146,
+      "morph_bleed": 11
+    },
+    "n_unbind_residual": 198,
+    "residual_dump": "/home/morpheus/hlx-private/climb_vs_best_civilian_20260915/morph19_residual.jsonl",
+    "encoder_trainable": {
+      "loaded": 24,
+      "unexpected": [],
+      "present": 24
+    }
+  },
+  "famcls52_civilian_transfer": {
+    "unbind_exact": 0.0027548209366391185,
+    "n_unbind_eval": 363,
+    "unbind_token_f1": 0.1014957264957265,
+    "unbind_token_precision": 0.1014957264957265,
+    "unbind_token_recall": 0.1014957264957265,
+    "unbind_slot_f1": 0.09935897435897435,
+    "unbind_residual_themes": {
+      "positional_head_filler_miss": 173,
+      "full_miss": 292,
+      "type_slot_token_miss": 176,
+      "partial_slot_miss": 43,
+      "morph_bleed": 1
+    },
+    "n_unbind_residual": 362,
+    "residual_dump": "/home/morpheus/hlx-private/climb_vs_best_civilian_20260915/famcls52_residual.jsonl",
+    "encoder_trainable": {
+      "loaded": 134,
+      "unexpected": [],
+      "present": 134
+    },
+    "climb_meta": {
+      "best_epoch": 8,
+      "rows_sha256": "4e151140bd12a0efe95c47d367f35fb1c9483030774f570568e731bbb0ec46ff",
+      "init_checkpoint": "/home/morpheus/hlx-private/p1-structure-unbind-famcls48-20260914/out/checkpoint.pt",
+      "name_gate": false,
+      "best_overwrite": false
+    }
+  },
+  "delta": {
+    "unbind_exact_famcls52_minus_morph19": -0.45179063360881544,
+    "unbind_token_f1_delta": -0.5961538461538461,
+    "unbind_slot_f1_delta": -0.5972222222222222
+  },
+  "ladder": {
+    "morph19_unbind_exact": 0.45454545454545453,
+    "famcls52_unbind_exact": 0.0027548209366391185,
+    "rung_0_45_cleared_by_morph19": true,
+    "rung_0_55_cleared": false,
+    "auto_promote": false
+  },
+  "verdict": "escalate_observed_partial_slot_miss"
+}
