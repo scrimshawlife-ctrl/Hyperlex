@@ -10,7 +10,7 @@
   "best_pin": "morph19",
   "name_gate": false,
   "no_train_until_authorize": true,
-  "ask": "Authorize OBSERVED structure gold for listed residual spans (schemes positional|type_slot only) OR authorize an alternate ladder path. Do not invent gold in this package \u2014 gold_fillers/gold_roles left blank for Danny/human.",
+  "ask": "Authorize OBSERVED structure gold for listed residual spans (schemes positional|type_slot only) OR authorize an alternate ladder path. Do not invent gold in this package — gold_fillers/gold_roles left blank for Danny/human.",
   "source": {
     "spark_dir": "~/hlx-private/climb_vs_best_civilian_20260915/",
     "spark_residual": "~/hlx-private/climb_vs_best_civilian_20260915/morph19_residual.jsonl",
@@ -99,27 +99,97 @@
     "candidates.part12.jsonl",
     "candidates.part13.jsonl"
   ],
-  "hyperlex_note": "Hyperlex main carries candidates.part0\u2013part13 shards + CANDIDATES_SHARDS.md/CANDIDATES_POINTER.md; cat in order reconstructs candidates.jsonl (171569 bytes, sha256 36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae). Canonical monolithic file also on workspace main + Spark ~/hlx-private/danny-gold-review-partial-slot-miss-20260915/.",
+  "hyperlex_note": "Hyperlex main carries candidates.part0–part13 shards + CANDIDATES_SHARDS.md/CANDIDATES_POINTER.md; cat in order reconstructs candidates.jsonl (171569 bytes, sha256 36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae). Canonical monolithic file also on workspace main + Spark ~/hlx-private/danny-gold-review-partial-slot-miss-20260915/.",
   "candidates_shards": {
     "reconstruct": "cat candidates.part0.jsonl candidates.part1.jsonl candidates.part2.jsonl candidates.part3.jsonl candidates.part4.jsonl candidates.part5.jsonl candidates.part6.jsonl candidates.part7.jsonl candidates.part8.jsonl candidates.part9.jsonl candidates.part10.jsonl candidates.part11.jsonl candidates.part12.jsonl candidates.part13.jsonl > candidates.jsonl",
     "full_bytes": 171569,
     "full_rows": 198,
     "full_sha256": "36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae",
     "parts": [
-      {"path": "candidates.part0.jsonl", "rows": 14, "bytes": 12129, "sha256": "fa0859e6ab514319405acaf88c817949b5e89c47d755806b1c683b1439d1ce57"},
-      {"path": "candidates.part1.jsonl", "rows": 14, "bytes": 12057, "sha256": "85ece33ab0775564cd6c958a28fe80122aeee8d5946c148f6901f39711df6eb5"},
-      {"path": "candidates.part2.jsonl", "rows": 13, "bytes": 12232, "sha256": "caac69f3416ed0868b9618b9f086e4d0a3ae3d111d28ed5c1ae102b0ff0bc6e5"},
-      {"path": "candidates.part3.jsonl", "rows": 14, "bytes": 12188, "sha256": "de79f5b043ebde08020286a639bb9a4334c5ee7e23382b85485444c3d2799626"},
-      {"path": "candidates.part4.jsonl", "rows": 14, "bytes": 12143, "sha256": "1ce22eb662b5d8e27e41d9215327dc740c2979f574e751cbe2225597bca9f052"},
-      {"path": "candidates.part5.jsonl", "rows": 15, "bytes": 12763, "sha256": "b23717a4c8aac439af345e95fd1ae5a11c509b7c3d52142b6dbe4a72d0acb8a3"},
-      {"path": "candidates.part6.jsonl", "rows": 14, "bytes": 12312, "sha256": "6f540b64574cb2d9f8614f17d2a5e0796ef9c84a3d856b20b3c861330964f1ea"},
-      {"path": "candidates.part7.jsonl", "rows": 14, "bytes": 12010, "sha256": "b1a6a3cdb8a9d90ef9cbb349020e7aed0a8ef2a256e3b4746cd332f7941c9bf9"},
-      {"path": "candidates.part8.jsonl", "rows": 15, "bytes": 12428, "sha256": "d493f968603ba8733eb318753fcd36b79fe87c6299cdf52891dac0aba0d1c4c8"},
-      {"path": "candidates.part9.jsonl", "rows": 15, "bytes": 12514, "sha256": "2e2017fc127aec857f2ffba5939ff3f6703ba06989b03f278b3c7927be1681c7"},
-      {"path": "candidates.part10.jsonl", "rows": 14, "bytes": 12165, "sha256": "f927eaab1629f01e48f96da464628548b17d702a2214b83e530200509ddc89d7"},
-      {"path": "candidates.part11.jsonl", "rows": 14, "bytes": 12332, "sha256": "fcd895d33e49e306d4133cc0c5650b3b42f9f4a1f468c2e8802d6f21b77ff156"},
-      {"path": "candidates.part12.jsonl", "rows": 14, "bytes": 12359, "sha256": "d6f0aaf6bace3d874b113db905cccd8ff5f4b3686f38d1690ccb56a624d7feb8"},
-      {"path": "candidates.part13.jsonl", "rows": 14, "bytes": 11937, "sha256": "593b1c2ca2dc2561378b1a398bd9645fe107a570b2227da6cd8797cee3956f62"}
+      {
+        "path": "candidates.part0.jsonl",
+        "rows": 14,
+        "bytes": 12129,
+        "sha256": "fa0859e6ab514319405acaf88c817949b5e89c47d755806b1c683b1439d1ce57"
+      },
+      {
+        "path": "candidates.part1.jsonl",
+        "rows": 14,
+        "bytes": 12057,
+        "sha256": "85ece33ab0775564cd6c958a28fe80122aeee8d5946c148f6901f39711df6eb5"
+      },
+      {
+        "path": "candidates.part2.jsonl",
+        "rows": 13,
+        "bytes": 12232,
+        "sha256": "caac69f3416ed0868b9618b9f086e4d0a3ae3d111d28ed5c1ae102b0ff0bc6e5"
+      },
+      {
+        "path": "candidates.part3.jsonl",
+        "rows": 14,
+        "bytes": 12188,
+        "sha256": "de79f5b043ebde08020286a639bb9a4334c5ee7e23382b85485444c3d2799626"
+      },
+      {
+        "path": "candidates.part4.jsonl",
+        "rows": 14,
+        "bytes": 12143,
+        "sha256": "1ce22eb662b5d8e27e41d9215327dc740c2979f574e751cbe2225597bca9f052"
+      },
+      {
+        "path": "candidates.part5.jsonl",
+        "rows": 15,
+        "bytes": 12763,
+        "sha256": "b23717a4c8aac439af345e95fd1ae5a11c509b7c3d52142b6dbe4a72d0acb8a3"
+      },
+      {
+        "path": "candidates.part6.jsonl",
+        "rows": 14,
+        "bytes": 12312,
+        "sha256": "6f540b64574cb2d9f8614f17d2a5e0796ef9c84a3d856b20b3c861330964f1ea"
+      },
+      {
+        "path": "candidates.part7.jsonl",
+        "rows": 14,
+        "bytes": 12010,
+        "sha256": "b1a6a3cdb8a9d90ef9cbb349020e7aed0a8ef2a256e3b4746cd332f7941c9bf9"
+      },
+      {
+        "path": "candidates.part8.jsonl",
+        "rows": 15,
+        "bytes": 12428,
+        "sha256": "d493f968603ba8733eb318753fcd36b79fe87c6299cdf52891dac0aba0d1c4c8"
+      },
+      {
+        "path": "candidates.part9.jsonl",
+        "rows": 15,
+        "bytes": 12514,
+        "sha256": "2e2017fc127aec857f2ffba5939ff3f6703ba06989b03f278b3c7927be1681c7"
+      },
+      {
+        "path": "candidates.part10.jsonl",
+        "rows": 14,
+        "bytes": 12165,
+        "sha256": "f927eaab1629f01e48f96da464628548b17d702a2214b83e530200509ddc89d7"
+      },
+      {
+        "path": "candidates.part11.jsonl",
+        "rows": 14,
+        "bytes": 12332,
+        "sha256": "fcd895d33e49e306d4133cc0c5650b3b42f9f4a1f468c2e8802d6f21b77ff156"
+      },
+      {
+        "path": "candidates.part12.jsonl",
+        "rows": 14,
+        "bytes": 12359,
+        "sha256": "d6f0aaf6bace3d874b113db905cccd8ff5f4b3686f38d1690ccb56a624d7feb8"
+      },
+      {
+        "path": "candidates.part13.jsonl",
+        "rows": 14,
+        "bytes": 11937,
+        "sha256": "593b1c2ca2dc2561378b1a398bd9645fe107a570b2227da6cd8797cee3956f62"
+      }
     ]
   }
 }
