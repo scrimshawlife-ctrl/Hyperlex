@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-12  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph36` (val unbind_exact≈0.5455; ladder 0.45 cleared; 0.55 near-miss; morph37 REJECT_VS_BEST). `name_gate` still false.  
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph36` (val unbind_exact≈0.5455; ladder 0.45 cleared; 0.55 near-miss; morph37 REJECT_VS_BEST; morph38 warm LR 1e-5 IN FLIGHT). `name_gate` still false.  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -51,7 +51,7 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
 | `name_gate` | **false** — E2 PASS on Spark does **not** flip the gate. Danny yes still required. Volume ≠ name. |
-| Spark BEST | **`seed-morph36`** — val `unbind_exact≈0.5455`. Ladder **0.45 cleared**; **0.55 MISS**. morph37 warm REJECT_VS_BEST (0.5317). Waiting Danny gold; no schedule clones without new lever. |
+| Spark BEST | **`seed-morph36`** — val `unbind_exact≈0.5455` (ep23 best-ckpt; operator promote). Prior morph19 preserved. Ladder **0.45 cleared**; **0.55** still open. morph37 warm REJECT_VS_BEST (best 0.5317). morph38 warm LR 1e-5 **IN FLIGHT**. |
 | E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
 | T1 name | Not allowed. Card stays `hyperlex-encoder-*` until Danny yes on `name_gate`. |
@@ -103,7 +103,7 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
 | Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph36 · ladder 0.45 cleared · 0.55 MISS · morph37 REJECT · trained E2 PASS · `name_gate` false · no Hub · not named Hyperlexical |
+| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph36 · ladder 0.45 cleared · 0.55 MISS · morph37 REJECT · morph38 LR 1e-5 IN FLIGHT · trained E2 PASS · `name_gate` false · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph36** (0.5455). morph37 warm REJECT_VS_BEST (0.5317). Ladder 0.55 MISS. Waiting Danny gold — **no more schedule clones without a new lever**. See `NEXT_MOVES_007.md`.
+1. Spark BEST = **morph36** (0.5455). morph37 REJECT_VS_BEST (0.5317). **morph38** warm LR **1e-5** IN FLIGHT (one lever vs morph37). Ladder 0.55 MISS. Danny gold still PENDING — do not invent OBSERVED. See `NEXT_MOVES_007.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
