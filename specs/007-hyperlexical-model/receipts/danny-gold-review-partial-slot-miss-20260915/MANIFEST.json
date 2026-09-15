@@ -10,7 +10,7 @@
   "best_pin": "morph19",
   "name_gate": false,
   "no_train_until_authorize": true,
-  "ask": "Authorize OBSERVED structure gold for listed residual spans (schemes positional|type_slot only) OR authorize an alternate ladder path. Do not invent gold in this package — gold_fillers/gold_roles left blank for Danny/human.",
+  "ask": "Authorize OBSERVED structure gold for listed residual spans (schemes positional|type_slot only) OR authorize an alternate ladder path. Do not invent gold in this package \u2014 gold_fillers/gold_roles left blank for Danny/human.",
   "source": {
     "spark_dir": "~/hlx-private/climb_vs_best_civilian_20260915/",
     "spark_residual": "~/hlx-private/climb_vs_best_civilian_20260915/morph19_residual.jsonl",
@@ -78,6 +78,48 @@
     "candidates.jsonl",
     "morph19_residual.summary.json",
     "counts.json",
-    "pattern_examples.json"
-  ]
+    "pattern_examples.json",
+    "CANDIDATES_SHEET.md",
+    "candidates_slim.jsonl",
+    "candidates_p1_observed.jsonl",
+    "CANDIDATES_POINTER.md",
+    "CANDIDATES_SHARDS.md",
+    "candidates.part0.jsonl",
+    "candidates.part1.jsonl",
+    "candidates.part2.jsonl",
+    "candidates.part3.jsonl"
+  ],
+  "hyperlex_note": "Hyperlex main carries candidates.part0\u2013part3 shards + CANDIDATES_SHARDS.md/CANDIDATES_POINTER.md; cat in order reconstructs candidates.jsonl (171569 bytes, sha256 36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae). Canonical monolithic file also on workspace main + Spark ~/hlx-private/danny-gold-review-partial-slot-miss-20260915/.",
+  "candidates_shards": {
+    "reconstruct": "cat candidates.part0.jsonl candidates.part1.jsonl candidates.part2.jsonl candidates.part3.jsonl > candidates.jsonl",
+    "full_bytes": 171569,
+    "full_rows": 198,
+    "full_sha256": "36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae",
+    "parts": [
+      {
+        "path": "candidates.part0.jsonl",
+        "rows": 50,
+        "bytes": 44369,
+        "sha256": "c8cd0c9639377236e53d99c6f86737bafd6ba457b952b998391d504f11829c23"
+      },
+      {
+        "path": "candidates.part1.jsonl",
+        "rows": 50,
+        "bytes": 43448,
+        "sha256": "e341ac6c18f79572fe4e24dd49a00119d57d34609d3197d1ff49a0688e925256"
+      },
+      {
+        "path": "candidates.part2.jsonl",
+        "rows": 50,
+        "bytes": 41955,
+        "sha256": "81e4d8c597ed7de72959c68cc6949d54f6638314a8f984d34923ffb80ca8ab52"
+      },
+      {
+        "path": "candidates.part3.jsonl",
+        "rows": 48,
+        "bytes": 41797,
+        "sha256": "fa12cb97712047c996e6fb178f3831fc10b5f718f3223b29f178155facb4fd8f"
+      }
+    ]
+  }
 }

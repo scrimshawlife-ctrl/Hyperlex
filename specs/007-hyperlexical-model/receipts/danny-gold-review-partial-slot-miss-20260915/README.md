@@ -11,7 +11,12 @@
 | `MANIFEST.json` | counts, constraints, source pins |
 | `LABELING_TEMPLATE.md` | schemes `positional` \| `type_slot` only; blank gold rules |
 | `PATTERN_RANK.md` | ranked miss patterns (`partial_slot_miss` first) |
-| `candidates.jsonl` | **198** residual rows; blank `gold_*` for Danny |
+| `candidates.jsonl` | **198** residual rows; blank `gold_*` for Danny (**canonical**) |
+| `candidates_p1_observed.jsonl` | P1 ∩ OBSERVED only (**25**) — quick Danny start |
+| `CANDIDATES_SHEET.md` | compact ranked table (all 198) |
+| `CANDIDATES_POINTER.md` | where full JSONL lives (workspace / Spark / Hyperlex shards) |
+| `CANDIDATES_SHARDS.md` | Hyperlex shard map; `cat part0..part3` → full `candidates.jsonl` |
+| `candidates.part0.jsonl`…`part3.jsonl` | Hyperlex-safe shards (byte-identical concat to full JSONL) |
 | `counts.json` | machine-readable tallies |
 | `morph19_residual.summary.json` | Spark residual summary copy |
 | `pattern_examples.json` | short example slices per cohort |
