@@ -1,0 +1,31 @@
+{
+  "theme_counts": {
+    "type_slot_token_miss": 81,
+    "partial_slot_miss": 146,
+    "morph_bleed": 11,
+    "full_miss": 28,
+    "positional_head_filler_miss": 36
+  },
+  "cohort_counts": {
+    "P1_partial_slot_miss": 146,
+    "P2_type_slot_token_miss": 16,
+    "P3_positional_head_filler_miss": 36
+  },
+  "scheme_counts": {
+    "type_slot": 91,
+    "positional": 107
+  },
+  "class_counts": {
+    "OBSERVED": 31,
+    "INFERRED": 167
+  },
+  "partial_slot_miss_by_scheme": {
+    "type_slot": 75,
+    "positional": 71
+  },
+  "partial_slot_miss_by_dataset_class": {
+    "OBSERVED": 25,
+    "INFERRED": 121
+  },
+  "n_residual_total": 198
+}
