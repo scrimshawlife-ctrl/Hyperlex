@@ -1,0 +1,3 @@
+canary: shards landing next
+full_sha256=36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae
+n_parts=8
