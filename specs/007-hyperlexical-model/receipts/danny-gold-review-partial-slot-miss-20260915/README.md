@@ -15,8 +15,8 @@
 | `candidates_p1_observed.jsonl` | P1 ∩ OBSERVED only (**25**) — quick Danny start |
 | `CANDIDATES_SHEET.md` | compact ranked table (all 198) |
 | `CANDIDATES_POINTER.md` | where full JSONL lives (workspace / Spark / Hyperlex shards) |
-| `CANDIDATES_SHARDS.md` | Hyperlex shard map; `cat part0..part7` → full `candidates.jsonl` |
-| `candidates.part0.jsonl`…`part7.jsonl` | Hyperlex-safe shards (byte-identical concat to full JSONL) |
+| `CANDIDATES_SHARDS.md` | Hyperlex shard map; `cat part0..part13` → full `candidates.jsonl` |
+| `candidates.part0.jsonl`…`part13.jsonl` | Hyperlex-safe shards (byte-identical concat to full JSONL) |
 | `counts.json` | machine-readable tallies |
 | `morph19_residual.summary.json` | Spark residual summary copy |
 | `pattern_examples.json` | short example slices per cohort |
