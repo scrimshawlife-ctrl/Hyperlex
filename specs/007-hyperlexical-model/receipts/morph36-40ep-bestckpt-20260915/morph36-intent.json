@@ -1,0 +1,21 @@
+{
+  "morph": 36,
+  "family": "schedule_40ep_morph19_envelope_save_best",
+  "delta": "HYPERLEX_SAVE_BEST_UNBIND=1 — persist best-by-val-unbind_exact as primary model.safetensors (fix morph35 peak-not-saved); final kept as model.final.safetensors; epochs=40; no invented OBSERVED gold; existing hard_atoms_train.jsonl only",
+  "hold": "morph19 envelope: slot_ce, HEAD_SLOT=2, OBSERVED=2, HARD=4, INFERRED=1.0, CAP=0, POS=1 TYPE=1, LAST=4, margin=0.5, loss=1.0, prior hard_atoms_train.jsonl; SECOND_SLOT identity 1.0",
+  "init": "trunk ModernBERT-base (morph19 envelope), NOT warm-load morph35 final — morph35 final is post-peak (0.4904 vs unsaved ep16 0.5372); re-run schedule with best-ckpt save is the cleaner fix",
+  "init_rejected_alt": "warm-start morph35 final would begin from degraded post-peak weights; morph35 peak weights were never checkpointed",
+  "baseline_best": "seed-morph19",
+  "baseline_unbind_exact": 0.45454545454545453,
+  "keep_candidate_morph35_final": 0.4903581267217631,
+  "keep_candidate_morph35_peak_unsaved": 0.5371900826446281,
+  "pin_rule": "gate primary (best-saved) civilian unbind_exact vs morph19 AND vs morph35 final; KEEP_CANDIDATE if beats morph35 without promote; do NOT promote BEST; name_gate=false",
+  "name_gate": false,
+  "best_overwrite": false,
+  "promote_best": false,
+  "ladder_target": 0.55,
+  "operator_override": "continue morph36 after morph35 KEEP_CANDIDATE; Danny gold still PENDING",
+  "danny_gold": "PENDING filled_gold=0",
+  "created_at": "2026-09-15T19:59:23.059696+00:00",
+  "note": "New out dir morph36. Does not overwrite morph19 BEST or morph35 KEEP dir."
+}
