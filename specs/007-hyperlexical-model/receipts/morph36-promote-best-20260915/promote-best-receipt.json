@@ -1,0 +1,30 @@
+{
+  "schema": "hyperlex.hyperlexical.best_pin.v0.1",
+  "decision": "BEST",
+  "promote_best": true,
+  "best_overwrite": true,
+  "operator_grant": "continue. authority is granted where its needed. YES promote morph36 KEEP_CANDIDATE \u2192 BEST (beats morph19 0.4545 with saved best 0.5455)",
+  "promote_best_this_once": true,
+  "seed": "seed-morph36",
+  "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph36",
+  "prior_best": "seed-morph19",
+  "prior_best_path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph19",
+  "prior_unbind_exact": 0.45454545454545453,
+  "val": {
+    "unbind_exact": 0.5454545454545454,
+    "unbind_token_f1": 0.7713675213675214,
+    "unbind_slot_f1": 0.7713675213675214,
+    "classify_acc": 0.458984375,
+    "n_unbind_eval": 363
+  },
+  "best_epoch": 23,
+  "save_best_unbind": true,
+  "primary_weights_from": "best_unbind_exact",
+  "beats_morph19": true,
+  "ladder_0_55": false,
+  "ladder_note": "saved best 0.5455 near but below 0.55",
+  "name_gate": false,
+  "hub": false,
+  "morph19_preserved": true,
+  "delta": "operator-granted promote morph36 best (ep23 unbind_exact=0.5455) \u2192 BEST; morph19 artifacts preserved intact"
+}
