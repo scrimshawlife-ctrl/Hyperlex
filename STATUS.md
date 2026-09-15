@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = morph19 (0.4545) still pin. morph35 KEEP_CANDIDATE (0.4904) held. **morph36** 40ep best-ckpt IN FLIGHT — see `NEXT_MOVES_007.md`. Danny gold still pending.
+1. Spark BEST = morph19 (0.4545) still pin. **morph36** KEEP_CANDIDATE (best 0.5455 / final 0.5124; E2 PASS) — **not promoted** (near 0.55). morph35 prior KEEP. Danny gold still pending — see `NEXT_MOVES_007.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
