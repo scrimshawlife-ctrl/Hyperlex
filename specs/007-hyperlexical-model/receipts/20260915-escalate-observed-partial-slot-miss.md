@@ -35,11 +35,21 @@ Scoring note: famcls52 native heads are family/role/pointer (structure climb). C
 
 ## Ask for Danny
 
-Settle **OBSERVED** gold targeting `partial_slot_miss` (and related type_slot / positional head misses) on the civilian unbind val wall — or explicitly authorize a different ladder path. Until then: **waiting on Danny**. Keep `name_gate=false`. BEST stays morph19.
+Settle **OBSERVED** gold targeting `partial_slot_miss` (and related type_slot / positional head misses) on the civilian unbind val wall — or explicitly authorize a different ladder path. Until then: **waiting on Danny**. Keep `name_gate=false`. BEST stays morph19. **No train** (no famcls53 / morph) until authorize.
+
+## Danny-ready gold review package
+
+`specs/007-hyperlexical-model/receipts/danny-gold-review-partial-slot-miss-20260915/`
+
+- Manifest + ranked candidates (`partial_slot_miss` first; then type_slot)
+- Labeling template: schemes **`positional` | `type_slot` only**; gold fields **blank** (OBSERVED hold)
+- Clear ask: `ASK_DANNY.md` — authorize OBSERVED structure gold **or** alternate ladder path
+- Counts: n_residual=198; P1 `partial_slot_miss`=**146**
 
 ## Artifacts
 
 - Spark: `~/hlx-private/climb_vs_best_civilian.json`
 - Spark: `~/hlx-private/climb_vs_best_civilian_20260915/` (JSON + residuals)
 - Workspace: `specs/007-hyperlexical-model/receipts/climb_vs_best_civilian.json`
+- Workspace review package: `specs/007-hyperlexical-model/receipts/danny-gold-review-partial-slot-miss-20260915/`
 - Climb pin: `~/hlx-private/p1-structure-unbind-famcls52-20260914/{KEPT.md,SMOKE_SUMMARY.json}`
