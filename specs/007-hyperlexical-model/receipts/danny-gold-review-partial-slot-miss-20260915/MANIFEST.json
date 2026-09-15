@@ -87,39 +87,27 @@
     "candidates.part0.jsonl",
     "candidates.part1.jsonl",
     "candidates.part2.jsonl",
-    "candidates.part3.jsonl"
+    "candidates.part3.jsonl",
+    "candidates.part4.jsonl",
+    "candidates.part5.jsonl",
+    "candidates.part6.jsonl",
+    "candidates.part7.jsonl"
   ],
-  "hyperlex_note": "Hyperlex main carries candidates.part0\u2013part3 shards + CANDIDATES_SHARDS.md/CANDIDATES_POINTER.md; cat in order reconstructs candidates.jsonl (171569 bytes, sha256 36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae). Canonical monolithic file also on workspace main + Spark ~/hlx-private/danny-gold-review-partial-slot-miss-20260915/.",
+  "hyperlex_note": "Hyperlex main carries candidates.part0\u2013part7 shards + CANDIDATES_SHARDS.md/CANDIDATES_POINTER.md; cat in order reconstructs candidates.jsonl (171569 bytes, sha256 36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae). Canonical monolithic file also on workspace main + Spark ~/hlx-private/danny-gold-review-partial-slot-miss-20260915/.",
   "candidates_shards": {
-    "reconstruct": "cat candidates.part0.jsonl candidates.part1.jsonl candidates.part2.jsonl candidates.part3.jsonl > candidates.jsonl",
+    "reconstruct": "cat candidates.part0.jsonl candidates.part1.jsonl candidates.part2.jsonl candidates.part3.jsonl candidates.part4.jsonl candidates.part5.jsonl candidates.part6.jsonl candidates.part7.jsonl > candidates.jsonl",
     "full_bytes": 171569,
     "full_rows": 198,
     "full_sha256": "36caa1fdd9fac789dbf84166aaaf1c3c543b3183a4b6a086476918c0f14aadae",
     "parts": [
-      {
-        "path": "candidates.part0.jsonl",
-        "rows": 50,
-        "bytes": 44369,
-        "sha256": "c8cd0c9639377236e53d99c6f86737bafd6ba457b952b998391d504f11829c23"
-      },
-      {
-        "path": "candidates.part1.jsonl",
-        "rows": 50,
-        "bytes": 43448,
-        "sha256": "e341ac6c18f79572fe4e24dd49a00119d57d34609d3197d1ff49a0688e925256"
-      },
-      {
-        "path": "candidates.part2.jsonl",
-        "rows": 50,
-        "bytes": 41955,
-        "sha256": "81e4d8c597ed7de72959c68cc6949d54f6638314a8f984d34923ffb80ca8ab52"
-      },
-      {
-        "path": "candidates.part3.jsonl",
-        "rows": 48,
-        "bytes": 41797,
-        "sha256": "fa12cb97712047c996e6fb178f3831fc10b5f718f3223b29f178155facb4fd8f"
-      }
+      {"path": "candidates.part0.jsonl", "rows": 26, "bytes": 22216, "sha256": "dbf8bcef96383fd2e51e6627ccc8b6fd002cb008ae0eb3928490d0ae261172b8"},
+      {"path": "candidates.part1.jsonl", "rows": 24, "bytes": 22153, "sha256": "425febef14db12dde8fde63478e0576250c2513ee403b96a7d05cbae7855fc7d"},
+      {"path": "candidates.part2.jsonl", "rows": 26, "bytes": 22350, "sha256": "dbe7e91f22c6030230aa6c85e151c514cf53ce64d9f8f45c0be1f666ab7df1ba"},
+      {"path": "candidates.part3.jsonl", "rows": 26, "bytes": 22864, "sha256": "f007cc0dd974e6be67deed11eeb4b80747eb1b159b1ea989214debe664766e1f"},
+      {"path": "candidates.part4.jsonl", "rows": 27, "bytes": 22335, "sha256": "f20b826bd9b5ebb11dff6022b80f476e66d688125f3042ba252940698d7a7a62"},
+      {"path": "candidates.part5.jsonl", "rows": 26, "bytes": 22175, "sha256": "2b8a7ccdf2d0f1812f5428f1219b64703b47da7ac50d1902e6d8183d730e6dd1"},
+      {"path": "candidates.part6.jsonl", "rows": 25, "bytes": 22108, "sha256": "5a2c95d88611ab80cc09ec4d809b8e7f436fdf5d6580271182f8d684a2f03b1e"},
+      {"path": "candidates.part7.jsonl", "rows": 18, "bytes": 15368, "sha256": "01b9ce260fed3a08c69ed06dd0aa535daaee82b98f99d128f296568f2e98d545"}
     ]
   }
 }
