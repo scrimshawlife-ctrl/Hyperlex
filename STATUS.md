@@ -3,8 +3,8 @@
 **Naming:** repo **Hyperlex** is the transitional monorepo shell. Public products: **Hyperlexical** (Spec 007 model / train / eval / E2 / `name_gate` claim) and **ne0l0gist** (slang ingest). `name_gate` remains false.
 
 **Version:** 0.4.0  
-**Observed:** 2026-09-10  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). T0 then T1 after E2.  
+**Observed:** 2026-09-12  
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph19` (val unbind_exact≈0.4545; ladder 0.45 cleared). `name_gate` still false.  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -17,7 +17,7 @@ This file is the operator snapshot. The docs site copies it to [status](https://
 |-------|------|--------|
 | Hermes skill | What you run today (`SKILL.md`, CLI, `src/hyperlex/`) | Ready (v0.4.0) |
 | T0 | Encoder baseline; card `hyperlex-encoder-*` | Specified. Not named Hyperlexical. |
-| T1 | First artifact that *may* be called Hyperlexical | Blocked on E2 vs Spec 004 on Spark |
+| T1 | First artifact that *may* be called Hyperlexical | Trained E2 PASS on Spark; still blocked on Danny yes for `name_gate` |
 | `name_gate` | Name + publish wall | **false** |
 | Hub | Operator upload | Not published |
 
@@ -50,10 +50,11 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 | Gate | State |
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
-| `name_gate` | **false** — stays false until E2 passes on Spark. Volume ≠ name. Gaps at 0 do not flip the gate. |
-| E2 vs Spec 004 | **FAIL** on the stub (expected). Trained E2 is **Spark-blocked**. Seed smoke is not a pass. |
+| `name_gate` | **false** — E2 PASS on Spark does **not** flip the gate. Danny yes still required. Volume ≠ name. |
+| Spark BEST | **`seed-morph19`** — val `unbind_exact≈0.4545` (165/363). Ladder **0.45 cleared**. Weight family (22–24) + schedule/capacity family (25–29) all REJECT — closest morph29 margin=0.75 at 0.4490. **0.55 blocked** pending Danny hard-atom *set* expand or loss-structure card. |
+| E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
-| T1 name | Not allowed. Card stays `hyperlex-encoder-*` until E2. |
+| T1 name | Not allowed. Card stays `hyperlex-encoder-*` until Danny yes on `name_gate`. |
 | Lineage families | **8** only. No ninth family. |
 | Brier | `null` on every 007 packet. |
 | Crawl | Crawl4AI **0.9.3** default. `--source firecrawl` aliases to `crawl4ai`. No paid Firecrawl without Danny yes. |
@@ -100,9 +101,9 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Ingest routes + automatic pipeline | Ready |
 | Atomic multi-term seeds | Ready |
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
-| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
+| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 model path (T0→T1) | SHADOW · classify volume ready · `name_gate` false · E2 Spark-blocked · no Hub · not named Hyperlexical |
+| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph19 · ladder 0.45 cleared · trained E2 PASS · `name_gate` false · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
@@ -141,11 +142,10 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark morph15 card — pin `seed-morph14` (unbind≈0.3857); climb toward ladder 0.45 with `slot_ce` + hard upsample + soft INFERRED + head-slot weight 2 + residual dump (`NEXT_MOVES_007.md` / `u3-recipe.md` / `scripts/spark/morph15-unbind.sh`).
+1. Spark BEST = morph19 (0.4545) still pin. morph35 KEEP_CANDIDATE (0.4904) held. **morph36** 40ep best-ckpt IN FLIGHT — see `NEXT_MOVES_007.md`. Danny gold still pending.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
 ## README
 
 Operator front door expanded for stack parity with Athanor / Semion / Yggdrasil (2026-09-11). Changelog-style dumps stay in CHANGELOG / receipts — not the main page.
-
