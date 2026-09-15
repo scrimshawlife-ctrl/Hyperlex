@@ -1,0 +1,4 @@
+KEEP_CANDIDATE
+best_unchanged=True
+exact=0.4903581267217631
+best_epoch_exact=0.5371900826446281

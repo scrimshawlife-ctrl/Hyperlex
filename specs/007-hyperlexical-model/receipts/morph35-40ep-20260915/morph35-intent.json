@@ -1,0 +1,17 @@
+{
+  "morph": 35,
+  "family": "schedule_40ep_morph19_envelope",
+  "delta": "epochs=40 (morph19/morph34 were 6); no new loss lever; no invented OBSERVED gold; existing hard_atoms_train.jsonl only",
+  "hold": "morph19 envelope: slot_ce, HEAD_SLOT=2, OBSERVED=2, HARD=4, INFERRED=1.0, CAP=0, POS=1 TYPE=1, LAST=4, margin=0.5, loss=1.0, prior hard_atoms_train.jsonl; SECOND_SLOT identity 1.0",
+  "init": "trunk ModernBERT-base (same as morph19 lineage; no warm-load of BEST weights — train writes NEW morph35 dir)",
+  "baseline_best": "seed-morph19",
+  "baseline_unbind_exact": 0.45454545454545453,
+  "pin_rule": "gate: civilian unbind_exact vs morph19; do NOT promote BEST even if greater (operator: without promoting); name_gate=false",
+  "name_gate": false,
+  "best_overwrite": false,
+  "ladder_target": 0.55,
+  "operator_override": "continue training while Danny gold escalate pending; climb famcls52 saturated 1.0 so civilian morph next",
+  "danny_gold": "PENDING filled_gold=0",
+  "created_at": "2026-09-15T18:14:05.378703+00:00",
+  "note": "Higher-value legal train vs famcls53 (holdout already perfect on accept29). Uses existing gold only."
+}
