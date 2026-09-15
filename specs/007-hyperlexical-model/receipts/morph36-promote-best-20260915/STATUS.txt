@@ -1,0 +1,5 @@
+BEST
+promote_best=True
+prior_best=seed-morph19
+exact=0.5454545454545454
+morph19_preserved=True
