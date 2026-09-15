@@ -1,0 +1,83 @@
+{
+  "schema": "hyperlex.spec007.danny_gold_review.v0.1",
+  "as_of": "2026-09-15T16:55:00Z",
+  "package": "danny-gold-review-partial-slot-miss-20260915",
+  "status": "waiting_on_danny",
+  "observed_hold": true,
+  "training_ready": false,
+  "best_overwrite": false,
+  "best_untouched": true,
+  "best_pin": "morph19",
+  "name_gate": false,
+  "no_train_until_authorize": true,
+  "ask": "Authorize OBSERVED structure gold for listed residual spans (schemes positional|type_slot only) OR authorize an alternate ladder path. Do not invent gold in this package — gold_fillers/gold_roles left blank for Danny/human.",
+  "source": {
+    "spark_dir": "~/hlx-private/climb_vs_best_civilian_20260915/",
+    "spark_residual": "~/hlx-private/climb_vs_best_civilian_20260915/morph19_residual.jsonl",
+    "spark_summary": "~/hlx-private/climb_vs_best_civilian_20260915/morph19_residual.summary.json",
+    "workspace_receipt": "specs/007-hyperlexical-model/receipts/climb_vs_best_civilian.json",
+    "model": "morph19 BEST",
+    "val_surface": "export_dataset(include_live=True) unbind split=val n=363"
+  },
+  "counts": {
+    "n_residual_total": 198,
+    "n_partial_slot_miss": 146,
+    "n_type_slot_token_miss": 81,
+    "n_positional_head_filler_miss": 36,
+    "n_full_miss": 28,
+    "n_morph_bleed": 11,
+    "by_priority_cohort": {
+      "P1_partial_slot_miss": 146,
+      "P2_type_slot_token_miss": 16,
+      "P3_positional_head_filler_miss": 36
+    },
+    "by_scheme": {
+      "type_slot": 91,
+      "positional": 107
+    },
+    "by_dataset_class": {
+      "OBSERVED": 31,
+      "INFERRED": 167
+    },
+    "partial_slot_miss_by_scheme": {
+      "type_slot": 75,
+      "positional": 71
+    },
+    "partial_slot_miss_by_dataset_class": {
+      "OBSERVED": 25,
+      "INFERRED": 121
+    }
+  },
+  "theme_priority_order": [
+    "partial_slot_miss",
+    "type_slot_token_miss",
+    "positional_head_filler_miss",
+    "full_miss",
+    "morph_bleed"
+  ],
+  "labeling_constraints": {
+    "role_scheme_allowed": [
+      "positional",
+      "type_slot"
+    ],
+    "gold_fields_blank_until_danny": [
+      "gold_fillers",
+      "gold_roles",
+      "authorized_observed_structure_gold"
+    ],
+    "eval_reference_fillers_are_not_authorized_gold": true,
+    "observed_hold": true,
+    "no_invented_gold": true
+  },
+  "files": [
+    "README.md",
+    "ASK_DANNY.md",
+    "MANIFEST.json",
+    "LABELING_TEMPLATE.md",
+    "PATTERN_RANK.md",
+    "candidates.jsonl",
+    "morph19_residual.summary.json",
+    "counts.json",
+    "pattern_examples.json"
+  ]
+}
