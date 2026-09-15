@@ -141,3 +141,7 @@ Do **not** without Danny/operator yes:
 ## License
 
 See repo `LICENSE` / package metadata. Corpus and scrape receipts carry their own provenance — do not treat PD-adjacent web text as automatically redistributable.
+
+## Shared research program (candidate)
+
+[Hyperlexical participation in persistent-agent research](specs/007-hyperlexical-model/PERSISTENT-AGENT-PROGRAM.md) maps this component into ABX-NOEMA-REP-001. Advisory specification only; existing contracts and gates remain authoritative.
