@@ -1,0 +1,8 @@
+# morph37 REJECT vs BEST
+
+best=0.5316804407713499 (ep2)
+final=0.5013774104683195
+morph36_BEST=0.5454545454545454
+E2 PASS=True
+warm_start=True
+BEST unchanged=morph36
