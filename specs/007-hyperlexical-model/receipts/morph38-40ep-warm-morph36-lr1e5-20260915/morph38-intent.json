@@ -1,0 +1,29 @@
+{
+  "morph": 38,
+  "family": "schedule_40ep_warm_morph36_best_save_best_lr1e5",
+  "delta": "ONE lever vs morph37: HYPERLEX_TRAIN_LR=1e-5 (morph37 used 2e-5). Warm morph36 BEST + SAVE_BEST_UNBIND=1; epochs=40; existing hard_atoms only; no invented OBSERVED. Justified: morph37 warm peaked ep2 then regressed under cold-start LR — halve LR for warm continue.",
+  "delta_vs_morph37": {
+    "changed": {
+      "HYPERLEX_TRAIN_LR": "1e-5"
+    },
+    "unchanged_hold": "warm INIT_FROM=morph36, SAVE_BEST_UNBIND=1, epochs=40, batch=8, LAST=4, slot_ce, HEAD_SLOT=2, OBSERVED=2, HARD=4, INFERRED=1.0, CAP=0, POS=1 TYPE=1, margin=0.5, loss=1.0, existing hard_atoms"
+  },
+  "hold": "morph19 envelope except LR: slot_ce, HEAD_SLOT=2, OBSERVED=2, HARD=4, INFERRED=1.0, CAP=0, POS=1 TYPE=1, LAST=4, margin=0.5, loss=1.0",
+  "init": "HYPERLEX_INIT_FROM=morph36 (warm from BEST primary weights)",
+  "baseline_best": "seed-morph36",
+  "baseline_unbind_exact": 0.5454545454545454,
+  "prior_best_archived": "seed-morph19",
+  "morph37_reject": {
+    "best": 0.5316804407713499,
+    "final": 0.5013774104683195,
+    "best_epoch": 2
+  },
+  "pin_rule": "gate primary (best-saved) vs morph36 BEST 0.5455; may promote morph38→BEST if exact>0.5455 (operator continue-authority); clear ladder if >=0.55; name_gate=false",
+  "name_gate": false,
+  "hub": false,
+  "promote_best_if_beats_morph36": true,
+  "ladder_target": 0.55,
+  "operator_override": "continue. authority granted for promote where earned. train morph38; promote if beats morph36",
+  "danny_gold": "PENDING filled_gold=0 — do not invent OBSERVED",
+  "created_at": "2026-09-15T23:24:53.515628+00:00"
+}
