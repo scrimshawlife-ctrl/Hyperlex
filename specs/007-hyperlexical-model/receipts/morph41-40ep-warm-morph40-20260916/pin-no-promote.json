@@ -1,0 +1,34 @@
+{
+  "schema": "hyperlex.hyperlexical.best_pin.v0.1",
+  "decision": "REJECT_VS_BEST",
+  "seed": "seed-morph41",
+  "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph41",
+  "prior_best": "seed-morph40",
+  "fair_morph40_unbind_exact": 0.7368421052631579,
+  "fair_val_n": 228,
+  "val": {
+    "unbind_exact": 0.7149122807017544,
+    "unbind_token_f1": 0.8227194492254734,
+    "unbind_slot_f1": 0.8209982788296042,
+    "classify_acc": 0.6875,
+    "n_unbind_eval": 228,
+    "epoch": 3
+  },
+  "best_epoch": 3,
+  "best_unbind_exact": 0.7149122807017544,
+  "e2": {
+    "e2_pass": true,
+    "unbind_exact": 1.0,
+    "trunk_forward": true
+  },
+  "beats_fair": false,
+  "ladder_0_55_on_val": true,
+  "n_unbind_force_train": 135,
+  "n_unbind_hard_atoms_matched": 178,
+  "prior_best_preserved": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40",
+  "morph36_preserved": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph36",
+  "delta": "warm morph40 BEST + SAVE_BEST_UNBIND 40ep; no new gold (force-train 135 / hard_atoms 180 unchanged)",
+  "no_new_gold": true,
+  "name_gate": false,
+  "pinned_at": "2026-09-16T07:04:47.034041+00:00"
+}

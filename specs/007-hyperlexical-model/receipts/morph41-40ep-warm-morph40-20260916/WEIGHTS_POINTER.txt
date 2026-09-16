@@ -1,0 +1,1 @@
+/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph41/best/model.safetensors
