@@ -1,0 +1,23 @@
+{
+  "schema": "hyperlex.fair_eval_force_train.v0.1",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph36",
+  "force_train_path": "/home/morpheus/hlx/force_train_morph40_expanded.jsonl",
+  "force_stats": {
+    "unbind_force_train_path": "force_train_morph40_expanded.jsonl",
+    "n_unbind_force_train": 135,
+    "n_unbind_force_train_keys": 135,
+    "n_unbind_val_after_force_train": 228
+  },
+  "n_val_before": 363,
+  "n_val_after": 228,
+  "n_train_after": 3140,
+  "morph36_unbind_exact_old_val": 0.5454545454545454,
+  "morph36_unbind_exact_new_val": 0.7324561403508771,
+  "morph36_token_f1_new_val": 0.8330464716006885,
+  "morph36_slot_f1_new_val": 0.8330464716006885,
+  "baseline_for_morph40_gate": 0.7324561403508771,
+  "prior_best_unbind_exact_old_val": 0.5454545454545454,
+  "prior_fair_morph39_val338": 0.5739644970414202,
+  "name_gate": false,
+  "scored_at": "2026-09-16T03:26:40.870598+00:00"
+}
