@@ -49,6 +49,7 @@ morph40 → **PIN BEST** (best **0.7368** > fair morph36 **0.7325** on n=228). E
 - BEST is morph40. Do not warm-clone without a new documented lever.
 - Residual after morph40: **60** (partial_slot_miss 28; positional_head 23; type_slot_token 23; full_miss 15).
 - 1 documentary INFERRED hold + 10 abstain stay out of train.
+- **Speed lever (landed):** morph launches default `HYPERLEX_CUDA_MEM_FRACTION=0.3` via `scripts/spark/guard.py` + `run_morph_train.sh` (retired `0.015` ~2GB leftover). morph41 mid-run **left** on 0.015 — next climb gets 0.3. Co-tenant → `0.03`. Receipt: `receipts/20260916-cuda-mem-fraction-speed-lever.md`.
 - `name_gate` remains false. No Hub. No invent beyond labeled set.
 
 ## Policy
