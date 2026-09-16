@@ -43,6 +43,6 @@ Rationale: raising past ~2 GB removes artificial allocator thrash; 0.3 is the 
 | morph39 | 0.015 | ~73 min | prior |
 | morph40 | 0.015 | ~80 min | prior |
 | morph41 | 0.015 | ~86 min | completed; REJECT_VS_BEST; not restarted for 0.3 |
-| next morph | **0.3** | TBD | measure tokens/sec or epoch wall on next exclusive launch |
+| **morph42** | **0.3** | **~87 min** | `hlx-train-morph42-1789542688`; REJECT (0.7149); **no wall speedup** — resident ~1.2 GiB |
 
-No throwaway retrain forced mid-morph41.
+No throwaway retrain forced mid-morph41. morph42 measured exclusive **0.3**: wall unchanged vs 0.015 on this ModernBERT last-N / batch-8 recipe.
