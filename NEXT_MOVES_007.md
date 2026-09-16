@@ -1,15 +1,13 @@
-# Spec 007 — morph40 BEST (INFERRED promote); morph36 preserved
+# Spec 007 — morph41 REJECT_VS_BEST; BEST stays morph40
 
 **Authority:** Spec 007 only. `name_gate` false. No Hub. **Labeler authorized.** No invent beyond labeled set.  
-**BEST:** **morph40** — `unbind_exact≈0.7368` (ep9) on fair val **n=228**. Prior morph36 artifacts preserved. Climb KEEP famcls52 ≠ BEST.
+**BEST held:** **morph40** — `unbind_exact≈0.7368` (ep9) on fair val **n=228**. morph36 artifacts preserved. Climb KEEP famcls52 ≠ BEST.
 
 ## Status
 
-morph36 was BEST through morph39 REJECT.  
-**Labeler AUTHORIZED 2026-09-16** (METHOD + 136 auth / 10 abstain).  
-morph39 OBSERVED-only gold → **REJECT_VS_BEST** vs fair 0.5740 (n=338).  
-**110 INFERRED** high-confidence promoted → OBSERVED train (1 punct hold documentary).  
-morph40 → **PIN BEST** (best **0.7368** > fair morph36 **0.7325** on n=228). E2 PASS.
+morph40 BEST confirmed on spark. Civilian residual dump after morph40: **60** (PSM **28**).  
+Residual review: **20** authorized structure / **8** abstain / **0** train promote → **NO_NEW_GOLD_THIS_CLIMB**.  
+**morph41** warm morph40 + SAVE_BEST_UNBIND 40ep on existing gold 135/180 — **REJECT_VS_BEST** (best **0.7149** ep3 < fair **0.7368**). E2 PASS. Container `hlx-train-morph41-1789537012` exited 0.
 
 ## Marks status (2026-09-16)
 
@@ -21,18 +19,19 @@ morph40 → **PIN BEST** (best **0.7368** > fair morph36 **0.7325** on n=228). E
 | morph39 observed-gold force-train | **HIT** → REJECT_VS_BEST |
 | INFERRED→OBSERVED train promote | **HIT** (110 / 1 hold / 10 abstain) |
 | morph40 inferred-promote | **HIT** → **PIN BEST** |
+| morph40 residual review | **HIT** → no new gold |
+| morph41 warm morph40 | **HIT** → **REJECT_VS_BEST** |
 | Ladder `unbind_exact` ≥ **0.55** (comparable new val n=228) | **HIT** (0.7368) |
 
 ## Civilian scores
 
 | model | val n | unbind_exact | note |
 |-------|------:|-------------:|------|
-| morph36 old val | 363 | 0.5455 | prior pin surface |
-| morph36 fair morph39 | 338 | 0.5740 | after 25 OBSERVED force-train |
-| morph39 best ep2 | 338 | 0.5621 | REJECT vs fair |
-| **morph36 fair morph40** | **228** | **0.7325** | after 135 force-train |
-| **morph40 BEST ep9** | **228** | **0.7368** | **PIN** |
+| morph36 fair morph40 | 228 | 0.7325 | after 135 force-train |
+| **morph40 BEST ep9** | **228** | **0.7368** | **PIN / held** |
 | morph40 final ep39 | 228 | 0.6930 | SAVE_BEST kept ep9 |
+| morph41 best ep3 | 228 | **0.7149** | REJECT vs fair 0.7368 |
+| morph41 final ep39 | 228 | 0.6711 | SAVE_BEST kept ep3 |
 
 ## Pins
 
@@ -40,17 +39,16 @@ morph40 → **PIN BEST** (best **0.7368** > fair morph36 **0.7325** on n=228). E
 |-----|------|------|
 | **BEST** | morph40 | `...-seed-morph40` |
 | morph36 | `...-seed-morph36` | preserved prior BEST |
-| morph39 | `...-seed-morph39` | REJECT_VS_BEST |
-| **Danny package** | `receipts/danny-gold-review-partial-slot-miss-20260915/` | 135 train-ready |
-| **morph40 gate** | `receipts/20260916-morph40-40ep-pin-best.md` | |
+| morph41 | `...-seed-morph41` | REJECT; weights kept |
+| **residual review** | `receipts/morph40-residual-review-20260916/` | 20 auth / 0 promote |
+| **morph41 reject** | `receipts/20260916-morph41-40ep-reject-vs-best.md` | |
 
 ## Next
 
-- BEST is morph40. Do not warm-clone without a new documented lever.
-- Residual after morph40: **60** (partial_slot_miss 28; positional_head 23; type_slot_token 23; full_miss 15).
-- 1 documentary INFERRED hold + 10 abstain stay out of train.
-- **Speed lever (landed):** morph launches default `HYPERLEX_CUDA_MEM_FRACTION=0.3` via `scripts/spark/guard.py` + `run_morph_train.sh` (retired `0.015` ~2GB leftover). morph41 mid-run **left** on 0.015 — next climb gets 0.3. Co-tenant → `0.03`. Receipt: `receipts/20260916-cuda-mem-fraction-speed-lever.md`.
-- `name_gate` remains false. No Hub. No invent beyond labeled set.
+- Warm-only climb failed; do **not** re-warm morph40 without a new lever.
+- Candidate next levers (pick **one**): integrate a thin slice of the 20 held morph40 PSM auth rows; non-warm recipe (head-slot / curriculum / hard_atoms); or operator-directed gold. Fair-eval if val changes.
+- **Speed lever ready:** next morph launch defaults `HYPERLEX_CUDA_MEM_FRACTION=0.3` (PR #80). morph41 ran at **0.015** end-to-end — left alone mid-run. Co-tenant → `0.03`.
+- 10 prior abstain + 1 documentary hold stay out. `name_gate` remains false. No Hub. No invent beyond labeled set.
 
 ## Policy
 
