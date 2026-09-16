@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-12  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph40` (held; morph43/44 residual-gold REJECT; gold exhausted → escalate; val unbind_exact≈0.7368 on fair n=228; morph36 preserved). `name_gate` still false.  
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph40` (**held**; morph43/44 residual-gold REJECT; gold exhausted → escalate) (val unbind_exact≈0.7368 on fair n=228; morph36 preserved; morph44 best 0.9432 < fair 0.9489 n=176). `name_gate` still false.  
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main

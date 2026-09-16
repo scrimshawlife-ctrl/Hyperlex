@@ -1,0 +1,10 @@
+{
+  "schema": "hyperlex.spec007.morph44_post_residual_label.v0.1",
+  "as_of": "2026-09-16T12:14:11.979055+00:00",
+  "n_residual": 10,
+  "n_authorize": 0,
+  "n_abstain": 10,
+  "n_new_not_in_force": 0,
+  "gold_exhausted": true,
+  "escalate": true
+}
