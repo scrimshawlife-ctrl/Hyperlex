@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import importlib.util
 import tempfile
 from pathlib import Path
 
@@ -24,6 +25,11 @@ from scripts.shadow.hyperlexical.training_reviewed_loop import (
     structure_exact_match,
 )
 from test_training_contracts import fixture
+
+
+def _require_torch_for_tests():
+    """Cheap CI has no torch. Spec 007: stub embeddings; no Spark in Actions."""
+    return pytest.importorskip("torch")
 
 
 def _sha(text: str) -> str:
@@ -135,7 +141,14 @@ def test_gold_span_diagnostic_is_not_bound_recovery():
     assert diag["n_span_exact"] == 1
 
 
-def test_rejects_train_eval_fallback_and_blocked_plan(tmp_path):
+def test_rejects_train_eval_fallback_and_blocked_plan(tmp_path, monkeypatch):
+    def boom(*_a, **_k):
+        raise RuntimeError("torch required for reviewed trainer")
+
+    monkeypatch.setattr(
+        "scripts.shadow.hyperlexical.training_reviewed_loop._require_torch",
+        boom,
+    )
     plan = eligible_plan()
     blocked = copy.deepcopy(plan)
     blocked["blockers"] = ["SYNTHETIC_BLOCK"]
@@ -150,6 +163,7 @@ def test_rejects_train_eval_fallback_and_blocked_plan(tmp_path):
 
 
 def test_uninterrupted_vs_resumed_weights_equal():
+    _require_torch_for_tests()
     plan = eligible_plan()
     with tempfile.TemporaryDirectory() as tmp:
         result = compare_uninterrupted_vs_resumed(
@@ -168,6 +182,7 @@ def test_uninterrupted_vs_resumed_weights_equal():
 
 
 def test_consumption_receipt_and_no_name_gate(tmp_path):
+    _require_torch_for_tests()
     plan = eligible_plan()
     out = run_reviewed_train(plan, out_dir=tmp_path / "run", seed=3, max_steps=4, batch_size=1)
     receipt = out["receipt"]
@@ -195,6 +210,7 @@ def test_pinned_indices_required_no_first_occurrence_fallback():
 
 
 def test_selected_example_ids_match_actual_consumption(tmp_path):
+    _require_torch_for_tests()
     plan = eligible_plan()
     selected = selected_train_example_ids(plan)
     out = run_reviewed_train(plan, out_dir=tmp_path / "consume", seed=5, max_steps=5, batch_size=1)
@@ -207,7 +223,16 @@ def test_selected_example_ids_match_actual_consumption(tmp_path):
         assert_consumption_matches_selection(selected, receipt["consumed_example_ids"] + ["alien"])
 
 
+def test_eligible_reviewed_train_fail_closed_without_torch(tmp_path):
+    if importlib.util.find_spec("torch") is not None:
+        pytest.skip("torch installed; missing-torch fail-closed path not exercised")
+    plan = eligible_plan()
+    with pytest.raises(RuntimeError, match="torch required"):
+        run_reviewed_train(plan, out_dir=tmp_path / "need-torch", seed=1, max_steps=1)
+
+
 def test_receipt_records_identities_and_refuses_best_overwrite(tmp_path):
+    _require_torch_for_tests()
     plan = eligible_plan()
     out = run_reviewed_train(plan, out_dir=tmp_path / "ident", seed=9, max_steps=3, batch_size=1)
     receipt = out["receipt"]
