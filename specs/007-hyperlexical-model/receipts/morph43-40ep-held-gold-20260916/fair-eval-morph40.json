@@ -1,0 +1,26 @@
+{
+  "schema": "hyperlex.fair_eval_same_surface.v0.1",
+  "as_of": "2026-09-16T09:03:21.729820+00:00",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40",
+  "seed": "seed-morph40",
+  "force_train_path": "/home/morpheus/hlx/force_train_morph43_expanded.jsonl",
+  "force_stats": {
+    "unbind_force_train_path": "force_train_morph43_expanded.jsonl",
+    "n_unbind_force_train": 186,
+    "n_unbind_force_train_keys": 186,
+    "n_unbind_val_after_force_train": 177
+  },
+  "n_val_before": 363,
+  "n_val_after": 177,
+  "n_train_after": 3191,
+  "n_hard_atoms": 226,
+  "n_gold_train_ready": 186,
+  "morph40_unbind_exact_raw_val_before_force": 0.8319559228650137,
+  "morph40_unbind_exact_fair_val": 0.9491525423728814,
+  "morph40_token_f1_fair_val": 0.960352422907489,
+  "morph40_slot_f1_fair_val": 0.960352422907489,
+  "baseline_for_morph43_gate": 0.9491525423728814,
+  "prior_fair_morph40_on_n228": 0.7368421052631579,
+  "name_gate": false,
+  "note": "Fair morph40 BEST after morph43 gold expand (force 186 / hard 226). Val n=177. Gate: morph43 best unbind_exact > 0.9491525423728814 on same surface."
+}
