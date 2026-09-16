@@ -1,0 +1,38 @@
+{
+  "schema": "hyperlex.spec007.danny_gold_labeled.v0.2",
+  "as_of": "2026-09-16T03:24:03.135749+00:00",
+  "authorization": "operator granted labeler authority 2026-09-16; INFERRED\u2192OBSERVED train promote authorized",
+  "scope": "P1_partial_slot_miss",
+  "n_candidates": 146,
+  "n_authorized": 136,
+  "n_abstain": 10,
+  "n_authorized_OBSERVED": 25,
+  "n_authorized_INFERRED": 111,
+  "n_training_ready_OBSERVED_original": 25,
+  "n_inferred_promoted_to_observed_train": 110,
+  "n_inferred_documentary_hold": 1,
+  "n_training_ready_total": 135,
+  "hold_reasons": {
+    "punct_only_filler": 1
+  },
+  "by_scheme_promoted": {
+    "type_slot": 56,
+    "positional": 54
+  },
+  "by_scheme_train_ready": {
+    "type_slot": 67,
+    "positional": 68
+  },
+  "qa_second_pass": {
+    "inferred_promoted_reparse_checked": 110,
+    "reparse_mismatches": 0,
+    "punct_hold_ids": [
+      "morph19-civ-res-002-00a1a4af745c"
+    ],
+    "abstain_unchanged_n": 10
+  },
+  "method": "METHOD.md",
+  "best_pin": "morph40",
+  "name_gate": false,
+  "morph_target": "morph40"
+}

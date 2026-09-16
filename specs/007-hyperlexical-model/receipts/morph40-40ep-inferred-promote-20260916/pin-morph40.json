@@ -1,0 +1,34 @@
+{
+  "schema": "hyperlex.hyperlexical.best_pin.v0.1",
+  "decision": "PIN",
+  "seed": "seed-morph40",
+  "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40",
+  "prior_best": "seed-morph36",
+  "prior_unbind_exact_old_val": 0.5454545454545454,
+  "fair_morph36_unbind_exact": 0.7324561403508771,
+  "fair_val_n": 228,
+  "val": {
+    "unbind_exact": 0.7368421052631579,
+    "unbind_token_f1": 0.8399311531841653,
+    "unbind_slot_f1": 0.8382099827882962,
+    "classify_acc": 0.681640625,
+    "n_unbind_eval": 228,
+    "epoch": 9
+  },
+  "best_epoch": 9,
+  "best_unbind_exact": 0.7368421052631579,
+  "e2": {
+    "e2_pass": true,
+    "unbind_exact": 1.0,
+    "trunk_forward": true
+  },
+  "beats_fair": true,
+  "ladder_0_55_on_new_val": true,
+  "ladder_note": "new val n=228 after promoting 135 force-train exacts; comparable surface is this fair val, not old n=363",
+  "n_unbind_force_train": 135,
+  "n_unbind_hard_atoms_matched": 178,
+  "prior_best_preserved": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph36",
+  "delta": "INFERRED->OBSERVED train promote: 110 high-confidence P1 gold + original 25 OBSERVED; force-train 135; hard_atoms 75->180; warm morph36; 40ep SAVE_BEST_UNBIND",
+  "name_gate": false,
+  "pinned_at": "2026-09-16T05:15:52.913329+00:00"
+}
