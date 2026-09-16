@@ -20,6 +20,16 @@ Hermes skill is what you **run today**. Spec 007 Hyperlexical encoder is **SHADO
 
 Docs site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.github.io/Hyperlex/) · status mirror: [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/).
 
+## Canonical remote and public claims
+
+**OBSERVED dual-home:** this repository (`scrimshawlife-ctrl/Hyperlex`) is the canonical train and work remote. [`Zero-State-LLC/Hyperlex`](https://github.com/Zero-State-LLC/Hyperlex) is the company mirror and may lag. Do not treat the org Hyperlex as the train source of truth.
+
+Pinned BEST receipt on `main`: [`specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md`](specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md) (`name_gate=false` / no Hub).
+
+Funding and demo language must match Zero State [Public Claims & Boundaries](https://app.notion.com/p/ecd794b1226b4dd89abe1ccd928dd35c) (Notion) and [Core Model Spine](https://app.notion.com/p/3dc3e8ba2f5c810db2f6f72a8ffe50eb). Do not claim: Nemotron integrated, Hub Hyperlexical card, Abraxas-named 7B, or free Inception GPUs.
+
+Full pointer: [`docs/CANONICAL.md`](docs/CANONICAL.md).
+
 ## Naming
 
 Repo **Hyperlex** is the transitional monorepo shell. Do not use bare public **Hyperlex** as a product name — it collides with French legaltech CLM / DiliTrust.
@@ -83,6 +93,7 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) (spine note) and [`docs/shadow-hyperlex
 | Doc | Path |
 |-----|------|
 | Status | [`STATUS.md`](STATUS.md) |
+| Canonical remotes and claims | [`docs/CANONICAL.md`](docs/CANONICAL.md) |
 | Architecture | [`ARCHITECTURE.md`](ARCHITECTURE.md) |
 | Shadow Hyperlexical | [`docs/shadow-hyperlexical.md`](docs/shadow-hyperlexical.md) |
 | Commands | [`docs/commands.md`](docs/commands.md) |

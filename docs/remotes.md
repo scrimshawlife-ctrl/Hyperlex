@@ -1,12 +1,15 @@
 # Remotes — personal vs org
 
-**Source of truth:** `scrimshawlife-ctrl/Hyperlex` (`main`).
+**OBSERVED:** the canonical train and work remote is
+`scrimshawlife-ctrl/Hyperlex` (`main`). Diligence pointer:
+[CANONICAL.md](CANONICAL.md).
 
-**Intended org twin:** `Zero-State-LLC/Hyperlex` — advertised on zer0state.com, **not created or not visible** as of 2026-09-09 (API 404). This connector cannot create org repos (`403` needs org admin).
+**Company mirror:** `Zero-State-LLC/Hyperlex` exists and may lag. Do not treat
+it as the train source of truth. Do not clone it for Spark train or Hub work.
 
-Until the org repo exists, do not treat the org URL as a clone target.
+## Optional org mirror push
 
-## After an org owner creates `Zero-State-LLC/Hyperlex`
+If you maintain the org remote:
 
 ```bash
 cd Hyperlex
@@ -15,16 +18,16 @@ git push org main
 git push org --tags
 ```
 
-Keep one SoT. Default: personal `main` first, then:
+Keep one source of truth. Default: personal `main` first, then:
 
 ```bash
 ./scripts/push-org.sh
 ```
 
-That script refuses if `org` remote is missing.
+That script refuses if the `org` remote is missing.
 
-## Do not
+## Don't
 
 - Diverge two `main`s
 - Train or publish Hub cards from a stale org clone
-- Point Aaron at the 404 org URL
+- Point operators at the org URL as the work remote
