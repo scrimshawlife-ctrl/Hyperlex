@@ -1,0 +1,16 @@
+{
+  "schema": "hyperlex.spec007.morph43_label_counts.v0.1",
+  "n_residual": 60,
+  "n_authorize": 51,
+  "n_abstain": 9,
+  "n_promoted_to_observed_train": 51,
+  "abstain_why": {
+    "prior_abstain_unchanged": 8,
+    "url_noise": 1
+  },
+  "authorize_why": {
+    "positional_text_split_match": 32,
+    "type_slot_text_parse_match": 19
+  },
+  "note": "Promoted all METHOD-compliant high-confidence residuals (prior PSM held auth + clean non-PSM). Prior ABSTAIN honored."
+}

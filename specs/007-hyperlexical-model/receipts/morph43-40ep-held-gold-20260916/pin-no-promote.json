@@ -1,0 +1,48 @@
+{
+  "beats_fair": false,
+  "best_epoch": 2,
+  "best_unbind_exact": 0.9378531073446328,
+  "container": "hlx-train-morph43-1789549404",
+  "decision": "REJECT_VS_BEST",
+  "delta": "ONE lever: held residual gold promote (+51 force-train 135->186, hard 180->226); warm morph40 BEST + SAVE_BEST_UNBIND 40ep @ mem 0.3; fair morph40 on n=177 = 0.9492",
+  "e2": {
+    "e2_pass": true,
+    "trunk_forward": true,
+    "unbind_exact": 1.0
+  },
+  "fair_morph40_unbind_exact": 0.9491525423728814,
+  "fair_val_n": 177,
+  "gate_agent": "bc-f9009328-a3c9-5a26-bfa8-aafb4cd571d3",
+  "gold_delta": {
+    "abstain": 9,
+    "authorize": 51,
+    "force_train": "135->186",
+    "hard_atoms": "180->226"
+  },
+  "ladder_0_55_on_val": true,
+  "mem_fraction": 0.3,
+  "morph36_preserved": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph36",
+  "n_unbind_force_train": 186,
+  "n_unbind_hard_atoms_matched": 224,
+  "name_gate": false,
+  "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph43",
+  "pinned_at": "2026-09-16T10:32:12.359423+00:00",
+  "prior_best": "seed-morph40",
+  "prior_best_preserved": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40",
+  "schema": "hyperlex.hyperlexical.best_pin.v0.1",
+  "seed": "seed-morph43",
+  "val": {
+    "classify_acc": 0.720703125,
+    "epoch": 2,
+    "n_unbind_eval": 177,
+    "unbind_exact": 0.9378531073446328,
+    "unbind_slot_f1": 0.9515418502202643,
+    "unbind_token_f1": 0.9515418502202643
+  },
+  "val_final": {
+    "epoch": 39,
+    "n_unbind_eval": 177,
+    "unbind_exact": 0.8870056497175142
+  },
+  "wall_minutes": 86.3
+}
