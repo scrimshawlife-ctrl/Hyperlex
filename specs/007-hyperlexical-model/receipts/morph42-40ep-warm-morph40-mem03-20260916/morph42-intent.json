@@ -1,0 +1,20 @@
+{
+  "schema": "hyperlex.morph_intent.v0.1",
+  "morph": 42,
+  "family": "warm_morph40_mem_fraction_0_3_speed_lever",
+  "delta": "ONE lever vs morph41 REJECT: exclusive CUDA mem_fraction 0.3 (HYPERLEX_CUDA_MEM_FRACTION) instead of morph41's 0.015; warm-init morph40 BEST + SAVE_BEST_UNBIND=1; epochs=40; EXISTING expanded gold only (force-train 135, hard_atoms 180). No new gold. Measure wall-time vs morph39/40 (~73-80min @ 0.015).",
+  "init_from": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40",
+  "save_best_unbind": true,
+  "epochs": 40,
+  "force_train_path": "/home/morpheus/hlx/force_train_morph40_expanded.jsonl",
+  "hard_atoms_path": "/home/morpheus/hlx/hard_atoms_train.jsonl",
+  "hard_atoms_n": 180,
+  "n_gold_train_ready": 135,
+  "fair_baseline_morph40": 0.7368421052631579,
+  "fair_val_n": 228,
+  "mem_fraction": 0.3,
+  "prior_morph41_mem_fraction": 0.015,
+  "no_new_gold": true,
+  "name_gate": false,
+  "created_at": "2026-09-16T07:11:28.682792+00:00"
+}
