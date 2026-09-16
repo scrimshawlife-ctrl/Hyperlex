@@ -92,6 +92,7 @@ nav:
       - Claude Code skill: claude-skill.md
       - Claude runtime contract: claude-runtime-contract.md
   - Specs:
+      - Canonical remotes and claims: CANONICAL.md
       - Spec kit: specs/index.md
       - Technical spec (v0.3 spine): spec.md
       - SHADOW encoder (007): shadow-hyperlexical.md
