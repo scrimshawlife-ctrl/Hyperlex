@@ -13,9 +13,9 @@ Promote remaining high-conf morph43 residual **`TOKEN:boogie SLOT:on MARKER:down
 |---------|------:|-------------:|
 | **morph40 BEST (fair gate)** | **176** | **0.9489** |
 | morph44 best ep2 | 176 | **0.9432** |
-| morph44 final | 176 | 0.9432 |
+| morph44 final ep39 | 176 | 0.8920 |
 
-Container `hlx-train-morph44-1789555151` exited 0. Wall ≈ **93 min** @ mem 0.3. E2 PASS.
+Container `hlx-train-morph44-1789555151` exited 0. Wall ≈ **92.5 min** @ mem 0.3. E2 PASS (1.0).
 
 ## Gate
 
