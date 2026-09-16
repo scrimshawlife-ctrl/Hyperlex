@@ -1,15 +1,13 @@
-# Spec 007 — morph40 BEST (INFERRED promote); morph36 preserved
+# Spec 007 — morph41 IN FLIGHT (warm morph40; no new gold)
 
 **Authority:** Spec 007 only. `name_gate` false. No Hub. **Labeler authorized.** No invent beyond labeled set.  
-**BEST:** **morph40** — `unbind_exact≈0.7368` (ep9) on fair val **n=228**. Prior morph36 artifacts preserved. Climb KEEP famcls52 ≠ BEST.
+**BEST held:** **morph40** — `unbind_exact≈0.7368` (ep9) on fair val **n=228**. morph36 artifacts preserved. Climb KEEP famcls52 ≠ BEST.
 
 ## Status
 
-morph36 was BEST through morph39 REJECT.  
-**Labeler AUTHORIZED 2026-09-16** (METHOD + 136 auth / 10 abstain).  
-morph39 OBSERVED-only gold → **REJECT_VS_BEST** vs fair 0.5740 (n=338).  
-**110 INFERRED** high-confidence promoted → OBSERVED train (1 punct hold documentary).  
-morph40 → **PIN BEST** (best **0.7368** > fair morph36 **0.7325** on n=228). E2 PASS.
+morph40 BEST confirmed on spark. Civilian residual dump: **60** (PSM **28**).  
+Residual review: **20** authorized structure / **8** abstain / **0** train promote → **NO_NEW_GOLD_THIS_CLIMB**.  
+**morph41** warm morph40 + SAVE_BEST_UNBIND 40ep on existing gold 135/180 — **IN FLIGHT** (`hlx-train-morph41-1789537012`). Gate vs fair morph40 **0.7368**.
 
 ## Marks status (2026-09-16)
 
@@ -21,18 +19,18 @@ morph40 → **PIN BEST** (best **0.7368** > fair morph36 **0.7325** on n=228). E
 | morph39 observed-gold force-train | **HIT** → REJECT_VS_BEST |
 | INFERRED→OBSERVED train promote | **HIT** (110 / 1 hold / 10 abstain) |
 | morph40 inferred-promote | **HIT** → **PIN BEST** |
+| morph40 residual review | **HIT** → no new gold |
+| morph41 warm morph40 | **IN FLIGHT** |
 | Ladder `unbind_exact` ≥ **0.55** (comparable new val n=228) | **HIT** (0.7368) |
 
 ## Civilian scores
 
 | model | val n | unbind_exact | note |
 |-------|------:|-------------:|------|
-| morph36 old val | 363 | 0.5455 | prior pin surface |
-| morph36 fair morph39 | 338 | 0.5740 | after 25 OBSERVED force-train |
-| morph39 best ep2 | 338 | 0.5621 | REJECT vs fair |
-| **morph36 fair morph40** | **228** | **0.7325** | after 135 force-train |
-| **morph40 BEST ep9** | **228** | **0.7368** | **PIN** |
+| morph36 fair morph40 | 228 | 0.7325 | after 135 force-train |
+| **morph40 BEST ep9** | **228** | **0.7368** | **PIN / morph41 fair gate** |
 | morph40 final ep39 | 228 | 0.6930 | SAVE_BEST kept ep9 |
+| morph41 | 228 | TBD | warm morph40 IN FLIGHT |
 
 ## Pins
 
@@ -40,15 +38,13 @@ morph40 → **PIN BEST** (best **0.7368** > fair morph36 **0.7325** on n=228). E
 |-----|------|------|
 | **BEST** | morph40 | `...-seed-morph40` |
 | morph36 | `...-seed-morph36` | preserved prior BEST |
-| morph39 | `...-seed-morph39` | REJECT_VS_BEST |
-| **Danny package** | `receipts/danny-gold-review-partial-slot-miss-20260915/` | 135 train-ready |
-| **morph40 gate** | `receipts/20260916-morph40-40ep-pin-best.md` | |
+| **residual review** | `receipts/morph40-residual-review-20260916/` | 20 auth / 0 promote |
+| **morph41 inflight** | `receipts/20260916-morph41-40ep-inflight.md` | |
 
 ## Next
 
-- BEST is morph40. Do not warm-clone without a new documented lever.
-- Residual after morph40: **60** (partial_slot_miss 28; positional_head 23; type_slot_token 23; full_miss 15).
-- 1 documentary INFERRED hold + 10 abstain stay out of train.
+- Await morph41 40ep + E2; promote only if best > fair morph40 **0.7368**; else keep morph40 BEST.
+- 20 authorized morph40 PSM held (not force-trained); 10 prior abstain + 1 documentary hold stay out.
 - `name_gate` remains false. No Hub. No invent beyond labeled set.
 
 ## Policy
