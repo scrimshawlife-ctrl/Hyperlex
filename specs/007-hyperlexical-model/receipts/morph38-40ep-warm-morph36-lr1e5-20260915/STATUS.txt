@@ -1,0 +1,7 @@
+REJECT_VS_BEST
+promote_best=False
+best_unchanged=True
+exact=0.5234159779614325
+beats_morph36=False
+ladder_0_55=False
+lr=1e-5
