@@ -505,12 +505,7 @@ def run_reviewed_train(
     scheduler_step_size=10,
 ):
     assert_plan_eligible(plan)
-    torch, nn = _require_torch()
     out_dir = Path(out_dir)
-    if resume_from is None and out_dir.exists() and any(out_dir.iterdir()):
-        raise FileExistsError(f"refusing to overwrite existing out_dir: {out_dir}")
-    out_dir.mkdir(parents=True, exist_ok=True)
-    seed_meta = seed_everything(seed)
     train_rows = select_split_rows(plan, "train")
     if not train_rows:
         raise ValueError("no train rows")
@@ -519,6 +514,12 @@ def run_reviewed_train(
     eval_rows = select_split_rows(plan, eval_split)
     if forbid_train_eval_fallback and not eval_rows:
         raise ValueError("eval split empty; refusing train-set evaluation fallback")
+    if resume_from is None and out_dir.exists() and any(out_dir.iterdir()):
+        raise FileExistsError(f"refusing to overwrite existing out_dir: {out_dir}")
+
+    torch, nn = _require_torch()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    seed_meta = seed_everything(seed)
 
     model = build_reviewed_model(
         len(plan["families"]),

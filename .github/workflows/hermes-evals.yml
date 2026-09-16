@@ -31,6 +31,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install test dependencies
+        # Cheap matrix: no torch. Reviewed-trainer step tests skip via importorskip.
         run: python -m pip install -U pip pytest jsonschema
       - name: Check skill
         run: python3 scripts/hyperlex.py check
