@@ -1,0 +1,41 @@
+{
+  "schema": "hyperlex.spec007.morph40_residual_review.v0.1",
+  "as_of": "2026-09-16T05:36:15.044235+00:00",
+  "authorization": "operator granted labeler authority 2026-09-16; schemes positional|type_slot; name_gate=false",
+  "source_residual": "/home/morpheus/hlx/residual-morph40.jsonl",
+  "n_residual_total": 60,
+  "themes_total": {
+    "full_miss": 15,
+    "morph_bleed": 4,
+    "partial_slot_miss": 28,
+    "positional_head_filler_miss": 23,
+    "type_slot_token_miss": 23
+  },
+  "n_partial_slot_miss": 28,
+  "n_authorized_structure": 20,
+  "n_abstain": 8,
+  "n_promoted_to_train": 0,
+  "train_integration": "NONE",
+  "promote_decision": "NO_NEW_GOLD_THIS_CLIMB",
+  "promote_rationale": "Authorized high-confidence structure on clean PSM residuals where text-reparse==eval gold; kept prior abstains + wiki/etymology/empty-slot/scaffolding as ABSTAIN. Did NOT integrate into force-train/hard_atoms: remaining misses are near-miss morph on already-correct SoT gold; thin BEST margin vs fair (0.7368 vs 0.7325); second INFERRED-promote wave deferred. morph41 lever = warm morph40 BEST + SAVE_BEST_UNBIND on existing expanded gold (135/180).",
+  "gold_train_ready_unchanged": 135,
+  "hard_atoms_unchanged": 180,
+  "fair_val_n_unchanged": 228,
+  "fair_morph40_baseline_unbind_exact": 0.7368421052631579,
+  "by_decision": {
+    "ABSTAIN": 8,
+    "AUTHORIZE_OBSERVED_STRUCTURE_GOLD": 20
+  },
+  "abstain_reasons": {
+    "empty_or_punct_slot_ambiguous": 1,
+    "prior_abstain_unchanged": 4,
+    "wiki_or_dump_scaffolding": 1,
+    "wiki_scaffolding_triangles": 1,
+    "etymology_affix_scaffolding": 1
+  },
+  "authorize_reasons": {
+    "positional_text_split_match": 10,
+    "type_slot_text_parse_match": 10
+  },
+  "name_gate": false
+}
