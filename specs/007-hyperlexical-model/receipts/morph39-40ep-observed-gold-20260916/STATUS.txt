@@ -1,0 +1,9 @@
+REJECT_VS_BEST
+promote_best=False
+best_unchanged=True
+exact=0.5621301775147929
+fair_baseline=0.5739644970414202
+beats_fair=False
+beats_old_0_5455=True
+ladder_0_55_on_new_val=True
+e2_pass=True
