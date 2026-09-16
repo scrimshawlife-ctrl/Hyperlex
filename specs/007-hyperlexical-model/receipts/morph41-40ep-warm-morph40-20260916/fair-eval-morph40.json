@@ -1,0 +1,15 @@
+{
+  "schema": "hyperlex.fair_eval_same_surface.v0.1",
+  "note": "no new gold / no force-train delta; fair morph40 baseline = morph40 BEST on current val n=228",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40",
+  "force_train_path": "/home/morpheus/hlx/force_train_morph40_expanded.jsonl",
+  "n_val": 228,
+  "n_gold_train_ready": 135,
+  "n_hard_atoms": 180,
+  "fair_morph40_unbind_exact": 0.7368421052631579,
+  "fair_morph40_best_epoch": 9,
+  "baseline_for_morph41_gate": 0.7368421052631579,
+  "prior_fair_morph36_on_same_val": 0.7324561403508771,
+  "name_gate": false,
+  "scored_at": "2026-09-16T05:36:52.687456+00:00"
+}
