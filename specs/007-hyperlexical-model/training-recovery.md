@@ -21,3 +21,10 @@ operator authority remain unchanged. No Notion writeback, training or promotion.
 - Spark BEST symlink → `seed-morph48`. morph40 + morph36 preserved. `name_gate=false`.
 - Container: `hlx-train-morph48-1789639062` exit 0 (launched by `bc-3e55c42d`).
 - Workspace: `receipts/20260917-morph48-40ep-promote-best.md`, `receipts/morph48-40ep-last6-20260917/`.
+
+### 2026-09-17 — morph49 LAST=7 intent LEGAL; launch BLOCKED (SSH tunnel)
+
+- Planned lever: `HYPERLEX_LAST_TRAINABLE=7` (was 6 on BEST); POS/HARD/HEAD held; morph40 gold; warm **morph48** + SAVE_BEST; mem 0.3; 40ep.
+- Fair gate: morph48 **0.7412280701754386** on n=228.
+- Blocker: Cloudflare Tunnel **1033** on `ssh.zer0state.com` and `qwen.zer0state.com` (`websocket: bad handshake`). WAN/LAN SSH timeout. No container. BEST stays morph48.
+- Workspace: `receipts/20260917-morph49-ssh-blocked.md`, `receipts/morph49-40ep-last7-20260917/`.
