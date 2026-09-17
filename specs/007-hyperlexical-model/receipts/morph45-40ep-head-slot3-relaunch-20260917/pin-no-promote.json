@@ -1,0 +1,28 @@
+{
+  "schema": "hyperlex.hyperlexical.best_pin.v0.1",
+  "decision": "REJECT_VS_BEST",
+  "seed": "seed-morph45",
+  "morph": 45,
+  "best_unbind_exact": 0.7236842105263158,
+  "best_epoch": 2,
+  "final_unbind_exact": 0.7105263157894737,
+  "fair_baseline_morph40": 0.7368421052631579,
+  "fair_val_n": 228,
+  "n_unbind_eval": 228,
+  "promote": false,
+  "BEST_held": "morph40",
+  "name_gate": false,
+  "e2": {
+    "e2_pass": true,
+    "unbind_exact": 1.0,
+    "model_swap": 1.0
+  },
+  "recipe": {
+    "head_slot_weight": 3.0,
+    "warm_start": true,
+    "save_best_unbind": true,
+    "force_train": 135,
+    "init_from": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40"
+  },
+  "observed_at": "2026-09-17T06:26:40.840005+00:00"
+}
