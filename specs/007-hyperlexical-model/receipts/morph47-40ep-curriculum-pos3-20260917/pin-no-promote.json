@@ -1,0 +1,19 @@
+{
+  "morph": 47,
+  "decision": "REJECT_VS_BEST",
+  "best_unbind_exact": 0.7149122807017544,
+  "best_epoch": 8,
+  "final_unbind_exact": 0.7149122807017544,
+  "fair_baseline_morph40": 0.7368421052631579,
+  "fair_val_n": 228,
+  "promote": false,
+  "BEST": "morph40",
+  "name_gate": false,
+  "lever": "HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS=3",
+  "container": "hlx-train-morph47-1789633911",
+  "e2_pass": true,
+  "e2_unbind_exact": 1.0,
+  "prior_best_preserved": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40",
+  "morph36_preserved": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph36",
+  "pinned_at": "2026-09-17T09:56:10.992112+00:00"
+}
