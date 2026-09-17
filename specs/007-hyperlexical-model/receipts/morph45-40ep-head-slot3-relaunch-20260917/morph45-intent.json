@@ -1,0 +1,20 @@
+{
+  "schema": "hyperlex.morph_intent.v0.1",
+  "morph": 45,
+  "family": "recipe_head_slot_weight",
+  "delta": "ONE lever vs morph40 BEST envelope: HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT=3 (was 2). Same morph40 gold surface (force_train 135, hard_atoms 180). Warm INIT_FROM=morph40 + SAVE_BEST_UNBIND=1; epochs=40; mem_fraction=0.3 exclusive. Justified: residual themes still dominated by positional_head_filler_miss / partial_slot_miss; morph19 itself won HEAD_SLOT 1->2. NOT a warm+force residual-gold clone.",
+  "init_from": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph40",
+  "save_best_unbind": true,
+  "epochs": 40,
+  "cuda_mem_fraction": 0.3,
+  "force_train_path": "/home/morpheus/hlx/force_train_morph40_expanded.jsonl",
+  "hard_atoms_path": "/home/morpheus/hlx/hard_atoms_train_morph40.jsonl",
+  "hard_atoms_n": 180,
+  "n_gold_train_ready": 135,
+  "fair_baseline_morph40": 0.7368421052631579,
+  "fair_val_n": 228,
+  "head_slot_weight": 3.0,
+  "hold": "morph19/morph40 envelope except HEAD_SLOT: slot_ce, OBSERVED=2, HARD=4, INFERRED=1.0, CAP=0, POS=1 TYPE=1, LAST=4, margin=0.5, loss=1.0, LR=2e-5",
+  "name_gate": false,
+  "promote_iff": "best unbind_exact > 0.7368421052631579 on same val n=228"
+}
