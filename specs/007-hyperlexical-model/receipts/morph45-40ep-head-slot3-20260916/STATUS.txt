@@ -1,0 +1,6 @@
+REJECT_VS_BEST (via relaunch hlx-train-morph45-1789620853)
+attempt1 container hlx-train-morph45-1789619192 exit 137 mid-run (external stop after false BLOCKED on reviewed-smoke 471-line loop.py)
+relaunch used Hyperlex detach main loop (711+) with INIT_FROM/SAVE_BEST/FORCE_TRAIN
+best_unbind_exact=0.7236842105263158 ep2
+fair_morph40=0.7368421052631579 n=228
+promote=false BEST=morph40
