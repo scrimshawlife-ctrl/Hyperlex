@@ -1,0 +1,16 @@
+REJECT_VS_BEST
+finished=2026-09-17T08:12:28Z
+best_unbind_exact=0.7149122807017544
+best_epoch=2
+final_unbind_exact=0.6842105263157895
+fair=0.7368421052631579
+fair_val_n=228
+hard_upsample=6
+head_slot_weight=2
+promote=false
+BEST=morph40
+container=hlx-train-morph46-1789626971
+e2_pass=True
+n_unbind_hard_extra_copies=1645
+gate_owner=bc-3e55c42d-a9e1-5cb4-8cb0-d67df904bd6f
+train_owner=bc-f84803c9-0bbf-521e-8712-bb6190ce3c98
