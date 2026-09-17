@@ -1,0 +1,15 @@
+{
+  "morph": 46,
+  "decision": "REJECT_VS_BEST",
+  "best_unbind_exact": 0.7149122807017544,
+  "best_epoch": 2,
+  "final_unbind_exact": 0.6842105263157895,
+  "fair_baseline_morph40": 0.7368421052631579,
+  "fair_val_n": 228,
+  "promote": false,
+  "BEST": "morph40",
+  "name_gate": false,
+  "lever": "HYPERLEX_UNBIND_HARD_UPSAMPLE=6",
+  "container": "hlx-train-morph46-1789626971",
+  "e2_pass": true
+}
