@@ -1,40 +1,52 @@
-# Spec 007 — morph48 PROMOTE BEST; morph40 superseded on fair n=228
+# Spec 007 — morph49 BLOCKED (SSH); BEST=morph48 (0.7412)
 
-**Authority:** Spec 007 only. `name_gate` false. No Hub. **Labeler authorized.** No invent beyond labeled set.  
+**Authority:** Spec 007 only. `name_gate` false. No Hub. **Labeler authorized.** No invent beyond labeled set.
 **BEST:** **morph48** — fair n=228 `unbind_exact≈0.7412` (ep19). morph40 + morph36 preserved.
 
 ## Status
 
-morph45 HEAD_SLOT=3 / morph46 HARD=6 / morph47 curriculum POS=3 all REJECT vs morph40 fair.  
-**morph48 LAST=6** beat fair morph40 (0.7412 > 0.7368) → **PROMOTE_BEST**.
+Warm-only morph41/42 REJECT. Residual-gold morph43/44 REJECT; high-conf gold **exhausted**.
+morph45 HEAD_SLOT=3 REJECT (0.7237 < 0.7368).
+morph46 HARD=6 REJECT (0.7149 < 0.7368).
+morph47 curriculum POS=3 REJECT (0.7149 < 0.7368).
+**morph48:** LEGAL — `HYPERLEX_LAST_TRAINABLE=6` → **PROMOTE_BEST** (0.7412 > 0.7368). E2 PASS.
 
-## Fair surface
+**morph49 intent:** LEGAL — `HYPERLEX_LAST_TRAINABLE=7` (was 6), warm morph48, morph40 gold, SAVE_BEST, mem 0.3, 40ep. Fair gate **> 0.7412280701754386** on n=228.
+**Launch:** **BLOCKED** — Spark Cloudflare Tunnel **1033** (ssh.zer0state.com + qwen.zer0state.com). Receipt: `receipts/20260917-morph49-ssh-blocked.md`.
 
-morph40 force 135 / hard 180 → val **n=228** (no recompute). Gate was **> 0.7368**; morph48 cleared it.
+## Fair surface (morph49 gate)
+
+morph40 force 135 / hard 180 → val **n=228**. Fair = morph48 BEST **0.7412280701754386** (recompute if val changes).
 
 ## Marks status (2026-09-17)
 
 | mark | status |
 |------|--------|
-| morph40 prior BEST | superseded (preserved) |
-| morph45 HEAD_SLOT=3 | **REJECT_VS_BEST** (0.7237) |
-| morph46 HARD=6 | **REJECT_VS_BEST** (0.7149) |
-| morph47 curriculum POS=3 | **REJECT_VS_BEST** (0.7149) |
-| morph48 LAST=6 | **PROMOTE_BEST** (0.7412) |
+| morph40 prior BEST | **superseded** (preserved) |
+| morph41 / morph42 warm-only | **REJECT_VS_BEST** |
+| morph43 / morph44 residual gold | **REJECT_VS_BEST** |
+| Residual high-conf gold | **EXHAUSTED** |
+| morph45 HEAD_SLOT=3 | **REJECT_VS_BEST** |
+| morph46 HARD=6 | **REJECT_VS_BEST** |
+| morph47 curriculum POS=3 | **REJECT_VS_BEST** |
+| morph48 LAST=6 | **PROMOTE_BEST / KEEP** (0.7412) |
+| morph49 LAST=7 | **BLOCKED_SSH** (intent LEGAL; not launched) |
 | Ladder ≥0.55 on n=228 | **HIT** (0.7412) |
 
 ## Civilian scores
 
 | model | val n | unbind_exact | note |
 |-------|------:|-------------:|------|
-| **morph48 BEST** | 228 | **0.7412** | PIN / promoted |
+| **morph48 BEST** | 228 | **0.7412** | PIN (ep19) |
 | morph40 prior | 228 | 0.7368 | preserved |
-| morph45 / 46 / 47 | 228 | ≤0.7237 | REJECT |
+| morph49 | — | — | blocked pre-launch |
 
 ## Next
 
-Hold morph48 BEST. `name_gate=false`. No Hub. Further climb only with a new legal lever vs morph48 fair.
+1. Restore Spark tunnel (`ssh spark` → `spark-bf46`); confirm BEST→morph48 + restored loop.py.
+2. Launch morph49 LAST=7; promote iff best > fair morph48.
+3. On REJECT: morph50 with new delta (LAST=8 or LAST=6 + mild LR) — do not repeat exhausted knobs.
 
 ## Policy
 
-`name_gate=false`. Fair-eval when val changes. No invent beyond labeled set.
+`name_gate=false`. Single BEST pin → morph48. No Hub. Do not invent gold.
