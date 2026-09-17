@@ -1,0 +1,3 @@
+BEST remains morph40
+morph45 best ep2 unbind_exact=0.7236842105263158 < fair 0.7368421052631579
+out=/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph45
