@@ -36,3 +36,18 @@ operator authority remain unchanged. No Notion writeback, training or promotion.
 - Spark BEST symlink → `seed-morph49`. morph48 + morph40 + morph36 preserved. `name_gate=false`.
 - Single pin via `GATE_LOCK.json` (owner `bc-ad3024d5-f1c6-5e5a-8c5e-757ca53e37d1`).
 - Workspace: `receipts/20260918-morph49-40ep-promote-best.md`, `receipts/morph49-40ep-last7-20260917/`.
+
+### 2026-09-18 — morph50 LAST=8 +2 residual gold IN FLIGHT
+
+- Confirmed Spark BEST=`seed-morph49`. Morph49 residuals n=49: authorize **39** / abstain **10**; **+2** new train-ready (`TOKEN:jailbreak SLOT:prompt`, `boon coon` + SoT flip).
+- Force 135→137; hard 180→182. Fair morph49 recomputed **0.7920353982300885** (n=226).
+- Lever: `HYPERLEX_LAST_TRAINABLE=8` (MAX) warm morph49 + SAVE_BEST; mem 0.3; 40ep.
+- Gate: morph50 best > fair morph49 on n=226. Workspace: `receipts/20260918-morph50-40ep-inflight.md`, `receipts/morph50-40ep-last8-20260918/`.
+
+### 2026-09-18 — morph50 LAST=8 +2 gold → PROMOTE_BEST
+
+- Container `hlx-train-morph50-1789703143` Exited 0. best `unbind_exact=0.8097345132743363` (ep38) > fair morph49 **0.7920353982300885** (n=226); E2 PASS → **PROMOTE_BEST**.
+- Spark BEST symlink → `seed-morph50`. morph49 + morph48 + morph40 + morph36 preserved. `name_gate=false`.
+- Sibling gate owner `bc-b4ecc915-ddac-5aaa-9cce-e29d15c18061` RUNNING/silent; coordinator claimed `morph50-gate.lock` and completed gate.
+- Workspace: `receipts/20260918-morph50-40ep-promote-best.md`, `receipts/morph50-40ep-last8-20260918/`.
+- LAST=8 is MAX — no further LAST one-delta without new gold / other legal family.
