@@ -1,8 +1,6 @@
-# morph49 — LAST=7 BLOCKED (SSH tunnel) — was planned IN FLIGHT
+# morph49 — LAST=7 PROMOTE BEST (was IN FLIGHT)
 
-**BEST held:** morph48 (0.7412).  
-Lever: `HYPERLEX_LAST_TRAINABLE=7`. Warm morph48 + SAVE_BEST; morph40 gold; mem 0.3; 40ep.
+**CLOSED:** best 0.7851 > fair morph48 0.7412 n=228 → **PROMOTE**. See `PROMOTE_BEST.md`.
 
-**Status:** **PAUSED** — Cloudflare Tunnel/Access front door down (bad handshake / HTTP 530; backoff exhausted). See `../20260917-spark-tunnel-down.md` and `../20260917-morph49-ssh-blocked.md`. No local fake-train.
-
-Private (when launched): `~/hlx-private/p1-spark-morph49-40ep-last7-20260917/`.
+Container `hlx-train-morph49-1789694077` exit 0. Spark BEST → morph49.  
+morph48 + morph40 + morph36 preserved. Gate owner `bc-ad3024d5-f1c6-5e5a-8c5e-757ca53e37d1`.
