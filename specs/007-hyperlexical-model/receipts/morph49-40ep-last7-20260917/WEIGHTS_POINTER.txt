@@ -1,0 +1,7 @@
+BEST=seed-morph49
+morph49 best ep27 unbind_exact=0.7850877192982456 > fair morph48 0.7412280701754386
+out=/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph49
+prior_best=seed-morph48 (preserved)
+morph40=preserved
+morph36=preserved
+name_gate=false
