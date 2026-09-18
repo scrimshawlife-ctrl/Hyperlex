@@ -1,0 +1,13 @@
+{
+  "gate_owner": "coordinate-continue-training",
+  "sibling_owner": "bc-b4ecc915-ddac-5aaa-9cce-e29d15c18061",
+  "completed_at": "2026-09-18T05:56:34.804615+00:00",
+  "decision": "PROMOTE_BEST",
+  "promote": true,
+  "best_unbind_exact": 0.8097345132743363,
+  "best_epoch": 38,
+  "fair_morph49": 0.7920353982300885,
+  "fair_n": 226,
+  "BEST": "seed-morph50",
+  "status": "done"
+}
