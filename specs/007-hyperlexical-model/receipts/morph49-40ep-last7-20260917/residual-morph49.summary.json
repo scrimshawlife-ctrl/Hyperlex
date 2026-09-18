@@ -1,0 +1,26 @@
+{
+  "unbind_residual_themes": {
+    "full_miss": 14,
+    "morph_bleed": 1,
+    "partial_slot_miss": 26,
+    "positional_head_filler_miss": 15,
+    "type_slot_token_miss": 22
+  },
+  "best_unbind_exact": 0.7850877192982456,
+  "best_epoch": 27,
+  "val": {
+    "classify_acc": 0.775390625,
+    "epoch": 27,
+    "n_classify_eval": 512,
+    "n_unbind_eval": 228,
+    "n_unbind_phase": 5290,
+    "unbind_exact": 0.7850877192982456,
+    "unbind_phase": "joint",
+    "unbind_phase_fallback_full_mix": false,
+    "unbind_slot_f1": 0.8623063683304647,
+    "unbind_token_f1": 0.8623063683304647,
+    "unbind_token_precision": 0.8623063683304647,
+    "unbind_token_recall": 0.8623063683304647
+  },
+  "n_unbind_eval": 228
+}

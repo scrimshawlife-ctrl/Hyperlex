@@ -28,3 +28,11 @@ operator authority remain unchanged. No Notion writeback, training or promotion.
 - Fair gate: morph48 **0.7412280701754386** on n=228.
 - Blocker: Cloudflare Tunnel **1033** on `ssh.zer0state.com` and `qwen.zer0state.com` (`websocket: bad handshake`). WAN/LAN SSH timeout. No container. BEST stays morph48.
 - Workspace: `receipts/20260917-morph49-ssh-blocked.md`, `receipts/morph49-40ep-last7-20260917/`.
+
+### 2026-09-18 — morph49 LAST=7 resumed → PROMOTE_BEST
+
+- Tunnel recovered (`ssh spark` → `spark-bf46` / `morpheus`). Launched `hlx-train-morph49-1789694077` (no duplicate train).
+- Result: best `unbind_exact=0.7850877192982456` (ep27) > fair morph48 **0.7412280701754386** (n=228); E2 PASS → **PROMOTE_BEST**.
+- Spark BEST symlink → `seed-morph49`. morph48 + morph40 + morph36 preserved. `name_gate=false`.
+- Single pin via `GATE_LOCK.json` (owner `bc-ad3024d5-f1c6-5e5a-8c5e-757ca53e37d1`).
+- Workspace: `receipts/20260918-morph49-40ep-promote-best.md`, `receipts/morph49-40ep-last7-20260917/`.

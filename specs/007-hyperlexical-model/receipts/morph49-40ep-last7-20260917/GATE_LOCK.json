@@ -1,0 +1,11 @@
+{
+  "gate_owner": "bc-ad3024d5-f1c6-5e5a-8c5e-757ca53e37d1",
+  "completed_at": "2026-09-18T03:12:28.159009+00:00",
+  "decision": "PROMOTE_BEST",
+  "promote": true,
+  "best_unbind_exact": 0.7850877192982456,
+  "best_epoch": 27,
+  "fair_morph48": 0.7412280701754386,
+  "BEST": "seed-morph49",
+  "status": "done"
+}

@@ -1,0 +1,11 @@
+decision=PROMOTE_BEST
+best_unbind_exact=0.7850877192982456
+best_epoch=27
+fair_morph48=0.7412280701754386
+fair_n=228
+lever=LAST_TRAINABLE=7
+container=hlx-train-morph49-1789694077
+e2_pass=true
+BEST=seed-morph49
+name_gate=false
+gate_owner=bc-ad3024d5-f1c6-5e5a-8c5e-757ca53e37d1

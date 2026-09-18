@@ -1,0 +1,2 @@
+ff68b6e7dd05ad26b58b52a1231a098368b1efd8541aef119926320f6bfacbc4
+LAUNCHED hlx-train-morph49-1789694077 OUT=/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph49 GUARD_FRAC=0.3
