@@ -1,0 +1,59 @@
+{
+  "schema": "hyperlex.hyperlexical.best_pin.v0.1",
+  "decision": "PIN_BEST",
+  "seed": "seed-morph50",
+  "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph50",
+  "prior_best": "seed-morph49",
+  "prior_unbind_exact": 0.7920353982300885,
+  "prior_fair_morph49_n228": 0.7850877192982456,
+  "fair_val_n": 226,
+  "best_unbind_exact": 0.8097345132743363,
+  "best_epoch": 38,
+  "val_best": {
+    "classify_acc": 0.76171875,
+    "epoch": 38,
+    "n_unbind_eval": 226,
+    "unbind_exact": 0.8097345132743363,
+    "unbind_slot_f1": 0.8856152512998267,
+    "unbind_token_f1": 0.8856152512998267
+  },
+  "val_final": {
+    "unbind_exact": 0.8097345132743363,
+    "unbind_token_f1": 0.8856152512998267,
+    "unbind_slot_f1": 0.8856152512998267,
+    "classify_acc": 0.76171875,
+    "n_unbind_eval": 226
+  },
+  "e2": {
+    "e2_pass": true,
+    "unbind_exact": 1.0,
+    "trunk_forward": true
+  },
+  "delta": "HYPERLEX_LAST_TRAINABLE=8 (MAX; was 7) +2 METHOD morph49 residual gold (jailbreak prompt OBSERVED; boon coon SoT flip)",
+  "recipe": {
+    "last_trainable": 8,
+    "hard_upsample": 4,
+    "head_slot_weight": 2.0,
+    "curriculum_pos_epochs": 1,
+    "curriculum_type_epochs": 1,
+    "lr": 2e-05,
+    "init_from": "morph49",
+    "save_best_unbind": true,
+    "mem_fraction": 0.3,
+    "force_train_n": 137,
+    "hard_atoms_n": 182
+  },
+  "preserved": [
+    "seed-morph49",
+    "seed-morph48",
+    "seed-morph40",
+    "seed-morph36"
+  ],
+  "beats_fair": true,
+  "promote": true,
+  "name_gate": false,
+  "gate_owner": "coordinate-continue-training",
+  "sibling_gate_owner": "bc-b4ecc915-ddac-5aaa-9cce-e29d15c18061",
+  "pinned_at": "2026-09-18T05:56:34.804615+00:00",
+  "container": "hlx-train-morph50-1789703143"
+}

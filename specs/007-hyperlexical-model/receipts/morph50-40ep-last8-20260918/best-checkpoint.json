@@ -1,0 +1,8 @@
+{
+  "classify_acc": 0.76171875,
+  "epoch": 38,
+  "metric": "unbind_exact",
+  "unbind_exact": 0.8097345132743363,
+  "unbind_slot_f1": 0.8856152512998267,
+  "unbind_token_f1": 0.8856152512998267
+}

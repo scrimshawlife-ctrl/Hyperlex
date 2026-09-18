@@ -1,0 +1,8 @@
+BEST=seed-morph50
+morph50 best ep38 unbind_exact=0.8097345132743363 > fair morph49 0.7920353982300885
+out=/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph50
+fair_n=226
+prior_fair_morph49_n228=0.7850877192982456
+e2_pass=true
+name_gate=false
+gate_owner=coordinate-continue-training
