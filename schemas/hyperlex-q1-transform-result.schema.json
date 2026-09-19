@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zerostate.dev/schemas/hyperlex-q1-transform-result.schema.json",
+  "title": "HyperlexQ1TransformResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","result_id","status","source_hash","transform","declared_invariants","expected_changed_attributes","provenance","epistemic_status"],
+  "properties": {
+    "schema_version": {"const":"0.1.0"},
+    "result_id": {"type":"string","minLength":1},
+    "status": {"enum":["PRODUCED","NOT_COMPUTABLE","REJECTED"]},
+    "source_hash": {"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},
+    "output_hash": {"type":["string","null"],"pattern":"^sha256:[0-9a-f]{64}$"},
+    "transform": {
+      "type":"object","additionalProperties":false,
+      "required":["transform_id","revision","parameters","deterministic"],
+      "properties":{
+        "transform_id":{"type":"string","minLength":1},
+        "revision":{"type":"string","minLength":1},
+        "parameters":{"type":"object"},
+        "deterministic":{"type":"boolean"},
+        "seed":{"type":["integer","string","null"]}
+      }
+    },
+    "declared_semantic_intent":{"type":["string","null"]},
+    "declared_invariants":{"type":"array","items":{"type":"string","minLength":1}},
+    "expected_changed_attributes":{"type":"array","items":{"type":"string","minLength":1}},
+    "runtime_binding":{"type":["object","null"],"additionalProperties":true},
+    "contamination":{"type":"array","items":{"type":"string","minLength":1}},
+    "fallback":{"type":["object","null"],"additionalProperties":true},
+    "provenance":{"enum":["OBSERVED","INFERRED","SPECULATIVE","NOT_COMPUTABLE"]},
+    "epistemic_status":{"enum":["OBSERVED","NOT_COMPUTABLE"]},
+    "limitations":{"type":"array","items":{"type":"string"}}
+  },
+  "allOf":[
+    {"if":{"properties":{"status":{"const":"PRODUCED"}}},"then":{"required":["output_hash"]}},
+    {"if":{"properties":{"status":{"const":"NOT_COMPUTABLE"}}},"then":{"properties":{"epistemic_status":{"const":"NOT_COMPUTABLE"},"provenance":{"const":"NOT_COMPUTABLE"}}}}
+  ]
+}
