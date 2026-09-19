@@ -27,6 +27,7 @@ It does **not** validate Hyperlexical, EXP-001, latent semantics, or ecosystem r
 7. Missing required evidence yields `NOT_COMPUTABLE` or a typed rejection.
 8. Existing Hyperlex provenance semantics remain valid: `OBSERVED`, `INFERRED`, `SPECULATIVE`, `NOT_COMPUTABLE`.
 9. Brier/calibration behavior remains governed by existing settlement rules; HYPERLEX-Q1 does not create Brier evidence.
+10. When `parameters.accepted_revisions` is supplied, a transform revision absent from that list is stale and MUST be rejected. Absence of the list does not invent a global registry.
 
 ## Journey
 
@@ -57,6 +58,7 @@ An experiment runner provides a source fixture and registered transform request.
 **Failure paths:**
 - missing source identity -> reject;
 - missing required transform revision -> `NOT_COMPUTABLE`;
+- stale revision against `accepted_revisions` -> reject;
 - nondeterministic path without declared seed/envelope -> `NOT_COMPUTABLE`;
 - fallback route -> explicit fallback provenance;
 - contamination detected -> emit contaminated result, never silently clean it;
@@ -76,7 +78,7 @@ HYPERLEX-Q1 MUST test:
 4. false invariance declaration;
 5. missing model/runtime binding when binding is required;
 6. contaminated source/output;
-7. stale transform revision;
+7. stale transform revision rejected against a registered accepted-revision set;
 8. repeated execution with same registered inputs;
 9. fallback execution;
 10. malformed or absent provenance.
@@ -92,6 +94,7 @@ PASS requires all:
 - false-invariance fixture is exportable as a hypothesis but cannot become latent truth;
 - contamination and fallback remain visible;
 - missing required binding fails closed;
+- stale revision against `accepted_revisions` is rejected;
 - no HYPERLEX-Q1 output silently gains `CALIBRATED` or `SETTLED`;
 - evidence receipt binds canonical repository commit and fixture hashes;
 - automated tests pass;
@@ -106,7 +109,7 @@ Add a versioned Q1 transport schema compatible with the Noesis EIC boundary.
 Implement the ten qualification fixture classes.
 
 ### T-HQ1-003 — Build validator
-Reject latent-truth promotion, missing required provenance, and undeclared nondeterminism.
+Reject latent-truth promotion, missing required provenance, undeclared nondeterminism, and stale revision against a registered set.
 
 ### T-HQ1-004 — Qualification receipt
 Bind commit, CI runs, fixture hashes, failures, limitations, reviewer, and UTC decision.

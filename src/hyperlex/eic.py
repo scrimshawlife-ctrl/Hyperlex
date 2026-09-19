@@ -40,10 +40,17 @@ def validate_q1_result(payload: dict[str, Any], schema_path: str | Path | None =
     if payload["epistemic_status"] not in _ALLOWED_EPISTEMIC:
         raise ValueError("Hyperlex Q1 cannot promote transform output beyond OBSERVED/NOT_COMPUTABLE")
     transform = payload["transform"]
-    if transform["deterministic"] and transform.get("seed") is None and transform["parameters"].get("requires_seed"):
+    parameters = transform.get("parameters") or {}
+    if transform["deterministic"] and transform.get("seed") is None and parameters.get("requires_seed"):
         raise ValueError("declared deterministic seeded transform is missing seed")
-    if payload["status"] == "PRODUCED" and payload.get("runtime_binding") is None and transform["parameters"].get("requires_runtime_binding"):
+    if payload["status"] == "PRODUCED" and payload.get("runtime_binding") is None and parameters.get("requires_runtime_binding"):
         raise ValueError("required runtime/model binding is missing")
+    accepted = parameters.get("accepted_revisions")
+    if accepted is not None:
+        if not isinstance(accepted, list) or not accepted:
+            raise ValueError("accepted_revisions must be a non-empty list when supplied")
+        if transform["revision"] not in accepted:
+            raise ValueError("stale transform revision")
 
 
 def build_q1_result(

@@ -86,7 +86,11 @@ def test_calibrated_or_settled_epistemic_status_is_rejected():
             validate_q1_result(invalid)
 
 
-def test_changed_revision_changes_declared_transform_identity():
-    one = base(revision="v1")
-    two = base(revision="v2")
-    assert one["transform"]["revision"] != two["transform"]["revision"]
+def test_registered_revision_is_accepted():
+    result = base(revision="v2", parameters={"accepted_revisions": ["v2", "v3"]})
+    assert result["transform"]["revision"] == "v2"
+
+
+def test_stale_revision_is_rejected():
+    with pytest.raises(ValueError, match="stale transform revision"):
+        base(revision="v1", parameters={"accepted_revisions": ["v2", "v3"]})
