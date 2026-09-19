@@ -28,7 +28,7 @@ def validate_q1_result(payload: dict[str, Any], schema_path: str | Path | None =
     except ImportError as exc:
         raise RuntimeError("jsonschema is required for HYPERLEX-Q1 validation") from exc
 
-    path = Path(schema_path) if schema_path else Path(__file__).resolve().parents[3] / "schemas" / "hyperlex-q1-transform-result.schema.json"
+    path = Path(schema_path) if schema_path else Path(__file__).resolve().parents[2] / "schemas" / "hyperlex-q1-transform-result.schema.json"
     schema = json.loads(path.read_text(encoding="utf-8"))
     errors = sorted(
         Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(payload),
