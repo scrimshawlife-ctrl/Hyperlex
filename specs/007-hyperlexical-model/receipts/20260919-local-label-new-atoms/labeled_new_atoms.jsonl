@@ -1,25 +1,7 @@
-# labeled_new_atoms.jsonl — sharded (MCP size limit)
+# labeled_new_atoms.jsonl — sharded (MCP size / corruption limits)
 
-This path previously held a truncated 12-row stub. Full packet = **460** JSONL rows in shards:
+This path is a pointer, not the packet. Reconstruct the full 460-row JSONL with the recipe in `LABEL_SHARDS.md` (zlib.b64 / hex sidecars).
 
-```bash
-cat labeled_new_atoms.part00.jsonl \
-    labeled_new_atoms.part01.jsonl \
-    labeled_new_atoms.part02.jsonl \
-    labeled_new_atoms.part03.jsonl \
-    labeled_new_atoms.part04.jsonl \
-    labeled_new_atoms.part05.jsonl \
-  > labeled_new_atoms.jsonl
-```
-
-| shard | rows |
-|-------|-----:|
-| part00 | 80 |
-| part01 | 80 |
-| part02 | 80 |
-| part03 | 80 |
-| part04 | 80 |
-| part05 | 60 |
-| **total** | **460** |
+Expected sha256 after reconstruct: `82c609716126efbb395bbc8ccf31a7d3fdd9862db422fe3b76711b5862f4823c`
 
 Not force-trained. INFERRED proposals only. `name_gate=false`.
