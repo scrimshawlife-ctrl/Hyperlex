@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Spec 007 morph62 PROMOTE_BEST:** `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=7`
+  warm morph61, second-slot weight 2 held. Best **0.8495575221238938**
+  (ep21, 192/226) > fair morph61 **0.8451327433628318** (n=226). E2
+  trunk-forward PASS (`unbind_exact=1.0`). Spark BEST → morph62. morph61
+  weights kept. Container `hlx-train-morph62-1789896471` exit 0.
+  Exclusive mem 0.3; Qwen stayed stopped+disabled. `name_gate=false`. No new gold.
+  Receipt: `receipts/20260920-morph62-40ep-promote-best.md`.
+
 - **Spec 007 morph61 PROMOTE_BEST:** `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=6`
   warm morph60, second-slot weight 2 held. Best **0.8451327433628318**
   (ep26, 191/226) > fair morph60 **0.8407079646017699** (n=226). E2
@@ -47,14 +55,101 @@
   Container `hlx-train-morph56-1789766977` exit 0. `name_gate=false`.
   Receipt: `receipts/20260918-morph56-40ep-promote-best.md`.
 
+- **Spec 007 morph53 REJECT_VS_BEST:** morph43-overlap gold alias
+  (warm morph50, SAVE_BEST, mem 0.3, force 169 / hard 211, 40ep) best
+  **0.9330** (ep1) ≤ fair morph50 **0.9433** (n=194). E2 PASS. ≥0.95 MISS.
+  BEST stays morph50. Container `hlx-train-morph53-1789721983` exit 0.
+  Receipt: `receipts/20260918-morph53-40ep-reject-vs-best.md`.
+
+- **Spec 007 SOLE TRAIN OWNER freeze:** Spark
+  `~/hlx-private/SOLE_TRAIN_OWNER.json` owner=`bc-f1e77ce4` (Adjudge).
+  Sole live `hlx-train-morph53-1789721983` / `9eb3c418b609`. Defer chase
+  `bc-e66f1e0b` + goal `bc-085b87da`. Kill duplicates only. Receipt:
+  `receipts/20260918-sole-train-owner-freeze.md`.
+
+- **Spec 007 OPERATOR ADJUDICATION — morph43-overlap gold AUTHORIZED:**
+  unlock HOLD residual gold for ~1.0 chase; stop kill/relaunch thrash.
+  Sole live train `hlx-train-morph53-1789721983` (=morph52 recipe alias after
+  morph52 name thrash; warm morph50, SAVE_BEST, mem 0.3, force 169 / hard 211,
+  40ep). Fair morph50 **0.9433** (n=194). BEST stays morph50 until gate.
+  Receipts: `OPERATOR_ADJUDICATION_MORPH43_GOLD_AUTHORIZED.md`,
+  `receipts/20260918-morph52-thrash-alias-morph53.md`,
+  `receipts/morph53-40ep-full-gold-20260918/`.
+
+- **Spec 007 OPERATOR ADJUDICATION — morph43-overlap gold AUTHORIZED:**
+  unlock HOLD residual gold for ~1.0 chase; stop kill/relaunch thrash.
+  Sole live train `hlx-train-morph52-1789719131` (warm morph50, SAVE_BEST,
+  mem 0.3, force 169 / hard 211, 40ep; clean relaunch after duplicate thrash
+  cleared). Fair morph50 **0.9433** (n=194). BEST stays morph50 until morph52
+  gate. Receipts:
+  `OPERATOR_ADJUDICATION_MORPH43_GOLD_AUTHORIZED.md`,
+  `receipts/20260918-operator-adjudication-morph43-gold-authorized.md`,
+  `receipts/operator-adjudication-morph43-gold-20260918/`,
+  `receipts/morph52-40ep-full-gold-20260918/`.
+
+- **Spec 007 morph52 ABORT_ILLEGAL (historical):** chase agent lifted
+  morph43-overlap HOLD before adjudication; sibling stopped then
+  reclaim. Superseded by AUTHORIZE above. Receipt:
+  `receipts/20260918-morph52-abort-illegal-warm-force.md`.
+
+- **Spec 007 morph51 ABORT (historical):** mild LR +1 novel; aborted
+  mid-train under thrash (Exited 137). Do not relaunch under morph43
+  gold adjudication. Receipts:
+  `receipts/20260918-morph51-40ep-inflight.md`,
+  `receipts/morph51-40ep-mild-lr-gold-20260918/`.
+
 - **Spec 007 morph50 PROMOTE BEST:** `LAST_TRAINABLE=8` (MAX) warm morph49 +
   SAVE_BEST + +2 METHOD morph49 residual gold (force 137 / hard 182;
   SoT flip `boon coon`) → best **0.8097** (ep38) > fair morph49
   **0.7920** (n=226). E2 PASS. Spark BEST → morph50;
   morph49+morph48+morph40+morph36 preserved. Container
-  `hlx-train-morph50-1789703143` exit 0. Receipts:
+  `hlx-train-morph50-1789703143` exit 0. Capacity LAST_MAX exhausted —
+  closer-to-1.0 needs new gold. Receipts:
   `receipts/20260918-morph50-40ep-promote-best.md`,
+  `receipts/20260918-capacity-lever-exhausted-need-gold.md`,
   `receipts/morph50-40ep-last8-20260918/`.
+
+- **Spec 007 morph50 IN FLIGHT (historical):** Fair morph49 recomputed
+  **0.7920** (n=226); gate best > 0.7920. Superseded by PROMOTE above.
+
+- **Spec 007 morph49 PROMOTE BEST:** `LAST_TRAINABLE=7` warm morph48 +
+  SAVE_BEST, morph40 gold, mem 0.3, 40ep → best **0.7851** (ep27) >
+  fair morph48 **0.7412** (n=228). E2 PASS. Spark BEST → morph49;
+  morph48+morph40+morph36 preserved. Container
+  `hlx-train-morph49-1789694077` exit 0. Receipts:
+  `receipts/20260918-morph49-40ep-promote-best.md`,
+  `receipts/morph49-40ep-last7-20260917/`.
+
+- **Spec 007 morph49 IN FLIGHT (historical):** Spark tunnel recovered;
+  launched morph49 then gated above.
+
+- **Spec 007 morph49 BLOCKED_SSH (historical):** LEGAL intent blocked by
+  Cloudflare Tunnel **1033** on 2026-09-17. Receipts:
+  `receipts/20260917-morph49-ssh-blocked.md`,
+  `receipts/20260917-spark-tunnel-down.md`.
+
+- **Spec 007 morph44 REJECT + residual gold escalate:** last residual
+  `boogie` force 187 → best **0.9432** < fair morph40 **0.9489**
+  (n=176); E2 PASS; ~93 min. Post-residual 0 auth / 10 abstain →
+  escalate (`20260916-escalate-residual-gold-exhausted.md`).
+
+- **Spec 007 morph43 REJECT_VS_BEST:** held residual gold promote
+  (force **135→186**, hard_atoms **180→226**) + warm morph40
+  SAVE_BEST_UNBIND 40ep @ mem **0.3** → best **0.9379** (ep2) < fair
+  morph40 **0.9492** (n=177). Final 0.8870; ~86.3 min; E2 PASS. BEST
+  stays morph40. Receipts:
+  `receipts/20260916-morph43-40ep-reject-vs-best.md`,
+  `receipts/morph43-40ep-held-gold-20260916/`.
+
+- **Spec 007 morph42 REJECT_VS_BEST:** warm morph40 @ mem **0.3** 40ep,
+  unchanged gold → best **0.7149** (ep3) < fair 0.7368. ~87 min; no wall
+  speedup vs 0.015. BEST stays morph40.
+
+- **Spec 007 morph41 REJECT_VS_BEST:** warm morph40 + SAVE_BEST_UNBIND
+  40ep on unchanged gold (135/180) → best `unbind_exact≈0.7149` (ep3)
+  < fair morph40 **0.7368** (n=228). E2 PASS. BEST stays morph40.
+  Ran at guard `mem_fraction=0.015`; next morph uses default **0.3**.
+  Receipts: `receipts/20260916-morph41-40ep-reject-vs-best.md`.
 
 - **Spec 007 head-slot CE upweight + morph15 recipe preflight:**
   `HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT` (default 1.0, fail-closed in
@@ -66,4 +161,448 @@
   Spark `morph15-unbind.sh` defaults head weight **2** and runs recipe
   preflight. `name_gate` stays false.
 
-<!-- Full Unreleased history: restore from Hyperlex main @ e32c1f5 + morph50 prepend when convenient. -->
+- **Spec 007 residual dump + morph15 card:** env-gated civilian val
+  residual JSONL (`HYPERLEX_UNBIND_RESIDUAL_DUMP=/path.jsonl`, default
+  off). Misses only; themes
+  (`positional_head_filler_miss`, `type_slot_token_miss`, `morph_bleed`,
+  `token_hit_order_miss`, `full_miss`, …) plus scheme/class counters land
+  on the receipt. Does not invent gold. morph15 Spark card (docs): pin
+  BEST `seed-morph14` (unbind_exact≈0.3857, slot/token F1≈0.659,
+  classify≈0.438, E2 PASS) and climb toward ladder **0.45** with
+  `slot_ce` + hard_upsample 3–4 + INFERRED_WEIGHT 0.4–0.5 + POS-heavy
+  curriculum + residual dump + head-slot weight 2. `name_gate` stays false.
+
+- **Spec 007 train knob:** env-gated per-slot filler CE as the primary
+  unbind train signal (`HYPERLEX_UNBIND_PRIMARY=slot_ce` or
+  `HYPERLEX_UNBIND_SLOT_CE=1`). Default unset is OFF — historical mixed
+  mean of filler CE + role CE + morph-margin, so prior morphs are
+  unchanged. When armed, mean per-position filler CE is primary;
+  existing list/margin leftovers are additive aux at fixed λ=0.25
+  (receipt `unbind_slot_ce_aux_lambda`, not a search). Receipt also
+  shows `unbind_slot_ce_armed` and `unbind_primary`. Civilian
+  `unbind_exact` stays the ladder metric; `unbind_token_f1` /
+  `unbind_slot_f1` still emit. seed-morph14 BEST is observed
+  (unbind_exact≈0.3857, slot/token F1≈0.659, classify≈0.438, E2 PASS),
+  not new SoT gold. No name_gate flip. No Spec 008 / Genesis.
+
+- **Spec 007 eval/metrics:** val unbind now emits `unbind_token_f1`
+  (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact,
+  positional / type_slot alignment) beside unchanged `unbind_exact`.
+  Optional `unbind_token_precision` / `unbind_token_recall`. Same
+  gold/pred length alignment the train val loop already uses. Receipt
+  `val` and per-epoch metrics carry the fields. Trunk-forward
+  `eval_unbind` fills them from civilian-style filler lists; stub/digest
+  004 probe swap leaves them null (no filler lists). Operator ladder on
+  exact is 0.45 / 0.55 / 0.65 — watch token_f1 so partial slot hits are
+  visible. seed-morph8 BEST is observed (unbind_exact≈0.3715,
+  classify≈0.563, E2 PASS 1.0), not new SoT gold. No train. `name_gate`
+  stays false.
+
+- **Spec 007 data/recipe shape PR #5:** targeted extra upsample of
+  already-OBSERVED hard train phrases (`HYPERLEX_UNBIND_HARD_ATOMS_PATH`
+  + `HYPERLEX_UNBIND_HARD_UPSAMPLE`, int ≥1, default 1 = identity). Path
+  is operator JSONL (`text` required per line); missing/unreadable/invalid
+  fails closed. When upsample >1, after normal OBSERVED×factor the loop
+  appends `(HARD_UPSAMPLE - 1)` extra copies of matching `class==OBSERVED`
+  train unbind rows only. Unmatched texts are ignored. INFERRED is never
+  promoted. No invented rows. Receipt: `unbind_hard_atoms_path` (basename),
+  `unbind_hard_upsample`, `n_unbind_hard_atoms_matched`,
+  `n_unbind_hard_extra_copies`. After morph3 plateau try hard_upsample
+  3–4 with the Spark operator list. Do not commit that file.
+  `name_gate` stays false. BEST stays operator-side (`seed-morph3`,
+  unbind≈0.358).
+
+- **Spec 007 data/recipe shape PR #4:** soft INFERRED unbind sample weight
+  (`HYPERLEX_UNBIND_INFERRED_WEIGHT`, float, default 1.0 = identity,
+  fail-closed finite in (0, 2]). When <1, scales unbind CE + morph-margin
+  for `class != OBSERVED` (INFERRED and any non-OBSERVED). Does not drop
+  rows — Morph4 hard `HYPERLEX_UNBIND_INFERRED_CAP=1000` rejected (val
+  0.229, morph_negs 305→187). Try 0.4–0.5 on Spark. Composes with
+  `shape_unbind_train` / curriculum / morph hard-negs / denylist.
+  Receipt field `unbind_inferred_weight`. Export JSONL stays SoT-shaped.
+  Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` is not this lever. Morph5 map
+  expand (#55) held (0.346). `name_gate` stays false. BEST stays
+  operator-side (`seed-morph3`, unbind≈0.358).
+
+- **Spec 007 data/recipe shape PR #3:** expand `MORPH_CLUSTERS` from Morph3
+  residual near-morphs (rizzed/rizzing, fanum taxed + gated tax/taxed,
+  quiet quit*, mew*, crash/crashout). Pairing stays fail-closed to fillers
+  already on unbind rows — no invented slang atoms. `tax`/`taxed` pair
+  only when gold is fanum* lineage. Morph4 hard
+  `HYPERLEX_UNBIND_INFERRED_CAP=1000` rejected (val 0.229, morph_negs
+  305→187); expand the map instead of defaulting a cap. Hard low caps
+  can starve morph-negs. Curriculum / denylist / upsample defaults
+  unchanged. `name_gate` stays false. BEST stays operator-side
+  (`seed-morph3`).
+
+- **Spec 007 data/recipe shape PR #2:** env-gated scheme-split unbind
+  curriculum inside the Hyperlexical loop (`HYPERLEX_UNBIND_CURRICULUM`
+  default 0 = identity). When on: positional / non-type_slot epochs, then
+  type_slot (TOKEN:/SLOT) epochs, remainder joint full mix. Phase lengths
+  `HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS` / `_TYPE_EPOCHS` (default 1/1
+  when on). Composes with `shape_unbind_train` (morph hard-negs + OBSERVED
+  upsample from #53). Empty exclusive subset falls back to full mix.
+  Classify path unchanged. Optional per-lineage filler denylist
+  (`HYPERLEX_UNBIND_FILLER_DENYLIST` / `_PATH`, empty default) filters
+  hard-neg / CE distractors only — no invented slang atoms. Receipt:
+  curriculum on/off, phase boundaries, n rows per phase.
+  `lexical_split` frozen. Export JSONL stays SoT-shaped. Flat
+  `HYPERLEX_UNBIND_LOSS_WEIGHT=2` is not this lever. BEST stays
+  operator-side (`seed-morph1`). `name_gate` stays false.
+  Morph1 OBSERVED val dump baked into recipe notes only (not SoT gold):
+  unbind_exact 0.321 (115/358); positional 185/135 fail, type_slot
+  173/108 fail; positional-first then type_slot then joint; residual
+  morph pair rizzless↔rizz gated to existing fillers; INFERRED cap
+  stays default-off; status-vocab denylist (bum/bolt/burn/mid) opt-in.
+
+- **Spec 007 data/recipe shape:** Hyperlexical loop generates near-morph
+  hard-negatives from existing unbind train fillers (explicit map seeded
+  from aped/aping, looksmaxxing variants, fanum*, aura* + conservative
+  same-stem auto rule; no invented slang atoms). Extra filler margin
+  term pushes away from the wrong morph. `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE`
+  (int, default 1) and `HYPERLEX_UNBIND_INFERRED_CAP` (int, 0=off) shape
+  train only. Receipt/export counts: `n_unbind_observed`,
+  `n_unbind_inferred`, upsample factor, `n_unbind_morph_negatives`.
+  `lexical_split` stays frozen (settle must not reshuffle val). Export
+  JSONL stays SoT-shaped — no invented OBSERVED gold. ne0l0gist harvest
+  unchanged. Flat `HYPERLEX_UNBIND_LOSS_WEIGHT=2` is not this lever.
+  BEST stays operator-side (seed-live5). `name_gate` stays false.
+
+- **Naming lock (2026-09-12 PT):** Public product split — **Hyperlexical**
+  (Spec 007 model / train / eval / E2 / `name_gate` claim) vs **ne0l0gist**
+  (slang ingest: Crawl4AI harvest, `ingest_tap`, export/settle, civilian/live
+  phrase harvest). Repo **Hyperlex** is the transitional monorepo shell.
+  Identifiers unchanged (`~/.hyperlex`, `HYPERLEX_*`, package `hyperlexical`).
+  `name_gate` stays false. Avoid bare public “Hyperlex” (French legaltech CLM /
+  DiliTrust collision).
+
+- **Spec 007 harness:** `HYPERLEX_UNBIND_LOSS_WEIGHT` (default 1.0) scales
+  unbind loss before backward; optional `HYPERLEX_UNBIND_EVERY_N` (default 1
+  = epoch-end only) interleaves one unbind step every N classify batches.
+  Effective values land in `train-receipt.json`. `name_gate` stays false.
+
+- **Spec 007 harness:** `HYPERLEX_LAST_TRAINABLE` overrides last-N unfrozen
+  encoder layers (default `LAST_TRAINABLE=2`, positive int, clamp to
+  `min(encoder layers, 8)`). `freeze_encoder` and `train-receipt.json`
+  record the effective value. `name_gate` stays false.
+
+- **Spec 007 Wave A:** `harvest_live_unbind` turns phrase-like live SoT atoms
+  (2–6 tokens, ≤80 chars) into dual-scheme unbind rows when `--include-live`
+  is set. Epistemic is copied (`epistemic` / `class`; unset→INFERRED). Spark
+  sidecar `harvest_unbind_observed_mw.jsonl` is adopted as stored OBSERVED
+  (not invented). Counted as `unbind_live` / `unbind_live_observed` /
+  `unbind_live_inferred`. E2 stays on Spec 004 fixtures. `name_gate` stays false.
+
+- **Spec 007 E2 trunk-forward:** `eval_unbind --trunk-forward` /
+  `HYPERLEX_E2_TRUNK_FORWARD=1` loads the local ModernBERT trunk plus
+  trained heads and scores real `unbind_exact` against the Spec 004
+  probe. Missing torch, trunk, or weights fails closed. Default/CI stays
+  the torch-free stub/digest path (no Hub, no trunk download).
+  `name_gate` stays false. `brier` stays null.
+
+- **Spec 007 harness:** `hyperlexical.train --include-live` / `HYPERLEX_INCLUDE_LIVE=1`
+  passes `include_live=True` into `export_dataset` (same path as
+  `python -m hyperlexical.export --include-live`). Default stays the
+  tracked/seed export. Missing live store fails closed (non-zero).
+  `eval_unbind` loads heads from `HYPERLEX_TRAIN_OUT` or the documented
+  seed out dir (`heads.json` / `heads.pt` / `model.safetensors`); no
+  weights keeps the stub path (exit 3). `name_gate` stays false.
+
+- **Docs: Spec 007 SoT scoreboard (2026-09-10 PT evening).** Local store 4333
+  (402 OBSERVED / 3931 INFERRED); `--include-live` n=6506 / classify 2437 /
+  unbind 1345 / negatives 208 / gaps 0/0/0; `name_gate` false; Danny ~2500
+  bar met. Tracked `civilian.v0.1.jsonl` labeled seed/snapshot (not the SoT;
+  no 6506-row dump in git). Hermes 913 / “gap to 2500” and 883 / ~360
+  Moltbook as global SoT are superseded. Spark handoff trains from local
+  SoT / `--include-live`. SKILL.md + QUICKSTART + operator-loop document
+  the Hermes classify & QA loop (`analyze --source firecrawl` → ingest_tap
+  → `export --include-live`).
+
+- **Docs hygiene:** README / MkDocs IA (Start · Concepts · Operator · Specs · Archive),
+  CONTRIBUTING rewrite, STATUS/ROADMAP honesty for Spec 007 (classify volume ready,
+  `name_gate` false, E2 Spark-blocked). Front door reframed as **skill now, model
+  next** (T0→T1 after E2). No product-gate changes.
+
+- **P1 fail-closed hardening:** Claude `init` / `install.sh --claude` helpers
+  are transactional (symlink refuse, target-keyed backup, staged smoke /
+  UNVERIFIED). Unguarded `copy_claude_helpers` removed. Scored `settle()` /
+  `settle_and_log()` require token or TTY confirm, non-empty `authority.ref`,
+  and non-advisory kind; piped yes is refused. X API base allowlists
+  `api.twitter.com` / `api.x.com` (https only). Cloud vector writes require
+  `HYPERLEX_CLOUD_WRITE=1` or TTY `--i-understand-cloud-write`. `doctor`
+  emits `CLAUDE_SOT_CLEARED=` from local pin/provenance (Skill Validation
+  fetches full git history so the pin SHA is locally present). `receipt.integrity`
+  is full sha256; `emit_receipt(..., validate=True)` default; legacy 12-char
+  verify only with `HYPERLEX_RECEIPT_LEGACY_INTEGRITY=1`.
+- **Claude Code host (additive):** `.claude-plugin/plugin.json`, project
+  `CLAUDE.md`, slash helpers (`.claude/skills/` + plugin `commands/`),
+  `install.sh --claude` / `--claude-plugin`, `scripts/claude_hlx.sh`,
+  `docs/claude-skill.md`, `docs/claude-runtime-contract.md`,
+  `references/claude-runtime-contract.md`.
+  `doctor` reports `CLAUDE_OK` / `CLAUDE_MISSING` (missing does not fail).
+  Hermes install paths unchanged.
+- CLI `wizard` + package `hyperlex.wizard`: week-one Hermes guided path
+  (`--auto` / interactive); never auto-settles; offline-first; SKILL.md procedure
+- **SIGNAL REPORT parity (Companion adaptation):** `result.v1` extended with optional `provenance.seed`, `analysis.compression_metrics`, `analysis.symbolic_role`, `analysis.propagation_vector`, `analysis.slang_family_tree`, `analysis.signal_report` (schema + package-local copy). Builder: `src/hyperlex/analysis/signal_report.py`. Wired into `detect_memetic_patterns` (attach + seed header). Docs: `docs/superpowers/specs/2026-08-06-signal-report-adaptation.md`. All new fields optional and fail-open. Brier remains null on open analysis.
+- **Ingest ↔ vector:** fail-open auto-index on `pipeline` / `run` / receipt emit (`hyperlex.vectordb.autoindex`); respects `HYPERLEX_VECTOR` + `HYPERLEX_VECTOR_BACKEND` (local only; Cloud promote stays explicit)
+- Vector/Chroma: `get_vector_store(backend="chroma", path=...)` no longer TypeErrors (`seed_all` always passed `path`)
+- Chroma local PersistentClient via `--db` / `HYPERLEX_CHROMA_PATH` (cloud credentials still supported)
+- Installer removes leftover destination `.git` so Hermes skill installs are not nested half-repos
+- Tests: ephemeral + local persistent Chroma seed/search smoke
+- **Promote path:** `vector-export` / `vector-import` / `vector-sync` copy embeddings as-is (local chroma → Cloud without re-embed)
+- `force_cloud=True` ignores `HYPERLEX_CHROMA_PATH` so promote does not write back to local by mistake
+- CLI auto-loads `~/.hermes/.env` (and `~/.hyperlex/.env`); accepts official `CHROMA_API_KEY` / `CHROMA_TENANT` / `CHROMA_DATABASE` aliases
+- Cloud client only requires API key; tenant/database optional when Chroma can infer them
+
+## 0.4.0 — Automatic backend pipeline (2026-08-05)
+
+- `run_pipeline` / CLI `pipeline`: ingest → analyze → receipt → forecasts → score log → Phase 5 risk
+- `ingest` and `run` default to the full auto path (`ingest --raw-only` for signal-only)
+- Multi-term bags auto-expand to one full result unit per lexicon atom
+- Never auto-settles; `brier` always null until operator `settle`
+- Package API: `run_pipeline`, `run_one`
+
+## 0.3.9 — Atomic multi-term seeds (2026-08-05)
+
+- `split_seed_terms`: longest-match lexicon split (`sigma rizz locked in` → sigma | rizz | locked in)
+- Analyze attaches `seed_terms` + `per_term` lineage; primary lineage is best single atom (no density stack)
+- Phase 5 auto-expands multi-term seeds → `hyperlex.phase5_multi_term.v1` (use `--no-expand` to blend)
+- CLI: `terms-split`; docs/backfill README clarify atomic pack entries
+- Scan/cron defaults use atomic queries; risk-schedule expands seed bags into atoms
+- Phase 5 archive snapshots re-exported multi-term; examples/docs scrubbed of blended seeds
+
+## 0.3.8 — Operator loop docs + simplified ingest routing (2026-08-05)
+
+- Canonical ingest catalog: `hyperlex.intake.sources` (`resolve_source`, `pick_source`, `ROUTE_PRESETS`)
+- Prefer `--route offline|live|glossary|social` over raw adapter names (aliases: real→glossary, x→x_search, …)
+- CLI: `run` one-shot path, `commands` map, `pending` open forecasts; positional query on `analyze`/`run`
+- Structured ingest always on the analyze path; `sources` shows routes + resolve preview
+- Docs: `docs/operator-loop.md`, `docs/commands.md`; ingest module rewrite
+- Recommendation: burn-in with offline cron + settle before ANN or more Phase 5 surface
+
+## 0.3.7 — Risk-tier → scan/cron schedule coupling (2026-08-05)
+
+- `hyperlex.simulation.schedule`: `TIER_POLICY`, `plan_scan_from_risk/term/tier`, `write_scan_plan`, `aggregate_scan_risk`
+- CLI: `risk-schedule` + `simulate --mode schedule` (advisory Hermes job envelopes; no auto-register)
+- `scan` summaries include `scan_risk_advisory` (lineage coverage → next cadence)
+- Examples: `examples/cron/risk-tier-elevated.job.json`, `examples/cron/README.md`
+- Docs: cron-live-emergence, phase5, modules/simulation
+
+## 0.3.6 — Transmission calibration, scenario library, research export (2026-08-05)
+
+- `calibrate_transmission_params` grid-search β/γ against settled pairs (SPECULATIVE)
+- Multi-agent scenario library + `compare_scenarios` presets
+- `export_research_packet` paper-ready JSON/Markdown
+- CLI: `simulate --mode calibrate|compare|export`
+
+## 0.3.5 — Hybrid lineage re-rank + domain phylogeny packs (2026-08-05)
+
+- `match_lineage` hybrid: lexical confidence + capped vector family boost
+- Domain packs under `data/phylogeny/` (finance, ai-native, political, regional)
+- `build_domain_phylogeny` / `list_domain_packs`; CLI `simulate --mode phylogeny --domain …`
+
+## 0.3.4 — Vector neighbors on analyze + receipt auto-index (2026-08-05)
+
+- `detect_memetic_patterns` attaches `analysis.vector_neighbors` when local DB present (`HYPERLEX_VECTOR=auto|1`)
+- `emit_receipt` fail-open indexes into `~/.hyperlex/vector.db`
+- ROADMAP: vector DB marked complete; hybrid lineage re-rank listed under 5.1
+
+## 0.3.3 — Local SQLite vector DB (2026-08-05)
+
+- `hyperlex.vectordb`: SQLite store at `~/.hyperlex/vector.db`
+- Default offline hash embeddings (`hyperlex.hash_ngram_v1.d256`); optional openai_compatible
+- Seed from LINEAGE_REGISTRY + `data/backfill/2026` + receipts
+- CLI: `vector-seed`, `vector-search`, `vector-stats`
+- Docs: `docs/modules/vectordb.md`
+
+## 0.3.2 — Hallmark redesign: Pages workbench identity (2026-08-05)
+
+- Custom docs identity: IBM Plex + phosphor-teal tokens (`docs/stylesheets/extra.css`)
+- Workbench home: status strip, desk cards (history / install / simulate / status)
+- STATUS published on site (`docs/status.md`); Run history elevated in nav
+- Archive family stats from receipt summaries (not ledger-only)
+- Catalog uses Material card grid for each run snapshot
+
+## 0.3.1 — Pages as static history of runs (2026-08-05)
+
+- `export_run_history` writes dated snapshots under `docs/archive/runs/<id>/`
+- Auto-refresh `docs/archive/latest/` + `catalog.json` + history `index.md`
+- CLI: `archive-export --history`, `--phase5`, `archive-catalog`
+- Phase 5 scenarios can be appended as publish-safe digests (not full agent dumps)
+- Docs/MkDocs: Run history catalog nav; Pages role clarified (static, not live store)
+
+## 0.3.0 — Phase 5.0 research simulation track (2026-08-05)
+
+- **Phase 5.0** package `hyperlex.simulation`:
+  - cultural transmission cascade (`simulate_cultural_transmission`)
+  - multi-agent memetic roles (`run_multi_agent_memetics`)
+  - hyperstition risk forecast (`forecast_hyperstition_risk`, `risk_from_analysis`)
+  - phylogeny scaffold (`build_family_phylogeny`)
+  - composed scenario (`run_phase5_scenario`)
+- CLI: `simulate` (`--mode scenario|transmission|agents|risk|phylogeny`, `--from-analyze`)
+- Docs: `docs/phase5.md`, `docs/modules/simulation.md`; ROADMAP/STATUS/SPEC/README refresh
+- All Phase 5 outputs **SPECULATIVE**; `brier` always null; no receipt mutation
+- API: symbols on `API_EXTENDED` (frozen `API_V1` unchanged)
+
+## 0.2.12 — YTD 2026 slang backfill + lineage backpropagation (2026-08-05)
+
+- Curated monthly packs: `data/backfill/2026/` (Jan–Aug) with OBSERVED/INFERRED terms.
+- `hyperlex.analysis.backfill` — load, inventory, merge packs into registry overlay.
+- `hyperlex.analysis.backprop` — non-mutating rematch of historical receipts; reclassification report only.
+- CLI: `lineage-backfill`, `lineage-backprop` (scripts + package entry).
+- `LINEAGE_REGISTRY` expanded with 2026 brainrot/AI leaves (`rizz`, `locked in`, `crash out`, `vibe coding`, …).
+- `match_lineage(..., registry=)` accepts overlay for backprop without global mutation.
+- Integrity rule: never rewrite historical receipt hashes; Brier still null until settlement.
+- Docs: `data/backfill/2026/README.md`; slang-lineages backfill section.
+
+## 0.2.11 — GitHub Pages enabled + long-term analysis archive (2026-08-05)
+
+- GitHub Pages enabled (Actions build) → https://scrimshawlife-ctrl.github.io/Hyperlex-Hermes-Specs/
+- `archive-export` writes sanitized ingest/analysis snapshots under `docs/archive/`
+  for long-term review on the docs site (local ~/.hyperlex remains primary store).
+- Docs: `docs/archive/README.md`; MkDocs nav includes analysis archive.
+
+## 0.2.10 — OpenAI-compatible LLM provider, ledger-stats, STATUS (2026-08-05)
+
+- Governed LLM: `HYPERLEX_LLM_PROVIDER=openai_compatible` (stdlib urllib; fail-closed offline).
+- CLI `ledger-stats` aggregates family/stage/source counts from receipt ledger.
+- `STATUS.md` skill readiness snapshot.
+
+## 0.2.9 — Skill doctor, Pages URL, release preflight (2026-08-05)
+
+- CLI `doctor`: deep Hermes-skill health (files, API_V1, mock analyze, brier null, goldens, compat).
+- Expanded `scripts/release_preflight.py` (doctor, diagram, case study, tests).
+- MkDocs `site_url` set for GitHub Pages project site.
+
+## 0.2.8 — Docs site deploy, strict MkDocs, CI case study (2026-08-05)
+
+- GitHub Pages workflow (`.github/workflows/docs.yml`) builds/deploys MkDocs.
+- `scripts/sync_mkdocs_pages.py` rewrites root-doc links for strict builds.
+- Skill CI runs case study script; docs ROADMAP mirrored to site.
+- MkDocs `--strict` clean (README excluded from site).
+
+## 0.2.7 — MkDocs site, governed LLM stub, ledger-diff (2026-08-05)
+
+- MkDocs documentation site (`mkdocs.yml`, optional extra `[docs]`).
+- Governed LLM neologism enrichment (`hyperlex.llm`); requires `HYPERLEX_LLM=1` + provider.
+- CLI `ledger-diff` compares two receipt snapshots.
+- Docs: `docs/modules/llm.md`, `docs/index.md`.
+
+## 0.2.6 — Case study + cross-domain lineages (2026-08-05)
+
+- Case study: `examples/case-studies/e2e-mock-scan.md` + `scripts/run_case_study.py`.
+- New lineage families: `gaming-meta`, `workplace-corp` (registry, Mermaid, mock seeds, goldens).
+- Typology: `labor_identity`; gaming cues on `platform_agency`.
+
+## 0.2.5 — Virality prediction v0, community drivers, richer neologisms (2026-08-05)
+
+- `predict_virality` → `analysis.virality.prediction` (SPECULATIVE; not Brier/calibration).
+- Semantic variation multi-label community drivers.
+- Neologism detector: compound phrases + formation tags.
+- Docs: `docs/modules/virality.md`.
+
+## 0.2.4 — Hermes skill posture, CI, typology, goldens (2026-08-05)
+
+- Docs: Hyperlex is a **Hermes skill (Python package repo)** — not a separate product app.
+  `docs/hermes-skill.md` replaces standalone-app framing.
+- CI: `PYTHONPATH=src`, offline env, diagram --from-golden step.
+- Memetic typology expansion: multi-type rule table + lineage soft prior + transparent rules_hit.
+- Golden receipts: kinship-address, political-status (+ typology field in MANIFEST).
+
+## 0.2.3 — Receipt history diagrams (2026-08-05)
+
+- `hyperlex.diagrams` — Mermaid lineage distribution, receipt timeline, family graph, per-receipt flow.
+- CLI `diagram --from-golden|--from-ledger|--input` writes `.mmd` + optional HTML.
+- Docs: `docs/diagrams.md`.
+
+## 0.2.2 — Docs refresh, market connectors, hyperstition feedback (2026-08-05)
+
+- Full docs pass: ARCHITECTURE, README, QUICKSTART, RELEASE_NOTES, connectors.md.
+- `hyperlex.connectors.market_signal` — market_signal.v1 + forecast_pipeline.v1 packets.
+- `hyperlex.connectors.hyperstition_feedback` — advisory stage→f map from settled series.
+- CLI: `signal`, `feedback`; `extract_forecasts(..., hyperstition_stage_map=...)`.
+- Roadmap: hyperstition feedback + market connectors marked done.
+
+## 0.2.1 — Standalone app, API freeze, golden receipts, Abraxas modules (2026-08-05)
+
+- Docs synced: `docs/ROADMAP.md`, `docs/api-v1.md`, `docs/hermes-skill.md`, SPEC/DESIGN.
+- Public API v1 freeze via `hyperlex.API_V1`.
+- Golden receipt corpus: `examples/receipts/golden/` + MANIFEST.
+- Relevant Abraxas capabilities as Hyperlex modules: `hyperlex.compat.abraxas`
+  (claims, BrierScorePacket, BrierLedgerEntry, operator review, HLX runes).
+- Hyperlex never imports Abraxas; hosts may import from Hyperlex.
+
+## 0.2.0 — Relay, provenance, glossary/X, local package (2026-08-05)
+
+- Rune/signal relay: `hyperlex.relay` + CLI `relay` + `schemas/rune_envelope.v1.schema.json`
+- Enhanced provenance fingerprints on ingest + analysis (`source_fingerprint`, content_hash, locator)
+- Glossary expansion (`glossary_expanded`) multi-source pack; X ingest via bearer token / xurl / stub
+- Package CLI (`python -m hyperlex` / console script); optional local build via `scripts/publish_pypi.sh` (no public PyPI publish)
+- Version 0.2.0
+
+## 0.1.3 — Cache, golden series, LIVE_EMERGENCE_SCAN (2026-08-05)
+
+- Persistent ingest cache (`~/.hyperlex/cache/`) + per-source rate limiting.
+- Golden settled series fixture: `examples/calibration/settled_series.v1.json`.
+- CLI `scan` (LIVE_EMERGENCE_SCAN) for multi-query cron/autonomous monitoring.
+- Hermes cron template: `examples/cron/live-emergence-scan.job.json` + `docs/cron-live-emergence.md`.
+
+## 0.1.2 — Receipt ledger (2026-08-05)
+
+- Append-only hash-chained receipt ledger (`~/.hyperlex/receipt_ledger.jsonl`).
+- `emit_receipt(..., append_ledger=True)` indexes each receipt (integrity, lineage, path).
+- CLI: `emit-receipt`, `list-receipts`, `verify-receipt-ledger`; `analyze --receipt`.
+- Hermes skill packaging already on `main` (v0.1.1); this continues the archive path.
+
+## 0.1.1 — Hermes skill packaging (2026-08-05)
+
+- Full Hermes skill contract in `SKILL.md` (frontmatter, triggers, procedure, authority).
+- Atomic-style `install.sh`: `--dry-run`, `--target`, `--rollback`, `--openclaw`, post-install check/smoke.
+- `hyperlex.manifest.yaml` expanded for Hermes/OpenClaw hosts and command surface.
+- `skills.sh.json`, `QUICKSTART.md`, `references/hermes-runtime-contract.md`.
+- Install target: `~/.hermes/skills/hyperlex`.
+
+
+## 0.1.0
+
+- Added executable Hermes skill runtime for standalone use.
+- Added `src/hyperlex` implementation package (copied from working engine implementation).
+- Added command entrypoint `scripts/hyperlex.py` with `check`, `sources`, `ingest`, `analyze`, `validate`, and `verify-receipt`.
+- Added schemas at repository root (`schemas/*.schema.json`) and manifest metadata.
+- Added install script and initial command smoke/test surface.
+- Updated SKILL/README/SPEC/docs references to reflect implemented runtime surface.
+
+## Documentation & Lineage (2026-08-05)
+
+- Added and expanded `docs/slang-lineages.md` (methodology, mutation operators, template, live-feed process).
+- Added `schemas/lineage.v1.schema.json` for analysis lineage attachments.
+- Implemented `match_lineage()` with confidence scoring; wired into `detect_memetic_patterns`.
+- Added `examples/slang-families/` with Mermaid diagrams and HTML renderers.
+
+## Brier / Calibration (2026-08-05)
+
+- Design: `docs/brier-calibration.md` (forecast → settlement → atomic/series Brier, Murphy, Yates, BSS).
+- Module: `src/hyperlex/calibration/` (`extract_forecasts`, `settle`, `score_pair`, `score_series`).
+- Schemas: `forecast.v1`, `settlement.v1`, `brier_series.v1`.
+- Removed hardcoded `provenance.brier = 0.89`; open results set `brier: null` with `brier_requires_settlement`.
+- DESIGN principle 12: Brier requires settlement; fail-closed `NOT_COMPUTABLE` when outcomes missing.
+
+## Calibration v1.1 diagnostics (2026-08-05)
+
+- **Vieira non-negative Yates** (`yates_vieira`): variance mismatch + correlation deficit + bias²; reports ρ when defined.
+- **Ferro–Fricker Murphy** (`murphy_ferro`): bias-corrected REL/RES/UNC for small-n series; keeps uncorrected snapshot.
+- **Discrimination slope** (`discrimination.delta_f`): mean(f|o=1) − mean(f|o=0).
+- Classical Yates enriched with mean_forecast, mean_outcome, cov_fo, var_f, var_o.
+- Schema `brier_series.v1` extended; design doc updated.
+
+## Operator settlement path + score log (2026-08-05)
+
+- `calibration/score_log.py` — append-only, hash-chained JSONL (`forecast` / `settlement` / `score` events).
+  Default `~/.hyperlex/score_log.jsonl`; override via `HYPERLEX_SCORE_LOG`, `--log`, or `--repo-log`.
+- `settle_and_log` + `recompute_series` / `verify_chain`.
+- CLI: `analyze --forecasts [--append-log]`, `extract-forecasts`, `settle`, `score-series`, `verify-score-log`.
+- `export.to_brier_ledger_entry` — Abraxas `BrierLedgerEntry.v1`-compatible shape (no Abraxas import).
+- `recalibrate.mean_shift_from_series` — advisory only when Yates bias² elevated; does not rewrite history.
+- Golden tests: lineage confidence formula, score_pair, score_series empty→NOT_COMPUTABLE, log roundtrip, CLI settle path.
+- Result schema: `provenance.brier` may be `null`; analysis may include `lineage`.
+- CLI import hardening: package `src/` always shadows `scripts/hyperlex.py` on `sys.path`.
