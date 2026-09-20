@@ -40,4 +40,6 @@ Wiki, URL, etymology, dictionary scaffolding, punctuation (including emoji and c
 
 Files: `20260919-local-label-new-atoms/labeled_new_atoms.jsonl`, `20260919-local-label-new-atoms/LABEL_COUNTS.json`. No force JSONL.
 
+Reconstruction of the 460-row packet is via `LABEL_SHARDS.md` / `labeled_new_atoms.part00.jsonl`–`part05` (zlib.b64 sidecars on this branch; decompress per LABEL_SHARDS.md).
+
 OBSERVED upsample 3 was not launched.
