@@ -1,0 +1,41 @@
+name: assemble-changelog-morph63
+on:
+  push:
+    branches: [cursor/morph61-promote-docs-41af]
+    paths:
+      - .tmp/changelog_restore_part0.txt
+      - .tmp/changelog_restore_part1.txt
+      - .tmp/changelog_restore_part2.txt
+      - .tmp/assemble_changelog_trigger
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cursor/morph61-promote-docs-41af
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Concat parts into CHANGELOG.md
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib, hashlib
+          parts=[pathlib.Path(f".tmp/changelog_restore_part{i}.txt").read_bytes() for i in range(3)]
+          data=b"".join(parts)
+          digest=hashlib.sha256(data).hexdigest()
+          print(len(data), digest)
+          assert digest=="e44a5c1de32e38fe4731235dae82a870a679086aae4d52c146b460c7862c25c6", digest
+          pathlib.Path("CHANGELOG.md").write_bytes(data)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          if git diff --cached --quiet; then
+            echo "CHANGELOG already up to date"
+            exit 0
+          fi
+          git commit -m "docs(007): CHANGELOG morph63 PROMOTE upsample8"
+          git push origin HEAD:cursor/morph61-promote-docs-41af
