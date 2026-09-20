@@ -1,1 +1,1 @@
-{{include:/tmp/cl_content_only.txt}}
+{{INCLUDE_FILE:/tmp/cl_content_only.txt}}
