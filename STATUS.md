@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph63** (held). Observed upsample 8 beat fair morph62: **0.8539823008849557** (193/226) > **0.8495575221238938** (192/226). Do not replay upsample 8 or second-slot weight 3/4. **In flight:** morph64 `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=9` (`hlx-train-morph64-1789928581`). See `NEXT_MOVES_007.md` / `receipts/20260920-morph64-observed-upsample9-inflight.md`.
+1. Spark BEST = **morph63** (held). morph64 upsample 9 **REJECT** (tie 193/226). Do not replay upsample 9 or second-slot weight 3/4. **In flight:** morph65 `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=10` (`hlx-train-morph65-1789947808`). See `NEXT_MOVES_007.md` / `receipts/20260920-morph65-observed-upsample10-inflight.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
