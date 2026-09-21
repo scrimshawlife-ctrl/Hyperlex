@@ -1,0 +1,217 @@
+# Changelog
+
+## Unreleased
+
+- **Spec 007 morph63 PROMOTE_BEST:** `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=8`
+  warm morph62, second-slot weight 2 held. Best **0.8539823008849557**
+  (ep13, 193/226) > fair morph62 **0.8495575221238938** (n=226). E2
+  trunk-forward PASS (`unbind_exact=1.0`). Spark BEST → morph63. morph62
+  weights kept. Container `hlx-train-morph63-1789911656` exit 0.
+  Exclusive mem 0.3; Qwen stayed stopped+disabled. `name_gate=false`. No new gold.
+  Receipt: `receipts/20260920-morph63-40ep-promote-best.md`.
+
+- **Spec 007 morph62 PROMOTE_BEST:** `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=7`
+  warm morph61, second-slot weight 2 held. Best **0.8495575221238938**
+  (ep21, 192/226) > fair morph61 **0.8451327433628318** (n=226). E2
+  trunk-forward PASS (`unbind_exact=1.0`). Spark BEST → morph62. morph61
+  weights kept. Container `hlx-train-morph62-1789896471` exit 0.
+  Exclusive mem 0.3; Qwen stayed stopped+disabled. `name_gate=false`. No new gold.
+  Receipt: `receipts/20260920-morph62-40ep-promote-best.md`.
+
+- **Spec 007 morph61 PROMOTE_BEST:** `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=6`
+  warm morph60, second-slot weight 2 held. Best **0.8451327433628318**
+  (ep26, 191/226) > fair morph60 **0.8407079646017699** (n=226). E2
+  trunk-forward PASS (`unbind_exact=1.0`). Spark BEST → morph61. morph60
+  weights kept. Container `hlx-train-morph61-1789880707` exit 0 after
+  exclusive remount (Qwen stopped+disabled). `name_gate=false`. No new gold.
+  Receipt: `receipts/20260920-morph61-40ep-promote-best.md`.
+
+- **Spec 007 morph60 PROMOTE_BEST:** `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=5`
+  warm morph59, second-slot weight 2 held. Best **0.8407079646017699**
+  (ep9, 190/226) > fair morph59 **0.831858407079646** (n=226). E2
+  trunk-forward PASS (`unbind_exact=1.0`). Spark BEST → morph60. morph59
+  weights kept. Container `hlx-train-morph60-1789829154` exit 0.
+  `name_gate=false`. No new gold.
+  Receipt: `receipts/20260919-morph60-40ep-promote-best.md`.
+
+- **Spec 007 morph59 PROMOTE_BEST:** `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=4`
+  warm morph58, second-slot weight 2 held. Best **0.831858407079646**
+  (ep14, 188/226) > fair morph58 **0.8230088495575221** (n=226). E2
+  trunk-forward PASS (`unbind_exact=1.0`). Spark BEST → morph59. morph58
+  weights kept. Container `hlx-train-morph59-1789803430` exit 0.
+  `name_gate=false`. No new gold.
+  Receipt: `receipts/20260919-morph59-40ep-promote-best.md`.
+
+- **Spec 007 morph58 PROMOTE_BEST:** `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=3`
+  warm morph56, second-slot weight 2 held. Best **0.8230088495575221**
+  (ep37, 186/226) > fair morph56 **0.8185840707964602** (n=226). E2
+  trunk-forward PASS (`unbind_exact=1.0`). Spark BEST → morph58. morph56
+  weights kept. Container `hlx-train-morph58-1789793254` exit 0.
+  `name_gate=false`. No new gold.
+  Receipt: `receipts/20260919-morph58-40ep-promote-best.md`.
+
+- **Spec 007 morph57 REJECT_VS_BEST:** `HYPERLEX_UNBIND_SECOND_SLOT_WEIGHT=3`
+  warm morph56. Best **0.8185840707964602** (ep34, 185/226) ties fair
+  morph56 on n=226. E2 PASS. Tie is not a promote. BEST stays morph56.
+  Container `hlx-train-morph57-1789775196` exit 0. `name_gate=false`.
+  Receipt: `receipts/20260919-morph57-40ep-reject-tie.md`.
+
+- **Spec 007 morph56 PROMOTE_BEST:** `HYPERLEX_UNBIND_SECOND_SLOT_WEIGHT=2`
+  on the morph50 surface. Best **0.8185840707964602** (ep10, 185/226) >
+  fair morph50 **0.8097345132743363** (n=226). E2 trunk-forward PASS
+  (`unbind_exact=1.0`). Spark BEST → morph56. morph50 weights kept.
+  Container `hlx-train-morph56-1789766977` exit 0. `name_gate=false`.
+  Receipt: `receipts/20260918-morph56-40ep-promote-best.md`.
+
+- **Spec 007 morph53 REJECT_VS_BEST:** morph43-overlap gold alias
+  (warm morph50, SAVE_BEST, mem 0.3, force 169 / hard 211, 40ep) best
+  **0.9330** (ep1) ≤ fair morph50 **0.9433** (n=194). E2 PASS. ≥0.95 MISS.
+  BEST stays morph50. Container `hlx-train-morph53-1789721983` exit 0.
+  Receipt: `receipts/20260918-morph53-40ep-reject-vs-best.md`.
+
+- **Spec 007 SOLE TRAIN OWNER freeze:** Spark
+  `~/hlx-private/SOLE_TRAIN_OWNER.json` owner=`bc-f1e77ce4` (Adjudge).
+  Sole live `hlx-train-morph53-1789721983` / `9eb3c418b609`. Defer chase
+  `bc-e66f1e0b` + goal `bc-085b87da`. Kill duplicates only. Receipt:
+  `receipts/20260918-sole-train-owner-freeze.md`.
+
+- **Spec 007 OPERATOR ADJUDICATION — morph43-overlap gold AUTHORIZED:**
+  unlock HOLD residual gold for ~1.0 chase; stop kill/relaunch thrash.
+  Sole live train `hlx-train-morph53-1789721983` (=morph52 recipe alias after
+  morph52 name thrash; warm morph50, SAVE_BEST, mem 0.3, force 169 / hard 211,
+  40ep). Fair morph50 **0.9433** (n=194). BEST stays morph50 until gate.
+  Receipts: `OPERATOR_ADJUDICATION_MORPH43_GOLD_AUTHORIZED.md`,
+  `receipts/20260918-morph52-thrash-alias-morph53.md`,
+  `receipts/morph53-40ep-full-gold-20260918/`.
+
+- **Spec 007 OPERATOR ADJUDICATION — morph43-overlap gold AUTHORIZED:**
+  unlock HOLD residual gold for ~1.0 chase; stop kill/relaunch thrash.
+  Sole live train `hlx-train-morph52-1789719131` (warm morph50, SAVE_BEST,
+  mem 0.3, force 169 / hard 211, 40ep; clean relaunch after duplicate thrash
+  cleared). Fair morph50 **0.9433** (n=194). BEST stays morph50 until morph52
+  gate. Receipts:
+  `OPERATOR_ADJUDICATION_MORPH43_GOLD_AUTHORIZED.md`,
+  `receipts/20260918-operator-adjudication-morph43-gold-authorized.md`,
+  `receipts/operator-adjudication-morph43-gold-20260918/`,
+  `receipts/morph52-40ep-full-gold-20260918/`.
+
+- **Spec 007 morph52 ABORT_ILLEGAL (historical):** chase agent lifted
+  morph43-overlap HOLD before adjudication; sibling stopped then
+  reclaim. Superseded by AUTHORIZE above. Receipt:
+  `receipts/20260918-morph52-abort-illegal-warm-force.md`.
+
+- **Spec 007 morph51 ABORT (historical):** mild LR +1 novel; aborted
+  mid-train under thrash (Exited 137). Do not relaunch under morph43
+  gold adjudication. Receipts:
+  `receipts/20260918-morph51-40ep-inflight.md`,
+  `receipts/morph51-40ep-mild-lr-gold-20260918/`.
+
+- **Spec 007 morph50 PROMOTE BEST:** `LAST_TRAINABLE=8` (MAX) warm morph49 +
+  SAVE_BEST + +2 METHOD morph49 residual gold (force 137 / hard 182;
+  SoT flip `boon coon`) → best **0.8097** (ep38) > fair morph49
+  **0.7920** (n=226). E2 PASS. Spark BEST → morph50;
+  morph49+morph48+morph40+morph36 preserved. Container
+  `hlx-train-morph50-1789703143` exit 0. Capacity LAST_MAX exhausted —
+  closer-to-1.0 needs new gold. Receipts:
+  `receipts/20260918-morph50-40ep-promote-best.md`,
+  `receipts/20260918-capacity-lever-exhausted-need-gold.md`,
+  `receipts/morph50-40ep-last8-20260918/`.
+
+- **Spec 007 morph50 IN FLIGHT (historical):** Fair morph49 recomputed
+  **0.7920** (n=226); gate best > 0.7920. Superseded by PROMOTE above.
+
+- **Spec 007 morph49 PROMOTE BEST:** `LAST_TRAINABLE=7` warm morph48 +
+  SAVE_BEST, morph40 gold, mem 0.3, 40ep → best **0.7851** (ep27) >
+  fair morph48 **0.7412** (n=228). E2 PASS. Spark BEST → morph49;
+  morph48+morph40+morph36 preserved. Container
+  `hlx-train-morph49-1789694077` exit 0. Receipts:
+  `receipts/20260918-morph49-40ep-promote-best.md`,
+  `receipts/morph49-40ep-last7-20260917/`.
+
+- **Spec 007 morph49 IN FLIGHT (historical):** Spark tunnel recovered;
+  launched morph49 then gated above.
+
+- **Spec 007 morph49 BLOCKED_SSH (historical):** LEGAL intent blocked by
+  Cloudflare Tunnel **1033** on 2026-09-17. Receipts:
+  `receipts/20260917-morph49-ssh-blocked.md`,
+  `receipts/20260917-spark-tunnel-down.md`.
+
+- **Spec 007 morph44 REJECT + residual gold escalate:** last residual
+  `boogie` force 187 → best **0.9432** < fair morph40 **0.9489**
+  (n=176); E2 PASS; ~93 min. Post-residual 0 auth / 10 abstain →
+  escalate (`20260916-escalate-residual-gold-exhausted.md`).
+
+- **Spec 007 morph43 REJECT_VS_BEST:** held residual gold promote
+  (force **135→186**, hard_atoms **180→226**) + warm morph40
+  SAVE_BEST_UNBIND 40ep @ mem **0.3** → best **0.9379** (ep2) < fair
+  morph40 **0.9492** (n=177). Final 0.8870; ~86.3 min; E2 PASS. BEST
+  stays morph40. Receipts:
+  `receipts/20260916-morph43-40ep-reject-vs-best.md`,
+  `receipts/morph43-40ep-held-gold-20260916/`.
+
+- **Spec 007 morph42 REJECT_VS_BEST:** warm morph40 @ mem **0.3** 40ep,
+  unchanged gold → best **0.7149** (ep3) < fair 0.7368. ~87 min; no wall
+  speedup vs 0.015. BEST stays morph40.
+
+- **Spec 007 morph41 REJECT_VS_BEST:** warm morph40 + SAVE_BEST_UNBIND
+  40ep on unchanged gold (135/180) → best `unbind_exact≈0.7149` (ep3)
+  < fair morph40 **0.7368** (n=228). E2 PASS. BEST stays morph40.
+  Ran at guard `mem_fraction=0.015`; next morph uses default **0.3**.
+  Receipts: `receipts/20260916-morph41-40ep-reject-vs-best.md`.
+
+- **Spec 007 head-slot CE upweight + morph15 recipe preflight:**
+  `HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT` (default 1.0, fail-closed in
+  (0, 4]) scales position-0 filler CE before `combine_unbind_train_terms`.
+  Targets `positional_head_filler_miss` without inventing gold. Receipt /
+  `config-train.json` carry `unbind_head_slot_weight`. Torch-free
+  `python3 -m hyperlexical.morph15_recipe` resolves the morph15 card
+  knobs (exit 2 bad env, exit 3 hard-atoms missing when upsample>1).
+  Spark `morph15-unbind.sh` defaults head weight **2** and runs recipe
+  preflight. `name_gate` stays false.
+
+- **Spec 007 residual dump + morph15 card:** env-gated civilian val
+  residual JSONL (`HYPERLEX_UNBIND_RESIDUAL_DUMP=/path.jsonl`, default
+  off). Misses only; themes
+  (`positional_head_filler_miss`, `type_slot_token_miss`, `morph_bleed`,
+  `token_hit_order_miss`, `full_miss`, …) plus scheme/class counters land
+  on the receipt. Does not invent gold. morph15 Spark card (docs): pin
+  BEST `seed-morph14` (unbind_exact≈0.3857, slot/token F1≈0.659,
+  classify≈0.438, E2 PASS) and climb toward ladder **0.45** with
+  `slot_ce` + hard_upsample 3–4 + INFERRED_WEIGHT 0.4–0.5 + POS-heavy
+  curriculum + residual dump + head-slot weight 2. `name_gate` stays false.
+
+- **Spec 007 train knob:** env-gated per-slot filler CE as the primary
+  unbind train signal (`HYPERLEX_UNBIND_PRIMARY=slot_ce` or
+  `HYPERLEX_UNBIND_SLOT_CE=1`). Default unset is OFF — historical mixed
+  mean of filler CE + role CE + morph-margin, so prior morphs are
+  unchanged. When armed, mean per-position filler CE is primary;
+  existing list/margin leftovers are additive aux at fixed λ=0.25
+  (receipt `unbind_slot_ce_aux_lambda`, not a search). Receipt also
+  shows `unbind_slot_ce_armed` and `unbind_primary`. Civilian
+  `unbind_exact` stays the ladder metric; `unbind_token_f1` /
+  `unbind_slot_f1` still emit. seed-morph14 BEST is observed
+  (unbind_exact≈0.3857, slot/token F1≈0.659, classify≈0.438, E2 PASS),
+  not new SoT gold. No name_gate flip. No Spec 008 / Genesis.
+
+- **Spec 007 eval/metrics:** val unbind now emits `unbind_token_f1`
+  (micro bag-of-filler F1) and `unbind_slot_f1` (per-position exact,
+  positional / type_slot alignment) beside unchanged `unbind_exact`.
+  Optional `unbind_token_precision` / `unbind_token_recall`. Same
+  gold/pred length alignment the train val loop already uses. Receipt
+  `val` and per-epoch metrics carry the fields. Trunk-forward
+  `eval_unbind` fills them from civilian-style filler lists; stub/digest
+  004 probe swap leaves them null (no filler lists). Operator ladder on
+  exact is 0.45 / 0.55 / 0.65 — watch token_f1 so partial slot hits are
+  visible. seed-morph8 BEST is observed (unbind_exact≈0.3715,
+  classify≈0.563, E2 PASS 1.0), not new SoT gold. No train. `name_gate`
+  stays false.
+
+- **Spec 007 data/recipe shape PR #5:** targeted extra upsample of
+  already-OBSERVED hard train phrases (`HYPERLEX_UNBIND_HARD_ATOMS_PATH`
+  + `HYPERLEX_UNBIND_HARD_UPSAMPLE`, int ≥1, default 1 = identity). Path
+  is operator JSONL (`text` required per line); missing/unreadable/invalid
+  fails closed. When upsample >1, after normal OBSERVED×factor the loop
+  appends `(HARD_UPSAMPLE - 1)` extra copies of matching `class==OBSERVED`
+  train unbind rows only. Unmatched texts are ignored. INFERRED is never
+  promoted. No invented rows. Receipt: `unbind_hard_atoms_path` (basename),
+  
