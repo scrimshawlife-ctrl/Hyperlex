@@ -1,0 +1,15 @@
+{
+  "by_class": {
+    "INFERRED": 9,
+    "OBSERVED": 1
+  },
+  "by_scheme": {
+    "positional": 3,
+    "type_slot": 7
+  },
+  "n_residual": 10,
+  "themes": {
+    "partial_slot_miss": 10,
+    "type_slot_token_miss": 6
+  }
+}

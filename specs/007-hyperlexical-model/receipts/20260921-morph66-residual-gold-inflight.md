@@ -1,17 +1,5 @@
-# morph66 IN FLIGHT — residual gold force/hard (2026-09-21)
+# morph66 IN FLIGHT — residual gold force/hard (2026-09-21) — SUPERSEDED
 
-Container `hlx-train-morph66-1789969749`. One knob: force/hard morph63 residual gold expand (**164** / **206**). Held `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=8`, `HYPERLEX_UNBIND_SECOND_SLOT_WEIGHT=2`, warm **morph65**, LAST=8, HEAD=2, POS=1, TYPE=1, HARD_UPSAMPLE=4, mem 0.3 exclusive, 40ep, SAVE_BEST. `name_gate=false`.
+**Superseded by** `receipts/20260921-morph66-40ep-reject-vs-best.md`.
 
-## Fair (same-surface)
-
-Fair-eval CURRENT BEST morph65 on post-force val:
-
-| | |
-|--|--|
-| fair | **0.9601990049751243** = 193/201 |
-| force keys | 164 (matched 162) |
-| val n after force | **201** (was 226) |
-
-PIN only if morph66 best > fair on n=201 and E2 trunk-forward exact 1.0.
-
-Upsample ladder frozen (no 9/10/11 replay). Qwen remains stopped+disabled. Spark poll `poll_morph66.sh` → E2 → `finish_morph66.py`.
+Container `hlx-train-morph66-1789969749` completed. Gate **REJECT_VS_BEST**: best **0.9502487562189055** (ep9, 191/201) < fair morph65 **0.9601990049751243**. E2 PASS. BEST stays `seed-morph65`.
