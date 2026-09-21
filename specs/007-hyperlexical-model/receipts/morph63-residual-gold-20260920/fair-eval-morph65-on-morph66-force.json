@@ -1,0 +1,22 @@
+{
+  "schema": "hyperlex.fair_eval_same_surface.v0.1",
+  "as_of": "2026-09-21T05:47:28.762293+00:00",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+  "seed": "seed-morph65",
+  "force_train_path": "/home/morpheus/hlx/force_train_morph66_expanded.jsonl",
+  "force_stats": {
+    "unbind_force_train_path": "force_train_morph66_expanded.jsonl",
+    "n_unbind_force_train": 162,
+    "n_unbind_force_train_keys": 164,
+    "n_unbind_val_after_force_train": 201
+  },
+  "n_hard_atoms": 206,
+  "unbind_exact": 0.9601990049751243,
+  "n_scored": 201,
+  "n_correct_est": 193,
+  "baseline_for_morph66_gate": 0.9601990049751243,
+  "prior_fair_morph63_on_n226": 0.8539823008849557,
+  "note": "Fair CURRENT BEST morph65 after residual gold force expand (164 keys / val n=201). Gate morph66 best > this fair on same surface.",
+  "name_gate": false,
+  "authorization": "operator continue-as-recommended; morph65 PROMOTE then gold morph66"
+}
