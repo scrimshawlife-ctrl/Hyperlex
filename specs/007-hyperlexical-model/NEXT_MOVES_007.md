@@ -1,23 +1,18 @@
-# Spec 007 — next after morph67 SoT-flip launch
+# Spec 007 — next after morph67 REJECT + morph68 residual-gold launch
 
-`name_gate=false`. BEST=**morph65** (held until morph67 gate). Upsample ladder frozen. Do not run SECOND_SLOT=4.
+`name_gate=false`. BEST=**morph65** (held). Upsample ladder frozen. Do not run SECOND_SLOT=4.
 
 ## Done
 
-1. METHOD morph43 on morph65 force residuals n=8 → AUTHORIZE 2 / ABSTAIN 6.
-2. Force expand **no-op** (`force_added=0`) — did not burn identical morph67.
-3. SoT flip: 2 AUTHORIZE → OBSERVED in harvest sidecar. Force now 164/164 moved; fair morph65 **0.9698 n=199**.
-4. **In flight:** morph67 warm morph65, UPSAMPLE=8, SECOND_SLOT=2, same force/hard as morph66, exclusive 0.3.
+1. morph67 SoT-flip **REJECT_VS_BEST**: best **0.9597989949748744** (ep18, 191/199) < fair **0.9698492462311558** (193/199). E2 PASS. BEST stays morph65.
+2. METHOD morph43 on morph67 residuals n=8 → AUTHORIZE **2** / ABSTAIN **6**.
+3. Force/hard expand: **force_added=2** / **hard_added=2** → 166 / 208. Harvest OBSERVED append for both AUTHORIZE. Force moves **166/166**; fair morph65 **0.9695431472081218** (191/197).
+4. **In flight:** morph68 warm morph65, UPSAMPLE=8, SECOND_SLOT=2, force/hard morph68 expanded, exclusive 0.3.
 
-## Gate (when morph67 exits)
+## Gate (when morph68 exits)
 
-PIN iff best > fair **0.9698492462311558** (n=199) and E2 trunk-forward `unbind_exact=1.0`. Else REJECT; BEST stays morph65.
+PIN iff best > fair **0.9695431472081218** (n=197) and E2 trunk-forward `unbind_exact=1.0`. Else REJECT; BEST stays morph65.
 
-| not this card | |
-|--|--|
-| upsample 11+ | frozen |
-| SECOND_SLOT=4 | blocked |
-| invent OBSERVED | forbidden |
-| Hub / name_gate | false |
+AUTHORIZE texts: `[Out:] Mega yachts [In:] Mega gyatt`, `an egg's age`.
 
 Qwen stays stopped unless the operator re-enables `qwen38-27b.service`.
