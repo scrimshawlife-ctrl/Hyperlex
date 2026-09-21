@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65** (PROMOTE 194/226). Upsample ladder **frozen** (no 11+). Do not run second-slot weight 4. **In flight:** morph66 residual gold force/hard 164/206 (`hlx-train-morph66-1789969749`); fair morph65 **0.9602** n=201. See `NEXT_MOVES_007.md` / `receipts/20260921-morph66-residual-gold-inflight.md`.
+1. Spark BEST = **morph65** (held). morph66 residual-gold **REJECT** (0.9502 < fair 0.9602 n=201). Upsample ladder **frozen**. Do not replay morph66 force/hard or second-slot 4. **Next:** METHOD-label morph65 force residuals (8 INFERRED on n=201). See `NEXT_MOVES_007.md` / `receipts/20260921-morph66-40ep-reject-vs-best.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 

@@ -1,22 +1,29 @@
-# Spec 007 — next after morph66: watch gold gate; freeze upsample
+# Spec 007 — next after morph66 REJECT: label morph65 force residuals (n=201)
 
-`name_gate=false`. BEST=**morph65** (`0.8584070796460177`, 194/226). Upsample ladder frozen (3..10 done; no 11+). Do not run second-slot weight 4.
+`name_gate=false`. BEST=**morph65**. Upsample ladder frozen. Do not run SECOND_SLOT=4. Do not replay morph66 force/hard.
 
-## In flight
+## Gate result
 
-**morph66** `hlx-train-morph66-1789969749` — one knob force/hard residual gold 164/206. Warm morph65. Hold UPSAMPLE=8, SECOND_SLOT=2, LAST=8, HEAD=2, POS=1, TYPE=1, HARD=4, mem 0.3 exclusive, 40ep, SAVE_BEST.
+morph66 residual-gold **REJECT**: best **0.9502** (191/201) < fair morph65 **0.9602** (193/201). E2 PASS. BEST stays morph65.
 
-| | |
+## 0.95 bar
+
+On post-force fair surface n=201, morph65 already clears ~0.95 (**0.9602**). Gap to 1.0 = **8 exacts**.
+
+## Prepared dump (Spark)
+
+`~/hlx-private/p1-spark-morph65-force-residuals-20260921/` — morph65 misses on force surface: **8 INFERRED** (type_slot 6 / positional 2). Receipt: `receipts/20260921-morph65-force-residuals-n201.json`.
+
+## One card
+
+METHOD morph43 AUTHORIZE / ABSTAIN only on those 8. Expect many wiki/scaffold ABSTAINs. If AUTHORIZE ≥1: expand force/hard, re-fair morph65, one gold-knob morph67 warm morph65 (UPSAMPLE=8, SECOND_SLOT=2 held).
+
+| not this card | |
 |--|--|
-| fair | **0.9601990049751243** n=201 (193/201) — morph65 on post-force val |
-| PIN | best > fair on n=201 and E2 trunk-forward 1.0 |
-| not this card | upsample 11+, SECOND_SLOT=4, invent gold, Hub |
-
-## Done
-
-1. Packet settle 25 AUTHORIZE → OBSERVED.
-2. morph63 residual gold AUTHORIZE 27 / ABSTAIN 6 → force 164 / hard 206.
-3. morph65 PROMOTE (+1 exact vs morph63).
-4. Fair-eval morph65 on new force surface → 0.9602 @ n=201.
+| upsample 11+ | frozen |
+| SECOND_SLOT=4 | blocked |
+| replay morph66 force/hard | rejected |
+| invent OBSERVED | forbidden |
+| Hub / name_gate | false |
 
 Qwen stays stopped unless the operator re-enables `qwen38-27b.service`.
