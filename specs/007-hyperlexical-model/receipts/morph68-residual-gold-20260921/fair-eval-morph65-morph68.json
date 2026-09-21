@@ -1,0 +1,40 @@
+{
+  "schema": "hyperlex.fair_eval_same_surface.v0.1",
+  "as_of": "2026-09-21T22:32:18.974200+00:00",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+  "seed": "seed-morph65",
+  "force_train_path": "/home/morpheus/hlx/force_train_morph68_expanded.jsonl",
+  "force_stats": {
+    "unbind_force_train_path": "force_train_morph68_expanded.jsonl",
+    "n_unbind_force_train": 166,
+    "n_unbind_force_train_keys": 166,
+    "n_unbind_val_after_force_train": 197
+  },
+  "n_hard_atoms": 208,
+  "unbind_exact": 0.9695431472081218,
+  "n_scored": 197,
+  "n_correct_est": 191,
+  "scored": {
+    "unbind_exact": 0.9695431472081218,
+    "n_unbind_eval": 197,
+    "unbind_token_f1": 0.9797979797979798,
+    "unbind_token_precision": 0.9797979797979798,
+    "unbind_token_recall": 0.9797979797979798,
+    "unbind_slot_f1": 0.9797979797979798
+  },
+  "knob": "morph67 residual AUTHORIZE force/hard expand (METHOD morph43)",
+  "prior_fair_morph65_n199": 0.9698492462311558,
+  "promote": {
+    "authorize": 2,
+    "abstain": 6,
+    "force_added": 2,
+    "hard_added": 2,
+    "force_new": 166,
+    "hard_new": 208,
+    "authorize_texts": [
+      "[Out:] Mega yachts [In:] Mega gyatt",
+      "an egg's age"
+    ]
+  },
+  "note": "Fair morph65 BEST on morph68 force surface. Gate morph68 best > this fair + E2 trunk-forward 1.0."
+}
