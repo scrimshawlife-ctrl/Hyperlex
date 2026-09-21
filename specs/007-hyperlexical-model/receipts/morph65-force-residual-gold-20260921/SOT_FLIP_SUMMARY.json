@@ -1,0 +1,12 @@
+{
+  "as_of": "2026-09-21T17:06:37.716145+00:00",
+  "auth": "operator continue 2026-09-21; morph65 force residual AUTHORIZE SoT flip INFERRED\u2192OBSERVED (harvest sidecar)",
+  "n_appended": 2,
+  "texts": [
+    "TOKEN:MUSH SLOT:: MARKER:Multi-User TOKEN:Shared SLOT:Hallucination",
+    "TOKEN:Real SLOT:eyes MARKER:realize TOKEN:clanker SLOT:lies!!!"
+  ],
+  "harvest": "/home/morpheus/.hyperlex/hyperlexical/harvest_unbind_observed_mw.jsonl",
+  "backup_suffix": "bak-pre-morph67-sot-flip-20260921T170637Z",
+  "note": "force keys already present; class was INFERRED so force did not move. OBSERVED upgrade enables train+upsample. Not inventing fillers."
+}
