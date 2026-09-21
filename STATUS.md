@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-12  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph63` (**PROMOTE** — 0.8539823008849557 ep13 > fair morph62 0.8495575221238938 n=226; E2 PASS). `name_gate` still false.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — 0.8584070796460177 ep6 > fair morph63 0.8539823008849557 n=226; E2 PASS). `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -51,7 +51,7 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
 | `name_gate` | **false** — E2 PASS on Spark does **not** flip the gate. Danny yes still required. Volume ≠ name. |
-| Spark BEST | **`seed-morph63`** — pin `unbind_exact=0.8539823008849557` (ep13, 193/226) > fair morph62 0.8495575221238938. E2 PASS. Ladder ≥0.55 **HIT**. LAST_TRAINABLE_MAX=8 **HIT**. |
+| Spark BEST | **`seed-morph65`** — pin `unbind_exact=0.8584070796460177` (ep6, 194/226) > fair morph63 0.8539823008849557. E2 PASS. Ladder ≥0.55 **HIT**. LAST_TRAINABLE_MAX=8 **HIT**. Upsample ladder frozen. |
 | E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
 | T1 name | Not allowed. Card stays `hyperlex-encoder-*` until Danny yes on `name_gate`. |
@@ -103,7 +103,7 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
 | Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph63 (0.8540 ep13 n=226) · fair morph62 0.8496 · E2 PASS · ladder ≥0.55 HIT · LAST=8 MAX · `name_gate` false · no Hub · not named Hyperlexical |
+| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 (0.8584 ep6 n=226) · fair morph63 0.8540 · E2 PASS · ladder ≥0.55 HIT · LAST=8 MAX · upsample frozen · `name_gate` false · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph63** (held). morph64 upsample 9 **REJECT** (tie 193/226). Do not replay upsample 9 or second-slot weight 3/4. **In flight:** morph65 `HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=10` (`hlx-train-morph65-1789947808`). See `NEXT_MOVES_007.md` / `receipts/20260920-morph65-observed-upsample10-inflight.md`.
+1. Spark BEST = **morph65** (PROMOTE 194/226). Upsample ladder **frozen** (no 11+). Do not run second-slot weight 4. **In flight:** morph66 residual gold force/hard 164/206 (`hlx-train-morph66-1789969749`); fair morph65 **0.9602** n=201. See `NEXT_MOVES_007.md` / `receipts/20260921-morph66-residual-gold-inflight.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
