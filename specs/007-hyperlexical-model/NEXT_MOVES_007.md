@@ -1,17 +1,22 @@
-# Spec 007 — next card: OBSERVED upsample 10; BEST=morph63
+# Spec 007 — next after morph66: watch gold gate; freeze upsample
 
-`name_gate=false`. morph64 observed upsample 9 **tied** fair morph63 (193/226). Do not replay upsample 9. Do not run second-slot weight 4. Do not add gold.
+`name_gate=false`. BEST=**morph65** (`0.8584070796460177`, 194/226). Upsample ladder frozen (3..10 done; no 11+). Do not run second-slot weight 4.
 
-## One knob
+## In flight
 
-`HYPERLEX_UNBIND_OBSERVED_UPSAMPLE=10` (9 rejected as tie; not stacked with another lever). Residuals on BEST morph63 are 33, of which 25 are OBSERVED (`partial_slot_miss` 20).
-
-Hold from morph63: warm morph63, `SECOND_SLOT=2`, LR=2e-5, LAST=8, HEAD=2, POS=1, TYPE=1, HARD=4, force 137, mem 0.3 exclusive, 40ep, SAVE_BEST.
+**morph66** `hlx-train-morph66-1789969749` — one knob force/hard residual gold 164/206. Warm morph65. Hold UPSAMPLE=8, SECOND_SLOT=2, LAST=8, HEAD=2, POS=1, TYPE=1, HARD=4, mem 0.3 exclusive, 40ep, SAVE_BEST.
 
 | | |
 |--|--|
-| fair | **0.8539823008849557** n=226 (193/226) |
-| PIN | best > fair on n=226 and E2 trunk-forward 1.0 |
-| not this card | SECOND_SLOT=4, HEAD=3, HARD=6, POS=3, TYPE=3, another LR, Jev ingest, force of the label packet |
+| fair | **0.9601990049751243** n=201 (193/201) — morph65 on post-force val |
+| PIN | best > fair on n=201 and E2 trunk-forward 1.0 |
+| not this card | upsample 11+, SECOND_SLOT=4, invent gold, Hub |
 
-Upsample ladder: 3/4/5 = +2; 6/7/8 = +1; **9 = +0 tie**. 0.95 on this val is 215/226. Upsample 10 will not get there. The 25 INFERRED proposals from 2026-09-19 stay unsettled. Qwen stays stopped unless the operator re-enables `qwen38-27b.service`.
+## Done
+
+1. Packet settle 25 AUTHORIZE → OBSERVED.
+2. morph63 residual gold AUTHORIZE 27 / ABSTAIN 6 → force 164 / hard 206.
+3. morph65 PROMOTE (+1 exact vs morph63).
+4. Fair-eval morph65 on new force surface → 0.9602 @ n=201.
+
+Qwen stays stopped unless the operator re-enables `qwen38-27b.service`.
