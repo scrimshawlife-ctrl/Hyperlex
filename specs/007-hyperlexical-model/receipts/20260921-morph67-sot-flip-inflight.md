@@ -1,5 +1,7 @@
 # morph67 INFLIGHT — SoT class flip (2026-09-21)
 
+**Superseded by** `receipts/20260921-morph67-40ep-reject-vs-best.md`.
+
 Container `hlx-train-morph67-1790010500`. `name_gate=false`. Exclusive mem 0.3. Qwen stopped+disabled.
 
 ## One knob

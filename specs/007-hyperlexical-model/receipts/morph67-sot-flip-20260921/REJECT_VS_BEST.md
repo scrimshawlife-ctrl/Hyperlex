@@ -1,0 +1,3 @@
+# morph67 REJECT
+
+best 0.9597989949748744 vs fair 0.9698492462311558 (n=199, decision REJECT_VS_BEST). BEST stays morph65.
