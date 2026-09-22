@@ -1,1 +1,1 @@
-__CURSOR_FILE_CONTENT__:/workspace/scripts/shadow/hyperlexical/loop.py
+PLACEHOLDER_LOAD_FROM_FILE
