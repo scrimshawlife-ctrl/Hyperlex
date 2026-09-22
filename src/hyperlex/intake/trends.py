@@ -185,3 +185,248 @@ def build_trends_packet(
         "error_class": None,
     }
     return _with_fingerprint(body, query=query, geo=geo, timeframe=timeframe, fetched_at=fetched)
+
+
+import os
+from importlib.util import find_spec
+
+from .cache import cache_key, get_cached, rate_window_open, set_cached, stamp_rate_limit
+from .sources import offline_mode
+
+
+def trends_geo_timeframe() -> tuple[str, str]:
+    geo = os.environ.get("HYPERLEX_TRENDS_GEO", "")
+    geo = geo.strip() if isinstance(geo, str) else ""
+    timeframe = os.environ.get("HYPERLEX_TRENDS_TIMEFRAME", "").strip() or DEFAULT_TIMEFRAME
+    return geo, timeframe
+
+
+def pytrends_import_status() -> str:
+    if find_spec("pytrends") is None:
+        return "missing"
+    try:
+        from pytrends.request import TrendReq  # noqa: F401
+    except ModuleNotFoundError:
+        return "missing"
+    return "ok"
+
+
+def _is_offline(flag: Optional[bool]) -> bool:
+    if flag is True or offline_mode():
+        return True
+    return False
+
+
+def _is_rate_limited(exc: BaseException) -> bool:
+    response = getattr(exc, "response", None)
+    if getattr(response, "status_code", None) == 429:
+        return True
+    return "code 429" in str(exc)
+
+
+def _trends_cache_key(query: str, geo: str, timeframe: str) -> str:
+    return cache_key(f"{query}|{geo}|{timeframe}", "trends")
+
+
+def _read_cache(query: str, geo: str, timeframe: str) -> Optional[Dict[str, Any]]:
+    raw = get_cached(_trends_cache_key(query, geo, timeframe), source="trends")
+    if not isinstance(raw, str):
+        return None
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def _write_cache(packet: Dict[str, Any], query: str, geo: str, timeframe: str) -> None:
+    set_cached(
+        _trends_cache_key(query, geo, timeframe),
+        json.dumps(packet, sort_keys=True),
+        source="trends",
+    )
+
+
+def _put(ingest: Dict[str, Any], packet: Dict[str, Any]) -> Dict[str, Any]:
+    ingest["trends"] = packet
+    return ingest
+
+
+def attach_trends(
+    ingest: Dict[str, Any],
+    *,
+    route: Optional[str],
+    offline: Optional[bool] = None,
+    client: Optional[Any] = None,
+) -> Dict[str, Any]:
+    route_name = (route or "").strip().lower()
+    if route_name not in {"trends", "live"}:
+        return ingest
+    try:
+        return _attach_trends(ingest, route_name=route_name, offline=offline, client=client)
+    except Exception as exc:
+        if route_name == "live" and _is_offline(offline):
+            return ingest
+        geo, timeframe = trends_geo_timeframe()
+        query = str(ingest.get("query") or "").strip()
+        reason = "rate_limited" if _is_rate_limited(exc) else "fetch_failed"
+        error_class = None if reason == "rate_limited" else type(exc).__name__
+        return _put(
+            ingest,
+            build_trends_packet(
+                query=query,
+                geo=geo,
+                timeframe=timeframe,
+                failure=reason,
+                error_class=error_class,
+            ),
+        )
+
+
+def _attach_trends(
+    ingest: Dict[str, Any],
+    *,
+    route_name: str,
+    offline: Optional[bool],
+    client: Optional[Any],
+) -> Dict[str, Any]:
+    if _is_offline(offline):
+        if route_name == "live":
+            return ingest
+        geo, timeframe = trends_geo_timeframe()
+        return _put(
+            ingest,
+            build_trends_packet(
+                query=str(ingest.get("query") or "").strip(),
+                geo=geo,
+                timeframe=timeframe,
+                failure="offline",
+            ),
+        )
+
+    if client is None:
+        try:
+            status = pytrends_import_status()
+        except Exception as exc:
+            geo, timeframe = trends_geo_timeframe()
+            return _put(
+                ingest,
+                build_trends_packet(
+                    query=str(ingest.get("query") or "").strip(),
+                    geo=geo,
+                    timeframe=timeframe,
+                    failure="fetch_failed",
+                    error_class=type(exc).__name__,
+                ),
+            )
+        if status == "missing":
+            if route_name == "live":
+                return ingest
+            geo, timeframe = trends_geo_timeframe()
+            return _put(
+                ingest,
+                build_trends_packet(
+                    query=str(ingest.get("query") or "").strip(),
+                    geo=geo,
+                    timeframe=timeframe,
+                    failure="trends_extra_missing",
+                ),
+            )
+        client = PytrendsClient()
+
+    geo, timeframe = trends_geo_timeframe()
+    query = str(ingest.get("query") or "").strip()
+    if not query or len(query) > 100:
+        return _put(
+            ingest,
+            build_trends_packet(query=query, geo=geo, timeframe=timeframe, failure="query_rejected"),
+        )
+
+    cached = _read_cache(query, geo, timeframe)
+    if cached is not None:
+        copied = dict(cached)
+        copied["cached"] = True
+        return _put(ingest, copied)
+
+    if not rate_window_open("trends"):
+        return _put(
+            ingest,
+            build_trends_packet(query=query, geo=geo, timeframe=timeframe, failure="rate_limited"),
+        )
+
+    try:
+        raw = client.fetch(query, geo=geo, timeframe=timeframe)
+    except Exception as exc:
+        stamp_rate_limit("trends")
+        reason = "rate_limited" if _is_rate_limited(exc) else "fetch_failed"
+        return _put(
+            ingest,
+            build_trends_packet(
+                query=query,
+                geo=geo,
+                timeframe=timeframe,
+                failure=reason,
+                error_class=None if reason == "rate_limited" else type(exc).__name__,
+            ),
+        )
+    stamp_rate_limit("trends")
+    payload = raw if isinstance(raw, dict) else {}
+    packet = build_trends_packet(
+        query=query,
+        geo=geo,
+        timeframe=timeframe,
+        interest_over_time=payload.get("interest_over_time") or [],
+        related_queries=payload.get("related_queries") or {},
+    )
+    if packet["status"] in {"ok", "empty"}:
+        _write_cache(packet, query, geo, timeframe)
+    return _put(ingest, packet)
+
+
+def _new_trend_req():
+    from pytrends.request import TrendReq
+
+    return TrendReq(hl="en-US", tz=0, timeout=(5, 20), retries=2, backoff_factor=0.3)
+
+
+def _interest_from_frame(frame: Any, query: str) -> List[Dict[str, Any]]:
+    if frame is None or getattr(frame, "empty", True):
+        return []
+    columns = list(getattr(frame, "columns", []))
+    value_col = query if query in columns else next((col for col in columns if col != "isPartial"), None)
+    rows: List[Dict[str, Any]] = []
+    for idx, row in frame.iterrows():
+        date = idx.strftime("%Y-%m-%d") if hasattr(idx, "strftime") else str(idx)[:10]
+        value = row.get(value_col) if value_col is not None else None
+        partial = bool(row.get("isPartial", False))
+        rows.append({"date": date, "value": value, "partial": partial})
+    return rows
+
+
+def _related_from_payload(payload: Any, query: str) -> Dict[str, List[Dict[str, Any]]]:
+    block: Any = {}
+    if isinstance(payload, dict):
+        block = payload.get(query) or {}
+        if not block and len(payload) == 1:
+            block = next(iter(payload.values()))
+    if not isinstance(block, dict):
+        block = {}
+
+    def rows(frame: Any) -> List[Dict[str, Any]]:
+        if frame is None or getattr(frame, "empty", True):
+            return []
+        out: List[Dict[str, Any]] = []
+        for _, row in frame.iterrows():
+            out.append({"query": row.get("query"), "value": row.get("value")})
+        return out
+
+    return {"top": rows(block.get("top")), "rising": rows(block.get("rising"))}
+
+
+class PytrendsClient:
+    def fetch(self, query: str, *, geo: str, timeframe: str) -> Dict[str, Any]:
+        req = _new_trend_req()
+        req.build_payload([query], timeframe=timeframe, geo=geo)
+        interest = _interest_from_frame(req.interest_over_time(), query)
+        related = _related_from_payload(req.related_queries(), query)
+        return {"interest_over_time": interest, "related_queries": related}
