@@ -1,17 +1,23 @@
-# Spec 007 — next after morph70 REJECT (role-vocab-filtered new-atoms tie)
+# Spec 007 — next after morph71 IN FLIGHT (role-vocab expand / non-warm)
 
-`name_gate=false`. BEST=**morph65** (held). Upsample ladder frozen. Do not run SECOND_SLOT=4.
+`name_gate=false`. BEST=**morph65** (held until gate). Upsample ladder frozen. Do not run SECOND_SLOT=4.
 
 ## Done
 
-1. morph69 REJECT (tie fair 0.9649 n=171). Residual AUTHORIZE=0.
-2. morph70: settled new-atoms AUTHORIZE → role-vocab filter **force_added=2**; best **0.9649122807017544** = fair → **REJECT_VS_BEST**. E2 PASS. Residual AUTHORIZE=0.
+1. morph69–70 REJECT (tie fair 0.9649 n=171). Residual AUTHORIZE=0 on those cards.
+2. morph70 role-vocab filter force_added=2 exhausted warm-compat new-atoms.
 
-## Next
+## Now
 
-Hold. No morph71 without a new legal one-knob.
-- Do not burn force_added=0.
-- 23 longer `local-label-new-atoms` AUTHORIZE still held (need `pos_6+`; morph65 role head max `pos_5`) — requires explicit **role-vocab expand / non-warm** card, not another warm morph65 clone.
-- METHOD residual AUTHORIZE exhausted.
+**morph71 IN FLIGHT** — role-vocab expand / non-warm for 23 held longer new-atoms AUTHORIZE (`pos_6+`).
+- force **217** / hard **258** (force_added=23)
+- fair morph65 **0.9649122807017544** n=171
+- container `hlx-train-morph71-1790110734`
+- no `HYPERLEX_INIT_FROM`
+
+## After gate
+
+- PROMOTE only if best > fair n=171 and E2 trunk-forward 1.0.
+- Else REJECT; do not burn force_added=0; do not warm-clone morph65 on expanded vocab.
 
 Qwen stays stopped unless the operator re-enables `qwen38-27b.service`.
