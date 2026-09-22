@@ -1,1 +1,1 @@
-file:///workspace/scripts/shadow/hyperlexical/loop.py
+__CURSOR_FILE_CONTENT__:/workspace/scripts/shadow/hyperlexical/loop.py
