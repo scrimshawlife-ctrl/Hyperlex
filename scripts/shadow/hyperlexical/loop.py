@@ -1,1 +1,1 @@
-file:///workspace/scripts/shadow/hyperlexical/loop.py
+https://raw.githubusercontent.com/scrimshawlife-ctrl/Hyperlex/main/scripts/shadow/hyperlexical/loop.py
