@@ -1,0 +1,10 @@
+{
+  "interest_over_time": [
+    {"date": "2026-06-21", "value": 42, "partial": false},
+    {"date": "2026-06-28", "value": 100, "partial": true}
+  ],
+  "related_queries": {
+    "top": [{"query": "rizz meaning", "value": 100}],
+    "rising": [{"query": "rizz face", "value": "Breakout"}]
+  }
+}
