@@ -1,0 +1,7 @@
+{
+  "auth": "operator continue 2026-09-22; update goldens — integrate unused METHOD AUTHORIZE morph43/morph50 residual gold not yet in force68 (AUTHORIZE_MORPH43_OVERLAP still in force)",
+  "AUTHORIZE": 26,
+  "ABSTAIN": 0,
+  "n": 26,
+  "from": "unused prior METHOD authorize packets"
+}
