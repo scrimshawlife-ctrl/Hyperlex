@@ -1,7 +1,7 @@
 # Design: Google Trends evidence on Hyperlex routes
 
 **Date:** 2026-09-22
-**Status:** Accepted in design review; awaiting spec file review
+**Status:** Accepted. Implementation plan: `docs/superpowers/plans/2026-09-22-pytrends-evidence.md`
 **Scope:** Spec 1, evidence only
 **Repo:** `scrimshawlife-ctrl/Hyperlex` at `e1f5935`
 
