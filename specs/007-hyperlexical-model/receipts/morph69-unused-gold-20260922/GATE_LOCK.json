@@ -1,0 +1,12 @@
+{
+  "gate_owner": "morph69-unused-gold",
+  "finished_at": "2026-09-22T13:00:15.679408+00:00",
+  "status": "done",
+  "decision": "REJECT_VS_BEST",
+  "best_unbind_exact": 0.9649122807017544,
+  "fair": 0.9649122807017544,
+  "fair_val_n": 171,
+  "e2_pass": true,
+  "surface_ok": true,
+  "val_n": 171
+}
