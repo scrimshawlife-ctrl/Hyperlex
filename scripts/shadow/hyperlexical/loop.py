@@ -1,1 +1,1 @@
-__CURSOR_MCP_ARGS_FILE__:/home/ubuntu/.cursor/projects/workspace/agent-tools/LOOP_RESTORE_PUSH.json
+@/workspace/scripts/shadow/hyperlexical/loop.py
