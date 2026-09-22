@@ -1,0 +1,17 @@
+{
+  "schema": "hyperlex.train_hang_fix.v0.1",
+  "as_of": "2026-09-22T03:18:15.082679+00:00",
+  "prior_hangs": [
+    "hlx-train-morph68-1790029975",
+    "hlx-train-morph68-1790040737"
+  ],
+  "root_cause": "per-step loss.detach().cpu() forced ~12k CUDA host syncs/epoch; after SAVE_BEST full encoder GPU\u2192CPU copy, subsequent syncs hung (host CPU ~98%, GPU util 0, mem held). Not CPU device fallback.",
+  "fix": [
+    "loop.py: keep last_train_loss on-device; one .item() sync per epoch",
+    "loop.py: cuda.synchronize + empty_cache after SAVE_BEST",
+    "loop.py: epoch-progress.jsonl + stdout flush per epoch",
+    "relaunch: PYTORCH_CUDA_ALLOC_CONF without expandable_segments"
+  ],
+  "one_knob_unchanged": true,
+  "recipe": "same morph68 residual-gold force/hard, warm morph65, UPSAMPLE=8, SECOND_SLOT=2, mem 0.3"
+}
