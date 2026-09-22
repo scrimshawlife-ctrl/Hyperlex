@@ -543,3 +543,94 @@ def test_pytrends_client_maps_frames(monkeypatch):
     assert req.kwargs == {"kw_list": ["rizz"], "timeframe": "today 3-m", "geo": ""}
     assert got["interest_over_time"] == [{"date": "2026-06-21", "value": 42, "partial": False}]
     assert got["related_queries"]["rising"][0]["value"] == "Breakout"
+
+
+def test_fetch_ingest_offline_trends_and_mock_omits(trends_env, monkeypatch):
+    from hyperlex.intake import fetch_ingest
+
+    monkeypatch.setenv("HYPERLEX_OFFLINE", "1")
+    trends = fetch_ingest("rizz", route="trends")
+    assert trends["source"] == "mock"
+    assert trends["trends"]["status"] == "not_computable"
+    assert trends["trends"]["reason"] == "offline"
+    assert "brainrot" in trends["raw_signal"]
+    fp = trends["source_fingerprint"]["fingerprint_id"]
+
+    again = fetch_ingest("rizz", source="mock")
+    assert "trends" not in again
+    offline = fetch_ingest("rizz", route="offline")
+    assert "trends" not in offline
+    assert fp
+
+
+def test_detect_copies_trends_to_top_level(monkeypatch):
+    from hyperlex.analysis import detect_memetic_patterns
+
+    sentinel = {
+        "schema": "hyperlex.trends_evidence.v1",
+        "status": "ok",
+        "brier": None,
+    }
+
+    def _fake_fetch(query, source="mock", structured=True, max_terms=8, route=None):
+        return {
+            "query": query,
+            "source": "mock",
+            "raw_signal": 'Mock channel note on "rizz". Quiet discourse sample.',
+            "extracted_terms": [],
+            "metadata": {},
+            "route": {"route": "trends", "ok": True},
+            "provenance": {"source_fingerprint": {"fingerprint_id": "abc"}},
+            "source_fingerprint": {
+                "fingerprint_id": "abc",
+                "content_hash": "abc",
+                "source_locator": "hyperlex://mock",
+                "adapter_version": "ingest-v1.7",
+            },
+            "trends": sentinel,
+        }
+
+    monkeypatch.setattr("hyperlex.analysis.fetch_ingest", _fake_fetch)
+    result = detect_memetic_patterns(query="rizz", ingest_source="mock", ingest_route="trends")
+    assert result["trends"] is sentinel
+    assert "trends" not in result["ingest"]
+    assert "trends" not in result["analysis"]
+    assert result["provenance"]["brier"] is None
+
+
+def test_cli_run_trends_offline(tmp_path):
+    import os
+    import subprocess
+    import sys
+
+    root = Path(__file__).resolve().parents[1]
+    env = {
+        **dict(os.environ),
+        "PYTHONPATH": str(root / "src"),
+        "HYPERLEX_OFFLINE": "1",
+        "HYPERLEX_SCORE_LOG": str(tmp_path / "score_log.jsonl"),
+        "HYPERLEX_CACHE_DIR": str(tmp_path / "cache"),
+        "HYPERLEX_RATE_LIMIT_PATH": str(tmp_path / "rate_limit.json"),
+    }
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(root / "scripts" / "hyperlex.py"),
+            "run",
+            "rizz",
+            "--route",
+            "trends",
+            "--no-phase5",
+            "--receipt-dir",
+            str(tmp_path / "receipts"),
+        ],
+        cwd=str(root),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    data = json.loads(proc.stdout)
+    assert data["result"]["trends"]["status"] == "not_computable"
+    assert data["result"]["trends"]["reason"] == "offline"
+    assert data["result"]["provenance"]["brier"] is None

@@ -32,6 +32,9 @@ dev = [
 schema = [
     "jsonschema>=4.0",
 ]
+trends = [
+    "pytrends>=4.9",
+]
 
 [project.urls]
 Homepage = "https://github.com/scrimshawlife/hyperlex"

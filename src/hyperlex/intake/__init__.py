@@ -20,6 +20,7 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
 
 from .sources import pick_source
+from .trends import attach_trends
 from ..provenance import source_fingerprint
 
 
@@ -321,7 +322,7 @@ def fetch_ingest(
         fetched_at=fetched_at,
     )
 
-    return {
+    packet = {
         "query": query,
         "source": source,
         "raw_signal": raw,
@@ -341,6 +342,11 @@ def fetch_ingest(
         },
         "source_fingerprint": fp,
     }
+    return attach_trends(
+        packet,
+        route=resolved.get("route"),
+        offline=bool(resolved.get("offline_forced")),
+    )
 
 def _fetch_moltbook_agent_discourse(query: str) -> str:
     """Moltbook (AI agent social network) ingest for memetic patterns around cognition, memory, slang.
