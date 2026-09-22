@@ -101,9 +101,9 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Ingest routes + automatic pipeline | Ready |
 | Atomic multi-term seeds | Ready |
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
-| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
+| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\\|push\\|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 (0.8584 ep6 n=226) · fair morph63 0.8540 · E2 PASS · ladder ≥0.55 HIT · LAST=8 MAX · upsample frozen · morph67 SoT-flip inflight · `name_gate` false · no Hub · not named Hyperlexical |
+| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 (0.8584 ep6 n=226) · fair morph63 0.8540 · E2 PASS · ladder ≥0.55 HIT · LAST=8 MAX · upsample frozen · morph68 REJECT (tie fair 0.9695 n=197) · morph69 unused METHOD gold inflight · `name_gate` false · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65** (held). morph67 SoT-flip **REJECT** (0.9598 < fair 0.9698 n=199). morph67 residual label AUTHORIZE 2 → force_added=2. morph68 hung twice after ep4; **hang-fix relaunch** `hlx-train-morph68-1790047095` (drop per-step `.cpu()` sync; SAVE_BEST barrier; epoch heartbeat). Fair morph65 **0.9695 n=197**. See `NEXT_MOVES_007.md` / `receipts/20260921-morph68-residual-gold-inflight.md`.
+1. Spark BEST = **morph65** (held). morph68 **REJECT_VS_BEST** — best **0.9695431472081218** = fair n=197 (tie). E2 PASS. morph68 residual AUTHORIZE=0; **goldens updated** unused METHOD morph43/50 gold **force_added=26**. **In flight:** morph69 (`hlx-train-morph69-1790065790`); fair morph65 **0.9649 n=171**. See `NEXT_MOVES_007.md` / `receipts/20260922-morph69-unused-method-gold.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
