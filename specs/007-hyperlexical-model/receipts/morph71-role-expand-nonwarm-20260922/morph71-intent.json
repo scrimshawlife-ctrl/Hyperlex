@@ -1,0 +1,31 @@
+{
+  "morph": 71,
+  "as_of": "2026-09-22T20:58:54.985383+00:00",
+  "auth": "operator continue 2026-09-22; morph71 role-vocab expand / non-warm for held longer local-label-new-atoms AUTHORIZE (pos_6+; morph65 max pos_5)",
+  "one_knob": "role-vocab expand / non-warm for held longer new-atoms AUTHORIZE",
+  "warm": null,
+  "init_from": null,
+  "force": "/home/morpheus/hlx/force_train_morph71_expanded.jsonl",
+  "hard": "/home/morpheus/hlx/hard_atoms_train_morph71.jsonl",
+  "upsample": 8,
+  "second_slot": 2,
+  "last_trainable": 8,
+  "epochs": 40,
+  "lr": "2e-5",
+  "mem_fraction": 0.3,
+  "save_best": true,
+  "fair_path": "/home/morpheus/hlx/fair-eval-morph65-morph71.json",
+  "fair_exact": 0.9649122807017544,
+  "fair_n": 171,
+  "pin_rule": "best > fair on n=171 and E2 trunk-forward unbind_exact=1.0",
+  "name_gate": false,
+  "morph70_note": "best 0.9649122807017544 == fair morph70 → REJECT_VS_BEST; role-vocab filter force_added=2; 23 longer held",
+  "not_this_card": [
+    "warm INIT_FROM morph65",
+    "upsample 11+",
+    "SECOND_SLOT=4",
+    "invent OBSERVED fillers",
+    "Hub",
+    "force_added=0 warm clone"
+  ]
+}
