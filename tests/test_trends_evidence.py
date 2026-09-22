@@ -638,10 +638,11 @@ def test_cli_run_trends_offline(tmp_path):
 
 def test_trends_extra_pins_urllib3_below_2():
     # pytrends 4.9.2 passes method_whitelist; urllib3 2 removed that argument.
-    import tomllib
+    import re
 
-    path = Path(__file__).resolve().parents[1] / "pyproject.toml"
-    data = tomllib.loads(path.read_text(encoding="utf-8"))
-    extra = data["project"]["optional-dependencies"]["trends"]
+    text = (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text(encoding="utf-8")
+    match = re.search(r"(?ms)^trends\s*=\s*\[(.*?)\]", text)
+    assert match is not None
+    extra = match.group(1)
     assert "pytrends>=4.9" in extra
     assert "urllib3>=1.26,<2" in extra
