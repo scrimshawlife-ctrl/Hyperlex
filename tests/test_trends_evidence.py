@@ -59,3 +59,25 @@ def test_no_rate_limit_env_keeps_window_open(trends_env, monkeypatch):
     stamp_rate_limit("trends")
     monkeypatch.setenv("HYPERLEX_NO_RATE_LIMIT", "1")
     assert rate_window_open("trends") is True
+
+
+def test_route_trends_selects_combined():
+    from hyperlex.intake.sources import list_sources, pick_source, resolve_source
+
+    src, pkt = pick_source(None, route="trends", force_offline=False)
+    assert src == "combined"
+    assert pkt["route"] == "trends"
+    assert pkt["ok"] is True
+    assert pkt["network"] is True
+
+    src_off, pkt_off = pick_source(None, route="trends", force_offline=True)
+    assert src_off == "mock"
+    assert pkt_off["offline_forced"] is True
+    assert pkt_off["route"] == "trends"
+
+    names = {row["name"] for row in list_sources()["routes"]}
+    assert "trends" in names
+
+    unknown = resolve_source(route="not-a-route", force_offline=False)
+    assert unknown["ok"] is False
+    assert "trends" in unknown["error"]
