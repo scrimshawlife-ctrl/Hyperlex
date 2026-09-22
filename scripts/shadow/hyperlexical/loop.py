@@ -1,1 +1,1 @@
-PLACEHOLDER_LOAD_FROM_FILE
+__CURSOR_MCP_ARGS_FILE__:/home/ubuntu/.cursor/projects/workspace/agent-tools/LOOP_RESTORE_PUSH.json
