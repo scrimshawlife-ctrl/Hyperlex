@@ -1,0 +1,37 @@
+{
+  "auth": "operator 2026-09-23 authorize val-settle \u2014 morph77 we're so back / clutch up / bet that up / real talk (split=val)",
+  "as_of": "2026-09-23T22:42:55.447298+00:00",
+  "qualify": [
+    "we're so back",
+    "clutch up",
+    "bet that up",
+    "real talk"
+  ],
+  "settled_inferred_to_observed": [
+    "we're so back",
+    "clutch up",
+    "bet that up",
+    "real talk"
+  ],
+  "already_observed": [],
+  "force_base": 224,
+  "force77": 232,
+  "force_added": 8,
+  "hard_base": 265,
+  "hard77": 273,
+  "hard_added": 8,
+  "added_force_texts": [
+    "we're so back",
+    "TOKEN:we're SLOT:so MARKER:back",
+    "clutch up",
+    "TOKEN:clutch SLOT:up",
+    "bet that up",
+    "TOKEN:bet SLOT:that MARKER:up",
+    "real talk",
+    "TOKEN:real SLOT:talk"
+  ],
+  "split_policy": "force_val",
+  "force_path": "/home/morpheus/hlx/force_train_morph77_expanded.jsonl",
+  "hard_path": "/home/morpheus/hlx/hard_atoms_train_morph77.jsonl",
+  "one_knob": "val-settle force expand (4 phrases) after morph76 ceiling"
+}
