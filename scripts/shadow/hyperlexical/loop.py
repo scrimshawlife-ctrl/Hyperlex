@@ -62,6 +62,7 @@ UNBIND_LOSS_WEIGHT_ENV = "HYPERLEX_UNBIND_LOSS_WEIGHT"
 UNBIND_EVERY_N_ENV = "HYPERLEX_UNBIND_EVERY_N"
 SAVE_BEST_UNBIND_ENV = "HYPERLEX_SAVE_BEST_UNBIND"
 INIT_FROM_ENV = "HYPERLEX_INIT_FROM"
+INIT_EXPAND_VOCAB_ENV = "HYPERLEX_INIT_EXPAND_VOCAB"
 UNBIND_LOSS_WEIGHT_DEFAULT = 1.0
 UNBIND_EVERY_N_DEFAULT = 1
 
@@ -94,6 +95,20 @@ def resolve_init_from(raw: str | None = None) -> Path | None:
     return path
 
 
+def resolve_init_expand_vocab(raw: str | None = None) -> bool:
+    """When true, warm-load remaps shared role/filler rows into expanded vocabs.
+
+    Default fail-closed on vocab mismatch. Opt-in via HYPERLEX_INIT_EXPAND_VOCAB=1
+    so a smaller prior seed (e.g. morph65 max pos_5) can warm a harvest that added
+    pos_6+/new fillers: copy overlapping labels by name, leave new rows at init.
+    """
+    if raw is None:
+        raw = os.environ.get(INIT_EXPAND_VOCAB_ENV)
+    if raw is None or (isinstance(raw, str) and not raw.strip()):
+        return False
+    return str(raw).strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _init_weight_path(init_dir: Path) -> Path:
     for name in ("model.safetensors", "heads.pt"):
         candidate = init_dir / name
@@ -122,6 +137,55 @@ def _read_init_vocabs(init_dir: Path) -> tuple[list | None, list | None]:
     return None, None
 
 
+def _remap_linear_rows(module, state: dict, init_labels: list, current_labels: list, head: str) -> dict:
+    """Copy overlapping out-rows from init Linear state into current module by label name."""
+    weight = state.get("weight")
+    if weight is None:
+        raise ValueError(f"{INIT_FROM_ENV} {head} missing weight")
+    if int(getattr(weight, "shape", [0])[0]) != len(init_labels):
+        raise ValueError(
+            f"{INIT_FROM_ENV} {head} weight rows {tuple(weight.shape)} != "
+            f"init vocab {len(init_labels)}"
+        )
+    if int(module.weight.shape[0]) != len(current_labels):
+        raise ValueError(
+            f"{INIT_FROM_ENV} {head} module rows {tuple(module.weight.shape)} != "
+            f"current vocab {len(current_labels)}"
+        )
+    current_of = {lab: i for i, lab in enumerate(current_labels)}
+    mapped = 0
+    skipped = 0
+    for ii, lab in enumerate(init_labels):
+        ci = current_of.get(lab)
+        if ci is None:
+            skipped += 1
+            continue
+        module.weight.data[ci].copy_(weight[ii].detach())
+        mapped += 1
+    bias = state.get("bias")
+    if bias is not None and module.bias is not None:
+        if int(getattr(bias, "shape", [0])[0]) != len(init_labels):
+            raise ValueError(
+                f"{INIT_FROM_ENV} {head} bias rows != init vocab {len(init_labels)}"
+            )
+        for ii, lab in enumerate(init_labels):
+            ci = current_of.get(lab)
+            if ci is None:
+                continue
+            module.bias.data[ci].copy_(bias[ii].detach())
+    if mapped == 0:
+        raise ValueError(
+            f"{INIT_FROM_ENV} {head} expand remap matched 0/{len(init_labels)} labels"
+        )
+    return {
+        "mapped": mapped,
+        "skipped_init_only": skipped,
+        "new_current_rows": len(current_labels) - mapped,
+        "init_n": len(init_labels),
+        "current_n": len(current_labels),
+    }
+
+
 def warm_load_checkpoint(
     encoder,
     classify,
@@ -129,20 +193,40 @@ def warm_load_checkpoint(
     filler_head,
     maps: dict,
     init_dir: Path,
+    *,
+    expand_vocab: bool | None = None,
 ) -> dict:
-    """Load heads + trainable encoder tensors from a prior seed dump. Fail closed."""
+    """Load heads + trainable encoder tensors from a prior seed dump. Fail closed.
+
+    When expand_vocab is true (or HYPERLEX_INIT_EXPAND_VOCAB=1), role/filler heads
+    remap overlapping labels by name into the current larger vocab; classify still
+    loads strict. Default remains exact-vocab match.
+    """
+    if expand_vocab is None:
+        expand_vocab = resolve_init_expand_vocab()
     weight_path = _init_weight_path(init_dir)
     init_roles, init_fillers = _read_init_vocabs(init_dir)
-    if init_roles is not None and init_roles != list(maps.get("role_vocab") or []):
-        raise ValueError(
-            f"{INIT_FROM_ENV} role_vocab mismatch vs current export "
-            f"(init={len(init_roles)} current={len(maps.get('role_vocab') or [])})"
-        )
-    if init_fillers is not None and init_fillers != list(maps.get("filler_vocab") or []):
+    cur_roles = list(maps.get("role_vocab") or [])
+    cur_fillers = list(maps.get("filler_vocab") or [])
+    roles_match = init_roles is None or init_roles == cur_roles
+    fillers_match = init_fillers is None or init_fillers == cur_fillers
+    vocab_match = roles_match and fillers_match
+    if not vocab_match and not expand_vocab:
+        if init_roles is not None and init_roles != cur_roles:
+            raise ValueError(
+                f"{INIT_FROM_ENV} role_vocab mismatch vs current export "
+                f"(init={len(init_roles)} current={len(cur_roles)})"
+            )
         raise ValueError(
             f"{INIT_FROM_ENV} filler_vocab mismatch vs current export "
-            f"(init={len(init_fillers)} current={len(maps.get('filler_vocab') or [])})"
+            f"(init={len(init_fillers or [])} current={len(cur_fillers)})"
         )
+    if not vocab_match and expand_vocab:
+        if init_roles is None or init_fillers is None:
+            raise ValueError(
+                f"{INIT_EXPAND_VOCAB_ENV}=1 requires init role_vocab+filler_vocab "
+                f"in {init_dir}/config.json (or layout.json)"
+            )
 
     if weight_path.name == "model.safetensors":
         from safetensors.torch import load_file
@@ -177,15 +261,32 @@ def warm_load_checkpoint(
         split["encoder"] = enc
         heads_blob = blob
 
-    for name, module in (
-        ("classify", classify),
-        ("role_head", role_head),
-        ("filler_head", filler_head),
-    ):
-        state = split.get(name) or {}
-        if not state:
-            raise ValueError(f"{weight_path} missing {name} tensors")
-        module.load_state_dict(state, strict=True)
+    classify_state = split.get("classify") or {}
+    if not classify_state:
+        raise ValueError(f"{weight_path} missing classify tensors")
+    classify.load_state_dict(classify_state, strict=True)
+
+    expand_receipt: dict = {
+        "expand_vocab": bool(expand_vocab and not vocab_match),
+        "vocab_match": vocab_match,
+    }
+    if vocab_match or not expand_vocab:
+        for name, module in (("role_head", role_head), ("filler_head", filler_head)):
+            state = split.get(name) or {}
+            if not state:
+                raise ValueError(f"{weight_path} missing {name} tensors")
+            module.load_state_dict(state, strict=True)
+    else:
+        role_state = split.get("role_head") or {}
+        filler_state = split.get("filler_head") or {}
+        if not role_state or not filler_state:
+            raise ValueError(f"{weight_path} missing role_head/filler_head tensors")
+        expand_receipt["role"] = _remap_linear_rows(
+            role_head, role_state, list(init_roles), cur_roles, "role_head"
+        )
+        expand_receipt["filler"] = _remap_linear_rows(
+            filler_head, filler_state, list(init_fillers), cur_fillers, "filler_head"
+        )
 
     applied = apply_encoder_trainable(encoder, split.get("encoder") or {})
     if applied["present"] and applied["loaded"] == 0:
@@ -198,6 +299,8 @@ def warm_load_checkpoint(
         "encoder_trainable_loaded": applied["loaded"],
         "encoder_trainable_present": applied["present"],
         "heads_blob": bool(heads_blob),
+        "init_expand_vocab": bool(expand_vocab),
+        **expand_receipt,
     }
 
 
@@ -257,7 +360,7 @@ def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
     """Train recipe. Val is frozen lexical split unless force-train env is set.
 
     ``HYPERLEX_UNBIND_FORCE_TRAIN_PATH`` may move authorized OBSERVED exacts
-    from val\u2192train (accept-style). Empty/unset \u2192 val untouched.
+    from val→train (accept-style). Empty/unset → val untouched.
     """
     train = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "train"]
     val = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "val"]
@@ -561,7 +664,7 @@ def run_loop(
             if device.type == "cuda":
                 torch.cuda.synchronize()
                 torch.cuda.empty_cache()
-        # Durable heartbeat \u2014 morph68 hung silently after ep4 with frozen docker logs.
+        # Durable heartbeat — morph68 hung silently after ep4 with frozen docker logs.
         progress = {
             "epoch": ep,
             "unbind_exact": exact,
@@ -583,7 +686,7 @@ def run_loop(
         encoder, classify, role_head, filler_head, maps, layout
     )
     # Always write final epoch weights under a distinct name when best-save is on,
-    # then promote best \u2192 primary model.safetensors (fixes morph35 peak-not-saved).
+    # then promote best → primary model.safetensors (fixes morph35 peak-not-saved).
     if save_best_unbind and best_state is not None:
         final_file = save_heads(out_dir, final_state)
         # rename primary final dump aside, then write best as primary
@@ -676,6 +779,10 @@ def run_loop(
         "warm_start": bool(init_receipt.get("warm_start")),
         "init_weight_file": init_receipt.get("weight_file"),
         "init_encoder_trainable_loaded": init_receipt.get("encoder_trainable_loaded"),
+        "init_expand_vocab": bool(init_receipt.get("init_expand_vocab")),
+        "init_expand_vocab_applied": bool(init_receipt.get("expand_vocab")),
+        "init_expand_role": init_receipt.get("role"),
+        "init_expand_filler": init_receipt.get("filler"),
         "epoch_metrics": epoch_metrics,
         "weight_file": weight_file,
         "aligner": "char_span + offset_mapping",
