@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-12  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — force fair **1.0** n=164 post scaffolding demote; E2 PASS). morph69–74 REJECT; morph75 CANCELLED (fair ceiling). **HOLD (empty gold)** — Jev refine deferred all 8 prior AUTHORIZE phrases; await fresh acquire/METHOD. Broad OBSERVED val 0.890 n=254. `name_gate` still false.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — force fair **1.0** n=164). morph69–75 closed; morph76 acquire-settle kept (`highkey shawty` OBSERVED; force 224) but train **CANCELLED_FAIR_CEILING**. **HOLD — next acquire must be val-split.** Broad OBSERVED val 0.890. `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65** (held). **HOLD (empty gold)** — Jev classify emptied the morph43 AUTHORIZE card (defer_quality=8). Next: fresh civilian acquire + METHOD outside residual wall, or explicit phrase override. See `receipts/20260923-jev-refine-empty-gold-hold.md`.
+1. Spark BEST = **morph65** (held). **HOLD — val-split acquire.** morph76 force_added=4 but fair stayed 1.0 n=164 (train-split atoms). Next AUTHORIZE atoms must land on **val** before morph77. See `receipts/20260923-morph76-acquire-settle-cancelled-fair-ceiling.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
