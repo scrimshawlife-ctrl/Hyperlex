@@ -1,1 +1,1 @@
-PLACEHOLDER_WILL_REPLACE
+@/tmp/test_only.txt
