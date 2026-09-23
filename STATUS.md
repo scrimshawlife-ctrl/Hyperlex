@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-12  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — force fair **1.0** n=164 post scaffolding demote; E2 PASS). morph69–74 REJECT; morph75 CANCELLED (fair ceiling). **HOLD** — gold card ready (METHOD morph43 AUTHORIZE=9 / 8 phrases); await explicit authorize before morph76. Broad OBSERVED val 0.890 n=254. `name_gate` still false.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — force fair **1.0** n=164 post scaffolding demote; E2 PASS). morph69–74 REJECT; morph75 CANCELLED (fair ceiling). **HOLD (empty gold)** — Jev refine deferred all 8 prior AUTHORIZE phrases; await fresh acquire/METHOD. Broad OBSERVED val 0.890 n=254. `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -51,7 +51,7 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
 | `name_gate` | **false** — E2 PASS on Spark does **not** flip the gate. Danny yes still required. Volume ≠ name. |
-| Spark BEST | **`seed-morph65`** — force fair **1.0** n=164 (post scaffolding demote). Pin ep6 0.8584 n=226. E2 PASS. Ladder ≥0.55 **HIT**. LAST_TRAINABLE_MAX=8 **HIT**. Upsample freeze **11+**. morph69–74 REJECT; morph75 CANCELLED. **HOLD** gold card AUTHORIZE=9 awaiting morph76 authorize. |
+| Spark BEST | **`seed-morph65`** — force fair **1.0** n=164 (post scaffolding demote). Pin ep6 0.8584 n=226. E2 PASS. Ladder ≥0.55 **HIT**. LAST_TRAINABLE_MAX=8 **HIT**. Upsample freeze **11+**. morph69–74 REJECT; morph75 CANCELLED. **HOLD (empty gold)** — Jev refine deferred prior AUTHORIZE=8. |
 | E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
 | T1 name | Not allowed. Card stays `hyperlex-encoder-*` until Danny yes on `name_gate`. |
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65** (held). **HOLD** — gold card ready (METHOD morph43 AUTHORIZE=9 / 8 phrases). Await explicit `authorize morph76` before force/hard expand → re-fair → morph76. See `NEXT_MOVES_007.md` / `receipts/20260923-continue-land-hold.md`.
+1. Spark BEST = **morph65** (held). **HOLD (empty gold)** — Jev classify emptied the morph43 AUTHORIZE card (defer_quality=8). Next: fresh civilian acquire + METHOD outside residual wall, or explicit phrase override. See `receipts/20260923-jev-refine-empty-gold-hold.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
