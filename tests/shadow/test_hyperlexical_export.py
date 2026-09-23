@@ -1,1 +1,1 @@
-@/tmp/test_only.txt
+SEE_ARGUMENTS_JSON_FILE
