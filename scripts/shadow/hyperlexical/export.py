@@ -1,6 +1,1 @@
-"""U2 civilian exporter. No hyperlex import. No ~/.hyperlex copy."""
-
-from __future__ import annotations
-
-# PARTIAL_RESTORE_MARKER - full content follows via push_files
-raise SystemExit('incomplete restore')
+LOAD_FROM_TOOL_ARGS:Github-create_or_update_file.json:sha256:5233434bf44d93f41a6970d73114391dd33b8874b87de527f022587a4daf45eb
