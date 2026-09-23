@@ -1,1 +1,1 @@
-SEE_ARGUMENTS_JSON_FILE
+__FROM_FILE__:/tmp/test_only.txt
