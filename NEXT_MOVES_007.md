@@ -1,13 +1,12 @@
-# Spec 007 — next: soft_ceiling armed · morph78 HOLD empty gold
+# Spec 007 — next: soft_ceiling armed · HOLD empty gold (idle)
 
 `name_gate=false`. BEST=**morph65** (held). Upsample freeze = **11+**. Do not run SECOND_SLOT=4.
 
 ## Done
 
-- Gate **soft_ceiling ARMED** (live prior broad 0.8867 n=256).
-- morph78 fresh acquire + METHOD morph43: 37 candidates all val.
-- Jev qualify: **force_expand_safe=0** → **HOLD empty gold** (`land_hold_empty`).
-- Revisit morph77 leftovers: no card ≥0.40 NEW.
+- soft_ceiling **ARMED** (live prior broad **0.88671875** n=256).
+- morph78 fresh acquire → HOLD empty (force_expand_safe=0).
+- Live broad residual reprobe → 29 residuals; Jev again **force_expand_safe=0** → **land_hold_empty** 0.86.
 
 ## Gate (armed)
 
@@ -15,6 +14,6 @@
 
 ## Next
 
-Await **`authorize morph78`** / **`authorize val-settle`** with named phrases (override), or a new acquire direction. Do not train without gold.
+**Idle HOLD.** Await **`authorize morph78`** / **`authorize val-settle`** with named phrases, or a new acquire direction. Do not burn identical empty acquires.
 
 Qwen stays stopped unless re-enabled.

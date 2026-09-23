@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-12  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — force fair **1.0** n=164). Gate **soft_ceiling_tiebreak ARMED**. morph78 fresh acquire HOLD **empty gold** (Jev defer 35 / safe 0). Live broad prior 0.8867 n=256. `name_gate` still false.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 acquire + live residual reprobe both **HOLD empty gold**. `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65** (held). soft_ceiling **ARMED**. morph78 fresh acquire → **HOLD empty gold** (Jev land_hold_empty). Await authorize with named phrases or new acquire direction. See `receipts/20260923-morph78-fresh-acquire-hold-empty.md`.
+1. Spark BEST = **morph65**. soft_ceiling **ARMED**. Gold card empty after morph78 acquire + live broad residual reprobe (Jev land_hold_empty). Await authorize with named phrases. See `receipts/20260923-morph65-broad-reprobe-hold-empty.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
