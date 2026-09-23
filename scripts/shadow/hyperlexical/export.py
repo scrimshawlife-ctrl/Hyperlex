@@ -1,1 +1,1 @@
-__FROM_FILE__:/tmp/export_only.txt
+file:///tmp/export_only.txt
