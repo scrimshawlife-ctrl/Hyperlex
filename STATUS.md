@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-12  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — force fair **1.0** n=164). morph77 val-settle kept (4 OBSERVED; force 232) but train CANCELLED_FAIR_CEILING. **Force-surface climb STOP** (Jev stop_force_climb). Broad OBSERVED val 0.890 optional. `name_gate` still false.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — force fair **1.0** n=164). Gate **soft_ceiling_tiebreak ARMED** (operator authorize 2026-09-23): at force-fair 1.0 promote on candidate broad OBSERVED **>** PRIOR morph65 on live SoT (pincheck 0.8867 n=256; authorize pin 0.890 n=254 historical) + E2. morph77 val-settle kept (force 232). `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -51,7 +51,7 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
 | `name_gate` | **false** — E2 PASS on Spark does **not** flip the gate. Danny yes still required. Volume ≠ name. |
-| Spark BEST | **`seed-morph65`** — force fair **1.0** n=164 (post scaffolding demote). Pin ep6 0.8584 n=226. E2 PASS. Ladder ≥0.55 **HIT**. LAST_TRAINABLE_MAX=8 **HIT**. Upsample freeze **11+**. morph69–74 REJECT; morph75 CANCELLED. **HOLD (empty gold)** — Jev refine deferred prior AUTHORIZE=8. |
+| Spark BEST | **`seed-morph65`** — force fair **1.0** n=164. soft_ceiling **ARMED** (live prior broad 0.8867 n=256). E2 PASS. LAST=8. Upsample freeze **11+**. morph69–74 REJECT; morph75–77 CANCELLED_FAIR_CEILING. Empty gold → fresh acquire for morph78. |
 | E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
 | T1 name | Not allowed. Card stays `hyperlex-encoder-*` until Danny yes on `name_gate`. |
@@ -103,7 +103,7 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
 | Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 · force fair 1.0 n=164 · broad OBSERVED 0.890 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–75 closed · HOLD gold card · `name_gate` false · no Hub · not named Hyperlexical |
+| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 · soft_ceiling ARMED · force fair 1.0 n=164 · live broad prior 0.887 n=256 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–77 closed · next fresh acquire morph78 · `name_gate` false · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65** (held). **Force-surface climb STOP** — fair 1.0 n=164 cannot be strictly beaten; force keys leave fair val. morph77 settle kept. Optional broad OBSERVED path or operator gate change. See `receipts/20260923-morph77-val-settle-cancelled-fair-ceiling.md`.
+1. Spark BEST = **morph65** (held). Gate **soft_ceiling ARMED** — ceiling escape on broad OBSERVED. Next: fresh acquire + METHOD morph43 → morph78 under soft_ceiling finish. See `receipts/20260923-authorize-gate-soft-ceiling.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 

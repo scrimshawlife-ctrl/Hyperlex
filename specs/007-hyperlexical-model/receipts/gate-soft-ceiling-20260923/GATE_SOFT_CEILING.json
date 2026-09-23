@@ -1,0 +1,69 @@
+{
+  "schema": "hyperlex.gate_soft_ceiling_tiebreak.v0.1",
+  "status": "ARMED",
+  "authorized_at": "2026-09-23T22:51:00+00:00",
+  "auth": "operator authorize gate soft_ceiling 2026-09-23",
+  "name_gate": false,
+  "prior_best": "seed-morph65",
+  "force_fair_ceiling": {
+    "exact": 1.0,
+    "n": 164,
+    "note": "Force keys leave fair val; expand cannot grow n. morph75-77 CANCELLED_FAIR_CEILING."
+  },
+  "authorize_pin_historical": {
+    "seed": "seed-morph65",
+    "unbind_exact": 0.889763779527559,
+    "n": 254,
+    "source_receipt": "morph65-broad-residual-diag-20260923/morph65-broad-residual-diag.json",
+    "note": "Pin at authorize before morph77 settle grew OBSERVED val."
+  },
+  "live_prior_broad_pincheck_post_morph77": {
+    "as_of": "2026-09-23T22:59:00+00:00",
+    "model": "seed-morph65",
+    "unbind_exact": 0.88671875,
+    "n": 256,
+    "path": "/home/morpheus/hlx/broad-eval-morph65-pincheck.json",
+    "note": "After morph77 val-settle (+4 OBSERVED). Finish must re-eval PRIOR on current SoT."
+  },
+  "rules": {
+    "when_force_fair_lt_1": {
+      "promote_if": [
+        "candidate best unbind_exact > force_fair exact on same force surface",
+        "val_n == force_fair n",
+        "E2 trunk-forward unbind_exact == 1.0"
+      ]
+    },
+    "when_force_fair_eq_1": {
+      "promote_if": [
+        "candidate broad OBSERVED val (no force) > PRIOR morph65 broad OBSERVED on same live SoT",
+        "candidate broad n == prior broad n",
+        "E2 trunk-forward unbind_exact == 1.0"
+      ],
+      "fallback_if_no_prior_eval": "authorize_pin_historical strictly greater + n match",
+      "note": "Force-fair advisory; do not cancel solely for force-fair 1.0."
+    }
+  },
+  "constraints_unchanged": [
+    "no Hub",
+    "name_gate=false",
+    "schemes positional|type_slot only",
+    "Brier null",
+    "LAST_TRAINABLE max 8",
+    "upsample freeze 11+",
+    "no SECOND_SLOT=4",
+    "no invented OBSERVED",
+    "METHOD morph43 for residual labels"
+  ],
+  "jev": {
+    "pairwise_prefer": "soft_ceiling_tiebreak",
+    "pairwise_score": 0.8,
+    "adopt_strength": "moderate"
+  },
+  "spark_paths": {
+    "gate_pin": "/home/morpheus/hlx/GATE_SOFT_CEILING.json",
+    "eval_helper": "/home/morpheus/hlx/eval_broad_observed.py",
+    "run_eval": "/home/morpheus/hlx/run_broad_eval.sh",
+    "finish_template": "/home/morpheus/hlx/finish_soft_ceiling.py",
+    "decision_helper": "/home/morpheus/hlx/gate_soft_ceiling_decide.py"
+  }
+}
