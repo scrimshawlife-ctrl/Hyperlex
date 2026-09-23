@@ -12,10 +12,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Assemble decode commit
         env:
-          N_EXPORT: '8'
-          N_TEST: '4'
-          EXPORT_SHA: '5233434bf44d93f41a6970d73114391dd33b8874b87de527f022587a4daf45eb'
-          TEST_SHA: 'a52ef8c195b8bcc7a26901c0ec96fcb1094672aed292ffe79622d1e3e2469c08'
+          N_EXPORT: '4'
+          N_TEST: '2'
+          EXPORT_SHA: '2d991dc1d48c7bb049c67db21cda407773fe06be42d0b9c95ddd26ae51639ec0'
+          TEST_SHA: 'd7139d63f5ff284e1ba225215af0f8ff13dfb4d1d9e9bade0aaeb2d7fe5797a7'
         run: |
           set -euo pipefail
           python3 <<'PY'
@@ -28,6 +28,7 @@ jobs:
           e = zlib.decompress(base64.b64decode(ce))
           t = zlib.decompress(base64.b64decode(ct))
           assert b'reject_wiki_scaffolding_text' in e
+          assert b'_strip_type_slot_tags' in e
           assert len(e) > 40000
           assert hashlib.sha256(e).hexdigest() == os.environ['EXPORT_SHA']
           assert hashlib.sha256(t).hexdigest() == os.environ['TEST_SHA']
@@ -38,5 +39,5 @@ jobs:
           git config user.name "Daniel Meyer"
           git config user.email "scrimshawlife@gmail.com"
           git add scripts/shadow/hyperlexical/export.py tests/shadow/test_hyperlexical_export.py
-          git commit -m "fix(007): restore export.py scaffolding reject after tip mishap"
+          git commit -m "fix(007): reject type_slot-tagged wiki scaffolding chrome"
           git push
