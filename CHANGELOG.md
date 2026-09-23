@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Spec 007 tip CI: restore unbind force-train API:** `loop.py` imported
+  `apply_unbind_force_train` but tip `unbind_recipe.py` lacked the helpers
+  (`HYPERLEX_UNBIND_FORCE_TRAIN_PATH`, resolve/load/apply). Restored + tests
+  `tests/shadow/test_hyperlexical_unbind_force_train.py`.
+
+- **Spec 007 Hyperlexical product plan (draft):**
+  `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md` — climb under
+  soft_ceiling, engineering hygiene, name_gate/Hub packaging, PR triage
+  (#100 / #99 / #95). Does not flip `name_gate`.
+
 - **Spec 007 morph74 IN FLIGHT (SoT clean + acquire-settle):** quarantined **57**
   INFERRED wiki/scaffolding from Spark SoT; durable `reject_wiki_scaffolding_text`.
   Settle `to the moon` + `elo hell` → force/hard **217→221 / 258→262**. Warm
