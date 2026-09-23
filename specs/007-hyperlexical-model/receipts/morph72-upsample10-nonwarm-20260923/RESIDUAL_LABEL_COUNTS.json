@@ -1,0 +1,13 @@
+{
+  "auth": "operator continue 2026-09-23; morph72 REJECT residual METHOD morph43 label",
+  "AUTHORIZE": 0,
+  "ABSTAIN": 8,
+  "n": 8,
+  "by_scheme": {
+    "positional": 3,
+    "type_slot": 5
+  },
+  "by_why": {
+    "abstain_scaffolding_wiki_etym": 8
+  }
+}
