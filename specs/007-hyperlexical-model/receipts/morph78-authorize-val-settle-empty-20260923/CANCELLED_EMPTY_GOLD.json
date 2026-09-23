@@ -1,0 +1,42 @@
+{
+  "schema": "hyperlex.cancel_empty_gold.v0.1",
+  "status": "CANCELLED_EMPTY_GOLD",
+  "as_of": "2026-09-23T23:38:19.380050+00:00",
+  "auth": "operator 2026-09-23 authorize val-settle",
+  "gate": "soft_ceiling_tiebreak",
+  "reason": "HOLD authorize_card_phrases empty on morph78 acquire + live residual reprobe; no invented OBSERVED; Jev cancel_empty_gold 0.96",
+  "hold_cards_checked": [
+    "p1-spark-morph78-fresh-acquire-label-hold-20260923",
+    "p1-spark-morph65-broad-reprobe-soft-ceiling-20260923"
+  ],
+  "authorize_card_phrases": [],
+  "jev": {
+    "choice": "cancel_empty_gold",
+    "confidence": 0.96,
+    "probabilities": {
+      "cancel_empty_gold": 0.97,
+      "override_morph78_method_auth": 0.03,
+      "settle_morph77_leftover_safe": 0.0,
+      "override_reprobe_auth": 0.0
+    },
+    "runner_up": "override_morph78_method_auth",
+    "model": "jev-1.13.0",
+    "latency_ms": 458,
+    "usage": {
+      "input_tokens": 540,
+      "output_tokens": 67
+    }
+  },
+  "force77": 232,
+  "hard77": 273,
+  "prior_best": "seed-morph65",
+  "live_broad_prior": {
+    "exact": 0.88671875,
+    "n": 256
+  },
+  "not_done": [
+    "SoT settle",
+    "force/hard expand",
+    "morph78 train"
+  ]
+}
