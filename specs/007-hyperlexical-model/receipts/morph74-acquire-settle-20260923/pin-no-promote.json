@@ -1,0 +1,43 @@
+{
+  "schema": "hyperlex.hyperlexical.best_pin.v0.1",
+  "decision": "REJECT_VS_BEST",
+  "seed": "seed-morph74",
+  "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph74",
+  "prior_best": "seed-morph65",
+  "prior_unbind_exact": 0.9880239520958084,
+  "fair_val_n": 167,
+  "best_unbind_exact": 0.9820359281437125,
+  "best_epoch": 15,
+  "val_best": {
+    "classify_acc": 0.7725490196078432,
+    "epoch": 15,
+    "n_classify_eval": 510,
+    "n_unbind_eval": 167,
+    "n_unbind_phase": 15374,
+    "unbind_exact": 0.9820359281437125,
+    "unbind_phase": "joint",
+    "unbind_phase_fallback_full_mix": false,
+    "unbind_slot_f1": 0.9778325123152709,
+    "unbind_token_f1": 0.9778325123152709,
+    "unbind_token_precision": 0.9778325123152709,
+    "unbind_token_recall": 0.9778325123152709
+  },
+  "val_n_train_receipt": 167,
+  "e2": {
+    "e2_pass": true,
+    "unbind_exact": 1.0,
+    "trunk_forward": true
+  },
+  "delta": "SoT flip 2 AUTHORIZE INFERRED→OBSERVED; force/hard morph66 164/206 held; UPSAMPLE=8 SECOND_SLOT=2; warm morph65",
+  "unbind_residual_themes": {
+    "full_miss": 2,
+    "partial_slot_miss": 1,
+    "positional_head_filler_miss": 1,
+    "type_slot_token_miss": 1
+  },
+  "name_gate": false,
+  "pinned_at": "2026-09-23T21:19:12.196708+00:00",
+  "gate_owner": "morph74-acquire-settle",
+  "morph65_preserved": true,
+  "morph63_preserved": true
+}

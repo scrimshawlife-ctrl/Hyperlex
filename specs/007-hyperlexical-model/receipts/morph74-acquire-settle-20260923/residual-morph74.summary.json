@@ -1,0 +1,17 @@
+{
+  "by_class": {
+    "INFERRED": 1,
+    "OBSERVED": 2
+  },
+  "by_scheme": {
+    "positional": 2,
+    "type_slot": 1
+  },
+  "n_residual": 3,
+  "themes": {
+    "full_miss": 2,
+    "partial_slot_miss": 1,
+    "positional_head_filler_miss": 1,
+    "type_slot_token_miss": 1
+  }
+}
