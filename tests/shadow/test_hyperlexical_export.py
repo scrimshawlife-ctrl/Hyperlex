@@ -1,1 +1,0 @@
-__FROM_FILE__:/tmp/test_only.txt
