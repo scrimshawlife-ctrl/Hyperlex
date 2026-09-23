@@ -15,4 +15,8 @@
 
 Do not auto-launch. Do not UPSAMPLE 11+. Do not SECOND_SLOT=4.
 
+Authorize phrases: `admin abuse`, `aloha snackbar`, `bling bling`, `lowkenuinely how do these people exist`, `my guy`, `quit lit`, `real eyes realize clanker lies!!!`, `using a beard`.
+
+Operator `continue` 2026-09-23 → Jev **land_hold** 0.87 (`receipts/20260923-continue-land-hold.md`).
+
 Qwen stays stopped unless the operator re-enables `qwen38-27b.service`.
