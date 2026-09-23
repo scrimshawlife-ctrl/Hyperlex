@@ -1,0 +1,286 @@
+{
+  "summary": {
+    "defer_quality": 18,
+    "already_variant": 1
+  },
+  "safe": [],
+  "defer": [
+    {
+      "phrase": "real eyes realize clanker lies!!!",
+      "norm": "real eyes realize clanker lies!!!",
+      "choice": "defer_quality",
+      "confidence": 0.84,
+      "probabilities": {
+        "defer_quality": 0.89,
+        "already_variant": 0.09,
+        "force_expand_safe": 0.02
+      },
+      "prior_defer_wall": true,
+      "lineage": "ai-native",
+      "scheme": "type_slot"
+    },
+    {
+      "phrase": "using a beard",
+      "norm": "using a beard",
+      "choice": "defer_quality",
+      "confidence": 0.87,
+      "probabilities": {
+        "defer_quality": 0.92,
+        "already_variant": 0.07,
+        "force_expand_safe": 0.01
+      },
+      "prior_defer_wall": true,
+      "lineage": "betting-sharp",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "lowkenuinely how do these people exist",
+      "norm": "lowkenuinely how do these people exist",
+      "choice": "defer_quality",
+      "confidence": 0.92,
+      "probabilities": {
+        "defer_quality": 0.94,
+        "already_variant": 0.04,
+        "force_expand_safe": 0.02
+      },
+      "prior_defer_wall": true,
+      "lineage": "brainrot-aura",
+      "scheme": "type_slot"
+    },
+    {
+      "phrase": "admin abuse",
+      "norm": "admin abuse",
+      "choice": "defer_quality",
+      "confidence": 0.9,
+      "probabilities": {
+        "defer_quality": 0.93,
+        "already_variant": 0.05,
+        "force_expand_safe": 0.01
+      },
+      "prior_defer_wall": true,
+      "lineage": "gaming-meta",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "my guy",
+      "norm": "my guy",
+      "choice": "defer_quality",
+      "confidence": 0.76,
+      "probabilities": {
+        "defer_quality": 0.84,
+        "already_variant": 0.14,
+        "force_expand_safe": 0.02
+      },
+      "prior_defer_wall": true,
+      "lineage": "kinship-address",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "aloha snackbar",
+      "norm": "aloha snackbar",
+      "choice": "defer_quality",
+      "confidence": 0.89,
+      "probabilities": {
+        "defer_quality": 0.93,
+        "already_variant": 0.06,
+        "force_expand_safe": 0.01
+      },
+      "prior_defer_wall": true,
+      "lineage": "none",
+      "scheme": "type_slot"
+    },
+    {
+      "phrase": "bamboo baksheesh",
+      "norm": "bamboo baksheesh",
+      "choice": "defer_quality",
+      "confidence": 0.7,
+      "probabilities": {
+        "defer_quality": 0.8,
+        "already_variant": 0.14,
+        "force_expand_safe": 0.06
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "type_slot"
+    },
+    {
+      "phrase": "bathroom singer",
+      "norm": "bathroom singer",
+      "choice": "defer_quality",
+      "confidence": 0.56,
+      "probabilities": {
+        "defer_quality": 0.7,
+        "already_variant": 0.23,
+        "force_expand_safe": 0.07
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "type_slot"
+    },
+    {
+      "phrase": "bearded clam",
+      "norm": "bearded clam",
+      "choice": "defer_quality",
+      "confidence": 0.62,
+      "probabilities": {
+        "defer_quality": 0.75,
+        "already_variant": 0.2,
+        "force_expand_safe": 0.05
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "type_slot"
+    },
+    {
+      "phrase": "bliss ninny",
+      "norm": "bliss ninny",
+      "choice": "defer_quality",
+      "confidence": 0.67,
+      "probabilities": {
+        "defer_quality": 0.78,
+        "already_variant": 0.17,
+        "force_expand_safe": 0.05
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "type_slot"
+    },
+    {
+      "phrase": "after a while, crocodile",
+      "norm": "after a while, crocodile",
+      "choice": "defer_quality",
+      "confidence": 0.72,
+      "probabilities": {
+        "defer_quality": 0.81,
+        "already_variant": 0.12,
+        "force_expand_safe": 0.07
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "as a mug",
+      "norm": "as a mug",
+      "choice": "defer_quality",
+      "confidence": 0.69,
+      "probabilities": {
+        "defer_quality": 0.79,
+        "already_variant": 0.15,
+        "force_expand_safe": 0.06
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "bench jockey",
+      "norm": "bench jockey",
+      "choice": "defer_quality",
+      "confidence": 0.7,
+      "probabilities": {
+        "defer_quality": 0.8,
+        "already_variant": 0.15,
+        "force_expand_safe": 0.05
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "bent as a nine-bob note",
+      "norm": "bent as a nine-bob note",
+      "choice": "defer_quality",
+      "confidence": 0.73,
+      "probabilities": {
+        "defer_quality": 0.82,
+        "already_variant": 0.13,
+        "force_expand_safe": 0.05
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "bling bling",
+      "norm": "bling bling",
+      "choice": "defer_quality",
+      "confidence": 0.82,
+      "probabilities": {
+        "defer_quality": 0.88,
+        "already_variant": 0.1,
+        "force_expand_safe": 0.02
+      },
+      "prior_defer_wall": true,
+      "lineage": "none",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "box of ivories",
+      "norm": "box of ivories",
+      "choice": "defer_quality",
+      "confidence": 0.65,
+      "probabilities": {
+        "defer_quality": 0.77,
+        "already_variant": 0.14,
+        "force_expand_safe": 0.09
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "bread and honey",
+      "norm": "bread and honey",
+      "choice": "defer_quality",
+      "confidence": 0.64,
+      "probabilities": {
+        "defer_quality": 0.76,
+        "already_variant": 0.14,
+        "force_expand_safe": 0.1
+      },
+      "prior_defer_wall": false,
+      "lineage": "none",
+      "scheme": "positional"
+    },
+    {
+      "phrase": "quit lit",
+      "norm": "quit lit",
+      "choice": "defer_quality",
+      "confidence": 0.84,
+      "probabilities": {
+        "defer_quality": 0.89,
+        "already_variant": 0.09,
+        "force_expand_safe": 0.02
+      },
+      "prior_defer_wall": true,
+      "lineage": "workplace-corp",
+      "scheme": "type_slot"
+    }
+  ],
+  "variant": [
+    {
+      "phrase": "highkey shawty",
+      "norm": "highkey shawty",
+      "choice": "already_variant",
+      "confidence": 0.69,
+      "probabilities": {
+        "already_variant": 0.79,
+        "defer_quality": 0.19,
+        "force_expand_safe": 0.02
+      },
+      "prior_defer_wall": false,
+      "lineage": "kinship-address",
+      "scheme": "positional"
+    }
+  ],
+  "safe_new": [],
+  "card_high_conf_new": [],
+  "model": "jev-1.13.0",
+  "usage": {
+    "input_tokens": 10256,
+    "output_tokens": 854,
+    "calls": 19,
+    "cached_calls": 0
+  }
+}
