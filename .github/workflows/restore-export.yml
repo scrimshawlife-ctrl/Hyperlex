@@ -1,0 +1,31 @@
+name: restore-export
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.restore/TRIGGER'
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode and commit
+        run: |
+          python3 - <<'PY'
+          import base64, zlib
+          from pathlib import Path
+          e = zlib.decompress(base64.b64decode(Path('.restore/export.zlib.b64').read_text().strip()))
+          t = zlib.decompress(base64.b64decode(Path('.restore/test.zlib.b64').read_text().strip()))
+          Path('scripts/shadow/hyperlexical/export.py').write_bytes(e)
+          Path('tests/shadow/test_hyperlexical_export.py').write_bytes(t)
+          assert b'reject_wiki_scaffolding_text' in e
+          assert len(e) > 40000
+          print('ok', len(e), len(t))
+          PY
+          git config user.name "Daniel Meyer"
+          git config user.email "scrimshawlife@gmail.com"
+          git add scripts/shadow/hyperlexical/export.py tests/shadow/test_hyperlexical_export.py
+          git commit -m "fix(007): restore export.py scaffolding reject after tip mishap" || exit 0
+          git push
