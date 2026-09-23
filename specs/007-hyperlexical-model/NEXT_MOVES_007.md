@@ -1,22 +1,18 @@
-# Spec 007 — next: HOLD (gold card ready; await authorize)
+# Spec 007 — next: HOLD (empty gold after Jev refine)
 
 `name_gate=false`. BEST=**morph65** (held). Upsample freeze = **11+**. Do not run SECOND_SLOT=4.
 
 ## Done
 
 1. morph69–74 REJECT; morph75 CANCELLED (force fair ceiling 1.0 n=164).
-2. OBSERVED wiki scaffolding demoted; live unbind scaff_chrome=0.
-3. Broad residual diag: OBSERVED val **0.890** n=254 → 28 residuals.
-4. METHOD morph43: **AUTHORIZE=9 / ABSTAIN=19** (8 civilian phrases).
+2. Broad residual METHOD morph43: AUTHORIZE=9 / ABSTAIN=19 (8 phrases).
+3. Jev further classify: AUTHORIZE recheck → **defer_quality=8**; ABSTAIN refine → idiom_dead=18 / morph_bleed=1 / revisit=0.
+4. Gold card **emptied**. morph76 not armed.
 
 ## Next
 
-**HOLD — await operator authorize** for gold force/hard expand on the 8 authorize phrases → re-fair morph65 → one morph76 warm morph65.
+**HOLD (empty gold).** Fresh civilian acquire + METHOD morph43 outside this residual wall, or explicit operator override naming phrases. Do not auto-launch morph76 on the deferred 8.
 
-Do not auto-launch. Do not UPSAMPLE 11+. Do not SECOND_SLOT=4.
-
-Authorize phrases: `admin abuse`, `aloha snackbar`, `bling bling`, `lowkenuinely how do these people exist`, `my guy`, `quit lit`, `real eyes realize clanker lies!!!`, `using a beard`.
-
-Operator `continue` 2026-09-23 → Jev **land_hold** 0.87 (`receipts/20260923-continue-land-hold.md`).
+See `receipts/20260923-jev-refine-empty-gold-hold.md`.
 
 Qwen stays stopped unless the operator re-enables `qwen38-27b.service`.
