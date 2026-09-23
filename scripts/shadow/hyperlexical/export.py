@@ -1,1 +1,1 @@
-PLACEHOLDER_EXPORT
+@/tmp/export_only.txt

@@ -1,1 +1,1 @@
-PLACEHOLDER_TEST
+@/tmp/test_only.txt
