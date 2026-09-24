@@ -1,0 +1,49 @@
+{
+  "auto_fire": false,
+  "brier": null,
+  "class": "INFERRED",
+  "embed_mode": "MODEL_EMBEDDING",
+  "forecast_eligible": false,
+  "input_hash": "1e50b5001350fbabbdfe1f499764dfa34bc25198235d0feebf773700244a29f8",
+  "lineage_confidence": 0.879764,
+  "lineage_family": "brainrot-aura",
+  "model_id": "hyperlex-structure-149m",
+  "model_version": "seed-morph78",
+  "param_count": 150546889,
+  "payload_ref": null,
+  "restricted_intent_suspected": false,
+  "role_scheme": "positional",
+  "routes_claimed": [
+    "form",
+    "lexical"
+  ],
+  "schema": "hyperlex.hyperlexical.inference.v0.1",
+  "selection_proxy": "unspecified",
+  "stage": null,
+  "surface": "no cap fr",
+  "typology": [],
+  "unbind": {
+    "atoms": [
+      {
+        "filler": "no",
+        "filler_pred": "no",
+        "role": "pos_0",
+        "role_pred": "pos_0"
+      },
+      {
+        "filler": "cap",
+        "filler_pred": "cap",
+        "role": "pos_1",
+        "role_pred": "pos_1"
+      },
+      {
+        "filler": "fr",
+        "filler_pred": "fr",
+        "role": "pos_2",
+        "role_pred": "pos_2"
+      }
+    ]
+  },
+  "unbind_ok": true,
+  "vector_hash": "80853a08e9ef7fdb319921c460d8a032cdec285457e8b49c98dd41874ebc1963"
+}

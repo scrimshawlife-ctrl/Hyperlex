@@ -1,0 +1,55 @@
+{
+  "auto_fire": false,
+  "brier": null,
+  "class": "INFERRED",
+  "embed_mode": "MODEL_EMBEDDING",
+  "forecast_eligible": false,
+  "input_hash": "c4c648b19dfd0c567fd2e60022d871e70cf50370e126a0eac839e16126152455",
+  "lineage_confidence": 0.999999,
+  "lineage_family": "none",
+  "model_id": "hyperlex-structure-149m",
+  "model_version": "seed-morph78",
+  "param_count": 150546889,
+  "payload_ref": null,
+  "restricted_intent_suspected": false,
+  "role_scheme": "positional",
+  "routes_claimed": [
+    "form",
+    "lexical"
+  ],
+  "schema": "hyperlex.hyperlexical.inference.v0.1",
+  "selection_proxy": "unspecified",
+  "stage": null,
+  "surface": "have fun staying poor",
+  "typology": [],
+  "unbind": {
+    "atoms": [
+      {
+        "filler": "have",
+        "filler_pred": "have",
+        "role": "pos_0",
+        "role_pred": "pos_0"
+      },
+      {
+        "filler": "fun",
+        "filler_pred": "fun",
+        "role": "pos_1",
+        "role_pred": "pos_1"
+      },
+      {
+        "filler": "staying",
+        "filler_pred": "staying",
+        "role": "pos_2",
+        "role_pred": "pos_2"
+      },
+      {
+        "filler": "poor",
+        "filler_pred": "poor",
+        "role": "pos_3",
+        "role_pred": "pos_3"
+      }
+    ]
+  },
+  "unbind_ok": true,
+  "vector_hash": "2d5c4541a0ae677c4c91f9180359691eb29d15956e79a67bdbf4f7f2e4084fda"
+}

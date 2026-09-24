@@ -29,7 +29,7 @@ Operator scoreboard (Danny-locked harvest snapshot **2026-09-10**; climb pin **2
 Next operator sentences that do work:
 
 - Default: **HOLD** `seed-morph78`; operator product review of `HYPERLEXICAL-PRODUCT-PLAN.md`
-- Real inference path; Hub decision; optional T13 decision (each separate). `name_gate` + card rename done.
+- Hub decision; optional T13 decision (each separate). `name_gate`, card rename, and real inference path done.
 - A new climb only on a new named-phrase acquire card vs morph78 PRIOR — see `NAME-GATE-AND-NAMED-PHRASES.md`
 - `open 006 IsA` — separate spec
 
