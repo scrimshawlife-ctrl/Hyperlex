@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Trained inference (Spec 007):** `hyperlexical.infer --model-dir` runs a local
+  checkpoint (lazy torch, local trunk, fail-closed exit 2) and emits a
+  `MODEL_EMBEDDING` inference packet; only the approved pin carries
+  `hyperlex-structure-149m`. Default CLI stays the offline stub.
+
 - **Card rename (Spec 007):** Hub card `hyperlex-structure-149m` for `seed-morph78`.
   `name_gate.py` pins the approved checkpoint; `eval_unbind` sets `name_gate`
   true only for a trunk-forward eval of that pin; eval schema field is boolean.

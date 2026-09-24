@@ -42,6 +42,8 @@ Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **supersed
 
 ```bash
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
+# trained pin (Spark; needs torch + local trunk):
+PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --model-dir ~/.hyperlex/models/BEST
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap --dry-run
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.export
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
