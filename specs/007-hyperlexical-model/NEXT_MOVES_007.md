@@ -7,7 +7,8 @@
 - soft_ceiling **ARMED** (live prior broad **0.88671875** n=256).
 - morph78 acquire + live residual reprobe → empty gold.
 - Operator **`authorize val-settle`** → **CANCELLED_EMPTY_GOLD** (no phrases on HOLD card; no invent OBSERVED).
-- Tip CI gap: restored `apply_unbind_force_train` + tests (was imported by `loop.py`, missing from `unbind_recipe.py`).
+- Tip CI gap: restored `apply_unbind_force_train` + tests; restored `route_rows` / reviewed refuse-before-write in `loop.py`.
+- Local full suite **702 passed** (shadow 365). CI validate re-check after tip push.
 - Draft product plan: `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md`.
 
 ## Gate (armed)
