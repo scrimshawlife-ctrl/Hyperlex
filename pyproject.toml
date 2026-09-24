@@ -32,6 +32,11 @@ dev = [
 schema = [
     "jsonschema>=4.0",
 ]
+# pytrends 4.9.2 still passes method_whitelist; urllib3 2 removed it.
+trends = [
+    "pytrends>=4.9",
+    "urllib3>=1.26,<2",
+]
 
 [project.urls]
 Homepage = "https://github.com/scrimshawlife/hyperlex"
