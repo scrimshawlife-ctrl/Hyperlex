@@ -1,6 +1,7 @@
 {
   "HYPERLEX_ALLOW_TRAIN": "1",
   "HYPERLEX_CUDA_MEM_FRACTION": "0.3",
+  "HYPERLEX_FILLER_FILTER": "off",
   "HYPERLEX_INCLUDE_LIVE": "1",
   "HYPERLEX_INIT_EXPAND_VOCAB": "1",
   "HYPERLEX_INIT_FROM": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
