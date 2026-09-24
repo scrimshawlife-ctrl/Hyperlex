@@ -86,7 +86,7 @@ surface until T13 promote — and T13 is not open.
 ### T0 / T1
 Spec 007 encoder tiers. **T0** is a classify baseline (`hyperlex-encoder-*`).
 **T1** is the first artifact that *may* be called Hyperlexical, and only after
-trained E2 PASS on Spark **and** Danny yes on `name_gate`. Neither tier is a Hub card today.
+trained E2 PASS on Spark **and** Danny yes on `name_gate`. `seed-morph78` met both on 2026-09-24. Neither tier is a Hub card today.
 
 ### SHADOW
 An advisory lane that is **not** on `API_V1`. Mutation detect v0.2 and Spec 007
@@ -95,14 +95,14 @@ fails.
 
 ### Hyperlexical (name)
 Public **model** product claim for Spec 007 (train / eval / E2 / `name_gate`).
-The earned Hub name still requires Danny `name_gate` yes (`name_gate` is **false**).
-Until then the card is `hyperlex-encoder-*`. Do not call a stub, harvest dump,
+Approved for pin `seed-morph78` (Danny `name_gate` yes, 2026-09-24). Card/package IDs
+are still `hyperlex-encoder-*` until a separate rename. Do not call a stub, harvest dump,
 or seed smoke Hyperlexical-gated-true. Harvest / ingest is **ne0l0gist**.
 
 ### name_gate
 Name + publish wall before a T1 may be called Hyperlexical. Classify volume and
-trained E2 PASS can be ready while `name_gate` stays **false**. Danny explicit
-yes flips the gate — E2 alone does not. See [SHADOW encoder](../shadow-hyperlexical.md)
+trained E2 PASS could be ready while `name_gate` stayed **false**. Danny explicit
+yes flips the gate — E2 alone does not. Now **true** for `seed-morph78` only. See [SHADOW encoder](../shadow-hyperlexical.md)
 and [NAMING.md](../NAMING.md).
 
 ## Hard constraints
@@ -111,7 +111,7 @@ and [NAMING.md](../NAMING.md).
 |------|---------|
 | No fabricated Brier | Open runs: `brier: null` |
 | Phase 5 speculative | Research only; not measurement |
-| Spec 007 SHADOW | Classify volume ready; `name_gate` false; no Hub |
+| Spec 007 SHADOW | `seed-morph78` named Hyperlexical (`name_gate` true); no Hub |
 | Naming split | **Hyperlexical** = model claim; **ne0l0gist** = ingest; repo **Hyperlex** is the shell ([NAMING.md](../NAMING.md)) |
 | Eight families only | Do not invent a ninth lineage family |
 | No Abraxas hard import | Hyperlex never imports Abraxas |

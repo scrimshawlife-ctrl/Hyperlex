@@ -1,6 +1,6 @@
 # Start here
 
-The Hermes skill is what you run. Spec 007 is the model path (T0 → T1 after E2) — SHADOW, `name_gate` false, not named Hyperlexical. See [Status](../status.md).
+The Hermes skill is what you run. Spec 007 is the model path (T0 → T1 after E2) — SHADOW; pin `seed-morph78` is named **Hyperlexical** (`name_gate` true, 2026-09-24). See [Status](../status.md).
 
 | Page | Purpose |
 |------|---------|

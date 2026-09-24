@@ -1,7 +1,7 @@
 # Name gate + named phrases — operator plan
 
-**Status:** DRAFT (does **not** flip `name_gate`) · **Date:** 2026-09-24  
-**Locks:** `name_gate=false` · no Hub · no invented OBSERVED · upsample freeze **11+** · no `SECOND_SLOT=4` · soft_ceiling spent (morph78 BEST)
+**Status:** `name_gate` **FLIPPED** for `seed-morph78` (Danny, 2026-09-24, A6) · **Date:** 2026-09-24  
+**Locks:** `name_gate=true` (morph78 only) · no Hub · no invented OBSERVED · upsample freeze **11+** · no `SECOND_SLOT=4` · soft_ceiling spent (morph78 BEST)
 
 Companion to `HYPERLEXICAL-PRODUCT-PLAN.md`.
 
@@ -13,7 +13,7 @@ Companion to `HYPERLEXICAL-PRODUCT-PLAN.md`.
 - PRIOR morph65 = **0.8867** n=256
 - trained trunk-forward E2 = **PASS**
 - next climb = **not authorized**
-- `name_gate=false`
+- `name_gate=true` for `seed-morph78` (Danny `flip name_gate`)
 - Hub = unpublished
 - T13 = not authorized
 
@@ -28,9 +28,10 @@ Danny: **`name neologist as in repo`**. Public ingest product = **`ne0l0gist`** 
 | Wall | Current state |
 |------|---------------|
 | Dataset readiness (`milestones.md`) | bucket gaps 0/0/0 on the operator `--include-live` surface |
-| Public model name / publish | **BLOCKED** until Danny explicit `name_gate yes` or explicit Hyperlexical naming |
+| Public model name | **APPROVED** for `seed-morph78` (2026-09-24) |
+| Publish (Hub) | **BLOCKED** — separate sentence |
 
-Volume readiness ≠ public naming. E2 PASS ≠ public naming.
+Volume readiness ≠ public naming. E2 PASS ≠ public naming. Danny's sentence named it.
 
 ## Gold / climb
 
@@ -56,21 +57,21 @@ A future climb needs a **new** acquire/authorize card and compares against morph
 
 Still forbidden: empty settle, invented OBSERVED, recycled settled phrases, UPSAMPLE 11+, `SECOND_SLOT=4`.
 
-## `name_gate` flip plan — Danny only
+## `name_gate` flip — done (Danny)
 
-No agent flips the flag.
+Receipt: `receipts/20260924-name-gate-yes-morph78.md`. No agent flipped it without the sentence.
 
 - [x] Dataset bucket gaps 0/0/0 (met 2026-09-10)
 - [x] Trained trunk-forward E2 PASS on `seed-morph78`
 - [x] soft_ceiling climb closed with morph78 PROMOTE_BEST
 - [x] Hygiene: `VERSION` ↔ `pyproject.toml`; stale "E2 Spark-blocked" current-state wording scrubbed (PR #102)
 - [x] Product-state reconciliation drafted (PR #102)
-- [ ] Operator product review of `HYPERLEXICAL-PRODUCT-PLAN.md`
-- [ ] Danny explicit `name_gate yes` / "name Hyperlexical"
+- [ ] Operator product review of `HYPERLEXICAL-PRODUCT-PLAN.md` — not separately recorded; Danny flipped without it
+- [x] Danny explicit `flip name_gate` (2026-09-24)
 
-On Danny yes, keep actions separate:
+Actions stay separate:
 
-1. change governed `name_gate` surfaces;
+1. change governed `name_gate` surfaces — **done** (A6);
 2. update public card naming (`hyperlex-encoder-*` → Hyperlexical per `model-card.draft.md`);
 3. Hub upload only on a separate named operator action;
 4. optional T13 only on separate authorization + tests.

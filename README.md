@@ -14,8 +14,8 @@ Hermes skill is what you **run today**. Spec 007 Hyperlexical encoder is **SHADO
 | **Owns** | memetic ingest · classify · receipts · virality / hyperstition signals · Spec 007 encoder specify |
 | **Honesty** | `OBSERVED` / `INFERRED` / `SPECULATIVE` (+ provenance; settled Brier only where calibrated) |
 | **Shape** | Hermes skill **live** (v0.4.0). Spec 007 T0→T1 **gated**. Not a chatbot mind. |
-| **Anti** | Efficacy theater · inventing Brier · naming artifacts **Hyperlexical** before `name_gate` · Hub without `ALLOW_HUB` |
-| **Lane** | Skill ready · encoder SHADOW · `name_gate` **false** · Hub not published |
+| **Anti** | Efficacy theater · inventing Brier · naming any artifact other than the gated pin **Hyperlexical** · Hub without `ALLOW_HUB` |
+| **Lane** | Skill ready · encoder SHADOW · `name_gate` **true** (`seed-morph78`) · Hub not published |
 | **Version** | `0.4.0` — prefer [`STATUS.md`](STATUS.md) |
 
 Docs site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.github.io/Hyperlex/) · status mirror: [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/).
@@ -42,14 +42,14 @@ Repo **Hyperlex** is the transitional monorepo shell. Do not use bare public **H
 | **ne0l0gist** | Slang ingest tool (zeros spelling): Crawl4AI harvest, `ingest_tap`, export/settle — **operator-named 2026-09-24** |
 | **Hyperlex** (repo) | Transitional monorepo shell. GitHub repo name, `~/.hyperlex` paths, `HYPERLEX_*` env vars, and the `hyperlexical` Python package stay as-is |
 
-`name_gate` stays **false**. Naming **ne0l0gist** does **not** name a trained artifact Hyperlexical-gated-true.
+`name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). Naming **ne0l0gist** was a separate sentence and did not flip it. Card/package IDs stay `hyperlex-encoder-*`; Hub and T13 not authorized.
 
 ## What ships / what does not
 
 | Ships now | Does **not** ship |
 |-----------|-------------------|
 | Hermes skill install + CLI (`install.sh`, `scripts/hyperlex.py`) | Artifact named **Hyperlexical** |
-| Spec 007 SHADOW encoder code path | `name_gate` true / Hub publish |
+| Spec 007 SHADOW encoder code path · `seed-morph78` named Hyperlexical | Hub publish · T13 promote |
 | Local SoT classify volume (operator machine) | Full SoT in git |
 | Pages static run history / Phase 5 research hooks | Paid Firecrawl by default (Crawl4AI is default) |
 
@@ -60,8 +60,8 @@ Snapshot — full scoreboard in [`STATUS.md`](STATUS.md).
 | Area | State |
 |------|-------|
 | Hermes skill | Ready **v0.4.0** |
-| Spec 007 | SHADOW · BEST `seed-morph78` (PROMOTE_BEST 2026-09-24) · trained E2 **PASS** · public T1 name blocked on `name_gate` |
-| `name_gate` | **false** (volume ≠ name) |
+| Spec 007 | SHADOW · BEST `seed-morph78` (PROMOTE_BEST 2026-09-24) · trained E2 **PASS** · named **Hyperlexical** (`name_gate` yes, A6) |
+| `name_gate` | **true** for `seed-morph78` (Danny 2026-09-24) |
 | Hub | Not published |
 | Local SoT | `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` — **4333** (**not in git**) |
 | Export classify (include-live) | **2437** family-labeled (harvest gate) |
@@ -141,7 +141,7 @@ Spark trains from **local SoT** / `export --include-live`, not from the tracked 
 
 Do **not** without Danny/operator yes:
 
-- Call an artifact **Hyperlexical** or flip `name_gate`
+- Call any artifact other than `seed-morph78` **Hyperlexical**, or extend `name_gate` to another checkpoint
 - Publish to Hub (`ALLOW_HUB`)
 - Commit the 4333 SoT into git
 - Invent Brier scores (settled calibration only)

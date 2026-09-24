@@ -2,7 +2,7 @@
 
 Hyperlex **runs as a Hermes skill** today. Spec 007 is the **model path** (T0 → T1 after E2), still SHADOW.
 
-**Naming:** **Hyperlexical** = Spec 007 model / train / eval / E2 / `name_gate` claim. **ne0l0gist** = slang ingest / harvest. Repo **Hyperlex** is the transitional monorepo shell. `name_gate` stays false.
+**Naming:** **Hyperlexical** = Spec 007 model / train / eval / E2 / `name_gate` claim. **ne0l0gist** = slang ingest / harvest. Repo **Hyperlex** is the transitional monorepo shell. `name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6).
 
 Specs live under [`specs/`](https://github.com/scrimshawlife-ctrl/Hyperlex/tree/main/specs) in the repository. This page is the docs-site index. It does not add gates.
 
@@ -17,11 +17,11 @@ Constitution: [`.specify/memory/constitution.md`](https://github.com/scrimshawli
 | 004 | Recoverable-structure probe | SPECIFY locked · implement SHADOW | `scripts/shadow/recoverable_structure/` |
 | 005 | Route labels | SPECIFY locked (Notion + branch `005-route-labels`) | not on main — [PR 18](https://github.com/scrimshawlife-ctrl/Hyperlex/pull/18) |
 | 006 | IsA | reserved — do not open from 007 | — |
-| 007 | Hyperlexical model | SPECIFY locked C1–C52 · A5 milestones · SHADOW implement on main | `scripts/shadow/hyperlexical/` · stub E2 fail (expected) · trained E2 PASS on BEST `seed-morph78` · `name_gate` false · no Hub |
+| 007 | Hyperlexical model | SPECIFY locked C1–C52 · A5 milestones · SHADOW implement on main | `scripts/shadow/hyperlexical/` · stub E2 fail (expected) · trained E2 PASS on BEST `seed-morph78` · `name_gate` **true** (morph78) · no Hub |
 
 ## Spec 007 (SHADOW)
 
-Not on `API_V1`. Not a Hugging Face model. Not named **Hyperlexical** until Danny's `name_gate` yes (trained E2 PASS on `seed-morph78` does not flip it).
+Not on `API_V1`. Not a Hugging Face model. Pin `seed-morph78` is named **Hyperlexical** (Danny `name_gate` yes, 2026-09-24). No other checkpoint is.
 
 - Pages overview: [SHADOW encoder (007)](../shadow-hyperlexical.md)
 - Operator snapshot: [Status](../status.md)

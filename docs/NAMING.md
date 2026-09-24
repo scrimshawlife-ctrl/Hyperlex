@@ -1,8 +1,8 @@
 # Naming lock — Hyperlex / Hyperlexical / ne0l0gist
 
 **Status:** LOCKED · **Date:** 2026-09-24  
-**Operator:** Danny `name neologist as in repo`  
-**Receipt:** `specs/007-hyperlexical-model/receipts/20260924-name-ne0l0gist-as-in-repo.md`
+**Operator:** Danny `name neologist as in repo` · Danny `flip name_gate`  
+**Receipts:** `specs/007-hyperlexical-model/receipts/20260924-name-ne0l0gist-as-in-repo.md` · `specs/007-hyperlexical-model/receipts/20260924-name-gate-yes-morph78.md`
 
 This file is the **durable naming SoT** for agents and operators. Copy it; do not invent alternate product spellings.
 
@@ -12,15 +12,15 @@ This file is the **durable naming SoT** for agents and operators. Copy it; do no
 |------|----------|------|--------|
 | **Hyperlex** | Hyperlex | Transitional **monorepo shell** only. GitHub repo, `~/.hyperlex/`, `HYPERLEX_*`, skill install path. Not a public product brand (collides with French legaltech CLM / DiliTrust). | shell only |
 | **ne0l0gist** | `ne` + `0` + `l` + `0` + `gist` (zeros, not letter O) | Public **slang ingest / harvest** product: Crawl4AI, `ingest_tap`, export/settle, civilian + live phrase harvest | **yes** (2026-09-24) |
-| **Hyperlexical** | Hyperlexical | Spec 007 **model / train / eval / E2 / `name_gate`** product claim | **no** until Danny `name_gate` yes |
+| **Hyperlexical** | Hyperlexical | Spec 007 **model / train / eval / E2 / `name_gate`** product claim | **yes** (2026-09-24) — pin `seed-morph78` only |
 
-`name_gate` stays **false**. Naming **ne0l0gist** does **not** flip Hyperlexical `name_gate`, Hub, or T13.
+`name_gate` is **true** for `seed-morph78` (amendment A6). Naming **ne0l0gist** was a separate sentence. Neither authorizes Hub, T13, or renaming card/package identifiers (`hyperlex-encoder-*`).
 
 ## Do not
 
 - Spell ingest `neologist`, `neOlogist`, or `ne0logist` (wrong zeros/letters)
 - Call the Hermes skill or repo “Hyperlexical”
-- Call a stub, seed smoke, or harvest dump Hyperlexical-gated-true
+- Call any checkpoint other than `seed-morph78`, a stub, seed smoke, or harvest dump Hyperlexical
 - Treat org mirror `Zero-State-LLC/Hyperlex` as work/train SoT (may lag personal `main`)
 - Rename paths / package / env (`hyperlex`, `hyperlexical`, `HYPERLEX_*`) without a separate hard-cut sentence
 
