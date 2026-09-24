@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-24  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 GOLD empty. Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settle kept (`have fun staying poor`, `fr fr no cap` OBSERVED val). Force **236**/hard **277**. soft_ceiling train **IN_FLIGHT** (`hlx-train-morph78-1790221699`). Hyperlexical `name_gate` still false.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 GOLD empty. Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settle kept. Force **236**/hard **277**. soft_ceiling train **IN_FLIGHT** ep≤6 best **0.9939** (`hlx-train-morph78-1790221699`). Hyperlexical `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -101,7 +101,7 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Ingest routes + automatic pipeline | Ready |
 | Atomic multi-term seeds | Ready |
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
-| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
+| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
 | Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 · soft_ceiling ARMED · force fair 1.0 n=164 · live broad prior 0.887 n=256 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–77 closed · next fresh acquire morph78 · `name_gate` false · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |

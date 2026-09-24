@@ -1,0 +1,13 @@
+{
+  "as_of": "2026-09-24T04:53:42Z",
+  "container": "hlx-train-morph78-1790221699",
+  "status": "IN_FLIGHT",
+  "epochs_logged": 7,
+  "last_epoch": 6,
+  "best_unbind_exact": 0.9939024390243902,
+  "best_epoch": 3,
+  "fair_exact": 1.0,
+  "fair_n": 164,
+  "gate": "soft_ceiling_tiebreak",
+  "name_gate": false
+}

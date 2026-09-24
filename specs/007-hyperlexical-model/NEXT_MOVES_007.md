@@ -4,18 +4,20 @@
 
 ## Done
 
-- Org **#14** naming graft merged.
-- Operator **`name phrases`** → morph78 settle **`have fun staying poor`**, **`fr fr no cap`** OBSERVED val.
-- Force/hard **232→236 / 273→277**. Fair still 1.0 n=164 → **SOFT_CEILING_CONTINUE**.
-- Train **`hlx-train-morph78-1790221699`** IN_FLIGHT; poll → E2 + broad decide.
+- morph78 named phrases settled OBSERVED val · force/hard **236/277** · **SOFT_CEILING_CONTINUE**.
+- Train **`hlx-train-morph78-1790221699`** IN_FLIGHT (poller alive).
 
-## Gate (armed)
+## Live (poll 2026-09-24 ~04:53Z)
 
-**soft_ceiling_tiebreak:** force-fair <1.0 → classic; =1.0 → broad OBSERVED > PRIOR live + E2.
+| epoch | unbind_exact | best |
+|------:|-------------:|-----:|
+| 0–6 | … | **0.9939** (ep3) |
+
+No `train-receipt` yet (40ep). soft_ceiling finish after train + E2 + broad.
 
 ## Next
 
-1. Await morph78 train + soft_ceiling finish (PROMOTE_BEST or REJECT; BEST stays morph65 on reject).
+1. Await train complete → poll E2 + PRIOR/candidate broad → soft_ceiling decide.
 2. Do not flip `name_gate`. Do not Hub.
 
 Qwen stays stopped unless re-enabled.
