@@ -3,8 +3,8 @@
 **Naming:** repo **Hyperlex** is the transitional monorepo shell. Public products: **Hyperlexical** (Spec 007 model / train / eval / E2 / `name_gate` claim) and **ne0l0gist** (slang ingest). `name_gate` remains false.
 
 **Version:** 0.4.0  
-**Observed:** 2026-09-23  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 GOLD empty. Operator `authorize val-settle` → **CANCELLED_EMPTY_GOLD** (no phrases). Product plan drafted (`HYPERLEXICAL-PRODUCT-PLAN.md`). Open PRs triaged (#100 recommend / #99 CI fix / #95 rebase). `name_gate` still false.
+**Observed:** 2026-09-24  
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 GOLD empty. `#100` + `#99` on main; `#95` stays draft. Hygiene: `pyproject.toml` = `VERSION` **0.4.0**. Name-gate / named-phrases plan: `NAME-GATE-AND-NAMED-PHRASES.md`. `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65**. soft_ceiling **ARMED**. `authorize val-settle` → **CANCELLED_EMPTY_GOLD**. Await authorize listing **named phrases**. See `receipts/20260923-authorize-val-settle-cancelled-empty-gold.md`.
+1. Spark BEST = **morph65**. soft_ceiling **ARMED**. Await authorize with **named phrases** on a live empty card (not morph77’s already-settled four), or a new `force_expand_safe` acquire. Plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
