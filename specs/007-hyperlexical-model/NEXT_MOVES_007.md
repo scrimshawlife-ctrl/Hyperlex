@@ -1,18 +1,16 @@
-# Spec 007 — next: soft_ceiling armed · hygiene PR open
+# Spec 007 — next: soft_ceiling armed · #101 on main
 
-`name_gate=false`. BEST=**morph65** (held). Upsample freeze = **11+**. Do not run SECOND_SLOT=4.
+`name_gate=false`. BEST=**morph65** (held).
 
 Mirror of root `NEXT_MOVES_007.md`.
 
 ## Done
 
-- soft_ceiling ARMED · empty morph78 gold · #100/#99 merged
-- Hygiene + ne0l0gist naming lock · Notion + claims
-- Draft **#101** open · validate green · trends pins restored
-- **#95** rebased onto main; stays draft/UNQUALIFIED
+- **#101** merged to main (hygiene + ne0l0gist naming lock)
+- **#95** stays draft/UNQUALIFIED
 
 ## Next
 
 1. Named-phrase authorize or new `force_expand_safe` acquire
-2. Operator merge yes on **#101**
+2. Optional `push-org` only with explicit authorize
 3. No empty settles · no `name_gate` flip
