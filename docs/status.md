@@ -144,7 +144,7 @@ data/backfill/2026/
 
 1. Spark BEST = **morph78**. Default **HOLD**. Operator review `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md`; a new climb needs a new named-phrase acquire card (compare vs morph78 broad 0.9883 n=256). `name_gate` yes recorded (A6); next are separate card-rename / Hub / T13 decisions. Plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
-3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13) without a separate sentence. Do not extend `name_gate` to any checkpoint other than `seed-morph78`.
+3. Do not Hub-upload — publish audit recommends local-only until blockers clear (`specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`). Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13) without a separate sentence. Do not extend `name_gate` to any checkpoint other than `seed-morph78`.
 
 ## README
 
