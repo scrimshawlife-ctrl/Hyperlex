@@ -2,10 +2,12 @@
 
 **OBSERVED:** the canonical train and work remote is
 `scrimshawlife-ctrl/Hyperlex` (`main`). Diligence pointer:
-[CANONICAL.md](CANONICAL.md).
+[CANONICAL.md](CANONICAL.md). Product naming SoT: [NAMING.md](NAMING.md).
 
 **Company mirror:** `Zero-State-LLC/Hyperlex` exists and may lag. Do not treat
 it as the train source of truth. Do not clone it for Spark train or Hub work.
+After naming/docs land on personal `main`, sync org only via intentional push
+below — do not smash.
 
 ## Optional org mirror push
 

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Naming persistence lock:** `docs/NAMING.md` + Notion Naming lock page +
+  Public Claims CLAIM-HLX-NAME-001/002/003. Operator Hub / Spine Owner /
+  Core Model Spine updated. Org mirror stays lag (do not train from it).
+  Does **not** flip Hyperlexical `name_gate`.
+
 - **Operator name ne0l0gist (ingest):** Danny `name neologist as in repo` —
   public ingest product **`ne0l0gist`** (repo spelling). Receipt
   `specs/007-hyperlexical-model/receipts/20260924-name-ne0l0gist-as-in-repo.md`.

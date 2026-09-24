@@ -24,6 +24,10 @@ This is **not**:
 | **ne0l0gist** | Slang ingest / harvest / `ingest_tap` / export-settle (**named**) |
 | **Hyperlexical** | Spec 007 model / train / eval / E2 — still behind `name_gate` |
 
+## Persistence
+
+Durable lock: `docs/NAMING.md` · Notion Naming lock page under Hyperlex Spine Owner · Public Claims CLAIM-HLX-NAME-001…003.
+
 ## Next
 
 Hyperlexical `name_gate` still needs an explicit Danny sentence (`name_gate` yes / “name Hyperlexical”). Climb still needs named phrases on a live empty card or a new `force_expand_safe` acquire.
