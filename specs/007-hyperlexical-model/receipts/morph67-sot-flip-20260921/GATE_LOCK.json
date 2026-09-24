@@ -1,0 +1,12 @@
+{
+  "gate_owner": "morph67-sot-flip",
+  "finished_at": "2026-09-21T22:15:32.762981+00:00",
+  "status": "done",
+  "decision": "REJECT_VS_BEST",
+  "best_unbind_exact": 0.9597989949748744,
+  "fair": 0.9698492462311558,
+  "fair_val_n": 199,
+  "e2_pass": true,
+  "surface_ok": true,
+  "val_n": 199
+}

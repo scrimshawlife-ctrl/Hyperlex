@@ -1,0 +1,43 @@
+name: restore-export
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.restore/TRIGGER']
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble decode commit
+        env:
+          N_EXPORT: '4'
+          N_TEST: '2'
+          EXPORT_SHA: '2d991dc1d48c7bb049c67db21cda407773fe06be42d0b9c95ddd26ae51639ec0'
+          TEST_SHA: 'd7139d63f5ff284e1ba225215af0f8ff13dfb4d1d9e9bade0aaeb2d7fe5797a7'
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import base64, zlib, hashlib, os
+          from pathlib import Path
+          n_e = int(os.environ['N_EXPORT'])
+          n_t = int(os.environ['N_TEST'])
+          ce = ''.join(Path(f'.restore/export.{i:02d}.b64p').read_text().strip() for i in range(n_e))
+          ct = ''.join(Path(f'.restore/test.{i:02d}.b64p').read_text().strip() for i in range(n_t))
+          e = zlib.decompress(base64.b64decode(ce))
+          t = zlib.decompress(base64.b64decode(ct))
+          assert b'reject_wiki_scaffolding_text' in e
+          assert b'_strip_type_slot_tags' in e
+          assert len(e) > 40000
+          assert hashlib.sha256(e).hexdigest() == os.environ['EXPORT_SHA']
+          assert hashlib.sha256(t).hexdigest() == os.environ['TEST_SHA']
+          Path('scripts/shadow/hyperlexical/export.py').write_bytes(e)
+          Path('tests/shadow/test_hyperlexical_export.py').write_bytes(t)
+          print('ok', len(e), len(t))
+          PY
+          git config user.name "Daniel Meyer"
+          git config user.email "scrimshawlife@gmail.com"
+          git add scripts/shadow/hyperlexical/export.py tests/shadow/test_hyperlexical_export.py
+          git commit -m "fix(007): reject type_slot-tagged wiki scaffolding chrome"
+          git push

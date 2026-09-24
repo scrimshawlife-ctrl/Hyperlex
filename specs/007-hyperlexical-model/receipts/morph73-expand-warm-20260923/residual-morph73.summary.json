@@ -1,0 +1,14 @@
+{
+  "by_class": {
+    "INFERRED": 6
+  },
+  "by_scheme": {
+    "positional": 2,
+    "type_slot": 4
+  },
+  "n_residual": 6,
+  "themes": {
+    "partial_slot_miss": 6,
+    "type_slot_token_miss": 3
+  }
+}

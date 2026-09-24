@@ -1,0 +1,8 @@
+{
+  "AUTHORIZE": 2,
+  "ABSTAIN": 6,
+  "by_reason": {
+    "abstain_scaffolding_wiki_etym": 6,
+    "type_slot_parse_match": 2
+  }
+}

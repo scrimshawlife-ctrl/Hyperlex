@@ -1,0 +1,52 @@
+{
+  "as_of": "2026-09-23T22:34:55.466094+00:00",
+  "auth": "operator continue 2026-09-23; val-split acquire + METHOD morph43 label HOLD after morph76 fair ceiling (morph77 prep)",
+  "split_policy": "force_val",
+  "queries": 31,
+  "candidate_atoms": 31,
+  "by_lineage": {
+    "brainrot-aura": 9,
+    "crypto-degen": 9,
+    "gaming-meta": 5,
+    "kinship-address": 7,
+    "workplace-corp": 1
+  },
+  "by_split": {
+    "val": 31
+  },
+  "samples": [
+    "fanum tax",
+    "mid af",
+    "Its so over",
+    "It's So Over",
+    "We're So Back",
+    "were so back",
+    "Aura Points",
+    "aura point",
+    "negative aura",
+    "Have Fun Staying Poor",
+    "probably nothing",
+    "wen moon wen lambo",
+    "wen lambo",
+    "Few Understand",
+    "Few Understand",
+    "Few Understand This",
+    "Very Few Understand This",
+    "up only",
+    "Throw the Game",
+    "Boosted Animal",
+    "clutch up",
+    "mid diff",
+    "diff mid",
+    "no cap fr",
+    "fr fr no cap",
+    "On God",
+    "say less",
+    "bet that",
+    "bet that up",
+    "Real Talk",
+    "low bandwidth"
+  ],
+  "hold": true,
+  "note": "label HOLD — no settle/train until explicit authorize"
+}

@@ -1,0 +1,269 @@
+{
+  "device": "cuda",
+  "encoder_trainable_loaded": 48,
+  "encoder_trainable_present": 48,
+  "examples": [
+    {
+      "class": "INFERRED",
+      "fillers_gold": [
+        "(from",
+        "to",
+        "the",
+        "moon)",
+        "quotations",
+        "\u25bc"
+      ],
+      "fillers_pred": [
+        "(computing)",
+        "to",
+        "the",
+        "moon)",
+        "character",
+        "\u25bc"
+      ],
+      "lineage": "crypto-degen",
+      "multiword": true,
+      "provenance": "live-pos:INFERRED",
+      "role_scheme": "positional",
+      "roles": [
+        "pos_0",
+        "pos_1",
+        "pos_2",
+        "pos_3",
+        "pos_4",
+        "pos_5"
+      ],
+      "text": "(from to the moon) quotations \u25bc"
+    },
+    {
+      "class": "INFERRED",
+      "fillers_gold": [
+        "Armenian:",
+        "\u057d\u0574\u0578\u0582\u0580\u0586\")",
+        "(smurf),",
+        "\u057d\u0574\u0578\u0582\u0580\u0586\u056b\u056f\")",
+        "pl",
+        "(smurfik)"
+      ],
+      "fillers_pred": [
+        "Armenian:",
+        "\u057d\u0574\u0578\u0582\u0580\u0586\u056b\u056f\")",
+        "(smurf)",
+        "\u057d\u0574\u0578\u0582\u0580\u0586\u056b\u056f\")",
+        "pl",
+        "(smurfik)"
+      ],
+      "lineage": "gaming-meta",
+      "multiword": true,
+      "provenance": "live-pos:INFERRED",
+      "role_scheme": "positional",
+      "roles": [
+        "pos_0",
+        "pos_1",
+        "pos_2",
+        "pos_3",
+        "pos_4",
+        "pos_5"
+      ],
+      "text": "Armenian: \u057d\u0574\u0578\u0582\u0580\u0586\") (smurf), \u057d\u0574\u0578\u0582\u0580\u0586\u056b\u056f\") pl (smurfik)"
+    },
+    {
+      "class": "INFERRED",
+      "fillers_gold": [
+        "\"Crash",
+        "out",
+        "etymology\",",
+        "The",
+        "Idioms."
+      ],
+      "fillers_pred": [
+        "crash",
+        "out",
+        "etymology\",",
+        "The",
+        "Idioms."
+      ],
+      "lineage": "brainrot-aura",
+      "multiword": true,
+      "provenance": "live-type:INFERRED",
+      "role_scheme": "type_slot",
+      "roles": [
+        "TOKEN",
+        "SLOT",
+        "MARKER",
+        "TOKEN",
+        "SLOT"
+      ],
+      "text": "TOKEN:\"Crash SLOT:out MARKER:etymology\", TOKEN:The SLOT:Idioms."
+    },
+    {
+      "class": "INFERRED",
+      "fillers_gold": [
+        "MUSH",
+        ":",
+        "Multi-User",
+        "Shared",
+        "Hallucination"
+      ],
+      "fillers_pred": [
+        "MUSH",
+        ":",
+        "Multi-User",
+        "Shared",
+        "hallucination"
+      ],
+      "lineage": "ai-native",
+      "multiword": true,
+      "provenance": "live-type:INFERRED",
+      "role_scheme": "type_slot",
+      "roles": [
+        "TOKEN",
+        "SLOT",
+        "MARKER",
+        "TOKEN",
+        "SLOT"
+      ],
+      "text": "TOKEN:MUSH SLOT:: MARKER:Multi-User TOKEN:Shared SLOT:Hallucination"
+    },
+    {
+      "class": "INFERRED",
+      "fillers_gold": [
+        "Real",
+        "eyes",
+        "realize",
+        "clanker",
+        "lies!!!"
+      ],
+      "fillers_pred": [
+        "a",
+        "eyes",
+        "real",
+        "clanker",
+        "lies!!!"
+      ],
+      "lineage": "ai-native",
+      "multiword": true,
+      "provenance": "live-type:INFERRED",
+      "role_scheme": "type_slot",
+      "roles": [
+        "TOKEN",
+        "SLOT",
+        "MARKER",
+        "TOKEN",
+        "SLOT"
+      ],
+      "text": "TOKEN:Real SLOT:eyes MARKER:realize TOKEN:clanker SLOT:lies!!!"
+    },
+    {
+      "class": "INFERRED",
+      "fillers_gold": [
+        "synonym",
+        "\u25b2quotations",
+        "\u25bc",
+        "Synonym:",
+        "tryhard"
+      ],
+      "fillers_pred": [
+        "synonym",
+        "quotations",
+        "\u25bc",
+        "Antonym:",
+        "tryhard"
+      ],
+      "lineage": "gaming-meta",
+      "multiword": true,
+      "provenance": "live-type:INFERRED",
+      "role_scheme": "type_slot",
+      "roles": [
+        "TOKEN",
+        "SLOT",
+        "MARKER",
+        "TOKEN",
+        "SLOT"
+      ],
+      "text": "TOKEN:synonym SLOT:\u25b2quotations MARKER:\u25bc TOKEN:Synonym: SLOT:tryhard"
+    },
+    {
+      "class": "INFERRED",
+      "fillers_gold": [
+        "(neologism)",
+        "Alternative",
+        "form",
+        "of",
+        "brain",
+        "rot."
+      ],
+      "fillers_pred": [
+        "(neologism)",
+        "Alternative",
+        "form",
+        "of",
+        "brain",
+        "rot"
+      ],
+      "lineage": "brainrot-aura",
+      "multiword": true,
+      "provenance": "live-type:INFERRED",
+      "role_scheme": "type_slot",
+      "roles": [
+        "TOKEN",
+        "SLOT",
+        "MARKER",
+        "TOKEN",
+        "SLOT",
+        "MARKER"
+      ],
+      "text": "TOKEN:(neologism) SLOT:Alternative MARKER:form TOKEN:of SLOT:brain MARKER:rot."
+    },
+    {
+      "class": "INFERRED",
+      "fillers_gold": [
+        "^",
+        "\"aura",
+        "farming\"",
+        "on",
+        "Google",
+        "Trends."
+      ],
+      "fillers_pred": [
+        "^",
+        "aura",
+        "farming",
+        "on",
+        "Google",
+        "Trends."
+      ],
+      "lineage": "brainrot-aura",
+      "multiword": true,
+      "provenance": "live-type:INFERRED",
+      "role_scheme": "type_slot",
+      "roles": [
+        "TOKEN",
+        "SLOT",
+        "MARKER",
+        "TOKEN",
+        "SLOT",
+        "MARKER"
+      ],
+      "text": "TOKEN:^ SLOT:\"aura MARKER:farming\" TOKEN:on SLOT:Google MARKER:Trends."
+    }
+  ],
+  "export_sha256": "d114cb031ff0fa88e6581bcbc34c892e8eb814c9ee672fb22864c35114fe8ce2",
+  "model_dir": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+  "multiword_failures": 8,
+  "multiword_totals": 201,
+  "n_examples": 8,
+  "n_failures_logged_pool": 8,
+  "n_unbind_val": 201,
+  "name_gate": false,
+  "schema": "hyperlex.hyperlexical.unbind_failure_dump.v0.1",
+  "scheme_failures": {
+    "positional": 2,
+    "type_slot": 6
+  },
+  "scheme_totals": {
+    "positional": 101,
+    "type_slot": 100
+  },
+  "unbind_exact": 0.9601990049751243
+}

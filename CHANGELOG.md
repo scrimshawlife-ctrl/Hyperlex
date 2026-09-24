@@ -2,23 +2,26 @@
 
 ## Unreleased
 
-- **Spec 007 morph50 PROMOTE BEST:** `LAST_TRAINABLE=8` (MAX) warm morph49 +
-  SAVE_BEST + +2 METHOD morph49 residual gold (force 137 / hard 182;
-  SoT flip `boon coon`) → best **0.8097** (ep38) > fair morph49
-  **0.7920** (n=226). E2 PASS. Spark BEST → morph50;
-  morph49+morph48+morph40+morph36 preserved. Container
-  `hlx-train-morph50-1789703143` exit 0. Receipts:
-  `receipts/20260918-morph50-40ep-promote-best.md`,
-  `receipts/morph50-40ep-last8-20260918/`.
+- **Spec 007 tip CI: restore unbind force-train API:** `loop.py` imported
+  `apply_unbind_force_train` but tip `unbind_recipe.py` lacked the helpers
+  (`HYPERLEX_UNBIND_FORCE_TRAIN_PATH`, resolve/load/apply). Restored + tests
+  `tests/shadow/test_hyperlexical_unbind_force_train.py`.
 
-- **Spec 007 head-slot CE upweight + morph15 recipe preflight:**
-  `HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT` (default 1.0, fail-closed in
-  (0, 4]) scales position-0 filler CE before `combine_unbind_train_terms`.
-  Targets `positional_head_filler_miss` without inventing gold. Receipt /
-  `config-train.json` carry `unbind_head_slot_weight`. Torch-free
-  `python3 -m hyperlexical.morph15_recipe` resolves the morph15 card
-  knobs (exit 2 bad env, exit 3 hard-atoms missing when upsample>1).
-  Spark `morph15-unbind.sh` defaults head weight **2** and runs recipe
-  preflight. `name_gate` stays false.
+- **Spec 007 Hyperlexical product plan (draft):**
+  `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md` — climb under
+  soft_ceiling, engineering hygiene, name_gate/Hub packaging, PR triage
+  (#100 / #99 / #95). Does not flip `name_gate`.
 
-<!-- Full Unreleased history: restore from Hyperlex main @ e32c1f5 + morph50 prepend when convenient. -->
+- **Spec 007 morph74 IN FLIGHT (SoT clean + acquire-settle):** quarantined **57**
+  INFERRED wiki/scaffolding from Spark SoT; durable `reject_wiki_scaffolding_text`.
+  Settle `to the moon` + `elo hell` → force/hard **217→221 / 258→262**. Warm
+  morph65 + `INIT_EXPAND_VOCAB=1`. Fair **0.9880239520958084** n=167. Container
+  `hlx-train-morph74-1790179734`. Receipts:
+  `receipts/20260923-sot-clean-acquire-civilian.md`,
+  `receipts/20260923-morph74-acquire-settle-inflight.md`.
+
+- **Spec 007 morph73 REJECT_VS_BEST:** expand-warm tied fair **0.9649122807017544**
+  n=171 → REJECT. Residual AUTHORIZE=0 scaffolding — cleaned for morph74.
+
+- **Earlier Unreleased Spec 007 / docs / P1 entries:** morph72→morph56 ladder and
+  0.4.0… history preserved in branch history / operator workspace `CHANGELOG.md`.

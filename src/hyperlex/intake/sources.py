@@ -131,6 +131,11 @@ ROUTE_PRESETS: Dict[str, Dict[str, Any]] = {
         "description": "X/Twitter path (bearer / xurl / stub)",
         "network": True,
     },
+    "trends": {
+        "source": "combined",
+        "description": "Combined language ingest plus a Google Trends evidence packet",
+        "network": True,
+    },
 }
 
 
@@ -164,7 +169,7 @@ def resolve_source(
         if preset is None:
             return {
                 "ok": False,
-                "error": f"unknown route={route_name!r}; use offline|mock|default|live|glossary|social",
+                "error": f"unknown route={route_name!r}; use offline|mock|default|live|glossary|social|trends",
                 "source": "mock",
                 "requested": requested,
                 "route": route_name,

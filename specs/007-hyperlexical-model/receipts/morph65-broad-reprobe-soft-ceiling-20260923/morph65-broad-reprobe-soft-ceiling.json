@@ -1,0 +1,115 @@
+{
+  "schema": "hyperlex.broad_residual_diag.v0.1",
+  "as_of": "2026-09-23T23:31:28.105501+00:00",
+  "auth": "operator continue 2026-09-23; soft_ceiling ARMED \u2014 morph65 live broad residual reprobe + METHOD morph43 HOLD",
+  "gate": "soft_ceiling_tiebreak",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+  "force": null,
+  "n_unbind_export": 3700,
+  "n_val": 357,
+  "n_val_observed": 256,
+  "n_val_inferred": 101,
+  "scored": {
+    "val_all": {
+      "unbind_exact": 0.9187675070028011,
+      "n_unbind_eval": 357,
+      "unbind_token_f1": 0.9477777777777778,
+      "unbind_slot_f1": 0.9477777777777778
+    },
+    "val_observed": {
+      "unbind_exact": 0.88671875,
+      "n_unbind_eval": 256,
+      "unbind_token_f1": 0.9279141104294478,
+      "unbind_slot_f1": 0.9279141104294478
+    },
+    "val_inferred": {
+      "unbind_exact": 1.0,
+      "n_unbind_eval": 101,
+      "unbind_token_f1": 1.0,
+      "unbind_slot_f1": 1.0
+    }
+  },
+  "n_residual_observed": 29,
+  "n_residual_inferred": 0,
+  "n_residual_observed_scaff": 0,
+  "residual_themes_observed": {
+    "positional_head_filler_miss": 8,
+    "full_miss": 8,
+    "type_slot_token_miss": 12,
+    "partial_slot_miss": 17,
+    "morph_bleed": 1
+  },
+  "residual_dump": {
+    "unbind_residual_dump": "residual-morph65-broad-reprobe.jsonl",
+    "n_unbind_residual": 29,
+    "unbind_residual_themes": {
+      "partial_slot_miss": 17,
+      "type_slot_token_miss": 12,
+      "positional_head_filler_miss": 8,
+      "full_miss": 8,
+      "morph_bleed": 1
+    },
+    "unbind_residual_by_scheme": {
+      "positional": 17,
+      "type_slot": 12
+    },
+    "unbind_residual_by_class": {
+      "OBSERVED": 29
+    },
+    "unbind_residual_summary": "residual-morph65-broad-reprobe.summary.json"
+  },
+  "label_counts": {
+    "n": 29,
+    "AUTHORIZE": 20,
+    "ABSTAIN": 9,
+    "by_decision": {
+      "ABSTAIN": 9,
+      "AUTHORIZE": 20
+    },
+    "by_why": {
+      "abstain_dictionary_idiom_harvest": 8,
+      "authorize_civilian_circulating": 20,
+      "abstain_morph_bleed": 1
+    },
+    "by_scheme": {
+      "positional": 17,
+      "type_slot": 12
+    },
+    "authorize_phrases": [
+      "admin abuse",
+      "after a while, crocodile",
+      "aloha snackbar",
+      "as a mug",
+      "bamboo baksheesh",
+      "bathroom singer",
+      "bearded clam",
+      "bench jockey",
+      "bent as a nine-bob note",
+      "bling bling",
+      "bliss ninny",
+      "box of ivories",
+      "bread and honey",
+      "highkey shawty",
+      "lowkenuinely how do these people exist",
+      "my guy",
+      "quit lit",
+      "real eyes realize clanker lies!!!",
+      "using a beard"
+    ],
+    "prior_defer_wall_n": 9,
+    "as_of": "2026-09-23T23:31:28.105388+00:00",
+    "authorization": "operator continue 2026-09-23; soft_ceiling ARMED \u2014 morph65 live broad residual reprobe + METHOD morph43 HOLD",
+    "gate": "soft_ceiling_tiebreak",
+    "live_broad_observed_exact": 0.88671875,
+    "live_broad_observed_n": 256
+  },
+  "prior_force_fair": {
+    "exact": 1.0,
+    "n": 164
+  },
+  "prior_authorize_pin": {
+    "exact": 0.889763779527559,
+    "n": 254
+  },
+  "note": "Live reprobe under soft_ceiling. Compare to authorize pin n=254; morph77 settle grew OBSERVED val. HOLD for Jev qualify."
+}

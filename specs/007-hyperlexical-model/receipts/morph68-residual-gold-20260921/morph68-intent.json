@@ -1,0 +1,28 @@
+{
+  "morph": 68,
+  "as_of": "2026-09-21T22:32:55.134561+00:00",
+  "auth": "operator continue 2026-09-21; morph68 after morph67 REJECT + residual AUTHORIZE force expand",
+  "one_knob": "morph67 residual AUTHORIZE n=2 force/hard expand + harvest OBSERVED append",
+  "warm": "seed-morph65",
+  "force": "/home/morpheus/hlx/force_train_morph68_expanded.jsonl",
+  "hard": "/home/morpheus/hlx/hard_atoms_train_morph68.jsonl",
+  "upsample": 8,
+  "second_slot": 2,
+  "last_trainable": 8,
+  "epochs": 40,
+  "lr": "2e-5",
+  "mem_fraction": 0.3,
+  "save_best": true,
+  "fair_path": "/home/morpheus/hlx/fair-eval-morph65-morph68.json",
+  "fair_exact": 0.9695431472081218,
+  "fair_n": 197,
+  "pin_rule": "best > fair on n=197 and E2 trunk-forward unbind_exact=1.0",
+  "name_gate": false,
+  "not_this_card": [
+    "upsample 11+",
+    "SECOND_SLOT=4",
+    "replay morph67 SoT without new gold",
+    "invent OBSERVED fillers",
+    "Hub"
+  ]
+}

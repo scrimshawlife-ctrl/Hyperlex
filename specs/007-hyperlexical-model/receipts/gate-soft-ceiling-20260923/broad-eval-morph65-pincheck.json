@@ -1,0 +1,26 @@
+{
+  "schema": "hyperlex.broad_observed_eval.v0.1",
+  "as_of": "2026-09-23T23:00:20.622872+00:00",
+  "gate": "soft_ceiling_tiebreak",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+  "force": null,
+  "unbind_exact": 0.88671875,
+  "n_scored": 256,
+  "scored": {
+    "unbind_exact": 0.88671875,
+    "n_unbind_eval": 256,
+    "unbind_token_f1": 0.9279141104294478,
+    "unbind_token_precision": 0.9279141104294478,
+    "unbind_token_recall": 0.9279141104294478,
+    "unbind_slot_f1": 0.9279141104294478
+  },
+  "baseline": {
+    "seed": "seed-morph65",
+    "unbind_exact": 0.889763779527559,
+    "n": 254
+  },
+  "beats_baseline": false,
+  "delta": -0.003045029527559029,
+  "surface_ok": false,
+  "note": "Broad OBSERVED val without apply_unbind_force_train. soft_ceiling escape hatch when force-fair == 1.0."
+}

@@ -1,0 +1,21 @@
+{
+  "auth": "operator continue 2026-09-22; morph68 residual gold after morph68 tie/REJECT (METHOD morph43; update goldens to continue)",
+  "residual_n": 6,
+  "authorize": 0,
+  "abstain": 6,
+  "by_reason": {
+    "abstain_scaffolding_wiki_etym": 5,
+    "parenthetical_meta_filler": 1
+  },
+  "force_base": 166,
+  "force_new": 166,
+  "force_added": 0,
+  "hard_base": 208,
+  "hard_new": 208,
+  "hard_added": 0,
+  "force_path": "/home/morpheus/hlx/force_train_morph69_expanded.jsonl",
+  "hard_path": "/home/morpheus/hlx/hard_atoms_train_morph69.jsonl",
+  "authorize_texts": [],
+  "note": "AUTHORIZE=0 all residuals scaffolding/wiki/etym; do not launch identical morph69",
+  "as_of": "2026-09-22T07:50:58.049768+00:00"
+}

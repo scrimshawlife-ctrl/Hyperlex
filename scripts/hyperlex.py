@@ -918,7 +918,7 @@ def cmd_commands(_args: argparse.Namespace) -> int:
             {"cmd": "score-series --mean-shift --verify-chain", "why": "Brier series after settlements"},
         ],
         "ingest_routing": [
-            {"cmd": "sources", "why": "Catalog + routes (offline|live|default|glossary|social)"},
+            {"cmd": "sources", "why": "Catalog + routes (offline|live|default|glossary|social|trends)"},
             {"cmd": "sources --route live", "why": "Preview resolve for a route"},
             {"cmd": "ingest \"<query>\" --route offline", "why": "Ingest only (structured + fingerprint)"},
             {"cmd": "analyze \"<query>\" --route offline", "why": "Analyze without auto-receipt"},
@@ -2412,7 +2412,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
     sources_parser = subparsers.add_parser(
         "sources",
-        help="List ingest sources + routes (offline|live|default|glossary|social)",
+        help="List ingest sources + routes (offline|live|default|glossary|social|trends)",
     )
     sources_parser.add_argument("--route", default="", help="Preview resolve for a named route")
     sources_parser.add_argument("--source", default="", help="Preview resolve for a source alias")
@@ -2434,7 +2434,7 @@ def _build_parser() -> argparse.ArgumentParser:
         p.add_argument(
             "--route",
             default=default_route,
-            help="Operator route: offline|mock|default|live|glossary|social",
+            help="Operator route: offline|mock|default|live|glossary|social|trends",
         )
         p.add_argument("--domain", default="general")
         p.add_argument("--no-expand", action="store_true", default=False, help="Do not split multi-term bags")
@@ -2506,7 +2506,7 @@ def _build_parser() -> argparse.ArgumentParser:
     analyze_parser.add_argument(
         "--route",
         default="",
-        help="Operator route: offline|mock|default|live|glossary|social",
+        help="Operator route: offline|mock|default|live|glossary|social|trends",
     )
     analyze_parser.add_argument("--input", help="Optional ingest JSON payload")
     analyze_parser.add_argument(
@@ -2962,7 +2962,7 @@ def _build_parser() -> argparse.ArgumentParser:
     scan_parser.add_argument(
         "--route",
         default="",
-        help="Operator route: offline|mock|default|live|glossary|social",
+        help="Operator route: offline|mock|default|live|glossary|social|trends",
     )
     scan_parser.add_argument("--structured-ingest", dest="structured_ingest", action="store_true", default=True)
     scan_parser.add_argument("--validate", action="store_true", default=False)

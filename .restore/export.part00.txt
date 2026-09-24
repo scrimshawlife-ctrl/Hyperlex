@@ -1,0 +1,403 @@
+"""U2 civilian exporter. No hyperlex import. No ~/.hyperlex copy."""
+
+from __future__ import annotations
+
+import argparse
+import ast
+import hashlib
+import json
+import os
+import sys
+from pathlib import Path
+from typing import Any
+
+from .packet import RESTRICTED_MARKER, SCHEMES, sha256_hex
+from ._negatives_data import NEGATIVES  # ordinary prose; no slang
+from .unbind_recipe import recipe_env_counts
+
+FAMILIES = (
+    "betting-sharp",
+    "crypto-degen",
+    "ai-native",
+    "brainrot-aura",
+    "kinship-address",
+    "political-status",
+    "gaming-meta",
+    "workplace-corp",
+)
+
+TYPOLOGY = {
+    "betting-sharp": ["status"],
+    "crypto-degen": ["status", "tribal"],
+    "ai-native": ["compression", "memory", "provenance", "context"],
+    "brainrot-aura": ["compression", "status"],
+    "kinship-address": ["tribal"],
+    "political-status": ["tribal", "irony_shield"],
+    "gaming-meta": ["status", "hook"],
+    "workplace-corp": ["camouflage"],
+}
+
+
+DIALECT = (
+    "no cap fr",
+    "it's giving",
+    "locked in",
+    "crash out",
+    "left no crumbs",
+    "chat is this real",
+    "aura points",
+    "let him cook",
+)
+
+ROW_KEYS = (
+    "text",
+    "split",
+    "lineage",
+    "typology",
+    "stage",
+    "roles",
+    "fillers",
+    "role_scheme",
+    "task",
+    "provenance",
+    "class",
+    "license",
+)
+
+COLLISION_HOLD = {"skill issue"}
+
+# Short slang / numeric codes that len≤2 or numeric filters would false-reject.
+# Prefer explicit allowlist over blanket keep of all short/numeric tokens.
+SHORT_SLANG_ALLOWLIST = frozenset(
+    {
+        "w",
+        "l",
+        "ez",
+        "gg",
+        "gm",
+        "gn",
+        "bs",
+        "a+",
+        "ai",
+        "ak",
+        "3p",
+        "ag",
+        "bf",
+        "bj",
+        "bk",
+        "bm",
+        "420",
+        "4/20",
+        "4:20",
+        "100",
+        "404",
+        "5150",
+        "10-4",
+        "304",
+        "143",
+        "007",
+        "411",
+        "730",
+        "10-20",
+    }
+)
+
+# Spec 004 type_slot vocabulary (structural placeholders — not gloss-derived POS).
+TYPE_SLOT_TAGS = ("TOKEN", "SLOT", "MARKER")
+
+
+def repo_root() -> Path:
+    return Path(__file__).resolve().parents[3]
+
+
+def lexical_split(text: str) -> str:
+    """Frozen hash split. Do not change the hash, modulus, or bucket edges.
+
+    Settle may add rows mid-experiment. A new text gets a bucket from *its*
+    hash only. Existing texts keep their split — val must not reshuffle.
+    """
+    n = int(sha256_hex(text.lower())[:8], 16) % 10
+    if n == 0:
+        return "test"
+    if n == 1:
+        return "val"
+    return "train"
+
+
+def _norm_class(raw: str | None, default: str) -> str:
+    val = (raw or default).upper()
+    if val not in {"OBSERVED", "INFERRED", "SPECULATIVE"}:
+        return default
+    if val == "SPECULATIVE":
+        return "INFERRED"
+    return val
+
+
+def _norm_role_scheme(raw: Any) -> str | None:
+    """Fail-closed: recoverable_structure allows positional|type_slot only.
+
+    Dump / harvest leftovers such as ``civilian`` are not a third scheme.
+    Classify rows with an unknown label drop to None (no unbind gold).
+    """
+    if raw in SCHEMES:
+        return str(raw)
+    return None
+
+
+def _row(**kwargs: Any) -> dict[str, Any]:
+    text = kwargs["text"]
+    if RESTRICTED_MARKER in text:
+        raise ValueError("restricted text")
+    if text.lower() in COLLISION_HOLD and kwargs.get("task") == "classify":
+        kwargs = dict(kwargs)
+        kwargs["lineage"] = "none"
+        kwargs["class"] = "INFERRED"
+        kwargs["provenance"] = str(kwargs.get("provenance") or "") + ":collision-hold"
+    out = {k: kwargs.get(k) for k in ROW_KEYS}
+    # Spec 007 lexical split is train/val/test only. Reject store contamination
+    # (e.g. blanket-yes wrote split="live") so --include-live cannot bypass the hash split.
+    split = kwargs.get("split")
+    if split not in {"train", "val", "test"}:
+        split = lexical_split(text)
+    out["split"] = split
+    out["typology"] = list(out.get("typology") or [])
+    out["roles"] = list(out.get("roles") or [])
+    out["fillers"] = list(out.get("fillers") or [])
+    out["license"] = out.get("license") or "MIT-examples"
+    out["stage"] = out.get("stage") or "circulating"
+    out["role_scheme"] = _norm_role_scheme(out.get("role_scheme"))
+    return out
+
+
+def load_registry(root: Path) -> list[dict[str, Any]]:
+    path = root / "src" / "hyperlex" / "analysis" / "__init__.py"
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            targets = node.targets
+        elif isinstance(node, ast.AnnAssign):
+            targets = [node.target]
+        else:
+            continue
+        for target in targets:
+            if (
+                isinstance(target, ast.Name)
+                and target.id == "LINEAGE_REGISTRY"
+                and node.value is not None
+            ):
+                return ast.literal_eval(node.value)
+    raise RuntimeError("LINEAGE_REGISTRY missing")
+
+
+def harvest_registry(root: Path) -> list[dict[str, Any]]:
+    rows = []
+    for entry in load_registry(root):
+        fam = entry["family_id"]
+        if fam not in FAMILIES:
+            continue
+        for term in entry.get("terms") or []:
+            rows.append(
+                _row(
+                    text=term,
+                    lineage=fam,
+                    typology=TYPOLOGY.get(fam, []),
+                    task="classify",
+                    provenance=f"LINEAGE_REGISTRY:{fam}",
+                    **{"class": "INFERRED"},
+                    role_scheme=None,
+                )
+            )
+    return rows
+
+
+def harvest_receipts(root: Path) -> list[dict[str, Any]]:
+    rows = []
+    gold = root / "examples" / "receipts" / "golden"
+    if not gold.is_dir():
+        return rows
+    for path in sorted(gold.glob("*.json")):
+        if path.name == "MANIFEST.json":
+            continue
+        data = json.loads(path.read_text(encoding="utf-8"))
+        lineage = (data.get("analysis") or {}).get("lineage") or {}
+        fam = lineage.get("family_id") or "none"
+        if fam not in FAMILIES and fam != "none":
+            fam = "none"
+        terms = list(lineage.get("matched_terms") or [])
+        query = ((data.get("ingest") or {}).get("query") or "").strip()
+        if query:
+            terms.append(query)
+        seen = set()
+        for term in terms:
+            if not term or term in seen:
+                continue
+            seen.add(term)
+            rows.append(
+                _row(
+                    text=term,
+                    lineage=fam,
+                    typology=TYPOLOGY.get(fam, []),
+                    task="classify",
+                    provenance=f"golden:{path.name}",
+                    **{"class": "INFERRED"},
+                    role_scheme=None,
+                )
+            )
+    return rows
+
+
+def harvest_backfill(root: Path) -> list[dict[str, Any]]:
+    rows = []
+    pack_dir = root / "data" / "backfill" / "2026"
+    if not pack_dir.is_dir():
+        return rows
+    for path in sorted(pack_dir.glob("2026-*.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        default = data.get("provenance_default") or "INFERRED"
+        for item in data.get("terms") or []:
+            term = (item.get("term") or "").strip()
+            if not term:
+                continue
+            fam = item.get("family_id") or "none"
+            if fam not in FAMILIES and fam != "none":
+                fam = "none"
+            rows.append(
+                _row(
+                    text=term,
+                    lineage=fam,
+                    typology=TYPOLOGY.get(fam, []),
+                    task="classify",
+                    provenance=f"backfill:{path.name}",
+                    **{"class": _norm_class(item.get("provenance"), default)},
+                    role_scheme=None,
+                )
+            )
+    return rows
+
+
+def harvest_archive(root: Path) -> list[dict[str, Any]]:
+    rows = []
+    archive = root / "docs" / "archive"
+    if not archive.is_dir():
+        return rows
+    for path in sorted(archive.glob("**/receipts/*.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        lineage = (data.get("analysis") or {}).get("lineage") or {}
+        fam = lineage.get("family_id") or data.get("lineage_family") or "none"
+        if fam not in FAMILIES and fam != "none":
+            fam = "none"
+        terms = list(lineage.get("matched_terms") or [])
+        query = ((data.get("ingest") or {}).get("query") or "").strip()
+        if query:
+            terms.append(query)
+        seen = set()
+        for term in terms:
+            if not term or term in seen:
+                continue
+            seen.add(term)
+            rows.append(
+                _row(
+                    text=term,
+                    lineage=fam,
+                    typology=TYPOLOGY.get(fam, []),
+                    task="classify",
+                    provenance=f"archive:{path.relative_to(root).as_posix()}",
+                    **{"class": "INFERRED"},
+                    role_scheme=None,
+                )
+            )
+    return rows
+
+
+def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
+    """Spec 004 fixture gold under both schemes. Honest default n=24 (~45 unique).
+
+    Fixture rows are provenance `004:tpr:*` only — not civilian name-gate gold.
+    """
+    sys.path.insert(0, str(repo_root() / "scripts" / "shadow"))
+    from recoverable_structure.fixtures import make_spans
+
+    rows = []
+    spans = make_spans(n=n, length=4, seed=7)
+    for i, sp in enumerate(spans):
+        items = list(sp["item_ids"])
+        tags = list(sp["type_tags"])
+        rows.append(
+            _row(
+                text=" ".join(items),
+                lineage="none",
+                typology=[],
+                stage="noise",
+                roles=[f"pos_{k}" for k in range(len(items))],
+                fillers=items,
+                role_scheme="positional",
+                task="unbind",
+                provenance=f"004:tpr:positional:{i}",
+                **{"class": "OBSERVED"},
+            )
+        )
+        rows.append(
+            _row(
+                text=" ".join(f"{t}:{it}" for t, it in zip(tags, items)),
+                lineage="none",
+                typology=[],
+                stage="noise",
+                roles=tags,
+                fillers=items,
+                role_scheme="type_slot",
+                task="unbind",
+                provenance=f"004:tpr:type_slot:{i}",
+                **{"class": "OBSERVED"},
+            )
+        )
+    return rows
+
+
+def _structural_type_tags(n: int) -> list[str]:
+    """Assign Spec 004 TOKEN/SLOT/MARKER by index — not gloss/POS invention."""
+    return [TYPE_SLOT_TAGS[i % len(TYPE_SLOT_TAGS)] for i in range(n)]
+
+
+LIVE_UNBIND_MAX_LEN = 80
+LIVE_UNBIND_MAX_TOKENS = 6
+OBSERVED_MW_HARVEST_NAME = "harvest_unbind_observed_mw.jsonl"
+
+
+def _unbind_dual_scheme_rows(
+    atom: str,
+    tokens: list[str],
+    *,
+    lineage: str,
+    stage: str,
+    epistemic: str,
+    pos_provenance: str,
+    type_provenance: str,
+    license: str | None = None,
+) -> list[dict[str, Any]]:
+    """Emit positional + type_slot unbind rows. Fillers = real tokens only."""
+    if lineage not in FAMILIES and lineage != "none":
+        lineage = "none"
+    extra: dict[str, Any] = {}
+    if license:
+        extra["license"] = license
+    pos = _row(
+        text=atom,
+        lineage=lineage,
+        typology=TYPOLOGY.get(lineage, []),
+        stage=stage,
+        roles=[f"pos_{k}" for k in range(len(tokens))],
+        fillers=tokens,
+        role_scheme="positional",
+        task="unbind",
+        provenance=pos_provenance,
+        **{"class": epistemic},
+        **extra,
+    )
+    tags = _structural_type_tags(len(tokens))
+    typ = _row(
+        text=" ".join(f"{t}:{tok}" for t, tok in zip(tags, tokens)),
+        lineage=lineage,
+      

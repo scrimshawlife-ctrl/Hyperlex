@@ -1,0 +1,15 @@
+{
+  "as_of": "2026-09-21T22:31:52.804842+00:00",
+  "auth": "operator continue 2026-09-21; morph67 residual AUTHORIZE harvest OBSERVED append for morph68 force move",
+  "n_appended": 2,
+  "texts": [
+    "[Out:] Mega yachts [In:] Mega gyatt",
+    "an egg's age"
+  ],
+  "authorize_all": [
+    "[Out:] Mega yachts [In:] Mega gyatt",
+    "an egg's age"
+  ],
+  "harvest": "/home/morpheus/.hyperlex/hyperlexical/harvest_unbind_observed_mw.jsonl",
+  "note": "force_train_morph68_expanded.jsonl already has both as OBSERVED; harvest SoT needed for apply_unbind_force_train move on INFERRED keys."
+}

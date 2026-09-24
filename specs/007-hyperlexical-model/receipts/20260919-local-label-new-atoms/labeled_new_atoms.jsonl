@@ -1,0 +1,7 @@
+# labeled_new_atoms.jsonl — sharded (MCP size / corruption limits)
+
+This path is a pointer, not the packet. Reconstruct the full 460-row JSONL with the recipe in `LABEL_SHARDS.md` (zlib.b64 / hex sidecars).
+
+Expected sha256 after reconstruct: `82c609716126efbb395bbc8ccf31a7d3fdd9862db422fe3b76711b5862f4823c`
+
+Not force-trained. INFERRED proposals only. `name_gate=false`.

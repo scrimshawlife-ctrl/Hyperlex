@@ -1,0 +1,11 @@
+{
+  "schema": "hyperlex.train_hang.v0.1",
+  "as_of": "2026-09-22T03:13:15.839242+00:00",
+  "container": "hlx-train-morph68-1790040737",
+  "best_before_kill": {
+    "epoch": 4,
+    "unbind_exact": 0.9644670050761421
+  },
+  "note": "Second hang same pattern; operator ordered fix+continue. Investigating post-ep4 CPU spin.",
+  "action": "kill_investigate_fix_relaunch"
+}

@@ -1,0 +1,41 @@
+{
+  "reviewed": 460,
+  "authorize": 25,
+  "abstain": 435,
+  "by_why": {
+    "abstain_not_new": 18,
+    "positional_text_split_match": 25,
+    "abstain_scaffolding": 53,
+    "abstain_punct": 292,
+    "abstain_wiki": 37,
+    "abstain_url": 35
+  },
+  "held_in_packet": [],
+  "skill_issue_decision": "ABSTAIN",
+  "notion_rows": [
+    {
+      "text": "that's penis",
+      "decision": "ABSTAIN",
+      "why": "abstain_not_new"
+    },
+    {
+      "text": "aura farming",
+      "decision": "ABSTAIN",
+      "why": "abstain_not_new"
+    },
+    {
+      "text": "that even",
+      "decision": "ABSTAIN",
+      "why": "abstain_not_new"
+    },
+    {
+      "text": "lef a word a prayer",
+      "decision": "ABSTAIN",
+      "why": "abstain_not_new"
+    }
+  ],
+  "residual_relabeled": 0,
+  "force_train_rows": 0,
+  "authorize_reparse_ok": true,
+  "fair_gate_unchanged": "0.8185840707964602 n=226"
+}
