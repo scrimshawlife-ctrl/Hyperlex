@@ -29,6 +29,7 @@ sys.path.insert(0, str(REPO / "scripts" / "shadow"))
 
 from hyperlexical.export import export_dataset  # noqa: E402
 from hyperlexical.provenance import provenance  # noqa: E402
+from hyperlexical.release_set import maybe_release  # noqa: E402
 from hyperlexical.soft_ceiling import clean_surface, load_jsonl_keys, oov_filler_surface, row_key  # noqa: E402
 
 METRICS = {
@@ -36,7 +37,7 @@ METRICS = {
     "unbind_slices": ["all", "clean", "oov_filler", "by_role_scheme"],
     "classify": ["accuracy", "macro_f1", "ece_15_bins", "abstain_rate"],
     "report_by_label_class": ["OBSERVED", "INFERRED"],
-    "baselines": ["stub", "spec004_probe"],
+    "baselines": ["unbind_copy_token", "classify_majority_train"],
 }
 
 
@@ -95,7 +96,8 @@ def main(argv=None) -> int:
     for path in args.trained:
         trained |= load_jsonl_keys(path)
     bundle = export_dataset(REPO, include_live=True)
-    body = build(bundle["rows"], trained)
+    rows, release_stats = maybe_release(bundle["rows"])
+    body = build(rows, trained)
     models = {}
     for m in args.model:
         d = Path(m)
@@ -109,6 +111,7 @@ def main(argv=None) -> int:
         "models": models,
         "trained_files": args.trained,
         "n_trained_keys": len(trained),
+        "release_set": release_stats,
         "metrics": METRICS,
         "rules": [
             "Score each listed model once on these exact row-ID hashes.",
