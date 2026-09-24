@@ -26,6 +26,7 @@ from .save_pretrained import (
     split_weight_tensors,
     write_skeleton,
 )
+from .training_routing import route_rows
 from .unbind_curriculum import (
     plan_unbind_curriculum,
     resolve_curriculum_schedule,
@@ -357,13 +358,14 @@ def should_interleave_unbind(classify_batch_index: int, every_n: int) -> bool:
 
 
 def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
-    """Train recipe. Val is frozen lexical split unless force-train env is set.
+    """Train recipe after route_rows. Val frozen unless force-train env is set.
 
     ``HYPERLEX_UNBIND_FORCE_TRAIN_PATH`` may move authorized OBSERVED exacts
     from val→train (accept-style). Empty/unset → val untouched.
     """
-    train = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "train"]
-    val = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "val"]
+    routed, _ = route_rows(rows)
+    train = routed["unbind"]["train"]
+    val = routed["unbind"]["val"]
     train, val, force_stats = apply_unbind_force_train(train, val)
     shaped, stats = shape_unbind_train(train)
     stats = {**stats, **force_stats}
@@ -419,9 +421,12 @@ def run_loop(
 ) -> dict:
     root = repo_root()
     bundle = export_dataset(root, include_live=include_live, live_store=live_store)
+    if any(r.get("role_scheme") == "reviewed_occurrences" for r in bundle["rows"]):
+        raise ValueError("reviewed occurrences require occurrence-aware loop alignment")
+    routed, task_accounting = route_rows(bundle["rows"])
     write_export(root / "specs" / "007-hyperlexical-model" / "exports", bundle)
-    classify_tr = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "train"]
-    classify_va = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "val"]
+    classify_tr = routed["classify"]["train"]
+    classify_va = routed["classify"]["val"]
     unbind_tr, unbind_va, unbind_recipe = prepare_unbind_splits(bundle["rows"])
     if len(classify_tr) < 8:
         raise RuntimeError("not enough classify train rows")
@@ -724,6 +729,7 @@ def run_loop(
         "cuda": bool(torch.cuda.is_available()),
         "epochs": epochs,
         "n_train_classify": len(classify_tr),
+        "task_accounting": task_accounting,
         "n_train_unbind": len(unbind_tr),
         "n_unfrozen_encoder": n_unfrozen,
         "n_encoder_tensors": len(final_state.get("encoder") or {}),
