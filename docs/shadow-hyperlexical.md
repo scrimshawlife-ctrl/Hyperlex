@@ -1,10 +1,10 @@
 # SHADOW — Spec 007 model path
 
-**Naming:** this page is **Hyperlexical** (model / train / eval / E2 / `name_gate` claim). Harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional shell. Trained E2 passed on `seed-morph78` (2026-09-24). The public name still requires Danny's `name_gate` yes (`name_gate` is **false**).
+**Naming:** this page is **Hyperlexical** (model / train / eval / E2 / `name_gate` claim). Harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional shell. Trained E2 passed on `seed-morph78` (2026-09-24). Danny approved the name on 2026-09-24: `seed-morph78` is **Hyperlexical** (`name_gate` **true**).
 
 The Hermes skill is the **current operator surface**. This page is the **model path**: a learned encoder that starts as T0 and may become T1 after E2.
 
-Not on Hyperlex `API_V1`. Not a Hugging Face model. Not named **Hyperlexical** until Danny's `name_gate` yes. Trained E2 PASS alone does not name it.
+Not on Hyperlex `API_V1`. Not a Hugging Face model. Pin `seed-morph78` is named **Hyperlexical** (trained E2 PASS + Danny `name_gate` yes). No other checkpoint is.
 
 Specify is locked C1–C52 plus A5 milestones. Implement on `main` is the stub, harvest, eval harness, and gated Spark loop.
 
@@ -14,10 +14,10 @@ Specify is locked C1–C52 plus A5 milestones. Implement on `main` is the stub, 
 |------|---------|--------------|-------------|
 | Skill | Hermes CLI + package | Hyperlex (the skill) | Shipping v0.4.0 |
 | T0 | Base encoder + classify heads | `hyperlex-encoder-*` only | Specified. Not Hyperlexical. |
-| T1 | Encoder + unbind heads; E2 vs Spec 004 | `hyperlex-structure-*` / Hyperlexical | Trained E2 **PASS** on `seed-morph78`; name **not** granted (`name_gate` false). |
+| T1 | Encoder + unbind heads; E2 vs Spec 004 | `hyperlex-structure-*` / Hyperlexical | **Earned** by `seed-morph78`: trained E2 PASS + `name_gate` yes (2026-09-24). Card rename pending. |
 | T2 | Separate generative LoRA | out of this cycle | Not an implement target |
 
-`name_gate` stays **false** until Danny yes. E2 PASS ≠ name. Classify volume ready ≠ T1.
+`name_gate` is **true** for `seed-morph78` (Danny yes). E2 PASS alone ≠ name. Classify volume ready ≠ T1.
 
 ## Honest gates (2026-09-10 PT evening)
 
@@ -32,7 +32,7 @@ Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **supersed
 | Gate | State |
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437**. |
-| `name_gate` | **false**. Volume does not name the model. E2 PASS does not flip it; Danny yes required. |
+| `name_gate` | **true** for `seed-morph78` (Danny 2026-09-24, A6). Volume and E2 did not flip it; the sentence did. |
 | E2 vs Spec 004 | **FAIL** on the stub (expected). Trained E2 **PASS** on Spark BEST `seed-morph78` (updated 2026-09-24). Seed smoke is not a pass. |
 | Hub | No upload. Skeleton only. Weights stay on Spark. |
 | Families | **8**. No ninth family. |

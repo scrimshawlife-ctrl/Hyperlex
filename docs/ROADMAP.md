@@ -3,7 +3,7 @@
 ## Vision
 Hyperlex **ships today as a Hermes skill** (this Python package). Relevant Abraxas wire capabilities live under `hyperlex.compat.abraxas`; hosts import *from* Hyperlex.
 
-The same project is on a **model path** (Spec 007): T0 encoder baseline, then T1 after eval gate E2. T1 is the first artifact that may be called Hyperlexical. Trained E2 can PASS on Spark without flipping `name_gate` — Danny yes is still required. No Hub card until then.
+The same project is on a **model path** (Spec 007): T0 encoder baseline, then T1 after eval gate E2. T1 is the first artifact that may be called Hyperlexical. Trained E2 PASS alone did not flip `name_gate`; Danny's yes did (2026-09-24, `seed-morph78`). No Hub card yet.
 
 The skill remains the operator surface while the encoder stays SHADOW.
 
@@ -85,7 +85,7 @@ The skill remains the operator surface while the encoder stays SHADOW.
 - [ ] Hub upload (operator — not started)
 - [ ] T13 promote into `src/hyperlex/`
 
-`name_gate` stays **false** until Danny yes (E2 PASS alone does not flip). Classify volume ≠ a Hyperlexical name. No ninth family.
+`name_gate` is **true** for `seed-morph78` (Danny yes 2026-09-24; E2 PASS alone did not flip). Classify volume ≠ a Hyperlexical name. No ninth family.
 
 ## Milestones
 - v0.2.x: Phases 0–4 complete (Hermes skill production track)
@@ -102,6 +102,7 @@ The skill remains the operator surface while the encoder stays SHADOW.
 See [SPEC.md](SPEC.md) and [DESIGN.md](DESIGN.md) for the historical spine. Current operator snapshot: [STATUS.md](STATUS.md).
 
 ## Recent
+- 2026-09-24: Danny `flip name_gate` — `seed-morph78` named **Hyperlexical** (amendment A6). Card rename, Hub, T13 still separate.
 - 2026-09-24: morph78 PROMOTE_BEST (soft_ceiling ceiling_escape; broad 0.9883 > 0.8867 n=256 + E2) after named-phrase settle. `name_gate` still false.
 - 2026-09-24: Hygiene — `pyproject.toml` aligned to `VERSION` 0.4.0; ROADMAP E2 line matches trained PASS; name_gate / named-phrases plan drafted. `#100` + `#99` on main. soft_ceiling ARMED; morph65 held.
 - 2026-09-10 PT evening: Spec 007 SoT 4333 / `--include-live` classify 2437; Danny ~2500 bar met; `name_gate` false. Hermes 913 / gap-to-2500 superseded. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37). (E2 was Spark-blocked at that snapshot; trained E2 later PASS on morph65.)

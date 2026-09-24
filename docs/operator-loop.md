@@ -64,7 +64,7 @@ $HLX analyze "rizz" --route offline
 
 ## Spec 007 Hyperlexical — classify & QA (Hermes)
 
-**Voice:** live harvest / `ingest_tap` / export-settle is **ne0l0gist**. Train / eval is **Hyperlexical**. Checkout is the Hyperlex repo (transitional shell). `name_gate` stays false.
+**Voice:** live harvest / `ingest_tap` / export-settle is **ne0l0gist**. Train / eval is **Hyperlexical**. Checkout is the Hyperlex repo (transitional shell). `name_gate` is true for pin `seed-morph78` only.
 
 From the **Hyperlex repo checkout**. Shadow modules: `scripts/shadow/hyperlexical/`. SoT: `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` (local-only; do not commit).
 
@@ -76,7 +76,7 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.ingest_tap
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
 ```
 
-INFERRED until operator settle. No auto-OBSERVED. `name_gate` false until Spark E2. 8 families only. Skill contract: [SKILL.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/SKILL.md).
+INFERRED until operator settle. No auto-OBSERVED. `name_gate` true only for `seed-morph78` (Spark E2 + Danny yes). 8 families only. Skill contract: [SKILL.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/SKILL.md).
 
 ## Calibration path (where Brier appears)
 
