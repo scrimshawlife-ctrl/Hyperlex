@@ -45,7 +45,7 @@ Receipt: `receipts/20260923-morph77-val-acquire-label-hold.md` · card `receipts
 
 | card | `authorize_card_phrases` |
 |------|--------------------------|
-| morph78 fresh acquire | **named 2026-09-24:** `have fun staying poor`, `fr fr no cap` (Spark settle pending) |
+| morph78 fresh acquire | **settled 2026-09-24:** `have fun staying poor`, `fr fr no cap` OBSERVED val; soft_ceiling train IN_FLIGHT |
 | morph65 live broad residual reprobe | `[]` |
 
 Operator bare `authorize val-settle` → **CANCELLED_EMPTY_GOLD** (`receipts/20260923-authorize-val-settle-cancelled-empty-gold.md`). Force tip remains morph77 **232/273**. Live broad prior **0.88671875** n=256.
