@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph78**. Operator review `HYPERLEXICAL-PRODUCT-PLAN.md`; hold BEST or authorize a new acquire with named phrases (soft_ceiling compare vs morph78 broad 0.9883 n=256). `name_gate` needs Danny yes. Plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md`.
+1. Spark BEST = **morph78**. Default **HOLD**. Operator review `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md`; a new climb needs a new named-phrase acquire card (compare vs morph78 broad 0.9883 n=256). `name_gate` needs Danny yes. Plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 

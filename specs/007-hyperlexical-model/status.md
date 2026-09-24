@@ -28,8 +28,9 @@ Operator scoreboard (Danny-locked harvest snapshot **2026-09-10**; climb pin **2
 
 Next operator sentences that do work:
 
-- Authorize with **named phrases** on a live empty card, or new `force_expand_safe` acquire — see `NAME-GATE-AND-NAMED-PHRASES.md`
-- soft_ceiling decide / broad OBSERVED path (not force-only at fair 1.0 n=164)
+- Default: **HOLD** `seed-morph78`; operator product review of `HYPERLEXICAL-PRODUCT-PLAN.md`
+- Danny `name_gate` decision; Hub decision; optional T13 decision (each separate)
+- A new climb only on a new named-phrase acquire card vs morph78 PRIOR — see `NAME-GATE-AND-NAMED-PHRASES.md`
 - `open 006 IsA` — separate spec
 
 There is no further specify work on 007 without an amendment.

@@ -1,10 +1,10 @@
 # SHADOW — Spec 007 model path
 
-**Naming:** this page is **Hyperlexical** (model / train / eval / E2 / `name_gate` claim). Harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional shell. The earned Hub name still requires E2 (`name_gate` is **false**).
+**Naming:** this page is **Hyperlexical** (model / train / eval / E2 / `name_gate` claim). Harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional shell. Trained E2 passed on `seed-morph78` (2026-09-24). The public name still requires Danny's `name_gate` yes (`name_gate` is **false**).
 
 The Hermes skill is the **current operator surface**. This page is the **model path**: a learned encoder that starts as T0 and may become T1 after E2.
 
-Not on Hyperlex `API_V1`. Not a Hugging Face model. Not named **Hyperlexical** until eval gate E2 passes on Spark.
+Not on Hyperlex `API_V1`. Not a Hugging Face model. Not named **Hyperlexical** until Danny's `name_gate` yes. Trained E2 PASS alone does not name it.
 
 Specify is locked C1–C52 plus A5 milestones. Implement on `main` is the stub, harvest, eval harness, and gated Spark loop.
 
@@ -14,10 +14,10 @@ Specify is locked C1–C52 plus A5 milestones. Implement on `main` is the stub, 
 |------|---------|--------------|-------------|
 | Skill | Hermes CLI + package | Hyperlex (the skill) | Shipping v0.4.0 |
 | T0 | Base encoder + classify heads | `hyperlex-encoder-*` only | Specified. Not Hyperlexical. |
-| T1 | Encoder + unbind heads; E2 vs Spec 004 | `hyperlex-structure-*` / Hyperlexical | **Not earned.** E2 Spark-blocked. |
+| T1 | Encoder + unbind heads; E2 vs Spec 004 | `hyperlex-structure-*` / Hyperlexical | Trained E2 **PASS** on `seed-morph78`; name **not** granted (`name_gate` false). |
 | T2 | Separate generative LoRA | out of this cycle | Not an implement target |
 
-`name_gate` stays **false** until E2. Classify volume ready ≠ T1.
+`name_gate` stays **false** until Danny yes. E2 PASS ≠ name. Classify volume ready ≠ T1.
 
 ## Honest gates (2026-09-10 PT evening)
 
@@ -32,8 +32,8 @@ Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **supersed
 | Gate | State |
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437**. |
-| `name_gate` | **false**. Volume does not name the model. Gate stays false until E2 passes on Spark. |
-| E2 vs Spec 004 | **FAIL** on the stub (expected). A trained E2 is Spark-blocked. Seed smoke is not a pass. |
+| `name_gate` | **false**. Volume does not name the model. E2 PASS does not flip it; Danny yes required. |
+| E2 vs Spec 004 | **FAIL** on the stub (expected). Trained E2 **PASS** on Spark BEST `seed-morph78` (updated 2026-09-24). Seed smoke is not a pass. |
 | Hub | No upload. Skeleton only. Weights stay on Spark. |
 | Families | **8**. No ninth family. |
 | Brier | `null` on every packet. |
@@ -64,7 +64,7 @@ Bring-up is procedure, not a product card. A seed smoke that ends with E2 failin
 | [HERMES-SPARK-RUN.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/HERMES-SPARK-RUN.md) | Hermes run order |
 | [milestones.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/milestones.md) | A5 name-gate / tier table (#33) |
 
-Trunk: `answerdotai/ModernBERT-base`. Local snapshot only. Last 2 layers trainable. Span aligner + val metrics. HF-shaped dump (`config.json`, `model.safetensors` or `heads.pt`). No Hub upload from the recipe. Card name stays `hyperlex-encoder-modernbert-base-seed` until E2.
+Trunk: `answerdotai/ModernBERT-base`. Local snapshot only. Recipe default: last 2 layers trainable (climb pins such as `seed-morph78` use LAST_TRAINABLE=8). Span aligner + val metrics. HF-shaped dump (`config.json`, `model.safetensors` or `heads.pt`). No Hub upload from the recipe. Card name stays `hyperlex-encoder-modernbert-base-seed` until `name_gate` yes.
 
 ## Eval table (stub)
 
