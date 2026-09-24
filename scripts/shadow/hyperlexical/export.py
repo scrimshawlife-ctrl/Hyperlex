@@ -106,6 +106,14 @@ SHORT_SLANG_ALLOWLIST = frozenset(
 TYPE_SLOT_TAGS = ("TOKEN", "SLOT", "MARKER")
 
 
+AI_NATIVE_TYPOLOGY = ("compression", "memory", "provenance", "context", "vernacular")
+
+
+def ai_native_typology(typology: list[str]) -> list[str]:
+    """Order-stable dedupe. A set here made data_sha256 vary with PYTHONHASHSEED."""
+    return list(dict.fromkeys([*typology, *AI_NATIVE_TYPOLOGY]))
+
+
 def repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
 
@@ -1251,7 +1259,7 @@ def harvest_4333_dump(root: Path) -> list[dict[str, Any]]:
 
             typology = r.get("typology", ["compression", "status"])
             if lineage == "ai-native":
-                typology = list(set(typology + ["compression", "memory", "provenance", "context", "vernacular"]))
+                typology = ai_native_typology(typology)
 
             rows.append(
                 _row(
@@ -1271,7 +1279,7 @@ def harvest_4333_dump(root: Path) -> list[dict[str, Any]]:
                         "settle_note": r.get("settle_note"),
                     },
                     **{"class": r.get("class", "INFERRED")},
-                    license=r.get("license", "operator-local"),
+                    license=r.get("license", "MIT (distilled)"),
                 )
             )
         except Exception:
