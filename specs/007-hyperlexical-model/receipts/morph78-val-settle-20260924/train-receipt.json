@@ -1,1 +1,1 @@
-${file:/tmp/m78_train_mini.json}
+{"aligner":"char_span + offset_mapping","best_epoch":15,"best_unbind_exact":1.0,"brier":null,"cuda":true,"data_sha256":"64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430","device":"cuda","e2_pass":false,"epochs":40,"best_epoch":15,"name_gate":false,"schema":"hyperlex.hyperlexical.train_receipt.v0.1","note":"FULL_CONTENT_IN_FILE_SEE_BATCH","force":236,"hard":277}
