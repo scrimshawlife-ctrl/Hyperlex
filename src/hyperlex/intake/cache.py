@@ -29,6 +29,7 @@ SOURCE_TTL: Dict[str, int] = {
     "x_search": 120,
     "combined": 180,
     "mock": 0,  # never disk-cache mock (deterministic, cheap)
+    "trends": 21600,
 }
 
 # Minimum seconds between live network fetches per source
@@ -43,6 +44,7 @@ SOURCE_MIN_INTERVAL: Dict[str, float] = {
     "crawl4ai": 1.0,
     "x_search": 2.0,
     "combined": 5.0,
+    "trends": 60.0,
 }
 
 _MEM: Dict[str, Tuple[float, str]] = {}  # key -> (expires_at, value)
@@ -192,6 +194,31 @@ def min_interval_for(source: str) -> float:
         except ValueError:
             pass
     return float(SOURCE_MIN_INTERVAL.get(src, 1.0))
+
+
+def rate_window_open(source: str) -> bool:
+    """True when a live fetch for ``source`` is allowed now.
+
+    Does not sleep and does not stamp. ``HYPERLEX_NO_RATE_LIMIT=1`` is open.
+    A minimum interval of 0 is open.
+    """
+    flag = str(os.environ.get("HYPERLEX_NO_RATE_LIMIT", "")).strip().lower()
+    if flag in {"1", "true", "yes", "on"}:
+        return True
+    src = (source or "").strip().lower()
+    min_iv = float(min_interval_for(src))
+    if min_iv <= 0:
+        return True
+    last = float(_load_rate_state().get(src, 0.0))
+    return (time.time() - last) >= min_iv
+
+
+def stamp_rate_limit(source: str) -> None:
+    """Record now as the last attempt for ``source``. Does not sleep."""
+    src = (source or "").strip().lower()
+    state = _load_rate_state()
+    state[src] = time.time()
+    _save_rate_state(state)
 
 
 def wait_for_rate_limit(source: str) -> Dict[str, Any]:
