@@ -12,7 +12,7 @@ This plan turns Spec 007 from a SHADOW Spark climb into a shippable Hyperlexical
 
 | Layer | State |
 |-------|--------|
-| Hermes skill (`SKILL.md`, CLI, `src/hyperlex/`) | **Ready** (v0.4.0 operator surface; pyproject may read 1.6.0 — hygiene debt) |
+| Hermes skill (`SKILL.md`, CLI, `src/hyperlex/`) | **Ready** (v0.4.0; `pyproject.toml` aligned to `VERSION`) |
 | Spec 007 shadow train/eval | **Ready enough to climb** — BEST=`seed-morph65`, E2 PASS on trained trunk |
 | Force fair | **1.0** n=164 (classic promote wall) |
 | soft_ceiling | **ARMED** — at fair 1.0, promote only if live broad OBSERVED **>** PRIOR morph65 (**0.88671875** n=256) + E2 |
@@ -56,9 +56,9 @@ Constraints: upsample freeze 11+; no SECOND_SLOT=4; Qwen stopped unless re-enabl
 
 | Step | Action | Exit |
 |------|--------|------|
-| B1 | Restore `apply_unbind_force_train` + tests on tip (#99 CI) | validate green |
-| B2 | Align `VERSION` ↔ `pyproject.toml` version (0.4.0 vs 1.6.0 skew) | Single source of truth |
-| B3 | Drop / quarantine stale probe files and truncated CHANGELOG placeholders on tip | Docs match receipts |
+| B1 | Restore `apply_unbind_force_train` + tests on tip (#99 CI) | validate green (**done** · merged) |
+| B2 | Align `VERSION` ↔ `pyproject.toml` version (0.4.0 vs 1.6.0 skew) | Single source of truth (**done** · 0.4.0) |
+| B3 | Drop / quarantine stale probe files; scrub “E2 Spark-blocked” once trained E2 PASS is the pin | Docs match receipts (**done** on hygiene branch) |
 | B4 | Keep force-train path env-only; val move ⇒ fair re-baseline | Receipt stats present |
 
 ### C. Product packaging (post–name_gate, separate authorize)
@@ -74,11 +74,11 @@ Constraints: upsample freeze 11+; no SECOND_SLOT=4; Qwen stopped unless re-enabl
 
 | PR | Role | Handle |
 |----|------|--------|
-| **#100** pytrends evidence | Skill route evidence | CI green / mergeable. Recommend merge after operator live `analyze --route trends` check. Independent of Hyperlexical name. |
-| **#99** Spec 007 tip docs + climb | Model path | Stay **draft** until CI green + operator merge yes. Large docs+receipts surface. |
+| **#100** pytrends evidence | Skill route evidence | **Merged** to main. Independent of Hyperlexical name. |
+| **#99** Spec 007 tip docs + climb | Model path | **Merged** to main. |
 | **#95** HYPERLEX-Q1 | Epistemic interchange | Stay **draft**; rebase onto current `main`; remains UNQUALIFIED / pairwise BLOCKED. Spec-only. |
 
-Do **not** merge any of these without explicit operator yes.
+Do **not** merge **#95** without explicit operator yes.
 
 ---
 
@@ -114,17 +114,18 @@ Climb (A) and skill PR #100 can proceed in parallel. Name/Hub (C) never parallel
 ## Definition of done (product)
 
 - [ ] soft_ceiling path either PROMOTE’s a new BEST or operator closes climb with held morph65
-- [ ] Tip CI green; force-train API present; version skew fixed
+- [x] Tip CI green; force-train API present; version skew fixed
 - [ ] Model card filled from live pin metrics
 - [ ] Danny `name_gate` yes (or explicit hold)
 - [ ] Hub upload done **or** explicit “no Hub this cycle”
-- [ ] STATUS / ROADMAP / milestones updated to match reality (no stale “E2 Spark-blocked” once trained E2 PASS is the pin)
+- [x] STATUS / ROADMAP updated to match reality (no stale “E2 Spark-blocked” on operator ROADMAP once trained E2 PASS is the pin)
 
 ---
 
 ## Pointers
 
 - Climb next: root `NEXT_MOVES_007.md`
+- Name gate / named phrases: `NAME-GATE-AND-NAMED-PHRASES.md`
 - Soft_ceiling receipts: `receipts/20260923-authorize-gate-soft-ceiling.md`, `receipts/gate-soft-ceiling-20260923/`
 - Empty gold: `receipts/20260923-authorize-val-settle-cancelled-empty-gold.md`
 - Gates: `milestones.md`, `spec.md`, `dual-use-gate.md`
