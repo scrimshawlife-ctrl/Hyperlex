@@ -87,3 +87,25 @@ def test_cli_default_is_still_stub(tmp_path):
     out = tmp_path / "p.json"
     assert infer_main(["--text", "rizz", "--out", str(out)]) == 0
     assert json.loads(out.read_text())["model_id"] == "stub"
+
+
+def test_calibration_temperature_read(tmp_path):
+    from hyperlexical.infer import _temperature
+
+    cal = tmp_path / "cal.json"
+    cal.write_text(json.dumps({"all": {"temperature": 5.1}}))
+    assert _temperature(str(cal)) == 5.1
+    assert _temperature("") == 1.0
+
+
+def test_hub_loader_file_shape():
+    import ast
+
+    src = (ROOT / "specs" / "007-hyperlexical-model" / "hf-package" / "modeling_hyperlexical.py").read_text()
+    tree = ast.parse(src)
+    classes = {n.name for n in tree.body if isinstance(n, ast.ClassDef)}
+    assert {"HyperlexicalConfig", "HyperlexicalModel"} <= classes
+    assert 'model_type = "hyperlex-encoder"' in src
+    cfg = json.loads((ROOT / "specs" / "007-hyperlexical-model" / "hf-package" / "config.json").read_text())
+    assert cfg["model_type"] == "hyperlex-encoder"
+    assert cfg["brier"] is None
