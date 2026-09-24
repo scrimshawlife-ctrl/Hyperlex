@@ -25,6 +25,7 @@ sys.path.insert(0, str(REPO / "scripts" / "shadow"))
 
 from hyperlexical.export import export_dataset  # noqa: E402
 from hyperlexical.provenance import provenance  # noqa: E402
+from hyperlexical.release_set import maybe_release  # noqa: E402
 from hyperlexical.soft_ceiling import clean_surface, load_jsonl_keys, oov_filler_surface, overlap  # noqa: E402
 
 
@@ -61,7 +62,8 @@ def main(argv=None) -> int:
     for path in args.force + args.hard:
         trained |= load_jsonl_keys(path)
     bundle = export_dataset(REPO, include_live=True)
-    surf = surfaces(bundle["rows"], trained)
+    rows, release_stats = maybe_release(bundle["rows"])
+    surf = surfaces(rows, trained)
 
     import torch
     from torch import nn
@@ -104,6 +106,7 @@ def main(argv=None) -> int:
         "trained_files": args.force + args.hard,
         "n_trained_keys": len(trained),
         "accounting": surf["accounting"],
+        "release_set": release_stats,
         "slices": slices,
         "brier": None,
         **provenance(REPO),

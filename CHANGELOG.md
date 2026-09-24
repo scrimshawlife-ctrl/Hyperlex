@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Release-candidate tooling (Spec 007):** `release_set.py` (`HYPERLEX_RELEASE_SET=1`
+  drops CC BY-SA rows and same-text rows from train and every eval surface);
+  `HYPERLEX_EXPORT_DIR` keeps train runs from rewriting tracked exports;
+  `score_holdout.py` (scores once, verifies manifest hashes, copy/majority
+  baselines, val-fitted calibration); `launch_train.py` (canonical launcher,
+  refuses if busy / no ALLOW_TRAIN / receipt exists); `rc1-train-env.json`
+  (morph78 recipe, cold start, strict filler filter, release set).
+
 - **D1 / D5(a) / D8 / A7 (Spec 007):** `license_relabel.py` marks Wiktionary-
   sourced rows `CC BY-SA 4.0`; `filler_filter.py` (`HYPERLEX_FILLER_FILTER`,
   default `strict`) keeps handles, links, and wiki scraps out of the shipped

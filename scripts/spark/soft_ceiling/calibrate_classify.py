@@ -26,6 +26,7 @@ sys.path.insert(0, str(REPO / "scripts" / "shadow"))
 from hyperlexical.export import export_dataset  # noqa: E402
 from hyperlexical.layout import FAMILIES, HIDDEN, MAX_LEN  # noqa: E402
 from hyperlexical.provenance import provenance  # noqa: E402
+from hyperlexical.release_set import maybe_release  # noqa: E402
 from hyperlexical.soft_ceiling import clean_surface, load_jsonl_keys  # noqa: E402
 
 TEMPS = [round(0.5 + 0.05 * i, 2) for i in range(191)]  # 0.5 .. 10.0
@@ -97,7 +98,7 @@ def main(argv=None) -> int:
     trained = set()
     for f in args.trained:
         trained |= load_jsonl_keys(f)
-    rows = export_dataset(REPO, include_live=True)["rows"]
+    rows, release_stats = maybe_release(export_dataset(REPO, include_live=True)["rows"])
     train_all = [r for r in rows if r.get("split") == "train"]
     val_cls = [r for r in rows if r.get("task") == "classify" and r.get("split") == "val"]
     val_clean, acct = clean_surface(val_cls, train_rows=train_all, trained_keys=trained)
@@ -136,6 +137,7 @@ def main(argv=None) -> int:
         "model": str(model),
         "fit_split": "val",
         "surface": acct,
+        "release_set": release_stats,
         "n": len(gold),
         "by_label_class": dict(Counter(cls)),
         "gold_by_family": dict(Counter(FAMILIES[g] for g in gold)),

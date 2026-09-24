@@ -22,6 +22,7 @@ from .layout import (
 from .eval_forward import apply_encoder_trainable
 from .filler_filter import assert_publishable_vocab, filter_mode, filter_unbind_rows
 from .provenance import provenance
+from .release_set import maybe_release
 from .save_pretrained import (
     collect_encoder_trainable,
     save_heads,
@@ -451,11 +452,16 @@ def run_loop(
 ) -> dict:
     root = repo_root()
     bundle = export_dataset(root, include_live=include_live, live_store=live_store)
+    release_rows_, release_stats = maybe_release(bundle["rows"])
+    if release_stats["release_set"]:
+        bundle = {**bundle, "rows": release_rows_}
     if any(r.get("role_scheme") == "reviewed_occurrences" for r in bundle["rows"]):
         raise ValueError("reviewed occurrences require occurrence-aware loop alignment")
     routed, task_accounting = route_rows(bundle["rows"])
     task_accounting = {**task_accounting, "task_routing": task_routing()}
-    write_export(root / "specs" / "007-hyperlexical-model" / "exports", bundle)
+    export_dir = Path(os.environ.get("HYPERLEX_EXPORT_DIR") or (root / "specs" / "007-hyperlexical-model" / "exports"))
+    export_dir.mkdir(parents=True, exist_ok=True)
+    write_export(export_dir, bundle)
     if task_routing() == "legacy_split":
         classify_tr = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "train"]
         classify_va = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "val"]
@@ -798,6 +804,7 @@ def run_loop(
         "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
         "n_unbind_hard_atoms_matched": unbind_recipe.get("n_unbind_hard_atoms_matched", 0),
         "unbind_force_train_path": unbind_recipe.get("unbind_force_train_path", ""),
+        "release_set": release_stats,
         "filler_filter": unbind_recipe.get("filler_filter"),
         "n_filler_rows_dropped_train": unbind_recipe.get("n_filler_rows_dropped_train", 0),
         "n_filler_rows_dropped_val": unbind_recipe.get("n_filler_rows_dropped_val", 0),
