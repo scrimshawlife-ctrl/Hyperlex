@@ -31,7 +31,7 @@ The pinned BEST promote receipt on `main` is
 [20260915-morph36-promote-best.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md)
 are history.
 
-That receipt records **`name_gate=false`** and **no Hub** publish.
+That receipt records **`name_gate=false`** at promote time and **no Hub** publish. Danny flipped `name_gate` for this pin later the same day: [20260924-name-gate-yes-morph78.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/receipts/20260924-name-gate-yes-morph78.md).
 
 ## Public Claims & Boundaries
 

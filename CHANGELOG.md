@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **`name_gate` yes (`seed-morph78`):** Danny `flip name_gate` — pin may be called
+  **Hyperlexical** (amendment A6; receipt `specs/007-hyperlexical-model/receipts/20260924-name-gate-yes-morph78.md`). Card IDs, packet/schema
+  field, Hub, and T13 unchanged.
+
 - **Naming persistence lock:** `docs/NAMING.md` + Notion Naming lock page +
   Public Claims CLAIM-HLX-NAME-001/002/003. Operator Hub / Spine Owner /
   Core Model Spine updated. Org mirror stays lag (do not train from it).
