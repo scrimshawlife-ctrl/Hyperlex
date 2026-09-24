@@ -1,0 +1,24 @@
+{
+  "schema": "hyperlex.broad_observed_eval.v0.1",
+  "as_of": "2026-09-24T09:37:31.234491+00:00",
+  "gate": "soft_ceiling_tiebreak",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph78",
+  "force": null,
+  "unbind_exact": 0.98828125,
+  "n_scored": 256,
+  "scored": {
+    "unbind_exact": 0.98828125,
+    "n_unbind_eval": 256,
+    "unbind_token_f1": 0.995398773006135,
+    "unbind_token_precision": 0.995398773006135,
+    "unbind_token_recall": 0.995398773006135,
+    "unbind_slot_f1": 0.995398773006135
+  },
+  "authorize_pin": {
+    "seed": "seed-morph65",
+    "unbind_exact": 0.889763779527559,
+    "n": 254,
+    "note": "Historical at gate authorize; live SoT may differ"
+  },
+  "note": "Broad OBSERVED val without apply_unbind_force_train. soft_ceiling: compare candidate vs PRIOR on this same live surface."
+}
