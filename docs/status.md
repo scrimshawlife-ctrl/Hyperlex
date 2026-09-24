@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-24  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 GOLD empty. Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settle kept. Force **236**/hard **277**. soft_ceiling train **IN_FLIGHT** ep≤6 best **0.9939** (`hlx-train-morph78-1790221699`). Hyperlexical `name_gate` still false.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph78`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 GOLD empty. Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settle kept. Force **236**/hard **277**. soft_ceiling **PROMOTE_BEST** morph78 (broad 0.9883 > PRIOR 0.8867 n=256 + E2). Hyperlexical `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -51,7 +51,7 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
 | `name_gate` | **false** — E2 PASS on Spark does **not** flip the gate. Danny yes still required. Volume ≠ name. |
-| Spark BEST | **`seed-morph65`** — force fair **1.0** n=164. soft_ceiling **ARMED** (live prior broad 0.8867 n=256). morph78 acquire HOLD **empty gold**. E2 PASS. LAST=8. Upsample freeze **11+**. |
+| Spark BEST | **`seed-morph78`** — force fair **1.0** n=164. soft_ceiling **ARMED** (live prior broad 0.8867 n=256). morph78 acquire HOLD **empty gold**. E2 PASS. LAST=8. Upsample freeze **11+**. |
 | E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
 | T1 name | Not allowed. Card stays `hyperlex-encoder-*` until Danny yes on `name_gate`. |
