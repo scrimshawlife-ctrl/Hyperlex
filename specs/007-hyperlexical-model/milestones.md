@@ -22,7 +22,7 @@ Operator-settled gold only.
 | negatives | 200 |
 
 - OBSERVED only after settle. Harvest / tap / weak-tag mapper stay INFERRED.
-- Dataset buckets above are the floor to *plan* a T1 name. The public `name_gate` flag stays false until Danny yes (E2 PASS alone does not flip).
+- Dataset buckets above are the floor to *plan* a T1 name. The public `name_gate` flag stays false until Danny yes (E2 PASS alone does not flip). Danny yes recorded 2026-09-24 for `seed-morph78` (A6).
 - Weak harvest inflation is not progress against 2k.
 
 Minimum to *plan* implement remains 200 / 40 / 50 (`spec.md` dataset contract).

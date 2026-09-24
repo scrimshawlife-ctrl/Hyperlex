@@ -33,10 +33,11 @@ Live counts stay on Notion Tasks 007. Do not rewrite gates when a harvest number
 - [x] name_gate dataset gaps 0/0/0 — flag still false until Danny yes
 - [x] No OBSERVED promote from tap
 
+- [x] `name_gate` flipped for `seed-morph78` (Danny yes 2026-09-24, amendment A6)
+
 ## Explicitly not done
 
 - Hub card upload / T8
 - Load ModernBERT in CI
-- Flip `name_gate` (Danny yes)
 - Open 006
 - Force-only climb at fair 1.0 n=164 (soft_ceiling used instead; that climb closed with morph78 PROMOTE_BEST 2026-09-24)

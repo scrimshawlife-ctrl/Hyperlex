@@ -13,7 +13,7 @@ tags:
 
 # hyperlex-encoder-modernbert-base-seed
 
-**Do not treat this as a publicly named Hyperlexical artifact yet.** Trained trunk-forward E2 has **PASSED**, but `name_gate=false` remains the explicit public-name/publish wall. This card is the publish *shape*. Weights are produced on Spark and are not in git.
+**Pin `seed-morph78` is named Hyperlexical** (trained trunk-forward E2 PASS + Danny `name_gate` yes, 2026-09-24). The identifiers on this card are still `hyperlex-encoder-*` until a separate rename, and it is **not** uploaded. This card is the publish *shape*. Weights are produced on Spark and are not in git.
 
 ## Current pin
 
@@ -26,7 +26,7 @@ tags:
 - Force/hard: **236 / 277**
 - This pin: observed upsample **10**, second-slot weight **2.0**, LAST_TRAINABLE **8**, 40 epochs, warm from morph65
 - Upsample freeze: **11+** · `SECOND_SLOT=4`: forbidden
-- `name_gate`: **false**
+- `name_gate`: **true** (this pin only; amendment A6)
 - Brier: **null**
 - Hub: unpublished
 
@@ -81,7 +81,7 @@ E2 source: `receipts/morph78-val-settle-20260924/e2-unbind-morph78.json`. That d
 
 ## Naming / publication gate
 
-E2 PASS does **not** flip the product name. Public `Hyperlexical` naming, Hub upload, and optional T13 promotion remain separate operator actions. Until explicit `name_gate` authorization, retain `hyperlex-encoder-*` naming and keep weights off git.
+E2 PASS did not flip the name; Danny's sentence did. Card/package identifier rename, Hub upload, and optional T13 promotion remain separate operator actions. Keep weights off git.
 
 ## Limitations
 

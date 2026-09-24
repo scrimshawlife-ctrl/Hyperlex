@@ -1,6 +1,6 @@
 # Hermes prompt — Hyperlexical T1 training harvest
 
-**Voice:** harvest list = **ne0l0gist**. Training target = **Hyperlexical** (`name_gate` false).
+**Voice:** harvest list = **ne0l0gist**. Training target = **Hyperlexical** (`name_gate` true for pin `seed-morph78` only).
 
 Copy below the line. Do not run this prompt as a generator of restricted wraps.
 
