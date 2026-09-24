@@ -1,11 +1,13 @@
-# Spec 007 — next: soft_ceiling armed · morph78 phrases named
+# Spec 007 — next: morph78 soft_ceiling train IN_FLIGHT
 
 `name_gate=false`. BEST=**morph65** (held). Upsample freeze = **11+**. Do not run SECOND_SLOT=4.
 
 ## Done
 
-- soft_ceiling **ARMED** · **#100/#99/#101** on personal main · org **#14** naming graft merged (no force).
-- Operator **`name phrases`** → morph78 authorize card filled: `have fun staying poor`, `fr fr no cap` (from `jev_revisit77_safe_new`).
+- Org **#14** naming graft merged.
+- Operator **`name phrases`** → morph78 settle **`have fun staying poor`**, **`fr fr no cap`** OBSERVED val.
+- Force/hard **232→236 / 273→277**. Fair still 1.0 n=164 → **SOFT_CEILING_CONTINUE**.
+- Train **`hlx-train-morph78-1790221699`** IN_FLIGHT; poll → E2 + broad decide.
 
 ## Gate (armed)
 
@@ -13,8 +15,7 @@
 
 ## Next
 
-1. Spark **PACKET_SETTLE** morph78 named phrases as OBSERVED `split=val` → force/hard from morph77 tip (232/273).
-2. soft_ceiling decide. Do not invent more gold. Do not re-settle morph77’s four.
-3. Do not flip `name_gate`.
+1. Await morph78 train + soft_ceiling finish (PROMOTE_BEST or REJECT; BEST stays morph65 on reject).
+2. Do not flip `name_gate`. Do not Hub.
 
 Qwen stays stopped unless re-enabled.
