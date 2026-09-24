@@ -102,6 +102,7 @@ The skill remains the operator surface while the encoder stays SHADOW.
 See [SPEC.md](SPEC.md) and [DESIGN.md](DESIGN.md) for the historical spine. Current operator snapshot: [STATUS.md](STATUS.md).
 
 ## Recent
+- 2026-09-24: Card rename — Hub card `hyperlex-structure-149m`; eval packets set `name_gate` true only for trunk-forward eval of `seed-morph78`.
 - 2026-09-24: Danny `flip name_gate` — `seed-morph78` named **Hyperlexical** (amendment A6). Card rename, Hub, T13 still separate.
 - 2026-09-24: morph78 PROMOTE_BEST (soft_ceiling ceiling_escape; broad 0.9883 > 0.8867 n=256 + E2) after named-phrase settle. `name_gate` still false.
 - 2026-09-24: Hygiene — `pyproject.toml` aligned to `VERSION` 0.4.0; ROADMAP E2 line matches trained PASS; name_gate / named-phrases plan drafted. `#100` + `#99` on main. soft_ceiling ARMED; morph65 held.
