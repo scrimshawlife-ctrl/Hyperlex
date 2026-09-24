@@ -32,7 +32,3 @@
 
 - **Earlier Unreleased Spec 007 / docs / P1 entries:** morph72→morph56 ladder and
   0.4.0… history preserved in branch history / operator workspace `CHANGELOG.md`.
-
-<!-- HYGIENE_NOTE: full long-form CHANGELOG body from hygiene_rest.json staged at
-     /tmp/hygiene_parts/CHANGELOG_FULL.md (45709 chars); condensed form matches
-     main tip style. Full restore available if operator wants long history. -->
