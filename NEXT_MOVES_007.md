@@ -1,23 +1,20 @@
-# Spec 007 — next: morph78 soft_ceiling train IN_FLIGHT
+# Spec 007 — next: morph78 is BEST (soft_ceiling)
 
-`name_gate=false`. BEST=**morph65** (held). Upsample freeze = **11+**. Do not run SECOND_SLOT=4.
+`name_gate=false`. BEST=**morph78** (promoted). Upsample freeze = **11+**. Do not run SECOND_SLOT=4.
 
 ## Done
 
-- morph78 named phrases settled OBSERVED val · force/hard **236/277** · **SOFT_CEILING_CONTINUE**.
-- Train **`hlx-train-morph78-1790221699`** IN_FLIGHT (poller alive).
+- morph78 named phrases settled · force/hard **236/277** · soft_ceiling train complete.
+- **PROMOTE_BEST** (ceiling_escape): broad **0.9883** > PRIOR morph65 **0.8867** n=256 + E2 PASS.
 
-## Live (poll 2026-09-24 ~04:53Z)
+## Gate
 
-| epoch | unbind_exact | best |
-|------:|-------------:|-----:|
-| 0–6 | … | **0.9939** (ep3) |
-
-No `train-receipt` yet (40ep). soft_ceiling finish after train + E2 + broad.
+soft_ceiling **spent** for this climb (morph78 now PRIOR/BEST). Further climbs need a new authorize/acquire card.
 
 ## Next
 
-1. Await train complete → poll E2 + PRIOR/candidate broad → soft_ceiling decide.
-2. Do not flip `name_gate`. Do not Hub.
+1. Operator review product plan / whether to hold BEST or continue climb.
+2. Do **not** flip `name_gate` without Danny yes.
+3. Do not Hub.
 
 Qwen stays stopped unless re-enabled.
