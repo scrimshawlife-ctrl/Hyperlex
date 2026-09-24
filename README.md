@@ -14,7 +14,7 @@ Hermes skill is what you **run today**. Spec 007 Hyperlexical encoder is **SHADO
 | **Owns** | memetic ingest · classify · receipts · virality / hyperstition signals · Spec 007 encoder specify |
 | **Honesty** | `OBSERVED` / `INFERRED` / `SPECULATIVE` (+ provenance; settled Brier only where calibrated) |
 | **Shape** | Hermes skill **live** (v0.4.0). Spec 007 T0→T1 **gated**. Not a chatbot mind. |
-| **Anti** | Efficacy theater · inventing Brier · naming artifacts **Hyperlexical** before E2 · Hub without `ALLOW_HUB` |
+| **Anti** | Efficacy theater · inventing Brier · naming artifacts **Hyperlexical** before `name_gate` · Hub without `ALLOW_HUB` |
 | **Lane** | Skill ready · encoder SHADOW · `name_gate` **false** · Hub not published |
 | **Version** | `0.4.0` — prefer [`STATUS.md`](STATUS.md) |
 
@@ -24,7 +24,7 @@ Docs site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.gi
 
 **OBSERVED dual-home:** this repository (`scrimshawlife-ctrl/Hyperlex`) is the canonical train and work remote. [`Zero-State-LLC/Hyperlex`](https://github.com/Zero-State-LLC/Hyperlex) is the company mirror and may lag. Do not treat the org Hyperlex as the train source of truth.
 
-Pinned BEST receipt on `main`: [`specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md`](specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md) (`name_gate=false` / no Hub).
+Pinned BEST receipt on `main`: [`specs/007-hyperlexical-model/receipts/20260924-morph78-soft-ceiling-promote-best.md`](specs/007-hyperlexical-model/receipts/20260924-morph78-soft-ceiling-promote-best.md) — `seed-morph78`, 2026-09-24 (`name_gate=false` / no Hub). Earlier pins (morph36, morph65) stay in `receipts/` as history.
 
 Funding and demo language must match Zero State [Public Claims & Boundaries](https://app.notion.com/p/ecd794b1226b4dd89abe1ccd928dd35c) (Notion) and [Core Model Spine](https://app.notion.com/p/3dc3e8ba2f5c810db2f6f72a8ffe50eb). Do not claim: Nemotron integrated, Hub Hyperlexical card, Abraxas-named 7B, or free Inception GPUs.
 
@@ -53,14 +53,14 @@ Repo **Hyperlex** is the transitional monorepo shell. Do not use bare public **H
 | Local SoT classify volume (operator machine) | Full SoT in git |
 | Pages static run history / Phase 5 research hooks | Paid Firecrawl by default (Crawl4AI is default) |
 
-## Current state (OBSERVED 2026-09-10/11 PT)
+## Current state (harvest rows OBSERVED 2026-09-10/11 PT · Spec 007 row 2026-09-24)
 
 Snapshot — full scoreboard in [`STATUS.md`](STATUS.md).
 
 | Area | State |
 |------|-------|
 | Hermes skill | Ready **v0.4.0** |
-| Spec 007 | SHADOW on main · T0 specified · T1 blocked on Spark E2 |
+| Spec 007 | SHADOW · BEST `seed-morph78` (PROMOTE_BEST 2026-09-24) · trained E2 **PASS** · public T1 name blocked on `name_gate` |
 | `name_gate` | **false** (volume ≠ name) |
 | Hub | Not published |
 | Local SoT | `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` — **4333** (**not in git**) |

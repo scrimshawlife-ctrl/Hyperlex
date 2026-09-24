@@ -17,11 +17,11 @@ Constitution: [`.specify/memory/constitution.md`](https://github.com/scrimshawli
 | 004 | Recoverable-structure probe | SPECIFY locked · implement SHADOW | `scripts/shadow/recoverable_structure/` |
 | 005 | Route labels | SPECIFY locked (Notion + branch `005-route-labels`) | not on main — [PR 18](https://github.com/scrimshawlife-ctrl/Hyperlex/pull/18) |
 | 006 | IsA | reserved — do not open from 007 | — |
-| 007 | Hyperlexical model | SPECIFY locked C1–C52 · A5 milestones · SHADOW implement on main | `scripts/shadow/hyperlexical/` · E2 fail · `name_gate` false · no Hub |
+| 007 | Hyperlexical model | SPECIFY locked C1–C52 · A5 milestones · SHADOW implement on main | `scripts/shadow/hyperlexical/` · stub E2 fail (expected) · trained E2 PASS on BEST `seed-morph78` · `name_gate` false · no Hub |
 
 ## Spec 007 (SHADOW)
 
-Not on `API_V1`. Not a Hugging Face model. Not named **Hyperlexical** until E2 passes on Spark.
+Not on `API_V1`. Not a Hugging Face model. Not named **Hyperlexical** until Danny's `name_gate` yes (trained E2 PASS on `seed-morph78` does not flip it).
 
 - Pages overview: [SHADOW encoder (007)](../shadow-hyperlexical.md)
 - Operator snapshot: [Status](../status.md)

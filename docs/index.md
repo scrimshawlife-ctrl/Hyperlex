@@ -29,10 +29,10 @@ Repo <strong>Hyperlex</strong> is the transitional monorepo shell. Public produc
 |-------|--------|
 | **Hermes skill** | Shipping v0.4.0 — ingest, 8-family lineage, receipts, settle → Brier |
 | **T0 encoder** | Specified baseline (`hyperlex-encoder-*`). Not a Hyperlexical name. |
-| **T1 encoder** | Allowed to take the Hyperlexical name **only after E2** on Spark. Not there. |
+| **T1 encoder** | Hyperlexical name needs trained E2 **and** Danny's `name_gate` yes. E2 passed on `seed-morph78` (2026-09-24); `name_gate` still false. |
 | **`name_gate` / Hub** | **false** / not published |
 
-Classify volume is ready. E2 is Spark-blocked. [SHADOW encoder (007)](shadow-hyperlexical.md) · [Status](status.md).
+Classify volume is ready. Spark BEST `seed-morph78` passes trained E2; the name is still gated. [SHADOW encoder (007)](shadow-hyperlexical.md) · [Status](status.md).
 
 ## What happens on a run
 
@@ -47,7 +47,7 @@ flowchart LR
   B -.-> H[007 model path]
 ```
 
-Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5). Spec 007 is **SHADOW / advisory**: classify volume is ready; `name_gate` is false; E2 is Spark-blocked. Do not call the encoder Hyperlexical.
+Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5). Spec 007 is **SHADOW / advisory**: classify volume is ready; trained E2 passed on `seed-morph78`; `name_gate` is false. Do not call the encoder Hyperlexical.
 
 | Stage | What you get |
 |-------|----------------|

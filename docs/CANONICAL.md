@@ -26,7 +26,10 @@ see [Remotes](remotes.md).
 ## Current BEST receipt
 
 The pinned BEST promote receipt on `main` is
-[20260915-morph36-promote-best.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md).
+[20260924-morph78-soft-ceiling-promote-best.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/receipts/20260924-morph78-soft-ceiling-promote-best.md)
+(`seed-morph78`, 2026-09-24). Earlier pins such as
+[20260915-morph36-promote-best.md](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md)
+are history.
 
 That receipt records **`name_gate=false`** and **no Hub** publish.
 
