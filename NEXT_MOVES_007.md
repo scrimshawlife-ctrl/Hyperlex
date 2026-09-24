@@ -13,6 +13,7 @@
 - **#100** + **#99** merged to main.
 - Hygiene: `pyproject.toml` → **0.4.0** (matches `VERSION`); scrubbed stale “E2 Spark-blocked” on ROADMAP; dropped tracked `__pycache__` / tip probe / `.tmp` restore junk.
 - Name-gate + named-phrases plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md` (cites morph77 HOLD phrases; empty morph78/reprobe).
+- Operator **`name neologist as in repo`** → ingest product **`ne0l0gist`** (receipt `receipts/20260924-name-ne0l0gist-as-in-repo.md`). Does **not** flip Hyperlexical `name_gate`.
 
 ## Gate (armed)
 

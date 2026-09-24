@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Operator name ne0l0gist (ingest):** Danny `name neologist as in repo` —
+  public ingest product **`ne0l0gist`** (repo spelling). Receipt
+  `specs/007-hyperlexical-model/receipts/20260924-name-ne0l0gist-as-in-repo.md`.
+  Does **not** flip Hyperlexical `name_gate`.
+
 - **Hygiene + name-gate plan:** `pyproject.toml` version aligned to `VERSION`
   **0.4.0**; ROADMAP trained-E2 line (no stale Spark-blocked checkbox); drop tracked
   `__pycache__`, tip probe, `.tmp` restore junk. Draft

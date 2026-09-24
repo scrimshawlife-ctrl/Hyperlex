@@ -5,6 +5,10 @@
 
 Companion to `HYPERLEXICAL-PRODUCT-PLAN.md` workstreams A (climb/gold) and C (post–name_gate packaging).
 
+### Operator name (ingest) — 2026-09-24
+
+Danny: **`name neologist as in repo`**. Public ingest product = **`ne0l0gist`** (repo spelling with zeros). Receipt: `receipts/20260924-name-ne0l0gist-as-in-repo.md`. This does **not** flip Hyperlexical `name_gate`.
+
 ---
 
 ## Two walls (do not conflate)
@@ -12,7 +16,7 @@ Companion to `HYPERLEXICAL-PRODUCT-PLAN.md` workstreams A (climb/gold) and C (po
 | Wall | What it gates | Current state |
 |------|----------------|---------------|
 | **Dataset name-gate buckets** (`milestones.md`) | Settled gold floors before *planning* a T1 name | Gaps **0 / 0 / 0** on operator `--include-live` (classify ≥2k / unbind ≥200 / negatives ≥200) |
-| **`name_gate` flag** | Public **Hyperlexical** name + Hub/T13 packaging | **false** — Danny explicit yes required. Trained E2 PASS on Spark does **not** flip this. |
+| **`name_gate` flag** | Public **Hyperlexical** name + Hub/T13 packaging | **false** — Danny explicit yes required. Trained E2 PASS on Spark does **not** flip this. Ingest **`ne0l0gist`** is already named (separate product). |
 
 Volume readiness ≠ name. Seed smoke ≠ T1. Stub E2 FAIL remains expected.
 

@@ -10,6 +10,7 @@ Mirror of root `NEXT_MOVES_007.md`.
 - `#100` + `#99` on main · tip force-train + route_rows restored.
 - Hygiene: `pyproject.toml` = `VERSION` 0.4.0 · ROADMAP E2 line honest · junk removed.
 - Plans: `HYPERLEXICAL-PRODUCT-PLAN.md` · `NAME-GATE-AND-NAMED-PHRASES.md`.
+- Operator named ingest **ne0l0gist** (as in repo). Hyperlexical `name_gate` still false.
 
 ## Next
 
