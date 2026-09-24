@@ -1,0 +1,49 @@
+{
+  "auto_fire": false,
+  "brier": null,
+  "class": "INFERRED",
+  "embed_mode": "MODEL_EMBEDDING",
+  "forecast_eligible": false,
+  "input_hash": "4df92ccb02f4fbd0bdea30ce8f9f5b975e5359dad3c7db19d846f5b32176a879",
+  "lineage_confidence": 1.0,
+  "lineage_family": "none",
+  "model_id": "hyperlex-structure-149m",
+  "model_version": "seed-morph78",
+  "param_count": 150546889,
+  "payload_ref": null,
+  "restricted_intent_suspected": false,
+  "role_scheme": "positional",
+  "routes_claimed": [
+    "form",
+    "lexical"
+  ],
+  "schema": "hyperlex.hyperlexical.inference.v0.1",
+  "selection_proxy": "unspecified",
+  "stage": null,
+  "surface": "bet that up",
+  "typology": [],
+  "unbind": {
+    "atoms": [
+      {
+        "filler": "bet",
+        "filler_pred": "bet",
+        "role": "pos_0",
+        "role_pred": "pos_0"
+      },
+      {
+        "filler": "that",
+        "filler_pred": "that",
+        "role": "pos_1",
+        "role_pred": "pos_1"
+      },
+      {
+        "filler": "up",
+        "filler_pred": "up",
+        "role": "pos_2",
+        "role_pred": "pos_2"
+      }
+    ]
+  },
+  "unbind_ok": true,
+  "vector_hash": "ec1a71eddb9782fd606f374ce7b4ca0af1b5564fc97715be9e16fbf613f1e146"
+}

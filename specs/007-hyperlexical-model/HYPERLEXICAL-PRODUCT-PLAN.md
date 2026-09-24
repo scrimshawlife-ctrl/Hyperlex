@@ -80,7 +80,7 @@ Item 4 is done. Hub card name is `hyperlex-structure-149m`; local train-out path
 - [ ] operator reviews this reconciled plan
 - [x] Danny explicit `flip name_gate` (2026-09-24)
 - [x] card rename → `hyperlex-structure-149m` + eval packet `name_gate` true only for trunk-forward eval of `seed-morph78`
-- [ ] real `seed-morph78` inference path (trunk-forward infer → inference packet)
+- [x] real `seed-morph78` inference path (`infer --model-dir`; receipt `receipts/20260924-infer-model-morph78.md`)
 - [ ] finalize public model card from pinned receipts
 - [ ] separately authorize Hub upload, or explicitly close the cycle with no Hub
 - [ ] optional T13 in a separate PR with tests
@@ -97,7 +97,7 @@ Q1 status is not a substitute for Spec 007 product completion, and Spec 007 prog
 
 ## Default recommendation
 
-**HOLD morph78.** NAME is done. Resolve the inference path and PUBLISH before authorizing another training climb.
+**HOLD morph78.** NAME is done. Resolve PUBLISH (and the two inference findings) before authorizing another training climb.
 
 ## Explicit non-goals
 
@@ -119,7 +119,7 @@ Q1 status is not a substitute for Spec 007 product completion, and Spec 007 prog
 - [ ] operator product review
 - [x] Danny `name_gate` decision — yes for `seed-morph78`
 - [x] card rename
-- [ ] real inference path
+- [x] real inference path
 - [ ] Hub decision: upload authorized, or explicit no-Hub this cycle
 - [ ] optional T13 decision
 
