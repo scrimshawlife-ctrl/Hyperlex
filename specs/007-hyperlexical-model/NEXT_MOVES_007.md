@@ -8,10 +8,11 @@ Mirror of root `NEXT_MOVES_007.md`.
 
 - soft_ceiling ARMED · empty morph78 gold · #100/#99 merged
 - Hygiene + ne0l0gist naming lock · Notion + claims
-- Draft **#101** open
+- Draft **#101** open · validate green · trends pins restored
+- **#95** rebased onto main; stays draft/UNQUALIFIED
 
 ## Next
 
 1. Named-phrase authorize or new `force_expand_safe` acquire
 2. Operator merge yes on **#101**
-3. No empty settles · no `name_gate` flip · **#95** stays draft/UNQUALIFIED
+3. No empty settles · no `name_gate` flip

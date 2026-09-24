@@ -7,7 +7,9 @@
 - soft_ceiling **ARMED** · morph78/reprobe empty gold · `authorize val-settle` → **CANCELLED_EMPTY_GOLD**.
 - **#100** + **#99** on main.
 - Hygiene + name-gate plan + **ne0l0gist** naming lock + Notion/claims persistence.
-- Draft PR **#101** — hygiene + naming (draft; `name_gate` still false).
+- Draft PR **#101** — hygiene + naming; validate **green** (3.10/3.11/3.12). `name_gate` still false.
+- Restored `trends` optional-deps pins (hygiene had dropped them; CI caught it).
+- **#95** rebased onto main tip; stays draft / UNQUALIFIED.
 
 ## Gate (armed)
 
