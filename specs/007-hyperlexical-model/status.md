@@ -20,7 +20,7 @@ Operator scoreboard (Danny-locked harvest snapshot **2026-09-10**; climb pin **2
 | Danny ~2500 candidate bar | **met** |
 | Hermes 913 / gap-to-2500 | **superseded** — not current |
 | U3 eval harness | on `main`; stub E2 fail (expected) |
-| U3 Spark train | BEST=`seed-morph78`; force fair **1.0** n=164; soft_ceiling **ARMED**; trained trunk-forward E2 **PASS** |
+| U3 Spark train | BEST=`seed-morph78` (soft_ceiling PROMOTE_BEST; broad 0.9883 n=256); force fair **1.0** n=164; trained trunk-forward E2 **PASS** |
 | `name_gate` | **false** — Danny yes required. E2 PASS ≠ flip. |
 | Hub upload | blocked (C11, C40) |
 | 006 IsA | closed |

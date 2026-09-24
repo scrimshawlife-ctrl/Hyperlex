@@ -1,7 +1,7 @@
 # Name gate + named phrases — operator plan
 
 **Status:** DRAFT (does **not** flip `name_gate`) · **Date:** 2026-09-24  
-**Locks:** `name_gate=false` · no Hub · no invented OBSERVED · upsample freeze **11+** · no `SECOND_SLOT=4` · soft_ceiling **ARMED**
+**Locks:** `name_gate=false` · no Hub · no invented OBSERVED · upsample freeze **11+** · no `SECOND_SLOT=4` · soft_ceiling spent (morph78 BEST)
 
 Companion to `HYPERLEXICAL-PRODUCT-PLAN.md` workstreams A (climb/gold) and C (post–name_gate packaging).
 
@@ -41,7 +41,7 @@ Receipt: `receipts/20260923-morph77-val-acquire-label-hold.md` · card `receipts
 
 **Do not re-authorize / re-settle these four** — they are already OBSERVED. Re-listing them as “new gold” would be inventing progress.
 
-### Empty cards (why morph78 settle cancelled)
+### Cards after morph77
 
 | card | `authorize_card_phrases` |
 |------|--------------------------|
@@ -71,8 +71,8 @@ This section is a checklist. **No agent flips the flag.**
 ### Preconditions (all must already be true or explicitly waved)
 
 - [x] Dataset bucket gaps 0/0/0 on the harvest surface (met 2026-09-10)
-- [x] Trained trunk-forward E2 PASS on pinned BEST (`seed-morph65`)
-- [x] Soft_ceiling rule armed and documented; climb either PROMOTE’s a new BEST or operator closes on held morph65
+- [x] Trained trunk-forward E2 PASS on pinned BEST (`seed-morph78`)
+- [x] Soft_ceiling climb closed: morph78 PROMOTE_BEST 2026-09-24
 - [ ] Operator product review of `HYPERLEXICAL-PRODUCT-PLAN.md`
 - [x] Hygiene B2–B3 landed (`VERSION` ↔ `pyproject.toml`; stale “E2 Spark-blocked” scrubbed from operator ROADMAP/STATUS copies)
 - [ ] Danny sentence that explicitly says **`name_gate` yes** (or “name Hyperlexical”)

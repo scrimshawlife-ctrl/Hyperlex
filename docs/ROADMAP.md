@@ -81,7 +81,7 @@ The skill remains the operator surface while the encoder stays SHADOW.
 - [x] Live-split coerce to lexical train/val/test (#38)
 - [x] 8-family leaf unlock; classify volume ready (harvest receipt 2026-09-10)
 - [x] Spark bring-up runbooks on main (#28)
-- [x] Trained trunk-forward E2 PASS on Spark (BEST=`seed-morph65`; stub still expected FAIL; seed smoke ≠ T1)
+- [x] Trained trunk-forward E2 PASS on Spark (BEST=`seed-morph78`; stub still expected FAIL; seed smoke ≠ T1)
 - [ ] Hub upload (operator — not started)
 - [ ] T13 promote into `src/hyperlex/`
 
@@ -102,6 +102,7 @@ The skill remains the operator surface while the encoder stays SHADOW.
 See [SPEC.md](SPEC.md) and [DESIGN.md](DESIGN.md) for the historical spine. Current operator snapshot: [STATUS.md](STATUS.md).
 
 ## Recent
+- 2026-09-24: morph78 PROMOTE_BEST (soft_ceiling ceiling_escape; broad 0.9883 > 0.8867 n=256 + E2) after named-phrase settle. `name_gate` still false.
 - 2026-09-24: Hygiene — `pyproject.toml` aligned to `VERSION` 0.4.0; ROADMAP E2 line matches trained PASS; name_gate / named-phrases plan drafted. `#100` + `#99` on main. soft_ceiling ARMED; morph65 held.
 - 2026-09-10 PT evening: Spec 007 SoT 4333 / `--include-live` classify 2437; Danny ~2500 bar met; `name_gate` false. Hermes 913 / gap-to-2500 superseded. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37). (E2 was Spark-blocked at that snapshot; trained E2 later PASS on morph65.)
 - 2026-09-09: Spec 007 SHADOW encoder harness on main (not a Hub card)

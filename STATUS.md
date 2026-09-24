@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-24  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph78`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 GOLD empty. Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settle kept. Force **236**/hard **277**. soft_ceiling **PROMOTE_BEST** morph78 (broad 0.9883 > PRIOR 0.8867 n=256 + E2). Hyperlexical `name_gate` still false.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph78` (soft_ceiling PROMOTE_BEST 2026-09-24; broad **0.9883** n=256). Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settled `have fun staying poor` + `fr fr no cap`; force **236**/hard **277**. Hyperlexical `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -51,7 +51,7 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
 | `name_gate` | **false** — E2 PASS on Spark does **not** flip the gate. Danny yes still required. Volume ≠ name. |
-| Spark BEST | **`seed-morph78`** — force fair **1.0** n=164. soft_ceiling **ARMED** (live prior broad 0.8867 n=256). morph78 acquire HOLD **empty gold**. E2 PASS. LAST=8. Upsample freeze **11+**. |
+| Spark BEST | **`seed-morph78`** — PROMOTE_BEST via soft_ceiling ceiling_escape: broad OBSERVED **0.9883** > morph65 **0.8867** n=256; E2 PASS; force fair 1.0 n=164 (advisory). LAST=8. Upsample freeze **11+**. |
 | E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
 | T1 name | Not allowed. Card stays `hyperlex-encoder-*` until Danny yes on `name_gate`. |
@@ -103,7 +103,7 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
 | Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 · soft_ceiling ARMED · force fair 1.0 n=164 · live broad prior 0.887 n=256 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–77 closed · next fresh acquire morph78 · `name_gate` false · no Hub · not named Hyperlexical |
+| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph78 · broad 0.988 n=256 · force fair 1.0 n=164 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–78 closed · next climb needs new named-phrase card · `name_gate` false · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65**. soft_ceiling **ARMED**. Await authorize with **named phrases** on a live empty card (not morph77’s already-settled four), or a new `force_expand_safe` acquire. Plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md`.
+1. Spark BEST = **morph78**. Operator review `HYPERLEXICAL-PRODUCT-PLAN.md`; hold BEST or authorize a new acquire with named phrases (soft_ceiling compare vs morph78 broad 0.9883 n=256). `name_gate` needs Danny yes. Plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 
