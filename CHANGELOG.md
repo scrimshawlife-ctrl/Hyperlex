@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Card rename (Spec 007):** Hub card `hyperlex-structure-149m` for `seed-morph78`.
+  `name_gate.py` pins the approved checkpoint; `eval_unbind` sets `name_gate`
+  true only for a trunk-forward eval of that pin; eval schema field is boolean.
+  Training contract and HF dump writer unchanged (new checkpoints stay unnamed).
+
 - **`name_gate` yes (`seed-morph78`):** Danny `flip name_gate` — pin may be called
   **Hyperlexical** (amendment A6; receipt `specs/007-hyperlexical-model/receipts/20260924-name-gate-yes-morph78.md`). Card IDs, packet/schema
   field, Hub, and T13 unchanged.

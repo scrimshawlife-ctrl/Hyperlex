@@ -14,7 +14,7 @@ This file is the **durable naming SoT** for agents and operators. Copy it; do no
 | **ne0l0gist** | `ne` + `0` + `l` + `0` + `gist` (zeros, not letter O) | Public **slang ingest / harvest** product: Crawl4AI, `ingest_tap`, export/settle, civilian + live phrase harvest | **yes** (2026-09-24) |
 | **Hyperlexical** | Hyperlexical | Spec 007 **model / train / eval / E2 / `name_gate`** product claim | **yes** (2026-09-24) — pin `seed-morph78` only |
 
-`name_gate` is **true** for `seed-morph78` (amendment A6). Naming **ne0l0gist** was a separate sentence. Neither authorizes Hub, T13, or renaming card/package identifiers (`hyperlex-encoder-*`).
+`name_gate` is **true** for `seed-morph78` (amendment A6). Naming **ne0l0gist** was a separate sentence. Neither authorizes Hub or T13. Hub card name: `hyperlex-structure-149m`. Local paths / `HYPERLEX_*` / package names are unchanged (no hard-cut).
 
 ## Do not
 
