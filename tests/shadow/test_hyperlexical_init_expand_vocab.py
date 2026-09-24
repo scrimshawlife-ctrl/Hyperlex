@@ -7,7 +7,8 @@ from pathlib import Path
 import sys
 
 import pytest
-import torch
+
+torch = pytest.importorskip("torch")
 from torch import nn
 
 ROOT = Path(__file__).resolve().parents[2]
