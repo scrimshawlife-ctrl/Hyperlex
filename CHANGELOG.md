@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **D1 / D5(a) / D8 / A7 (Spec 007):** `license_relabel.py` marks Wiktionary-
+  sourced rows `CC BY-SA 4.0`; `filler_filter.py` (`HYPERLEX_FILLER_FILTER`,
+  default `strict`) keeps handles, links, and wiki scraps out of the shipped
+  filler vocab; amendment A7 (A1 counts trunk parameters); receipts record the
+  filter. morph78 recipe pins `HYPERLEX_FILLER_FILTER=off` for reproduction.
+
 - **Publish readiness (Spec 007):** canonical soft_ceiling chain (`soft_ceiling.py`,
   `val_settle.py`, `scripts/spark/soft_ceiling/`) with contamination-safe gate;
   train receipts record code commit / tree hash / env; `HYPERLEX_TASK_ROUTING`

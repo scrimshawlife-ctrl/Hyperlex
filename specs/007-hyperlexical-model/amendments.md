@@ -25,3 +25,10 @@ Danny: **`flip name_gate`**. Receipt: `receipts/20260924-name-gate-yes-morph78.m
 - Basis: T1 tier (`milestones.md`) — ModernBERT-base trunk (A2, ≤150M per A1), unbind heads, trained E2 PASS vs Spec 004 probe; dataset buckets 0/0/0; soft_ceiling PROMOTE_BEST.
 - Amends `engineering.md` merge rule: a PR may set `name_gate` true only when it records a Danny yes as an amendment (this one).
 - Does not rename card/package identifiers (`hyperlex-encoder-*`; C31 target `hyperlex-structure-149m`), does not change SHADOW packet/schema `name_gate` fields, does not authorize Hub upload or T13, does not start a climb.
+
+## A7 — A1 ceiling counts trunk parameters (2026-09-24)
+Danny: **`go D1 + relabel + filter + A7`** (D6).
+- The A1 ceiling "T1 ≤ 150M" counts **trunk** parameters. Task heads (classify / role / filler) are excluded, because their size scales with label and filler vocab.
+- Cards and receipts always report both: trunk and total. `seed-morph78`: trunk 149,014,272 (within A1); total 150,546,889.
+- Card name `hyperlex-structure-149m` (C31) refers to the trunk count.
+- Does not change training, `name_gate`, BEST, Hub, or T13.

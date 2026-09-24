@@ -33,7 +33,7 @@ Minimum to *name* a T1 card is this table.
 | Tier | Meaning | Name allowed |
 |------|---------|--------------|
 | T0 | 22–40M encoder baseline | `hyperlex-encoder-*` — not Hyperlexical |
-| T1 | 60–150M + unbind heads; E2 beats Spec 004 probe; A1 ceiling 150M; A2 trunk `answerdotai/ModernBERT-base` | first artifact that may be called Hyperlexical |
+| T1 | 60–150M + unbind heads; E2 beats Spec 004 probe; A1 ceiling 150M (trunk params, A7); A2 trunk `answerdotai/ModernBERT-base` | first artifact that may be called Hyperlexical |
 | T2 | generative LoRA | out of this implement cycle |
 
 ## Implement units (plan)

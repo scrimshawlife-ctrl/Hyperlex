@@ -102,6 +102,7 @@ The skill remains the operator surface while the encoder stays SHADOW.
 See [SPEC.md](SPEC.md) and [DESIGN.md](DESIGN.md) for the historical spine. Current operator snapshot: [STATUS.md](STATUS.md).
 
 ## Recent
+- 2026-09-24: D1 Spark on `main`; Wiktionary rows relabelled CC BY-SA; strict filler-vocab filter; amendment A7 (A1 counts trunk).
 - 2026-09-24: Publish-readiness steps executed — code canonical and morph78 data prep reproducible from `main`; corrected gate ties morph78/morph65; 709 Wiktionary rows and vocab scrub block release.
 - 2026-09-24: Publish audit — recommend **not** publishing `seed-morph78` yet: 193/256 broad-val rows were force-trained (leak-free val ties morph65 at 1.0 n=63); training code not reproducible from `main`.
 - 2026-09-24: Real inference path — `infer --model-dir` on `seed-morph78` emits `MODEL_EMBEDDING` packets as `hyperlex-structure-149m` (Spark-verified).
