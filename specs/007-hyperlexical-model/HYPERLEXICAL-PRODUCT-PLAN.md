@@ -82,7 +82,7 @@ Item 4 is done. Hub card name is `hyperlex-structure-149m`; local train-out path
 - [x] card rename → `hyperlex-structure-149m` + eval packet `name_gate` true only for trunk-forward eval of `seed-morph78`
 - [x] real `seed-morph78` inference path (`infer --model-dir`; receipt `receipts/20260924-infer-model-morph78.md`)
 - [ ] finalize public model card from pinned receipts
-- [ ] separately authorize Hub upload, or explicitly close the cycle with no Hub
+- [ ] separately authorize Hub upload, or explicitly close the cycle with no Hub — **audit recommends not yet** (`specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`)
 - [ ] optional T13 in a separate PR with tests
 
 ### D. Adjacent tracks (not product naming)
