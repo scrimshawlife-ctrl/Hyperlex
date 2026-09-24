@@ -39,4 +39,4 @@ Live counts stay on Notion Tasks 007. Do not rewrite gates when a harvest number
 - Load ModernBERT in CI
 - Flip `name_gate` (Danny yes)
 - Open 006
-- Force-only climb past morph65 fair 1.0 n=164 (soft_ceiling armed instead)
+- Force-only climb at fair 1.0 n=164 (soft_ceiling used instead; that climb closed with morph78 PROMOTE_BEST 2026-09-24)

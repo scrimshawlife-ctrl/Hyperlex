@@ -2,7 +2,7 @@
 
 **Feature**: Learned recoverable-structure encoder for slang atoms  
 **Date**: 2026-09-09  
-**Status**: SPECIFY locked C1–C52 / A5 milestones+engineering / SHADOW implement on main / E2 fail / no Hub  
+**Status**: SPECIFY locked C1–C52 / A5 milestones+engineering / SHADOW implement on main / stub E2 fail (expected) / trained E2 PASS on BEST `seed-morph78` (2026-09-24) / `name_gate` false / no Hub  
 **Depends on**: constitution v1.0.0 I–X; specs 000, 001, 003, 004; 005 route-labels (do not claim `semantic`)  
 **Does not open**: 006 IsA (reserved)  
 **Clarify**: `clarify.md` + `locks-a4.md` + `locks-a5.md`  
@@ -15,7 +15,7 @@
 **Packet**: `hyperlex.hyperlexical.inference.v0.1`  
 **HF name reserved**: `hyperlex-encoder-*` until unbind gate passes; `hyperlex-structure-*` only after gate
 
-**Naming:** this spec is the **Hyperlexical** model / train / eval / E2 / `name_gate` claim. Slang harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional monorepo shell. `name_gate` stays false until E2.
+**Naming:** this spec is the **Hyperlexical** model / train / eval / E2 / `name_gate` claim. Slang harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional monorepo shell. `name_gate` stays false until Danny explicit yes; trained E2 PASS does not flip it.
 
 ## Intent
 
