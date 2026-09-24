@@ -48,6 +48,8 @@ safetensors weights · no chat template or generation head · Brier null / not a
 
 ## Path to a publishable release (in order)
 
+Detailed plan: `specs/007-hyperlexical-model/PUBLISH-READINESS-PLAN.md`.
+
 1. **Canonicalize training code.** Commit the Spark checkout edits and the `~/hlx` settle/finish/eval scripts into `scripts/shadow/` on `main`. Record `code_commit` in train receipts.
 2. **Fix the gate eval.** Broad val must exclude rows present in the force-train file (and any text in train). Re-run soft_ceiling decide for morph78 vs morph65 on the corrected surface.
 3. **Spend the test split once.** Score morph78 (and morph65) on `split=test` with canonical code. That number goes on the card.
