@@ -33,7 +33,7 @@ tags:
 
 ## Model details
 
-- Trunk: [`answerdotai/ModernBERT-base`](https://huggingface.co/answerdotai/ModernBERT-base) (~149M, Apache-2.0)
+- Trunk: [`answerdotai/ModernBERT-base`](https://huggingface.co/answerdotai/ModernBERT-base) (149,014,272 params, Apache-2.0); total with heads 150,546,889 (A1 counts trunk, A7)
 - Adapter: classify `Linear(768, 9)` + unbind role/filler heads on last-layer token states
 - Freeze: last 8 encoder layers trainable on `seed-morph78` (recipe default for seed smoke is last 2)
 - Tokenizer: official ModernBERT BPE (`local_files_only`)

@@ -37,3 +37,16 @@ Executes the no-decision items of `PUBLISH-READINESS-PLAN.md`. Nothing was train
 ## Code changed in this step
 
 `scripts/shadow/hyperlexical/{soft_ceiling,val_settle,provenance}.py` (new) · `loop.py` (provenance in receipt; `HYPERLEX_TASK_ROUTING`) · `export.py` (order-stable typology) · `infer.py` / `infer_model.py` (`--calibration`) · `scripts/spark/soft_ceiling/*` (new) · `hf-package/modeling_hyperlexical.py` (new) · tests `tests/shadow/test_hyperlexical_{soft_ceiling,val_settle,provenance,export_determinism}.py` + additions.
+
+## Operator decisions taken (2026-09-24, `go D1 + relabel + filter + A7`)
+
+| ID | Decision | Record |
+|---|---|---|
+| D1 | Spark checkout moved to clean `main`; prior tree saved | `receipts/d1-relabel-filter-a7-20260924/` |
+| D5(a) | Wiktionary rows relabelled in SoT + harvest sidecar (`license_relabel.py`) | same |
+| D8 | `HYPERLEX_FILLER_FILTER=strict` (default): drops unbind rows with non-publishable fillers; vocab guard fails closed. On the morph78 vocab it rejects 115 of 1,971 strings | `filler_filter.py` |
+| D6 | Amendment **A7**: A1 counts trunk params | `amendments.md` |
+
+Still open: D2 (skip recommended), D3, D4, D5(b) release-set exclusion, D7.
+
+**Clean retrain constraints (for the future authorize sentence):** cold start from the base trunk (no `HYPERLEX_INIT_FROM`: morph65/78 weights were trained with Wiktionary rows); exclude `source_license=CC-BY-SA-4.0` rows from the release training set; `HYPERLEX_FILLER_FILTER=strict`; keep the rest of the morph78 recipe as the single knob; refreeze the holdout manifest on the cleaned data before training.
