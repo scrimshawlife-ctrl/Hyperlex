@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Publish audit (Spec 007):** recommend keeping `seed-morph78` weights local-only.
+  Soft_ceiling broad val shares 193/256 rows with force-train; leak-free val
+  (n=63) ties morph78 and morph65 at 1.0. Training ran from an uncommitted Spark
+  checkout plus off-git scripts. See `specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`.
+
 - **Trained inference (Spec 007):** `hyperlexical.infer --model-dir` runs a local
   checkpoint (lazy torch, local trunk, fail-closed exit 2) and emits a
   `MODEL_EMBEDDING` inference packet; only the approved pin carries
