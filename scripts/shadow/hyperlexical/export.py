@@ -1279,7 +1279,7 @@ def harvest_4333_dump(root: Path) -> list[dict[str, Any]]:
                         "settle_note": r.get("settle_note"),
                     },
                     **{"class": r.get("class", "INFERRED")},
-                    license=r.get("license", "MIT (distilled)"),
+                    license=r.get("license", "operator-local"),
                 )
             )
         except Exception:
