@@ -16,6 +16,7 @@ python3 scripts/hyperlex.py run "locked in" --route offline
 | `live` | `combined` | yes |
 | `glossary` | `glossary` | yes |
 | `social` | `x_search` | yes |
+| `trends` | `combined` | yes |
 
 API: `resolve_source`, `pick_source`, `list_sources`, `ROUTE_PRESETS` in
 `hyperlex.intake.sources`.
@@ -69,6 +70,8 @@ CLI --route / --source
 - Crawl4ai min interval: `HYPERLEX_CRAWL4AI_MIN_INTERVAL` (default **1.0** s; was 5.0)
 - Firecrawl alias interval: `HYPERLEX_FIRECRAWL_MIN_INTERVAL` (default 1.0 s)
 - Generic per-source: `HYPERLEX_SOURCE_MIN_INTERVAL_<SOURCE>`
+
+`--route trends` always attaches a `trends` evidence packet (`hyperlex.trends_evidence.v1`). `--route live` attaches the same packet when the `trends` extra imports and the process is online. Install with `pip install -e ".[trends]"`. Geo defaults to worldwide (`HYPERLEX_TRENDS_GEO`). Timeframe defaults to `today 3-m` (`HYPERLEX_TRENDS_TIMEFRAME`). Minimum interval defaults to 60 seconds (`HYPERLEX_SOURCE_MIN_INTERVAL_TRENDS`). The packet is observed search interest. It does not change virality or Brier.
 
 ### crawl4ai URL / semantics
 

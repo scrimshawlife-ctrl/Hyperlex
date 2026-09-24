@@ -1124,6 +1124,9 @@ def detect_memetic_patterns(
         "source_fingerprint": source_fp,
     }
 
+    if "trends" in ingest_data:
+        result["trends"] = ingest_data["trends"]
+
     if validate:
         ok, msg = validate_result(result)
         result["schema_validation"] = {"valid": ok, "message": msg}
