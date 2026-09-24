@@ -61,11 +61,34 @@
   },
   "hold": true,
   "split_policy": "force_val",
-  "authorize_card_phrases": [],
-  "authorize_card_norms": [],
-  "authorize_card": [],
+  "authorize_card_phrases": [
+    "have fun staying poor",
+    "fr fr no cap"
+  ],
+  "authorize_card_norms": [
+    "have fun staying poor",
+    "fr fr no cap"
+  ],
+  "authorize_card": [
+    {
+      "phrase": "have fun staying poor",
+      "norm": "have fun staying poor",
+      "lineage": "crypto-degen",
+      "prior_choice": "force_expand_safe",
+      "confidence": 0.25,
+      "source": "jev_revisit77_safe_new"
+    },
+    {
+      "phrase": "fr fr no cap",
+      "norm": "fr fr no cap",
+      "lineage": "kinship-address",
+      "prior_choice": "force_expand_safe",
+      "confidence": 0.22,
+      "source": "jev_revisit77_safe_new"
+    }
+  ],
   "acquire_candidates": 37,
-  "note": "HOLD empty gold \u2014 Jev land_hold_empty. No settle/force/train. Explicit operator override naming phrases required, or new acquire direction.",
+  "note": "AUTHORIZE NAMED \u2014 operator `name phrases`. Spark PACKET_SETTLE still required. name_gate false.",
   "prior_force_fair": {
     "exact": 1.0,
     "n": 164
@@ -73,5 +96,17 @@
   "live_broad_prior": {
     "exact": 0.88671875,
     "n": 256
+  },
+  "authorize_received": {
+    "as_of": "2026-09-24T03:33:49.281914+00:00",
+    "operator": "name phrases",
+    "sentence": "authorize morph78: have fun staying poor, fr fr no cap",
+    "interpretation": "operator override naming phrases from live HOLD card jev_revisit77_safe_new",
+    "do_not_re_settle": [
+      "we're so back",
+      "clutch up",
+      "bet that up",
+      "real talk"
+    ]
   }
 }
