@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hyperlex"
-version = "1.6.0"
+version = "0.4.0"
 description = "Standalone memetic emergence engine for slang, hyperstition, virality. Real ingest + arXiv-distilled analysis + symbolic architecture (numogram+chaos)."
 authors = [
     {name = "Hermes / Abraxas systems"}
@@ -31,10 +31,6 @@ dev = [
 ]
 schema = [
     "jsonschema>=4.0",
-]
-trends = [
-    "pytrends>=4.9",
-    "urllib3>=1.26,<2",
 ]
 
 [project.urls]
