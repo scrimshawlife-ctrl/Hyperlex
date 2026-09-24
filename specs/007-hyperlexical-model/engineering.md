@@ -35,7 +35,7 @@ Detector over generator. Dual-use wall copied from 001/003/007.
 ## Merge
 
 - Honesty PRs may lower counts. That is a pass, not a regression.
-- Do not merge a PR that sets `name_gate` true.
+- Do not merge a PR that sets `name_gate` true unless it records a Danny yes as an amendment (A6: `seed-morph78`, 2026-09-24).
 - Do not merge mock analyze as gold.
 - 008 stays a sibling. No sacred-object implement from a 007 classify branch.
 

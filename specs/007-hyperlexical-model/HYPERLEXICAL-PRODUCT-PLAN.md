@@ -2,11 +2,11 @@
 
 **Status:** DRAFT (operator review) · **Reconciled:** 2026-09-24 (PR #102)
 
-**Naming:** repo **Hyperlex** = transitional shell. Public ingest = **ne0l0gist** (named). Public trained-model product = **Hyperlexical**, still gated. Hermes skill ≠ Hyperlexical. SoT: `docs/NAMING.md`.
+**Naming:** repo **Hyperlex** = transitional shell. Public ingest = **ne0l0gist** (named). Public trained-model product = **Hyperlexical** — approved for pin `seed-morph78` (2026-09-24). Hermes skill ≠ Hyperlexical. SoT: `docs/NAMING.md`.
 
-**Hard locks:** `name_gate=false` until Danny explicit yes · no Hub upload · no invented OBSERVED · upsample freeze **11+** · no `SECOND_SLOT=4` · schemes `positional|type_slot` only · Brier `null` on every 007 packet.
+**Hard locks:** `name_gate=true` for `seed-morph78` only (A6) · no Hub upload · no invented OBSERVED · upsample freeze **11+** · no `SECOND_SLOT=4` · schemes `positional|type_slot` only · Brier `null` on every 007 packet.
 
-This plan supersedes the 2026-09-23 draft (morph65 BEST, soft_ceiling ARMED, morph78 acquire empty). That draft was accurate on 2026-09-23 and remains in git history. This plan does not flip `name_gate`.
+This plan supersedes the 2026-09-23 draft (morph65 BEST, soft_ceiling ARMED, morph78 acquire empty). That draft was accurate on 2026-09-23 and remains in git history. Danny flipped `name_gate` for `seed-morph78` after this reconciliation (receipt `receipts/20260924-name-gate-yes-morph78.md`).
 
 ## Current honest state
 
@@ -23,11 +23,11 @@ This plan supersedes the 2026-09-23 draft (morph65 BEST, soft_ceiling ARMED, mor
 | Force/hard | **236 / 277** | `receipts/morph78-val-settle-20260924/ACQUIRE_SETTLE_SUMMARY.json` |
 | soft_ceiling | **SPENT / CLOSED** for this climb | `receipts/20260924-morph78-soft-ceiling-promote-best.md` |
 | E1 / E3 on `seed-morph78` | **NOT_COMPUTABLE** — no receipt | — |
-| `name_gate` | **false** | STATUS, pin, E2 JSON |
+| `name_gate` | **true** for `seed-morph78` (Danny 2026-09-24) | `receipts/20260924-name-gate-yes-morph78.md`, `amendments.md` A6 |
 | Hub | unpublished | — |
 | T13 | not authorized | — |
 
-Verdict: training produced a pinned candidate that passes E2. What is left is naming, publication and integration authority. Training is no longer the blocker.
+Verdict: TRAIN and NAME are done for `seed-morph78`. What is left is card-identifier rename, publication, and integration authority.
 
 ## Product state machines
 
@@ -36,7 +36,7 @@ These are independent. Do not collapse them into one "product ready" flag.
 | Machine | Path | Current |
 |---|---|---|
 | TRAIN | `UNTRAINED → TRAINED → E2_PASS → BEST_PINNED` | `BEST_PINNED(seed-morph78)` |
-| NAME | `UNNAMED_PUBLICLY → NAME_GATE_APPROVED` | `UNNAMED_PUBLICLY` |
+| NAME | `UNNAMED_PUBLICLY → NAME_GATE_APPROVED` | `NAME_GATE_APPROVED(seed-morph78)` |
 | PUBLISH | `LOCAL_ONLY → CARD_READY → HUB_AUTHORIZED → HUB_PUBLISHED` | `LOCAL_ONLY` |
 | INTEGRATION | `SHADOW → T13_AUTHORIZED → SRC_PROMOTED` | `SHADOW` |
 
@@ -53,7 +53,7 @@ Hyperlexical is complete for this product cycle when:
 5. any Hub upload is separately authorized;
 6. any T13 promotion is separately authorized and tested.
 
-Until item 4, artifact naming remains `hyperlex-encoder-*`.
+Item 4 is done. Card/package identifiers stay `hyperlex-encoder-*` until a separate rename change.
 
 ## Workstreams
 
@@ -78,7 +78,8 @@ Until item 4, artifact naming remains `hyperlex-encoder-*`.
 ### C. Product packaging — post-`name_gate`
 
 - [ ] operator reviews this reconciled plan
-- [ ] Danny explicit `name_gate yes` / "name Hyperlexical"
+- [x] Danny explicit `flip name_gate` (2026-09-24)
+- [ ] card/package identifier rename (`hyperlex-encoder-*` → C31 `hyperlex-structure-149m` / Hyperlexical) + packet/schema `name_gate` field
 - [ ] finalize public model card from pinned receipts
 - [ ] separately authorize Hub upload, or explicitly close the cycle with no Hub
 - [ ] optional T13 in a separate PR with tests
@@ -95,7 +96,7 @@ Q1 status is not a substitute for Spec 007 product completion, and Spec 007 prog
 
 ## Default recommendation
 
-**HOLD morph78.** Resolve NAME and PUBLISH decisions before authorizing another training climb.
+**HOLD morph78.** NAME is done. Resolve card rename and PUBLISH before authorizing another training climb.
 
 ## Explicit non-goals
 
@@ -115,7 +116,8 @@ Q1 status is not a substitute for Spec 007 product completion, and Spec 007 prog
 - [x] model card reflects live morph78 evidence (E1/E3 marked NOT_COMPUTABLE)
 - [x] Notion Operator Hub parity
 - [ ] operator product review
-- [ ] Danny `name_gate` decision
+- [x] Danny `name_gate` decision — yes for `seed-morph78`
+- [ ] card-rename decision
 - [ ] Hub decision: upload authorized, or explicit no-Hub this cycle
 - [ ] optional T13 decision
 

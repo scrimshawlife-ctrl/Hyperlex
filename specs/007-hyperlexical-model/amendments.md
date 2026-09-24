@@ -18,3 +18,10 @@ Notion-first, then disk.
 - `engineering.md` — classify / files / merge / Spark-later rules.
 - Notion: https://app.notion.com/p/3d73e8ba2f5c81e9aac1e7dc992e3481 · https://app.notion.com/p/3d73e8ba2f5c813db326e3f68ac77ee9
 Does not train. Does not set `name_gate`. Does not open 006 or 008.
+
+## A6 — `name_gate` yes for `seed-morph78` (2026-09-24)
+Danny: **`flip name_gate`**. Receipt: `receipts/20260924-name-gate-yes-morph78.md`.
+- Sets product-level `name_gate=true` for pin `seed-morph78` only. That pin may be called **Hyperlexical**.
+- Basis: T1 tier (`milestones.md`) — ModernBERT-base trunk (A2, ≤150M per A1), unbind heads, trained E2 PASS vs Spec 004 probe; dataset buckets 0/0/0; soft_ceiling PROMOTE_BEST.
+- Amends `engineering.md` merge rule: a PR may set `name_gate` true only when it records a Danny yes as an amendment (this one).
+- Does not rename card/package identifiers (`hyperlex-encoder-*`; C31 target `hyperlex-structure-149m`), does not change SHADOW packet/schema `name_gate` fields, does not authorize Hub upload or T13, does not start a climb.
