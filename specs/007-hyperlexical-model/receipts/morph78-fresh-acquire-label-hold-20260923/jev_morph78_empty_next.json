@@ -1,0 +1,17 @@
+{
+  "choice": "land_hold_empty",
+  "confidence": 0.51,
+  "probabilities": {
+    "land_hold_empty": 0.64,
+    "revisit_morph77_safe_new": 0.29,
+    "retry_acquire_fresh": 0.05,
+    "override_top_fes": 0.02
+  },
+  "runner_up": "revisit_morph77_safe_new",
+  "model": "jev-1.13.0",
+  "latency_ms": 394,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 64
+  }
+}

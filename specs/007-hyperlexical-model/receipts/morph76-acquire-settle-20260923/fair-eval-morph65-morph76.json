@@ -1,0 +1,31 @@
+{
+  "schema": "hyperlex.fair_eval_same_surface.v0.1",
+  "as_of": "2026-09-23T22:28:59.595590+00:00",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+  "seed": "seed-morph65",
+  "force_train_path": "/home/morpheus/hlx/force_train_morph76_expanded.jsonl",
+  "force_stats": {
+    "unbind_force_train_path": "force_train_morph76_expanded.jsonl",
+    "n_unbind_force_train": 192,
+    "n_unbind_force_train_keys": 224,
+    "n_unbind_val_after_force_train": 164
+  },
+  "n_hard_atoms": 265,
+  "unbind_exact": 1.0,
+  "n_scored": 164,
+  "n_correct_est": 164,
+  "scored": {
+    "unbind_exact": 1.0,
+    "n_unbind_eval": 164,
+    "unbind_token_f1": 1.0,
+    "unbind_token_precision": 1.0,
+    "unbind_token_recall": 1.0,
+    "unbind_slot_f1": 1.0
+  },
+  "knob": "fresh civilian acquire-settle highkey shawty + quiet quitting",
+  "prior_fair_morph65_n171": 0.9649122807017544,
+  "promote": {},
+  "note": "Fair morph65 BEST on morph76 force surface (SoT clean + to_the_moon/elo_hell). Gate morph76 best > this fair + E2 1.0.",
+  "fair_exact": 1.0,
+  "fair_n": 164
+}

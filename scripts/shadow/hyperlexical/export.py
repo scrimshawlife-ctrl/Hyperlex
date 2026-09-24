@@ -671,10 +671,64 @@ def dedupe(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [best[k] for k in order]
 
 
+def _strip_type_slot_tags(text: str) -> str:
+    """Recover underlying phrase from ``TOKEN:x SLOT:y`` type_slot display text."""
+    parts: list[str] = []
+    for tok in (text or "").split():
+        if ":" in tok and tok.split(":", 1)[0] in TYPE_SLOT_TAGS:
+            parts.append(tok.split(":", 1)[1])
+        else:
+            parts.append(tok)
+    return " ".join(parts)
+
+
+def reject_wiki_scaffolding_text(text: str) -> str | None:
+    """Return reject reason for wiki/dictionary chrome, else None.
+
+    Keeps civilian slang atoms; drops etymology / quotations / synonym-table /
+    language-gloss / Trends / declension scaffolding that walls unbind val.
+    Also rejects type_slot-tagged forms of the same chrome
+    (``TOKEN:Alternative SLOT:form …``), which otherwise miss contiguous
+    substring checks. Does not invent or settle OBSERVED.
+    """
+    raw = (text or "").strip()
+    if not raw:
+        return None
+    candidates = [raw, _strip_type_slot_tags(raw)]
+    for cand in candidates:
+        low = cand.lower()
+        # Dictionary / wiktionary chrome (substring, case-insensitive).
+        for needle, reason in (
+            ("etymology", "wiki_etymology"),
+            ("google trends", "wiki_trends"),
+            ("alternative form of", "wiki_alt_form"),
+            ("alternative letter-case form of", "wiki_alt_form"),
+            ("declension of", "wiki_declension"),
+            ("wiktionary", "wiki_wiktionary"),
+            ("quotations ▼", "wiki_quotations"),
+            ("▲quotations", "wiki_quotations"),
+            ("synonym ▲", "wiki_synonym_table"),
+            ("antonym ▲", "wiki_antonym_table"),
+            ("synonym:", "wiki_synonym_table"),
+            ("antonym:", "wiki_antonym_table"),
+            ("(neologism)", "wiki_neologism_gloss"),
+            ("armenian:", "wiki_lang_gloss"),
+            ("show ▼", "wiki_declension"),
+        ):
+            if needle in low:
+                return reason
+        # Language-label gloss dumps: "Armenian: …" already covered; bare ▼/▲ UI chrome
+        # only when paired with dictionary lemmata (handled above) or lone UI tokens.
+        if cand in {"▼", "▲", "quotations ▼", "▲quotations"}:
+            return "wiki_ui_chrome"
+    return None
+
+
 def reject_candidate_text(text: str) -> str | None:
     """Return reject reason for junk live candidates, else None.
 
-    Filters: empty/punct-only, len≤2, pure numeric, Unsupported titles.
+    Filters: empty/punct-only, len≤2, pure numeric, Unsupported titles,
+    wiki/dictionary scaffolding chrome.
     SHORT_SLANG_ALLOWLIST exempts known slang/codes from len/numeric kills.
     Does not promote or settle labels.
     """
@@ -696,6 +750,9 @@ def reject_candidate_text(text: str) -> str | None:
         return "len_le_2"
     if "unsupported title" in low or low.startswith("unsupported"):
         return "unsupported_title"
+    scaff = reject_wiki_scaffolding_text(raw)
+    if scaff:
+        return scaff
     return None
 
 
@@ -831,6 +888,11 @@ def _formed_unbind_row(raw: dict[str, Any]) -> dict[str, Any] | None:
     fillers = [str(t) for t in (raw.get("fillers") or []) if str(t).strip()]
     roles = [str(t) for t in (raw.get("roles") or []) if str(t).strip()]
     if not text or not fillers or len(roles) != len(fillers):
+        return None
+    # Sidecar / store formed rows must still fail closed on wiki chrome.
+    if reject_candidate_text(text) or reject_wiki_scaffolding_text(
+        " ".join(fillers)
+    ):
         return None
     epistemic = _live_unbind_epistemic(raw)
     lineage = _live_unbind_lineage(raw)

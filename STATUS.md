@@ -3,8 +3,8 @@
 **Naming:** repo **Hyperlex** is the transitional monorepo shell. Public products: **Hyperlexical** (Spec 007 model / train / eval / E2 / `name_gate` claim) and **ne0l0gist** (slang ingest). `name_gate` remains false.
 
 **Version:** 0.4.0  
-**Observed:** 2026-09-12  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65` (**PROMOTE** — 0.8584070796460177 ep6 > fair morph63 0.8539823008849557 n=226; E2 PASS). `name_gate` still false.
+**Observed:** 2026-09-23  
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph65`. soft_ceiling **ARMED**. Live broad **0.8867** n=256. morph78 GOLD empty. Operator `authorize val-settle` → **CANCELLED_EMPTY_GOLD** (no phrases). Product plan drafted (`HYPERLEXICAL-PRODUCT-PLAN.md`). Open PRs triaged (#100 recommend / #99 CI fix / #95 rebase). `name_gate` still false.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -51,7 +51,7 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 |------|--------|
 | Classify volume | **Ready** — operator `--include-live` family classify **2437** (≥2k). name_gate gaps **0 / 0 / 0** on that surface. |
 | `name_gate` | **false** — E2 PASS on Spark does **not** flip the gate. Danny yes still required. Volume ≠ name. |
-| Spark BEST | **`seed-morph65`** — pin `unbind_exact=0.8584070796460177` (ep6, 194/226) > fair morph63 0.8539823008849557. E2 PASS. Ladder ≥0.55 **HIT**. LAST_TRAINABLE_MAX=8 **HIT**. Upsample ladder frozen. |
+| Spark BEST | **`seed-morph65`** — force fair **1.0** n=164. soft_ceiling **ARMED** (live prior broad 0.8867 n=256). morph78 acquire HOLD **empty gold**. E2 PASS. LAST=8. Upsample freeze **11+**. |
 | E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
 | T1 name | Not allowed. Card stays `hyperlex-encoder-*` until Danny yes on `name_gate`. |
@@ -101,9 +101,9 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Ingest routes + automatic pipeline | Ready |
 | Atomic multi-term seeds | Ready |
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
-| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
+| Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list\|push\|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 (0.8584 ep6 n=226) · fair morph63 0.8540 · E2 PASS · ladder ≥0.55 HIT · LAST=8 MAX · upsample frozen · `name_gate` false · no Hub · not named Hyperlexical |
+| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph65 · soft_ceiling ARMED · force fair 1.0 n=164 · live broad prior 0.887 n=256 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–77 closed · next fresh acquire morph78 · `name_gate` false · no Hub · not named Hyperlexical |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
@@ -142,7 +142,7 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph65** (held). morph66 residual-gold **REJECT** (0.9502 < fair 0.9602 n=201). Upsample ladder **frozen**. Do not replay morph66 force/hard or second-slot 4. **Next:** METHOD-label morph65 force residuals (8 INFERRED on n=201). See `NEXT_MOVES_007.md` / `receipts/20260921-morph66-40ep-reject-vs-best.md`.
+1. Spark BEST = **morph65**. soft_ceiling **ARMED**. `authorize val-settle` → **CANCELLED_EMPTY_GOLD**. Await authorize listing **named phrases**. See `receipts/20260923-authorize-val-settle-cancelled-empty-gold.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
 3. Do not Hub-upload. Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13). Do not flip `name_gate`.
 

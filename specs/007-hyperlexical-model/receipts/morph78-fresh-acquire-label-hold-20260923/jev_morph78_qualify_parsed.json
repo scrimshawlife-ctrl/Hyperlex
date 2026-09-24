@@ -1,0 +1,564 @@
+{
+  "summary": {
+    "defer_quality": 35,
+    "already_variant": 2
+  },
+  "safe": [],
+  "defer": [
+    {
+      "phrase": "hits different",
+      "norm": "hits different",
+      "choice": "defer_quality",
+      "confidence": 0.38,
+      "probabilities": {
+        "defer_quality": 0.59,
+        "already_variant": 0.25,
+        "force_expand_safe": 0.16
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "goes hard",
+      "norm": "goes hard",
+      "choice": "defer_quality",
+      "confidence": 0.49,
+      "probabilities": {
+        "defer_quality": 0.66,
+        "force_expand_safe": 0.19,
+        "already_variant": 0.15
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "living rent free",
+      "norm": "living rent free",
+      "choice": "defer_quality",
+      "confidence": 0.48,
+      "probabilities": {
+        "defer_quality": 0.65,
+        "force_expand_safe": 0.22,
+        "already_variant": 0.13
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "rent free",
+      "norm": "rent free",
+      "choice": "defer_quality",
+      "confidence": 0.5,
+      "probabilities": {
+        "defer_quality": 0.67,
+        "force_expand_safe": 0.18,
+        "already_variant": 0.15
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "she understood the assignment",
+      "norm": "she understood the assignment",
+      "choice": "defer_quality",
+      "confidence": 0.41,
+      "probabilities": {
+        "defer_quality": 0.61,
+        "force_expand_safe": 0.21,
+        "already_variant": 0.18
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "understood the assignment",
+      "norm": "understood the assignment",
+      "choice": "defer_quality",
+      "confidence": 0.39,
+      "probabilities": {
+        "defer_quality": 0.6,
+        "already_variant": 0.22,
+        "force_expand_safe": 0.18
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "understand the assignment",
+      "norm": "understand the assignment",
+      "choice": "defer_quality",
+      "confidence": 0.19,
+      "probabilities": {
+        "defer_quality": 0.46,
+        "already_variant": 0.34,
+        "force_expand_safe": 0.2
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "caught in 4k",
+      "norm": "caught in 4k",
+      "choice": "defer_quality",
+      "confidence": 0.63,
+      "probabilities": {
+        "defer_quality": 0.75,
+        "force_expand_safe": 0.13,
+        "already_variant": 0.12
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "ngl fr",
+      "norm": "ngl fr",
+      "choice": "defer_quality",
+      "confidence": 0.66,
+      "probabilities": {
+        "defer_quality": 0.78,
+        "already_variant": 0.12,
+        "force_expand_safe": 0.1
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "slay queen",
+      "norm": "slay queen",
+      "choice": "defer_quality",
+      "confidence": 0.51,
+      "probabilities": {
+        "defer_quality": 0.68,
+        "force_expand_safe": 0.18,
+        "already_variant": 0.14
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "hot take",
+      "norm": "hot take",
+      "choice": "defer_quality",
+      "confidence": 0.45,
+      "probabilities": {
+        "defer_quality": 0.63,
+        "already_variant": 0.27,
+        "force_expand_safe": 0.1
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "hot take artist",
+      "norm": "hot take artist",
+      "choice": "defer_quality",
+      "confidence": 0.61,
+      "probabilities": {
+        "defer_quality": 0.75,
+        "already_variant": 0.14,
+        "force_expand_safe": 0.11
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "cold take",
+      "norm": "cold take",
+      "choice": "defer_quality",
+      "confidence": 0.54,
+      "probabilities": {
+        "defer_quality": 0.69,
+        "already_variant": 0.19,
+        "force_expand_safe": 0.12
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "freezing cold take",
+      "norm": "freezing cold take",
+      "choice": "defer_quality",
+      "confidence": 0.58,
+      "probabilities": {
+        "defer_quality": 0.72,
+        "force_expand_safe": 0.2,
+        "already_variant": 0.08
+      },
+      "already_observed": false,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "cope harder",
+      "norm": "cope harder",
+      "choice": "defer_quality",
+      "confidence": 0.49,
+      "probabilities": {
+        "defer_quality": 0.66,
+        "force_expand_safe": 0.22,
+        "already_variant": 0.12
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "mald seethe cope harder",
+      "norm": "mald seethe cope harder",
+      "choice": "defer_quality",
+      "confidence": 0.45,
+      "probabilities": {
+        "defer_quality": 0.64,
+        "already_variant": 0.19,
+        "force_expand_safe": 0.17
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "cope n cry harder",
+      "norm": "cope n cry harder",
+      "choice": "defer_quality",
+      "confidence": 0.62,
+      "probabilities": {
+        "defer_quality": 0.74,
+        "force_expand_safe": 0.19,
+        "already_variant": 0.07
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "take the l",
+      "norm": "take the l",
+      "choice": "defer_quality",
+      "confidence": 0.46,
+      "probabilities": {
+        "defer_quality": 0.65,
+        "force_expand_safe": 0.2,
+        "already_variant": 0.15
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "big l",
+      "norm": "big l",
+      "choice": "defer_quality",
+      "confidence": 0.65,
+      "probabilities": {
+        "defer_quality": 0.77,
+        "already_variant": 0.13,
+        "force_expand_safe": 0.1
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "l bozo plus ratio",
+      "norm": "l bozo plus ratio",
+      "choice": "defer_quality",
+      "confidence": 0.65,
+      "probabilities": {
+        "defer_quality": 0.77,
+        "already_variant": 0.13,
+        "force_expand_safe": 0.1
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "l plus ratio",
+      "norm": "l plus ratio",
+      "choice": "defer_quality",
+      "confidence": 0.52,
+      "probabilities": {
+        "defer_quality": 0.68,
+        "already_variant": 0.17,
+        "force_expand_safe": 0.15
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "ratio plus l",
+      "norm": "ratio plus l",
+      "choice": "defer_quality",
+      "confidence": 0.6,
+      "probabilities": {
+        "defer_quality": 0.73,
+        "already_variant": 0.14,
+        "force_expand_safe": 0.13
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "based and redpilled",
+      "norm": "based and redpilled",
+      "choice": "defer_quality",
+      "confidence": 0.41,
+      "probabilities": {
+        "defer_quality": 0.6,
+        "already_variant": 0.26,
+        "force_expand_safe": 0.14
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "based and red pilled",
+      "norm": "based and red pilled",
+      "choice": "defer_quality",
+      "confidence": 0.48,
+      "probabilities": {
+        "defer_quality": 0.65,
+        "already_variant": 0.22,
+        "force_expand_safe": 0.13
+      },
+      "already_observed": false,
+      "lineage": "crypto-degen"
+    },
+    {
+      "phrase": "jungle diff",
+      "norm": "jungle diff",
+      "choice": "defer_quality",
+      "confidence": 0.66,
+      "probabilities": {
+        "defer_quality": 0.77,
+        "already_variant": 0.12,
+        "force_expand_safe": 0.11
+      },
+      "already_observed": false,
+      "lineage": "gaming-meta"
+    },
+    {
+      "phrase": "diff jungle",
+      "norm": "diff jungle",
+      "choice": "defer_quality",
+      "confidence": 0.54,
+      "probabilities": {
+        "defer_quality": 0.7,
+        "already_variant": 0.17,
+        "force_expand_safe": 0.13
+      },
+      "already_observed": false,
+      "lineage": "gaming-meta"
+    },
+    {
+      "phrase": "throwing hard",
+      "norm": "throwing hard",
+      "choice": "defer_quality",
+      "confidence": 0.59,
+      "probabilities": {
+        "defer_quality": 0.73,
+        "force_expand_safe": 0.15,
+        "already_variant": 0.12
+      },
+      "already_observed": false,
+      "lineage": "gaming-meta"
+    },
+    {
+      "phrase": "smurf account",
+      "norm": "smurf account",
+      "choice": "defer_quality",
+      "confidence": 0.31,
+      "probabilities": {
+        "defer_quality": 0.53,
+        "force_expand_safe": 0.29,
+        "already_variant": 0.18
+      },
+      "already_observed": false,
+      "lineage": "gaming-meta"
+    },
+    {
+      "phrase": "front on me",
+      "norm": "front on me",
+      "choice": "defer_quality",
+      "confidence": 0.3,
+      "probabilities": {
+        "defer_quality": 0.54,
+        "force_expand_safe": 0.28,
+        "already_variant": 0.18
+      },
+      "already_observed": false,
+      "lineage": "kinship-address"
+    },
+    {
+      "phrase": "on me fr",
+      "norm": "on me fr",
+      "choice": "defer_quality",
+      "confidence": 0.56,
+      "probabilities": {
+        "defer_quality": 0.71,
+        "force_expand_safe": 0.16,
+        "already_variant": 0.13
+      },
+      "already_observed": false,
+      "lineage": "kinship-address"
+    },
+    {
+      "phrase": "let's take this offline",
+      "norm": "let's take this offline",
+      "choice": "defer_quality",
+      "confidence": 0.47,
+      "probabilities": {
+        "defer_quality": 0.65,
+        "already_variant": 0.18,
+        "force_expand_safe": 0.17
+      },
+      "already_observed": false,
+      "lineage": "workplace-corp"
+    },
+    {
+      "phrase": "take offline",
+      "norm": "take offline",
+      "choice": "defer_quality",
+      "confidence": 0.59,
+      "probabilities": {
+        "defer_quality": 0.73,
+        "force_expand_safe": 0.14,
+        "already_variant": 0.13
+      },
+      "already_observed": false,
+      "lineage": "workplace-corp"
+    },
+    {
+      "phrase": "take it off-line",
+      "norm": "take it off-line",
+      "choice": "defer_quality",
+      "confidence": 0.44,
+      "probabilities": {
+        "defer_quality": 0.63,
+        "already_variant": 0.2,
+        "force_expand_safe": 0.17
+      },
+      "already_observed": false,
+      "lineage": "workplace-corp"
+    },
+    {
+      "phrase": "action item",
+      "norm": "action item",
+      "choice": "defer_quality",
+      "confidence": 0.58,
+      "probabilities": {
+        "defer_quality": 0.73,
+        "already_variant": 0.14,
+        "force_expand_safe": 0.13
+      },
+      "already_observed": false,
+      "lineage": "workplace-corp"
+    },
+    {
+      "phrase": "action items",
+      "norm": "action items",
+      "choice": "defer_quality",
+      "confidence": 0.58,
+      "probabilities": {
+        "defer_quality": 0.72,
+        "force_expand_safe": 0.15,
+        "already_variant": 0.13
+      },
+      "already_observed": false,
+      "lineage": "workplace-corp"
+    }
+  ],
+  "variant": [
+    {
+      "phrase": "main character energy",
+      "norm": "main character energy",
+      "choice": "already_variant",
+      "confidence": 0.37,
+      "probabilities": {
+        "already_variant": 0.58,
+        "defer_quality": 0.23,
+        "force_expand_safe": 0.19
+      },
+      "already_observed": true,
+      "lineage": "brainrot-aura"
+    },
+    {
+      "phrase": "no thoughts head empty",
+      "norm": "no thoughts head empty",
+      "choice": "already_variant",
+      "confidence": 0.3,
+      "probabilities": {
+        "already_variant": 0.53,
+        "defer_quality": 0.32,
+        "force_expand_safe": 0.15
+      },
+      "already_observed": true,
+      "lineage": "brainrot-aura"
+    }
+  ],
+  "safe_new": [],
+  "safe_obs": [],
+  "card_high_conf_new": [],
+  "model": "jev-1.13.0",
+  "usage": {
+    "input_tokens": 18944,
+    "output_tokens": 1663,
+    "calls": 37,
+    "cached_calls": 0
+  },
+  "top_fes_probs": [
+    {
+      "norm": "smurf account",
+      "fes": 0.29,
+      "choice": "defer_quality",
+      "conf": 0.31
+    },
+    {
+      "norm": "front on me",
+      "fes": 0.28,
+      "choice": "defer_quality",
+      "conf": 0.3
+    },
+    {
+      "norm": "living rent free",
+      "fes": 0.22,
+      "choice": "defer_quality",
+      "conf": 0.48
+    },
+    {
+      "norm": "cope harder",
+      "fes": 0.22,
+      "choice": "defer_quality",
+      "conf": 0.49
+    },
+    {
+      "norm": "she understood the assignment",
+      "fes": 0.21,
+      "choice": "defer_quality",
+      "conf": 0.41
+    },
+    {
+      "norm": "understand the assignment",
+      "fes": 0.2,
+      "choice": "defer_quality",
+      "conf": 0.19
+    },
+    {
+      "norm": "freezing cold take",
+      "fes": 0.2,
+      "choice": "defer_quality",
+      "conf": 0.58
+    },
+    {
+      "norm": "take the l",
+      "fes": 0.2,
+      "choice": "defer_quality",
+      "conf": 0.46
+    },
+    {
+      "norm": "goes hard",
+      "fes": 0.19,
+      "choice": "defer_quality",
+      "conf": 0.49
+    },
+    {
+      "norm": "main character energy",
+      "fes": 0.19,
+      "choice": "already_variant",
+      "conf": 0.37
+    }
+  ]
+}

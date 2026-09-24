@@ -1,0 +1,21 @@
+{
+  "status": "CANCELLED_FAIR_CEILING",
+  "as_of": "2026-09-23T22:29:32.953109+00:00",
+  "auth": "operator 2026-09-23 go ahead next useful moves; fair ceiling after acquire-settle",
+  "container": "hlx-train-morph76-1790202540",
+  "fair_exact": 1.0,
+  "fair_n": 164,
+  "force_added": 4,
+  "hard_added": 4,
+  "settled": [
+    "highkey shawty"
+  ],
+  "force_keys_added": [
+    "highkey shawty",
+    "TOKEN:highkey SLOT:shawty",
+    "quiet quitting",
+    "TOKEN:quiet SLOT:quitting"
+  ],
+  "reason": "Fair morph65 on morph76 force surface is already 1.0 n=164; cannot satisfy strictly-greater promote gate. Stopped before burn. SoT settle kept (highkey shawty OBSERVED + quiet quitting force keys).",
+  "note": "New atoms were train-split so val n unchanged; force keys 220\u2192224 still force_added=4 but gate ceiling blocks train."
+}

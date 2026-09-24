@@ -1,0 +1,17 @@
+{
+  "choice": "cancel_empty_gold",
+  "confidence": 0.96,
+  "probabilities": {
+    "cancel_empty_gold": 0.97,
+    "override_morph78_method_auth": 0.03,
+    "settle_morph77_leftover_safe": 0.0,
+    "override_reprobe_auth": 0.0
+  },
+  "runner_up": "override_morph78_method_auth",
+  "model": "jev-1.13.0",
+  "latency_ms": 458,
+  "usage": {
+    "input_tokens": 540,
+    "output_tokens": 67
+  }
+}

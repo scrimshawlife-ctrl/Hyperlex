@@ -1,0 +1,10 @@
+{
+  "auth": "operator continue 2026-09-22; morph69 REJECT residual METHOD morph43",
+  "residual_n": 6,
+  "AUTHORIZE": 0,
+  "ABSTAIN": 6,
+  "by_reason": {
+    "abstain_scaffolding_wiki_etym": 5,
+    "parenthetical_meta_filler": 1
+  }
+}

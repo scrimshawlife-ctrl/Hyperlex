@@ -100,7 +100,7 @@ def test_no_third_scheme():
 
 
 def test_reject_candidate_text():
-    from hyperlexical.export import reject_candidate_text
+    from hyperlexical.export import reject_candidate_text, reject_wiki_scaffolding_text
 
     assert reject_candidate_text("") == "empty"
     assert reject_candidate_text("ab") == "len_le_2"
@@ -114,6 +114,28 @@ def test_reject_candidate_text():
     # still reject bare junk / ambiguous non-allowlisted shorts
     assert reject_candidate_text("a") == "len_le_2"
     assert reject_candidate_text("11") == "numeric"
+    # wiki / dictionary scaffolding — residual wall chrome
+    assert reject_candidate_text('(from to the moon) quotations ▼') == "wiki_quotations"
+    assert reject_candidate_text('^ "aura farming" on Google Trends.') == "wiki_trends"
+    assert reject_candidate_text("(neologism) Alternative form of brain rot.") == "wiki_alt_form"
+    assert reject_candidate_text("Alternative form of bussin'.") == "wiki_alt_form"
+    assert (
+        reject_wiki_scaffolding_text(
+            "TOKEN:Alternative SLOT:form MARKER:of TOKEN:bussin'."
+        )
+        == "wiki_alt_form"
+    )
+    assert reject_candidate_text(
+        "1. (UK soccer slang) Alternative letter-case form of Gooner."
+    ) == "wiki_alt_form"
+    assert reject_candidate_text('Armenian: smurf pl (smurfik)') == "wiki_lang_gloss"
+    assert reject_candidate_text("synonym ▲quotations ▼ Synonym: tryhard") == "wiki_quotations"
+    assert reject_candidate_text('"Crash out etymology", The Idioms.') == "wiki_etymology"
+    # civilian slang atoms stay
+    assert reject_candidate_text("aura farming") is None
+    assert reject_candidate_text("to the moon") is None
+    assert reject_candidate_text("crash out") is None
+    assert reject_wiki_scaffolding_text("show ▼Declension of smurf") == "wiki_declension"
 
 
 def test_include_live_preserves_store_class(tmp_path):

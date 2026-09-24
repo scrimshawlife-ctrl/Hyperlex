@@ -1,0 +1,15 @@
+{
+  "schema": "hyperlex.train_hang.v0.1",
+  "as_of": "2026-09-22T01:32:02.051727+00:00",
+  "container": "hlx-train-morph68-1790029975",
+  "best_before_kill": {
+    "classify_acc": 0.787109375,
+    "epoch": 4,
+    "metric": "unbind_exact",
+    "unbind_exact": 0.9644670050761421,
+    "unbind_slot_f1": 0.9818181818181818,
+    "unbind_token_f1": 0.9818181818181818
+  },
+  "note": "Hung after ep4 best 0.964467; ~3h wall with 98% CPU, GPU mem ~1.6GB, no model-dir mtime change, docker log frozen after weight load. Kill+relaunch same knob (force/hard morph68, warm morph65).",
+  "action": "kill_relaunch_same_recipe"
+}

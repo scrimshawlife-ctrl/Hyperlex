@@ -1,0 +1,28 @@
+{
+  "schema": "hyperlex.fair_eval_same_surface.v0.1",
+  "as_of": "2026-09-21T17:07:43.061379+00:00",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+  "seed": "seed-morph65",
+  "force_train_path": "/home/morpheus/hlx/force_train_morph66_expanded.jsonl",
+  "force_stats": {
+    "unbind_force_train_path": "force_train_morph66_expanded.jsonl",
+    "n_unbind_force_train": 164,
+    "n_unbind_force_train_keys": 164,
+    "n_unbind_val_after_force_train": 199
+  },
+  "n_hard_atoms": 206,
+  "unbind_exact": 0.9698492462311558,
+  "n_scored": 199,
+  "n_correct_est": 193,
+  "scored": {
+    "unbind_exact": 0.9698492462311558,
+    "n_unbind_eval": 199,
+    "unbind_token_f1": 0.9801587301587301,
+    "unbind_token_precision": 0.9801587301587301,
+    "unbind_token_recall": 0.9801587301587301,
+    "unbind_slot_f1": 0.9801587301587301
+  },
+  "knob": "SoT flip 2 METHOD AUTHORIZE morph65 force residuals INFERRED\u2192OBSERVED in harvest_unbind_observed_mw.jsonl",
+  "prior_fair_morph65_n201": 0.9601990049751243,
+  "note": "Fair morph65 BEST after SoT class flip; force now moves 164/164; val n shrinks. Gate morph67 best > this fair + E2 trunk-forward 1.0."
+}

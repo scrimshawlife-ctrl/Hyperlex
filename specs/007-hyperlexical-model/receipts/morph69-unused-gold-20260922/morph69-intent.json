@@ -1,0 +1,29 @@
+{
+  "morph": 69,
+  "as_of": "2026-09-22T07:53:44.651375+00:00",
+  "auth": "operator continue 2026-09-22; update goldens to continue",
+  "one_knob": "integrate unused METHOD AUTHORIZE morph43/morph50 residual gold not in force68 (force_added=26)",
+  "warm": "seed-morph65",
+  "force": "/home/morpheus/hlx/force_train_morph69_expanded.jsonl",
+  "hard": "/home/morpheus/hlx/hard_atoms_train_morph69.jsonl",
+  "upsample": 8,
+  "second_slot": 2,
+  "last_trainable": 8,
+  "epochs": 40,
+  "lr": "2e-5",
+  "mem_fraction": 0.3,
+  "save_best": true,
+  "fair_path": "/home/morpheus/hlx/fair-eval-morph65-morph69.json",
+  "fair_exact": 0.9649122807017544,
+  "fair_n": 171,
+  "pin_rule": "best > fair on n=171 and E2 trunk-forward unbind_exact=1.0",
+  "name_gate": false,
+  "morph68_note": "best 0.9695431472081218 == fair morph68 0.9695431472081218 → REJECT_VS_BEST (strictly greater); residual AUTHORIZE=0 scaffolding",
+  "not_this_card": [
+    "upsample 11+",
+    "SECOND_SLOT=4",
+    "invent OBSERVED fillers",
+    "Hub",
+    "replay morph68 residual-only with force_added=0"
+  ]
+}

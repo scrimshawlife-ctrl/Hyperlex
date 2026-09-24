@@ -1,0 +1,22 @@
+{
+  "auth": "operator continue 2026-09-21; morph67 residual gold after morph67 SoT-flip REJECT (METHOD morph43)",
+  "residual_n": 8,
+  "authorize": 2,
+  "abstain": 6,
+  "by_reason": {
+    "abstain_scaffolding_wiki_etym": 6,
+    "positional_text_split_match": 2
+  },
+  "force_base": 164,
+  "force_new": 166,
+  "force_added": 2,
+  "hard_base": 206,
+  "hard_new": 208,
+  "hard_added": 2,
+  "force_path": "/home/morpheus/hlx/force_train_morph68_expanded.jsonl",
+  "hard_path": "/home/morpheus/hlx/hard_atoms_train_morph68.jsonl",
+  "authorize_texts": [
+    "[Out:] Mega yachts [In:] Mega gyatt",
+    "an egg's age"
+  ]
+}

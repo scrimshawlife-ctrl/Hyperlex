@@ -1,0 +1,29 @@
+{
+  "morph": 67,
+  "as_of": "2026-09-21T17:08:20.402086+00:00",
+  "auth": "operator continue 2026-09-21; morph67 after morph65 residual AUTHORIZE SoT flip (force_added was 0)",
+  "one_knob": "SoT INFERRED\u2192OBSERVED for 2 METHOD AUTHORIZE morph65 force residuals via harvest_unbind_observed_mw.jsonl",
+  "why_not_force_expand": "force_added=0 hard_added=0; texts already in morph66 force as dead keys (class INFERRED so apply_unbind_force_train skipped)",
+  "warm": "seed-morph65",
+  "force": "/home/morpheus/hlx/force_train_morph66_expanded.jsonl",
+  "hard": "/home/morpheus/hlx/hard_atoms_train_morph66.jsonl",
+  "upsample": 8,
+  "second_slot": 2,
+  "last_trainable": 8,
+  "epochs": 40,
+  "lr": "2e-5",
+  "mem_fraction": 0.3,
+  "save_best": true,
+  "fair_path": "/home/morpheus/hlx/fair-eval-morph65-morph67-sot.json",
+  "fair_exact": 0.9698492462311558,
+  "fair_n": 199,
+  "pin_rule": "best > fair on n=199 and E2 trunk-forward unbind_exact=1.0",
+  "name_gate": false,
+  "not_this_card": [
+    "upsample 11+",
+    "SECOND_SLOT=4",
+    "replay morph66 reject without SoT flip",
+    "invent OBSERVED fillers",
+    "Hub"
+  ]
+}
