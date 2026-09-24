@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 from hyperlexical.filler_filter import assert_publishable_vocab, filter_mode, filter_unbind_rows, reject_reason
 
 
-@pytest.mark.parametrize("tok", ["rizz", "no", "cap", "fr", "4k", "brain-rot", "let's", "let\\u2019s", "'em", "honkin'", "skibidi", "W"])
+@pytest.mark.parametrize("tok", ["rizz", "no", "cap", "fr", "4k", "brain-rot", "let's", "let\u2019s", "'em", "honkin'", "skibidi", "W"])
 def test_publishable(tok):
     assert reject_reason(tok) is None
 
@@ -28,7 +28,7 @@ def test_publishable(tok):
         ("brainrot.", "not_word"),
         ("1.", "not_word"),
         ("Języka", "non_ascii"),
-        ("cap\\U0001F923", "non_ascii"),
+        ("cap\U0001F923", "non_ascii"),
         ("", "empty"),
         ("a" * 30, "too_long"),
     ],
