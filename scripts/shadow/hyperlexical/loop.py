@@ -20,6 +20,7 @@ from .layout import (
     resolve_last_trainable,
 )
 from .eval_forward import apply_encoder_trainable
+from .filler_filter import assert_publishable_vocab, filter_mode, filter_unbind_rows
 from .provenance import provenance
 from .save_pretrained import (
     collect_encoder_trainable,
@@ -388,8 +389,16 @@ def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
         train = routed["unbind"]["train"]
         val = routed["unbind"]["val"]
     train, val, force_stats = apply_unbind_force_train(train, val)
+    train, filt_train = filter_unbind_rows(train)
+    val, filt_val = filter_unbind_rows(val)
     shaped, stats = shape_unbind_train(train)
-    stats = {**stats, **force_stats}
+    stats = {
+        **stats,
+        **force_stats,
+        "filler_filter": filt_train["filler_filter"],
+        "n_filler_rows_dropped_train": filt_train["n_filler_rows_dropped"],
+        "n_filler_rows_dropped_val": filt_val["n_filler_rows_dropped"],
+    }
     return shaped, val, stats
 
 
@@ -462,6 +471,8 @@ def run_loop(
     from torch.optim import AdamW
 
     maps = label_maps(unbind_tr + unbind_va)
+    if filter_mode() == "strict":
+        assert_publishable_vocab(maps["filler_vocab"])
     tok, encoder = _require_local_model(trunk)
     hidden = int(getattr(encoder.config, "hidden_size", HIDDEN))
     if hidden != HIDDEN:
@@ -787,6 +798,9 @@ def run_loop(
         "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
         "n_unbind_hard_atoms_matched": unbind_recipe.get("n_unbind_hard_atoms_matched", 0),
         "unbind_force_train_path": unbind_recipe.get("unbind_force_train_path", ""),
+        "filler_filter": unbind_recipe.get("filler_filter"),
+        "n_filler_rows_dropped_train": unbind_recipe.get("n_filler_rows_dropped_train", 0),
+        "n_filler_rows_dropped_val": unbind_recipe.get("n_filler_rows_dropped_val", 0),
         "n_unbind_force_train": unbind_recipe.get("n_unbind_force_train", 0),
         "n_unbind_force_train_keys": unbind_recipe.get("n_unbind_force_train_keys", 0),
         "n_unbind_val_after_force_train": unbind_recipe.get(
