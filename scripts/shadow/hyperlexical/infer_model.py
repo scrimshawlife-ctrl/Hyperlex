@@ -83,7 +83,14 @@ def model_packet(
     return validate_packet(packet)
 
 
-def infer(text: str, *, model_dir: Path, trunk_dir: Path | None = None, restricted: bool = False) -> dict:
+def infer(
+    text: str,
+    *,
+    model_dir: Path,
+    trunk_dir: Path | None = None,
+    restricted: bool = False,
+    temperature: float = 1.0,
+) -> dict:
     if restricted or "__RESTRICTED_FIXTURE__" in (text or ""):
         return build_packet(text, restricted=True)
     if not (text or "").strip():
@@ -132,7 +139,7 @@ def infer(text: str, *, model_dir: Path, trunk_dir: Path | None = None, restrict
         enc = tok([text], truncation=True, max_length=MAX_LEN, return_tensors="pt")
         states = encoder(**enc).last_hidden_state[0]
         cls = states[0]
-        probs = torch.softmax(heads["classify"](cls), dim=-1).tolist()
+        probs = torch.softmax(heads["classify"](cls) / float(temperature), dim=-1).tolist()
         offs = _offsets(tok, text)
         atoms = []
         for i, token in enumerate(tokens):

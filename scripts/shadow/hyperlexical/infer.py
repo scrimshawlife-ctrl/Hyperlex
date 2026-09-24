@@ -10,6 +10,13 @@ import sys
 from .packet import build_packet
 
 
+def _temperature(path: str) -> float:
+    if not path:
+        return 1.0
+    with open(path, encoding="utf-8") as fh:
+        return float(json.load(fh)["all"]["temperature"])
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="hyperlexical-infer")
     p.add_argument("--text", default="")
@@ -19,6 +26,7 @@ def main(argv=None) -> int:
     p.add_argument("--out", default="")
     p.add_argument("--model-dir", default="", help="local train-out dir (e.g. ~/.hyperlex/models/BEST); needs torch + trunk")
     p.add_argument("--trunk-dir", default="", help="local ModernBERT-base snapshot (default HYPERLEX_TRUNK_DIR)")
+    p.add_argument("--calibration", default="", help="calibrate_classify.py JSON; applies its lineage temperature")
     args = p.parse_args(argv)
     if os.environ.get("HYPERLEX_OFFLINE") == "0" and not args.offline:
         print("abort: online infer is out of U1", file=sys.stderr)
@@ -35,6 +43,7 @@ def main(argv=None) -> int:
                 model_dir=args.model_dir,
                 trunk_dir=args.trunk_dir or None,
                 restricted=args.restricted,
+                temperature=_temperature(args.calibration),
             )
         except InferModelError as exc:
             print(json.dumps({"abort": True, "error": str(exc), "brier": None}), file=sys.stderr)
