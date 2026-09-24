@@ -13,7 +13,21 @@ tags:
 
 # hyperlex-encoder-modernbert-base-seed
 
-**Do not treat this as Hyperlexical.** E2 has not passed. Name-gate is false. This card is the publish *shape*. Weights are produced on Spark and are not in git.
+**Do not treat this as a publicly named Hyperlexical artifact yet.** Trained trunk-forward E2 has **PASSED**, but `name_gate=false` remains the explicit public-name/publish wall. This card is the publish *shape*. Weights are produced on Spark and are not in git.
+
+## Current pin
+
+- BEST: `seed-morph78`
+- Promotion: `PROMOTE_BEST` via soft_ceiling ceiling escape on 2026-09-24
+- Broad OBSERVED: **0.9883**, n=256
+- PRIOR: morph65 **0.8867**, n=256
+- E2: **PASS**
+- Force/hard: **236 / 277**
+- Upsample freeze: **11+**
+- `SECOND_SLOT=4`: forbidden
+- `name_gate`: **false**
+- Brier: **null**
+- Hub: unpublished
 
 ## Model details
 
@@ -25,14 +39,7 @@ tags:
 - Packet: `hyperlex.hyperlexical.inference.v0.1`
 - Brier: always null. Not a forecast.
 
-Load the trunk from a local snapshot. Load heads from this directory (`model.safetensors` or `heads.pt`). There is no chat template.
-
-```python
-from transformers import AutoModel, AutoTokenizer
-tok = AutoTokenizer.from_pretrained(trunk_dir, local_files_only=True)
-enc = AutoModel.from_pretrained(trunk_dir, local_files_only=True)
-# heads: classify / role_head / filler_head in model.safetensors
-```
+Load the trunk from a local snapshot. Load heads from the pinned Spark artifact. There is no chat template.
 
 ## Intended use
 
@@ -48,31 +55,29 @@ Uncensored in the Hyperlex sense: no refusal head on civilian dialect. Dual-use 
 
 ## Training data
 
-Git-tracked seed `civilian.v0.1.jsonl` is an 883-row snapshot from fixtures, dialect atoms, registry (INFERRED), golden (INFERRED), and archive (INFERRED). It is **not** the train SoT. T1 train uses the local store / `--include-live` (operator 2026-09-10 PT evening: classify 2437). `name_gate` stays false until E2.
+Git-tracked seed `civilian.v0.1.jsonl` is an 883-row snapshot and is **not** the train SoT. T1 training uses the local store / `--include-live` under operator settlement rules. INFERRED typology/stage does not become gold merely by inclusion.
 
-Do not treat INFERRED typology/stage as gold.
-
-## Eval (pre-train / stub)
+## Eval
 
 | Gate | Status | Note |
 |------|--------|------|
-| E0 packet on `rizz` | PASS | stub infer, brier null |
-| E1 classify vs fixture | NOT RUN | needs Spark weights |
-| E2 unbind vs Spec 004 probe | FAIL | stub swap < probe swap. Required for the word Hyperlexical |
-| E3 MiniLM control | NOT RUN | control only, not the card |
-| E4 restricted surface drop | PASS | `__RESTRICTED_FIXTURE__` |
-| E5 schema / walls | PASS | no semantic, no symbolic |
-| E6 dialect no refusal | PASS | `no cap fr` |
+| E0 packet | PASS | packet/schema path |
+| E1 classify vs fixture | PARTIAL / receipt-bound | do not infer beyond receipts |
+| E2 unbind vs Spec 004 probe | **PASS** | trained trunk-forward on pinned model |
+| E3 MiniLM control | NOT_COMPUTABLE here | no current evidence added by this reconciliation |
+| E4 restricted surface drop | PASS | existing governed surface |
+| E5 schema / walls | PASS | no semantic/symbolic authority mint |
+| E6 dialect no refusal | PASS | existing governed surface |
 
-After Spark `--run`, replace this table with `train-receipt.json` val metrics and a new `eval_unbind` JSON. Do not flip E2 by editing the card.
+This reconciliation updates stale pre-train wording only. It does not manufacture new eval evidence.
+
+## Naming / publication gate
+
+E2 PASS does **not** flip the product name. Public `Hyperlexical` naming, Hub upload, and optional T13 promotion remain separate operator actions. Until explicit `name_gate` authorization, retain `hyperlex-encoder-*` naming and keep weights off git.
 
 ## Limitations
 
-Small seed. Crude first-occurrence aligner if offset mapping is missing. Last-2 freeze not ablated. Encoded slang is US-internet heavy. Not a general NLU encoder.
-
-## Bias
-
-Lineage families are Hyperlex registry families. They are not demographic labels. Registry rows are INFERRED.
+Small/curated slang surface; US-internet-heavy distribution; registry families are project taxonomies, not demographic labels; no general NLU claim; no forecast authority.
 
 ## Citation / contact
 
