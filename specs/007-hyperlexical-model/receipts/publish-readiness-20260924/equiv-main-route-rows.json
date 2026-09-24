@@ -1,0 +1,72 @@
+{
+  "code_commit": "0245d005165f352291ab62694541a70d1a11b115",
+  "code_dir": "/home/morpheus/hlx-main-wt/scripts/shadow/hyperlexical",
+  "code_tree_sha256": "4369d60d9ba3a2d389e2086c9c5caf81f81783b6134db06caff835fd964c0672",
+  "data_content_match_train_export": true,
+  "diff": {
+    "n_train_classify": {
+      "now": 4360,
+      "receipt": 4062
+    },
+    "n_train_unbind": {
+      "now": 15537,
+      "receipt": 15536
+    },
+    "n_unbind_inferred": {
+      "now": 1940,
+      "receipt": 1939
+    }
+  },
+  "equivalent": false,
+  "hyperlex_env": {
+    "HYPERLEX_ALLOW_TRAIN": "1",
+    "HYPERLEX_CUDA_MEM_FRACTION": "0.3",
+    "HYPERLEX_INCLUDE_LIVE": "1",
+    "HYPERLEX_INIT_EXPAND_VOCAB": "1",
+    "HYPERLEX_INIT_FROM": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+    "HYPERLEX_LAST_TRAINABLE": "8",
+    "HYPERLEX_OFFLINE": "1",
+    "HYPERLEX_SAVE_BEST_UNBIND": "1",
+    "HYPERLEX_TRAIN_BATCH": "8",
+    "HYPERLEX_TRAIN_EPOCHS": "40",
+    "HYPERLEX_TRAIN_LR": "2e-5",
+    "HYPERLEX_TRAIN_OUT": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph78",
+    "HYPERLEX_TRUNK_DIR": "/home/morpheus/.hyperlex/models/trunks/ModernBERT-base",
+    "HYPERLEX_UNBIND_CURRICULUM": "1",
+    "HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS": "1",
+    "HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS": "1",
+    "HYPERLEX_UNBIND_FILLER_DENYLIST_PATH": "/home/morpheus/hlx/filler-denylist-status.json",
+    "HYPERLEX_UNBIND_FORCE_TRAIN_PATH": "/home/morpheus/hlx/force_train_morph78_expanded.jsonl",
+    "HYPERLEX_UNBIND_HARD_ATOMS_PATH": "/home/morpheus/hlx/hard_atoms_train_morph78.jsonl",
+    "HYPERLEX_UNBIND_HARD_UPSAMPLE": "4",
+    "HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT": "2",
+    "HYPERLEX_UNBIND_INFERRED_CAP": "0",
+    "HYPERLEX_UNBIND_INFERRED_WEIGHT": "1.0",
+    "HYPERLEX_UNBIND_LOSS_WEIGHT": "1.0",
+    "HYPERLEX_UNBIND_MORPH_MARGIN": "0.5",
+    "HYPERLEX_UNBIND_OBSERVED_UPSAMPLE": "10",
+    "HYPERLEX_UNBIND_PRIMARY": "slot_ce",
+    "HYPERLEX_UNBIND_RESIDUAL_DUMP": "/home/morpheus/hlx/residual-morph78.jsonl",
+    "HYPERLEX_UNBIND_SECOND_SLOT_WEIGHT": "2"
+  },
+  "now": {
+    "classify_routing": "route_rows",
+    "data_content_sha256": "7246224c16295c9a02a17baf4883a2df73ab5c5bed60b5e480b54d4b20b3c70e",
+    "data_sha256": "4bb5f077416e0b5bcdc7384fcddabf98330f1dc038fa0a2a5750e0455baec410",
+    "live_included": 4258,
+    "n_train_classify": 4360,
+    "n_train_unbind": 15537,
+    "n_unbind_force_train": 193,
+    "n_unbind_force_train_keys": 236,
+    "n_unbind_hard_atoms_matched": 267,
+    "n_unbind_hard_extra_copies": 1317,
+    "n_unbind_inferred": 1940,
+    "n_unbind_morph_negatives": 325,
+    "n_unbind_observed": 1228,
+    "n_unbind_val_after_force_train": 164,
+    "train_export_content_sha256": "7246224c16295c9a02a17baf4883a2df73ab5c5bed60b5e480b54d4b20b3c70e"
+  },
+  "receipt": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph78/train-receipt.json",
+  "root": "/home/morpheus/hlx-main-wt",
+  "schema": "hyperlex.recipe_equivalence.v0.1"
+}

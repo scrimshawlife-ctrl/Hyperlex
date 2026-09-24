@@ -20,6 +20,7 @@ from .layout import (
     resolve_last_trainable,
 )
 from .eval_forward import apply_encoder_trainable
+from .provenance import provenance
 from .save_pretrained import (
     collect_encoder_trainable,
     save_heads,
@@ -350,6 +351,22 @@ def resolve_unbind_every_n(raw: str | int | None = None) -> int:
     return n
 
 
+TASK_ROUTING_ENV = "HYPERLEX_TASK_ROUTING"
+TASK_ROUTINGS = ("route_rows", "legacy_split")
+
+
+def task_routing(raw: str | None = None) -> str:
+    """``route_rows`` (default) or ``legacy_split`` (pre-routing loop; reproduces morph75–78).
+
+    ``legacy_split`` selects rows by ``task == "classify"`` / ``task == "unbind"`` only, so
+    ``classify+unbind`` rows are not trained. Unknown values fail closed.
+    """
+    value = (os.environ.get(TASK_ROUTING_ENV, "") if raw is None else raw).strip() or "route_rows"
+    if value not in TASK_ROUTINGS:
+        raise ValueError(f"{TASK_ROUTING_ENV} must be one of {TASK_ROUTINGS}")
+    return value
+
+
 def should_interleave_unbind(classify_batch_index: int, every_n: int) -> bool:
     """True after classify batch `index` (0-based) when every_n > 1."""
     if every_n <= 1:
@@ -363,9 +380,13 @@ def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
     ``HYPERLEX_UNBIND_FORCE_TRAIN_PATH`` may move authorized OBSERVED exacts
     from val→train (accept-style). Empty/unset → val untouched.
     """
-    routed, _ = route_rows(rows)
-    train = routed["unbind"]["train"]
-    val = routed["unbind"]["val"]
+    if task_routing() == "legacy_split":
+        train = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "train"]
+        val = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "val"]
+    else:
+        routed, _ = route_rows(rows)
+        train = routed["unbind"]["train"]
+        val = routed["unbind"]["val"]
     train, val, force_stats = apply_unbind_force_train(train, val)
     shaped, stats = shape_unbind_train(train)
     stats = {**stats, **force_stats}
@@ -424,9 +445,14 @@ def run_loop(
     if any(r.get("role_scheme") == "reviewed_occurrences" for r in bundle["rows"]):
         raise ValueError("reviewed occurrences require occurrence-aware loop alignment")
     routed, task_accounting = route_rows(bundle["rows"])
+    task_accounting = {**task_accounting, "task_routing": task_routing()}
     write_export(root / "specs" / "007-hyperlexical-model" / "exports", bundle)
-    classify_tr = routed["classify"]["train"]
-    classify_va = routed["classify"]["val"]
+    if task_routing() == "legacy_split":
+        classify_tr = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "train"]
+        classify_va = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "val"]
+    else:
+        classify_tr = routed["classify"]["train"]
+        classify_va = routed["classify"]["val"]
     unbind_tr, unbind_va, unbind_recipe = prepare_unbind_splits(bundle["rows"])
     if len(classify_tr) < 8:
         raise RuntimeError("not enough classify train rows")
@@ -728,6 +754,7 @@ def run_loop(
         "device": str(device),
         "cuda": bool(torch.cuda.is_available()),
         "epochs": epochs,
+        **provenance(root),
         "n_train_classify": len(classify_tr),
         "task_accounting": task_accounting,
         "n_train_unbind": len(unbind_tr),

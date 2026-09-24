@@ -1,0 +1,46 @@
+{
+  "schema": "hyperlex.broad_observed_eval.v0.2",
+  "as_of": "2026-09-24T20:29:33.583268+00:00",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+  "trained_files": [
+    "/home/morpheus/hlx/force_train_morph78_expanded.jsonl",
+    "/home/morpheus/hlx/force_train_morph50_expanded.jsonl",
+    "/home/morpheus/hlx/hard_atoms_train_morph78.jsonl",
+    "/home/morpheus/hlx/hard_atoms_train_morph50.jsonl"
+  ],
+  "n_trained_keys": 447,
+  "accounting": {
+    "n_input": 256,
+    "n_kept": 58,
+    "n_excluded_trained_key": 193,
+    "n_excluded_trained_text": 5,
+    "n_excluded_train_split_text": 0
+  },
+  "slices": {
+    "all": {
+      "unbind_exact": 0.88671875,
+      "n_scored": 256,
+      "overlap": 198,
+      "unbind_token_f1": 0.9279141104294478
+    },
+    "clean": {
+      "unbind_exact": 1.0,
+      "n_scored": 58,
+      "overlap": 0,
+      "unbind_token_f1": 1.0
+    },
+    "oov": {
+      "unbind_exact": null,
+      "n_scored": 0,
+      "overlap": 0,
+      "unbind_token_f1": null
+    }
+  },
+  "brier": null,
+  "code_commit": "0245d005165f352291ab62694541a70d1a11b115",
+  "code_tree_sha256": "ea549b6d4afec7cece7c0d77f5f0cee9791a3e80fe1719ef6c210ad774c6ee0f",
+  "hyperlex_env": {
+    "HYPERLEX_OFFLINE": "1",
+    "HYPERLEX_TRUNK_DIR": "/home/morpheus/.hyperlex/models/trunks/ModernBERT-base"
+  }
+}

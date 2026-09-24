@@ -1,0 +1,57 @@
+{
+ "n_filler_vocab": 1972,
+ "n_role_vocab": 12,
+ "role_vocab": [
+  "<unk>",
+  "MARKER",
+  "SLOT",
+  "TOKEN",
+  "pos_0",
+  "pos_1",
+  "pos_2",
+  "pos_3",
+  "pos_4",
+  "pos_5",
+  "pos_6",
+  "pos_7"
+ ],
+ "flags": {
+  "email": [],
+  "url": [
+   "sha256:9aee04f8a903",
+   "sha256:36fbdf089a2a"
+  ],
+  "handle": [
+   "sha256:da434781b854",
+   "sha256:aa22279e09f8"
+  ],
+  "digits5+": [],
+  "phone": [],
+  "long>30": [
+   "sha256:9aee04f8a903"
+  ],
+  "non_ascii": [
+   "(\u201cdagger\u201d).",
+   "+\u200e",
+   "J\u0119zyka",
+   "J\u0119zykowe",
+   "M\u0142odzie\u017cy",
+   "besti\u00ed\")",
+   "broski.\u2019",
+   "cap\ud83e\udd23\ud83e\udd23",
+   "let\u2019s",
+   "quote,\u201d",
+   "you\u2019ve",
+   "\u0441\u043a\u0456\u0431\u0456\u0434\u0456\")",
+   "\u1235\u1219\u122d\u134d\")",
+   "\u2014Sounds",
+   "\u2018Good",
+   "\u201challucination\u201d,",
+   "\u2192"
+  ],
+  "caps_name": [
+   "sha256:c922fd0c9799"
+  ]
+ },
+ "redaction": "handle/url/long/caps_name entries replaced by sha256 prefixes; raw strings stay on Spark only"
+}
