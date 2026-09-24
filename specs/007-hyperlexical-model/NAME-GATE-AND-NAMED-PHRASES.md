@@ -70,7 +70,7 @@ This section is a checklist. **No agent flips the flag.**
 - [x] Trained trunk-forward E2 PASS on pinned BEST (`seed-morph65`)
 - [x] Soft_ceiling rule armed and documented; climb either PROMOTE’s a new BEST or operator closes on held morph65
 - [ ] Operator product review of `HYPERLEXICAL-PRODUCT-PLAN.md`
-- [ ] Hygiene B2–B3 landed (`VERSION` ↔ `pyproject.toml`; stale “E2 Spark-blocked” scrubbed from operator ROADMAP/STATUS copies)
+- [x] Hygiene B2–B3 landed (`VERSION` ↔ `pyproject.toml`; stale “E2 Spark-blocked” scrubbed from operator ROADMAP/STATUS copies)
 - [ ] Danny sentence that explicitly says **`name_gate` yes** (or “name Hyperlexical”)
 
 ### On Danny yes (separate PRs / sentences)
