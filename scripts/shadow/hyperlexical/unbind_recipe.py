@@ -20,6 +20,7 @@ UNBIND_FILLER_DENYLIST_ENV = "HYPERLEX_UNBIND_FILLER_DENYLIST"
 UNBIND_FILLER_DENYLIST_PATH_ENV = "HYPERLEX_UNBIND_FILLER_DENYLIST_PATH"
 UNBIND_HARD_ATOMS_PATH_ENV = "HYPERLEX_UNBIND_HARD_ATOMS_PATH"
 UNBIND_HARD_UPSAMPLE_ENV = "HYPERLEX_UNBIND_HARD_UPSAMPLE"
+UNBIND_FORCE_TRAIN_PATH_ENV = "HYPERLEX_UNBIND_FORCE_TRAIN_PATH"
 UNBIND_OBSERVED_UPSAMPLE_DEFAULT = 1
 # Extra copies of already-OBSERVED hard phrases after the normal upsample.
 # 1 = identity (no extra). Operator JSONL is env-path only — not SoT gold.
@@ -140,6 +141,107 @@ def hard_atoms_receipt_path(path: str | Path | None) -> str:
     if not token:
         return ""
     return Path(token).name
+
+
+def resolve_unbind_force_train_path(raw: str | Path | None = None) -> str:
+    """Operator JSONL of authorized exacts to move val→train. Empty = off."""
+    if raw is None:
+        raw = os.environ.get(UNBIND_FORCE_TRAIN_PATH_ENV)
+    if raw is None or (isinstance(raw, str) and not str(raw).strip()):
+        return ""
+    return str(raw).strip()
+
+
+def force_train_receipt_path(path: str | Path | None) -> str:
+    token = str(path or "").strip()
+    if not token:
+        return ""
+    return Path(token).name
+
+
+def load_force_train_keys(path: str | Path | None = None) -> frozenset[tuple[str, str]]:
+    """Load ``(text, role_scheme)`` keys from operator force-train JSONL.
+
+    Unset / empty path → empty set (identity). Configured path must exist and
+    be valid JSONL with string ``text`` and ``role_scheme`` in
+    {positional, type_slot}. Does not invent OBSERVED class labels.
+    """
+    raw = resolve_unbind_force_train_path(path)
+    if not raw:
+        return frozenset()
+    p = Path(raw)
+    if not p.is_file():
+        raise ValueError(f"{UNBIND_FORCE_TRAIN_PATH_ENV} is not a file: {p}")
+    try:
+        body = p.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(f"{UNBIND_FORCE_TRAIN_PATH_ENV} is unreadable: {p}") from exc
+    keys: set[tuple[str, str]] = set()
+    for index, line in enumerate(body.splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            obj = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ValueError(
+                f"{UNBIND_FORCE_TRAIN_PATH_ENV} line {index} is not valid JSON"
+            ) from exc
+        if not isinstance(obj, dict):
+            raise ValueError(
+                f"{UNBIND_FORCE_TRAIN_PATH_ENV} line {index} must be a JSON object"
+            )
+        text = obj.get("text")
+        scheme = obj.get("role_scheme")
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError(
+                f"{UNBIND_FORCE_TRAIN_PATH_ENV} line {index} needs non-empty string text"
+            )
+        if scheme not in {"positional", "type_slot"}:
+            raise ValueError(
+                f"{UNBIND_FORCE_TRAIN_PATH_ENV} line {index} role_scheme must be "
+                f"positional|type_slot, got {scheme!r}"
+            )
+        keys.add((text.strip(), str(scheme)))
+    return frozenset(keys)
+
+
+def apply_unbind_force_train(
+    train: list[dict[str, Any]],
+    val: list[dict[str, Any]],
+    *,
+    path: str | Path | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    """Move authorized OBSERVED val exacts into train (accept-style force-train).
+
+    Only rows with ``class==OBSERVED`` and ``(text, role_scheme)`` in the
+    force-train JSONL leave val. Val changes → fair-eval baseline required.
+    Empty path → identity. Missing configured path fails closed.
+    """
+    keys = load_force_train_keys(path)
+    receipt_path = force_train_receipt_path(resolve_unbind_force_train_path(path))
+    if not keys:
+        return train, val, {
+            "unbind_force_train_path": receipt_path,
+            "n_unbind_force_train": 0,
+            "n_unbind_force_train_keys": 0,
+            "n_unbind_val_after_force_train": len(val),
+        }
+    keep_val: list[dict[str, Any]] = []
+    moved: list[dict[str, Any]] = []
+    for row in val:
+        key = (str(row.get("text") or "").strip(), str(row.get("role_scheme") or ""))
+        if key in keys and row.get("class") == "OBSERVED":
+            copy = dict(row)
+            copy["split"] = "train"
+            moved.append(copy)
+        else:
+            keep_val.append(row)
+    return train + moved, keep_val, {
+        "unbind_force_train_path": receipt_path,
+        "n_unbind_force_train": len(moved),
+        "n_unbind_force_train_keys": len(keys),
+        "n_unbind_val_after_force_train": len(keep_val),
+    }
 
 
 def unbind_row_hard_atom_keys(row: Mapping[str, Any]) -> set[str]:
