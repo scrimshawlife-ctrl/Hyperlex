@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- **Naming persistence lock:** `docs/NAMING.md` + Notion Naming lock page +
+  Public Claims CLAIM-HLX-NAME-001/002/003. Operator Hub / Spine Owner /
+  Core Model Spine updated. Org mirror stays lag (do not train from it).
+  Does **not** flip Hyperlexical `name_gate`.
+
+- **Operator name ne0l0gist (ingest):** Danny `name neologist as in repo` —
+  public ingest product **`ne0l0gist`** (repo spelling). Receipt
+  `specs/007-hyperlexical-model/receipts/20260924-name-ne0l0gist-as-in-repo.md`.
+  Does **not** flip Hyperlexical `name_gate`.
+
+- **Hygiene + name-gate plan:** `pyproject.toml` version aligned to `VERSION`
+  **0.4.0**; ROADMAP trained-E2 line (no stale Spark-blocked checkbox); drop tracked
+  `__pycache__`, tip probe, `.tmp` restore junk. Draft
+  `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md` (morph77 HOLD
+  phrases already settled; morph78/reprobe empty; Danny yes still required).
+  Does not flip `name_gate`.
+
 - **Spec 007 tip CI: restore unbind force-train API:** `loop.py` imported
   `apply_unbind_force_train` but tip `unbind_recipe.py` lacked the helpers
   (`HYPERLEX_UNBIND_FORCE_TRAIN_PATH`, resolve/load/apply). Restored + tests

@@ -93,6 +93,7 @@ nav:
       - Claude runtime contract: claude-runtime-contract.md
   - Specs:
       - Canonical remotes and claims: CANONICAL.md
+      - Naming lock: NAMING.md
       - Spec kit: specs/index.md
       - Technical spec (v0.3 spine): spec.md
       - SHADOW encoder (007): shadow-hyperlexical.md
@@ -100,17 +101,6 @@ nav:
       - Roadmap: ROADMAP.md
       - KEEP-93 settle receipt: receipts/settle-keep93-2026-09-10.md
       - Blanket-yes unlock receipt: receipts/blanket-yes-unlock-2026-09-10.md
-  - Archive:
-      - Run history: archive/index.md
-      - Latest analysis: archive/latest/index.md
-      - Telemetry desk: telemetry.md
-      - Design (Orchestra, historical): design-orchestra.md
-      - Security: SECURITY.md
-      - Semver: SEMVER.md
-      - Release notes: RELEASE_NOTES.md
-      - Diagrams: diagrams.md
-      - Rune relay: rune-signal-relay.md
-      - Connectors: connectors.md
       - Remotes: remotes.md
 
 plugins:

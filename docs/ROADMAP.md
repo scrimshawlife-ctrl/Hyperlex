@@ -3,7 +3,7 @@
 ## Vision
 Hyperlex **ships today as a Hermes skill** (this Python package). Relevant Abraxas wire capabilities live under `hyperlex.compat.abraxas`; hosts import *from* Hyperlex.
 
-The same project is on a **model path** (Spec 007): T0 encoder baseline, then T1 after eval gate E2. T1 is the first artifact that may be called Hyperlexical. Until E2 passes on Spark, `name_gate` is false and there is no Hub card.
+The same project is on a **model path** (Spec 007): T0 encoder baseline, then T1 after eval gate E2. T1 is the first artifact that may be called Hyperlexical. Trained E2 can PASS on Spark without flipping `name_gate` — Danny yes is still required. No Hub card until then.
 
 The skill remains the operator surface while the encoder stays SHADOW.
 
@@ -81,11 +81,11 @@ The skill remains the operator surface while the encoder stays SHADOW.
 - [x] Live-split coerce to lexical train/val/test (#38)
 - [x] 8-family leaf unlock; classify volume ready (harvest receipt 2026-09-10)
 - [x] Spark bring-up runbooks on main (#28)
-- [ ] E2 pass (Spark-blocked; stub expected fail; seed smoke is not a pass)
+- [x] Trained trunk-forward E2 PASS on Spark (BEST=`seed-morph65`; stub still expected FAIL; seed smoke ≠ T1)
 - [ ] Hub upload (operator — not started)
 - [ ] T13 promote into `src/hyperlex/`
 
-`name_gate` stays **false** until E2 passes on Spark. Classify volume ≠ a Hyperlexical name. No ninth family.
+`name_gate` stays **false** until Danny yes (E2 PASS alone does not flip). Classify volume ≠ a Hyperlexical name. No ninth family.
 
 ## Milestones
 - v0.2.x: Phases 0–4 complete (Hermes skill production track)
@@ -99,10 +99,11 @@ The skill remains the operator surface while the encoder stays SHADOW.
 - v1.0: Stable skill contract + long-horizon archive + optional research contribs
 - 007: `hyperlex-structure-149m` name only after E2
 
-See [SPEC.md](spec.md) and [DESIGN.md](design.md) for the historical spine. Current operator snapshot: [STATUS.md](status.md).
+See [SPEC.md](SPEC.md) and [DESIGN.md](DESIGN.md) for the historical spine. Current operator snapshot: [STATUS.md](STATUS.md).
 
 ## Recent
-- 2026-09-10 PT evening: Spec 007 SoT 4333 / `--include-live` classify 2437; Danny ~2500 bar met; `name_gate` false; E2 Spark-blocked. Hermes 913 / gap-to-2500 superseded. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37).
+- 2026-09-24: Hygiene — `pyproject.toml` aligned to `VERSION` 0.4.0; ROADMAP E2 line matches trained PASS; name_gate / named-phrases plan drafted. `#100` + `#99` on main. soft_ceiling ARMED; morph65 held.
+- 2026-09-10 PT evening: Spec 007 SoT 4333 / `--include-live` classify 2437; Danny ~2500 bar met; `name_gate` false. Hermes 913 / gap-to-2500 superseded. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37). (E2 was Spark-blocked at that snapshot; trained E2 later PASS on morph65.)
 - 2026-09-09: Spec 007 SHADOW encoder harness on main (not a Hub card)
 - v0.4.0: automatic backend pipeline (ingest → results)
 - v0.3.9: Atomic multi-term seeds; Pages demos; scan packs atomic
