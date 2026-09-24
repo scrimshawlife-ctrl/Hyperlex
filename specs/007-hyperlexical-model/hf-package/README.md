@@ -8,12 +8,13 @@ tags:
   - encoder
   - slang
   - hyperlex
+  - hyperlexical
   - not-chat
 ---
 
-# hyperlex-encoder-modernbert-base-seed
+# hyperlex-structure-149m — Hyperlexical
 
-**Pin `seed-morph78` is named Hyperlexical** (trained trunk-forward E2 PASS + Danny `name_gate` yes, 2026-09-24). The identifiers on this card are still `hyperlex-encoder-*` until a separate rename, and it is **not** uploaded. This card is the publish *shape*. Weights are produced on Spark and are not in git.
+**Pin `seed-morph78` is named Hyperlexical** (trained trunk-forward E2 PASS + Danny `name_gate` yes, 2026-09-24). Card name `hyperlex-structure-149m` (locked C31). It is **not** uploaded. Local train-out directories keep their `hyperlex-encoder-modernbert-base-seed-*` paths. This card is the publish *shape*. Weights are produced on Spark and are not in git.
 
 ## Current pin
 
@@ -81,7 +82,7 @@ E2 source: `receipts/morph78-val-settle-20260924/e2-unbind-morph78.json`. That d
 
 ## Naming / publication gate
 
-E2 PASS did not flip the name; Danny's sentence did. Card/package identifier rename, Hub upload, and optional T13 promotion remain separate operator actions. Keep weights off git.
+E2 PASS did not flip the name; Danny's sentence did. Only `seed-morph78` carries this card (`scripts/shadow/hyperlexical/name_gate.py`). Hub upload and optional T13 promotion remain separate operator actions. Keep weights off git.
 
 ## Limitations
 

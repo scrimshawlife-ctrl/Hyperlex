@@ -14,7 +14,7 @@ Specify is locked C1–C52 plus A5 milestones. Implement on `main` is the stub, 
 |------|---------|--------------|-------------|
 | Skill | Hermes CLI + package | Hyperlex (the skill) | Shipping v0.4.0 |
 | T0 | Base encoder + classify heads | `hyperlex-encoder-*` only | Specified. Not Hyperlexical. |
-| T1 | Encoder + unbind heads; E2 vs Spec 004 | `hyperlex-structure-*` / Hyperlexical | **Earned** by `seed-morph78`: trained E2 PASS + `name_gate` yes (2026-09-24). Card rename pending. |
+| T1 | Encoder + unbind heads; E2 vs Spec 004 | `hyperlex-structure-*` / Hyperlexical | **Earned** by `seed-morph78`: trained E2 PASS + `name_gate` yes (2026-09-24). Card `hyperlex-structure-149m`. |
 | T2 | Separate generative LoRA | out of this cycle | Not an implement target |
 
 `name_gate` is **true** for `seed-morph78` (Danny yes). E2 PASS alone ≠ name. Classify volume ready ≠ T1.

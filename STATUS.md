@@ -4,7 +4,7 @@
 
 **Version:** 0.4.0  
 **Observed:** 2026-09-24  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph78` (soft_ceiling PROMOTE_BEST 2026-09-24; broad **0.9883** n=256). Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settled `have fun staying poor` + `fr fr no cap`; force **236**/hard **277**. `name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). Card/package IDs stay `hyperlex-encoder-*`; Hub and T13 not authorized.
+**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph78` (soft_ceiling PROMOTE_BEST 2026-09-24; broad **0.9883** n=256). Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settled `have fun staying poor` + `fr fr no cap`; force **236**/hard **277**. `name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). Hub card `hyperlex-structure-149m`; Hub and T13 not authorized.
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
 **Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
@@ -54,7 +54,7 @@ Danny ~2500 candidate bar: **met**. Hermes **913** / “gap to 2500” is **supe
 | Spark BEST | **`seed-morph78`** — PROMOTE_BEST via soft_ceiling ceiling_escape: broad OBSERVED **0.9883** > morph65 **0.8867** n=256; E2 PASS; force fair 1.0 n=164 (advisory). LAST=8. Upsample freeze **11+**. |
 | E2 vs Spec 004 | Stub still FAIL (expected). **Trained trunk-forward E2 PASS** on morph19 (`unbind_exact=1.0`). Seed smoke ≠ T1. |
 | Hub publish | **No** — skeleton in-repo; weights stay on Spark. |
-| T1 name | **Hyperlexical** approved for `seed-morph78`. Card/package IDs still `hyperlex-encoder-*` until a separate card-rename change. |
+| T1 name | **Hyperlexical** approved for `seed-morph78`. Hub card `hyperlex-structure-149m` (C31). Local train-out paths keep `hyperlex-encoder-modernbert-base-seed-*`. |
 | Lineage families | **8** only. No ninth family. |
 | Brier | `null` on every 007 packet. |
 | Crawl | Crawl4AI **0.9.3** default. `--source firecrawl` aliases to `crawl4ai`. No paid Firecrawl without Danny yes. |

@@ -42,7 +42,7 @@ Repo **Hyperlex** is the transitional monorepo shell. Do not use bare public **H
 | **ne0l0gist** | Slang ingest tool (zeros spelling): Crawl4AI harvest, `ingest_tap`, export/settle — **operator-named 2026-09-24** |
 | **Hyperlex** (repo) | Transitional monorepo shell. GitHub repo name, `~/.hyperlex` paths, `HYPERLEX_*` env vars, and the `hyperlexical` Python package stay as-is |
 
-`name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). Naming **ne0l0gist** was a separate sentence and did not flip it. Card/package IDs stay `hyperlex-encoder-*`; Hub and T13 not authorized.
+`name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). Naming **ne0l0gist** was a separate sentence and did not flip it. Hub card `hyperlex-structure-149m`; Hub and T13 not authorized.
 
 ## What ships / what does not
 

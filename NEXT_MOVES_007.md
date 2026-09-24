@@ -6,6 +6,7 @@
 
 - morph78 named phrases settled · force/hard **236/277** · soft_ceiling train complete.
 - **PROMOTE_BEST** (ceiling_escape): broad **0.9883** > PRIOR morph65 **0.8867** n=256 + E2 PASS.
+- Card rename: Hub card `hyperlex-structure-149m`; eval packets set `name_gate` true only for a trunk-forward eval of `seed-morph78`.
 - Danny **`flip name_gate`** → `seed-morph78` may be called **Hyperlexical** (receipt `specs/007-hyperlexical-model/receipts/20260924-name-gate-yes-morph78.md`).
 
 ## Gate
@@ -14,7 +15,7 @@ soft_ceiling **spent** for this climb (morph78 now PRIOR/BEST). Further climbs n
 
 ## Next (each a separate operator sentence)
 
-1. Card rename: `hyperlex-encoder-*` identifiers → Hyperlexical / `hyperlex-structure-149m` (C31) and packet/schema `name_gate` field.
+1. Real `seed-morph78` inference path (trunk-forward infer emitting the inference packet) — in progress.
 2. Hub upload — still not authorized.
 3. Optional T13 (promote `scripts/shadow/hyperlexical/` into `src/hyperlex/`).
 4. HOLD morph78; no new climb without a new card.

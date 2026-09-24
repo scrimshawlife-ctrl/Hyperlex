@@ -53,7 +53,7 @@ Hyperlexical is complete for this product cycle when:
 5. any Hub upload is separately authorized;
 6. any T13 promotion is separately authorized and tested.
 
-Item 4 is done. Card/package identifiers stay `hyperlex-encoder-*` until a separate rename change.
+Item 4 is done. Hub card name is `hyperlex-structure-149m`; local train-out paths keep `hyperlex-encoder-modernbert-base-seed-*`.
 
 ## Workstreams
 
@@ -79,7 +79,8 @@ Item 4 is done. Card/package identifiers stay `hyperlex-encoder-*` until a separ
 
 - [ ] operator reviews this reconciled plan
 - [x] Danny explicit `flip name_gate` (2026-09-24)
-- [ ] card/package identifier rename (`hyperlex-encoder-*` → C31 `hyperlex-structure-149m` / Hyperlexical) + packet/schema `name_gate` field
+- [x] card rename → `hyperlex-structure-149m` + eval packet `name_gate` true only for trunk-forward eval of `seed-morph78`
+- [ ] real `seed-morph78` inference path (trunk-forward infer → inference packet)
 - [ ] finalize public model card from pinned receipts
 - [ ] separately authorize Hub upload, or explicitly close the cycle with no Hub
 - [ ] optional T13 in a separate PR with tests
@@ -96,7 +97,7 @@ Q1 status is not a substitute for Spec 007 product completion, and Spec 007 prog
 
 ## Default recommendation
 
-**HOLD morph78.** NAME is done. Resolve card rename and PUBLISH before authorizing another training climb.
+**HOLD morph78.** NAME is done. Resolve the inference path and PUBLISH before authorizing another training climb.
 
 ## Explicit non-goals
 
@@ -117,7 +118,8 @@ Q1 status is not a substitute for Spec 007 product completion, and Spec 007 prog
 - [x] Notion Operator Hub parity
 - [ ] operator product review
 - [x] Danny `name_gate` decision — yes for `seed-morph78`
-- [ ] card-rename decision
+- [x] card rename
+- [ ] real inference path
 - [ ] Hub decision: upload authorized, or explicit no-Hub this cycle
 - [ ] optional T13 decision
 

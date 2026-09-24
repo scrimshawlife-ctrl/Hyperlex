@@ -6,4 +6,4 @@ Canonical draft for Hub shape: `hf-package/README.md`.
 
 **Name:** `name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). This pin may be called **Hyperlexical**.
 
-Do not upload (Hub not authorized). Publish-shape identifiers stay `hyperlex-encoder-*` until a separate card-rename change (locked C31 target: `hyperlex-structure-149m`). Weights stay off git.
+Do not upload (Hub not authorized). Hub card name: `hyperlex-structure-149m` (locked C31). Local train-out paths keep `hyperlex-encoder-modernbert-base-seed-*`. Weights stay off git.

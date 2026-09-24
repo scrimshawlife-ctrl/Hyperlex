@@ -72,7 +72,7 @@ Receipt: `receipts/20260924-name-gate-yes-morph78.md`. No agent flipped it witho
 Actions stay separate:
 
 1. change governed `name_gate` surfaces — **done** (A6);
-2. update public card naming (`hyperlex-encoder-*` → Hyperlexical per `model-card.draft.md`);
+2. update public card naming → `hyperlex-structure-149m` — **done** (card + eval packet field);
 3. Hub upload only on a separate named operator action;
 4. optional T13 only on separate authorization + tests.
 

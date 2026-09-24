@@ -2,7 +2,8 @@
 
 Stub/digest swap has no civilian filler lists, so unbind_token_f1 /
 unbind_slot_f1 stay null. Trunk-forward scores the same aligned filler
-lists as train val and fills those fields. name_gate stays false.
+lists as train val and fills those fields. name_gate is true only for a
+trunk-forward eval of an approved pin (``name_gate.APPROVED_PINS``, A6).
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ import os
 import sys
 from pathlib import Path
 
+from .name_gate import name_gate_for
 from .unbind_metrics import null_unbind_secondary
 
 HEAD_NAMES = ("heads.json", "model.safetensors", "heads.pt")
@@ -294,14 +296,14 @@ def run_eval(model_dir: str | Path | None = None, trunk_forward: bool = False) -
                 "trunk_forward": True,
                 "trunk_dir": str(trunk),
                 "model_dir": str(directory),
-                "name_gate": False,
+                "name_gate": name_gate_for(directory),
                 "device": scored.get("device"),
                 "encoder_trainable_loaded": scored.get("encoder_trainable_loaded", 0),
                 "encoder_trainable_present": scored.get("encoder_trainable_present", 0),
                 "note": (
                     f"Trunk-forward unbind_exact + token/slot F1 from {weight} vs 004 "
                     "probe_swap_min. Stub/digest leaves F1 null (no civilian filler "
-                    "lists). name_gate stays false. "
+                    "lists). name_gate is true only for an approved pin (A6). "
                     + scored.get(
                         "encoder_note",
                         "Encoder is the local trunk snapshot; heads from train out.",

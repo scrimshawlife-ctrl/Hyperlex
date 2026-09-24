@@ -95,8 +95,8 @@ fails.
 
 ### Hyperlexical (name)
 Public **model** product claim for Spec 007 (train / eval / E2 / `name_gate`).
-Approved for pin `seed-morph78` (Danny `name_gate` yes, 2026-09-24). Card/package IDs
-are still `hyperlex-encoder-*` until a separate rename. Do not call a stub, harvest dump,
+Approved for pin `seed-morph78` (Danny `name_gate` yes, 2026-09-24). Hub card name
+is `hyperlex-structure-149m`. Do not call a stub, harvest dump,
 or seed smoke Hyperlexical-gated-true. Harvest / ingest is **ne0l0gist**.
 
 ### name_gate
