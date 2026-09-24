@@ -1,6 +1,6 @@
 # Publish-readiness plan — steps 1–6 (2026-09-24)
 
-Follows `PUBLISH-AUDIT-20260924.md`. Goal: make `seed-morph78` (or whichever pin survives step 2) publishable to a private/gated Hub repo (audit step 7). This plan starts no climb and uploads nothing. Items marked **D#** need an operator sentence.
+Follows `PUBLISH-AUDIT-20260924.md`. **Results of the agent-executable items:** `specs/007-hyperlexical-model/PUBLISH-READINESS-RESULTS-20260924.md`. Goal: make `seed-morph78` (or whichever pin survives step 2) publishable to a private/gated Hub repo (audit step 7). This plan starts no climb and uploads nothing. Items marked **D#** need an operator sentence.
 
 ## Dependency order
 
