@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Publish readiness (Spec 007):** canonical soft_ceiling chain (`soft_ceiling.py`,
+  `val_settle.py`, `scripts/spark/soft_ceiling/`) with contamination-safe gate;
+  train receipts record code commit / tree hash / env; `HYPERLEX_TASK_ROUTING`
+  switch reproduces morph75–78 data prep exactly; order-stable export typology
+  (data_sha256 was hash-seed dependent); calibrated lineage (`infer --calibration`);
+  Hub remote-code loader. Results: `specs/007-hyperlexical-model/PUBLISH-READINESS-RESULTS-20260924.md`.
+
 - **Publish audit (Spec 007):** recommend keeping `seed-morph78` weights local-only.
   Soft_ceiling broad val shares 193/256 rows with force-train; leak-free val
   (n=63) ties morph78 and morph65 at 1.0. Training ran from an uncommitted Spark

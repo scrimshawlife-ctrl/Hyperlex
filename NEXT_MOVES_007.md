@@ -19,6 +19,7 @@ soft_ceiling **spent** for this climb (morph78 now PRIOR/BEST). Further climbs n
 1. Hub: **recommend do not publish yet** — publish audit `specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`. Blockers: promotion metric train-contaminated (leak-free val morph78 = morph65 = 1.0, n=63); weights not reproducible from `main`.
    Fix order: canonicalize Spark training code → fix gate eval → score test split once → data/licence → calibration/A1 → loader → private Hub first.
    Detailed plan + operator decisions D1–D7: `specs/007-hyperlexical-model/PUBLISH-READINESS-PLAN.md`.
+   Executed (no-decision items): `specs/007-hyperlexical-model/PUBLISH-READINESS-RESULTS-20260924.md`. Corrected gate REJECTs morph78 vs morph65 (tie 1.0, n=58); 709 Wiktionary rows (D5); vocab scrub needed (D8). Awaiting D1–D8.
 2. Optional T13 (promote `scripts/shadow/hyperlexical/` into `src/hyperlex/`).
 3. HOLD morph78; no new climb without a new card.
 
