@@ -90,6 +90,7 @@ def test_write_and_hash(tmp_path):
     assert man["counts"]["unbind_live_observed"] == 0
     assert man["counts"]["unbind_live_inferred"] == 0
     assert "classify_all" in man["counts"]
+    assert isinstance(man["counts"]["gold_demoted"], dict)
 
 
 def test_no_third_scheme():

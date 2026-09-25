@@ -5,7 +5,7 @@ Strict filter + FULL classification to meet T1 requirements:
 - efficiency >= 0.75 OR (provenance + eff>0.65) OR explicit strong signals
 - Always run detect_memetic_patterns for richest typology, roles, fillers, stage
 - Roles = memory_tiers + provenance if required
-- Fillers = context_loss_technique (or KDR/general)
+- Fillers = context_loss_technique when the detector found one, else no label
 - Typology includes memory_*, context_*, provenance, compression, hyperstition_signal
 - Stage based on efficiency
 - class = INFERRED but with full fields for T1 name-gate
@@ -71,7 +71,8 @@ def classify_row(text: str, fallback_item: dict = None) -> dict:
     if not roles:
         roles = ["episodic"]
 
-    fillers = [mm.get("context_loss_technique")] if mm.get("context_loss_technique") else ["KDR" if any(p in text.lower() for p in ["kdr", "rented", "ghost"]) else "general"]
+    technique = mm.get("context_loss_technique")
+    fillers = [technique] if technique else []
 
     return {
         "typology": sorted(set(typology)) or ["memory", "provenance"],

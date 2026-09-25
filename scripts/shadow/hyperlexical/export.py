@@ -9,7 +9,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from .packet import RESTRICTED_MARKER, SCHEMES, sha256_hex
 from ._negatives_data import NEGATIVES  # ordinary prose; no slang
@@ -616,11 +616,112 @@ def harvest_negatives() -> list[dict[str, Any]]:
     ]
 
 
+# Defaults the Moltbook adapters used to invent when the detector returned
+# nothing. ``general`` is the unconditional fallback in
+# moltbook_to_hyperlexical and create_high_signal_subset. The high-signal
+# script's other fallback, ``KDR``, is not listed here: it is rejected by the
+# surface-token check unless ``kdr`` is itself a token (see
+# ``original_gold_unbind_verdict``). Do not add category names. A label that
+# is a real surface token is original gold and may stay.
+FALLBACK_PLACEHOLDER_LABELS = frozenset({"general"})
+
+
+def _gold_labels(fillers: Any) -> list[str]:
+    """Non-empty filler strings. A bare string is one label, not characters."""
+    if fillers is None:
+        return []
+    if isinstance(fillers, str):
+        fillers = [fillers]
+    labels: list[str] = []
+    for item in fillers:
+        if item is None:
+            continue
+        text = str(item).strip()
+        if text:
+            labels.append(text)
+    return labels
+
+
+def original_gold_unbind_verdict(text: str, fillers: Any) -> tuple[bool, str | None]:
+    """Decide whether original fillers may be unbind gold.
+
+    Returns ``(True, None)`` only when every label is a real surface token
+    and none is a fallback placeholder. Otherwise ``(False, reason)``.
+
+    Token membership reuses ``selection_surface.lenient_copy_hit`` (same rule
+    as ``score_holdout.copy_baseline``): whitespace split, then the substring
+    after the first colon, then ``.lower()``. It is not a substring search
+    and it does not strip punctuation. ``kdr`` inside ``kdrama`` misses.
+    ``KDR.`` is the token ``kdr.`` and does not match filler ``KDR``.
+
+    Empty gold returns ``(False, None)``: there is nothing to demote and
+    nothing to emit as unbind. The label string is never rewritten.
+    """
+    labels = _gold_labels(fillers)
+    if not labels:
+        return False, None
+    if any(label.lower() in FALLBACK_PLACEHOLDER_LABELS for label in labels):
+        return False, "fallback_label"
+    # Lazy import: selection_surface imports TYPE_SLOT_TAGS from this module.
+    from .selection_surface import lenient_copy_hit
+
+    if not lenient_copy_hit({"text": text, "fillers": labels}):
+        return False, "gold_not_in_text"
+    return True, None
+
+
+def provenance_source_tag(row: Mapping[str, Any]) -> str:
+    prov = row.get("provenance")
+    if isinstance(prov, dict):
+        return str(prov.get("source") or "unknown")
+    return str(prov or "unknown")
+
+
+def summarize_gold_demotions(rows: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
+    """Pre-dedupe counts of demoted rows, keyed by provenance source then reason."""
+    counts: dict[str, dict[str, int]] = {}
+    for row in rows:
+        reason = row.get("gold_demote_reason")
+        if not reason:
+            continue
+        source = provenance_source_tag(row)
+        bucket = counts.setdefault(source, {})
+        bucket[str(reason)] = bucket.get(str(reason), 0) + 1
+    return {src: dict(sorted(reasons.items())) for src, reasons in sorted(counts.items())}
+
+
+def _seed_typology(labels: Mapping[str, Any]) -> list[str]:
+    """Classify tags from seed fields other than ``context_loss``.
+
+    The context-loss string is unbind gold. Copying it into typology would
+    keep a label that the gold gate just refused.
+    """
+    typology: list[str] = []
+    tiers = labels.get("memory_tier") or []
+    if isinstance(tiers, str):
+        tiers = [tiers]
+    if isinstance(tiers, list):
+        for tier in tiers:
+            if isinstance(tier, str) and tier.strip() and tier.strip().lower() != "unknown":
+                typology.append(f"memory_{tier.strip()}")
+    if labels.get("provenance") is True:
+        typology.append("provenance")
+    if labels.get("compression") == "load_bearing":
+        typology.append("compression")
+    return typology or ["memory"]
+
+
 def harvest_moltbook(root: Path) -> list[dict[str, Any]]:
     """Moltbook agent discourse → ai-native rows for hyperlexical training.
+
     Uses pre-classified rows from scripts/moltbook_to_hyperlexical.py
     (memory tiers, efficiency, provenance, context loss).
-    Also loads dedicated high-signal subset when present (for oversampling strong memory/provenance signals).
+    Also loads dedicated high-signal subset when present.
+
+    classify+unbind is emitted only when every original filler is a surface
+    token and not a fallback placeholder. Otherwise the row is classify-only:
+    no fillers, no roles, no role scheme, ``class`` INFERRED, and
+    ``gold_demote_reason`` set. Labels are not replaced.
     """
     rows = []
     for p in [
@@ -635,24 +736,103 @@ def harvest_moltbook(root: Path) -> list[dict[str, Any]]:
                 continue
             try:
                 r = json.loads(line)
-                if r.get("lineage") == "ai-native":
-                    rows.append(
-                        _row(
-                            text=r.get("text", ""),
-                            lineage="ai-native",
-                            typology=r.get("typology", ["compression"]),
-                            stage=r.get("stage", "circulating"),
-                            roles=r.get("roles", []),
-                            fillers=r.get("fillers", []),
-                            role_scheme=r.get("role_scheme"),
-                            task="classify+unbind",
-                            provenance=r.get("provenance", {"source": "moltbook"}),
-                            **{"class": r.get("class", "INFERRED")},
-                            license=r.get("license", "MIT (distilled)"),
-                        )
+                if r.get("lineage") != "ai-native":
+                    continue
+                text = r.get("text", "")
+                fillers = r.get("fillers", [])
+                keep, reason = original_gold_unbind_verdict(text, fillers)
+                if keep:
+                    row = _row(
+                        text=text,
+                        lineage="ai-native",
+                        typology=r.get("typology", ["compression"]),
+                        stage=r.get("stage", "circulating"),
+                        roles=r.get("roles", []),
+                        fillers=fillers,
+                        role_scheme=r.get("role_scheme"),
+                        task="classify+unbind",
+                        provenance=r.get("provenance", {"source": "moltbook"}),
+                        **{"class": r.get("class", "INFERRED")},
+                        license=r.get("license", "MIT (distilled)"),
                     )
+                else:
+                    row = _row(
+                        text=text,
+                        lineage="ai-native",
+                        typology=r.get("typology", ["compression"]),
+                        stage=r.get("stage", "circulating"),
+                        roles=[],
+                        fillers=[],
+                        role_scheme=None,
+                        task="classify",
+                        provenance=r.get("provenance", {"source": "moltbook"}),
+                        **{"class": "INFERRED"},
+                        license=r.get("license", "MIT (distilled)"),
+                    )
+                    if reason:
+                        row["gold_demote_reason"] = reason
+                rows.append(row)
             except Exception:
                 continue
+    return rows
+
+
+def harvest_seed_examples(root: Path) -> list[dict[str, Any]]:
+    """Gate ``data/agent_memetics/seed_examples.jsonl`` at export time.
+
+    Original gold is ``labels.context_loss``. Rows with no such label are
+    not emitted. Failing gold becomes classify-only, class INFERRED, with a
+    ``gold_demote_reason``. The stored label is never rewritten (a post
+    labeled ``general`` stays demoted; it is not relabeled ``kdr``).
+    """
+    path = root / "data" / "agent_memetics" / "seed_examples.jsonl"
+    if not path.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        text = str(rec.get("text") or "")
+        if not text.strip():
+            continue
+        labels = rec.get("labels") if isinstance(rec.get("labels"), dict) else {}
+        raw = labels.get("context_loss")
+        if not isinstance(raw, str) or not raw.strip():
+            continue
+        keep, reason = original_gold_unbind_verdict(text, [raw])
+        if keep:
+            task = "classify+unbind"
+            fillers: list[str] = [raw]
+            roles: list[str] = ["TOKEN"]
+            scheme: str | None = "type_slot"
+        else:
+            task = "classify"
+            fillers = []
+            roles = []
+            scheme = None
+        try:
+            row = _row(
+                text=text,
+                lineage="ai-native",
+                typology=_seed_typology(labels),
+                stage="circulating",
+                roles=roles,
+                fillers=fillers,
+                role_scheme=scheme,
+                task=task,
+                provenance={"source": "seed_examples", "class": "INFERRED"},
+                **{"class": "INFERRED"},
+                license="MIT (distilled)",
+            )
+        except ValueError:
+            continue
+        if reason:
+            row["gold_demote_reason"] = reason
+        rows.append(row)
     return rows
 
 
@@ -1030,6 +1210,10 @@ def export_dataset(
     live_store: Path | None = None,
 ) -> dict[str, Any]:
     root = root or repo_root()
+    moltbook_rows = harvest_moltbook(root)
+    seed_rows = harvest_seed_examples(root)
+    # Count demotions before dedupe so a dropped duplicate still counts.
+    gold_demoted = summarize_gold_demotions(moltbook_rows + seed_rows)
     rows = (
         harvest_dialect()
         + harvest_backfill(root)
@@ -1040,7 +1224,9 @@ def export_dataset(
         + harvest_civilian_unbind(root)
         + harvest_negatives()
         + harvest_inferred_classify_pass(root)
-        + harvest_moltbook(root) + harvest_4333_dump(root)
+        + moltbook_rows
+        + seed_rows
+        + harvest_4333_dump(root)
     )
     live_n = 0
     live_rejected = 0
@@ -1143,6 +1329,9 @@ def export_dataset(
         "name_gate_classify_gap": max(0, 2000 - classify_family),
         "name_gate_unbind_gap": max(0, 200 - unbind_all),
         "name_gate_negative_gap": max(0, 200 - negatives),
+        # Pre-dedupe. Keys are provenance source, then reason
+        # (fallback_label, gold_not_in_text). Demoted rows are classify-only.
+        "gold_demoted": gold_demoted,
     }
     # Recipe gates are documented here; the Hyperlexical loop applies
     # upsample/cap + morph hard-negs + optional scheme curriculum.
@@ -1187,7 +1376,11 @@ def write_export(out_dir: Path, bundle: dict[str, Any]) -> Path:
                     "are counts only — loop applies train multiplicity / hard-negs / "
                     "scheme-split curriculum / INFERRED sample weight / "
                     "targeted OBSERVED hard-atom extras; "
-                    "export does not invent OBSERVED SoT gold. lexical_split is frozen."
+                    "export does not invent OBSERVED SoT gold. lexical_split is frozen. "
+                    "gold_demoted counts Moltbook and seed_examples rows (pre-dedupe) "
+                    "whose original unbind gold was a fallback placeholder or not a "
+                    "surface token. Those rows are classify, class INFERRED, with no "
+                    "fillers. Labels are not replaced. Other sources are unchanged."
                 ),
             },
             indent=2,
