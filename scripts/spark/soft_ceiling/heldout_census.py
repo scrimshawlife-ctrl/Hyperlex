@@ -14,9 +14,11 @@ published verdict stays HOLD until those admitted-ID hashes match.
 
 The holdout manifest is opened only for a string ID list (``row_ids`` or
 ``ids``). The committed rc1 manifest stores slice hashes, not that list, so
-rule 5 excludes nobody until an ID list is present. ``split=test`` rows are
-discarded by the split field before release filtering, and their text is
-not hashed. Rebuilding the ID list from test rows is refused.
+an id match excludes nobody until an ID list is present. Rule 5 also
+excludes a row whose normalized text matches a holdout row or a ``--trained``
+row, including a demoted or re-tasked twin of a spent id. ``split=test``
+rows are discarded by the split field before release filtering, and their
+text is not hashed. Rebuilding the ID list from test rows is refused.
 """
 from __future__ import annotations
 

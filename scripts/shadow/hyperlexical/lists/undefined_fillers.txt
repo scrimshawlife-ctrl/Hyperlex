@@ -1,0 +1,10 @@
+# Undefined fillers. A row is flagged when any filler normalizes to a line
+# below. Normalization is the census group-text rule: NFKC, casefold, then
+# URLs, punctuation, and extra whitespace removed.
+#
+# KDR is a keyword-heuristic filler. The repo never defines the term.
+# scripts/create_high_signal_subset.py used to stamp filler "KDR" when the
+# detector returned no context_loss_technique and the text contained "kdr",
+# "rented", or "ghost". PR #118 stopped new stamps. The four classify+unbind
+# rows the export gold gate still keeps all use this filler.
+KDR

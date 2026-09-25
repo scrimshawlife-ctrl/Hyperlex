@@ -178,13 +178,66 @@ def _publishable(row: Mapping[str, Any]) -> bool:
     return True
 
 
-def _in_holdout(row: Mapping[str, Any], holdout_ids: set[str]) -> bool:
+def blocking_texts(
+    pool: Sequence[Mapping[str, Any]],
+    trained_rows: Sequence[Mapping[str, Any]],
+    holdout_ids: Iterable[str] = (),
+) -> dict[str, Any]:
+    """Normalized texts that bar a row, plus holdout-id resolution counts.
+
+    Every non-empty trained-row text is included. A holdout id contributes
+    text only when it equals ``row_id`` or ``holdout_key`` of a non-test pool
+    or trained row. Ids that do not match are counted unresolved; their text
+    cannot be recovered from the hash. ``split=test`` rows are dropped before
+    any text is read. Empty normalized text is omitted so blank rows do not
+    collide.
+    """
+    safe_pool, _pool_test = drop_test_rows(pool)
+    trained, _trained_test = drop_test_rows(trained_rows)
+    holdout = {str(item) for item in holdout_ids}
+    texts: set[str] = set()
+    matched: set[str] = set()
+    for row in trained:
+        text = normalize_group_text(str(row.get("text") or ""))
+        if text:
+            texts.add(text)
+    if holdout:
+        for row in [*safe_pool, *trained]:
+            hit = exclusion_ids(row) & holdout
+            if not hit:
+                continue
+            matched |= hit
+            text = normalize_group_text(str(row.get("text") or ""))
+            if text:
+                texts.add(text)
+    return {
+        "texts": texts,
+        "n_holdout_ids": len(holdout),
+        "n_holdout_ids_resolved": len(matched),
+        "n_holdout_ids_unresolved": len(holdout) - len(matched),
+    }
+
+
+def _in_holdout(
+    row: Mapping[str, Any],
+    holdout_ids: set[str],
+    blocked_texts: set[str] | None = None,
+) -> bool:
+    """Id hit, or the same normalized text as a holdout or trained row."""
+    text = normalize_group_text(str(row.get("text") or ""))
+    if text and blocked_texts and text in blocked_texts:
+        return True
     if not holdout_ids:
         return False
     return bool(exclusion_ids(row) & holdout_ids)
 
 
-def rule_failures(row: Mapping[str, Any], seen: SeenIndex, holdout_ids: set[str]) -> list[str]:
+def rule_failures(
+    row: Mapping[str, Any],
+    seen: SeenIndex,
+    holdout_ids: set[str],
+    blocked_texts: set[str] | None = None,
+) -> list[str]:
     """Rules in admission order. The list is every failure, not only the first."""
     fails: list[str] = []
     task = str(row.get("task") or "")
@@ -203,7 +256,7 @@ def rule_failures(row: Mapping[str, Any], seen: SeenIndex, holdout_ids: set[str]
         fails.append("3")
     if not _publishable(row):
         fails.append("4")
-    if _in_holdout(row, holdout_ids):
+    if _in_holdout(row, holdout_ids, blocked_texts):
         fails.append("5")
     return fails
 
@@ -293,13 +346,14 @@ def census_rows(
     else:
         pool = [dict(row) for row in rows if row.get("split") != "test"]
     holdout = {str(item) for item in holdout_ids}
+    blocked = blocking_texts(pool, trained_rows, holdout)
     seen = build_seen(pool, trained_rows)
     first = _zero_rules()
     every = _zero_rules()
     admitted: list[dict] = []
     admitted_ids: list[str] = []
     for row in pool:
-        fails = rule_failures(row, seen, holdout)
+        fails = rule_failures(row, seen, holdout, blocked["texts"])
         if not fails:
             admitted.append(dict(row))
             admitted_ids.append(row_id(row))
@@ -345,7 +399,10 @@ def census_rows(
             "2": "every gold filler is a token of the text",
             "3": "no group-key twin and no filler-Jaccard >= 0.5 sibling in the trained union",
             "4": "gold passes assert_publishable_vocab",
-            "5": "row id is not in the holdout manifest ID list",
+            "5": (
+                "row id is not in the holdout manifest ID list, and normalized "
+                "text matches no holdout or trained row"
+            ),
         },
         "rejected": {"first_failing": first, "all_failing": every},
         "admitted": admitted_stats,
