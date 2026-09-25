@@ -26,6 +26,7 @@ from hyperlexical.heldout_census import (  # noqa: E402
     source_over_cap,
     write_census,
 )
+from hyperlexical import release_set as release_set_mod  # noqa: E402
 from hyperlexical.selection_surface import row_id  # noqa: E402
 from hyperlexical.soft_ceiling import row_key  # noqa: E402
 import heldout_census as census_cli  # noqa: E402
@@ -403,6 +404,94 @@ def test_sources_do_not_import_scorer_or_torch():
         assert "import holdout_manifest" not in text
         assert "from holdout_manifest" not in text
         assert "import torch" not in text
+
+
+def _hash_fields(payload):
+    found = {}
+
+    def walk(obj, prefix):
+        if isinstance(obj, dict):
+            for key, value in obj.items():
+                path = f"{prefix}.{key}" if prefix else key
+                if isinstance(value, (dict, list)):
+                    walk(value, path)
+                elif "sha" in key.lower() or "hash" in key.lower():
+                    found[path] = value
+        elif isinstance(obj, list):
+            for index, value in enumerate(obj):
+                walk(value, f"{prefix}[{index}]")
+
+    walk(payload, "")
+    return found
+
+
+def test_test_rows_dropped_before_release_filtering(monkeypatch, tmp_path):
+    """Share-alike test text must not drop a val row or change any hash."""
+    monkeypatch.setenv("HYPERLEX_OFFLINE", "1")
+    monkeypatch.setenv("HYPERLEX_RELEASE_SET", "1")
+    monkeypatch.setenv("HYPERLEX_INCLUDE_LIVE", "1")
+    monkeypatch.delenv("HYPERLEX_ALLOW_TRAIN", raising=False)
+    val = _row("sentinel phrase", ["sentinel", "phrase"])
+    val["license"] = "MIT"
+    val["typology"] = []
+    collide = _row("sentinel phrase", ["UNREAD_TEST_FILLER"], split="test")
+    collide["license"] = "CC BY-SA 3.0"
+    collide["source_license"] = "CC-BY-SA"
+    held = _row("HELD_OUT_ONLY phrase", ["UNREAD_TEST_FILLER"], split="test")
+    held["license"] = "MIT"
+    held["typology"] = []
+    state = {"rows": []}
+    seen = {"maybe": [], "release": []}
+    real_maybe = census_cli.maybe_release
+    real_release = release_set_mod.release_rows
+
+    def fake_export(root, include_live=True):
+        return {"rows": [dict(row) for row in state["rows"]]}
+
+    def spy_maybe(rows):
+        seen["maybe"].append(list(rows))
+        assert all(row.get("split") != "test" for row in rows)
+        return real_maybe(rows)
+
+    def spy_release(rows):
+        seen["release"].append(list(rows))
+        assert all(row.get("split") != "test" for row in rows)
+        blob = json.dumps(rows)
+        assert "UNREAD_TEST_FILLER" not in blob
+        assert "HELD_OUT_ONLY" not in blob
+        return real_release(rows)
+
+    monkeypatch.setattr(census_cli, "export_dataset", fake_export)
+    monkeypatch.setattr(census_cli, "maybe_release", spy_maybe)
+    monkeypatch.setattr(release_set_mod, "release_rows", spy_release)
+    manifest = _write(tmp_path, "ids.json", {"row_ids": []})
+
+    def run(rows, name):
+        state["rows"] = rows
+        out = tmp_path / name
+        assert census_cli.main(["--out-dir", str(out), "--holdout-manifest", str(manifest)]) == 0
+        return json.loads((out / "census.json").read_text(encoding="utf-8"))
+
+    plain = run([val], "without")
+    tainted = run([val, collide, held], "with")
+    assert seen["maybe"] and seen["release"]
+    assert all(row.get("split") != "test" for batch in seen["maybe"] for row in batch)
+    assert all(row.get("split") != "test" for batch in seen["release"] for row in batch)
+    assert plain["n_admitted"] == tainted["n_admitted"] == 1
+    assert plain["admitted"] == tainted["admitted"]
+    assert plain["admitted_ids_sha256"] == tainted["admitted_ids_sha256"]
+    assert _hash_fields(plain) == _hash_fields(tainted)
+    assert plain["release_set"]["release_content_sha256"] == tainted["release_set"]["release_content_sha256"]
+    assert plain["n_test_dropped_before_release"] == 0
+    assert tainted["n_test_dropped_before_release"] == 2
+    assert tainted["n_test_discarded"] == 2
+    assert plain["test_dropped_before_release_filtering"] is True
+    assert tainted["test_dropped_before_release_filtering"] is True
+    body = json.dumps(tainted)
+    assert "UNREAD_TEST_FILLER" not in body
+    assert "HELD_OUT_ONLY" not in body
+    assert "test_content_sha256" not in body
+    assert "n_test_dropped_before_release" not in tainted["release_set"]
 
 
 def test_write_census_rejects_escaped_name(tmp_path):

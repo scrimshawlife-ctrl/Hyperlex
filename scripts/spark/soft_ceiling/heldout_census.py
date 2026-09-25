@@ -15,7 +15,8 @@ published verdict stays HOLD until those admitted-ID hashes match.
 The holdout manifest is opened only for a string ID list (``row_ids`` or
 ``ids``). The committed rc1 manifest stores slice hashes, not that list, so
 rule 5 excludes nobody until an ID list is present. ``split=test`` rows are
-still discarded unread. Rebuilding the ID list from test rows is refused.
+discarded by the split field before release filtering, and their text is
+not hashed. Rebuilding the ID list from test rows is refused.
 """
 from __future__ import annotations
 
@@ -32,6 +33,7 @@ from hyperlexical.export import export_dataset  # noqa: E402
 from hyperlexical.heldout_census import census_rows, load_holdout_ids, load_trained_files, write_census  # noqa: E402
 from hyperlexical.provenance import provenance  # noqa: E402
 from hyperlexical.release_set import maybe_release  # noqa: E402
+from hyperlexical.selection_surface import drop_test_rows  # noqa: E402
 
 RUN_COMMAND = """\
 docker run --rm \\
@@ -78,8 +80,22 @@ def require_census_env() -> None:
 
 
 def load_release_pool() -> tuple[list[dict], dict]:
+    """Export the pool, drop ``split=test`` by that field, then release-filter.
+
+    ``release_rows`` reads text and fillers. Test rows must already be gone,
+    or a share-alike test phrase can drop a val candidate and enter
+    ``release_content_sha256``. The drop count is attached for the report
+    and removed before that dict is stored; the dropped rows are not hashed.
+    """
     bundle = export_dataset(REPO, include_live=True)
-    return maybe_release(bundle["rows"])
+    rows = bundle.pop("rows")
+    kept, n_test = drop_test_rows(rows)
+    del rows
+    released, stats = maybe_release(kept)
+    stats = dict(stats)
+    stats["n_test_dropped_before_release"] = n_test
+    stats["test_dropped_before_release_filtering"] = True
+    return released, stats
 
 
 def main(argv=None) -> int:
@@ -109,6 +125,9 @@ def main(argv=None) -> int:
     holdout_ids, id_list_present = load_holdout_ids(args.holdout_manifest)
     trained_rows, trained_files = load_trained_files(args.trained)
     pool, stats = load_release_pool()
+    stats = dict(stats)
+    n_test_before = stats.pop("n_test_dropped_before_release", None)
+    stats.pop("test_dropped_before_release_filtering", None)
     prior = None
     if args.reproduce:
         prior_path = Path(args.reproduce)
@@ -123,6 +142,8 @@ def main(argv=None) -> int:
         trained_rows,
         holdout_ids,
         id_list_present=id_list_present,
+        n_test_discarded=n_test_before,
+        n_test_dropped_before_release=n_test_before,
         release_set=stats,
         trained_files=trained_files,
         code_commit=prov.get("code_commit"),
