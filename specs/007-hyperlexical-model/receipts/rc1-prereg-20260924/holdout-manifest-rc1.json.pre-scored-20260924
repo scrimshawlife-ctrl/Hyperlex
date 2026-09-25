@@ -127,11 +127,6 @@
     "Any future climb draws and hashes a new holdout before training."
   ],
   "schema": "hyperlex.holdout_manifest.v0.1",
-  "scored_at": "2026-09-24T21:06:28-07:00",
-  "scored_by_container": "hlx-eval-rc1-test-1790309133",
-  "scored_decision_receipt": "specs/007-hyperlexical-model/receipts/rc1-result-20260924/pin-reject.json",
-  "scored_note": "Scored once (rc1+morph78+morph65) 2026-09-24 21:05:34-21:06:28 PT; test burned for selection. Pre-edit original (as committed in ff5ec92): holdout-manifest-rc1.json.pre-scored-20260924. Status flipped by Danny yes 2026-09-24 ~21:15 PT.",
-  "scored_scores_receipt": "specs/007-hyperlexical-model/receipts/rc1-result-20260924/holdout-scores-rc1.json",
   "slices": {
     "classify_clean": {
       "by_class": {
@@ -180,7 +175,7 @@
     }
   },
   "split": "test",
-  "status": "SCORED_SPENT",
+  "status": "FROZEN_NOT_SCORED",
   "trained_files": [
     "/home/morpheus/hlx/force_train_morph78_expanded.jsonl",
     "/home/morpheus/hlx/hard_atoms_train_morph78.jsonl",
