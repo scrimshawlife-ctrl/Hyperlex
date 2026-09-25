@@ -48,6 +48,8 @@ pipeline / run / ingest
 | `sources --route live` | Preview resolve |
 | `ingest "<query>" --route offline` | Ingest only (structured + fingerprint) |
 | `analyze "<query>" --route offline` | Analyze without auto-receipt |
+| `classify "<term>"` | Family of one short term. Registry `match_lineage`, else `none` |
+| `classify "<term>" --jevgate` | Same cascade, then opt-in [jevgate-1](jevgate.md) on a miss |
 
 Prefer **`--route offline|live|glossary|social`** over raw adapter names.
 Aliases: `real`→glossary, `x`→x_search, `firecrawl`→crawl4ai (Crawl4AI 0.9.3 default; no paid Firecrawl without Danny yes), `live`→combined.
