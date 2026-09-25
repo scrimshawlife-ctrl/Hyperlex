@@ -21,6 +21,14 @@ from .layout import (
 )
 from .eval_forward import apply_encoder_trainable
 from .filler_filter import assert_publishable_vocab, filter_mode, filter_unbind_rows
+from .holdout_guard import (
+    assert_no_holdout,
+    filter_holdout_rows,
+    holdout_receipt,
+    load_holdout_spec,
+    log_holdout,
+    require_holdout_for_training,
+)
 from .provenance import provenance
 from .release_set import maybe_release
 from .save_pretrained import (
@@ -381,7 +389,10 @@ def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
 
     ``HYPERLEX_UNBIND_FORCE_TRAIN_PATH`` may move authorized OBSERVED exacts
     from val→train (accept-style). Empty/unset → val untouched.
+    ``HLX_HOLDOUT_MANIFESTS`` rows are dropped before that move and before
+    hard-atom copies, then checked again so neither injection can put them back.
     """
+    spec = load_holdout_spec()
     if task_routing() == "legacy_split":
         train = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "train"]
         val = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "val"]
@@ -389,16 +400,26 @@ def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
         routed, _ = route_rows(rows)
         train = routed["unbind"]["train"]
         val = routed["unbind"]["val"]
+    train, n_train = filter_holdout_rows(train, spec)
+    val, n_val = filter_holdout_rows(val, spec)
     train, val, force_stats = apply_unbind_force_train(train, val)
+    train, n_train_injected = filter_holdout_rows(train, spec)
+    val, n_val_injected = filter_holdout_rows(val, spec)
     train, filt_train = filter_unbind_rows(train)
     val, filt_val = filter_unbind_rows(val)
     shaped, stats = shape_unbind_train(train)
+    shaped, n_hard = filter_holdout_rows(shaped, spec)
+    assert_no_holdout(shaped, spec, "unbind train")
+    assert_no_holdout(val, spec, "unbind val")
     stats = {
         **stats,
         **force_stats,
         "filler_filter": filt_train["filler_filter"],
         "n_filler_rows_dropped_train": filt_train["n_filler_rows_dropped"],
         "n_filler_rows_dropped_val": filt_val["n_filler_rows_dropped"],
+        "n_holdout_removed_train": n_train + n_train_injected + n_hard,
+        "n_holdout_removed_val": n_val + n_val_injected,
+        "holdout_manifests": [dict(item) for item in spec.manifests],
     }
     return shaped, val, stats
 
@@ -450,6 +471,7 @@ def run_loop(
     include_live: bool = False,
     live_store: Path | None = None,
 ) -> dict:
+    holdout_spec = require_holdout_for_training()
     root = repo_root()
     bundle = export_dataset(root, include_live=include_live, live_store=live_store)
     release_rows_, release_stats = maybe_release(bundle["rows"])
@@ -469,6 +491,19 @@ def run_loop(
         classify_tr = routed["classify"]["train"]
         classify_va = routed["classify"]["val"]
     unbind_tr, unbind_va, unbind_recipe = prepare_unbind_splits(bundle["rows"])
+    classify_tr, n_classify_train = filter_holdout_rows(classify_tr, holdout_spec)
+    classify_va, n_classify_val = filter_holdout_rows(classify_va, holdout_spec)
+    assert_no_holdout(classify_tr, holdout_spec, "classify train")
+    assert_no_holdout(classify_va, holdout_spec, "classify val")
+    assert_no_holdout(unbind_tr, holdout_spec, "unbind train")
+    assert_no_holdout(unbind_va, holdout_spec, "unbind val")
+    holdout_removed = {
+        "classify_train": n_classify_train,
+        "classify_val": n_classify_val,
+        "unbind_train": unbind_recipe.get("n_holdout_removed_train", 0),
+        "unbind_val": unbind_recipe.get("n_holdout_removed_val", 0),
+    }
+    log_holdout(holdout_spec, holdout_removed)
     if len(classify_tr) < 8:
         raise RuntimeError("not enough classify train rows")
 
@@ -841,6 +876,7 @@ def run_loop(
         "weight_file": weight_file,
         "aligner": "char_span + offset_mapping",
         "data_sha256": bundle["sha256"],
+        "holdout": holdout_receipt(holdout_spec, holdout_removed),
         "include_live": include_live,
         "live_included": bundle["counts"].get("live_included", 0),
         "name_gate": False,
@@ -894,6 +930,7 @@ def run_loop(
                     "n_unbind_val_after_force_train", 0
                 ),
                 "save_best_unbind": save_best_unbind,
+                "holdout": holdout_receipt(holdout_spec, holdout_removed),
                 "init_from": init_receipt.get("init_from"),
                 "warm_start": bool(init_receipt.get("warm_start")),
             },
