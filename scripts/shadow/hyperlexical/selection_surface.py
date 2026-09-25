@@ -497,13 +497,20 @@ def publish_verdict(candidate: str, rows: list, reproduce_rows: list | None) -> 
 
 
 def provenance_mix(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Count provenance tags.
+
+    Annotated rows already store ``provenance_bucket`` and ``provenance_source``.
+    ``annotate_rows`` drops ``license`` and flattens dict provenance to text, so
+    re-deriving the tags mis-counts license-only templates and dict sources.
+    Raw export rows omit the tags; derive them in that case.
+    """
     buckets: Counter[str] = Counter()
     sources: Counter[str] = Counter()
     schemes: Counter[str] = Counter()
     classes: Counter[str] = Counter()
     for row in rows:
-        buckets[provenance_bucket(row)] += 1
-        sources[provenance_source(row)] += 1
+        buckets[row.get("provenance_bucket") or provenance_bucket(row)] += 1
+        sources[row.get("provenance_source") or provenance_source(row)] += 1
         schemes[str(row.get("role_scheme") or "")] += 1
         classes[str(row.get("class") or "").upper()] += 1
     return {
