@@ -51,6 +51,18 @@ def cmd_check(_: argparse.Namespace) -> int:
     return 0 if ok else 2
 
 
+def cmd_classify(args: argparse.Namespace) -> int:
+    from hyperlex.analysis.jevgate import classify_term, jevgate_from_args
+
+    term = (getattr(args, "term_pos", None) or getattr(args, "term", None) or "").strip()
+    if not term:
+        _emit({"ok": False, "command": "classify", "error": "empty term", "brier": None})
+        return 2
+    out = classify_term(term, jevgate=jevgate_from_args(args))
+    _emit({"ok": True, "command": "classify", **out})
+    return 0
+
+
 def cmd_analyze(args: argparse.Namespace) -> int:
     from hyperlex import detect_memetic_patterns, extract_forecasts, emit_receipt, relay_from_result
     from hyperlex.intake.sources import pick_source
@@ -127,6 +139,8 @@ def cmd_commands(_: argparse.Namespace) -> int:
             'mutation trace "<text>" --human',
             "mutation predict <atom>",
             "mutation watch",
+            'classify "<term>"',
+            'classify "<term>" --jevgate',
         ],
         "routes": ["offline", "mock", "default", "live", "glossary", "social"],
         "docs": "docs/operator-loop.md · docs/commands.md",
@@ -502,6 +516,24 @@ def build_parser() -> argparse.ArgumentParser:
     mp_alias.add_argument("--term", default="")
     mp_alias.add_argument("--family", default="")
     mp_alias.set_defaults(func=cmd_mutation_predict)
+
+    cl = sub.add_parser(
+        "classify",
+        help="Classify a short term into 8 hyperlexical families or none",
+    )
+    cl.add_argument("term_pos", nargs="?", default="", help="Short slang term")
+    cl.add_argument("--term", default="", help="Short slang term (flag form)")
+    cl.add_argument(
+        "--jevgate",
+        action="store_true",
+        help="Opt in to jevgate-1 after match_lineage misses (prereg v5). Default off.",
+    )
+    cl.add_argument(
+        "--no-jevgate",
+        action="store_true",
+        help="Force the registry cascade even if HYPERLEX_JEVGATE is set",
+    )
+    cl.set_defaults(func=cmd_classify)
 
     a = sub.add_parser("analyze")
     a.add_argument("query_pos", nargs="?", default="")

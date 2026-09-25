@@ -78,6 +78,7 @@ nav:
           - Virality: modules/virality.md
           - Vector DB: modules/vectordb.md
           - LLM: modules/llm.md
+          - jevgate-1 classify: jevgate.md
       - Phase 5 research: phase5.md
       - Simulation modules: modules/simulation.md
       - Brier design: brier-calibration.md
