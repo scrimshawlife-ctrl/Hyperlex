@@ -179,8 +179,11 @@ def _offsets(tok, text: str):
         return None
 
 
-def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> dict:
-    """Same per-row exact filler metric as train val, plus token/slot F1."""
+def predict_unbind_pairs(encoder, filler_head, tok, maps, rows, device) -> list[tuple[list[str], list[str]]]:
+    """Per-row ``(gold, pred)`` filler strings. Skips empty gold.
+
+    Same alignment as train val / ``score_unbind_exact``. Inference only.
+    """
     encoder.eval()
     filler_head.eval()
     pairs: list[tuple[list[str], list[str]]] = []
@@ -206,7 +209,12 @@ def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> dict:
             gold_strs.append(mapped_filler(maps, fill))
             pred_strs.append(mapped_pred(maps, pred))
         pairs.append((gold_strs, pred_strs))
-    return summarize_unbind_pairs(pairs)
+    return pairs
+
+
+def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> dict:
+    """Same per-row exact filler metric as train val, plus token/slot F1."""
+    return summarize_unbind_pairs(predict_unbind_pairs(encoder, filler_head, tok, maps, rows, device))
 
 
 def run_unbind_exact(

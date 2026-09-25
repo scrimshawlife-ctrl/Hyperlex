@@ -1,0 +1,275 @@
+{
+  "schema": "hyperlex.holdout_scores.v0.1",
+  "as_of": "2026-09-25T04:06:27.578412+00:00",
+  "manifest": "specs/007-hyperlexical-model/receipts/rc1-prereg-20260924/holdout-manifest-rc1.json",
+  "manifest_verified": true,
+  "release_set": {
+    "release_set": true,
+    "n_input": 9150,
+    "n_kept": 7805,
+    "n_excluded_share_alike": 776,
+    "n_excluded_same_text": 569,
+    "kept_by_task_split": {
+      "classify:train": 3568,
+      "classify:test": 449,
+      "classify:val": 395,
+      "classify+unbind:val": 30,
+      "classify+unbind:test": 32,
+      "classify+unbind:train": 298,
+      "unbind:val": 191,
+      "unbind:train": 2530,
+      "unbind:test": 312
+    },
+    "release_content_sha256": "c05a3b66244f1d46a1df5ff6e0d7184116bd0c7d14137b9b88881de9c20d7094"
+  },
+  "baselines": {
+    "unbind_copy_token": {
+      "unbind_all": 1.0,
+      "unbind_clean": 1.0,
+      "unbind_oov_filler": 1.0
+    },
+    "classify_majority_train": {
+      "family": "none",
+      "accuracy": 0.6486486486486487
+    }
+  },
+  "results": {
+    "hyperlex-encoder-modernbert-base-seed-rc1": {
+      "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-rc1",
+      "calibration": {
+        "temperature": 2.65,
+        "abstain_threshold": 0.7402
+      },
+      "unbind": {
+        "unbind_all": {
+          "n": 312,
+          "unbind_exact": 0.6730769230769231,
+          "unbind_token_f1": 0.8333333333333334,
+          "unbind_slot_f1": 0.8333333333333334,
+          "by_role_scheme": {
+            "positional": 0.6751592356687898,
+            "type_slot": 0.6709677419354839
+          }
+        },
+        "unbind_clean": {
+          "n": 306,
+          "unbind_exact": 0.6797385620915033,
+          "unbind_token_f1": 0.8367071524966262,
+          "unbind_slot_f1": 0.8367071524966262,
+          "by_role_scheme": {
+            "positional": 0.6842105263157895,
+            "type_slot": 0.6753246753246753
+          }
+        },
+        "unbind_oov_filler": {
+          "n": 10,
+          "unbind_exact": 0.1,
+          "unbind_token_f1": 0.15,
+          "unbind_slot_f1": 0.15,
+          "by_role_scheme": {
+            "positional": 0.0,
+            "type_slot": 0.16666666666666666
+          }
+        }
+      },
+      "classify": {
+        "all": {
+          "n": 444,
+          "accuracy": 0.7905405405405406,
+          "macro_f1": 0.5669547966744714,
+          "ece_15_bins": 0.06308958361540391,
+          "abstain_rate": 0.3873873873873874,
+          "selective_accuracy": 0.9227941176470589
+        },
+        "by_label_class": {
+          "INFERRED": {
+            "n": 372,
+            "accuracy": 0.8333333333333334,
+            "macro_f1": 0.5901020542360399,
+            "ece_15_bins": 0.0820093451960463,
+            "abstain_rate": 0.34408602150537637,
+            "selective_accuracy": 0.9344262295081968
+          },
+          "OBSERVED": {
+            "n": 72,
+            "accuracy": 0.5694444444444444,
+            "macro_f1": 0.41180753402975623,
+            "ece_15_bins": 0.1533673939826101,
+            "abstain_rate": 0.6111111111111112,
+            "selective_accuracy": 0.8214285714285714
+          }
+        }
+      }
+    },
+    "hyperlex-encoder-modernbert-base-seed-morph78": {
+      "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph78",
+      "calibration": {
+        "temperature": 5.45,
+        "abstain_threshold": 0.6182
+      },
+      "unbind": {
+        "unbind_all": {
+          "n": 312,
+          "unbind_exact": 0.7211538461538461,
+          "unbind_token_f1": 0.8619791666666666,
+          "unbind_slot_f1": 0.8619791666666666,
+          "by_role_scheme": {
+            "positional": 0.7070063694267515,
+            "type_slot": 0.7354838709677419
+          }
+        },
+        "unbind_clean": {
+          "n": 306,
+          "unbind_exact": 0.7254901960784313,
+          "unbind_token_f1": 0.865047233468286,
+          "unbind_slot_f1": 0.865047233468286,
+          "by_role_scheme": {
+            "positional": 0.7105263157894737,
+            "type_slot": 0.7402597402597403
+          }
+        },
+        "unbind_oov_filler": {
+          "n": 10,
+          "unbind_exact": 0.1,
+          "unbind_token_f1": 0.15,
+          "unbind_slot_f1": 0.15,
+          "by_role_scheme": {
+            "positional": 0.0,
+            "type_slot": 0.16666666666666666
+          }
+        }
+      },
+      "classify": {
+        "all": {
+          "n": 444,
+          "accuracy": 0.8175675675675675,
+          "macro_f1": 0.6214097795741264,
+          "ece_15_bins": 0.056411454800957904,
+          "abstain_rate": 0.2432432432432432,
+          "selective_accuracy": 0.9434523809523809
+        },
+        "by_label_class": {
+          "INFERRED": {
+            "n": 372,
+            "accuracy": 0.8521505376344086,
+            "macro_f1": 0.6065501869710079,
+            "ece_15_bins": 0.05112887173475998,
+            "abstain_rate": 0.18548387096774188,
+            "selective_accuracy": 0.9603960396039604
+          },
+          "OBSERVED": {
+            "n": 72,
+            "accuracy": 0.6388888888888888,
+            "macro_f1": 0.533713747075359,
+            "ece_15_bins": 0.1699764286912116,
+            "abstain_rate": 0.5416666666666667,
+            "selective_accuracy": 0.7878787878787878
+          }
+        }
+      }
+    },
+    "hyperlex-encoder-modernbert-base-seed-morph65": {
+      "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+      "calibration": {
+        "temperature": 5.4,
+        "abstain_threshold": 0.5838
+      },
+      "unbind": {
+        "unbind_all": {
+          "n": 312,
+          "unbind_exact": 0.6955128205128205,
+          "unbind_token_f1": 0.84765625,
+          "unbind_slot_f1": 0.84765625,
+          "by_role_scheme": {
+            "positional": 0.7070063694267515,
+            "type_slot": 0.6838709677419355
+          }
+        },
+        "unbind_clean": {
+          "n": 306,
+          "unbind_exact": 0.6993464052287581,
+          "unbind_token_f1": 0.8515519568151148,
+          "unbind_slot_f1": 0.8515519568151148,
+          "by_role_scheme": {
+            "positional": 0.7105263157894737,
+            "type_slot": 0.6883116883116883
+          }
+        },
+        "unbind_oov_filler": {
+          "n": 10,
+          "unbind_exact": 0.0,
+          "unbind_token_f1": 0.0,
+          "unbind_slot_f1": 0.0,
+          "by_role_scheme": {
+            "positional": 0.0,
+            "type_slot": 0.0
+          }
+        }
+      },
+      "classify": {
+        "all": {
+          "n": 444,
+          "accuracy": 0.8198198198198198,
+          "macro_f1": 0.6084795921005237,
+          "ece_15_bins": 0.05353691501024819,
+          "abstain_rate": 0.18918918918918914,
+          "selective_accuracy": 0.9
+        },
+        "by_label_class": {
+          "INFERRED": {
+            "n": 372,
+            "accuracy": 0.8548387096774194,
+            "macro_f1": 0.604101221070648,
+            "ece_15_bins": 0.047049412096937054,
+            "abstain_rate": 0.15860215053763438,
+            "selective_accuracy": 0.9361022364217252
+          },
+          "OBSERVED": {
+            "n": 72,
+            "accuracy": 0.6388888888888888,
+            "macro_f1": 0.5241899375515495,
+            "ece_15_bins": 0.20783672240953172,
+            "abstain_rate": 0.3472222222222222,
+            "selective_accuracy": 0.6595744680851063
+          }
+        }
+      }
+    }
+  },
+  "brier": null,
+  "code_commit": "ff5ec922a494bcad6b33062b15ea099808dbcd1f",
+  "code_tree_sha256": "736bb3fc3b8afbec150bb2f8cf8b9617ac1c25f808d0375b7397319d04505e80",
+  "hyperlex_env": {
+    "HYPERLEX_ALLOW_TRAIN": "1",
+    "HYPERLEX_CUDA_MEM_FRACTION": "0.3",
+    "HYPERLEX_EXPORT_DIR": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-rc1/export",
+    "HYPERLEX_FILLER_FILTER": "strict",
+    "HYPERLEX_INCLUDE_LIVE": "1",
+    "HYPERLEX_LAST_TRAINABLE": "8",
+    "HYPERLEX_OFFLINE": "1",
+    "HYPERLEX_RELEASE_SET": "1",
+    "HYPERLEX_SAVE_BEST_UNBIND": "1",
+    "HYPERLEX_TASK_ROUTING": "legacy_split",
+    "HYPERLEX_TRAIN_BATCH": "8",
+    "HYPERLEX_TRAIN_EPOCHS": "40",
+    "HYPERLEX_TRAIN_LR": "2e-5",
+    "HYPERLEX_TRAIN_OUT": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-rc1",
+    "HYPERLEX_TRUNK_DIR": "/home/morpheus/.hyperlex/models/trunks/ModernBERT-base",
+    "HYPERLEX_UNBIND_CURRICULUM": "1",
+    "HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS": "1",
+    "HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS": "1",
+    "HYPERLEX_UNBIND_FILLER_DENYLIST_PATH": "/home/morpheus/hlx/filler-denylist-status.json",
+    "HYPERLEX_UNBIND_FORCE_TRAIN_PATH": "/home/morpheus/hlx/force_train_morph78_expanded.jsonl",
+    "HYPERLEX_UNBIND_HARD_ATOMS_PATH": "/home/morpheus/hlx/hard_atoms_train_morph78.jsonl",
+    "HYPERLEX_UNBIND_HARD_UPSAMPLE": "4",
+    "HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT": "2",
+    "HYPERLEX_UNBIND_INFERRED_CAP": "0",
+    "HYPERLEX_UNBIND_INFERRED_WEIGHT": "1.0",
+    "HYPERLEX_UNBIND_LOSS_WEIGHT": "1.0",
+    "HYPERLEX_UNBIND_MORPH_MARGIN": "0.5",
+    "HYPERLEX_UNBIND_OBSERVED_UPSAMPLE": "10",
+    "HYPERLEX_UNBIND_PRIMARY": "slot_ce",
+    "HYPERLEX_UNBIND_RESIDUAL_DUMP": "/home/morpheus/hlx/residual-rc1.jsonl",
+    "HYPERLEX_UNBIND_SECOND_SLOT_WEIGHT": "2"
+  }
+}

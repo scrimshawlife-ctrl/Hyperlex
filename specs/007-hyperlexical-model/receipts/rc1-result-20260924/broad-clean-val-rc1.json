@@ -1,0 +1,70 @@
+{
+  "schema": "hyperlex.broad_observed_eval.v0.2",
+  "as_of": "2026-09-25T04:03:39.042862+00:00",
+  "model": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-rc1",
+  "trained_files": [
+    "/home/morpheus/hlx/force_train_morph78_expanded.jsonl",
+    "/home/morpheus/hlx/force_train_morph50_expanded.jsonl",
+    "/home/morpheus/hlx/hard_atoms_train_morph78.jsonl",
+    "/home/morpheus/hlx/hard_atoms_train_morph50.jsonl"
+  ],
+  "n_trained_keys": 447,
+  "accounting": {
+    "n_input": 106,
+    "n_kept": 51,
+    "n_excluded_trained_key": 50,
+    "n_excluded_trained_text": 5,
+    "n_excluded_train_split_text": 0
+  },
+  "release_set": {
+    "release_set": true,
+    "n_input": 9150,
+    "n_kept": 7805,
+    "n_excluded_share_alike": 776,
+    "n_excluded_same_text": 569,
+    "kept_by_task_split": {
+      "classify:train": 3568,
+      "classify:test": 449,
+      "classify:val": 395,
+      "classify+unbind:val": 30,
+      "classify+unbind:test": 32,
+      "classify+unbind:train": 298,
+      "unbind:val": 191,
+      "unbind:train": 2530,
+      "unbind:test": 312
+    },
+    "release_content_sha256": "c05a3b66244f1d46a1df5ff6e0d7184116bd0c7d14137b9b88881de9c20d7094"
+  },
+  "slices": {
+    "all": {
+      "unbind_exact": 1.0,
+      "n_scored": 106,
+      "overlap": 55,
+      "unbind_token_f1": 1.0
+    },
+    "clean": {
+      "unbind_exact": 1.0,
+      "n_scored": 51,
+      "overlap": 0,
+      "unbind_token_f1": 1.0
+    },
+    "oov": {
+      "unbind_exact": null,
+      "n_scored": 0,
+      "overlap": 0,
+      "unbind_token_f1": null
+    }
+  },
+  "brier": null,
+  "code_commit": "ff5ec922a494bcad6b33062b15ea099808dbcd1f",
+  "code_tree_sha256": "736bb3fc3b8afbec150bb2f8cf8b9617ac1c25f808d0375b7397319d04505e80",
+  "hyperlex_env": {
+    "HYPERLEX_CUDA_MEM_FRACTION": "0.3",
+    "HYPERLEX_FILLER_FILTER": "strict",
+    "HYPERLEX_INCLUDE_LIVE": "1",
+    "HYPERLEX_OFFLINE": "1",
+    "HYPERLEX_RELEASE_SET": "1",
+    "HYPERLEX_TASK_ROUTING": "legacy_split",
+    "HYPERLEX_TRUNK_DIR": "/home/morpheus/.hyperlex/models/trunks/ModernBERT-base"
+  }
+}
