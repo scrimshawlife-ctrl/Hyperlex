@@ -320,17 +320,43 @@ def harvest_archive(root: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
-    """Spec 004 fixture gold under both schemes. Honest default n=24 (~45 unique).
+def e2_disjoint_enabled() -> bool:
+    """Drop harvest spans whose filler tuple is in the E2 test set.
 
-    Fixture rows are provenance `004:tpr:*` only — not civilian name-gate gold.
+    Default off so existing exports stay byte-identical. Set ``HLX_E2_DISJOINT=1``
+    to exclude them. Reporting of the leak (``e2_train_overlap_count``) is separate
+    and always on.
+    """
+    return os.environ.get("HLX_E2_DISJOINT") == "1"
+
+
+def harvest_unbind_spans(n: int = 24) -> list[tuple[int, dict[str, Any]]]:
+    """``(original index, span)`` from ``make_spans(n, length=4, seed=7)``.
+
+    With ``HLX_E2_DISJOINT=1``, spans whose filler tuple appears in the E2 test
+    set are omitted. Original indices stay on the rows that remain.
     """
     sys.path.insert(0, str(repo_root() / "scripts" / "shadow"))
     from recoverable_structure.fixtures import make_spans
 
+    indexed = list(enumerate(make_spans(n=n, length=4, seed=7)))
+    if e2_disjoint_enabled():
+        from .eval_unbind import e2_test_filler_tuples, filler_tuple
+
+        banned = e2_test_filler_tuples()
+        indexed = [(i, sp) for i, sp in indexed if filler_tuple(sp) not in banned]
+    return indexed
+
+
+def harvest_unbind(n: int = 24) -> list[dict[str, Any]]:
+    """Spec 004 fixture gold under both schemes. Honest default n=24 (~45 unique).
+
+    Fixture rows are provenance `004:tpr:*` only — not civilian name-gate gold.
+    ``HLX_E2_DISJOINT`` defaults off; set it to ``1`` to drop spans that share a
+    filler tuple with the E2 test set.
+    """
     rows = []
-    spans = make_spans(n=n, length=4, seed=7)
-    for i, sp in enumerate(spans):
+    for i, sp in harvest_unbind_spans(n):
         items = list(sp["item_ids"])
         tags = list(sp["type_tags"])
         rows.append(

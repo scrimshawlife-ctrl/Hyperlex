@@ -9,9 +9,17 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
 from hyperlexical.eval_unbind import main as eval_main
-from hyperlexical.eval_unbind import run_eval, spans_to_unbind_rows, want_trunk_forward
+from hyperlexical.eval_unbind import (
+    _probe_report,
+    e2_test_spans,
+    e2_train_overlap_count,
+    filler_tuple,
+    run_eval,
+    spans_to_unbind_rows,
+    want_trunk_forward,
+)
 from hyperlexical import train as train_mod
-from hyperlexical.export import LiveStoreMissing, export_dataset
+from hyperlexical.export import LiveStoreMissing, export_dataset, harvest_unbind, harvest_unbind_spans
 from hyperlexical.loop import run_loop
 
 
@@ -19,6 +27,7 @@ def test_eval_stub_loses_to_004(tmp_path, monkeypatch):
     monkeypatch.delenv("HYPERLEX_TRAIN_OUT", raising=False)
     monkeypatch.delenv("HYPERLEX_E2_TRUNK_FORWARD", raising=False)
     monkeypatch.delenv("HYPERLEX_TRUNK_DIR", raising=False)
+    monkeypatch.delenv("HLX_E2_DISJOINT", raising=False)
     monkeypatch.setenv("HYPERLEX_TRAIN_OUT", str(tmp_path / "no-heads"))
     report = run_eval()
     assert report["brier"] is None
@@ -34,6 +43,64 @@ def test_eval_stub_loses_to_004(tmp_path, monkeypatch):
     assert report["unbind_slot_f1"] is None
     assert report["unbind_token_precision"] is None
     assert report["unbind_token_recall"] is None
+    assert report["unbind_exact_strict"] is None
+    assert report["e2_train_overlap_count"] > 0
+
+
+def test_e2_train_overlap_legacy_and_disjoint(monkeypatch):
+    """Leak check: harvest n=24 vs the 12 E2 test spans (n=48, seed=7).
+
+    Index identity overlaps test indices 0, 6, 12, 16, 18. Filler-tuple
+    comparison also counts test index 44, whose fillers match training
+    index 10 with different type tags. ``e2_train_overlap_count`` uses
+    filler tuples, so the legacy count is 6 and the disjoint flag makes it 0.
+    """
+    monkeypatch.delenv("HLX_E2_DISJOINT", raising=False)
+    sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
+    from recoverable_structure.fit import _split
+    from recoverable_structure.fixtures import make_spans
+
+    spans = make_spans(n=48, length=4, seed=7)
+    _train_idx, test_idx, _split_hash = _split(48, seed=7)
+    train = make_spans(n=24, length=4, seed=7)
+    assert test_idx == [0, 6, 12, 16, 18, 36, 41, 43, 44, 45, 46, 47]
+    same_span = [
+        i
+        for i in test_idx
+        if i < 24 and spans[i]["item_ids"] == train[i]["item_ids"] and spans[i]["type_tags"] == train[i]["type_tags"]
+    ]
+    assert same_span == [0, 6, 12, 16, 18]
+    train_tuples = {tuple(sp["item_ids"]) for sp in train}
+    tuple_overlap = [i for i in test_idx if tuple(spans[i]["item_ids"]) in train_tuples]
+    assert tuple_overlap == [0, 6, 12, 16, 18, 44]
+    assert filler_tuple(spans[44]) == filler_tuple(train[10])
+    assert spans[44]["type_tags"] != train[10]["type_tags"]
+
+    probe_spans = _probe_report()[1]
+    assert [filler_tuple(sp) for sp in e2_test_spans()] == [filler_tuple(sp) for sp in probe_spans]
+    assert e2_train_overlap_count() == len(tuple_overlap) == 6
+    assert e2_train_overlap_count() > 0
+
+    legacy_rows = harvest_unbind()
+    assert len(legacy_rows) == 48
+    legacy_by_prov = {row["provenance"]: row for row in legacy_rows}
+
+    monkeypatch.setenv("HLX_E2_DISJOINT", "1")
+    assert e2_train_overlap_count() == 0
+    dropped = harvest_unbind_spans()
+    assert len(dropped) == 18
+    disjoint_rows = harvest_unbind()
+    assert len(disjoint_rows) == 36
+    assert {row["provenance"] for row in disjoint_rows} < set(legacy_by_prov)
+    for row in disjoint_rows:
+        assert row == legacy_by_prov[row["provenance"]]
+    monkeypatch.delenv("HYPERLEX_E2_TRUNK_FORWARD", raising=False)
+    monkeypatch.setenv("HYPERLEX_TRAIN_OUT", str(ROOT / "no-such-train-out"))
+    report = run_eval()
+    assert report["e2_train_overlap_count"] == 0
+    assert report.get("unbind_exact") is None
+    assert report["unbind_exact_strict"] is None
+    assert report["e2_pass"] is False
 
 
 def test_eval_loads_fixture_heads_without_hyperlex(tmp_path, monkeypatch):

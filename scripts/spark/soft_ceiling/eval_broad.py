@@ -98,6 +98,9 @@ def main(argv=None) -> int:
             "n_scored": int(scored.get("n_unbind_eval") or 0),
             "overlap": overlap(rows, trained),
             "unbind_token_f1": scored.get("unbind_token_f1"),
+            "unbind_exact_strict": scored.get("unbind_exact_strict"),
+            "unbind_token_f1_strict": scored.get("unbind_token_f1_strict"),
+            "unbind_slot_f1_strict": scored.get("unbind_slot_f1_strict"),
         }
     out = {
         "schema": "hyperlex.broad_observed_eval.v0.2",

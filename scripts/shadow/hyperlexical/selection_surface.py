@@ -21,7 +21,7 @@ from typing import Any, Iterable, Mapping, Sequence
 from .export import TYPE_SLOT_TAGS
 from .filler_filter import filter_unbind_rows
 from .soft_ceiling import clean_surface
-from .unbind_metrics import slot_counts, summarize_unbind_pairs, token_multiset_counts
+from .unbind_metrics import slot_counts, strict_pair, summarize_unbind_pairs, token_multiset_counts
 
 # Published morph78 test-clean Wilson 95% from the spent rc1 receipt (n=306).
 # Pinned, not recomputed. This audit does not read that split.
@@ -310,22 +310,52 @@ def strict_slot_pair(row: Mapping[str, Any]) -> tuple[list[str], list[str]]:
     return gold, pred
 
 
-def metric_block(pairs: Sequence[tuple[Sequence[str], Sequence[str]]]) -> dict[str, Any]:
-    """Exact, token-F1, and slot-F1. Wilson on exact (row hits) and on micro recall."""
+def _f1_entry(value: float | None, n_rows: int, tp: int, gold_n: int) -> dict[str, Any]:
+    interval = wilson_interval(tp, gold_n)
+    return {
+        "value": value,
+        "n": n_rows,
+        "micro_tp": tp,
+        "micro_gold": gold_n,
+        "wilson95": list(interval) if interval else None,
+    }
+
+
+def metric_block(
+    pairs: Sequence[tuple[Sequence[str], Sequence[str]]],
+    *,
+    strict_pairs: Sequence[tuple[Sequence[str], Sequence[str]]] | None = None,
+) -> dict[str, Any]:
+    """Exact, token-F1, and slot-F1. Wilson on exact (row hits) and on micro recall.
+
+    Legacy keys use ``pairs`` as given. Strict keys use raw lowercased gold
+    (``strict_pairs`` when the caller still has the unmapped filler) and treat
+    a ``<unk>`` prediction as a miss.
+    """
     usable = [([str(g) for g in gold], [str(p) for p in pred]) for gold, pred in pairs if gold]
     n = len(usable)
+    empty = {"value": None, "n": 0, "wilson95": None}
     if n == 0:
-        empty = {"value": None, "n": 0, "wilson95": None}
         return {
             "n": 0,
             "unbind_exact": {**_rate(0, 0)},
+            "unbind_exact_strict": {**_rate(0, 0)},
             "unbind_token_f1": {**empty, "micro_tp": 0, "micro_gold": 0},
+            "unbind_token_f1_strict": {**empty, "micro_tp": 0, "micro_gold": 0},
             "unbind_slot_f1": {**empty, "micro_tp": 0, "micro_gold": 0},
+            "unbind_slot_f1_strict": {**empty, "micro_tp": 0, "micro_gold": 0},
         }
-    summary = summarize_unbind_pairs(usable)
+    strict_src = usable if strict_pairs is None else [
+        ([str(g) for g in gold], [str(p) for p in pred]) for gold, pred in strict_pairs if gold
+    ]
+    summary = summarize_unbind_pairs(usable, strict_pairs=strict_src)
     k = sum(gold == pred for gold, pred in usable)
+    strict_view = [strict_pair(gold, pred) for gold, pred in strict_src]
+    k_strict = sum(gold == pred for gold, pred in strict_view)
     tok_tp = tok_g = 0
     slot_tp = slot_g = 0
+    stok_tp = stok_g = 0
+    sslot_tp = sslot_g = 0
     for gold, pred in usable:
         tp, _pn, gn = token_multiset_counts(gold, pred)
         tok_tp += tp
@@ -333,25 +363,26 @@ def metric_block(pairs: Sequence[tuple[Sequence[str], Sequence[str]]]) -> dict[s
         stp, _spn, sgn = slot_counts(gold, pred)
         slot_tp += stp
         slot_g += sgn
-    tok_w = wilson_interval(tok_tp, tok_g)
-    slot_w = wilson_interval(slot_tp, slot_g)
+    for gold, pred in strict_view:
+        tp, _pn, gn = token_multiset_counts(gold, pred)
+        stok_tp += tp
+        stok_g += gn
+        stp, _spn, sgn = slot_counts(gold, pred)
+        sslot_tp += stp
+        sslot_g += sgn
+    n_strict = len(strict_view)
     return {
         "n": n,
         "unbind_exact": _rate(k, n),
-        "unbind_token_f1": {
-            "value": summary["unbind_token_f1"],
-            "n": n,
-            "micro_tp": tok_tp,
-            "micro_gold": tok_g,
-            "wilson95": list(tok_w) if tok_w else None,
-        },
-        "unbind_slot_f1": {
-            "value": summary["unbind_slot_f1"],
-            "n": n,
-            "micro_tp": slot_tp,
-            "micro_gold": slot_g,
-            "wilson95": list(slot_w) if slot_w else None,
-        },
+        "unbind_exact_strict": _rate(k_strict, n_strict),
+        "unbind_token_f1": _f1_entry(summary["unbind_token_f1"], n, tok_tp, tok_g),
+        "unbind_token_f1_strict": _f1_entry(
+            summary["unbind_token_f1_strict"], n_strict, stok_tp, stok_g
+        ),
+        "unbind_slot_f1": _f1_entry(summary["unbind_slot_f1"], n, slot_tp, slot_g),
+        "unbind_slot_f1_strict": _f1_entry(
+            summary["unbind_slot_f1_strict"], n_strict, sslot_tp, sslot_g
+        ),
     }
 
 
@@ -381,23 +412,31 @@ def slice_groups(rows: Sequence[Mapping[str, Any]]) -> list[tuple[str, list]]:
     return grouped
 
 
-def _pairs_for(rows: Sequence[Mapping[str, Any]], pred_map: Mapping[str, tuple]) -> list[tuple[list[str], list[str]]]:
-    pairs: list[tuple[list[str], list[str]]] = []
+def _pairs_for(
+    rows: Sequence[Mapping[str, Any]], pred_map: Mapping[str, tuple]
+) -> tuple[list[tuple[list[str], list[str]]], list[tuple[list[str], list[str]]]]:
+    """Legacy pairs from the pred map, strict pairs from raw row fillers."""
+    legacy: list[tuple[list[str], list[str]]] = []
+    strict: list[tuple[list[str], list[str]]] = []
     for row in rows:
-        if not row.get("fillers"):
+        fillers = list(row.get("fillers") or [])
+        if not fillers:
             continue
         ident = str(row["row_id"])
         if ident not in pred_map:
             raise KeyError(f"missing prediction for {ident}")
         gold, pred = pred_map[ident]
-        pairs.append((list(gold), list(pred)))
-    return pairs
+        pred_l = [str(item) for item in pred]
+        legacy.append(([str(item) for item in gold], pred_l))
+        strict.append(([str(item).lower() for item in fillers], pred_l))
+    return legacy, strict
 
 
 def model_slice_metrics(rows: Sequence[Mapping[str, Any]], pred_map: Mapping[str, tuple]) -> dict[str, Any]:
     out: dict[str, Any] = {}
     for name, group in slice_groups(rows):
-        out[name] = metric_block(_pairs_for(group, pred_map))
+        legacy, strict = _pairs_for(group, pred_map)
+        out[name] = metric_block(legacy, strict_pairs=strict)
     return out
 
 
@@ -730,14 +769,15 @@ def render_summary(report: Mapping[str, Any]) -> str:
         "",
         "## Unbind exact",
         "",
-        "| model | slice | exact | n | wilson95 |",
-        "|---|---|---:|---:|---|",
+        "| model | slice | exact | exact_strict | n | wilson95 |",
+        "|---|---|---:|---:|---:|---|",
     ]
     for name, body in report["models"].items():
         for slice_name in ("all", "harvested", "templated", "sibling", "no_sibling"):
             block = body["slices"][slice_name]["unbind_exact"]
+            strict_block = body["slices"][slice_name]["unbind_exact_strict"]
             lines.append(
-                f"| {name} | {slice_name} | {block['value']} | {block['n']} | {block['wilson95']} |"
+                f"| {name} | {slice_name} | {block['value']} | {strict_block['value']} | {block['n']} | {block['wilson95']} |"
             )
     lines.extend(["", "## Controls on all", ""])
     copy = report["controls"]["unbind_copy_token"]["all"]
@@ -748,8 +788,11 @@ def render_summary(report: Mapping[str, Any]) -> str:
     lines.append(
         "strict_slot_copy "
         f"exact={strict['unbind_exact']['value']} "
+        f"exact_strict={strict['unbind_exact_strict']['value']} "
         f"token_f1={strict['unbind_token_f1']['value']} "
+        f"token_f1_strict={strict['unbind_token_f1_strict']['value']} "
         f"slot_f1={strict['unbind_slot_f1']['value']} "
+        f"slot_f1_strict={strict['unbind_slot_f1_strict']['value']} "
         f"n={strict['n']}"
     )
     lines.extend(["", "## Known selection surfaces", ""])
