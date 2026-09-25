@@ -13,6 +13,8 @@ import json
 import pathlib
 import sys
 
+import pytest
+
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
@@ -21,11 +23,13 @@ from hyperlexical.export import (  # noqa: E402
     audit_seed_examples_gold,
     dedupe,
     export_dataset,
+    gold_demoted_after_dedupe,
     harvest_backfill,
     harvest_dialect,
     harvest_moltbook,
     harvest_negatives,
     harvest_unbind,
+    lexical_split,
     original_gold_unbind_verdict,
     provenance_source_tag,
     summarize_gold_demotions,
@@ -438,5 +442,116 @@ def test_non_moltbook_sources_stay_byte_identical_in_full_export():
         if source == "seed_examples_audit_only":
             assert set(reasons) <= {"fallback_label", "gold_not_in_text", "kept"}
         else:
-            assert set(reasons) <= {"fallback_label", "gold_not_in_text"}
+            assert set(reasons) <= {"fallback_label", "gold_not_in_text", "no_gold"}
         assert sum(reasons.values()) > 0
+    post, splits = gold_demoted_after_dedupe(bundle["rows"])
+    assert bundle["counts"]["gold_demoted_post_dedupe"] == post
+    assert bundle["counts"]["gold_demoted_post_dedupe_by_split"] == splits
+    assert set(splits) == {"train", "val"}
+    assert sum(splits.values()) == sum(sum(reasons.values()) for reasons in post.values())
+    skipped = 0
+    for name in (
+        "moltbook_hyperlexical_rows.jsonl",
+        "moltbook_hyperlexical_high.jsonl",
+        "moltbook_hyperlexical_high_signal.jsonl",
+    ):
+        path = ROOT / "data" / name
+        if not path.is_file():
+            continue
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                json.loads(line)
+            except json.JSONDecodeError:
+                skipped += 1
+    assert bundle["counts"]["moltbook_skipped_lines"] == skipped
+
+
+def _split_text(prefix: str, want: str) -> str:
+    for index in range(300):
+        text = f"{prefix} {index}"
+        if lexical_split(text) == want:
+            return text
+    raise AssertionError(f"no {want} text for {prefix}")
+
+
+def test_empty_gold_is_tagged_no_gold_and_bad_json_is_counted(tmp_path):
+    empty = _split_text("quiet desk", "val")
+    duplicate = _split_text("quiet desk", "val")
+    assert empty == duplicate or lexical_split(empty) == "val"
+    # Two harvest lines with the same text collapse after dedupe.
+    same = empty
+    other = _split_text("also quiet", "train")
+    assert lexical_split(same) == "val"
+    assert lexical_split(other) == "train"
+    _write_molt(
+        tmp_path,
+        [
+            "{not json",
+            "",
+            _molt_line(text=same, fillers=[], roles=[]),
+            _molt_line(text=same, fillers=["", None], roles=[]),
+            _molt_line(text=other, fillers=[]),
+            _molt_line(text="see KDR next", fillers=["KDR"], roles=["TOKEN"], **{"class": "OBSERVED"}),
+            json.dumps({"text": "not ai native", "lineage": "brainrot-aura", "fillers": ["general"]}),
+        ],
+    )
+    stats: dict[str, int] = {}
+    rows = harvest_moltbook(tmp_path, stats=stats)
+    assert stats["moltbook_skipped_lines"] == 1
+    empties = [row for row in rows if row["text"] == same]
+    assert len(empties) == 2
+    for row in empties:
+        assert row["task"] == "classify"
+        assert row["class"] == "INFERRED"
+        assert row["fillers"] == []
+        assert row["gold_demote_reason"] == "no_gold"
+        assert row["text"] == same
+    assert all(row["text"] != "not ai native" for row in rows)
+    kept = [row for row in rows if row["text"] == "see KDR next"]
+    assert kept[0]["task"] == "classify+unbind"
+    assert "gold_demote_reason" not in kept[0]
+    assert kept[0]["class"] == "OBSERVED"
+    collapsed = dedupe(rows)
+    post, splits = gold_demoted_after_dedupe(collapsed)
+    assert splits["val"] >= 1
+    assert splits["train"] >= 1
+    assert post["moltbook"]["no_gold"] == splits["train"] + splits["val"]
+    # Pre-dedupe still counts both copies of the val text. Post-dedupe keeps one.
+    assert summarize_gold_demotions(rows)["moltbook"]["no_gold"] == 3
+    assert splits["val"] == 1
+
+
+def test_harvest_moltbook_does_not_swallow_non_json_errors(tmp_path):
+    _write_molt(
+        tmp_path,
+        [_molt_line(text="hello __RESTRICTED_FIXTURE__ there", fillers=["hello"])],
+    )
+    with pytest.raises(ValueError, match="restricted"):
+        harvest_moltbook(tmp_path)
+    path = tmp_path / "data" / "moltbook_hyperlexical_rows.jsonl"
+    path.write_text("[]\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="not an object"):
+        harvest_moltbook(tmp_path)
+
+
+def test_post_dedupe_counts_do_not_read_test_rows():
+    class _SplitOnly:
+        def get(self, key, default=None):
+            if key != "split":
+                raise AssertionError(key)
+            return "test"
+
+    val = {
+        "split": "val",
+        "text": "kept phrase",
+        "gold_demote_reason": "no_gold",
+        "provenance": {"source": "moltbook"},
+        "task": "classify",
+        "lineage": "ai-native",
+    }
+    post, splits = gold_demoted_after_dedupe([_SplitOnly(), val])
+    assert splits == {"train": 0, "val": 1}
+    assert post == {"moltbook": {"no_gold": 1}}
+    assert "UNREAD" not in json.dumps({"post": post, "splits": splits})

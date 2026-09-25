@@ -17,6 +17,7 @@ from hyperlexical.heldout_census import (  # noqa: E402
     TOPUP_MIN,
     admitted_ids_sha256,
     census_rows,
+    exclusion_ids,
     group_key,
     load_holdout_ids,
     load_trained_files,
@@ -499,3 +500,66 @@ def test_write_census_rejects_escaped_name(tmp_path):
     path = write_census(report, tmp_path)
     assert path.name == "census.json"
     assert path.parent == tmp_path
+
+
+def test_rule5_text_excludes_demoted_and_retasked_twins():
+    """A spent unbind id does not match its demoted or re-tasked twin.
+
+    Exclusion is the normalized text. Verdict thresholds stay put.
+    """
+    spent = _row("spent phrase here", ["spent", "phrase", "here"], task="unbind")
+    demoted = _row(
+        "Spent, phrase here!",
+        [],
+        task="classify",
+        cls="INFERRED",
+        scheme=None,
+    )
+    demoted["gold_demote_reason"] = "no_gold"
+    demoted["fillers"] = []
+    retasked = _row(
+        "spent phrase here",
+        ["here"],
+        task="classify+unbind",
+        scheme="type_slot",
+    )
+    control = _row("unrelated zebra token", ["unrelated", "zebra", "token"], task="unbind")
+    assert normalize_group_text(demoted["text"]) == normalize_group_text(spent["text"])
+    assert not (exclusion_ids(demoted) & exclusion_ids(spent))
+    assert not (exclusion_ids(retasked) & exclusion_ids(spent))
+
+    via_trained = _census([demoted, retasked, control], trained=[spent])
+    assert via_trained["n_admitted"] == 1
+    assert via_trained["rejected"]["first_failing"] == {"1": 1, "2": 0, "3": 0, "4": 0, "5": 1}
+    assert via_trained["rejected"]["all_failing"] == {"1": 1, "2": 1, "3": 0, "4": 0, "5": 2}
+    assert "spent phrase here" not in json.dumps(via_trained)
+
+    via_id = _census([spent, demoted, retasked, control], holdout={row_id(spent)})
+    assert via_id["n_admitted"] == 1
+    assert via_id["rejected"]["first_failing"] == {"1": 1, "2": 0, "3": 0, "4": 0, "5": 2}
+    assert via_id["rejected"]["all_failing"] == {"1": 1, "2": 1, "3": 0, "4": 0, "5": 3}
+    assert "normalized text" in via_id["rules"]["5"]
+    assert DRAW_READY_MIN == 470 and TOPUP_MIN == 150
+    assert pinned_verdict(470, 282) == "DRAW_READY"
+    assert pinned_verdict(470, 283) == "SOURCE_CAP"
+    assert pinned_verdict(150, 150) == "TOPUP_NEEDED"
+    assert pinned_verdict(149, 149) == "POOL_EXHAUSTED"
+
+
+def test_rule5_does_not_read_test_split_text(monkeypatch):
+    import hyperlexical.heldout_census as census_mod
+
+    real = census_mod.normalize_group_text
+
+    def spy(text):
+        assert "UNREAD_TEST" not in str(text)
+        return real(text)
+
+    monkeypatch.setattr(census_mod, "normalize_group_text", spy)
+    secret = _row("UNREAD_TEST phrase", ["unread"], split="test")
+    kept = _row("visible zebra", ["visible", "zebra"])
+    report = census_mod.census_rows([kept, secret], [secret])
+    assert report["n_test_discarded"] == 1
+    assert report["n_admitted"] == 1
+    assert report["rejected"]["all_failing"]["5"] == 0
+    assert "UNREAD_TEST" not in json.dumps(report)
