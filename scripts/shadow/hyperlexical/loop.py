@@ -491,6 +491,11 @@ def run_loop(
         classify_tr = routed["classify"]["train"]
         classify_va = routed["classify"]["val"]
     unbind_tr, unbind_va, unbind_recipe = prepare_unbind_splits(bundle["rows"])
+    from .classify_admission import apply_classify_admission
+
+    classify_tr, classify_va, classify_admission_receipt = apply_classify_admission(
+        bundle["rows"], classify_tr, classify_va
+    )
     classify_tr, n_classify_train = filter_holdout_rows(classify_tr, holdout_spec)
     classify_va, n_classify_val = filter_holdout_rows(classify_va, holdout_spec)
     assert_no_holdout(classify_tr, holdout_spec, "classify train")
@@ -884,6 +889,7 @@ def run_loop(
         "aligner": "char_span + offset_mapping",
         "data_sha256": bundle["sha256"],
         "holdout": holdout_receipt(holdout_spec, holdout_removed),
+        "classify_admission": classify_admission_receipt,
         "include_live": include_live,
         "live_included": bundle["counts"].get("live_included", 0),
         "name_gate": False,

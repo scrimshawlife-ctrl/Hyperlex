@@ -1218,6 +1218,43 @@ def harvest_live_unbind(
     return rows
 
 
+def undo_dump_brainrot_fold(rows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
+    """Undo the brainrot-aura -> ai-native fold baked into data/hyperlex_4333_dump.jsonl.
+
+    The dump (300c83e) carries 0 brainrot-aura rows; 63 ai-native rows keep
+    provenance.original_lineage=brainrot-aura and ~400 more are plain brainrot
+    slang. A notion (dump) classify row labelled ai-native becomes brainrot-aura
+    when every non-notion, non-test classify row with the same normalized text
+    says brainrot-aura. Rows with mixed or no outside evidence are left alone.
+    Split is text-hashed, so relabelling cannot move a row across splits.
+    """
+    from .heldout_census import normalize_group_text  # lazy: selection_surface imports export
+
+    def _src(r: dict[str, Any]) -> str:
+        prov = r.get("provenance")
+        return str(prov.get("source") or "") if isinstance(prov, dict) else ""
+
+    other: dict[str, set[str]] = {}
+    for r in rows:
+        if r.get("task") != "classify" or r.get("split") == "test" or _src(r) == "notion":
+            continue
+        key = normalize_group_text(r.get("text") or "")
+        if key:
+            other.setdefault(key, set()).add(str(r.get("lineage")))
+    undone = 0
+    for r in rows:
+        if r.get("task") != "classify" or _src(r) != "notion" or r.get("lineage") != "ai-native":
+            continue
+        if other.get(normalize_group_text(r.get("text") or "")) == {"brainrot-aura"}:
+            r["lineage"] = "brainrot-aura"
+            raw = r["provenance"].get("raw_typology")
+            if isinstance(raw, list) and raw:
+                r["typology"] = list(dict.fromkeys(raw))
+            r["provenance"]["fold_undone"] = "dump_brainrot_fold"
+            undone += 1
+    return rows, undone
+
+
 def export_dataset(
     root: Path | None = None,
     *,
@@ -1265,6 +1302,7 @@ def export_dataset(
         held = _positional_unbind_atoms(rows)
         live_unbind = harvest_live_unbind(store, skip_atoms=held)
         rows = rows + live_rows + live_unbind
+    rows, dump_fold_undone = undo_dump_brainrot_fold(rows)
     rows = dedupe(rows)
     gold_demoted_post, gold_demoted_by_split = gold_demoted_after_dedupe(rows)
     rows.sort(key=lambda r: (r["task"], r["lineage"], r["text"]))
@@ -1341,6 +1379,7 @@ def export_dataset(
         "val": sum(1 for r in rows if r["split"] == "val"),
         "test": sum(1 for r in rows if r["split"] == "test"),
         "live_included": live_n if include_live else 0,
+        "dump_brainrot_fold_undone": dump_fold_undone,
         "live_rejected": live_rejected if include_live else 0,
         "name_gate": False,
         "name_gate_classify_gap": max(0, 2000 - classify_family),
@@ -1476,8 +1515,12 @@ def harvest_4333_dump(root: Path) -> list[dict[str, Any]]:
                 continue
 
             lineage = r.get("lineage", "ai-native")
-            if lineage in ("brainrot-aura", "ai-native"):
-                lineage = "ai-native"
+            # FOLD_BUG (3dc37b7): brainrot-aura was folded into ai-native here and
+            # upstream in the dump. brainrot-aura is its own family (layout.FAMILIES[3]);
+            # "brainrot aura" is a mutation of two base terms, not an ai-native coinage.
+            orig = r.get("provenance") if isinstance(r.get("provenance"), dict) else {}
+            if lineage == "ai-native" and orig.get("original_lineage") == "brainrot-aura":
+                lineage = "brainrot-aura"
 
             typology = r.get("typology", ["compression", "status"])
             if lineage == "ai-native":
@@ -1499,6 +1542,7 @@ def harvest_4333_dump(root: Path) -> list[dict[str, Any]]:
                         "original_provenance": r.get("provenance"),
                         "reclassify_pass": r.get("reclassify_pass"),
                         "settle_note": r.get("settle_note"),
+                        "raw_typology": r.get("typology"),
                     },
                     **{"class": r.get("class", "INFERRED")},
                     license=r.get("license", "operator-local"),
