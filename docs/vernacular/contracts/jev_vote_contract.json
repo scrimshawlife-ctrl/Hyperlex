@@ -1,0 +1,118 @@
+{
+  "_publication": {
+    "source_file": "jev_contract.json",
+    "source_sha256": "56ba6913279af295abd8cf143d61300beeec09d95c4b8cd4acd8493fca39aaa1",
+    "note": "Published copy for documentation. Sanitized on 2026-09-25 PT: local file paths, cache paths, account names and people's names were removed or generalized; the question text, closed sets, thresholds and fail-closed rules are unchanged. This contract embeds NO real posts, X post text, author handles, term example posts, holdout ids or database contents: the {term}/{pid}/STATE fields are template placeholders filled at run time. The illustrative state under 'synthetic_example' (where present) is invented and clearly synthetic."
+  },
+  "contract_id": "vernacular-term-verdict",
+  "version": "rebuilt-v3.2-metrics",
+  "provenance": "REBUILT 2026-09-25 (rebuilt series; not the original contract, which was lost in a 2026-09-24 migration). v3.2 adds borderline voting (3-vote majority when vote 1's top probability is in [0.35, 0.65]) and the deterministic rule counts evidence on SLANG_SENSE posts only (per-post labels from contract rebuilt-sense-v1). Question text identical to v3.1 (keeps the operator's null-meaning cap). No term-specific hints.",
+  "approved_by": "operator, 2026-09-25 PT (standing Jev permission)",
+  "approval_scope": "Standing permission covers Jev calls only (no other spend, sends or posts). Per-run safety cap: $1.",
+  "model": "jev-latest",
+  "answer_key": "verdict",
+  "closed_set": [
+    "SLANG_COHERENT",
+    "SLANG_NULL_MEANING",
+    "QUARANTINE",
+    "HOLD"
+  ],
+  "final_verdict_mapping": {
+    "SLANG_COHERENT": "deterministic rule metrics-rule-v1.4 (see ../VERDICT-RULES.md) -> PASS if >=1 evidence path (A_BROAD_ADOPTION | B_PERSISTENT_USE | C_ATTESTED / attested_operator / attested_dictionary | D_LINEAGE) and no guard flag, else OBSERVE",
+    "QUARANTINE": "QUARANTINE",
+    "HOLD": "HOLD",
+    "SLANG_NULL_MEANING": "OBSERVE always (flag NULL_MEANING_CAP; evidence paths still recorded)"
+  },
+  "min_top_probability": 0.5,
+  "fail_closed_rules": [
+    "Jev error, timeout, missing answer, or a choice outside closed_set: the term FAILS CLOSED (note left untouched, listed in the receipt). No verdict is guessed.",
+    "Valid answer whose top probability is below min_top_probability: effective choice HOLD (abstain), probabilities kept in the receipt.",
+    "SLANG_COHERENT or SLANG_NULL_MEANING but no metrics row for the term: FAILS CLOSED (note untouched).",
+    "Never writes Notion; a verdict is a label only and never triggers publishing.",
+    "Borderline voting: any vote erroring fails the term closed (note untouched); partial vote sets are never used."
+  ],
+  "questions": {
+    "verdict": {
+      "type": "choice",
+      "instructions": "You judge ONE question about a term from a slang-ingest database record (STATE): is it real slang with ONE coherent slang meaning? Use only STATE: status, current_summary, possible_meanings, meanings_epistemic, meaning_history, variants, sample_posts. Do not invent meanings.\nSample posts are raw matches of the spelling and may include unrelated uses of the same letters (names, schools, companies, tickers, technical terms, other languages). Ignore those unrelated uses: judge whether the recorded meaning and the posts that do use the term as slang point to one coherent slang sense. Unrelated same-spelling posts alone are not a reason for HOLD or QUARANTINE; they only matter if the recorded meaning itself is built from them.\nYou are NOT judging how popular, frequent, new, widespread or established the term is; a separate evidence rule decides that. Few sample posts is never a reason by itself to answer HOLD or QUARANTINE.\nSLANG_NULL_MEANING: the term is real slang, but its meaning is deliberately empty: the recorded meaning and/or the posts say it means nothing, or that the joke is that it means nothing (a null-meaning meme used as a vibe, chant or in-joke rather than to convey a sense). Choose this instead of SLANG_COHERENT whenever the term's point is that it has no real meaning. A term that merely has a vague, mild or emotional meaning (e.g. an intensifier or a general expression of approval) is NOT null-meaning.\nSLANG_COHERENT: the term is a slang word, phrase, abbreviation/acronym, or a slang use of an ordinary word, and the recorded meaning together with the sample posts points to one coherent slang sense (small variations or extensions of the same sense are fine; a literal everyday sense existing alongside the slang sense is fine).\nQUARANTINE: the term is not a slang lexeme or its record is unusable: status is 'quarantined'; it is a proper name (person, group, band, actor, brand, product, platform, chain, title); a hashtag or show/event/tour/ship tag; only an ordinary non-slang sense is recorded or used; a sentence fragment; or the recorded meanings are incoherent, contradictory, or polluted by unrelated text.\nHOLD: the meaning is empty, unknown or unconfirmed; the term has several unrelated slang senses with no dominant one; or you are unsure. Prefer HOLD over guessing.",
+      "criteria": {
+        "SLANG_COHERENT": "Real slang (word, phrase, acronym, or slang use of an ordinary word) whose recorded meaning and samples point to one coherent slang sense. Popularity is not considered.",
+        "SLANG_NULL_MEANING": "Real slang whose meaning is deliberately empty; the joke is that it means nothing (null-meaning meme). Popularity is not considered.",
+        "QUARANTINE": "Not a slang lexeme or unusable record: status quarantined, proper name, hashtag/tag, only an ordinary non-slang sense, fragment, or incoherent/polluted meanings.",
+        "HOLD": "Meaning empty, unknown or unconfirmed, several unrelated senses with none dominant, or unsure: abstain, fail closed."
+      }
+    }
+  },
+  "previous_versions": [
+    {
+      "version": "rebuilt-v1",
+      "sha256": "8d274820c7875f14c9f9df8f31b39db62e3b32925f3fcd9a46a612b7904e7ce3",
+      "approved_by": "operator 2026-09-25 10:11 PT, one run on 9 terms"
+    },
+    {
+      "version": "rebuilt-v2",
+      "sha256": "4789fbc9b0a749e4f7d67a54e95c1402149f5bd699383f748d4ec93ed3fc3e5f",
+      "approved_by": "operator 2026-09-25 10:23 PT, standing"
+    },
+    {
+      "version": "rebuilt-v3 (rejected candidate, never installed)",
+      "sha256": "e87f6713cedec450e982f926b774c3a5e7ca3536c201c1d09b4ba9aa0d6b534a"
+    },
+    {
+      "version": "rebuilt-v3-metrics-draft1 (calibrated 36/41, not installed for writes)",
+      "sha256": "e9e773eb48853d2bed13b83435f6a15e4138e7ad6996966f60ef7825c4bc92ee",
+      "note": "draft1 provenance text says '~10:40 PT'; actual file time 10:36 PT"
+    },
+    {
+      "version": "rebuilt-v3-metrics r2 pre-correction (identical question text; provenance times wrong)",
+      "sha256": "9555d3fe57be3d5ecce41a679e370ed7caacbb0ddd190ca86ed7ca94abd48113"
+    },
+    {
+      "version": "rebuilt-v3-metrics",
+      "sha256": "a9ce40a7b6efffc3abc1ee96173ac88f498b161c2f3ae67fda42cc54a36de286",
+      "approved_by": "operator 2026-09-25 10:23 PT, standing"
+    },
+    {
+      "version": "rebuilt-v3.1-metrics",
+      "sha256": "8679b8f911e041ef14e43f0d6cf5f01355f8ca72c3388a2af765125fc3f6da1e",
+      "approved_by": "operator 2026-09-25 10:23 PT, standing"
+    }
+  ],
+  "ruling": "Operator ruling 2026-09-25 10:43 PT: treat meaningless memes as OBSERVE, not PASS. Operator 2026-09-25 10:50 PT: approved borderline 3-vote majority and sense purity.",
+  "voting": {
+    "band_lo": 0.35,
+    "band_hi": 0.65,
+    "votes": 3,
+    "rule": "band on vote-1 top probability (inclusive); inside the band each vote's label is its argmax choice; majority >=2 of 3 wins; no majority -> HOLD; outside the band single call, top < min_top_probability -> HOLD",
+    "why_band": "0.5 is the abstain threshold; +/-0.15 covers the observed run-to-run jitter (unc: 0.46-0.53 over 5 identical-question calls) with margin, while answers >=0.66 (clear) stay single-call to keep cost low."
+  },
+  "synthetic_example": {
+    "_synthetic": true,
+    "STATE": {
+      "term": "zorblet",
+      "status": "candidate",
+      "current_summary": "SYNTHETIC: impressive, cool",
+      "possible_meanings": [
+        "SYNTHETIC: impressive"
+      ],
+      "variants": [
+        "zorblets"
+      ],
+      "sample_posts": [
+        "SYNTHETIC POST 1: that fit is zorblet",
+        "SYNTHETIC POST 2: zorblet energy today"
+      ]
+    },
+    "answer_shape": {
+      "verdict": {
+        "choice": "SLANG_COHERENT",
+        "probabilities": {
+          "SLANG_COHERENT": 0.8,
+          "SLANG_NULL_MEANING": 0.05,
+          "QUARANTINE": 0.05,
+          "HOLD": 0.1
+        }
+      }
+    }
+  }
+}
