@@ -33,7 +33,14 @@ from hyperlexical.release_set import maybe_release  # noqa: E402
 from hyperlexical.soft_ceiling import clean_surface, load_jsonl_keys, oov_filler_surface, row_key  # noqa: E402
 
 METRICS = {
-    "unbind": ["unbind_exact", "unbind_token_f1", "unbind_slot_f1"],
+    "unbind": [
+        "unbind_exact",
+        "unbind_token_f1",
+        "unbind_slot_f1",
+        "unbind_exact_strict",
+        "unbind_token_f1_strict",
+        "unbind_slot_f1_strict",
+    ],
     "unbind_slices": ["all", "clean", "oov_filler", "by_role_scheme"],
     "classify": ["accuracy", "macro_f1", "ece_15_bins", "abstain_rate"],
     "report_by_label_class": ["OBSERVED", "INFERRED"],

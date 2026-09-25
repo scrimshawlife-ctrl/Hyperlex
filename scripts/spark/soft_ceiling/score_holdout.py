@@ -140,10 +140,23 @@ def main(argv=None) -> int:
         for k in ("unbind_all", "unbind_clean", "unbind_oov_filler"):
             s = score_unbind_exact(enc, fh, tok, maps, sl[k], dev) if sl[k] else {}
             by_scheme = {}
+            by_scheme_strict = {}
             for scheme in sorted({str(r.get("role_scheme")) for r in sl[k]}):
                 sub = [r for r in sl[k] if str(r.get("role_scheme")) == scheme]
-                by_scheme[scheme] = score_unbind_exact(enc, fh, tok, maps, sub, dev).get("unbind_exact")
-            unbind[k] = {"n": len(sl[k]), "unbind_exact": s.get("unbind_exact"), "unbind_token_f1": s.get("unbind_token_f1"), "unbind_slot_f1": s.get("unbind_slot_f1"), "by_role_scheme": by_scheme}
+                scheme_scored = score_unbind_exact(enc, fh, tok, maps, sub, dev)
+                by_scheme[scheme] = scheme_scored.get("unbind_exact")
+                by_scheme_strict[scheme] = scheme_scored.get("unbind_exact_strict")
+            unbind[k] = {
+                "n": len(sl[k]),
+                "unbind_exact": s.get("unbind_exact"),
+                "unbind_token_f1": s.get("unbind_token_f1"),
+                "unbind_slot_f1": s.get("unbind_slot_f1"),
+                "unbind_exact_strict": s.get("unbind_exact_strict"),
+                "unbind_token_f1_strict": s.get("unbind_token_f1_strict"),
+                "unbind_slot_f1_strict": s.get("unbind_slot_f1_strict"),
+                "by_role_scheme": by_scheme,
+                "by_role_scheme_strict": by_scheme_strict,
+            }
         logits = []
         with torch.no_grad():
             for r in cls_rows:
@@ -186,7 +199,7 @@ def main(argv=None) -> int:
         **provenance(REPO),
     }
     Path(args.out).write_text(json.dumps(out, indent=2) + "\n")
-    print(json.dumps({"baselines": baselines, "results": {k: {"unbind": {s: v["unbind_exact"] for s, v in r["unbind"].items()}, "classify": r["classify"]["all"]} for k, r in results.items()}}, indent=2))
+    print(json.dumps({"baselines": baselines, "results": {k: {"unbind": {s: v["unbind_exact"] for s, v in r["unbind"].items()}, "unbind_strict": {s: v.get("unbind_exact_strict") for s, v in r["unbind"].items()}, "classify": r["classify"]["all"]} for k, r in results.items()}}, indent=2))
     return 0
 
 

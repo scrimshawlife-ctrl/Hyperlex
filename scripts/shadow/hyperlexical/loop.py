@@ -645,6 +645,7 @@ def run_loop(
             hit += int(pred == gold)
             tot += 1
         pairs: list[tuple[list[str], list[str]]] = []
+        strict_pairs: list[tuple[list[str], list[str]]] = []
         residual_records: list[dict] = []
         for row in unbind_va or unbind_tr[:8]:
             fillers = list(row.get("fillers") or [])
@@ -654,13 +655,16 @@ def run_loop(
             states = out.last_hidden_state[0]
             offs = _offsets(tok, row["text"])
             gold_strs: list[str] = []
+            raw_strs: list[str] = []
             pred_strs: list[str] = []
             for fill in fillers:
                 idxs = pool_indices(states.size(0), atom_token_index(row["text"], fill, offs))
                 pred = int(filler_head(states[idxs].mean(0)).argmax())
                 gold_strs.append(mapped_filler(maps, fill))
+                raw_strs.append(str(fill).lower())
                 pred_strs.append(mapped_pred(maps, pred))
             pairs.append((gold_strs, pred_strs))
+            strict_pairs.append((raw_strs, pred_strs))
             if residual_dump_path:
                 rec = residual_row_record(
                     text=str(row.get("text") or ""),
@@ -674,7 +678,7 @@ def run_loop(
         encoder.train()
         classify.train()
         filler_head.train()
-        metrics = summarize_unbind_pairs(pairs)
+        metrics = summarize_unbind_pairs(pairs, strict_pairs=strict_pairs)
         metrics["classify_acc"] = hit / max(1, tot)
         metrics["n_classify_eval"] = tot
         return metrics
@@ -735,6 +739,9 @@ def run_loop(
                         "unbind_exact": exact,
                         "unbind_token_f1": best_metrics.get("unbind_token_f1"),
                         "unbind_slot_f1": best_metrics.get("unbind_slot_f1"),
+                        "unbind_exact_strict": best_metrics.get("unbind_exact_strict"),
+                        "unbind_token_f1_strict": best_metrics.get("unbind_token_f1_strict"),
+                        "unbind_slot_f1_strict": best_metrics.get("unbind_slot_f1_strict"),
                         "classify_acc": best_metrics.get("classify_acc"),
                     },
                     indent=2,
