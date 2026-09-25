@@ -18,17 +18,19 @@ sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
 from hyperlexical.export import (  # noqa: E402
     _row,
+    audit_seed_examples_gold,
+    dedupe,
     export_dataset,
     harvest_backfill,
     harvest_dialect,
     harvest_moltbook,
     harvest_negatives,
-    harvest_seed_examples,
     harvest_unbind,
     original_gold_unbind_verdict,
+    provenance_source_tag,
     summarize_gold_demotions,
 )
-from hyperlexical.selection_surface import surface_tokens  # noqa: E402
+from hyperlexical.selection_surface import row_id, surface_tokens  # noqa: E402
 
 
 def _molt_line(**overrides):
@@ -161,7 +163,42 @@ def test_passing_moltbook_row_matches_ungated_builder(tmp_path):
     assert json.dumps(got, sort_keys=True) == json.dumps(expected, sort_keys=True)
 
 
-def test_seed_fixture_demotes_general_and_does_not_relabel_kdr(tmp_path):
+def _ungated_moltbook(root: pathlib.Path) -> list[dict]:
+    """Main's harvest_moltbook: every ai-native row is classify+unbind."""
+    rows = []
+    for name in (
+        "moltbook_hyperlexical_rows.jsonl",
+        "moltbook_hyperlexical_high.jsonl",
+        "moltbook_hyperlexical_high_signal.jsonl",
+    ):
+        path = root / "data" / name
+        if not path.exists():
+            continue
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            if record.get("lineage") != "ai-native":
+                continue
+            rows.append(
+                _row(
+                    text=record.get("text", ""),
+                    lineage="ai-native",
+                    typology=record.get("typology", ["compression"]),
+                    stage=record.get("stage", "circulating"),
+                    roles=record.get("roles", []),
+                    fillers=record.get("fillers", []),
+                    role_scheme=record.get("role_scheme"),
+                    task="classify+unbind",
+                    provenance=record.get("provenance", {"source": "moltbook"}),
+                    **{"class": record.get("class", "INFERRED")},
+                    license=record.get("license", "MIT (distilled)"),
+                )
+            )
+    return rows
+
+
+def test_seed_audit_counts_verdicts_and_emits_nothing(tmp_path):
     path = tmp_path / "data" / "agent_memetics" / "seed_examples.jsonl"
     path.parent.mkdir(parents=True)
     records = [
@@ -183,44 +220,53 @@ def test_seed_fixture_demotes_general_and_does_not_relabel_kdr(tmp_path):
         },
     ]
     path.write_text("".join(json.dumps(rec) + "\n" for rec in records), encoding="utf-8")
-    rows = harvest_seed_examples(tmp_path)
-    by_text = {row["text"]: row for row in rows}
-    assert "No context loss label on this seed." not in by_text
+    assert audit_seed_examples_gold(tmp_path) == {
+        "fallback_label": 1,
+        "gold_not_in_text": 1,
+        "kept": 1,
+    }
+    assert harvest_moltbook(tmp_path) == []
 
-    ungrounded = by_text["Hello from a quiet desk with no technique token."]
-    assert ungrounded["task"] == "classify"
-    assert ungrounded["fillers"] == []
-    assert ungrounded["class"] == "INFERRED"
-    assert ungrounded["gold_demote_reason"] == "gold_not_in_text"
-    assert ungrounded["provenance"]["source"] == "seed_examples"
+    # Curated-seed rows are the path that actually enters the export.
+    _write_molt(
+        tmp_path,
+        [
+            _molt_line(
+                text="Context note with KDR in the sentence.",
+                fillers=["general"],
+                provenance={"source": "moltbook-curated-seed", "class": "INFERRED"},
+            ),
+            _molt_line(
+                text="see KDR next",
+                fillers=["KDR"],
+                roles=["TOKEN"],
+                provenance={"source": "moltbook-curated-seed", "class": "INFERRED"},
+            ),
+        ],
+    )
+    gated = {row["text"]: row for row in harvest_moltbook(tmp_path)}
+    demoted = gated["Context note with KDR in the sentence."]
+    assert "kdr" in surface_tokens(demoted["text"])
+    assert demoted["task"] == "classify"
+    assert demoted["fillers"] == []
+    assert demoted["gold_demote_reason"] == "fallback_label"
+    assert demoted["provenance"]["source"] == "moltbook-curated-seed"
+    kept = gated["see KDR next"]
+    assert kept["task"] == "classify+unbind"
+    assert kept["fillers"] == ["KDR"]
+    assert "gold_demote_reason" not in kept
 
-    labeled_general = by_text["Context note with KDR in the sentence."]
-    assert "kdr" in surface_tokens(labeled_general["text"])
-    assert labeled_general["task"] == "classify"
-    assert labeled_general["fillers"] == []
-    assert labeled_general["gold_demote_reason"] == "fallback_label"
-    assert labeled_general["class"] == "INFERRED"
 
-    grounded = by_text["see KDR next"]
-    assert grounded["task"] == "classify+unbind"
-    assert grounded["fillers"] == ["KDR"]
-    assert grounded["class"] == "INFERRED"
-    assert "gold_demote_reason" not in grounded
-
-
-def test_real_seed_examples_kdr_cases_demote_without_relabel():
-    """The committed seed file. Labels are not edited. ``general`` is not retitled ``kdr``."""
+def test_real_seed_examples_audit_does_not_relabel():
+    """Read-only. The committed seed file is not edited and is not harvested."""
     path = ROOT / "data" / "agent_memetics" / "seed_examples.jsonl"
     kdr = []
     general_post = None
-    labeled = 0
     for line in path.read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
         rec = json.loads(line)
         label = (rec.get("labels") or {}).get("context_loss")
-        if isinstance(label, str) and label.strip():
-            labeled += 1
         if label == "KDR":
             kdr.append(rec)
         if label == "general" and "kdr" in rec["text"].lower():
@@ -244,25 +290,74 @@ def test_real_seed_examples_kdr_cases_demote_without_relabel():
     assert general_post is not None
     assert "kdr" in surface_tokens(general_post["text"])
     assert original_gold_unbind_verdict(general_post["text"], ["general"]) == (False, "fallback_label")
+    assert audit_seed_examples_gold(ROOT) == {
+        "fallback_label": 5,
+        "gold_not_in_text": 21,
+        "kept": 0,
+    }
 
-    rows = harvest_seed_examples(ROOT)
-    assert len(rows) == labeled
-    kdr_texts = {rec["text"] for rec in kdr}
-    harvested_kdr = [row for row in rows if row["text"] in kdr_texts]
-    assert len(harvested_kdr) == 5
-    assert all(row["task"] == "classify" for row in harvested_kdr)
-    assert all(row["fillers"] == [] for row in harvested_kdr)
-    assert all(row["roles"] == [] for row in harvested_kdr)
-    assert all(row["role_scheme"] is None for row in harvested_kdr)
-    assert all(row["class"] == "INFERRED" for row in harvested_kdr)
-    assert all(row["gold_demote_reason"] == "gold_not_in_text" for row in harvested_kdr)
 
-    hit = [row for row in rows if row["text"] == general_post["text"]]
-    assert len(hit) == 1
-    assert hit[0]["task"] == "classify"
-    assert hit[0]["fillers"] == []
-    assert hit[0]["class"] == "INFERRED"
-    assert hit[0]["gold_demote_reason"] == "fallback_label"
+def test_demotion_adds_no_new_row_ids(tmp_path):
+    """Gated texts match the ungated builder. New ids are demotions of those texts."""
+    pack = tmp_path / "data" / "backfill" / "2026"
+    pack.mkdir(parents=True)
+    (pack / "2026-01-01.json").write_text(
+        json.dumps(
+            {
+                "provenance_default": "INFERRED",
+                "terms": [
+                    {
+                        "term": "a general statement",
+                        "family_id": "ai-native",
+                        "provenance": "INFERRED",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    _write_molt(
+        tmp_path,
+        [
+            _molt_line(text="a general statement", fillers=["general"]),
+            _molt_line(text="alpha beta", fillers=["nope"]),
+            _molt_line(text="see KDR next", fillers=["KDR"], roles=["TOKEN"], **{"class": "OBSERVED"}),
+            _molt_line(
+                text="curated general note",
+                fillers=["general"],
+                provenance={"source": "moltbook-curated-seed", "class": "INFERRED"},
+            ),
+        ],
+    )
+    ungated = _ungated_moltbook(tmp_path)
+    gated = harvest_moltbook(tmp_path)
+    assert [row["text"] for row in gated] == [row["text"] for row in ungated]
+    ungated_ids = {row_id(row) for row in ungated}
+    ungated_texts = {row["text"] for row in ungated}
+    for before, after in zip(ungated, gated):
+        assert after["text"] == before["text"]
+        assert after["split"] == before["split"]
+        assert after["lineage"] == before["lineage"]
+        assert after["typology"] == before["typology"]
+        if after.get("gold_demote_reason"):
+            assert after["task"] == "classify"
+            assert after["fillers"] == []
+            assert after["roles"] == []
+            assert after["role_scheme"] is None
+            assert row_id(after) not in ungated_ids
+        else:
+            assert row_id(after) == row_id(before)
+            assert json.dumps(after, sort_keys=True) == json.dumps(before, sort_keys=True)
+
+    ungated_export = dedupe(harvest_backfill(tmp_path) + ungated)
+    gated_export = dedupe(harvest_backfill(tmp_path) + gated)
+    assert {row["text"] for row in gated_export} == {row["text"] for row in ungated_export}
+    ungated_export_ids = {row_id(row) for row in ungated_export}
+    for row in gated_export:
+        if row_id(row) not in ungated_export_ids:
+            assert row.get("gold_demote_reason")
+            assert row["text"] in ungated_texts
+            assert row["fillers"] == []
 
 
 def test_backfill_source_bytes_unchanged_while_moltbook_demotes(tmp_path):
@@ -330,10 +425,18 @@ def test_non_moltbook_sources_stay_byte_identical_in_full_export():
     assert all("gold_demote_reason" not in row for row in dialect + negatives + fixtures)
 
     molt = harvest_moltbook(ROOT)
-    seeds = harvest_seed_examples(ROOT)
-    assert bundle["counts"]["gold_demoted"] == summarize_gold_demotions(molt + seeds)
-    assert bundle["counts"]["gold_demoted"]
+    expected = summarize_gold_demotions(molt)
+    expected["seed_examples_audit_only"] = audit_seed_examples_gold(ROOT)
+    assert bundle["counts"]["gold_demoted"] == expected
+    assert expected["seed_examples_audit_only"] == {
+        "fallback_label": 5,
+        "gold_not_in_text": 21,
+        "kept": 0,
+    }
+    assert not any(provenance_source_tag(row) == "seed_examples" for row in bundle["rows"])
     for source, reasons in bundle["counts"]["gold_demoted"].items():
-        assert set(reasons) <= {"fallback_label", "gold_not_in_text"}
-        assert source
+        if source == "seed_examples_audit_only":
+            assert set(reasons) <= {"fallback_label", "gold_not_in_text", "kept"}
+        else:
+            assert set(reasons) <= {"fallback_label", "gold_not_in_text"}
         assert sum(reasons.values()) > 0
