@@ -37,7 +37,7 @@ RELEASE_VAL_TASKS = frozenset({"unbind", "classify+unbind"})
 CANONICAL_RANK = ("morph78", "morph65", "rc1")
 
 
-class TestSliceRefused(RuntimeError):
+class HoldoutSliceRefused(RuntimeError):
     """Raised when a test-split row reaches tagging, scoring, or output."""
 
 
@@ -52,7 +52,14 @@ def wilson_interval(k: int, n: int, *, z: float = Z95) -> tuple[float, float] | 
     denom = 1.0 + z2 / n
     center = (phat + z2 / (2.0 * n)) / denom
     half = z * math.sqrt(phat * (1.0 - phat) / n + z2 / (4.0 * n * n)) / denom
-    return (max(0.0, center - half), min(1.0, center + half))
+    lo = max(0.0, center - half)
+    hi = min(1.0, center + half)
+    # k=0 and k=n are exactly 0 and 1; float error leaves a 1 ulp gap.
+    if lo < 1e-12:
+        lo = 0.0
+    if hi > 1.0 - 1e-12:
+        hi = 1.0
+    return (lo, hi)
 
 
 def intervals_overlap(left: Sequence[float] | None, right: Sequence[float]) -> bool:
@@ -170,7 +177,7 @@ def provenance_source(row: Mapping[str, Any]) -> str:
 def assert_no_test(rows: Iterable[Mapping[str, Any]], *, where: str) -> None:
     n = sum(1 for row in rows if row.get("split") == "test")
     if n:
-        raise TestSliceRefused(f"REFUSE: {where} includes {n} holdout test rows")
+        raise HoldoutSliceRefused(f"REFUSE: {where} includes {n} holdout test rows")
 
 
 def drop_test_rows(rows: Sequence[Mapping[str, Any]]) -> tuple[list[dict], int]:
@@ -239,7 +246,7 @@ def annotate_rows(rows: Sequence[Mapping[str, Any]], train_rows: Sequence[Mappin
         flag, reason = index.match(row)
         ident = row_id(row)
         if ident in seen:
-            raise TestSliceRefused(f"REFUSE: duplicate row_id {ident}")
+            raise HoldoutSliceRefused(f"REFUSE: duplicate row_id {ident}")
         seen.add(ident)
         tagged.append(
             {

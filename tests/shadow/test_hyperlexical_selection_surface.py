@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 sys.path.insert(0, str(SPARK))
 
 from hyperlexical.selection_surface import (  # noqa: E402
-    TestSliceRefused,
+    HoldoutSliceRefused,
     TrainIndex,
     annotate_rows,
     assemble_report,
@@ -78,7 +78,7 @@ def test_stem_and_sibling_flag():
     assert index.match({"text": "unrelated words", "fillers": ["nope"]}) == (False, None)
     # 1/3 is below the 0.5 cutoff.
     assert index.match({"text": "unrelated words", "fillers": ["alpha"]}) == (False, None)
-    with pytest.raises(TestSliceRefused):
+    with pytest.raises(HoldoutSliceRefused):
         TrainIndex([{"split": "test", "text": "quiet quitting", "fillers": ["quiet", "quitting"]}])
 
 
@@ -371,7 +371,7 @@ def test_known_surfaces_and_force_move(tmp_path, monkeypatch):
             "provenance": "ingest:store",
         },
     ]
-    with pytest.raises(TestSliceRefused):
+    with pytest.raises(HoldoutSliceRefused):
         broad_clean_rows(rows + [{"task": "unbind", "split": "test", "text": "x", "class": "OBSERVED"}], set())
     keys = {row_key({"text": "trained key", "role_scheme": "positional"})}
     clean, accounting = broad_clean_rows(rows, keys)
