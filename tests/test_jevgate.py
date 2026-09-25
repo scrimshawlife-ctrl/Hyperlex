@@ -180,6 +180,28 @@ def test_best_guess_when_output_is_none():
     assert out["jev_error"] is None
 
 
+def test_best_guess_null_when_all_family_means_are_zero():
+    client = FakeJev(_three(1.0, {}))
+    out = classify_term(TERM, jevgate=True, client=client, match_fn=_miss)
+    assert out["jev_p_none"] == 1.0
+    assert out["jev_p_none"] >= TAU
+    assert all(value == 0.0 for value in out["jev_family_means"].values())
+    assert out["family"] == "none"
+    assert out["jev_best_guess"] is None
+
+
+def test_best_guess_null_when_all_family_means_are_equal():
+    order = eight_families()
+    client = FakeJev(_three(0.52, {name: 0.06 for name in order}))
+    out = classify_term(TERM, jevgate=True, client=client, match_fn=_miss)
+    assert out["jev_p_none"] == 0.52
+    assert out["jev_p_none"] >= TAU
+    assert len(set(out["jev_family_means"].values())) == 1
+    assert out["jev_family_means"][order[0]] == 0.06
+    assert out["family"] == "none"
+    assert out["jev_best_guess"] is None
+
+
 def test_retry_then_fail_closed(monkeypatch):
     secret = "synthetic-jev-key-not-real"
     monkeypatch.setenv("JEV_API_KEY", secret)

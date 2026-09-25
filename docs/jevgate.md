@@ -35,7 +35,7 @@ Frozen by prereg v5. Do not tune.
 
 The gate **abstains often by design**. `none` is the expected output for ordinary English, names, noise, and slang from communities outside the eight.
 
-`jev_best_guess` (argmax over the eight families, ignoring tau), `jev_p_none`, and the per-family means are low-confidence fields. They never change `family`. Jev's own `choice`, `in_scope`, and `any_slang` may be logged under `jev_log` and never decide.
+`jev_best_guess`, `jev_p_none`, and the per-family means are low-confidence fields. They never change `family`. `jev_best_guess` is the argmax over the eight families, ignoring tau, except when Jev gives no family signal: every family mean is 0, or all eight means are equal so the argmax would be only the layout tie-break. In that case `jev_best_guess` is null. The gated `family` is unchanged. Jev's own `choice`, `in_scope`, and `any_slang` may be logged under `jev_log` and never decide.
 
 On provider error, timeout, parse failure, model mismatch, or a missing key, the call is retried once. If it still fails, the result is `none` with `jev_error.flag` and `jev_error.reason` set. Jev failures do not raise into callers.
 

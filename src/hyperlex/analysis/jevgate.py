@@ -353,6 +353,17 @@ def _argmax(means: Mapping[str, float], order: tuple[str, ...]) -> str:
     return best
 
 
+def _flat_family_means(means: Mapping[str, float], order: tuple[str, ...]) -> bool:
+    """True when every family mean is the same, including all zeros.
+
+    Argmax would be only the layout tie-break, so there is no family signal.
+    """
+    if not order:
+        return True
+    first = float(means[order[0]])
+    return all(float(means[name]) == first for name in order)
+
+
 def decide_family(passes: list[Mapping[str, Any]], order: tuple[str, ...]) -> dict[str, Any]:
     """Aggregate pass means. Choice / in_scope / any_slang are logged only."""
     p_none = _mean([float(item["probabilities"]["none"]) for item in passes])
@@ -360,8 +371,9 @@ def decide_family(passes: list[Mapping[str, Any]], order: tuple[str, ...]) -> di
         name: _mean([float(item["probabilities"][name]) for item in passes])
         for name in order
     }
-    best = _argmax(means, order)
-    family = best if p_none < TAU else "none"
+    ranked = _argmax(means, order)
+    family = ranked if p_none < TAU else "none"
+    best = None if _flat_family_means(means, order) else ranked
     return {
         "family": family,
         "jev_best_guess": best,
