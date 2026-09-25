@@ -8,6 +8,14 @@ from pathlib import Path
 
 from .align import atom_token_index, offsets_from_tokenizer, pool_indices
 from .export import export_dataset, repo_root, write_export
+from .classify_metrics import (
+    NONE_LABEL,
+    SELECT_METRIC_CLASSIFY,
+    macro_f1_nonnone,
+    none_false_positive_rate,
+    resolve_select_metric,
+)
+from .force_train_overlap import enforce_force_train_disjoint
 from .layout import (
     FAMILIES,
     HIDDEN,
@@ -16,8 +24,9 @@ from .layout import (
     TRUNK,
     UNK,
     describe,
-    label_maps,
+    label_maps_for_splits,
     resolve_last_trainable,
+    resolve_vocab_train_only,
 )
 from .eval_forward import apply_encoder_trainable
 from .filler_filter import assert_publishable_vocab, filter_mode, filter_unbind_rows
@@ -507,11 +516,23 @@ def run_loop(
     if len(classify_tr) < 8:
         raise RuntimeError("not enough classify train rows")
 
+    select_metric = resolve_select_metric()
+    select_on_classify = select_metric == SELECT_METRIC_CLASSIFY
+    if select_on_classify:
+        selection_rows = list(classify_va or classify_tr[:8])
+    else:
+        selection_rows = list(unbind_va or unbind_tr[:8])
+    classify_va, unbind_va, force_overlap = enforce_force_train_disjoint(
+        classify_va,
+        unbind_va,
+        selection_rows,
+    )
+
     import torch
     from torch import nn
     from torch.optim import AdamW
 
-    maps = label_maps(unbind_tr + unbind_va)
+    maps = label_maps_for_splits(unbind_tr, unbind_va)
     if filter_mode() == "strict":
         assert_publishable_vocab(maps["filler_vocab"])
     tok, encoder = _require_local_model(trunk)
@@ -626,6 +647,7 @@ def run_loop(
     last_residual_records: list[dict] = []
     save_best_unbind = resolve_save_best_unbind()
     best_exact = float("-inf")
+    best_macro = float("-inf")
     best_metrics: dict | None = None
     best_state: dict | None = None
     best_residual_records: list[dict] = []
@@ -638,12 +660,17 @@ def run_loop(
         classify.eval()
         filler_head.eval()
         hit = tot = 0
+        classify_golds: list[str] = []
+        classify_preds: list[str] = []
         for row in classify_va or classify_tr[:8]:
             out = encoder(**encode_texts([row["text"]]))
             pred = int(classify(out.last_hidden_state[:, 0]).argmax(-1)[0])
             gold = maps["family_of"].get(row["lineage"], maps["family_of"]["none"])
             hit += int(pred == gold)
             tot += 1
+            if select_on_classify:
+                classify_golds.append(FAMILIES[gold] if 0 <= gold < len(FAMILIES) else NONE_LABEL)
+                classify_preds.append(FAMILIES[pred] if 0 <= pred < len(FAMILIES) else NONE_LABEL)
         pairs: list[tuple[list[str], list[str]]] = []
         strict_pairs: list[tuple[list[str], list[str]]] = []
         residual_records: list[dict] = []
@@ -681,6 +708,9 @@ def run_loop(
         metrics = summarize_unbind_pairs(pairs, strict_pairs=strict_pairs)
         metrics["classify_acc"] = hit / max(1, tot)
         metrics["n_classify_eval"] = tot
+        if select_on_classify:
+            metrics["classify_macro_f1_nonnone"] = macro_f1_nonnone(classify_golds, classify_preds)
+            metrics["none_fpr"] = none_false_positive_rate(classify_golds, classify_preds)
         return metrics
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -719,7 +749,59 @@ def run_loop(
             # One host sync per epoch (not per step).
             losses.append(float(last_train_loss.item()))
         saved_best = False
-        if save_best_unbind and exact > best_exact:
+        if select_on_classify:
+            if metrics.get("classify_macro_f1_nonnone") is None:
+                raise RuntimeError(
+                    "HLX_SELECT_METRIC=classify_macro_f1_nonnone but val has no "
+                    "non-none gold; macro-F1 is NOT_COMPUTABLE"
+                )
+            score_now = float(metrics["classify_macro_f1_nonnone"])
+            if score_now > best_macro:
+                if device.type == "cuda":
+                    torch.cuda.synchronize()
+                best_macro = score_now
+                best_metrics = dict(metrics)
+                best_state = _build_weight_state(
+                    encoder, classify, role_head, filler_head, maps, layout
+                )
+                best_residual_records = list(last_residual_records)
+                best_dir = out_dir / "best"
+                write_skeleton(best_dir, maps=maps)
+                save_heads(best_dir, best_state)
+                (best_dir / "best-checkpoint.json").write_text(
+                    json.dumps(
+                        {
+                            "metric": SELECT_METRIC_CLASSIFY,
+                            "epoch": ep,
+                            "classify_macro_f1_nonnone": score_now,
+                            "none_fpr": metrics.get("none_fpr"),
+                            "unbind_exact": exact,
+                            "unbind_token_f1": best_metrics.get("unbind_token_f1"),
+                            "unbind_slot_f1": best_metrics.get("unbind_slot_f1"),
+                            "unbind_exact_strict": best_metrics.get("unbind_exact_strict"),
+                            "unbind_token_f1_strict": best_metrics.get("unbind_token_f1_strict"),
+                            "unbind_slot_f1_strict": best_metrics.get("unbind_slot_f1_strict"),
+                            "classify_acc": best_metrics.get("classify_acc"),
+                        },
+                        indent=2,
+                        sort_keys=True,
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+                saved_best = True
+                if device.type == "cuda":
+                    torch.cuda.synchronize()
+                    torch.cuda.empty_cache()
+            none_fpr = metrics.get("none_fpr")
+            none_fpr_text = "null" if none_fpr is None else f"{float(none_fpr):.6f}"
+            best_text = None if best_macro == float("-inf") else best_macro
+            print(
+                f"[epoch {ep}] classify_macro_f1_nonnone={score_now:.6f} "
+                f"none_fpr={none_fpr_text} best={best_text} saved_best={saved_best}",
+                flush=True,
+            )
+        elif save_best_unbind and exact > best_exact:
             if device.type == "cuda":
                 torch.cuda.synchronize()
             best_exact = exact
@@ -764,20 +846,27 @@ def run_loop(
             "unbind_phase": phase_meta["phase"],
             "classify_acc": metrics.get("classify_acc"),
         }
+        if select_on_classify:
+            progress["classify_macro_f1_nonnone"] = metrics.get("classify_macro_f1_nonnone")
+            progress["none_fpr"] = metrics.get("none_fpr")
+            progress["best_classify_macro_f1_nonnone"] = (
+                None if best_macro == float("-inf") else best_macro
+            )
         with progress_path.open("a", encoding="utf-8") as pf:
             pf.write(json.dumps(progress, sort_keys=True) + "\n")
             pf.flush()
-        print(
-            f"[epoch {ep}] unbind_exact={exact:.6f} best={best_exact if best_exact != float('-inf') else None} saved_best={saved_best}",
-            flush=True,
-        )
+        if not select_on_classify:
+            print(
+                f"[epoch {ep}] unbind_exact={exact:.6f} best={best_exact if best_exact != float('-inf') else None} saved_best={saved_best}",
+                flush=True,
+            )
 
     final_state = _build_weight_state(
         encoder, classify, role_head, filler_head, maps, layout
     )
     # Always write final epoch weights under a distinct name when best-save is on,
     # then promote best → primary model.safetensors (fixes morph35 peak-not-saved).
-    if save_best_unbind and best_state is not None:
+    if (save_best_unbind or select_on_classify) and best_state is not None:
         final_file = save_heads(out_dir, final_state)
         # rename primary final dump aside, then write best as primary
         final_path = out_dir / final_file
@@ -788,7 +877,9 @@ def run_loop(
             final_path.replace(aside)
         weight_file = save_heads(out_dir, best_state)
         primary_val = best_metrics or {}
-        gated_from = "best_unbind_exact"
+        gated_from = (
+            "best_classify_macro_f1_nonnone" if select_on_classify else "best_unbind_exact"
+        )
         residual_for_dump = best_residual_records
     else:
         weight_file = save_heads(out_dir, final_state)
@@ -892,6 +983,21 @@ def run_loop(
         "forecast_eligible": False,
         "note": "HF-shaped dump. Not Hyperlexical until E2.",
     }
+    if select_on_classify:
+        receipt["select_metric"] = SELECT_METRIC_CLASSIFY
+    if force_overlap.get("disjoint"):
+        receipt["force_train_disjoint"] = {
+            "n_overlap": force_overlap["n_overlap"],
+            "n_in_val": force_overlap["n_in_val"],
+            "n_in_selection": force_overlap["n_in_selection"],
+            "n_force_rows": force_overlap["n_force_rows"],
+            "n_dropped_classify_val": force_overlap["n_dropped_classify_val"],
+            "n_dropped_unbind_val": force_overlap["n_dropped_unbind_val"],
+            "n_classify_val": force_overlap["n_classify_val"],
+            "n_unbind_val": force_overlap["n_unbind_val"],
+        }
+    if resolve_vocab_train_only():
+        receipt["vocab_train_only"] = True
     (out_dir / "layout.json").write_text(json.dumps(layout, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (out_dir / "train-receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (out_dir / "config-train.json").write_text(
