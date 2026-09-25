@@ -23,9 +23,12 @@ from hyperlexical.classify_metrics import (
     resolve_select_metric,
 )
 from hyperlexical.eval_classify import (
+    NONNONE_FAMILIES,
     SLICES_WARNING,
     _spec004_preds,
+    fit_bag_of_terms_logreg,
     main as classify_main,
+    resolve_bow_nonnone,
     run_eval_classify,
 )
 from hyperlexical.force_train_overlap import (
@@ -237,14 +240,25 @@ def test_eval_classify_end_to_end_synthetic(tmp_path, capsys):
     assert report["per_class"]["alpha"]["n"] == 1
     assert report["per_class"]["none"]["n"] == 1
     assert "other than none" in report["macro_f1_nonnone_definition"]
-    bag = report["baselines"]["bag_of_terms_logreg"]
+    assert "bag_of_terms_logreg" not in report["baselines"]
+    assert report["bow_nonnone"] is False
+    assert report["bow_nonnone_reason"] == "eval gold includes none"
+    assert report["gated_baseline"] == "bow_lr_with_none"
+    bag = report["baselines"]["bow_lr_with_none"]
     assert bag["status"] == "OK"
+    assert bag["role"] == "gated"
+    assert bag["eval_used_for_fit"] is False
     assert bag["accuracy"] == pytest.approx(1.0)
     mcnemar = bag["mcnemar"]
     assert mcnemar["n_discordant"] == 1
     assert mcnemar["n_baseline_only_correct"] == 1
     assert mcnemar["n_model_only_correct"] == 0
     assert mcnemar["p_two_sided"] == pytest.approx(mcnemar_exact_p(0, 1))
+    non = report["baselines"]["bow_lr_nonnone"]
+    assert non["status"] == "NOT_COMPUTABLE"
+    assert non["role"] == "reference"
+    assert non["mcnemar"] is None
+    assert "requested class list" in non["reason"]
     rule = report["baselines"]["match_lineage"]
     assert rule["status"] == "OK"
     assert "p_two_sided" in rule["mcnemar"]
@@ -283,3 +297,159 @@ def test_spec004_probe_refits_when_spans_exist():
     assert meta["status"] == "OK"
     assert meta["refit"] == "fit_scheme+swap_accuracy"
     assert preds == ["alpha", "beta"]
+
+
+def _family_rows():
+    """Synthetic tokens on two of the eight families, plus a none bucket."""
+    train = [
+        {"id": "t1", "text": "qxgametoken one", "lineage": "gaming-meta"},
+        {"id": "t2", "text": "qxgametoken two", "lineage": "gaming-meta"},
+        {"id": "t3", "text": "qxworktoken one", "lineage": "workplace-corp"},
+        {"id": "t4", "text": "qxworktoken two", "lineage": "workplace-corp"},
+        {"id": "t5", "text": "qxnonetoken one", "lineage": "none"},
+        {"id": "t6", "text": "qxnonetoken two", "lineage": "none"},
+    ]
+    eval_rows = [
+        {"id": "e1", "text": "qxgametoken three", "lineage": "gaming-meta"},
+        {"id": "e2", "text": "qxworktoken three", "lineage": "workplace-corp"},
+    ]
+    preds = [
+        {"id": "e1", "pred": "gaming-meta"},
+        {"id": "e2", "pred": "workplace-corp"},
+    ]
+    return train, eval_rows, preds
+
+
+def _run_family(tmp_path, train, eval_rows, preds, extra=()):
+    train_path = tmp_path / "train.jsonl"
+    eval_path = tmp_path / "eval.jsonl"
+    pred_path = tmp_path / "preds.jsonl"
+    out = tmp_path / "report.json"
+    _write_jsonl(train_path, train)
+    _write_jsonl(eval_path, eval_rows)
+    _write_jsonl(pred_path, preds)
+    rc = classify_main(
+        [
+            "--preds",
+            str(pred_path),
+            "--eval",
+            str(eval_path),
+            "--train",
+            str(train_path),
+            "--out",
+            str(out),
+            *extra,
+        ]
+    )
+    assert rc == 0
+    return json.loads(out.read_text(encoding="utf-8"))
+
+
+def test_resolve_bow_nonnone_auto_follows_eval_gold_only():
+    assert resolve_bow_nonnone(["gaming-meta", "workplace-corp"]) == (True, "eval gold has no none")
+    assert resolve_bow_nonnone(["gaming-meta", "none"]) == (False, "eval gold includes none")
+    assert resolve_bow_nonnone(["none"], "on") == (True, "forced on")
+    assert resolve_bow_nonnone(["gaming-meta"], "off") == (False, "forced off")
+    with pytest.raises(SystemExit, match="bow-nonnone"):
+        resolve_bow_nonnone(["gaming-meta"], "maybe")
+
+
+def test_bow_fit_ignores_eval_text_and_drops_none_rows():
+    train, eval_rows, _preds = _family_rows()
+    texts = [row["text"] for row in train]
+    labels = [row["lineage"] for row in train]
+    eval_texts = [row["text"] for row in eval_rows]
+    leaked = ["qxgametoken three unseenevaltoken", "qxworktoken zz"]
+    plain_preds, plain = fit_bag_of_terms_logreg(texts, labels, eval_texts)
+    leaked_preds, leaked_meta = fit_bag_of_terms_logreg(texts, labels, leaked)
+    assert plain["n_features"] == leaked_meta["n_features"] == 5
+    assert plain["n_train_rows_used"] == 6
+    assert plain["classes"] == ["gaming-meta", "none", "workplace-corp"]
+    assert plain["eval_used_for_fit"] is False
+    assert plain_preds == leaked_preds
+    non_preds, non = fit_bag_of_terms_logreg(texts, labels, leaked, classes=NONNONE_FAMILIES)
+    assert len(NONNONE_FAMILIES) == 8
+    assert non["classes"] == list(NONNONE_FAMILIES)
+    assert non["n_train_rows"] == 6
+    assert non["n_train_rows_used"] == 4
+    assert non["n_features"] == 4
+    assert non["eval_used_for_fit"] is False
+    assert non_preds == ["gaming-meta", "workplace-corp"]
+
+
+def test_bow_nonnone_gates_when_eval_has_no_none(tmp_path):
+    train, eval_rows, preds = _family_rows()
+    report = _run_family(tmp_path, train, eval_rows, preds)
+    assert report["bow_nonnone"] is True
+    assert report["bow_nonnone_reason"] == "eval gold has no none"
+    assert report["gated_baseline"] == "bow_lr_nonnone"
+    gated = report["baselines"]["bow_lr_nonnone"]
+    reference = report["baselines"]["bow_lr_with_none"]
+    assert gated["role"] == "gated"
+    assert reference["role"] == "reference"
+    assert gated["status"] == reference["status"] == "OK"
+    assert gated["classes"] == list(NONNONE_FAMILIES)
+    assert gated["n_train_rows_used"] == 4
+    assert gated["n_features"] == 4
+    assert reference["n_train_rows_used"] == 6
+    assert reference["n_features"] == 5
+    assert reference["classes"] == ["gaming-meta", "none", "workplace-corp"]
+    assert gated["eval_used_for_fit"] is False
+    assert reference["eval_used_for_fit"] is False
+    for block in (gated, reference):
+        mcnemar = block["mcnemar"]
+        assert mcnemar["n_discordant"] == 0
+        assert mcnemar["p_two_sided"] == pytest.approx(mcnemar_exact_p(0, 0))
+    relabeled = [dict(row) for row in eval_rows]
+    relabeled[1] = {**relabeled[1], "lineage": "gaming-meta"}
+    other = tmp_path / "relabel"
+    other.mkdir()
+    again = _run_family(other, train, relabeled, preds)
+    for name in ("bow_lr_nonnone", "bow_lr_with_none"):
+        left = report["baselines"][name]
+        right = again["baselines"][name]
+        assert right["n_features"] == left["n_features"]
+        assert right["classes"] == left["classes"]
+        assert right["n_train_rows_used"] == left["n_train_rows_used"]
+    forced = tmp_path / "off"
+    forced.mkdir()
+    off = _run_family(forced, train, eval_rows, preds, extra=("--bow-nonnone", "off"))
+    assert off["bow_nonnone"] is False
+    assert off["bow_nonnone_reason"] == "forced off"
+    assert off["gated_baseline"] == "bow_lr_with_none"
+    assert off["baselines"]["bow_lr_with_none"]["role"] == "gated"
+    assert off["baselines"]["bow_lr_nonnone"]["role"] == "reference"
+    assert off["baselines"]["bow_lr_nonnone"]["mcnemar"]["p_two_sided"] == pytest.approx(1.0)
+
+
+def test_bow_nonnone_forced_on_stays_gated_when_eval_has_none(tmp_path):
+    train, eval_rows, preds = _family_rows()
+    eval_rows = [
+        *eval_rows,
+        {"id": "e3", "text": "qxnonetoken three", "lineage": "none"},
+    ]
+    preds = [*preds, {"id": "e3", "pred": "none"}]
+    report = _run_family(tmp_path, train, eval_rows, preds, extra=("--bow-nonnone",))
+    assert report["bow_nonnone"] is True
+    assert report["bow_nonnone_reason"] == "forced on"
+    assert report["gated_baseline"] == "bow_lr_nonnone"
+    assert report["baselines"]["bow_lr_nonnone"]["role"] == "gated"
+    assert report["baselines"]["bow_lr_with_none"]["role"] == "reference"
+    assert report["baselines"]["bow_lr_nonnone"]["n_features"] == 4
+    assert report["baselines"]["bow_lr_with_none"]["n_features"] == 5
+    assert "p_two_sided" in report["baselines"]["bow_lr_nonnone"]["mcnemar"]
+    assert "p_two_sided" in report["baselines"]["bow_lr_with_none"]["mcnemar"]
+
+
+def test_bow_nonnone_does_not_fall_back_when_uncomputable(tmp_path):
+    train = [{"id": "t1", "text": "qxnonetoken one", "lineage": "none"}]
+    eval_rows = [{"id": "e1", "text": "qxgametoken one", "lineage": "gaming-meta"}]
+    preds = [{"id": "e1", "pred": "gaming-meta"}]
+    report = _run_family(tmp_path, train, eval_rows, preds)
+    assert report["bow_nonnone"] is True
+    assert report["gated_baseline"] == "bow_lr_nonnone"
+    assert report["baselines"]["bow_lr_nonnone"]["status"] == "NOT_COMPUTABLE"
+    assert report["baselines"]["bow_lr_nonnone"]["role"] == "gated"
+    assert report["baselines"]["bow_lr_nonnone"]["mcnemar"] is None
+    assert report["baselines"]["bow_lr_with_none"]["role"] == "reference"
+    assert report["baselines"]["bow_lr_with_none"]["status"] == "OK"
