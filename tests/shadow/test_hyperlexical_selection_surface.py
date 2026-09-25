@@ -3,6 +3,7 @@
 import json
 import pathlib
 import sys
+from collections import Counter
 
 import pytest
 
@@ -23,6 +24,8 @@ from hyperlexical.selection_surface import (  # noqa: E402
     lenient_copy_hit,
     load_force_keys,
     metric_block,
+    provenance_bucket,
+    provenance_source,
     publish_verdict,
     stem_token,
     strict_slot_pair,
@@ -302,6 +305,56 @@ def test_assemble_drops_test_and_holds_until_reproduce(tmp_path):
     summary = md_path.read_text(encoding="utf-8")
     assert "HOLD" in summary and "SURFACE_SWAP_SUPPORTED" in summary
     assert "secret test only" not in summary or "discarded" in summary
+
+
+def test_provenance_mix_prefers_annotated_tags():
+    """License-only templates and dict provenance stay tagged after annotate."""
+    rows = [
+        {
+            "task": "unbind",
+            "split": "val",
+            "class": "OBSERVED",
+            "lineage": "none",
+            "role_scheme": "positional",
+            "text": "license only template",
+            "fillers": ["license", "only"],
+            "provenance": "ingest:store",
+            "license": "unbind structural whitespace",
+        },
+        {
+            "task": "unbind",
+            "split": "val",
+            "class": "INFERRED",
+            "lineage": "ai-native",
+            "role_scheme": "type_slot",
+            "text": "dict provenance row",
+            "fillers": ["dict", "row"],
+            "provenance": {"class": "INFERRED", "source": "moltbook"},
+        },
+    ]
+    assert "provenance_bucket" not in rows[0]
+    assert "provenance_source" not in rows[1]
+    report = assemble_report(rows, trained_keys=set(), force_keys=set())
+    assert report["release_val"]["provenance_bucket"] == Counter(
+        row["provenance_bucket"] for row in report["rows"]
+    )
+    assert report["release_val"]["provenance_source"] == Counter(
+        row["provenance_source"] for row in report["rows"]
+    )
+    assert all(not str(key).startswith("{") for key in report["release_val"]["provenance_source"])
+    by_text = {row["text"]: row for row in report["rows"]}
+    assert by_text["license only template"]["provenance_bucket"] == "templated"
+    assert by_text["dict provenance row"]["provenance"].startswith("{")
+    assert by_text["dict provenance row"]["provenance_source"] == "dict:moltbook"
+    # Raw export rows have no per-row tags. Surface mixes still derive from license and dict provenance.
+    fair = report["known_surfaces"]["force_fair"]
+    assert fair["provenance_bucket"] == Counter(provenance_bucket(row) for row in rows)
+    assert fair["provenance_source"] == Counter(provenance_source(row) for row in rows)
+    assert fair["provenance_bucket"] == {"harvested": 1, "templated": 1}
+    assert fair["provenance_source"] == {"dict:moltbook": 1, "ingest": 1}
+    clean = report["known_surfaces"]["broad_clean"]
+    assert clean["provenance_bucket"] == {"templated": 1}
+    assert clean["provenance_source"] == {"ingest": 1}
 
 
 def test_known_surfaces_and_force_move(tmp_path, monkeypatch):
