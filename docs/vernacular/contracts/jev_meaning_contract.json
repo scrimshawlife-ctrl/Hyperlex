@@ -1,0 +1,107 @@
+{
+  "_publication": {
+    "source_file": "jev_meaning_contract.json",
+    "source_sha256": "deb8f4f657662fd8836fd512b0517dba0e3518ed636aeb6886fac9fff4281aba",
+    "note": "Published copy for documentation. Sanitized on 2026-09-25 PT: local file paths, cache paths, account names and people's names were removed or generalized; the question text, closed sets, thresholds and fail-closed rules are unchanged. This contract embeds NO real posts, X post text, author handles, term example posts, holdout ids or database contents: the {term}/{pid}/STATE fields are template placeholders filled at run time. The illustrative state under 'synthetic_example' (where present) is invented and clearly synthetic."
+  },
+  "contract_id": "vernacular-context-meaning",
+  "version": "rebuilt-meaning-v2",
+  "supersedes": "rebuilt-meaning-v1 (sha256 6512419a994c946ea2b8275fa586e5784ae2db4caa61083cdae648761a76d64d; its rows are kept as history)",
+  "provenance": "NEW 2026-09-25 11:07 PT, rebuilt-series label (not an original contract). Synonym-split fix (meaning field only, not verdicts). Changes vs v1: (1) near-duplicate candidates are merged before scoring (Jev pairwise same-sense check, complete linkage) so synonyms no longer split probability; (2) corpus/evidence notes are no longer candidates; (3) when no stored gloss resolves, a second stage offers short meanings taken verbatim from the term's own slang-sense posts (deterministic 'X means / stands for / = ...' extraction). Jev only returns choice/boolean/score answers, so it cannot write free text and nothing is invented. Same confidence + post-agreement bar as v1.",
+  "approved_by": "operator, 2026-09-25 PT (standing Jev permission; feature 10:57-10:58 PT; v2 fix approved 11:05 PT)",
+  "model": "jev-latest",
+  "max_posts": 20,
+  "max_post_chars": 240,
+  "max_glosses": 6,
+  "max_post_candidates": 6,
+  "max_candidate_words": 8,
+  "merge": {
+    "min_same_probability": 0.6,
+    "linkage": "complete",
+    "representative": "first member in candidate order (stored glosses before post-derived)"
+  },
+  "voting": {
+    "band_lo": 0.35,
+    "band_hi": 0.65,
+    "votes": 3
+  },
+  "resolve_rule": {
+    "min_single_top_probability": 0.66,
+    "min_voted_mean_probability": 0.5,
+    "min_post_agreement": 0.6,
+    "min_supporting_posts": 2,
+    "min_post_answer_probability": 0.5
+  },
+  "gloss_exclude_patterns": [
+    "sacred NOT_COMPUTABLE",
+    "not slang",
+    "not a slang",
+    "not a lexeme",
+    "NOT_COMPUTABLE from body",
+    "corpus:",
+    "corpus meta",
+    "unconfirmed",
+    "unproven",
+    "claimed",
+    "claim ",
+    "gloss unclear"
+  ],
+  "unresolved_categories": {
+    "conflict": [
+      "overall=MIXED",
+      "overall=NO_MAJORITY",
+      "posts disagree"
+    ],
+    "obscure": [
+      "no slang-sense posts",
+      "no candidate meanings",
+      "overall=NONE_FIT",
+      "low confidence",
+      "too few supporting posts"
+    ]
+  },
+  "note": "A context meaning (INFERRED) fills the note's meaning field only; it is NOT attestation and never changes a verdict. An operator definition (OBSERVED) overrides it. Context first; the operator is asked only when context cannot settle the meaning (UNRESOLVED).",
+  "questions": {
+    "merge": {
+      "type": "boolean",
+      "instructions": "STATE.candidates are short candidate meanings for the slang term '{term}'. Do candidates {a} and {b} describe the same sense of the term (paraphrases or near-synonyms of one meaning), rather than different meanings?"
+    },
+    "overall": {
+      "type": "choice",
+      "instructions": "STATE.posts are posts that use the term '{term}' as slang. Each option lists one meaning (alternative phrasings of the same meaning are separated by ' | '). Which option best describes how the term is used in these posts? Pick an option only if most posts fit it. Pick NONE_FIT if no option fits the posts, MIXED if the posts use clearly different senses with none dominant.",
+      "criteria_extra": {
+        "NONE_FIT": "no listed meaning fits how the posts use the term",
+        "MIXED": "posts use clearly different senses; none dominant"
+      }
+    },
+    "support": {
+      "type": "choice",
+      "instructions": "Post {pid} in STATE.posts: is the term '{term}' used there in the sense given in STATE.meaning (same or a close variant of that sense)? Mentioning or explaining the term with that sense counts as SUPPORTS.",
+      "criteria": {
+        "SUPPORTS": "uses or explains the term in STATE.meaning's sense (or a close variant)",
+        "DIFFERENT": "uses the term in a different sense, or the post does not show the sense"
+      }
+    }
+  },
+  "synthetic_example": {
+    "_synthetic": true,
+    "STATE": {
+      "term": "zorblet",
+      "candidates": {
+        "M1": "SYNTHETIC: impressive | really cool",
+        "M2": "SYNTHETIC: a small pastry"
+      },
+      "posts": {
+        "p1": "SYNTHETIC: that fit is zorblet",
+        "p2": "SYNTHETIC: zorblet energy today"
+      }
+    },
+    "expected": {
+      "overall": "M1",
+      "support": {
+        "p1": "SUPPORTS",
+        "p2": "SUPPORTS"
+      }
+    }
+  }
+}

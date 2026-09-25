@@ -1,0 +1,77 @@
+{
+  "_publication": {
+    "source_file": "jev_dictionary_contract.json",
+    "source_sha256": "0616564b2b45fa503db95a4a482b7f5db77aeb2ae9f71340e485c15637783efa",
+    "note": "Published copy for documentation. Sanitized on 2026-09-25 PT: local file paths, cache paths, account names and people's names were removed or generalized; the question text, closed sets, thresholds and fail-closed rules are unchanged. This contract embeds NO real posts, X post text, author handles, term example posts, holdout ids or database contents: the {term}/{pid}/STATE fields are template placeholders filled at run time. The illustrative state under 'synthetic_example' (where present) is invented and clearly synthetic."
+  },
+  "contract_id": "vernacular-dictionary-sense-match",
+  "version": "rebuilt-dictmatch-v1",
+  "provenance": "NEW 2026-09-25 11:24 PT, rebuilt-series label (not an original contract). External dictionary attestation (Urban Dictionary, Green's, Wiktionary): an entry whose sense matches the term's slang-sense meaning satisfies path C's '>= 2 explainers' part only (path label attested_dictionary); only the matching sense counts. Jev only judges whether each dictionary sense matches the corpus usage. General instructions; no term-specific hints.",
+  "approved_by": "operator, 2026-09-25 PT (standing Jev permission, $1/run cap)",
+  "model": "jev-latest",
+  "sources": {
+    "urbandictionary": {
+      "url": "https://api.urbandictionary.com/v0/define?term={q}",
+      "max_senses": 6,
+      "min_interval_s": 1.0,
+      "note": "exact-word entries in API order; the API currently returns 0 votes for every entry, so no vote floor is possible (user-generated: weakest source)"
+    },
+    "wiktionary": {
+      "url": "https://en.wiktionary.org/w/index.php?action=raw&title={title}",
+      "max_senses": 8,
+      "min_interval_s": 1.0,
+      "note": "English-section definition lines with their {{lb}} labels; quotation lines (##*) skipped"
+    },
+    "greens": {
+      "search_url": "https://greensdictofslang.com/search/basic?q={q}",
+      "max_entries": 3,
+      "max_senses": 4,
+      "min_interval_s": 2.0,
+      "note": "exact-headword search results, then the entry page's definition text"
+    }
+  },
+  "fetch": "Crawl4AI (self-hosted, free); no Firecrawl, no X. Fetched pages are cached permanently, so a term is fetched only the first time it is looked up.",
+  "max_posts": 8,
+  "max_post_chars": 240,
+  "min_match_probability": 0.6,
+  "question": {
+    "type": "choice",
+    "instructions": "STATE.dictionary_senses['{d}'] is one dictionary sense (source: {src}) of '{term}'. STATE.posts show how '{term}' is used as slang in our corpus; STATE.meaning, if not empty, is its recorded slang meaning. Does this dictionary sense describe the SAME slang sense as that corpus usage (a close paraphrase, or a broader or narrower wording of the same sense, counts)? A different sense of the same spelling (literal, older, unrelated, or a different slang meaning) is DIFFERENT.",
+    "criteria": {
+      "MATCH": "the dictionary sense is the same slang sense as the corpus usage",
+      "DIFFERENT": "a different sense of the same spelling, or unrelated"
+    }
+  },
+  "statuses": {
+    "MATCH": ">= 1 dictionary sense matched (p >= 0.6) -> attestation",
+    "NO_MATCH": "senses found, none matched",
+    "NO_ENTRY": "no entry in any source",
+    "NO_SLANG_POSTS": "no slang-sense posts to compare against (not attested)"
+  },
+  "fail_closed": "fetch error with no match found, or Jev error: no row is written for the term (previous row kept); the export fails that term closed.",
+  "synthetic_example": {
+    "_synthetic": true,
+    "STATE": {
+      "term": "zorblet",
+      "meaning": "SYNTHETIC: impressive",
+      "posts": {
+        "p1": "SYNTHETIC: that fit is zorblet"
+      },
+      "dictionary_senses": {
+        "d1": {
+          "source": "urbandictionary",
+          "text": "SYNTHETIC: something extremely impressive"
+        },
+        "d2": {
+          "source": "wiktionary",
+          "text": "SYNTHETIC: a small pastry"
+        }
+      }
+    },
+    "expected": {
+      "d1": "MATCH",
+      "d2": "DIFFERENT"
+    },
+    "term_status": "MATCH"
+  }
+}
