@@ -15,6 +15,8 @@ from .classify_metrics import (
     none_false_positive_rate,
     resolve_select_metric,
 )
+from .classify_split import apply_classify_split_file
+from .seed_control import apply_training_seed
 from .force_train_overlap import enforce_force_train_disjoint
 from .layout import (
     FAMILIES,
@@ -499,6 +501,9 @@ def run_loop(
     else:
         classify_tr = routed["classify"]["train"]
         classify_va = routed["classify"]["val"]
+    classify_tr, classify_va, classify_split_receipt = apply_classify_split_file(
+        classify_tr, classify_va
+    )
     unbind_tr, unbind_va, unbind_recipe = prepare_unbind_splits(bundle["rows"])
     from .classify_admission import apply_classify_admission
 
@@ -537,6 +542,7 @@ def run_loop(
     from torch import nn
     from torch.optim import AdamW
 
+    seed_receipt = apply_training_seed(torch)
     maps = label_maps_for_splits(unbind_tr, unbind_va)
     if filter_mode() == "strict":
         assert_publishable_vocab(maps["filler_vocab"])
@@ -857,6 +863,8 @@ def run_loop(
             progress["best_classify_macro_f1_nonnone"] = (
                 None if best_macro == float("-inf") else best_macro
             )
+        if seed_receipt is not None:
+            progress["seed"] = seed_receipt["seed"]
         with progress_path.open("a", encoding="utf-8") as pf:
             pf.write(json.dumps(progress, sort_keys=True) + "\n")
             pf.flush()
@@ -989,6 +997,10 @@ def run_loop(
         "forecast_eligible": False,
         "note": "HF-shaped dump. Not Hyperlexical until E2.",
     }
+    if classify_split_receipt is not None:
+        receipt["classify_split"] = classify_split_receipt
+    if seed_receipt is not None:
+        receipt["seed"] = seed_receipt
     if select_on_classify:
         receipt["select_metric"] = SELECT_METRIC_CLASSIFY
     if force_overlap.get("disjoint"):
@@ -1006,56 +1018,55 @@ def run_loop(
         receipt["vocab_train_only"] = True
     (out_dir / "layout.json").write_text(json.dumps(layout, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (out_dir / "train-receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    train_config = {
+        "lr": os.environ.get("HYPERLEX_TRAIN_LR", "2e-5"),
+        "epochs": epochs,
+        "batch": batch,
+        "max_len": MAX_LEN,
+        "last_trainable": last_trainable_used,
+        "unbind_loss_weight": unbind_loss_weight,
+        "unbind_every_n": unbind_every_n,
+        "unbind_primary": slot_ce_mode["unbind_primary"],
+        "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
+        "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
+        "unbind_head_slot_weight": head_slot_weight,
+        "unbind_second_slot_weight": second_slot_weight,
+        "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
+        "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
+        "unbind_inferred_weight": inferred_weight,
+        "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
+        "unbind_morph_margin": morph_margin,
+        "unbind_curriculum": curriculum_plan["enabled"],
+        "unbind_curriculum_pos_epochs": curriculum_plan["pos_epochs"],
+        "unbind_curriculum_type_epochs": curriculum_plan["type_epochs"],
+        "unbind_filler_denylist_lineages": unbind_recipe.get(
+            "unbind_filler_denylist_lineages", 0
+        ),
+        "unbind_hard_atoms_path": unbind_recipe.get("unbind_hard_atoms_path", ""),
+        "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
+        "n_unbind_hard_atoms_matched": unbind_recipe.get(
+            "n_unbind_hard_atoms_matched", 0
+        ),
+        "n_unbind_hard_extra_copies": unbind_recipe.get(
+            "n_unbind_hard_extra_copies", 0
+        ),
+        "unbind_force_train_path": unbind_recipe.get("unbind_force_train_path", ""),
+        "n_unbind_force_train": unbind_recipe.get("n_unbind_force_train", 0),
+        "n_unbind_force_train_keys": unbind_recipe.get(
+            "n_unbind_force_train_keys", 0
+        ),
+        "n_unbind_val_after_force_train": unbind_recipe.get(
+            "n_unbind_val_after_force_train", 0
+        ),
+        "save_best_unbind": save_best_unbind,
+        "holdout": holdout_receipt(holdout_spec, holdout_removed),
+        "init_from": init_receipt.get("init_from"),
+        "warm_start": bool(init_receipt.get("warm_start")),
+    }
+    if seed_receipt is not None:
+        train_config["seed"] = seed_receipt["seed"]
     (out_dir / "config-train.json").write_text(
-        json.dumps(
-            {
-                "lr": os.environ.get("HYPERLEX_TRAIN_LR", "2e-5"),
-                "epochs": epochs,
-                "batch": batch,
-                "max_len": MAX_LEN,
-                "last_trainable": last_trainable_used,
-                "unbind_loss_weight": unbind_loss_weight,
-                "unbind_every_n": unbind_every_n,
-                "unbind_primary": slot_ce_mode["unbind_primary"],
-                "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
-                "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
-                "unbind_head_slot_weight": head_slot_weight,
-                "unbind_second_slot_weight": second_slot_weight,
-                "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
-                "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
-                "unbind_inferred_weight": inferred_weight,
-                "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
-                "unbind_morph_margin": morph_margin,
-                "unbind_curriculum": curriculum_plan["enabled"],
-                "unbind_curriculum_pos_epochs": curriculum_plan["pos_epochs"],
-                "unbind_curriculum_type_epochs": curriculum_plan["type_epochs"],
-                "unbind_filler_denylist_lineages": unbind_recipe.get(
-                    "unbind_filler_denylist_lineages", 0
-                ),
-                "unbind_hard_atoms_path": unbind_recipe.get("unbind_hard_atoms_path", ""),
-                "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
-                "n_unbind_hard_atoms_matched": unbind_recipe.get(
-                    "n_unbind_hard_atoms_matched", 0
-                ),
-                "n_unbind_hard_extra_copies": unbind_recipe.get(
-                    "n_unbind_hard_extra_copies", 0
-                ),
-                "unbind_force_train_path": unbind_recipe.get("unbind_force_train_path", ""),
-                "n_unbind_force_train": unbind_recipe.get("n_unbind_force_train", 0),
-                "n_unbind_force_train_keys": unbind_recipe.get(
-                    "n_unbind_force_train_keys", 0
-                ),
-                "n_unbind_val_after_force_train": unbind_recipe.get(
-                    "n_unbind_val_after_force_train", 0
-                ),
-                "save_best_unbind": save_best_unbind,
-                "holdout": holdout_receipt(holdout_spec, holdout_removed),
-                "init_from": init_receipt.get("init_from"),
-                "warm_start": bool(init_receipt.get("warm_start")),
-            },
-            indent=2,
-        )
-        + "\n",
+        json.dumps(train_config, indent=2) + "\n",
         encoding="utf-8",
     )
     return receipt
