@@ -204,3 +204,21 @@ Synthetic row, placeholders only:
 
 The type-slot twin uses text `TOKEN:EXAMPLE_TOKEN_A SLOT:EXAMPLE_TOKEN_B`, roles `TOKEN` and `SLOT`, and the same fillers. Unbind settlement decisions are `ACCEPT`, `CORRECT_TARGET`, `REJECT`, and `UNRESOLVED` in `hyperlex.eval_unbind_settlement.v1`. That log is not the classify settlement schema. Admission still goes through `IdentityLedger.admit`. `unbind_clean` is set only for hashes kept by `clean_surface`.
 
+
+
+## Clean-unbind admission HLX-EVAL-ADMIT-2026-09-26-003
+
+Source: Princeton WordNet 3.0 index lemmas (`index.noun`, `index.verb`, `index.adj`, `index.adv`). Glosses in `data.*` were not read and were not used as targets. Raw artifact sha256 `cbda5ea6eef7f36a97a43d4a75f85e07fccbb4f23657d27b4ccbc93e2646ab59`. License file sha256 `7731175a77952e259390b496fab905e57118b8d19ad3a8383c67eee724ff443f`. Rights: WordNet 3.0 Copyright 2006 by Princeton University, with permission to use, copy, modify, and distribute for any purpose without fee or royalty when the notice is preserved. Unresolved-rights rows were not in this source.
+
+Fillers are the source lemma tokens (`target_origin=source_lemma_tokens`). Operator settlement `HLX-EVAL-UNBIND-SETTLE-2026-09-26-001` appended 250 `ACCEPT` events on that basis. `CORRECT_TARGET` 0. `REJECT` 0. `UNRESOLVED` 0. Settlement receipt sha256 `3ada2dae58bde22ef1ed1ac5a4004be75d7bf3f52cac590f24900de71015194b`. The classify settlement log was not rewritten.
+
+Screen of shaped dual-scheme rows: 128233 unique texts. Novel and clean: 128044. Rejected `TRAIN_CONSUMED` 184. Rejected existing `EVAL_RESERVE` 5. Those 5 were not reused. Novelty rate among shaped rows: 0.9985. Planning cap admitted 250 of the admissible set. `IdentityLedger.admit` appended 500 events. Events sha256 before `f5e0008f27a80b11bc7e5b98e48e9e99cada04ee8f9455ed5ece6f99c1de3266`, after `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`. Routed to `TRAIN_CANDIDATE`: 0. Acquisition receipt sha256 `be5671d4cf586b7a9ce3f45b4f5b8b5d0574edd4d1eaeef0c9644ca8ad2678a8`. Admission receipt sha256 `53df5397a13974e03bd60310fca2c29589e7a0fa6236dd576cf4ddf43a75bf15`. Census receipt sha256 `a5e9ae8ef6b65b5c187633e09b8700a5ef800eb1d97bd7a78aa2a9db26cf0a16`.
+
+Reserve after admission: classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250. The first three did not decrease. Admitted rows are `class=INFERRED`, `lineage=none`. Role schemes: positional 125, type_slot 125. Filler counts: 2 tokens 64, 3 tokens 56, 4 tokens 56, 5 tokens 46, 6 tokens 28. Source-index metadata, not a Hyperlex family: noun 72, verb 68, adv 62, adj 48. Unique filler targets: 125. Each target has 2 surfaces (the two role schemes). Maximum surfaces per target: 2.
+
+Planning progress, not a validity threshold: classify 241/606, OBSERVED 123/287, non-none 188/604, clean unbind 250/250. Statistical minimum remains `NOT_COMPUTABLE`.
+
+`select_003_gate.eligible` is true. `training_overlap_identities` is 0. `spent_or_abandoned_in_reserve` is 0. Reserve identities 491. SELECT-003 was not drafted. This is representation completeness, not training readiness. Evaluation quality is still one lexicon, `INFERRED`, `lineage=none`. These rights-cleared active families still have zero settled classify support and were not collected here: relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, spiritual-mystic.
+
+Vendor calls: 0. BEST was not moved. Do not train.
+
