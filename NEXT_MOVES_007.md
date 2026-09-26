@@ -30,10 +30,11 @@ BEST unchanged (`seed-morph78`). `name_gate` untouched. No Hub.
 
 ## Next (each a separate operator sentence)
 
-1. **Default HOLD** `seed-morph78`. No new climb without a named authorize/acquire card and a fresh holdout draw.
-2. **Hub:** still recommend **do not publish**. Audit + readiness: corrected clean gate ties morph78 to morph65; Wiktionary/data licence (D4, D5(b) for future release trains); open D3. Plan: `PUBLISH-READINESS-PLAN.md` / `PUBLISH-AUDIT-20260924.md`.
-3. Optional **T13** (promote `scripts/shadow/hyperlexical/` into `src/hyperlex/`).
-4. **D3** — keep morph78 BEST vs treat morph65/morph78 as tied on corrected gate (A6 already names morph78).
+1. **rc2 AUTHORIZED** (Danny 2026-09-26: `continue training according to our updated contents`). Pre-reg: `receipts/20260926-rc2-preregistration.md`. Env: `scripts/spark/soft_ceiling/rc2-train-env.json`. Runbook: `SPARK-RC2-RUN.md`. **Parked:** Spark SSH key missing from this Cloud Agent (`receipts/20260926-spark-ssh-blocked-rc2.md`). On Spark: draw **new** holdout → launch `seed-rc2` → score once.
+2. Soft_ceiling morph climb still needs a **named-phrase** authorize card (separate from rc2).
+3. **Hub:** still recommend **do not publish**.
+4. Optional **T13**.
+5. **D3** — keep morph78 BEST vs tie with morph65 on corrected gate.
 
 Open findings (receipt `receipts/20260924-infer-model-morph78.md`): classify overconfident on val-settled phrases; trunk+heads = 150.55M vs A1 150M (A7: A1 counts trunk).
 

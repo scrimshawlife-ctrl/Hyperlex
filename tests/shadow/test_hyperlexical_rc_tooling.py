@@ -41,3 +41,14 @@ def test_score_helpers():
     ]
     assert copy_baseline(rows) == 2 / 3
     assert copy_baseline([]) is None
+
+def test_rc2_env_is_cold_strict_release_with_holdout_guard():
+    env = json.loads((SPARK / "rc2-train-env.json").read_text())
+    assert env["HYPERLEX_ALLOW_TRAIN"] == "1"
+    assert env["HYPERLEX_FILLER_FILTER"] == "strict"
+    assert env["HYPERLEX_RELEASE_SET"] == "1"
+    assert "HYPERLEX_INIT_FROM" not in env
+    assert env["HYPERLEX_TRAIN_OUT"].endswith("seed-rc2")
+    assert "holdout-manifest-rc2.json" in env["HLX_HOLDOUT_MANIFESTS"]
+    assert env["HLX_FORCE_TRAIN_DISJOINT"] == "1"
+    assert env.get("HLX_ALLOW_NO_HOLDOUT") in (None, "", "0")
