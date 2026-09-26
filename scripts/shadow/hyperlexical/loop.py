@@ -8,7 +8,8 @@ from pathlib import Path
 
 from .align import atom_token_index, offsets_from_tokenizer, pool_indices
 from .export import export_dataset, repo_root, write_export
-from .train_input import load_training_bundle, peek_train_input_mode, train_input_receipt
+from .admission import AdmissionError, admit_training_run
+from .train_input import train_input_receipt
 from .classify_metrics import (
     NONE_LABEL,
     SELECT_METRIC_CLASSIFY,
@@ -34,19 +35,11 @@ from .layout import (
 from .eval_forward import apply_encoder_trainable
 from .filler_filter import assert_publishable_vocab, filter_mode, filter_unbind_rows
 from .holdout_guard import (
-    EXPERIMENT_ID_ENV,
     assert_no_holdout,
-    assert_pinned_holdout_disjoint,
     filter_holdout_rows,
     holdout_receipt,
     load_holdout_spec,
     log_holdout,
-    require_holdout_for_training,
-)
-from .identity_ledger import (
-    RESERVE_LEDGER_ENV,
-    IdentityLedger,
-    assert_training_disjoint_from_reserve,
 )
 from .provenance import provenance
 from .release_set import maybe_release
@@ -483,6 +476,11 @@ def _offsets(tok, text: str):
         return None
 
 
+def _enter_training_execution() -> None:
+    """Reached only after admission. Admission-only mode returns before this."""
+    return None
+
+
 def run_loop(
     trunk: Path,
     out_dir: Path,
@@ -490,26 +488,26 @@ def run_loop(
     include_live: bool = False,
     live_store: Path | None = None,
 ) -> dict:
-    # Controlled experiments must bind a pinned export before any rebuild.
-    peek_train_input_mode()
-    holdout_spec = require_holdout_for_training()
-    root = repo_root()
-    bundle = load_training_bundle(
-        root,
+    # Same gates as preflight. Admission-only returns before any optimizer.
+    admission = admit_training_run(
         include_live=include_live,
         live_store=live_store,
         export_dataset=export_dataset,
+        trunk=trunk,
+        out_dir=out_dir,
     )
+    if os.environ.get("HLX_ADMISSION_ONLY") == "1":
+        if not admission.ready:
+            raise AdmissionError(admission.error or "ADMISSION FAIL", admission.receipt)
+        return admission.receipt
+    bundle = admission.bundle
+    holdout_spec = admission.holdout_spec
     input_receipt = train_input_receipt(bundle)
-    disjoint_receipt = None
-    if os.environ.get(EXPERIMENT_ID_ENV, "").strip():
-        disjoint_receipt = assert_pinned_holdout_disjoint(bundle["rows"], holdout_spec)
-    reserve_receipt = None
-    reserve_ledger = os.environ.get(RESERVE_LEDGER_ENV, "").strip()
-    if reserve_ledger:
-        reserve_receipt = assert_training_disjoint_from_reserve(
-            bundle["rows"], IdentityLedger.load(reserve_ledger)
-        )
+    disjoint_receipt = admission.disjoint_receipt
+    reserve_receipt = admission.reserve_receipt
+    if bundle is None:
+        raise AdmissionError("ADMISSION FAIL: training bundle was not loaded", admission.receipt)
+    root = repo_root()
     release_rows_, release_stats = maybe_release(bundle["rows"])
     if release_stats["release_set"]:
         bundle = {**bundle, "rows": release_rows_}
@@ -563,6 +561,7 @@ def run_loop(
         selection_rows,
     )
 
+    _enter_training_execution()
     import torch
     from torch import nn
     from torch.optim import AdamW

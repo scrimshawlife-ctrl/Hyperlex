@@ -287,3 +287,31 @@ One launch was authorized from Spark commit `53f128a68a6603a98d9d5a3e56cc357f4a1
 Container `hlx-train-select003-1790441469` on `lmsysorg/sglang:dev-qwen38-27b-dflash2` (`sha256:616a3e97f45191af975896cfa644279096cb31bd408a071c2e99ca7209c3cafe`) started 2026-09-26T16:51:09Z and exited 1 at 2026-09-26T16:51:12Z. The trainer refused before `load_training_bundle`: `HYPERLEX_ALLOW_TRAIN=1` with no holdout manifest. Epochs 0. Gradient steps 0. No candidate checkpoint. The pinned export was not consumed. The reserve was not scored and was not spent. Decision `EXECUTION_INVALID`. The hypothesis is `UNTESTED`. This is not `PROMOTE`, `REJECT`, or `INCONCLUSIVE`.
 
 BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`. Vendor calls: 0. Do not retry this experiment id. Do not train.
+## SELECT-003 closed — PREFLIGHT_LAUNCH_HOLDOUT_GATE_MISMATCH
+
+`HLX-EXP-2026-09-26-SELECT-003` is permanently `EXECUTION_INVALID`. Cause: `PREFLIGHT_LAUNCH_HOLDOUT_GATE_MISMATCH`. The non-launching preflight reported `TRAINING_READY` without running `require_holdout_for_training` under `HYPERLEX_ALLOW_TRAIN=1`. The trainer then refused before `load_training_bundle` because the sealed candidate had no `HLX_HOLDOUT_MANIFESTS` and `HLX_ALLOW_NO_HOLDOUT` stayed unset. Epochs 0. Gradient steps 0. Candidate checkpoint: none. Reserve scored: false. `BEST_moved`: false. Hypothesis: `UNTESTED`. The sealed preregistration and threshold authorization are not rewritten. This id is not retried.
+
+## Controlled-experiment admission — CONTROLLED_RESERVE
+
+The canonical controlled-experiment holdout contract is `CONTROLLED_RESERVE`. A launch with `HLX_EXPERIMENT_ID` set is admitted by `admit_training_run`, which both preflight and `run_loop` call, in this order: experiment binding, launch gate, sealed reserve, pinned training input, train/reserve disjointness, single scientific variable, BEST and trunk digests, output directory, then ready.
+
+A sealed reserve binding satisfies the holdout requirement when the ledger is `EVAL_RESERVE`, all four slices are present, the binding digest matches `events.jsonl`, and training overlap by row id and by normalized text hash is 0. Overlap rejects the run. It does not drop training rows. `HLX_HOLDOUT_MANIFESTS` is not a second requirement. `HLX_ALLOW_NO_HOLDOUT` does not admit a controlled experiment. Legacy launches that are not controlled experiments still use the manifest gate.
+
+`HYPERLEX_ALLOW_TRAIN=1` is part of the effective environment hash. `HLX_ADMISSION_ONLY=1` is not. With that flag, `python -m hyperlexical.train --run` returns after admission and does not construct an optimizer, enter epoch 0, or take a gradient step. `TRAINING_READY` means that same admission returned `ADMISSION_PASS`.
+
+```text
+RUNE.PREFLIGHT_LAUNCH_PARITY(x) =
+    effective_environment_hash(preflight) == effective_environment_hash(launch)
+    AND admission_gate_sequence(preflight) == admission_gate_sequence(launch)
+    AND admission_result(preflight) == admission_result(launch)
+```
+
+## SELECT-004 readiness
+
+`HLX-EXP-2026-09-26-SELECT-004` is not preregistered and is not authorized to run. It may be drafted. SELECT-001, SELECT-002, and SELECT-003 produced no scientific evidence about `HLX_SELECT_METRIC`. A draft may test the same hypothesis: baseline unset, which resolves to `unbind_exact` with `HYPERLEX_SAVE_BEST_UNBIND=1`; candidate `classify_macro_f1_nonnone`.
+
+No canonical rule carries numeric thresholds across experiments. SELECT-003's floors do not transfer. SELECT-004 decision thresholds are `BLOCKED_PENDING_OPERATOR_AUTHORIZATION` until a fresh authorization is sealed for that id.
+
+The draft must keep the pinned export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, 9150 rows, BEST sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`, and trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. The GEN-0 reserve stays classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491. It is not scored and its lifecycle is not changed. Admission uses that reserve. It does not draw another one and it does not attach a legacy manifest.
+
+Vendor calls: 0. BEST was not moved. Do not train.

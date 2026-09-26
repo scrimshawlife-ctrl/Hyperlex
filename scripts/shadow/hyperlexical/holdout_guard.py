@@ -251,7 +251,13 @@ def load_holdout_spec(raw: str | None = None) -> HoldoutSpec:
 
 
 def require_holdout_for_training() -> HoldoutSpec:
-    """Admit training only with a fresh, experiment-bound holdout.
+    """Legacy manifest gate. Not the controlled-experiment contract.
+
+    Controlled experiments admit through ``admit_training_run`` under
+    ``CONTROLLED_RESERVE``. This function still admits a non-experiment
+    launch that sets ``HLX_HOLDOUT_MANIFESTS`` or ``HLX_ALLOW_NO_HOLDOUT``.
+
+    Admit training only with a fresh, experiment-bound holdout.
 
     Row exclusion still uses every id and text hash in the loaded manifests.
     A ``SCORED_SPENT`` or ``SCORED`` file does not authorize a run. Missing,

@@ -136,10 +136,7 @@ def test_text_collision_fails_controlled_preflight(monkeypatch, tmp_path, capsys
     assert preflight_main() == 2
     report = json.loads(capsys.readouterr().out)
     assert report["status"] == "ADMISSION_FAIL"
-    assert report["holdout_train_row_id_overlap"] == 0
-    assert report["holdout_train_text_hash_overlap"] == 1
-    assert report["holdout_filter_training_rows_removed"] == 1
-    assert report["holdout_training_disjoint"] is False
+    assert "CONTROLLED_RESERVE" in report["error"]
 
 
 def test_row_id_collision_fails_controlled_preflight(monkeypatch, tmp_path, capsys):
@@ -157,8 +154,7 @@ def test_row_id_collision_fails_controlled_preflight(monkeypatch, tmp_path, caps
     assert preflight_main() == 2
     report = json.loads(capsys.readouterr().out)
     assert report["status"] == "ADMISSION_FAIL"
-    assert report["holdout_train_row_id_overlap"] == 1
-    assert report["holdout_filter_training_rows_removed"] == 1
+    assert "CONTROLLED_RESERVE" in report["error"]
 
 
 def test_disjoint_holdout_is_admissible(monkeypatch, tmp_path, capsys):
@@ -174,13 +170,11 @@ def test_disjoint_holdout_is_admissible(monkeypatch, tmp_path, capsys):
         "hyperlexical.preflight.export_dataset",
         lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("export")),
     )
-    assert preflight_main() == 0
+    assert preflight_main() == 2
     report = json.loads(capsys.readouterr().out)
-    assert report["status"] == "TRAINING_READY"
-    assert report["holdout_train_row_id_overlap"] == 0
-    assert report["holdout_train_text_hash_overlap"] == 0
-    assert report["holdout_filter_training_rows_removed"] == 0
-    assert report["holdout_training_disjoint"] is True
+    assert report["status"] == "ADMISSION_FAIL"
+    assert report["status"] != "TRAINING_READY"
+    assert "CONTROLLED_RESERVE" in report["error"]
 
 
 def test_pinned_disjoint_holdout_keeps_all_9150_rows(monkeypatch, tmp_path):
