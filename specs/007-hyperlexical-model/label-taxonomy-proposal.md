@@ -344,3 +344,11 @@ Private sheets, mode 0600, under the stream `attest/` directory. Decision cells 
 `attest-apply` was not run. The current command only accepts the production eight plus `none` or `reject`, and it writes `label_source=OBSERVED` for every accepted value. That command must not be used on these lanes: it would reject the new names and would collapse `attest` into `OBSERVED`.
 
 No row was settled. `EVAL_RESERVE` stays 0. Vendor calls: 0. SELECT-003 was not drafted.
+
+## Settlement path — 2026-09-26
+
+The operator sheets stay the interface: lane A CONFIRM, lane B PROPOSED FAMILY, lane C DISAMBIGUATE, lane D RIGHTS BLOCKED, and the hint-only holding sheet. Decision cells stay empty until a person fills them. The tool validates completed rows and does not choose answers.
+
+The apply command is `python -m hyperlexical.identity_ledger settlement-apply`. It does not call production `attest-apply` and does not change that command. `ACCEPT` means the operator-entered settlement, including an explicit `attest` of `INFERRED` or `OBSERVED`. `NONE` writes `semantic_family=none`. `UNRESOLVED` stays null and cannot enter `EVAL_RESERVE`. A row with `RIGHTS_UNRESOLVED` cannot enter `EVAL_RESERVE` even when the family and attest are filled. `source_hint` is not copied into `semantic_family`.
+
+`taxonomy.active`, `evaluation.enabled`, and `production.enabled` are independent. The eighteen families are `taxonomy.active=true`, `evaluation.enabled=false`, `production.enabled=false`. Candidate names stay inactive unless a later activation names them. `layout.FAMILIES` is unchanged. No row was settled. `EVAL_RESERVE` stays 0. Vendor calls: 0. SELECT-003 was not drafted.

@@ -778,7 +778,7 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    """Admission and census command. Does not train or score."""
+    """Admission, census, and evaluation settlement. Does not train or score."""
     import argparse
     import sys
 
@@ -792,7 +792,22 @@ def main(argv: Sequence[str] | None = None) -> int:
     census_cmd = sub.add_parser("census")
     census_cmd.add_argument("--ledger", required=True)
     census_cmd.add_argument("--live-hashes", help="Optional JSON list of live text hashes")
+    settle = sub.add_parser("settlement-apply")
+    settle.add_argument("--stream-rows", required=True)
+    settle.add_argument("--sheet", action="append", default=[])
+    settle.add_argument("--records", default="")
+    settle.add_argument("--operator", required=True)
+    settle.add_argument("--provenance", required=True)
+    settle.add_argument("--batch-id", required=True)
+    settle.add_argument("--receipt", required=True)
+    settle.add_argument("--settlement-log", required=True)
+    settle.add_argument("--settled-at", required=True)
+    settle.add_argument("--activated-family", action="append", default=[])
     args = parser.parse_args(list(argv) if argv is not None else None)
+    if args.cmd == "settlement-apply":
+        from .eval_settlement import run_settlement_apply
+
+        return run_settlement_apply(args)
     if args.cmd == "census":
         ledger = IdentityLedger.load(args.ledger)
         live: set[str] = set()

@@ -139,3 +139,11 @@ The operator accepted the ontology structure and amended it. Active non-none fam
 
 Lanes are prepared and unsettled: A 204, B 65, C 21, D 16. Thirty-three Wiktionary hint-only rows sit outside those lanes and stay `LABEL_UNRESOLVED`. Decision cells are empty. `attest-apply` was not run. The current command would force `OBSERVED` and would reject the new names, so it must not be used on these sheets. Vendor calls: 0. Reserve stays 0. SELECT-003 stays undrafted.
 
+
+## Settlement tool HLX-EVAL-SETTLE-2026-09-26-001
+
+Evaluation settlement is a separate command, `python -m hyperlexical.identity_ledger settlement-apply`. Production `attest-apply` was not modified and was not run. That command still accepts only the production families plus `none` or `reject`, and it still writes `label_source=OBSERVED` for an accepted value.
+
+`settlement-apply` reads completed operator cells. It does not fill them. `source_hint`, `semantic_family`, and `attest` are separate fields. `ACCEPT` stores the attest the operator entered and does not promote existing evidence to `OBSERVED`. `RECLASSIFY` requires an explicit family that differs from the proposed evidence. `NONE` stores `semantic_family=none` and is not `reject`. `UNRESOLVED` stores null family and null attest. A second decision for the same row is refused. The log and the receipt are append-only and contain no row text.
+
+`taxonomy.active`, `evaluation.enabled`, and `production.enabled` are three flags. The eighteen families stay taxonomy-active only. Both enable flags stay false. `layout.FAMILIES` is unchanged. Lanes A–D and the hint-only holding sheet were validated with every decision cell empty (204 / 65 / 21 / 16 / 33). Rows settled: 0. Unresolved decisions: 0. Reserve added: 0. Vendor calls: 0. The identity ledger was not mutated. SELECT-003 stays undrafted.
