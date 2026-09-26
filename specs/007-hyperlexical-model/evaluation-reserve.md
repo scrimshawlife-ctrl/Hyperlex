@@ -278,3 +278,12 @@ Comparison baseline is `hyperlex-encoder-modernbert-base-seed-morph78`, weights 
 `INCONCLUSIVE` if the primary metrics are equal and the preservation and integrity guards pass. Also `INCONCLUSIVE` when execution and scoring are valid but the sealed rule cannot be applied deterministically, and that reason is not itself a hard integrity failure. An inconclusive result is not resolved by changing thresholds.
 
 These floors are new SELECT-003 rules. A later promote would mean checkpoint selection by non-none macro-F1 improved the sealed twelve supported families without exceeding the three allowed regressions. It would not mean improvement across the eighteen-family ontology. Families outside the gold universe remain relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, and spiritual-mystic. Representation completeness passes. Evaluation quality stays limited. Vendor calls: 0. Do not train.
+
+
+## SELECT-003 execution HLX-EXP-2026-09-26-SELECT-003
+
+One launch was authorized from Spark commit `53f128a68a6603a98d9d5a3e56cc357f4a17aa0c` with a clean tree. The sealed preregistration, threshold authorization, candidate environment, and non-launching preflight were not edited. `HYPERLEX_ALLOW_TRAIN=1` was a process overlay only. `HLX_ALLOW_NO_HOLDOUT` stayed unset.
+
+Container `hlx-train-select003-1790441469` on `lmsysorg/sglang:dev-qwen38-27b-dflash2` (`sha256:616a3e97f45191af975896cfa644279096cb31bd408a071c2e99ca7209c3cafe`) started 2026-09-26T16:51:09Z and exited 1 at 2026-09-26T16:51:12Z. The trainer refused before `load_training_bundle`: `HYPERLEX_ALLOW_TRAIN=1` with no holdout manifest. Epochs 0. Gradient steps 0. No candidate checkpoint. The pinned export was not consumed. The reserve was not scored and was not spent. Decision `EXECUTION_INVALID`. The hypothesis is `UNTESTED`. This is not `PROMOTE`, `REJECT`, or `INCONCLUSIVE`.
+
+BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`. Vendor calls: 0. Do not retry this experiment id. Do not train.
