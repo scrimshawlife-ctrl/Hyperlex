@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 from .export import export_dataset, repo_root
+from .holdout_guard import require_holdout_for_training
 from .train_input import load_training_bundle, train_input_receipt
 
 TRUNK = "answerdotai/ModernBERT-base"
@@ -78,9 +79,41 @@ def main(argv=None) -> int:
         and proof["training_export_sha256_actual"]
         and proof["training_export_sha256_actual"] == proof["training_export_sha256_expected"]
     )
+    holdout = {
+        "holdout_admitted": False,
+        "holdout_state": None,
+        "holdout_experiment_id": None,
+        "holdout_manifest_sha256": None,
+    }
+    holdout_error = None
+    if os.environ.get("HLX_ALLOW_NO_HOLDOUT") == "1":
+        holdout_error = "ADMISSION FAIL: HLX_ALLOW_NO_HOLDOUT is set"
+    elif experiment_id and allow and pinned_ok:
+        try:
+            spec = require_holdout_for_training()
+        except SystemExit as exc:
+            holdout_error = str(exc)
+            spec = None
+        if spec is not None and spec.manifests:
+            holdout = {
+                "holdout_admitted": True,
+                "holdout_state": spec.manifests[0].get("status"),
+                "holdout_experiment_id": spec.manifests[0].get("experiment_id"),
+                "holdout_manifest_sha256": ",".join(
+                    str(item.get("sha256")) for item in spec.manifests
+                ),
+            }
+        elif holdout_error is None:
+            holdout_error = "ADMISSION FAIL: no holdout manifest"
     if experiment_id:
-        ready = bool(allow and trunk_ready and pinned_ok)
-        status = "TRAINING_READY" if ready else "NOT_READY"
+        ready = bool(
+            allow
+            and trunk_ready
+            and pinned_ok
+            and holdout["holdout_admitted"]
+            and not holdout_error
+        )
+        status = "ADMISSION_FAIL" if holdout_error else ("TRAINING_READY" if ready else "NOT_READY")
     else:
         ready = bool(allow and trunk_ready)
         status = None
@@ -96,12 +129,15 @@ def main(argv=None) -> int:
         "training_export_sha256_actual": proof["training_export_sha256_actual"],
         "training_export_rows": proof["training_export_rows"],
         "live_export_generation_enabled": proof["live_export_generation_enabled"],
+        **holdout,
         "note": (
             "ready_to_train is a gate check, not E2 and not a Hyperlexical name. "
             "TRAINING_READY for a controlled experiment requires the trainer loader "
-            "to consume the pinned export."
+            "to consume the pinned export and require_holdout_for_training to admit."
         ),
     }
+    if holdout_error:
+        report["error"] = holdout_error
     _print(report)
     if not report["ready_to_train"]:
         return 2

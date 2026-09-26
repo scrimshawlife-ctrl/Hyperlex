@@ -158,11 +158,30 @@ def test_live_build_outside_controlled_experiment_still_exports(monkeypatch, tmp
     assert captured["live_store"] == tmp_path / "store.jsonl"
 
 
+
+def _seal_holdout(tmp_path: Path, experiment_id: str = "HLX-EXP-TEST") -> Path:
+    path = tmp_path / "holdout.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema": "hyperlex.holdout_manifest.v2",
+                "status": "UNSCORED_SEALED",
+                "experiment_id": experiment_id,
+                "row_ids": ["abc123"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
 def test_preflight_pinned_proves_loader_without_export(monkeypatch, tmp_path, capsys):
     path, digest = _pin(monkeypatch, tmp_path, [_classify("pinned quartz marker")], rows_env="1")
     trunk = tmp_path / "trunk"
     trunk.mkdir()
     (trunk / "config.json").write_text("{}\n", encoding="utf-8")
+    manifest = _seal_holdout(tmp_path)
+    monkeypatch.setenv("HLX_HOLDOUT_MANIFESTS", str(manifest))
     monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
     monkeypatch.setenv("HYPERLEX_TRUNK_DIR", str(trunk))
     monkeypatch.setattr("hyperlexical.preflight.export_dataset", _refuse_export)
@@ -176,6 +195,33 @@ def test_preflight_pinned_proves_loader_without_export(monkeypatch, tmp_path, ca
     assert report["training_export_sha256_actual"] == digest
     assert report["training_export_rows"] == 1
     assert report["live_export_generation_enabled"] is False
+    assert report["holdout_admitted"] is True
+    assert report["holdout_state"] == "UNSCORED_SEALED"
+    assert report["holdout_experiment_id"] == "HLX-EXP-TEST"
+
+
+def test_preflight_controlled_without_holdout_is_rejected(monkeypatch, tmp_path, capsys):
+    _pin(monkeypatch, tmp_path, [_classify("pinned quartz marker")], rows_env="1")
+    trunk = tmp_path / "trunk"
+    trunk.mkdir()
+    (trunk / "config.json").write_text("{}", encoding="utf-8")
+    monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
+    monkeypatch.setenv("HYPERLEX_TRUNK_DIR", str(trunk))
+    monkeypatch.setattr("hyperlexical.preflight.export_dataset", _refuse_export)
+    assert preflight_main() == 2
+    report = json.loads(capsys.readouterr().out)
+    assert report["status"] == "ADMISSION_FAIL"
+    assert report["ready_to_train"] is False
+    assert report["holdout_admitted"] is False
+    assert "no holdout manifest" in report["error"]
+
+
+def test_pinned_experiment_without_holdout_is_rejected(monkeypatch, tmp_path):
+    _pin(monkeypatch, tmp_path, [_classify("pinned quartz marker")], rows_env="1")
+    monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
+    monkeypatch.setattr("hyperlexical.loop.export_dataset", _refuse_export)
+    with pytest.raises(SystemExit, match="no holdout manifest"):
+        run_loop(tmp_path, tmp_path / "out", include_live=True)
 
 
 def test_preflight_experiment_without_pin_is_not_training_ready(monkeypatch, tmp_path, capsys):
