@@ -57,3 +57,4 @@ Any held-out manifest must be frozen and its sha256 recorded before any weights 
 ## Evaluation reserve (2026-09-26)
 
 The live evaluation universe is exhausted. Doctrine, the text-identity ledger, and the admission command are `evaluation-reserve.md`. Contamination identity is `normalized_text_sha256`, not row id. SELECT-001 and SELECT-002 holdouts are `UNSCORED_ABANDONED` and are not reopened. No statistical holdout minimum is declared. The SELECT-002 shape (606 / 287 / 604 / 250) is a planning target only. Do not train on `EVAL_RESERVE`.
+
