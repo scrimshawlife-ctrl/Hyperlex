@@ -315,3 +315,26 @@ No canonical rule carries numeric thresholds across experiments. SELECT-003's fl
 The draft must keep the pinned export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, 9150 rows, BEST sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`, and trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. The GEN-0 reserve stays classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491. It is not scored and its lifecycle is not changed. Admission uses that reserve. It does not draw another one and it does not attach a legacy manifest.
 
 Vendor calls: 0. BEST was not moved. Do not train.
+## SELECT-004 preregistered — HLX-EXP-2026-09-26-SELECT-004
+
+`HLX-EXP-2026-09-26-SELECT-004` is `PREREGISTERED`. Preregistration sha256 `365f7ce7141e8ee899fc52d85584a32c21ecfcb596e316b1438463bd8db85c4a`. That seal records repository commit `493c75981bf443baf2899b71b504fe7c7a529cf9` and a clean tree. Later documentation does not edit the sealed file.
+
+Predecessors are not evidence. SELECT-001 remains `CLOSED_AT_LAUNCH_GATE`. SELECT-002 remains `EXECUTION_INVALID` with epochs 0 and gradient steps 0. SELECT-003 remains `EXECUTION_INVALID`, cause `PREFLIGHT_LAUNCH_HOLDOUT_GATE_MISMATCH`, epochs 0, gradient steps 0, candidate checkpoint none, reserve not scored. The hypothesis is `UNTESTED`.
+
+The single scientific variable is `HLX_SELECT_METRIC`. Baseline is unset, which resolves to `unbind_exact` with `HYPERLEX_SAVE_BEST_UNBIND=1`. Candidate is `classify_macro_f1_nonnone`. Experiment diff sha256 `aa6e42e50a9547908edfe4860371a2ec05f7ec20ea87dfa829555d9e7b05bc4c`. `experimental_variable_count` is 1. Metadata differences are the experiment id, the output directory, and the residual-dump path.
+
+`CONTROLLED_RESERVE` binding sha256 `c16e69559dd6582f687532ce6e2a2e9b52a70db1aa066d11e7e68e723936b371`. Ledger events sha256 `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`. Projection sha256 `d071b7aec8154203ce7f9ae9531639b8d638f86c2ac0c3af38bead9b3c4a48f9`. Counts remain classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491, lifecycle `EVAL_RESERVE`. Training row-id overlap is 0. Training canonical-text overlap is 0. The reserve was not scored, spent, abandoned, or relabeled. Historical spent and abandoned identities in the same ledger are not this reserve.
+
+Training input is the pinned export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, mode `PINNED_EXPORT`. Declared rows, consumed rows, and effective optimization rows are 9150. No runtime exclusion reduced the set. `HLX_ALLOW_NO_HOLDOUT` stayed unset. No legacy holdout manifest was attached.
+
+BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`. Trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. BEST was not moved.
+
+Decision thresholds are `BLOCKED_PENDING_OPERATOR_AUTHORIZATION`. SELECT-003 numeric floors do not transfer. The prepared preservation metric names are `unbind_clean_exact`, `classification_accuracy`, and `observed_label_accuracy`. Those names have no active numeric thresholds.
+
+Admission-only parity passed. Preflight and the trainer entrypoint, both under `HYPERLEX_ALLOW_TRAIN=1` with `HLX_ADMISSION_ONLY=1`, share environment hash `759c591151c88074973c3ba2a555be551d3460c04c8cedf59ab36624de215885`. `admission_result` is `ADMISSION_PASS`. Status is `PREREGISTERED`. `optimizer_loaded` is false. Epochs 0. Gradient steps 0. The SELECT-004 output directory was absent before and after. `HLX_ADMISSION_ONLY` is excluded from the environment hash.
+
+`TRAINING_READY` exists only when all three are true: the scientific contract is sealed, the decision rule is sealed, and real entrypoint admission passes. SELECT-004 stays below `TRAINING_READY` until a fresh threshold authorization for this experiment id. `training_launch_authorized` is false.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. Classification support is 188 rights-cleared non-none identities. Clean unbind is 250 identities, 125 targets, 2 role-scheme surfaces per target, from Princeton WordNet 3.0 only. Unsupported families remain relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, and spiritual-mystic. A later result must not claim those families. Label universe sha256 `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`. Absent-class policy `omit_when_gold_support_is_zero`.
+
+Vendor calls: 0. Do not train. The next decision is a fresh SELECT-004 threshold authorization.
