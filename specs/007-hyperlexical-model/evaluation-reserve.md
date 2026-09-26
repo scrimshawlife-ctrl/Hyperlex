@@ -222,3 +222,43 @@ Planning progress, not a validity threshold: classify 241/606, OBSERVED 123/287,
 
 Vendor calls: 0. BEST was not moved. Do not train.
 
+
+## SELECT-003 preregistration HLX-EXP-2026-09-26-SELECT-003
+
+Phase: preregistration only. Experiment id `HLX-EXP-2026-09-26-SELECT-003`. Training is not authorized. BEST is not moved. No holdout is scored. Vendor calls: 0.
+
+Predecessors are not evidence for or against the hypothesis. SELECT-001 closed at the launch gate with the hypothesis `UNTESTED`. SELECT-002 is `EXECUTION_INVALID` with epochs 0 and gradient steps 0, hypothesis `UNTESTED`.
+
+Hypothesis: with training otherwise equivalent to the reconstructed `seed-morph78` baseline, does selecting checkpoints by `classify_macro_f1_nonnone` improve non-none classification macro-F1 while preserving the established unbind and classification safeguards?
+
+The single scientific variable is `HLX_SELECT_METRIC`. Baseline: unset, which resolves to `unbind_exact`, with `HYPERLEX_SAVE_BEST_UNBIND=1`. Candidate: `classify_macro_f1_nonnone`. Frozen with the reconstructed recipe: `HYPERLEX_FILLER_FILTER=off`, `HYPERLEX_TASK_ROUTING=legacy_split`, `HYPERLEX_UNBIND_LOSS_WEIGHT=1.0`, init `seed-morph65`, `HLX_SEED` unset, `HLX_E2_DISJOINT` absent, `HLX_VOCAB_TRAIN_ONLY` absent, `HLX_ALLOW_NO_HOLDOUT` unset, `HYPERLEX_RELEASE_SET` absent. Pinned-export execution is infrastructure, not a scientific variable. Checkpoint selection inside the trainer still uses the pinned export's val split. The reserve is the comparison surface for the decision rule. Substituting the reserve for that val split is a second variable and is not part of this experiment.
+
+Training input: pinned export, 9150 rows, sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`. Rows before the reserve filter 9150, after 9150. Reserve/training row-id overlap 0. Reserve/training text-hash overlap 0. Any difference is an admission failure.
+
+BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, weights sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`. Trunk weights sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. `layout.FAMILIES` was not edited.
+
+The bound GEN-0 reserve is unchanged: classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491. Events sha256 `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`. Ledger projection sha256 `d071b7aec8154203ce7f9ae9531639b8d638f86c2ac0c3af38bead9b3c4a48f9`. Spent 0. Abandoned 0. Text-disjoint from training. Rights-cleared. No identities are added or removed under this experiment id.
+
+Receipts bound with the reserve: classification settlement `HLX-EVAL-SETTLE-2026-09-26-002` canonical sha256 `1b0fb54a5de0fb708f74ad278037458c15e0abea5a7eb6b4b151b7e7fb34567e`; classification admission `HLX-EVAL-ADMIT-2026-09-26-002` sha256 `9898d13140b1adf9e496ce4a7e71f9573d3a0f87e97355ea01de3ecafb66e836`; clean-unbind acquisition `be5671d4cf586b7a9ce3f45b4f5b8b5d0574edd4d1eaeef0c9644ca8ad2678a8`; clean-unbind settlement `3ada2dae58bde22ef1ed1ac5a4004be75d7bf3f52cac590f24900de71015194b`; clean-unbind admission `53df5397a13974e03bd60310fca2c29589e7a0fa6236dd576cf4ddf43a75bf15`; census `a5e9ae8ef6b65b5c187633e09b8700a5ef800eb1d97bd7a78aa2a9db26cf0a16`.
+
+Primary metric:
+
+```text
+name: classify_macro_f1_nonnone
+label_universe_sha256: 227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175
+absent_class_policy: omit_when_gold_support_is_zero
+scorer: hyperlexical.classify_metrics.macro_f1_nonnone
+```
+
+The sealed class set is the non-none lineages present on the bound reserve, with identity support: approval-disapproval 1, betting-sharp 53, crypto-degen 3, gaming-meta 60, identity-affiliation 16, internet-slang 19, memetic 2, music-entertainment 1, politics-civic 13, social-status 6, technology-ai 4, workplace-career 10. Sum 188. The scorer's macro is the unweighted mean of per-class F1 over gold labels other than `none` that have support n>0. Classes with gold support 0 are omitted. They are not entered as F1=0. A later taxonomy expansion does not enter this experiment's metric. The six families with zero rights-cleared settled support stay outside the universe: relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, spiritual-mystic.
+
+Slice mapping, one contamination function for every slice (`normalized_text_sha256`):
+
+- `classify_macro_f1_nonnone` uses the 188 `classify_non_none` identities. Gold is `lineage`. The 53 `none` identities are not in this row set.
+- Classification accuracy uses the 241 `classify` identities. Gold is `lineage`, including `none`. Scorer: `accuracy`.
+- OBSERVED-label accuracy uses the 123 `classify_observed` identities. Gold is `lineage`. Scorer: `accuracy`. These three slices share classification settlement `HLX-EVAL-SETTLE-2026-09-26-002` and admission `HLX-EVAL-ADMIT-2026-09-26-002`.
+- Unbind clean exact uses the 250 `unbind_clean` identities. Gold is the filler list. Scorer: `score_unbind_exact` (`unbind_exact`). Settlement is `HLX-EVAL-UNBIND-SETTLE-2026-09-26-001`, not the classify log. Clean predicate remains `soft_ceiling.clean_surface`.
+
+Decision thresholds are `BLOCKED_PENDING_OPERATOR_AUTHORIZATION`. Inherited authorization from SELECT-002 is `NOT_COMPUTABLE`. No canonical rule carries numeric margins across an execution-invalid predecessor, and SELECT-002 sealed its margins for that experiment id only. Preservation names are prepared and inactive: unbind clean exact, classification accuracy, OBSERVED-label accuracy. Promote and reject thresholds are not set.
+
+Representation completeness passes. Training provenance passes. Holdout disjointness passes. Rights and provenance pass. Clean-unbind capacity passes. Evaluation quality is limited and disclosed: non-none support is 188 and imbalanced, and the 250 clean-unbind rows are Princeton WordNet 3.0 only, all `INFERRED`, `lineage=none`, 125 filler targets, 2 surfaces per target. The experiment is not authorized to run.
