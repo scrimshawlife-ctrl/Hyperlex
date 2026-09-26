@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -282,6 +283,60 @@ def test_unsealed_threshold_authorization_rejects_both(monkeypatch, tmp_path, ca
     pre = _assert_same_failure(monkeypatch, capsys)
     assert "not sealed" in pre["error"]
     assert pre["failed_gate"] == "ready"
+
+
+def _rebind_ledger(monkeypatch, tmp_path: Path, armed: dict, ledger) -> None:
+    directory = tmp_path / "ledger-rebound"
+    ledger.save(directory)
+    binding_path = Path(armed["reserve"]["binding"])
+    binding = json.loads(binding_path.read_text(encoding="utf-8"))
+    digest = hashlib.sha256((directory / "events.jsonl").read_bytes()).hexdigest()
+    binding["ledger_events_sha256"] = digest
+    rebound = tmp_path / "reserve-binding-rebound.json"
+    rebound.write_text(json.dumps(binding), encoding="utf-8")
+    monkeypatch.setenv("HLX_EVAL_RESERVE_LEDGER", str(directory))
+    monkeypatch.setenv("HLX_RESERVE_BINDING", str(rebound))
+
+
+def test_historical_spent_identity_is_not_the_controlled_reserve(monkeypatch, tmp_path, capsys):
+    from hyperlexical.identity_ledger import IdentityLedger
+
+    armed = arm_controlled(monkeypatch, tmp_path, [classify_row("train row")])
+    ledger = IdentityLedger.load(armed["reserve"]["ledger"])
+    ledger.mark_historical(
+        "ab" * 32,
+        "evaluation_spent",
+        source_artifact="historical-fixture",
+        provenance="fixture",
+    )
+    _rebind_ledger(monkeypatch, tmp_path, armed, ledger)
+    code, pre = _pair(monkeypatch, capsys)
+    assert code == 0
+    assert pre["admission_result"] == "ADMISSION_PASS"
+    assert pre["status"] == "PREREGISTERED"
+    assert pre["reserve_lifecycle"] == "EVAL_RESERVE"
+
+
+def test_reserve_identity_that_left_eval_reserve_rejects_both(monkeypatch, tmp_path, capsys):
+    from hyperlexical.identity_ledger import IdentityLedger, derived_state
+
+    armed = arm_controlled(monkeypatch, tmp_path, [classify_row("train row")])
+    ledger = IdentityLedger.load(armed["reserve"]["ledger"])
+    reserved = [
+        digest
+        for digest, record in ledger.identities.items()
+        if derived_state(record) == "EVAL_RESERVE"
+    ]
+    ledger.transition(
+        reserved[0],
+        "EVAL_BOUND",
+        source_artifact="fixture",
+        provenance="fixture",
+    )
+    _rebind_ledger(monkeypatch, tmp_path, armed, ledger)
+    pre = _assert_same_failure(monkeypatch, capsys)
+    assert "EVAL_BOUND" in pre["error"]
+    assert pre["failed_gate"] == "holdout_reserve"
 
 
 def test_allow_no_holdout_rejects_both(monkeypatch, tmp_path, capsys):

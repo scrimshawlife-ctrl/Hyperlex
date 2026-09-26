@@ -532,10 +532,13 @@ def _gate_reserve(ctx: _Context) -> tuple[IdentityLedger, dict[str, Any]]:
                 "holdout_reserve",
                 f"ADMISSION FAIL: reserve slice {key} does not match the binding",
             )
+    # The sealed reserve is EVAL_RESERVE. Historical spent and abandoned
+    # identities share the ledger and are not that reserve. An identity that
+    # still carries evaluation_reserved but has moved off EVAL_RESERVE fails.
     reserved = [
         record
         for record in ledger.identities.values()
-        if record.get("evaluation_reserved") or derived_state(record) in ("EVAL_RESERVE", "EVAL_BOUND", "EVAL_SPENT", "EVAL_ABANDONED")
+        if record.get("evaluation_reserved") or derived_state(record) == "EVAL_RESERVE"
     ]
     if not reserved:
         ctx.fail("holdout_reserve", "ADMISSION FAIL: sealed evaluation reserve has no identities")
