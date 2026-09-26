@@ -64,8 +64,10 @@ Item 4 is done. Hub card name is `hyperlex-structure-149m`; local train-out path
 - [x] broad comparison on the same n=256 surface: 0.98828125 > 0.88671875
 - [x] E2 PASS on `seed-morph78`
 - [x] PROMOTE_BEST; Spark `BEST` → `seed-morph78`
+- [x] rc1 clean cold-start + holdout score — **REJECT** (2026-09-24); BEST unchanged; holdout `SCORED_SPENT` (`receipts/rc1-result-20260924/OPERATOR-CARD.md`)
+- [x] selection-surface audit — **NO_RULE_MATCH** / HOLD (`receipts/selection-surface-audit-20260924/`)
 
-**Rule:** do not start another climb without a new operator-authorized acquire/card. A future climb compares against morph78 as PRIOR.
+**Rule:** do not start another climb without a new operator-authorized acquire/card **and** a new hashed holdout (rc1 holdout is spent). A future climb compares against morph78 as PRIOR.
 
 ### B. Engineering hygiene
 
@@ -81,8 +83,9 @@ Item 4 is done. Hub card name is `hyperlex-structure-149m`; local train-out path
 - [x] Danny explicit `flip name_gate` (2026-09-24)
 - [x] card rename → `hyperlex-structure-149m` + eval packet `name_gate` true only for trunk-forward eval of `seed-morph78`
 - [x] real `seed-morph78` inference path (`infer --model-dir`; receipt `receipts/20260924-infer-model-morph78.md`)
-- [ ] finalize public model card from pinned receipts
-- [ ] separately authorize Hub upload, or explicitly close the cycle with no Hub — **audit recommends not yet** (`specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`)
+- [x] rc1 reject recorded; operator docs synced to HOLD (2026-09-26)
+- [ ] finalize public model card from pinned receipts (include test table from rc1 holdout if/when publishing)
+- [ ] separately authorize Hub upload, or explicitly close the cycle with no Hub — **audit recommends not yet** (`PUBLISH-AUDIT-20260924.md`)
 - [ ] optional T13 in a separate PR with tests
 
 ### D. Adjacent tracks (not product naming)
@@ -97,7 +100,7 @@ Q1 status is not a substitute for Spec 007 product completion, and Spec 007 prog
 
 ## Default recommendation
 
-**HOLD morph78.** NAME is done. Resolve PUBLISH (and the two inference findings) before authorizing another training climb.
+**HOLD morph78.** NAME is done. rc1 is not an RC. Resolve PUBLISH (D3/D4/D5(b) + the two inference findings) before authorizing another training climb.
 
 ## Explicit non-goals
 
