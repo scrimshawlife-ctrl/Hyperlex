@@ -99,3 +99,16 @@ Convenience is not one of those conditions. This document does not create GEN-1.
 ## Ledger
 
 `scripts/shadow/hyperlexical/build_identity_ledger.py` catalogues receipt-backed artifacts. It does not infer lifecycle from filenames. The populated ledger stays on the host store, not in git, and does not contain raw text.
+
+## Acquisition batch HLX-EVAL-ACQ-2026-09-26-001
+
+Screened local rights-cleared and operator-labeled corpora. The ledger was not mutated. Decision `REJECT_BATCH`. The reserve stays empty.
+
+- 2026 backfill atoms: 67/67 unique hashes already `TRAIN_CONSUMED`.
+- Harvest multiword file: 890/890 unique hashes already `TRAIN_CONSUMED`.
+- Civilian seed: 17 novel identities, all lineage `ai-native`. A registry export marked `OBSERVED` is not an operator settlement, so those rows were held. Class imbalance is severe. No balance threshold is declared.
+- 2026-09-16 structure gold: the authorized train rows are already consumed. Four novel leftovers carry model predictions and were excluded.
+- Agent-memetics seeds: rights are unresolved and task labels are absent.
+
+New `OBSERVED` coverage is `NOT_COMPUTABLE` until an operator harvest settlement exists. This record does not settle phrases. SELECT-003 stays undrafted. GEN-1 was not created. In-repo settled gold is exhausted. That alone does not reset GEN-0.
+
