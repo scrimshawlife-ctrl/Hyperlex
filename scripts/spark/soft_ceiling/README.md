@@ -14,7 +14,7 @@ Gate logic lives in `scripts/shadow/hyperlexical/soft_ceiling.py` and is tested 
 
 Two training flags stay off unless set:
 
-- `HLX_SEED` — non-negative integer. Seeds Python `random`, NumPy, and PyTorch, and enables deterministic cuDNN plus `torch.use_deterministic_algorithms(True)`. Unset makes no seeding calls. `PYTHONHASHSEED` is written for child processes; it does not reseed the current process.
+- `HLX_SEED` — non-negative integer. Seeds Python `random`, NumPy, and PyTorch, and enables deterministic cuDNN plus `torch.use_deterministic_algorithms(True)`. Unset makes no seeding calls. When set, an empty `CUBLAS_WORKSPACE_CONFIG` becomes `:4096:8` before any CUDA call; `:16:8` is also accepted. CUDA 10.2 and newer raise on the first deterministic GEMM without one of those values. `PYTHONHASHSEED` is written for child processes; it does not reseed the current process.
 - `HLX_CLASSIFY_SPLIT_FILE` — JSON `{"schema":"hyperlex.classify_split_override.v0.1","base_trainval_sha256":"<optional>","split_by_row_id":{"<row_id>":"train"|"val"|"drop"}}`. Applied to classify train/val only, before admission and the holdout guard. The guard still wins. Row dicts are not rewritten. The receipt logs move and drop counts plus the file sha256, not row text or ids.
 
 For a fair comparison, pass **both** models' force/hard files to `eval_broad.py` for both runs, so candidate and prior are scored on the same clean rows.
