@@ -133,3 +133,9 @@ The production head stays the nine-way `layout.FAMILIES` list. The proposal adds
 
 Of the 339 stream rows, 204 keep the same family as a `PROPOSED_REMAP` (gaming-meta 98, betting-sharp 61, crypto-degen 5, none 40). 135 are `LABEL_UNRESOLVED`. `brainrot-aura` is not split. Kinship hints are not mapped to `relationship-dating`. Eleven of the sixteen names have no row on this shelf. Row settlement is not ready. SELECT-003 stays undrafted.
 
+## Taxonomy acceptance HLX-EVAL-TAXON-2026-09-26-002
+
+The operator accepted the ontology structure and amended it. Active non-none families are eighteen, including `identity-affiliation` and `politics-civic`. `work-hustle` is renamed `workplace-career`. `brainrot-aura` is not a family. Six names stay candidates. `taxonomy.active` is true and `evaluation.enabled` is false on all eighteen. `none` stays abstain. `source_hint` is evidence, not `semantic_family`.
+
+Lanes are prepared and unsettled: A 204, B 65, C 21, D 16. Thirty-three Wiktionary hint-only rows sit outside those lanes and stay `LABEL_UNRESOLVED`. Decision cells are empty. `attest-apply` was not run. The current command would force `OBSERVED` and would reject the new names, so it must not be used on these sheets. Vendor calls: 0. Reserve stays 0. SELECT-003 stays undrafted.
+

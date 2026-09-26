@@ -1,6 +1,6 @@
 # Label taxonomy proposal — evaluation reserve
 
-**Status:** draft for operator review. Not settled. Not applied.  
+**Status:** structure accepted 2026-09-26 with amendments (see Operator acceptance). Row settlement not applied. `evaluation.enabled` is false.  
 **Date:** 2026-09-26  
 **Shelf:** held-out stream `hs-20260925T211358Z` (339 rows). No row text in this file.  
 **Does not:** change `hyperlexical.layout.FAMILIES`, resize the classify head, call Jev, run `attest-apply`, or admit `EVAL_RESERVE`.
@@ -266,3 +266,81 @@ Taxonomy text is ready for review. Row settlement is not ready.
 - Then, and only then, `attest-apply`. This file does not authorize that command.
 
 `SELECT-003` stays undrafted. GEN-1 was not created. BEST stays `seed-morph78`.
+
+
+## Operator acceptance — 2026-09-26
+
+The operator accepted the ontology structure and amended the draft. This section supersedes the sixteen-name list, the name `work-hustle`, and the candidate status of `identity-affiliation` and `politics-civic`. The earlier sections stay as the draft record. The production head in `layout.FAMILIES` is unchanged.
+
+### Authorized active set (18 non-none)
+
+`gaming-meta`, `betting-sharp`, `crypto-degen`, `internet-slang`, `memetic`, `social-status`, `relationship-dating`, `approval-disapproval`, `conflict-aggression`, `technology-ai`, `workplace-career`, `sports-competition`, `music-entertainment`, `fashion-aesthetic`, `regional-cultural`, `spiritual-mystic`, `identity-affiliation`, `politics-civic`.
+
+`none` remains abstain.
+
+`taxonomy.active` is true for these eighteen. `evaluation.enabled` is false for every one of them until operator-settled support exists and a later governance decision turns evaluation on. Those two flags are independent.
+
+### Renames and promotions
+
+- `work-hustle` is not a family. The region is `workplace-career`: corporate jargon, employment and status language, career language, workplace hierarchy, and hustle or grind language. Finer shade sits on `function` or `register`.
+- `identity-affiliation` is active. It covers group membership, social belonging, in-group and out-group identity, affiliative address, and role affiliation. It is not `relationship-dating`. Familial address used socially is `semantic_family: identity-affiliation` with `function: address`.
+- `politics-civic` is active. It covers political roles, civic identity, governmental status, political-group terminology, and public institutional positioning. It is a descriptive region, not an ideological judgment, and it is not `social-status` or `identity-affiliation`.
+
+### Still candidates
+
+`finance-retail`, `market-structure`, `sexual-romantic`, `substance-party`, `crime-illicit`, `health-fitness`.
+
+`brainrot-aura` is not a family. The source cluster is disambiguated row by row into `internet-slang`, `memetic`, `social-status`, another active family, `none`, or `LABEL_UNRESOLVED`.
+
+### Source hint is not a label
+
+```yaml
+source_hint:
+  value:
+  provenance:
+semantic_family:
+  value:
+  settled_by:
+  settled_at:
+attest:
+  value: OBSERVED | INFERRED | UNLABELLED
+  settled_by:
+  settled_at:
+```
+
+A source hint is evidence shown to the operator. It does not become `semantic_family`. An existing `INFERRED` label does not become `OBSERVED`. Jev and any other model do not settle either field.
+
+### Taxonomy-level mappings (not row settlement)
+
+| Current condition | Mapping |
+|---|---|
+| gaming-meta label and hint | `gaming-meta` |
+| betting-sharp label and hint | `betting-sharp` |
+| crypto-degen label and hint | `crypto-degen` |
+| none label and hint | `none` |
+| workplace-corp hint | `workplace-career` |
+| ai-native hint | `technology-ai` |
+| kinship-address hint | `identity-affiliation` |
+| political-status hint | `politics-civic` |
+| brainrot-aura hint | no batch mapping |
+| gaming-meta label with betting-sharp hint | no batch mapping |
+| Reddit or Know Your Meme | excluded from `EVAL_RESERVE` until rights are resolved |
+
+Hint-family mapping accepted is not a row label settled.
+
+### Settlement lanes for `hs-20260925T211358Z`
+
+Private sheets, mode 0600, under the stream `attest/` directory. Decision cells are empty. `semantic_family`, `attest`, `register`, and `function` are empty. A proposed family is evidence in its own column, not a preselected answer.
+
+| Lane | Rows | Operator choice |
+|---|---|---|
+| A CONFIRM | 204 same-label proposed remaps | `ACCEPT`, `RECLASSIFY`, `UNRESOLVED` |
+| B PROPOSED FAMILY | 20 workplace-corp, 5 ai-native, 20 kinship-address, 20 political-status | `ACCEPT FAMILY`, `CHOOSE DIFFERENT FAMILY`, `NONE`, `UNRESOLVED` |
+| C DISAMBIGUATE | 20 brainrot-aura, 1 label/hint collision | a listed destination, another active family, `none`, or `UNRESOLVED` |
+| D RIGHTS BLOCKED | 14 Reddit, 2 Know Your Meme | semantic notes allowed; reserve admission impossible |
+
+33 Wiktionary rows are hint-only for `gaming-meta` (20) or `betting-sharp` (13). They are not in the four named lanes. They stay `LABEL_UNRESOLVED` on a private holding sheet. They were not given a batch settlement.
+
+`attest-apply` was not run. The current command only accepts the production eight plus `none` or `reject`, and it writes `label_source=OBSERVED` for every accepted value. That command must not be used on these lanes: it would reject the new names and would collapse `attest` into `OBSERVED`.
+
+No row was settled. `EVAL_RESERVE` stays 0. Vendor calls: 0. SELECT-003 was not drafted.
