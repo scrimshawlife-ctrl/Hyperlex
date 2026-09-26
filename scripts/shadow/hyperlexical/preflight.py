@@ -1,8 +1,10 @@
 """U3 preflight. No Hub. No train.
 
-``TRAINING_READY`` means ``admit_training_run`` passed under the same
-environment the trainer uses, including ``HYPERLEX_ALLOW_TRAIN=1``.
-The trainer entrypoint with ``HLX_ADMISSION_ONLY=1`` stops after those gates.
+``TRAINING_READY`` exists only when the scientific contract passed,
+the decision rule is sealed, and ``admit_training_run`` returns
+``ADMISSION_PASS``. An admission pass without a sealed decision rule
+stays ``PREREGISTERED``. The trainer entrypoint with
+``HLX_ADMISSION_ONLY=1`` stops after those gates.
 """
 
 from __future__ import annotations
@@ -40,8 +42,10 @@ def _base() -> dict:
         "brier": None,
         "experiment_id": experiment_id or None,
         "note": (
-            "TRAINING_READY means admit_training_run passed for this environment. "
-            "It is not E2 and not a Hyperlexical name."
+            "TRAINING_READY requires a sealed scientific contract, a sealed "
+            "decision rule, and admit_training_run. Admission without a "
+            "decision rule stays PREREGISTERED. It is not E2 and not a "
+            "Hyperlexical name."
         ),
     }
 
@@ -86,13 +90,10 @@ def main(argv=None) -> int:
         return 2
     report = _base()
     report.update(result.receipt)
-    report["ready_to_train"] = result.ready
     if result.contract == "CONTROLLED_RESERVE" and not result.launch_armed:
         report["status"] = "NOT_READY"
         report["admission_result"] = "NOT_ARMED"
-    elif result.ready and result.contract == "CONTROLLED_RESERVE":
-        report["status"] = "TRAINING_READY"
-        report["admission_result"] = "ADMISSION_PASS"
+        report["ready_to_train"] = False
     _print(report)
     return 0 if result.ready else 2
 

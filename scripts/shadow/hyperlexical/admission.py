@@ -16,6 +16,12 @@ not. Legacy launches that are not controlled experiments still use
 
 ``HLX_ADMISSION_ONLY=1`` is not part of the environment hash. The trainer
 returns after these gates and does not construct an optimizer.
+
+``TRAINING_READY`` exists only when all three are true: these scientific
+gates passed, a sealed threshold authorization matches this experiment, and
+admission returns ``ADMISSION_PASS``. Without that decision rule the status
+stays ``PREREGISTERED`` and ``ready_to_train`` stays false. An admission pass
+is not a training launch.
 """
 
 from __future__ import annotations
@@ -59,6 +65,9 @@ BEST_WEIGHTS_ENV = "HLX_BEST_WEIGHTS"
 TRUNK_SHA_ENV = "HLX_TRUNK_SHA256"
 TRAIN_OUT_ENV = "HYPERLEX_TRAIN_OUT"
 SELECT_METRIC_KEY = "HLX_SELECT_METRIC"
+THRESHOLD_AUTHORIZATION_ENV = "HLX_THRESHOLD_AUTHORIZATION"
+THRESHOLD_SCHEMA = "hyperlex.threshold_authorization.v1"
+THRESHOLDS_BLOCKED = "BLOCKED_PENDING_OPERATOR_AUTHORIZATION"
 REQUIRED_SLICES = ("classify", "classify_observed", "classify_non_none", "unbind_clean")
 
 GATE_SEQUENCE = (
@@ -77,6 +86,7 @@ GATE_SEQUENCE = (
 # so a dry launch and preflight hash the same binding.
 ENV_KEYS = (
     "HLX_EXPERIMENT_ID",
+    "HLX_THRESHOLD_AUTHORIZATION",
     "HYPERLEX_ALLOW_TRAIN",
     "HLX_EVAL_RESERVE_LEDGER",
     "HLX_RESERVE_BINDING",
@@ -373,6 +383,8 @@ def _admit_controlled(ctx: _Context) -> AdmissionResult:
     _gate_single_variable(ctx)
     _gate_best_trunk(ctx)
     _gate_output(ctx)
+    decision_sealed, decision_state = _decision_authorization(ctx)
+    status = "TRAINING_READY" if decision_sealed else "PREREGISTERED"
     spec = _empty_spec()
     disjoint = {
         "holdout_train_row_id_overlap": 0,
@@ -382,8 +394,12 @@ def _admit_controlled(ctx: _Context) -> AdmissionResult:
     }
     receipt = ctx.receipt(
         admission_result="ADMISSION_PASS",
-        status="TRAINING_READY",
-        ready_to_train=True,
+        status=status,
+        ready_to_train=decision_sealed,
+        scientific_contract_sealed=True,
+        decision_rule_sealed=decision_sealed,
+        decision_threshold_state=decision_state,
+        training_launch_authorized=False,
         holdout_admitted=True,
         holdout_state="EVAL_RESERVE",
         holdout_experiment_id=ctx.experiment_id,
@@ -397,7 +413,7 @@ def _admit_controlled(ctx: _Context) -> AdmissionResult:
     )
     return AdmissionResult(
         ready=True,
-        status="TRAINING_READY",
+        status=status,
         admission_result="ADMISSION_PASS",
         contract=CONTRACT_RESERVE,
         launch_armed=True,
@@ -408,6 +424,45 @@ def _admit_controlled(ctx: _Context) -> AdmissionResult:
         reserve_receipt=overlap,
         receipt=receipt,
     )
+
+
+def _decision_authorization(ctx: _Context) -> tuple[bool, str]:
+    """A missing authorization stays blocked. A bad file fails closed."""
+    raw = os.environ.get(THRESHOLD_AUTHORIZATION_ENV, "").strip()
+    if not raw:
+        return False, THRESHOLDS_BLOCKED
+    path = Path(raw)
+    if not path.is_file():
+        ctx.fail("ready", "ADMISSION FAIL: threshold authorization path is not a file")
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        ctx.fail("ready", "ADMISSION FAIL: threshold authorization is not JSON")
+    if not isinstance(payload, dict) or payload.get("schema") != THRESHOLD_SCHEMA:
+        ctx.fail(
+            "ready",
+            "ADMISSION FAIL: threshold authorization schema is not " + THRESHOLD_SCHEMA,
+        )
+    if payload.get("experiment_id") != ctx.experiment_id:
+        ctx.fail(
+            "ready",
+            "ADMISSION FAIL: threshold authorization experiment_id does not match",
+        )
+    if payload.get("sealed") is not True:
+        ctx.fail("ready", "ADMISSION FAIL: threshold authorization is not sealed")
+    thresholds = payload.get("decision_thresholds")
+    if not isinstance(thresholds, dict) or not thresholds:
+        ctx.fail(
+            "ready",
+            "ADMISSION FAIL: threshold authorization does not seal numeric decision thresholds",
+        )
+    for key, value in thresholds.items():
+        if not isinstance(key, str) or isinstance(value, bool) or not isinstance(value, (int, float)):
+            ctx.fail(
+                "ready",
+                "ADMISSION FAIL: threshold authorization does not seal numeric decision thresholds",
+            )
+    return True, "SEALED"
 
 
 def _gate_experiment(ctx: _Context) -> None:

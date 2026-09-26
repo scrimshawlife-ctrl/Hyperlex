@@ -46,6 +46,7 @@ def _clear(monkeypatch):
         "HYPERLEX_TRUNK_DIR",
         "HYPERLEX_FILLER_FILTER",
         "HYPERLEX_RELEASE_SET",
+        "HLX_THRESHOLD_AUTHORIZATION",
     ):
         monkeypatch.delenv(key, raising=False)
 
@@ -84,7 +85,12 @@ def test_environment_hash_includes_launch_overlay_and_skips_admission_only(monke
     material = effective_environment_material()
     assert material["HYPERLEX_ALLOW_TRAIN"] == "1"
     assert "HLX_ADMISSION_ONLY" not in material
+    assert "HLX_THRESHOLD_AUTHORIZATION" in material
+    assert material["HLX_THRESHOLD_AUTHORIZATION"] is None
     first = effective_environment_hash()
+    monkeypatch.setenv("HLX_THRESHOLD_AUTHORIZATION", "/tmp/not-a-file")
+    assert effective_environment_hash() != first
+    monkeypatch.delenv("HLX_THRESHOLD_AUTHORIZATION")
     monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "0")
     assert effective_environment_hash() != first
 
@@ -94,7 +100,12 @@ def test_controlled_reserve_passes_preflight_and_admission_only(monkeypatch, tmp
     code, pre = _pair(monkeypatch, capsys)
     assert code == 0
     assert pre["admission_result"] == "ADMISSION_PASS"
-    assert pre["status"] == "TRAINING_READY"
+    assert pre["status"] == "PREREGISTERED"
+    assert pre["ready_to_train"] is False
+    assert pre["scientific_contract_sealed"] is True
+    assert pre["decision_rule_sealed"] is False
+    assert pre["decision_threshold_state"] == "BLOCKED_PENDING_OPERATOR_AUTHORIZATION"
+    assert pre["training_launch_authorized"] is False
     assert pre["controlled_holdout_contract"] == "CONTROLLED_RESERVE"
     assert pre["training_input_mode"] == "PINNED_EXPORT"
     assert pre["training_export_sha256_actual"] == armed["digest"]
@@ -111,9 +122,12 @@ def test_controlled_reserve_passes_preflight_and_admission_only(monkeypatch, tmp
     launch_code, launch = _launch(capsys)
     assert launch_code == 0
     assert launch["admission_result"] == pre["admission_result"]
+    assert launch["status"] == "PREREGISTERED"
+    assert launch["ready_to_train"] is False
     assert launch["environment_hash"] == pre["environment_hash"]
     assert launch["admission_gate_sequence"] == pre["admission_gate_sequence"]
     assert launch["epochs"] == 0
+    assert launch["optimizer_loaded"] is False
     assert not armed["out"].exists()
 
 
@@ -216,6 +230,58 @@ def test_output_directory_collision_rejects_both(monkeypatch, tmp_path, capsys):
     pre = _assert_same_failure(monkeypatch, capsys)
     assert "output directory collision" in pre["error"]
     assert pre["failed_gate"] == "output_directory"
+
+
+def _write_thresholds(tmp_path: Path, **overrides) -> Path:
+    payload = {
+        "schema": "hyperlex.threshold_authorization.v1",
+        "experiment_id": "HLX-EXP-TEST",
+        "sealed": True,
+        "decision_thresholds": {"unbind_clean_exact": 0.5},
+    }
+    payload.update(overrides)
+    path = tmp_path / "threshold-authorization.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    return path
+
+
+def test_sealed_decision_rule_reaches_training_ready(monkeypatch, tmp_path, capsys):
+    arm_controlled(monkeypatch, tmp_path, [classify_row(f"train {i}") for i in range(4)])
+    path = _write_thresholds(tmp_path)
+    monkeypatch.setenv("HLX_THRESHOLD_AUTHORIZATION", str(path))
+    code, pre = _pair(monkeypatch, capsys)
+    assert code == 0
+    assert pre["admission_result"] == "ADMISSION_PASS"
+    assert pre["status"] == "TRAINING_READY"
+    assert pre["ready_to_train"] is True
+    assert pre["decision_rule_sealed"] is True
+    assert pre["decision_threshold_state"] == "SEALED"
+    assert pre["training_launch_authorized"] is False
+    assert pre["optimizer_loaded"] is False
+    launch_code, launch = _launch(capsys)
+    assert launch_code == 0
+    assert launch["status"] == pre["status"]
+    assert launch["environment_hash"] == pre["environment_hash"]
+    assert launch["optimizer_loaded"] is False
+
+
+def test_threshold_authorization_for_another_experiment_rejects_both(monkeypatch, tmp_path, capsys):
+    arm_controlled(monkeypatch, tmp_path, [classify_row("train row")])
+    path = _write_thresholds(tmp_path, experiment_id="HLX-EXP-OTHER")
+    monkeypatch.setenv("HLX_THRESHOLD_AUTHORIZATION", str(path))
+    pre = _assert_same_failure(monkeypatch, capsys)
+    assert "experiment_id does not match" in pre["error"]
+    assert pre["failed_gate"] == "ready"
+    assert pre["status"] == "ADMISSION_FAIL"
+
+
+def test_unsealed_threshold_authorization_rejects_both(monkeypatch, tmp_path, capsys):
+    arm_controlled(monkeypatch, tmp_path, [classify_row("train row")])
+    path = _write_thresholds(tmp_path, sealed=False)
+    monkeypatch.setenv("HLX_THRESHOLD_AUTHORIZATION", str(path))
+    pre = _assert_same_failure(monkeypatch, capsys)
+    assert "not sealed" in pre["error"]
+    assert pre["failed_gate"] == "ready"
 
 
 def test_allow_no_holdout_rejects_both(monkeypatch, tmp_path, capsys):
