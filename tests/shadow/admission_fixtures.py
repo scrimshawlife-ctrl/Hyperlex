@@ -135,8 +135,7 @@ def arm_controlled(
     reserve = seal_reserve(tmp_path, experiment_id=experiment_id, extra=extra_reserve)
     trunk = tmp_path / "trunk"
     trunk.mkdir()
-    (trunk / "config.json").write_text("{}
-", encoding="utf-8")
+    (trunk / "config.json").write_text("{}\n", encoding="utf-8")
     actual_trunk = write_weights(trunk / "model.safetensors", b"trunk-weights")
     actual_best = write_weights(tmp_path / "best.safetensors", b"best-weights")
     out = tmp_path / "train-out"
