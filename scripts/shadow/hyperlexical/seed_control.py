@@ -8,6 +8,7 @@ for child processes; the current process hash seed is fixed at startup.
 
 from __future__ import annotations
 
+import importlib
 import os
 import random
 from typing import Any
@@ -44,7 +45,7 @@ def apply_training_seed(torch_mod: Any = None) -> dict[str, Any] | None:
 
     np.random.seed(seed)
     if torch_mod is None:
-        import torch as torch_mod
+        torch_mod = importlib.import_module("torch")
 
     torch_mod.manual_seed(seed)
     if torch_mod.cuda.is_available():
