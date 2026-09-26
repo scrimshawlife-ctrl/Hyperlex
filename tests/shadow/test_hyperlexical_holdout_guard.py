@@ -306,18 +306,20 @@ def test_cli_manifest_and_run_loop_log(monkeypatch, tmp_path, capsys):
     def _export(*_args, **_kwargs):
         raise AssertionError("export_dataset must not run for a pinned experiment")
 
+    written = {"n": 0}
+
+    def _write(*_args, **_kwargs):
+        written["n"] += 1
+
     monkeypatch.setattr("hyperlexical.loop.export_dataset", _export)
-    monkeypatch.setattr("hyperlexical.loop.write_export", lambda *_a, **_k: None)
-    assert train_mod.main(["--offline", "--run", "--holdout-manifest", str(manifest)]) == 4
+    monkeypatch.setattr("hyperlexical.loop.write_export", _write)
+    with pytest.raises(SystemExit, match="ADMISSION FAIL"):
+        train_mod.main(["--offline", "--run", "--holdout-manifest", str(manifest)])
+    assert written["n"] == 0
     captured = capsys.readouterr()
-    logged = captured.out
-    assert "not enough classify" in captured.err
-    file_sha = hashlib.sha256(manifest.read_bytes()).hexdigest()
-    assert f"manifest_sha256={file_sha}" in logged
-    assert "classify_val=1" in logged
-    assert "unbind_val=1" in logged
-    assert "blue quartz" not in logged
-    assert surface not in logged
+    assert "blue quartz" not in captured.out
+    assert surface not in captured.out
+    assert surface not in captured.err
 
 
 def _admit(monkeypatch, path: Path, experiment_id: str = "HLX-EXP-TEST") -> None:

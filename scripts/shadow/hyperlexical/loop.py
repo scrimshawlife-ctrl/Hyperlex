@@ -34,7 +34,9 @@ from .layout import (
 from .eval_forward import apply_encoder_trainable
 from .filler_filter import assert_publishable_vocab, filter_mode, filter_unbind_rows
 from .holdout_guard import (
+    EXPERIMENT_ID_ENV,
     assert_no_holdout,
+    assert_pinned_holdout_disjoint,
     filter_holdout_rows,
     holdout_receipt,
     load_holdout_spec,
@@ -494,6 +496,9 @@ def run_loop(
         export_dataset=export_dataset,
     )
     input_receipt = train_input_receipt(bundle)
+    disjoint_receipt = None
+    if os.environ.get(EXPERIMENT_ID_ENV, "").strip():
+        disjoint_receipt = assert_pinned_holdout_disjoint(bundle["rows"], holdout_spec)
     release_rows_, release_stats = maybe_release(bundle["rows"])
     if release_stats["release_set"]:
         bundle = {**bundle, "rows": release_rows_}
@@ -1003,6 +1008,7 @@ def run_loop(
         "training_export_rows": input_receipt["training_export_rows"],
         "live_export_generation_enabled": input_receipt["live_export_generation_enabled"],
         "holdout": holdout_receipt(holdout_spec, holdout_removed),
+        "holdout_training_disjoint": disjoint_receipt,
         "classify_admission": classify_admission_receipt,
         "include_live": include_live,
         "live_included": bundle["counts"].get("live_included", 0),

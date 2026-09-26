@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 from .export import export_dataset, repo_root
-from .holdout_guard import require_holdout_for_training
+from .holdout_guard import disjoint_report, operational_status, require_holdout_for_training
 from .train_input import load_training_bundle, train_input_receipt
 
 TRUNK = "answerdotai/ModernBERT-base"
@@ -82,10 +82,12 @@ def main(argv=None) -> int:
     holdout = {
         "holdout_admitted": False,
         "holdout_state": None,
+        "holdout_operational_status": None,
         "holdout_experiment_id": None,
         "holdout_manifest_sha256": None,
     }
     holdout_error = None
+    spec = None
     if os.environ.get("HLX_ALLOW_NO_HOLDOUT") == "1":
         holdout_error = "ADMISSION FAIL: HLX_ALLOW_NO_HOLDOUT is set"
     elif experiment_id and allow and pinned_ok:
@@ -98,6 +100,7 @@ def main(argv=None) -> int:
             holdout = {
                 "holdout_admitted": True,
                 "holdout_state": spec.manifests[0].get("status"),
+                "holdout_operational_status": operational_status(spec.manifests[0]),
                 "holdout_experiment_id": spec.manifests[0].get("experiment_id"),
                 "holdout_manifest_sha256": ",".join(
                     str(item.get("sha256")) for item in spec.manifests
@@ -105,6 +108,20 @@ def main(argv=None) -> int:
             }
         elif holdout_error is None:
             holdout_error = "ADMISSION FAIL: no holdout manifest"
+    disjoint = {
+        "holdout_train_row_id_overlap": None,
+        "holdout_train_text_hash_overlap": None,
+        "holdout_filter_training_rows_removed": None,
+        "holdout_training_disjoint": None,
+    }
+    if spec is not None:
+        disjoint = disjoint_report(bundle["rows"], spec)
+        if experiment_id and not disjoint["holdout_training_disjoint"]:
+            holdout_error = (
+                "ADMISSION FAIL: holdout would remove "
+                f"{disjoint['holdout_filter_training_rows_removed']} pinned training rows"
+            )
+            holdout["holdout_admitted"] = False
     if experiment_id:
         ready = bool(
             allow
@@ -130,6 +147,7 @@ def main(argv=None) -> int:
         "training_export_rows": proof["training_export_rows"],
         "live_export_generation_enabled": proof["live_export_generation_enabled"],
         **holdout,
+        **disjoint,
         "note": (
             "ready_to_train is a gate check, not E2 and not a Hyperlexical name. "
             "TRAINING_READY for a controlled experiment requires the trainer loader "
