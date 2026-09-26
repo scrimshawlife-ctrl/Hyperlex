@@ -6,6 +6,7 @@ Synthetic rows only. No dataset text, ids, or private paths.
 from __future__ import annotations
 
 import json
+import os
 import random
 import sys
 from pathlib import Path
@@ -20,7 +21,11 @@ from hyperlexical.classify_split import (  # noqa: E402
     trainval_base_sha256,
 )
 from hyperlexical.holdout_guard import HoldoutSpec, filter_holdout_rows  # noqa: E402
-from hyperlexical.seed_control import apply_training_seed, resolve_training_seed  # noqa: E402
+from hyperlexical.seed_control import (  # noqa: E402
+    apply_training_seed,
+    ensure_cublas_workspace,
+    resolve_training_seed,
+)
 from hyperlexical.selection_surface import row_id  # noqa: E402
 
 
@@ -182,6 +187,7 @@ def test_seed_unset_does_not_touch_rng(monkeypatch):
     torch = pytest.importorskip("torch")
     monkeypatch.delenv("HLX_SEED", raising=False)
     monkeypatch.delenv("HLX_CLASSIFY_SPLIT_FILE", raising=False)
+    monkeypatch.delenv("CUBLAS_WORKSPACE_CONFIG", raising=False)
 
     random.seed(11)
     torch.manual_seed(11)
@@ -191,6 +197,7 @@ def test_seed_unset_does_not_touch_rng(monkeypatch):
     assert apply_training_seed(torch) is None
     assert random.getstate() == py_before
     assert torch.equal(torch.get_rng_state(), torch_before)
+    assert "CUBLAS_WORKSPACE_CONFIG" not in os.environ
 
 
 def test_seed_reproducible_and_distinct(monkeypatch):
@@ -198,6 +205,7 @@ def test_seed_reproducible_and_distinct(monkeypatch):
     from torch import nn
 
     monkeypatch.delenv("HLX_CLASSIFY_SPLIT_FILE", raising=False)
+    monkeypatch.delenv("CUBLAS_WORKSPACE_CONFIG", raising=False)
 
     def first_weight(seed: str):
         monkeypatch.setenv("HLX_SEED", seed)
@@ -213,10 +221,91 @@ def test_seed_reproducible_and_distinct(monkeypatch):
     receipt_c, weight_c = first_weight("8")
     assert receipt_a["seed"] == 7
     assert receipt_a["deterministic_algorithms"] is True
+    assert receipt_a["cublas_workspace_config"] == ":4096:8"
+    assert os.environ["CUBLAS_WORKSPACE_CONFIG"] == ":4096:8"
     assert torch.equal(weight_a, weight_b)
     assert not torch.equal(weight_a, weight_c)
     blob = json.dumps(receipt_a)
     assert "synthetic" not in blob
+
+
+class _Cuda:
+    def __init__(self, *, initialized: bool, available: bool = False):
+        self.initialized = initialized
+        self.available = available
+        self.workspace_at_available = None
+        self.seeded = False
+
+    def is_initialized(self):
+        return self.initialized
+
+    def is_available(self):
+        self.workspace_at_available = os.environ.get("CUBLAS_WORKSPACE_CONFIG")
+        self.initialized = True
+        return self.available
+
+    def manual_seed_all(self, seed):
+        self.seeded = True
+
+
+class _Cudnn:
+    deterministic = False
+    benchmark = True
+
+
+class _Backends:
+    def __init__(self):
+        self.cudnn = _Cudnn()
+
+
+class _Torch:
+    def __init__(self, cuda: _Cuda):
+        self.cuda = cuda
+        self.backends = _Backends()
+        self.seeded = None
+        self.deterministic = None
+
+    def manual_seed(self, seed):
+        self.seeded = seed
+
+    def use_deterministic_algorithms(self, enabled):
+        self.deterministic = enabled
+
+
+def test_cublas_workspace_is_set_before_cuda(monkeypatch):
+    monkeypatch.setenv("HLX_SEED", "3")
+    monkeypatch.delenv("CUBLAS_WORKSPACE_CONFIG", raising=False)
+    cuda = _Cuda(initialized=False, available=True)
+    torch = _Torch(cuda)
+    receipt = apply_training_seed(torch)
+    assert receipt["cublas_workspace_config"] == ":4096:8"
+    assert cuda.workspace_at_available == ":4096:8"
+    assert cuda.seeded is True
+    assert torch.deterministic is True
+
+
+def test_cublas_workspace_keeps_supported_value(monkeypatch):
+    monkeypatch.setenv("HLX_SEED", "3")
+    monkeypatch.setenv("CUBLAS_WORKSPACE_CONFIG", ":16:8")
+    cuda = _Cuda(initialized=False)
+    receipt = apply_training_seed(_Torch(cuda))
+    assert receipt["cublas_workspace_config"] == ":16:8"
+    assert os.environ["CUBLAS_WORKSPACE_CONFIG"] == ":16:8"
+
+
+def test_cublas_workspace_refuses_after_cuda_init(monkeypatch):
+    monkeypatch.setenv("HLX_SEED", "3")
+    monkeypatch.delenv("CUBLAS_WORKSPACE_CONFIG", raising=False)
+    with pytest.raises(SystemExit, match="REFUSE"):
+        apply_training_seed(_Torch(_Cuda(initialized=True)))
+    assert "CUBLAS_WORKSPACE_CONFIG" not in os.environ
+
+
+def test_cublas_workspace_refuses_unsupported_value(monkeypatch):
+    monkeypatch.setenv("HLX_SEED", "3")
+    monkeypatch.setenv("CUBLAS_WORKSPACE_CONFIG", ":1:1")
+    with pytest.raises(SystemExit, match="REFUSE"):
+        ensure_cublas_workspace()
 
 
 def test_seed_rejects_non_integers(monkeypatch):
