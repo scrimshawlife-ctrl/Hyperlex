@@ -19,6 +19,7 @@ from hyperlexical.holdout_guard import (  # noqa: E402
     holdout_receipt,
     load_holdout_spec,
     normalized_text_sha256,
+    require_holdout_for_training,
 )
 from hyperlexical.layout import label_maps  # noqa: E402
 from hyperlexical.loop import prepare_unbind_splits, run_loop  # noqa: E402
@@ -35,6 +36,10 @@ def _clear_holdout_env(monkeypatch):
     for key in (
         "HLX_HOLDOUT_MANIFESTS",
         "HLX_ALLOW_NO_HOLDOUT",
+        "HLX_EXPERIMENT_ID",
+        "HLX_TRAIN_EXPORT_PATH",
+        "HLX_TRAIN_EXPORT_SHA256",
+        "HLX_TRAIN_EXPORT_ROWS",
         "HYPERLEX_ALLOW_TRAIN",
         "HYPERLEX_RELEASE_SET",
         "HYPERLEX_TASK_ROUTING",
@@ -62,17 +67,24 @@ def _row(text, fillers, *, split="val", cls="OBSERVED", task="unbind"):
     }
 
 
-def _write_manifest(path: Path, *, row_ids=(), text_hashes=()) -> Path:
-    path.write_text(
-        json.dumps(
-            {
-                "schema": "hyperlex.holdout_manifest.v2",
-                "row_ids": list(row_ids),
-                "normalized_text_sha256": list(text_hashes),
-            }
-        ),
-        encoding="utf-8",
-    )
+def _write_manifest(
+    path: Path,
+    *,
+    row_ids=(),
+    text_hashes=(),
+    status=None,
+    experiment_id=None,
+) -> Path:
+    body = {
+        "schema": "hyperlex.holdout_manifest.v2",
+        "row_ids": list(row_ids),
+        "normalized_text_sha256": list(text_hashes),
+    }
+    if status is not None:
+        body["status"] = status
+    if experiment_id is not None:
+        body["experiment_id"] = experiment_id
+    path.write_text(json.dumps(body), encoding="utf-8")
     return path
 
 
@@ -277,24 +289,143 @@ def test_cli_manifest_and_run_loop_log(monkeypatch, tmp_path, capsys):
         tmp_path / "cli.json",
         row_ids=[row_id(unbind)],
         text_hashes=[normalized_text_sha256(surface)],
+        status="UNSCORED_SEALED",
+        experiment_id="HLX-EXP-TEST",
     )
+    monkeypatch.setenv("HLX_EXPERIMENT_ID", "HLX-EXP-TEST")
     monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
     monkeypatch.setenv("HYPERLEX_TRUNK_DIR", str(tmp_path))
     monkeypatch.setenv("HYPERLEX_EXPORT_DIR", str(tmp_path / "export"))
     (tmp_path / "config.json").write_text("{}\n", encoding="utf-8")
+    pinned = tmp_path / "pinned.jsonl"
+    payload = "".join(json.dumps(row, sort_keys=True) + "\n" for row in (classify, unbind))
+    pinned.write_text(payload, encoding="utf-8")
+    monkeypatch.setenv("HLX_TRAIN_EXPORT_PATH", str(pinned))
+    monkeypatch.setenv("HLX_TRAIN_EXPORT_SHA256", hashlib.sha256(pinned.read_bytes()).hexdigest())
 
     def _export(*_args, **_kwargs):
-        return {"rows": [classify, unbind], "sha256": "abc", "counts": {}}
+        raise AssertionError("export_dataset must not run for a pinned experiment")
+
+    written = {"n": 0}
+
+    def _write(*_args, **_kwargs):
+        written["n"] += 1
 
     monkeypatch.setattr("hyperlexical.loop.export_dataset", _export)
-    monkeypatch.setattr("hyperlexical.loop.write_export", lambda *_a, **_k: None)
-    assert train_mod.main(["--offline", "--run", "--holdout-manifest", str(manifest)]) == 4
+    monkeypatch.setattr("hyperlexical.loop.write_export", _write)
+    with pytest.raises(SystemExit, match="ADMISSION FAIL"):
+        train_mod.main(["--offline", "--run", "--holdout-manifest", str(manifest)])
+    assert written["n"] == 0
     captured = capsys.readouterr()
-    logged = captured.out
-    assert "not enough classify" in captured.err
-    file_sha = hashlib.sha256(manifest.read_bytes()).hexdigest()
-    assert f"manifest_sha256={file_sha}" in logged
-    assert "classify_val=1" in logged
-    assert "unbind_val=1" in logged
-    assert "blue quartz" not in logged
-    assert surface not in logged
+    assert "blue quartz" not in captured.out
+    assert surface not in captured.out
+    assert surface not in captured.err
+
+
+def _admit(monkeypatch, path: Path, experiment_id: str = "HLX-EXP-TEST") -> None:
+    monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
+    monkeypatch.setenv("HLX_EXPERIMENT_ID", experiment_id)
+    monkeypatch.setenv("HLX_HOLDOUT_MANIFESTS", str(path))
+
+
+def test_unscored_sealed_with_matching_binding_is_admissible(monkeypatch, tmp_path):
+    manifest = _write_manifest(
+        tmp_path / "fresh.json",
+        row_ids=["abc123"],
+        status="UNSCORED_SEALED",
+        experiment_id="HLX-EXP-TEST",
+    )
+    _admit(monkeypatch, manifest)
+    spec = require_holdout_for_training()
+    assert spec.row_ids == frozenset({"abc123"})
+    assert spec.manifests[0]["status"] == "UNSCORED_SEALED"
+    assert spec.manifests[0]["experiment_id"] == "HLX-EXP-TEST"
+
+
+@pytest.mark.parametrize("status", ["SCORED_SPENT", "SCORED", "FROZEN_NOT_SCORED"])
+def test_spent_scored_and_unknown_status_are_rejected(monkeypatch, tmp_path, status):
+    manifest = _write_manifest(
+        tmp_path / "closed.json",
+        row_ids=["abc123"],
+        status=status,
+        experiment_id="HLX-EXP-TEST",
+    )
+    _admit(monkeypatch, manifest)
+    with pytest.raises(SystemExit, match="not admissible"):
+        require_holdout_for_training()
+
+
+def test_missing_status_is_rejected(monkeypatch, tmp_path):
+    manifest = _write_manifest(tmp_path / "bare.json", row_ids=["abc123"])
+    _admit(monkeypatch, manifest)
+    with pytest.raises(SystemExit, match="status is missing"):
+        require_holdout_for_training()
+
+
+def test_wrong_experiment_binding_is_rejected(monkeypatch, tmp_path):
+    manifest = _write_manifest(
+        tmp_path / "wrong.json",
+        row_ids=["abc123"],
+        status="UNSCORED_SEALED",
+        experiment_id="HLX-EXP-OTHER",
+    )
+    _admit(monkeypatch, manifest, "HLX-EXP-TEST")
+    with pytest.raises(SystemExit, match="experiment binding"):
+        require_holdout_for_training()
+
+
+def test_unbound_experiment_is_rejected(monkeypatch, tmp_path):
+    manifest = _write_manifest(
+        tmp_path / "unbound.json",
+        row_ids=["abc123"],
+        status="UNSCORED_SEALED",
+    )
+    monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
+    monkeypatch.setenv("HLX_HOLDOUT_MANIFESTS", str(manifest))
+    with pytest.raises(SystemExit, match="experiment binding"):
+        require_holdout_for_training()
+
+
+def test_no_holdout_is_rejected_when_override_is_unset(monkeypatch):
+    monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
+    with pytest.raises(SystemExit, match="no holdout manifest"):
+        require_holdout_for_training()
+
+
+def test_spent_companion_does_not_admit(monkeypatch, tmp_path):
+    fresh = _write_manifest(
+        tmp_path / "fresh.json",
+        row_ids=["abc123"],
+        status="UNSCORED_SEALED",
+        experiment_id="HLX-EXP-TEST",
+    )
+    spent = _write_manifest(
+        tmp_path / "spent.json",
+        row_ids=["def456"],
+        status="SCORED_SPENT",
+        experiment_id="HLX-EXP-TEST",
+    )
+    monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
+    monkeypatch.setenv("HLX_EXPERIMENT_ID", "HLX-EXP-TEST")
+    monkeypatch.setenv("HLX_HOLDOUT_MANIFESTS", f"{fresh},{spent}")
+    with pytest.raises(SystemExit, match="SCORED_SPENT"):
+        require_holdout_for_training()
+
+
+def test_spent_manifest_still_excludes_rows(monkeypatch, tmp_path):
+    secret = _row("blue quartz lantern", ["quartz"], split="val")
+    keep = _row("north cobble path", ["cobble"], split="val")
+    manifest = _write_manifest(
+        tmp_path / "spent.json",
+        row_ids=[row_id(secret)],
+        status="SCORED_SPENT",
+        experiment_id="HLX-EXP-TEST",
+    )
+    _arm(monkeypatch, manifest)
+    _train, val, stats = prepare_unbind_splits([secret, keep])
+    assert [r["text"] for r in val] == ["north cobble path"]
+    assert stats["n_holdout_removed_val"] == 1
+    monkeypatch.setenv("HYPERLEX_ALLOW_TRAIN", "1")
+    monkeypatch.setenv("HLX_EXPERIMENT_ID", "HLX-EXP-TEST")
+    with pytest.raises(SystemExit, match="SCORED_SPENT"):
+        require_holdout_for_training()
