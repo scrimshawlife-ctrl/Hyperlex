@@ -168,3 +168,39 @@ One workplace-lane row describes retail product reformulation and price-tier inf
 Admission used `identity_ledger admit` under `hyperlex.eval_reserve.v1`, batch `HLX-EVAL-ADMIT-2026-09-26-002`. Admitted to `EVAL_RESERVE`: 241. Rejected existing identities: 0. Slice counts after admission: classify 241, classify_observed 123, classify_non_none 188, unbind_clean 0. `clean_unbind_support` is 0. This stream has no unbind target and none was fabricated. SELECT-003 was not drafted. The gate reports `eligible: false` because `unbind_clean` is unrepresented. Reserve identities are text-disjoint from the pinned train export.
 
 Receipt `HLX-EVAL-SETTLE-2026-09-26-002` sha256 `1b0fb54a5de0fb708f74ad278037458c15e0abea5a7eb6b4b151b7e7fb34567e`. `settlement-apply` still records `reserve_added: 0`; admission is the separate ledger command. Vendor calls: 0. BEST was not moved. Do not train.
+
+
+## Clean-unbind contract — 2026-09-26
+
+Phase: clean-unbind capacity recovery. The 241 classify reserve identities stay protected. This section does not retune `semantic_family`, `attest`, or `evaluation.enabled`.
+
+Executed shape: `hyperlexical.export._unbind_dual_scheme_rows`. Fillers are the source atom's own tokens. Positional text is those tokens joined by spaces, with roles `pos_0..pos_n-1`. Type-slot text is `TOKEN:` / `SLOT:` / `MARKER:` prefixed by index, and the fillers stay the same tokens. Role schemes are only `positional` and `type_slot`. Token count is 2 through `LIVE_UNBIND_MAX_TOKENS` (6). Atom length is at most `LIVE_UNBIND_MAX_LEN` (80). A gloss is not unbind gold. `class` is copied, not invented; this acquisition uses `INFERRED` and `lineage=none`.
+
+Contamination identity: `hyperlexical.holdout_guard.normalized_text_sha256` (NFKC, casefold, URL and punctuation stripped, SHA-256).
+
+Clean predicate: `soft_ceiling.clean_surface` on rows whose `split` is `train`, which is the call in `holdout_eligibility.census`. Definition string: `unbind_clean_definition = soft_ceiling.clean_surface`. The clean predicate is whitespace-collapsed lowercase equality of the row text against train text. It is not the contamination hash. `oov_filler_surface` is a different surface and is not this predicate.
+
+Scorer, not run in this phase: `hyperlexical.eval_forward.score_unbind_exact`. Gold is the filler list. Empty filler lists are skipped. Metrics are `unbind_exact`, `unbind_token_f1`, `unbind_slot_f1`, and the strict variants, including `by_role_scheme`. Baseline name: `unbind_copy_token`.
+
+Synthetic row, placeholders only:
+
+```json
+{
+  "text": "EXAMPLE_TOKEN_A EXAMPLE_TOKEN_B",
+  "split": "eval",
+  "lineage": "none",
+  "typology": [],
+  "stage": "noise",
+  "roles": ["pos_0", "pos_1"],
+  "fillers": ["EXAMPLE_TOKEN_A", "EXAMPLE_TOKEN_B"],
+  "role_scheme": "positional",
+  "task": "unbind",
+  "provenance": "source:EXAMPLE_LOCATOR",
+  "class": "INFERRED",
+  "license": "EXAMPLE_RIGHTS_GRANT",
+  "target_origin": "source_lemma_tokens"
+}
+```
+
+The type-slot twin uses text `TOKEN:EXAMPLE_TOKEN_A SLOT:EXAMPLE_TOKEN_B`, roles `TOKEN` and `SLOT`, and the same fillers. Unbind settlement decisions are `ACCEPT`, `CORRECT_TARGET`, `REJECT`, and `UNRESOLVED` in `hyperlex.eval_unbind_settlement.v1`. That log is not the classify settlement schema. Admission still goes through `IdentityLedger.admit`. `unbind_clean` is set only for hashes kept by `clean_surface`.
+

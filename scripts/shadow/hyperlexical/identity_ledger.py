@@ -789,6 +789,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     admit.add_argument("--rows", required=True)
     admit.add_argument("--batch-id", required=True)
     admit.add_argument("--source", required=True)
+    admit.add_argument(
+        "--train-export",
+        default="",
+        help="JSONL export. unbind_clean uses soft_ceiling.clean_surface on split=train.",
+    )
     census_cmd = sub.add_parser("census")
     census_cmd.add_argument("--ledger", required=True)
     census_cmd.add_argument("--live-hashes", help="Optional JSON list of live text hashes")
@@ -822,10 +827,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     ledger = IdentityLedger.load(args.ledger)
     prior = len(ledger.events)
     rows = _read_jsonl(Path(args.rows))
+    clean_hashes: set[str] = set()
+    if args.train_export:
+        from .clean_unbind import unbind_clean_hashes
+
+        exported = _read_jsonl(Path(args.train_export))
+        clean_hashes, _account = unbind_clean_hashes(rows, exported)
     report = ledger.admit(
         rows,
         batch_id=args.batch_id,
         source_artifact=args.source,
+        unbind_clean_hashes=clean_hashes,
     )
     written = ledger.persist_append(args.ledger, prior)
     report["events_appended"] = written
