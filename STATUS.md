@@ -103,7 +103,7 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Analysis enrichment (compression_metrics, typology tags, signal_report, integrity header) | Ready |
 | Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
-| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph78 · broad 0.988 n=256 · force fair 1.0 n=164 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–78 closed · next climb needs new named-phrase card · `name_gate` **true** (morph78, A6) · named Hyperlexical · no Hub · T13 not authorized |
+| Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph78 · broad 0.988 n=256 · force fair 1.0 n=164 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–78 closed · **rc1 REJECT** · holdout SCORED_SPENT · next climb needs new holdout + named-phrase card · `name_gate` **true** (morph78, A6) · named Hyperlexical · no Hub · T13 not authorized |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
 | External system hard import | Never |
@@ -142,9 +142,9 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph78**. Default **HOLD**. Operator review `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md`; a new climb needs a new named-phrase acquire card (compare vs morph78 broad 0.9883 n=256). `name_gate` yes recorded (A6); next are separate card-rename / Hub / T13 decisions. Plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md`.
+1. Spark BEST = **morph78**. Default **HOLD**. **rc1 REJECT** (2026-09-24): clean cold-start missed test non-inferiority vs morph78; holdout **`SCORED_SPENT`**. Receipt: `specs/007-hyperlexical-model/receipts/rc1-result-20260924/OPERATOR-CARD.md`. Operator review `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md`. A new climb needs a **new** hashed holdout + named-phrase acquire card vs morph78 PRIOR. Plan: `NEXT_MOVES_007.md`.
 2. Burn-in offline runs + settle path (this is how Brier becomes real).
-3. Do not Hub-upload — publish audit recommends local-only until blockers clear (`specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`). Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13) without a separate sentence. Do not extend `name_gate` to any checkpoint other than `seed-morph78`.
+3. Do not Hub-upload — publish audit recommends local-only until blockers clear (`specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`). Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13) without a separate sentence. Do not extend `name_gate` to any checkpoint other than `seed-morph78`. Open publish decisions: D3, D4, D5(b) for future release trains.
 
 ## README
 
