@@ -29,8 +29,9 @@ Operator scoreboard (Danny-locked harvest snapshot **2026-09-10**; climb pin **2
 Next operator sentences that do work:
 
 - Default: **HOLD** `seed-morph78`; operator product review of `HYPERLEXICAL-PRODUCT-PLAN.md`
+- **rc1 REJECT** (receipt `receipts/rc1-result-20260924/OPERATOR-CARD.md`); holdout **`SCORED_SPENT`** — do not re-score for selection
 - Hub decision; optional T13 decision (each separate). `name_gate`, card rename, and real inference path done.
-- A new climb only on a new named-phrase acquire card vs morph78 PRIOR — see `NAME-GATE-AND-NAMED-PHRASES.md`
+- A new climb only on a new hashed holdout + named-phrase acquire card vs morph78 PRIOR — see `NAME-GATE-AND-NAMED-PHRASES.md` / `NEXT_MOVES_007.md`
 - `open 006 IsA` — separate spec
 
 There is no further specify work on 007 without an amendment.
