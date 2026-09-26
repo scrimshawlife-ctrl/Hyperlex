@@ -112,3 +112,16 @@ Screened local rights-cleared and operator-labeled corpora. The ledger was not m
 
 New `OBSERVED` coverage is `NOT_COMPUTABLE` until an operator harvest settlement exists. This record does not settle phrases. SELECT-003 stays undrafted. GEN-1 was not created. In-repo settled gold is exhausted. That alone does not reset GEN-0.
 
+## Acquisition batch HLX-EVAL-ACQ-2026-09-26-002
+
+The held-out stream (`hs-20260925T211358Z`, 339 rows) is the shelf that sits beside the Jev lane. Every canonical text hash is absent from the identity ledger. Overlap with the box Jev exposure list is 0. The ledger was not mutated. Decision: not admitted. The reserve stays empty.
+
+Jev in this batch is the exposure fence. `hs_run.py` and each row policy forbid evaluating Jev, the lineage rule, or any other model on these rows. `JEV_API_KEY` is unset on this host. No vendor call was made. A Jev family call is not an operator settlement.
+
+- Rights-cleared INFERRED labels: gaming-meta 99, betting-sharp 61, crypto-degen 5, plus 40 encyclopedic `none`. Five families have no independent label.
+- 134 rows are `UNLABELLED`. The attest column is empty on all 339 rows, so new `OBSERVED` coverage is `NOT_COMPUTABLE`.
+- 16 Reddit and Know Your Meme rows have unresolved rights.
+- Class imbalance on the rights-cleared non-none subset is severe. No balance threshold is declared. Admitting it would open `classify_macro_f1_nonnone` on three families.
+
+SELECT-003 stays undrafted. GEN-1 was not created. Novel yield against `TRAIN_CONSUMED` is 339/339, so GEN-0 is not collision-blocked. The next label step is operator `attest-apply` on the queued sheet.
+
