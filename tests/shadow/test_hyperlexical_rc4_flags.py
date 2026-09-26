@@ -9,6 +9,7 @@ import json
 import os
 import random
 import sys
+import types
 from pathlib import Path
 
 import pytest
@@ -272,7 +273,20 @@ class _Torch:
         self.deterministic = enabled
 
 
+def _stub_numpy_if_missing(monkeypatch) -> None:
+    """CI installs pytest only. Seeding imports NumPy after the workspace is set."""
+    if "numpy" in sys.modules:
+        return
+    try:
+        import numpy  # noqa: F401
+    except ModuleNotFoundError:
+        fake = types.ModuleType("numpy")
+        fake.random = types.SimpleNamespace(seed=lambda seed: None)
+        monkeypatch.setitem(sys.modules, "numpy", fake)
+
+
 def test_cublas_workspace_is_set_before_cuda(monkeypatch):
+    _stub_numpy_if_missing(monkeypatch)
     monkeypatch.setenv("HLX_SEED", "3")
     monkeypatch.delenv("CUBLAS_WORKSPACE_CONFIG", raising=False)
     cuda = _Cuda(initialized=False, available=True)
@@ -285,6 +299,7 @@ def test_cublas_workspace_is_set_before_cuda(monkeypatch):
 
 
 def test_cublas_workspace_keeps_supported_value(monkeypatch):
+    _stub_numpy_if_missing(monkeypatch)
     monkeypatch.setenv("HLX_SEED", "3")
     monkeypatch.setenv("CUBLAS_WORKSPACE_CONFIG", ":16:8")
     cuda = _Cuda(initialized=False)
