@@ -125,3 +125,11 @@ Jev in this batch is the exposure fence. `hs_run.py` and each row policy forbid 
 
 SELECT-003 stays undrafted. GEN-1 was not created. Novel yield against `TRAIN_CONSUMED` is 339/339, so GEN-0 is not collision-blocked. The next label step is operator `attest-apply` on the queued sheet.
 
+## Taxonomy proposal HLX-EVAL-TAXON-2026-09-26-001
+
+The next label step is no longer `attest-apply`. The operator directed a taxonomy expansion first. Draft: `label-taxonomy-proposal.md`. Private remap receipt has no row text. The ledger was not mutated. Nothing was admitted. Jev was not called. `attest-apply` was not run.
+
+The production head stays the nine-way `layout.FAMILIES` list. The proposal adds sixteen non-none names as a draft active set, with `attest`, `register`, and `function` as separate surfaces. `evaluation.enabled` is false on every name. Support minimum is `NOT_COMPUTABLE`.
+
+Of the 339 stream rows, 204 keep the same family as a `PROPOSED_REMAP` (gaming-meta 98, betting-sharp 61, crypto-degen 5, none 40). 135 are `LABEL_UNRESOLVED`. `brainrot-aura` is not split. Kinship hints are not mapped to `relationship-dating`. Eleven of the sixteen names have no row on this shelf. Row settlement is not ready. SELECT-003 stays undrafted.
+
