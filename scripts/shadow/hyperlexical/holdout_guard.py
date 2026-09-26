@@ -17,6 +17,8 @@ from .selection_surface import row_id
 
 HOLDOUT_MANIFESTS_ENV = "HLX_HOLDOUT_MANIFESTS"
 ALLOW_NO_HOLDOUT_ENV = "HLX_ALLOW_NO_HOLDOUT"
+EXPERIMENT_ID_ENV = "HLX_EXPERIMENT_ID"
+ADMISSIBLE_STATUS = "UNSCORED_SEALED"
 _ID_KEYS = frozenset({"row_ids", "ids"})
 _HASH_KEYS = frozenset({"normalized_text_sha256"})
 _REMOVED_KEYS = ("classify_train", "classify_val", "unbind_train", "unbind_val")
@@ -151,13 +153,29 @@ def _read_manifest(path: str) -> tuple[dict[str, Any], set[str], set[str]]:
         raise SystemExit(
             f"REFUSE: holdout manifest has no row_ids or normalized_text_sha256: {file}"
         )
+    status, experiment_id = _admission_fields(payload)
     record = {
         "path": str(file),
         "sha256": _file_sha256(file),
         "n_row_ids": len(ids),
         "n_text_hashes": len(hashes),
+        "status": status,
+        "experiment_id": experiment_id,
     }
     return record, ids, hashes
+
+
+def _admission_fields(payload: Any) -> tuple[str | None, str | None]:
+    """Top-level status and experiment id. Nested copies do not authorize a run."""
+    if not isinstance(payload, dict):
+        return None, None
+    status = payload.get("status")
+    experiment_id = payload.get("experiment_id")
+    if status is not None and not isinstance(status, str):
+        raise SystemExit("REFUSE: holdout manifest status must be a string")
+    if experiment_id is not None and not isinstance(experiment_id, str):
+        raise SystemExit("REFUSE: holdout manifest experiment_id must be a string")
+    return status, experiment_id
 
 
 def load_holdout_spec(raw: str | None = None) -> HoldoutSpec:
@@ -177,15 +195,44 @@ def load_holdout_spec(raw: str | None = None) -> HoldoutSpec:
 
 
 def require_holdout_for_training() -> HoldoutSpec:
-    """Fail when training is armed and no manifest or explicit override is set."""
+    """Admit training only with a fresh, experiment-bound holdout.
+
+    Row exclusion still uses every id and text hash in the loaded manifests.
+    A ``SCORED_SPENT`` or ``SCORED`` file does not authorize a run. Missing,
+    unknown, and unbound statuses fail closed. ``HLX_ALLOW_NO_HOLDOUT=1``
+    remains the explicit no-manifest override and is not the admission path.
+    """
     spec = load_holdout_spec()
-    if os.environ.get("HYPERLEX_ALLOW_TRAIN") == "1" and not spec.manifests and not allow_no_holdout():
+    if os.environ.get("HYPERLEX_ALLOW_TRAIN") != "1":
+        return spec
+    if not spec.manifests and allow_no_holdout():
+        return spec
+    if not spec.manifests:
         raise SystemExit(
             "REFUSE: HYPERLEX_ALLOW_TRAIN=1 but no holdout manifest. "
             f"Set {HOLDOUT_MANIFESTS_ENV} to comma-separated manifest paths, "
             "pass --holdout-manifest, or set "
             f"{ALLOW_NO_HOLDOUT_ENV}=1 to override."
         )
+    expected = os.environ.get(EXPERIMENT_ID_ENV)
+    for item in spec.manifests:
+        status = item.get("status")
+        if status is None:
+            raise SystemExit(
+                "REFUSE: holdout manifest status is missing; required "
+                f"{ADMISSIBLE_STATUS}"
+            )
+        if status != ADMISSIBLE_STATUS:
+            raise SystemExit(
+                f"REFUSE: holdout manifest status {status} is not admissible; "
+                f"required {ADMISSIBLE_STATUS}"
+            )
+        bound = item.get("experiment_id")
+        if not expected or bound != expected:
+            raise SystemExit(
+                "REFUSE: holdout experiment binding "
+                f"{bound!r} does not match {EXPERIMENT_ID_ENV}"
+            )
     return spec
 
 
