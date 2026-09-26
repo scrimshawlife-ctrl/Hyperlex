@@ -150,9 +150,38 @@ def test_split_does_not_touch_unbind_lists(monkeypatch, tmp_path):
     assert unbind[0]["text"] == "synthetic unbind row"
 
 
-def test_seed_unset_does_not_touch_rng(monkeypatch):
+def test_each_flag_leaves_the_other_unset(monkeypatch, tmp_path):
+    train = [_row("synthetic row 1", "train")]
+    val = [_row("synthetic row 2", "val")]
+    monkeypatch.delenv("HLX_CLASSIFY_SPLIT_FILE", raising=False)
+    monkeypatch.setenv("HLX_SEED", "7")
+    got_tr, got_va, receipt = apply_classify_split_file(train, val)
+    assert got_tr is train
+    assert got_va is val
+    assert receipt is None
+    assert resolve_training_seed() == 7
+
     monkeypatch.delenv("HLX_SEED", raising=False)
-    import torch
+    path = tmp_path / "split.json"
+    _write_split(
+        path,
+        train,
+        val,
+        {row_id(train[0]): "val", row_id(val[0]): "train"},
+        base=False,
+    )
+    monkeypatch.setenv("HLX_CLASSIFY_SPLIT_FILE", str(path))
+    got_tr, got_va, receipt = apply_classify_split_file(train, val)
+    assert got_tr == [val[0]]
+    assert got_va == [train[0]]
+    assert receipt is not None
+    assert resolve_training_seed() is None
+
+
+def test_seed_unset_does_not_touch_rng(monkeypatch):
+    torch = pytest.importorskip("torch")
+    monkeypatch.delenv("HLX_SEED", raising=False)
+    monkeypatch.delenv("HLX_CLASSIFY_SPLIT_FILE", raising=False)
 
     random.seed(11)
     torch.manual_seed(11)
@@ -165,8 +194,10 @@ def test_seed_unset_does_not_touch_rng(monkeypatch):
 
 
 def test_seed_reproducible_and_distinct(monkeypatch):
-    import torch
+    torch = pytest.importorskip("torch")
     from torch import nn
+
+    monkeypatch.delenv("HLX_CLASSIFY_SPLIT_FILE", raising=False)
 
     def first_weight(seed: str):
         monkeypatch.setenv("HLX_SEED", seed)
