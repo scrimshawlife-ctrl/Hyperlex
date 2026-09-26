@@ -130,8 +130,7 @@ def test_text_collision_fails_controlled_preflight(monkeypatch, tmp_path, capsys
     _arm(monkeypatch, tmp_path, train, manifest)
     trunk = tmp_path / "trunk"
     trunk.mkdir()
-    (trunk / "config.json").write_text("{}
-", encoding="utf-8")
+    (trunk / "config.json").write_text("{}\n", encoding="utf-8")
     monkeypatch.setenv("HYPERLEX_TRUNK_DIR", str(trunk))
     monkeypatch.setattr("hyperlexical.preflight.export_dataset", lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("export")))
     assert preflight_main() == 2
@@ -146,8 +145,7 @@ def test_row_id_collision_fails_controlled_preflight(monkeypatch, tmp_path, caps
     _arm(monkeypatch, tmp_path, train, manifest)
     trunk = tmp_path / "trunk"
     trunk.mkdir()
-    (trunk / "config.json").write_text("{}
-", encoding="utf-8")
+    (trunk / "config.json").write_text("{}\n", encoding="utf-8")
     monkeypatch.setenv("HYPERLEX_TRUNK_DIR", str(trunk))
     monkeypatch.setattr(
         "hyperlexical.preflight.export_dataset",
@@ -166,8 +164,7 @@ def test_disjoint_holdout_is_admissible(monkeypatch, tmp_path, capsys):
     _arm(monkeypatch, tmp_path, train, manifest)
     trunk = tmp_path / "trunk"
     trunk.mkdir()
-    (trunk / "config.json").write_text("{}
-", encoding="utf-8")
+    (trunk / "config.json").write_text("{}\n", encoding="utf-8")
     monkeypatch.setenv("HYPERLEX_TRUNK_DIR", str(trunk))
     monkeypatch.setattr(
         "hyperlexical.preflight.export_dataset",
