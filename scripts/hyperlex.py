@@ -726,6 +726,18 @@ def _resolve_log_path(args: argparse.Namespace) -> Path:
     return default_log_path()
 
 
+def cmd_classify(args: argparse.Namespace) -> int:
+    from hyperlex.analysis.jevgate import classify_term, jevgate_from_args
+
+    term = (getattr(args, "term_pos", None) or getattr(args, "term", None) or "").strip()
+    if not term:
+        _emit({"ok": False, "command": "classify", "error": "empty term", "brier": None})
+        return 2
+    out = classify_term(term, jevgate=jevgate_from_args(args))
+    _emit({"ok": True, "command": "classify", **out})
+    return 0
+
+
 def cmd_analyze(args: argparse.Namespace) -> int:
     pkg, err = _import_hyperlex()
     if pkg is None:
@@ -922,6 +934,8 @@ def cmd_commands(_args: argparse.Namespace) -> int:
             {"cmd": "sources --route live", "why": "Preview resolve for a route"},
             {"cmd": "ingest \"<query>\" --route offline", "why": "Ingest only (structured + fingerprint)"},
             {"cmd": "analyze \"<query>\" --route offline", "why": "Analyze without auto-receipt"},
+            {"cmd": "classify \"<term>\"", "why": "Family cascade: match_lineage, else none (jevgate off)"},
+            {"cmd": "classify \"<term>\" --jevgate", "why": "Opt-in jevgate-1 after a registry miss (prereg v5)"},
         ],
         "research": [
             {"cmd": "simulate --term <t> --mode scenario", "why": "Phase 5 research (SPECULATIVE, brier null)"},
@@ -2527,6 +2541,24 @@ def _build_parser() -> argparse.ArgumentParser:
     analyze_parser.add_argument("--no-ledger", action="store_true", default=False, help="Skip receipt ledger append")
     analyze_parser.add_argument("--out")
     analyze_parser.set_defaults(func=cmd_analyze)
+
+    classify_parser = subparsers.add_parser(
+        "classify",
+        help="Classify a short term into 8 hyperlexical families or none",
+    )
+    classify_parser.add_argument("term_pos", nargs="?", default="", help="Short slang term")
+    classify_parser.add_argument("--term", default="", help="Short slang term (flag form)")
+    classify_parser.add_argument(
+        "--jevgate",
+        action="store_true",
+        help="Opt in to jevgate-1 after match_lineage misses (prereg v5). Default off.",
+    )
+    classify_parser.add_argument(
+        "--no-jevgate",
+        action="store_true",
+        help="Force the registry cascade even if HYPERLEX_JEVGATE is set",
+    )
+    classify_parser.set_defaults(func=cmd_classify)
 
     run_parser = subparsers.add_parser(
         "run",

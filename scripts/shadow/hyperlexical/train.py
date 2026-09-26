@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 from .export import LiveStoreMissing, resolve_live_store
+from .holdout_guard import merge_manifest_env
 
 TRUNK = "answerdotai/ModernBERT-base"
 
@@ -50,6 +51,12 @@ def main(argv=None) -> int:
         default="",
         help="optional path to ingest_candidates.jsonl (else HYPERLEX_LIVE_STORE or ~/.hyperlex/...)",
     )
+    p.add_argument(
+        "--holdout-manifest",
+        action="append",
+        default=None,
+        help="holdout manifest JSON (repeatable). Also HLX_HOLDOUT_MANIFESTS, comma-separated.",
+    )
     args = p.parse_args(argv)
     include_live = want_include_live(args.include_live)
     live_store = Path(args.live_store) if args.live_store else None
@@ -71,6 +78,8 @@ def main(argv=None) -> int:
         payload["note"] = "gate open. pass --run on Spark to execute the seed loop."
         print(json.dumps(payload, indent=2))
         return 0
+    if args.holdout_manifest:
+        merge_manifest_env(args.holdout_manifest)
     from .loop import run_loop
 
     out = Path(os.environ.get("HYPERLEX_TRAIN_OUT") or (Path.home() / ".hyperlex" / "models" / "hyperlex-encoder-modernbert-base-seed"))

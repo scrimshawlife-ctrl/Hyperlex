@@ -1,6 +1,6 @@
 # Spec 007 — live ingest tap (SHADOW)
 
-**Product voice:** **ne0l0gist** ingest. Writes candidates for the **Hyperlexical** train/eval path. `name_gate` stays false.
+**Product voice:** **ne0l0gist** ingest. Writes candidates for the **Hyperlexical** train/eval path. The tap never sets `name_gate`.
 
 **Date**: 2026-09-10  
 **Lane**: SHADOW / advisory  

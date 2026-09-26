@@ -61,7 +61,7 @@ def moltbook_post_to_row(post: dict, split: str = "train") -> dict:
         "typology": sorted(set(typology)) or ["memory", "provenance"],
         "stage": stage,
         "roles": mm.get("memory_tiers", []) + (["provenance"] if mm.get("provenance_required") else []),
-        "fillers": [mm.get("context_loss_technique") or "general"] if mm.get("context_loss_technique") else ["general"],
+        "fillers": [mm["context_loss_technique"]] if mm.get("context_loss_technique") else [],
         "role_scheme": "type_slot",
         "provenance": {
             "source": "moltbook",

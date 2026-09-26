@@ -1,130 +1,131 @@
 # Hyperlexical model product — completion plan
 
-**Status:** DRAFT (operator review) · **Date:** 2026-09-23  
-**Naming:** repo **Hyperlex** = transitional shell. Public products: **Hyperlexical** (this plan) and **ne0l0gist** (ingest). Hermes skill ≠ Hyperlexical.  
-**Hard locks (unchanged):** `name_gate=false` until Danny yes · no Hub upload · no invented OBSERVED · upsample freeze **11+** · no `SECOND_SLOT=4` · schemes `positional|type_slot` only · Brier `null` on every 007 packet.
+**Status:** DRAFT (operator review) · **Reconciled:** 2026-09-24 (PR #102)
 
-This plan turns Spec 007 from a SHADOW Spark climb into a shippable Hyperlexical product. It does **not** flip `name_gate`.
+**Naming:** repo **Hyperlex** = transitional shell. Public ingest = **ne0l0gist** (named). Public trained-model product = **Hyperlexical** — approved for pin `seed-morph78` (2026-09-24). Hermes skill ≠ Hyperlexical. SoT: `docs/NAMING.md`.
 
----
+**Hard locks:** `name_gate=true` for `seed-morph78` only (A6) · no Hub upload · no invented OBSERVED · upsample freeze **11+** · no `SECOND_SLOT=4` · schemes `positional|type_slot` only · Brier `null` on every 007 packet.
 
-## Current honest state (2026-09-23)
+This plan supersedes the 2026-09-23 draft (morph65 BEST, soft_ceiling ARMED, morph78 acquire empty). That draft was accurate on 2026-09-23 and remains in git history. Danny flipped `name_gate` for `seed-morph78` after this reconciliation (receipt `receipts/20260924-name-gate-yes-morph78.md`).
 
-| Layer | State |
-|-------|--------|
-| Hermes skill (`SKILL.md`, CLI, `src/hyperlex/`) | **Ready** (v0.4.0 operator surface; pyproject may read 1.6.0 — hygiene debt) |
-| Spec 007 shadow train/eval | **Ready enough to climb** — BEST=`seed-morph65`, E2 PASS on trained trunk |
-| Force fair | **1.0** n=164 (classic promote wall) |
-| soft_ceiling | **ARMED** — at fair 1.0, promote only if live broad OBSERVED **>** PRIOR morph65 (**0.88671875** n=256) + E2 |
-| Gold path | morph78 acquire + residual reprobe → **empty gold**; `authorize val-settle` → **CANCELLED_EMPTY_GOLD** |
-| Hyperlexical name / Hub / T13 promote into `src/hyperlex/` | **Blocked** |
+## Current honest state
 
-Verdict: skill is production-ready as a Hermes skill. The **Hyperlexical model product** is not — name wall, Hub, packaging, and live-gold path still open.
+| Layer | State | Evidence |
+|---|---|---|
+| Hermes skill | **Ready** v0.4.0 | `VERSION`, `pyproject.toml` |
+| Spec 007 lane | **SHADOW** | `spec.md`; code under `scripts/shadow/hyperlexical/` |
+| Trained pin | **BEST=`seed-morph78`** | `receipts/morph78-val-settle-20260924/pin-promote-best.json` |
+| Promotion | **PROMOTE_BEST**, soft_ceiling `ceiling_escape`, 2026-09-24 | `receipts/morph78-val-settle-20260924/GATE_LOCK.json` |
+| Broad OBSERVED | **0.98828125** n=256 | `receipts/morph78-val-settle-20260924/broad-eval-morph78.json` |
+| PRIOR | morph65 **0.88671875** n=256 (same live surface) | `receipts/morph78-val-settle-20260924/broad-eval-prior-morph65-at-finish.json` |
+| E2 | **PASS** — trained trunk-forward, unbind_exact 1.0, n_unbind_eval 24 | `receipts/morph78-val-settle-20260924/e2-unbind-morph78.json` |
+| Force fair (advisory at ceiling) | 1.0 n=164 | `receipts/morph78-val-settle-20260924/fair-eval-morph65-morph78.json` |
+| Force/hard | **236 / 277** | `receipts/morph78-val-settle-20260924/ACQUIRE_SETTLE_SUMMARY.json` |
+| soft_ceiling | **SPENT / CLOSED** for this climb | `receipts/20260924-morph78-soft-ceiling-promote-best.md` |
+| E1 / E3 on `seed-morph78` | **NOT_COMPUTABLE** — no receipt | — |
+| `name_gate` | **true** for `seed-morph78` (Danny 2026-09-24) | `receipts/20260924-name-gate-yes-morph78.md`, `amendments.md` A6 |
+| Hub | unpublished | — |
+| T13 | not authorized | — |
 
----
+Verdict: TRAIN and NAME are done for `seed-morph78`. What is left is card-identifier rename, publication, and integration authority.
 
-## Product definition (what “complete” means)
+## Product state machines
 
-Hyperlexical is complete when all of the following are true:
+These are independent. Do not collapse them into one "product ready" flag.
 
-1. **Train artifact** — pinned BEST checkpoint on Spark with receipts (fair surface + E2 + soft_ceiling decide if armed).
-2. **Eval gates** — E2 PASS on the pin; stub FAIL still expected; seed smoke ≠ T1.
-3. **Dataset honesty** — OBSERVED only from settled/authorized gold; no invent; force-train / hard-atoms are operator JSONL, not SoT.
-4. **Name** — Danny explicit yes flips `name_gate`; card may then be called Hyperlexical (not before).
-5. **Publish** — Hub upload is a **named** operator action after name_gate; weights stay out of git until then.
-6. **Operator surface** — infer CLI + packet schema + model card shipped; optional later T13 promote into `src/hyperlex/` (separate sentence).
+| Machine | Path | Current |
+|---|---|---|
+| TRAIN | `UNTRAINED → TRAINED → E2_PASS → BEST_PINNED` | `BEST_PINNED(seed-morph78)` |
+| NAME | `UNNAMED_PUBLICLY → NAME_GATE_APPROVED` | `NAME_GATE_APPROVED(seed-morph78)` |
+| PUBLISH | `LOCAL_ONLY → CARD_READY → HUB_AUTHORIZED → HUB_PUBLISHED` | `LOCAL_ONLY` |
+| INTEGRATION | `SHADOW → T13_AUTHORIZED → SRC_PROMOTED` | `SHADOW` |
 
-Until (4), the artifact stays `hyperlex-encoder-*`.
+Only an operator sentence advances NAME, PUBLISH past `CARD_READY`, or INTEGRATION. TRAIN advancing does not advance any other machine.
 
----
+## Definition of complete
+
+Hyperlexical is complete for this product cycle when:
+
+1. a pinned BEST has receipts and E2 PASS;
+2. dataset provenance remains honest (OBSERVED only from settled/authorized gold);
+3. the model card reflects the live pin without inventing metrics;
+4. Danny explicitly approves `name_gate`;
+5. any Hub upload is separately authorized;
+6. any T13 promotion is separately authorized and tested.
+
+Item 4 is done. Hub card name is `hyperlex-structure-149m`; local train-out paths keep `hyperlex-encoder-modernbert-base-seed-*`.
 
 ## Workstreams
 
-### A. Climb / gold (Spark · soft_ceiling)
+### A. Training / gold — CLOSED FOR CURRENT CLIMB
 
-| Step | Action | Exit |
-|------|--------|------|
-| A1 | Idle: do **not** re-burn empty settle / empty acquire | HOLD until named phrases |
-| A2 | Operator `authorize morph78 …` or `authorize val-settle` **listing phrases**, **or** acquire that clears Jev `force_expand_safe` | Non-empty authorize card |
-| A3 | Val-settle → force tip expand → fair baseline on new tip | Fair surface receipt |
-| A4 | Train next morph under soft_ceiling; decide via `gate_soft_ceiling_decide.py` | PROMOTE or REJECT_VS_BEST |
-| A5 | If PROMOTE: update BEST pin + PRIOR broad for next soft_ceiling compare | New BEST held |
+- [x] morph78 phrases settled OBSERVED `split=val`: `have fun staying poor`, `fr fr no cap`
+- [x] force/hard 232/273 → 236/277
+- [x] broad comparison on the same n=256 surface: 0.98828125 > 0.88671875
+- [x] E2 PASS on `seed-morph78`
+- [x] PROMOTE_BEST; Spark `BEST` → `seed-morph78`
 
-Constraints: upsample freeze 11+; no SECOND_SLOT=4; Qwen stopped unless re-enabled.
+**Rule:** do not start another climb without a new operator-authorized acquire/card. A future climb compares against morph78 as PRIOR.
 
-### B. Engineering hygiene (main / tip)
+### B. Engineering hygiene
 
-| Step | Action | Exit |
-|------|--------|------|
-| B1 | Restore `apply_unbind_force_train` + tests on tip (#99 CI) | validate green |
-| B2 | Align `VERSION` ↔ `pyproject.toml` version (0.4.0 vs 1.6.0 skew) | Single source of truth |
-| B3 | Drop / quarantine stale probe files and truncated CHANGELOG placeholders on tip | Docs match receipts |
-| B4 | Keep force-train path env-only; val move ⇒ fair re-baseline | Receipt stats present |
+- [x] `VERSION` ↔ `pyproject.toml` = 0.4.0
+- [x] STATUS / NEXT_MOVES show morph78
+- [x] model-card publish shape updated from pre-train E2 wording (PR #102)
+- [x] Notion Operator Hub has a 2026-09-24 morph78 block; 2026-09-23 block kept as history
+- [x] operator-facing pages no longer present morph65 as current BEST (PR #102 audit)
 
-### C. Product packaging (post–name_gate, separate authorize)
+### C. Product packaging — post-`name_gate`
 
-| Step | Action | Exit |
-|------|--------|------|
-| C1 | Finalize `model-card.draft.md` / `hf-package/README.md` with pin metrics | Card ready, still no upload |
-| C2 | Operator Hub upload sentence | Weights + card on Hub |
-| C3 | Optional T13: promote shadow package into `src/hyperlex/` | Separate PR + tests |
-| C4 | Flip `name_gate` only on Danny yes | Public Hyperlexical name |
+- [ ] operator reviews this reconciled plan
+- [x] Danny explicit `flip name_gate` (2026-09-24)
+- [x] card rename → `hyperlex-structure-149m` + eval packet `name_gate` true only for trunk-forward eval of `seed-morph78`
+- [x] real `seed-morph78` inference path (`infer --model-dir`; receipt `receipts/20260924-infer-model-morph78.md`)
+- [ ] finalize public model card from pinned receipts
+- [ ] separately authorize Hub upload, or explicitly close the cycle with no Hub — **audit recommends not yet** (`specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`)
+- [ ] optional T13 in a separate PR with tests
 
-### D. Adjacent Hyperlex PRs (skill track — not model name)
+### D. Adjacent tracks (not product naming)
 
-| PR | Role | Handle |
-|----|------|--------|
-| **#100** pytrends evidence | Skill route evidence | CI green / mergeable. Recommend merge after operator live `analyze --route trends` check. Independent of Hyperlexical name. |
-| **#99** Spec 007 tip docs + climb | Model path | Stay **draft** until CI green + operator merge yes. Large docs+receipts surface. |
-| **#95** HYPERLEX-Q1 | Epistemic interchange | Stay **draft**; rebase onto current `main`; remains UNQUALIFIED / pairwise BLOCKED. Spec-only. |
+| Track | State |
+|---|---|
+| HYPERLEX-Q1 (#95) | draft · **UNQUALIFIED** until its own evidence/review gate clears |
+| Hyperlex → Noesis pairwise qualification | **BLOCKED** on Q1 |
+| #99 / #100 / #101 | merged |
 
-Do **not** merge any of these without explicit operator yes.
+Q1 status is not a substitute for Spec 007 product completion, and Spec 007 progress does not qualify Q1.
 
----
+## Default recommendation
 
-## Sequencing (recommended)
-
-```
-B1 (CI fix) ──► #100 operator check + merge authorize
-       │
-       ├──► A2–A5 climb under soft_ceiling (needs gold)
-       │
-       ├──► B2–B3 hygiene on tip / follow-up PR
-       │
-       └──► #95 rebase only (no qualify claim)
-
-When climb + packaging ready:
-  Danny name_gate yes ──► C1–C2 Hub ──► optional C3 T13
-```
-
-Climb (A) and skill PR #100 can proceed in parallel. Name/Hub (C) never parallel-jumps ahead of Danny yes.
-
----
+**HOLD morph78.** NAME is done. Resolve PUBLISH (and the two inference findings) before authorizing another training climb.
 
 ## Explicit non-goals
 
-- Inventing OBSERVED fillers or empty-gold settles
-- Hub upload or `name_gate` flip without Danny
-- Warm-clone spam / upsample 11+ / SECOND_SLOT=4
-- Treating Hermes skill readiness as Hyperlexical product readiness
-- Calling stub or seed smoke a T1 pass
+- restarting the completed morph78 climb
+- inventing OBSERVED fillers or recycling settled phrases as new gold
+- treating E2 PASS as naming authority
+- Hub upload without a named operator action
+- T13 without separate authorization
+- changing Brier from `null` on 007 packets
 
----
+## Definition of done — current cycle
 
-## Definition of done (product)
-
-- [ ] soft_ceiling path either PROMOTE’s a new BEST or operator closes climb with held morph65
-- [ ] Tip CI green; force-train API present; version skew fixed
-- [ ] Model card filled from live pin metrics
-- [ ] Danny `name_gate` yes (or explicit hold)
-- [ ] Hub upload done **or** explicit “no Hub this cycle”
-- [ ] STATUS / ROADMAP / milestones updated to match reality (no stale “E2 Spark-blocked” once trained E2 PASS is the pin)
-
----
+- [x] BEST pinned: morph78
+- [x] trained E2 PASS
+- [x] soft_ceiling climb closed
+- [x] version hygiene
+- [x] model card reflects live morph78 evidence (E1/E3 marked NOT_COMPUTABLE)
+- [x] Notion Operator Hub parity
+- [ ] operator product review
+- [x] Danny `name_gate` decision — yes for `seed-morph78`
+- [x] card rename
+- [x] real inference path
+- [ ] Hub decision: upload authorized, or explicit no-Hub this cycle
+- [ ] optional T13 decision
 
 ## Pointers
 
-- Climb next: root `NEXT_MOVES_007.md`
-- Soft_ceiling receipts: `receipts/20260923-authorize-gate-soft-ceiling.md`, `receipts/gate-soft-ceiling-20260923/`
-- Empty gold: `receipts/20260923-authorize-val-settle-cancelled-empty-gold.md`
-- Gates: `milestones.md`, `spec.md`, `dual-use-gate.md`
+- Name gate + phrases: `NAME-GATE-AND-NAMED-PHRASES.md`
+- Next moves: root `NEXT_MOVES_007.md`
+- Promote receipt: `receipts/20260924-morph78-soft-ceiling-promote-best.md`
+- Historical gate authorize: `receipts/20260923-authorize-gate-soft-ceiling.md`

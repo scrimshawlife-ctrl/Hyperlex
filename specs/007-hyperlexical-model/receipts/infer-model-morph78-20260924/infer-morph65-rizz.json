@@ -1,0 +1,37 @@
+{
+  "auto_fire": false,
+  "brier": null,
+  "class": "INFERRED",
+  "embed_mode": "MODEL_EMBEDDING",
+  "forecast_eligible": false,
+  "input_hash": "95ef5a31d084e89425c9e30a864d6cba7fb5a4d1c0e031029cd58c1a433adb5d",
+  "lineage_confidence": 0.98396,
+  "lineage_family": "brainrot-aura",
+  "model_id": "hyperlex-encoder-modernbert-base-seed-morph65",
+  "model_version": "seed-morph65",
+  "param_count": 150551503,
+  "payload_ref": null,
+  "restricted_intent_suspected": false,
+  "role_scheme": "positional",
+  "routes_claimed": [
+    "form",
+    "lexical"
+  ],
+  "schema": "hyperlex.hyperlexical.inference.v0.1",
+  "selection_proxy": "unspecified",
+  "stage": null,
+  "surface": "rizz",
+  "typology": [],
+  "unbind": {
+    "atoms": [
+      {
+        "filler": "rizz",
+        "filler_pred": "rizz",
+        "role": "pos_0",
+        "role_pred": "pos_0"
+      }
+    ]
+  },
+  "unbind_ok": true,
+  "vector_hash": "06a317074d378b8fc91986341cac1f1a404721d51748c67328144350556ef915"
+}

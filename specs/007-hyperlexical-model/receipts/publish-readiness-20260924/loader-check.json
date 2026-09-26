@@ -1,0 +1,48 @@
+{
+  "schema": "hyperlex.hub_loader_check.v0.1",
+  "folder": "/home/morpheus/hlx-exec/hub-shaped-morph78",
+  "files": [
+    "config.json",
+    "model.safetensors",
+    "modeling_hyperlexical.py",
+    "special_tokens_map.json",
+    "tokenizer.json",
+    "tokenizer_config.json"
+  ],
+  "samples": [
+    {
+      "text": "rizz",
+      "hub_family": "brainrot-aura",
+      "infer_family": "brainrot-aura",
+      "match": true
+    },
+    {
+      "text": "no cap fr",
+      "hub_family": "brainrot-aura",
+      "infer_family": "brainrot-aura",
+      "match": true
+    },
+    {
+      "text": "touch grass",
+      "hub_family": "gaming-meta",
+      "infer_family": "gaming-meta",
+      "match": true
+    },
+    {
+      "text": "bet that up",
+      "hub_family": "none",
+      "infer_family": "none",
+      "match": true
+    },
+    {
+      "text": "have fun staying poor",
+      "hub_family": "none",
+      "infer_family": "none",
+      "match": true
+    }
+  ],
+  "parity": true,
+  "lineage_temperature": 5.1,
+  "network": false,
+  "uploaded": false
+}

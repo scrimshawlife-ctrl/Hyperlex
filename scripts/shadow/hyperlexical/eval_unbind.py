@@ -1,8 +1,11 @@
 """U3 eval harness. Stub/digest vs Spec 004 probe. Trunk-forward is opt-in.
 
 Stub/digest swap has no civilian filler lists, so unbind_token_f1 /
-unbind_slot_f1 stay null. Trunk-forward scores the same aligned filler
-lists as train val and fills those fields. name_gate stays false.
+unbind_slot_f1 and the strict keys stay null. Trunk-forward scores the
+same aligned filler lists as train val and fills those fields. Strict
+keys use the raw lowercased filler; a ``<unk>`` prediction is a miss.
+``e2_train_overlap_count`` is filled on every report. name_gate is true
+only for a trunk-forward eval of an approved pin (``name_gate.APPROVED_PINS``, A6).
 """
 
 from __future__ import annotations
@@ -15,7 +18,13 @@ import os
 import sys
 from pathlib import Path
 
+from .name_gate import name_gate_for
 from .unbind_metrics import null_unbind_secondary
+
+E2_SNAPSHOT_N = 48
+E2_LENGTH = 4
+E2_SEED = 7
+HARVEST_UNBIND_N = 24
 
 HEAD_NAMES = ("heads.json", "model.safetensors", "heads.pt")
 FORWARD_WEIGHT_NAMES = ("model.safetensors", "heads.pt")
@@ -167,13 +176,48 @@ def load_heads_meta(weight_path: Path) -> dict:
     return meta
 
 
+def filler_tuple(span: dict) -> tuple[str, ...]:
+    """Lowercased filler identity. Spans use ``item_ids``; rows use ``fillers``."""
+    raw = span.get("item_ids")
+    if raw is None:
+        raw = span.get("fillers") or ()
+    return tuple(str(item).lower() for item in raw)
+
+
+def e2_test_spans() -> list[dict]:
+    """12 Spec 004 TPR test spans. Same split as ``_probe_report`` (n=48, seed=7)."""
+    sys.path.insert(0, str(_shadow()))
+    from recoverable_structure.fit import _split
+    from recoverable_structure.fixtures import make_spans
+
+    spans = make_spans(n=E2_SNAPSHOT_N, length=E2_LENGTH, seed=E2_SEED)
+    _train_idx, test_idx, _split_hash = _split(len(spans), seed=E2_SEED)
+    return [spans[i] for i in test_idx]
+
+
+def e2_test_filler_tuples() -> set[tuple[str, ...]]:
+    return {filler_tuple(span) for span in e2_test_spans()}
+
+
+def e2_train_overlap_count(n: int = HARVEST_UNBIND_N) -> int:
+    """How many E2 test spans share a filler tuple with ``harvest_unbind``.
+
+    Respects ``HLX_E2_DISJOINT`` because the harvest drops those spans when
+    the flag is on. Computed on every E2 report, flag or not.
+    """
+    from .export import harvest_unbind_spans
+
+    train = {filler_tuple(span) for _index, span in harvest_unbind_spans(n)}
+    return sum(1 for span in e2_test_spans() if filler_tuple(span) in train)
+
+
 def _probe_report() -> tuple[dict, list[dict], float, float, float, float]:
     sys.path.insert(0, str(_shadow()))
     from recoverable_structure.fit import run_probe
     from recoverable_structure.fixtures import snapshot
 
-    snap = snapshot("tpr", n=48, length=4, dim=12, seed=7)
-    probe = run_probe(snap, schemes=("positional", "type_slot"))
+    snap = snapshot("tpr", n=E2_SNAPSHOT_N, length=E2_LENGTH, dim=12, seed=E2_SEED)
+    probe = run_probe(snap, schemes=("positional", "type_slot"), seed=E2_SEED)
     rec = probe["receipt"]
     pos = next(b for b in rec["schemes"] if b["scheme"] == "positional")
     typ = next(b for b in rec["schemes"] if b["scheme"] == "type_slot")
@@ -219,6 +263,7 @@ def _base_report(rec: dict, stub_acc: float, probe_acc: float, pos_acc: float, t
         "trunk_loaded": False,
         "brier": None,
         "forecast_eligible": False,
+        "e2_train_overlap_count": e2_train_overlap_count(),
         **null_unbind_secondary(),
     }
 
@@ -290,18 +335,25 @@ def run_eval(model_dir: str | Path | None = None, trunk_forward: bool = False) -
                 "unbind_token_precision": scored.get("unbind_token_precision"),
                 "unbind_token_recall": scored.get("unbind_token_recall"),
                 "unbind_slot_f1": scored.get("unbind_slot_f1"),
+                "unbind_exact_strict": scored.get("unbind_exact_strict"),
+                "unbind_token_f1_strict": scored.get("unbind_token_f1_strict"),
+                "unbind_token_precision_strict": scored.get("unbind_token_precision_strict"),
+                "unbind_token_recall_strict": scored.get("unbind_token_recall_strict"),
+                "unbind_slot_f1_strict": scored.get("unbind_slot_f1_strict"),
                 "trunk_loaded": True,
                 "trunk_forward": True,
                 "trunk_dir": str(trunk),
                 "model_dir": str(directory),
-                "name_gate": False,
+                "name_gate": name_gate_for(directory),
                 "device": scored.get("device"),
                 "encoder_trainable_loaded": scored.get("encoder_trainable_loaded", 0),
                 "encoder_trainable_present": scored.get("encoder_trainable_present", 0),
                 "note": (
                     f"Trunk-forward unbind_exact + token/slot F1 from {weight} vs 004 "
-                    "probe_swap_min. Stub/digest leaves F1 null (no civilian filler "
-                    "lists). name_gate stays false. "
+                    "probe_swap_min. Strict keys (unbind_exact_strict, strict token/slot "
+                    "F1) sit beside the legacy numbers; gold is the raw lowercased filler "
+                    "and a <unk> prediction is a miss. Stub/digest leaves F1 null (no "
+                    "civilian filler lists). name_gate is true only for an approved pin (A6). "
                     + scored.get(
                         "encoder_note",
                         "Encoder is the local trunk snapshot; heads from train out.",

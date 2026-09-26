@@ -4,6 +4,11 @@ Civilian unbind_exact is all-or-nothing on the full filler list. These
 secondary scores use the same gold/pred alignment the train val loop
 already uses (one predicted filler per gold slot, positional / type_slot
 order). name_gate stays false.
+
+Strict keys sit beside the legacy ones. Legacy gold may already be
+``mapped_filler`` (OOV → ``<unk>``), so predicting ``<unk>`` on that slot
+is a legacy hit. Strict gold is the raw lowercased filler, and a ``<unk>``
+prediction is always a miss. Ladder selection still reads ``unbind_exact``.
 """
 
 from __future__ import annotations
@@ -16,6 +21,20 @@ from .layout import UNK
 
 def _tokens(fillers: Sequence[str] | None) -> list[str]:
     return [str(item) for item in (fillers or [])]
+
+
+# Not a filler. Keeps an unk prediction from matching gold or another unk.
+_UNK_MISS = "\x00"
+
+
+def strict_pair(gold: Sequence[str], pred: Sequence[str]) -> tuple[list[str], list[str]]:
+    """Lowercased raw gold. A ``<unk>`` prediction never matches."""
+    g = [str(item).lower() for item in gold]
+    p: list[str] = []
+    for item in pred:
+        tok = str(item).lower()
+        p.append(_UNK_MISS if tok == UNK else tok)
+    return g, p
 
 
 def mapped_filler(maps: Mapping[str, Any], fill: str) -> str:
@@ -62,10 +81,12 @@ def _prf(tp: int, pred_n: int, gold_n: int) -> tuple[float, float, float]:
     return precision, recall, 2 * precision * recall / (precision + recall)
 
 
-def summarize_unbind_pairs(
+def _score_pairs(
     pairs: Iterable[tuple[Sequence[str], Sequence[str]]],
+    *,
+    strict: bool,
 ) -> dict[str, float | int]:
-    """Row-level unbind_exact plus micro token/slot F1.
+    """Row-level exact plus micro token/slot F1.
 
     Skips rows with an empty gold list (same as train val). Empty series
     returns zeros, matching unbind_exact = 0 / max(1, n).
@@ -74,7 +95,10 @@ def summarize_unbind_pairs(
     tok_tp = tok_p = tok_g = 0
     slot_tp = slot_p = slot_g = 0
     for gold, pred in pairs:
-        g, p = _tokens(gold), _tokens(pred)
+        if strict:
+            g, p = strict_pair(gold, pred)
+        else:
+            g, p = _tokens(gold), _tokens(pred)
         if not g:
             continue
         exact_hit += int(g == p)
@@ -99,6 +123,33 @@ def summarize_unbind_pairs(
     }
 
 
+def summarize_unbind_pairs(
+    pairs: Iterable[tuple[Sequence[str], Sequence[str]]],
+    *,
+    strict_pairs: Iterable[tuple[Sequence[str], Sequence[str]]] | None = None,
+) -> dict[str, float | int]:
+    """Legacy unbind metrics plus strict keys.
+
+    ``strict_pairs`` is the raw-filler series (one row per legacy row).
+    When omitted, strict rules apply to ``pairs`` themselves. Legacy keys
+    are scored on ``pairs`` unchanged.
+    """
+    rows = list(pairs)
+    legacy = _score_pairs(rows, strict=False)
+    strict_src = rows if strict_pairs is None else strict_pairs
+    strict = _score_pairs(strict_src, strict=True)
+    legacy.update(
+        {
+            "unbind_exact_strict": strict["unbind_exact"],
+            "unbind_token_f1_strict": strict["unbind_token_f1"],
+            "unbind_token_precision_strict": strict["unbind_token_precision"],
+            "unbind_token_recall_strict": strict["unbind_token_recall"],
+            "unbind_slot_f1_strict": strict["unbind_slot_f1"],
+        }
+    )
+    return legacy
+
+
 def null_unbind_secondary() -> dict[str, None]:
     """004 probe stub/digest: no civilian filler lists, so F1 is not computable."""
     return {
@@ -106,4 +157,9 @@ def null_unbind_secondary() -> dict[str, None]:
         "unbind_token_precision": None,
         "unbind_token_recall": None,
         "unbind_slot_f1": None,
+        "unbind_exact_strict": None,
+        "unbind_token_f1_strict": None,
+        "unbind_token_precision_strict": None,
+        "unbind_token_recall_strict": None,
+        "unbind_slot_f1_strict": None,
     }

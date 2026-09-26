@@ -3,7 +3,7 @@
 ## Vision
 Hyperlex **ships today as a Hermes skill** (this Python package). Relevant Abraxas wire capabilities live under `hyperlex.compat.abraxas`; hosts import *from* Hyperlex.
 
-The same project is on a **model path** (Spec 007): T0 encoder baseline, then T1 after eval gate E2. T1 is the first artifact that may be called Hyperlexical. Until E2 passes on Spark, `name_gate` is false and there is no Hub card.
+The same project is on a **model path** (Spec 007): T0 encoder baseline, then T1 after eval gate E2. T1 is the first artifact that may be called Hyperlexical. Trained E2 PASS alone did not flip `name_gate`; Danny's yes did (2026-09-24, `seed-morph78`). No Hub card yet.
 
 The skill remains the operator surface while the encoder stays SHADOW.
 
@@ -81,11 +81,11 @@ The skill remains the operator surface while the encoder stays SHADOW.
 - [x] Live-split coerce to lexical train/val/test (#38)
 - [x] 8-family leaf unlock; classify volume ready (harvest receipt 2026-09-10)
 - [x] Spark bring-up runbooks on main (#28)
-- [ ] E2 pass (Spark-blocked; stub expected fail; seed smoke is not a pass)
+- [x] Trained trunk-forward E2 PASS on Spark (BEST=`seed-morph78`; stub still expected FAIL; seed smoke ≠ T1)
 - [ ] Hub upload (operator — not started)
 - [ ] T13 promote into `src/hyperlex/`
 
-`name_gate` stays **false** until E2 passes on Spark. Classify volume ≠ a Hyperlexical name. No ninth family.
+`name_gate` is **true** for `seed-morph78` (Danny yes 2026-09-24; E2 PASS alone did not flip). Classify volume ≠ a Hyperlexical name. No ninth family.
 
 ## Milestones
 - v0.2.x: Phases 0–4 complete (Hermes skill production track)
@@ -102,7 +102,15 @@ The skill remains the operator surface while the encoder stays SHADOW.
 See [SPEC.md](SPEC.md) and [DESIGN.md](DESIGN.md) for the historical spine. Current operator snapshot: [STATUS.md](STATUS.md).
 
 ## Recent
-- 2026-09-10 PT evening: Spec 007 SoT 4333 / `--include-live` classify 2437; Danny ~2500 bar met; `name_gate` false; E2 Spark-blocked. Hermes 913 / gap-to-2500 superseded. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37).
+- 2026-09-24: D1 Spark on `main`; Wiktionary rows relabelled CC BY-SA; strict filler-vocab filter; amendment A7 (A1 counts trunk).
+- 2026-09-24: Publish-readiness steps executed — code canonical and morph78 data prep reproducible from `main`; corrected gate ties morph78/morph65; 709 Wiktionary rows and vocab scrub block release.
+- 2026-09-24: Publish audit — recommend **not** publishing `seed-morph78` yet: 193/256 broad-val rows were force-trained (leak-free val ties morph65 at 1.0 n=63); training code not reproducible from `main`.
+- 2026-09-24: Real inference path — `infer --model-dir` on `seed-morph78` emits `MODEL_EMBEDDING` packets as `hyperlex-structure-149m` (Spark-verified).
+- 2026-09-24: Card rename — Hub card `hyperlex-structure-149m`; eval packets set `name_gate` true only for trunk-forward eval of `seed-morph78`.
+- 2026-09-24: Danny `flip name_gate` — `seed-morph78` named **Hyperlexical** (amendment A6). Card rename, Hub, T13 still separate.
+- 2026-09-24: morph78 PROMOTE_BEST (soft_ceiling ceiling_escape; broad 0.9883 > 0.8867 n=256 + E2) after named-phrase settle. `name_gate` still false.
+- 2026-09-24: Hygiene — `pyproject.toml` aligned to `VERSION` 0.4.0; ROADMAP E2 line matches trained PASS; name_gate / named-phrases plan drafted. `#100` + `#99` on main. soft_ceiling ARMED; morph65 held.
+- 2026-09-10 PT evening: Spec 007 SoT 4333 / `--include-live` classify 2437; Danny ~2500 bar met; `name_gate` false. Hermes 913 / gap-to-2500 superseded. Spark bring-up (#28), A5 milestones (#33), lexical-split coerce (#38), 8-family unlock (#37). (E2 was Spark-blocked at that snapshot; trained E2 later PASS on morph65.)
 - 2026-09-09: Spec 007 SHADOW encoder harness on main (not a Hub card)
 - v0.4.0: automatic backend pipeline (ingest → results)
 - v0.3.9: Atomic multi-term seeds; Pages demos; scan packs atomic

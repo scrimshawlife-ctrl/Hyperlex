@@ -1,0 +1,190 @@
+{
+  "as_of": "2026-09-24T22:13:34.482825+00:00",
+  "brier": null,
+  "classify_by_lineage": {
+    "ai-native": 48,
+    "betting-sharp": 13,
+    "brainrot-aura": 23,
+    "crypto-degen": 18,
+    "gaming-meta": 20,
+    "kinship-address": 10,
+    "none": 288,
+    "political-status": 11,
+    "workplace-corp": 13
+  },
+  "code_commit": "ed275457c16b64ca5725ccf91d2328302fe9fdaf",
+  "code_tree_sha256": "736bb3fc3b8afbec150bb2f8cf8b9617ac1c25f808d0375b7397319d04505e80",
+  "exclusions": {
+    "classify": {
+      "n_excluded_train_split_text": 0,
+      "n_excluded_trained_key": 2,
+      "n_excluded_trained_text": 3,
+      "n_input": 449,
+      "n_kept": 444
+    },
+    "unbind": {
+      "n_excluded_train_split_text": 0,
+      "n_excluded_trained_key": 4,
+      "n_excluded_trained_text": 2,
+      "n_input": 312,
+      "n_kept": 306
+    }
+  },
+  "hyperlex_env": {
+    "HYPERLEX_ALLOW_TRAIN": "1",
+    "HYPERLEX_CUDA_MEM_FRACTION": "0.3",
+    "HYPERLEX_EXPORT_DIR": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-rc1/export",
+    "HYPERLEX_FILLER_FILTER": "strict",
+    "HYPERLEX_INCLUDE_LIVE": "1",
+    "HYPERLEX_LAST_TRAINABLE": "8",
+    "HYPERLEX_OFFLINE": "1",
+    "HYPERLEX_RELEASE_SET": "1",
+    "HYPERLEX_SAVE_BEST_UNBIND": "1",
+    "HYPERLEX_TASK_ROUTING": "legacy_split",
+    "HYPERLEX_TRAIN_BATCH": "8",
+    "HYPERLEX_TRAIN_EPOCHS": "40",
+    "HYPERLEX_TRAIN_LR": "2e-5",
+    "HYPERLEX_TRAIN_OUT": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-rc1",
+    "HYPERLEX_TRUNK_DIR": "/home/morpheus/.hyperlex/models/trunks/ModernBERT-base",
+    "HYPERLEX_UNBIND_CURRICULUM": "1",
+    "HYPERLEX_UNBIND_CURRICULUM_POS_EPOCHS": "1",
+    "HYPERLEX_UNBIND_CURRICULUM_TYPE_EPOCHS": "1",
+    "HYPERLEX_UNBIND_FILLER_DENYLIST_PATH": "/home/morpheus/hlx/filler-denylist-status.json",
+    "HYPERLEX_UNBIND_FORCE_TRAIN_PATH": "/home/morpheus/hlx/force_train_morph78_expanded.jsonl",
+    "HYPERLEX_UNBIND_HARD_ATOMS_PATH": "/home/morpheus/hlx/hard_atoms_train_morph78.jsonl",
+    "HYPERLEX_UNBIND_HARD_UPSAMPLE": "4",
+    "HYPERLEX_UNBIND_HEAD_SLOT_WEIGHT": "2",
+    "HYPERLEX_UNBIND_INFERRED_CAP": "0",
+    "HYPERLEX_UNBIND_INFERRED_WEIGHT": "1.0",
+    "HYPERLEX_UNBIND_LOSS_WEIGHT": "1.0",
+    "HYPERLEX_UNBIND_MORPH_MARGIN": "0.5",
+    "HYPERLEX_UNBIND_OBSERVED_UPSAMPLE": "10",
+    "HYPERLEX_UNBIND_PRIMARY": "slot_ce",
+    "HYPERLEX_UNBIND_RESIDUAL_DUMP": "/home/morpheus/hlx/residual-rc1.jsonl",
+    "HYPERLEX_UNBIND_SECOND_SLOT_WEIGHT": "2"
+  },
+  "metrics": {
+    "baselines": [
+      "unbind_copy_token",
+      "classify_majority_train"
+    ],
+    "classify": [
+      "accuracy",
+      "macro_f1",
+      "ece_15_bins",
+      "abstain_rate"
+    ],
+    "report_by_label_class": [
+      "OBSERVED",
+      "INFERRED"
+    ],
+    "unbind": [
+      "unbind_exact",
+      "unbind_token_f1",
+      "unbind_slot_f1"
+    ],
+    "unbind_slices": [
+      "all",
+      "clean",
+      "oov_filler",
+      "by_role_scheme"
+    ]
+  },
+  "models": {
+    "hyperlex-encoder-modernbert-base-seed-morph65": {
+      "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65",
+      "safetensors_sha256": "96838b9656a84c3fee1773a41fdf2fbbec2f88f3bc948e4acfbe06c194ac5587"
+    },
+    "hyperlex-encoder-modernbert-base-seed-morph78": {
+      "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph78",
+      "safetensors_sha256": "fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1"
+    }
+  },
+  "n_trained_keys": 447,
+  "release_set": {
+    "kept_by_task_split": {
+      "classify+unbind:test": 32,
+      "classify+unbind:train": 298,
+      "classify+unbind:val": 30,
+      "classify:test": 449,
+      "classify:train": 3568,
+      "classify:val": 395,
+      "unbind:test": 312,
+      "unbind:train": 2530,
+      "unbind:val": 191
+    },
+    "n_excluded_same_text": 569,
+    "n_excluded_share_alike": 776,
+    "n_input": 9150,
+    "n_kept": 7805,
+    "release_content_sha256": "c05a3b66244f1d46a1df5ff6e0d7184116bd0c7d14137b9b88881de9c20d7094",
+    "release_set": true
+  },
+  "rules": [
+    "Score each listed model once on these exact row-ID hashes.",
+    "No selection, tuning, or calibration on test after scoring; test is burned for selection.",
+    "Calibration (temperature, abstain threshold) is fitted on clean val before scoring and frozen here.",
+    "Any future climb draws and hashes a new holdout before training."
+  ],
+  "schema": "hyperlex.holdout_manifest.v0.1",
+  "scored_at": "2026-09-24T21:06:28-07:00",
+  "scored_by_container": "hlx-eval-rc1-test-1790309133",
+  "scored_decision_receipt": "specs/007-hyperlexical-model/receipts/rc1-result-20260924/pin-reject.json",
+  "scored_note": "Scored once (rc1+morph78+morph65) 2026-09-24 21:05:34-21:06:28 PT; test burned for selection. Pre-edit original (as committed in ff5ec92): holdout-manifest-rc1.json.pre-scored-20260924. Status flipped by Danny yes 2026-09-24 ~21:15 PT.",
+  "scored_scores_receipt": "specs/007-hyperlexical-model/receipts/rc1-result-20260924/holdout-scores-rc1.json",
+  "slices": {
+    "classify_clean": {
+      "by_class": {
+        "INFERRED": 372,
+        "OBSERVED": 72
+      },
+      "by_role_scheme": null,
+      "ids_sha256": "77cae4141c753b7dac7c81b423ed699c047c749c743e9c6633cc3f2a8d3776e8",
+      "n": 444
+    },
+    "unbind_all": {
+      "by_class": {
+        "INFERRED": 216,
+        "OBSERVED": 96
+      },
+      "by_role_scheme": {
+        "positional": 157,
+        "type_slot": 155
+      },
+      "ids_sha256": "3961254a9859e17ec2ddd187f8efccf22e94c4d8580e288e67bd50cc94210aae",
+      "n": 312
+    },
+    "unbind_clean": {
+      "by_class": {
+        "INFERRED": 216,
+        "OBSERVED": 90
+      },
+      "by_role_scheme": {
+        "positional": 152,
+        "type_slot": 154
+      },
+      "ids_sha256": "8cbc104de8772f7dceec3ecbf6dbc37c9f384a4bdbf756d458dc516232c68403",
+      "n": 306
+    },
+    "unbind_oov_filler": {
+      "by_class": {
+        "INFERRED": 8,
+        "OBSERVED": 2
+      },
+      "by_role_scheme": {
+        "positional": 4,
+        "type_slot": 6
+      },
+      "ids_sha256": "ae9a8e248fb78bf3014bd8e622906ff6b5f4908ce4736383a3cc4209fe73b6b7",
+      "n": 10
+    }
+  },
+  "split": "test",
+  "status": "SCORED_SPENT",
+  "trained_files": [
+    "/home/morpheus/hlx/force_train_morph78_expanded.jsonl",
+    "/home/morpheus/hlx/hard_atoms_train_morph78.jsonl",
+    "/home/morpheus/hlx/force_train_morph50_expanded.jsonl",
+    "/home/morpheus/hlx/hard_atoms_train_morph50.jsonl"
+  ]
+}

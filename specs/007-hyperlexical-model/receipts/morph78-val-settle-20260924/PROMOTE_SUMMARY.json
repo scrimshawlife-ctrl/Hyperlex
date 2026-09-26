@@ -1,0 +1,33 @@
+{
+  "auth": "operator 2026-09-24 name phrases \u2014 authorize morph78 have fun staying poor / fr fr no cap (split=val)",
+  "as_of": "2026-09-24T03:47:52.671303+00:00",
+  "qualify": [
+    "have fun staying poor",
+    "fr fr no cap"
+  ],
+  "settled_inferred_to_observed": [
+    "have fun staying poor",
+    "fr fr no cap"
+  ],
+  "already_observed": [],
+  "force_base": 232,
+  "force78": 236,
+  "force_added": 4,
+  "hard_base": 273,
+  "hard78": 277,
+  "hard_added": 4,
+  "added_force_texts": [
+    "have fun staying poor",
+    "TOKEN:have SLOT:fun MARKER:staying TOKEN:poor",
+    "fr fr no cap",
+    "TOKEN:fr SLOT:fr MARKER:no TOKEN:cap"
+  ],
+  "split_policy": "force_val",
+  "force_path": "/home/morpheus/hlx/force_train_morph78_expanded.jsonl",
+  "hard_path": "/home/morpheus/hlx/hard_atoms_train_morph78.jsonl",
+  "one_knob": "val-settle force expand (2 named phrases) after morph77 tip; soft_ceiling ARMED",
+  "fair_exact": 1.0,
+  "fair_n": 164,
+  "prior_fair_n": 164,
+  "fair_n_moved": false
+}

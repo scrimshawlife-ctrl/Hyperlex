@@ -1,32 +1,28 @@
-# Spec 007 — next: soft_ceiling armed · HOLD empty · product plan drafted
+# Spec 007 — next: morph78 is BEST and named Hyperlexical
 
-`name_gate=false`. BEST=**morph65** (held). Upsample freeze = **11+**. Do not run SECOND_SLOT=4.
+`name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). BEST=**morph78**. Upsample freeze = **11+**. Do not run SECOND_SLOT=4.
 
 ## Done
 
-- soft_ceiling **ARMED** (live prior broad **0.88671875** n=256).
-- morph78 acquire + live residual reprobe → empty gold.
-- Operator **`authorize val-settle`** → **CANCELLED_EMPTY_GOLD** (no phrases on HOLD card; no invent OBSERVED).
-- Tip CI gap: restored `apply_unbind_force_train` + tests; restored `route_rows` / reviewed refuse-before-write in `loop.py`.
-- Local full suite **702 passed** (shadow 365). CI validate re-check after tip push.
-- Draft product plan: `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md`.
+- morph78 named phrases settled · force/hard **236/277** · soft_ceiling train complete.
+- **PROMOTE_BEST** (ceiling_escape): broad **0.9883** > PRIOR morph65 **0.8867** n=256 + E2 PASS.
+- Card rename: Hub card `hyperlex-structure-149m`; eval packets set `name_gate` true only for a trunk-forward eval of `seed-morph78`.
+- Real inference: `hyperlexical.infer --model-dir ~/.hyperlex/models/BEST` → `MODEL_EMBEDDING` packet (`hyperlex-structure-149m`), verified on Spark.
+- Danny **`flip name_gate`** → `seed-morph78` may be called **Hyperlexical** (receipt `specs/007-hyperlexical-model/receipts/20260924-name-gate-yes-morph78.md`).
 
-## Gate (armed)
+## Gate
 
-**soft_ceiling_tiebreak:** force-fair <1.0 → classic; =1.0 → broad OBSERVED > PRIOR live + E2.
+soft_ceiling **spent** for this climb (morph78 now PRIOR/BEST). Further climbs need a new authorize/acquire card.
 
-## PR triage (no merge without authorize)
+## Next (each a separate operator sentence)
 
-| PR | State | Action |
-|----|-------|--------|
-| **#100** pytrends | CI green, mergeable | Recommend merge after operator live `--route trends` check |
-| **#99** Spec 007 tip | draft; validate was red → force-train restore | Stay draft until CI green + merge yes |
-| **#95** HYPERLEX-Q1 | draft; base stale vs main | Keep draft; rebase onto main; remains UNQUALIFIED |
+1. Hub: **recommend do not publish yet** — publish audit `specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`. Blockers: promotion metric train-contaminated (leak-free val morph78 = morph65 = 1.0, n=63); weights not reproducible from `main`.
+   Fix order: canonicalize Spark training code → fix gate eval → score test split once → data/licence → calibration/A1 → loader → private Hub first.
+   Detailed plan + operator decisions D1–D7: `specs/007-hyperlexical-model/PUBLISH-READINESS-PLAN.md`.
+   Executed (no-decision items): `specs/007-hyperlexical-model/PUBLISH-READINESS-RESULTS-20260924.md`. Corrected gate REJECTs morph78 vs morph65 (tie 1.0, n=58); 709 Wiktionary rows (D5); vocab scrub needed (D8). Done 2026-09-24: D1, D5(a) relabel, D8 filter, D6→A7. Receipt: `receipts/20260924-d1-relabel-filter-a7.md`. Open: D3, D4, D5(b), D7; D2 skip recommended. rc1 clean cold-start retrain pre-registered (`receipts/20260924-rc1-preregistration.md`) and launching.
+2. Optional T13 (promote `scripts/shadow/hyperlexical/` into `src/hyperlex/`).
+3. HOLD morph78; no new climb without a new card.
 
-## Next
-
-1. Await authorize with **named phrases**, or a new acquire that clears Jev `force_expand_safe`.
-2. Operator review of `HYPERLEXICAL-PRODUCT-PLAN.md` (climb → hygiene → name_gate → Hub).
-3. Do not re-burn empty settles.
+Open findings (receipt `receipts/20260924-infer-model-morph78.md`): classify overconfident on val-settled phrases; trunk+heads = 150.55M vs A1 150M (trunk 149.0M).
 
 Qwen stays stopped unless re-enabled.

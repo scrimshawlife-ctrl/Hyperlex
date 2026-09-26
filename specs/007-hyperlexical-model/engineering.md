@@ -24,6 +24,15 @@ Detector over generator. Dual-use wall copied from 001/003/007.
 - `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` is the local SoT (4333 rows as of 2026-09-10 PT evening). Do not commit it.
 - Spark / T1 train uses that local SoT via `export --include-live`, not the tracked seed alone.
 
+## Hash before training
+
+Any held-out manifest must be frozen and its sha256 recorded before any weights exist for a run that will be scored on it.
+
+- Freeze the manifest file (row ids and `normalized_text_sha256` entries) first. Record that file's sha256.
+- Do not start a run that will be scored on the manifest until that hash exists.
+- A score whose manifest hash was taken after weights for that run exist is not a valid score.
+- `HLX_HOLDOUT_MANIFESTS` is the freeze input. The train receipt stores `manifest_sha256` from those bytes. Do not rewrite the manifest after the scored run has started.
+
 ## Code
 
 - Home until T13: `scripts/shadow/hyperlexical/`
@@ -35,7 +44,7 @@ Detector over generator. Dual-use wall copied from 001/003/007.
 ## Merge
 
 - Honesty PRs may lower counts. That is a pass, not a regression.
-- Do not merge a PR that sets `name_gate` true.
+- Do not merge a PR that sets `name_gate` true unless it records a Danny yes as an amendment (A6: `seed-morph78`, 2026-09-24).
 - Do not merge mock analyze as gold.
 - 008 stays a sibling. No sacred-object implement from a 007 classify branch.
 

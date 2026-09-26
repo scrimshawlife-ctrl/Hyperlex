@@ -1,6 +1,6 @@
 # U3 recipe — Spark train / 004 eval (SHADOW)
 
-Status: recipe + harness landed. Weights not trained. E2 not passed.
+Status: recipe + harness landed. Trained climb pins exist on Spark; current BEST `seed-morph78` passes trained E2 (2026-09-24). See `STATUS.md`.
 
 ## Box
 
@@ -22,7 +22,7 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
 
 T1 / E2 trains from the **local SoT** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`) via `--include-live`. Omit `--include-live` only for harness wiring against the tracked seed. Operator `--include-live` (2026-09-10 PT evening): n=6506 · classify 2437 · unbind 1345 · negatives 208 · gaps 0/0/0.
 
-Name-gate is still false (E2 Spark-blocked). The word Hyperlexical stays off the card until E2 beats 004 on shared fixtures **and** civilian unbind rows exist.
+Name-gate is true for `seed-morph78` only (trained E2 PASS + Danny yes, 2026-09-24). The word Hyperlexical stays off the card until E2 beats 004 on shared fixtures **and** civilian unbind rows exist.
 
 Do not train on `split=reject`. Do not treat INFERRED typology/stage as OBSERVED gold.
 

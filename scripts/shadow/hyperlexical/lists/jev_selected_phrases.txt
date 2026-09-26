@@ -1,0 +1,20 @@
+# Jev-selected phrases later settled OBSERVED on val.
+# Jev picked the candidates. A human named them. Jev did not write the fillers.
+# Matching is exact on the census group-text normalization of the row text
+# or of any one filler. Lines starting with # are comments.
+#
+# morph77 card_high_conf_new, then a human settle as OBSERVED split=val:
+#   specs/007-hyperlexical-model/receipts/20260923-morph77-val-acquire-label-hold.md
+we're so back
+clutch up
+bet that up
+real talk
+#
+# morph76 settle_high_conf, INFERRED to OBSERVED (highkey shawty):
+#   specs/007-hyperlexical-model/receipts/20260923-morph76-acquire-settle-cancelled-fair-ceiling.md
+highkey shawty
+#
+# morph78 operator-named from the Jev card pool (jev_revisit77_safe_new):
+#   specs/007-hyperlexical-model/receipts/20260924-authorize-name-phrases-morph78.md
+have fun staying poor
+fr fr no cap

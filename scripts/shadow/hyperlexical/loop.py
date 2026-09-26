@@ -8,6 +8,16 @@ from pathlib import Path
 
 from .align import atom_token_index, offsets_from_tokenizer, pool_indices
 from .export import export_dataset, repo_root, write_export
+from .classify_metrics import (
+    NONE_LABEL,
+    SELECT_METRIC_CLASSIFY,
+    macro_f1_nonnone,
+    none_false_positive_rate,
+    resolve_select_metric,
+)
+from .classify_split import apply_classify_split_file
+from .seed_control import apply_training_seed
+from .force_train_overlap import enforce_force_train_disjoint
 from .layout import (
     FAMILIES,
     HIDDEN,
@@ -16,10 +26,22 @@ from .layout import (
     TRUNK,
     UNK,
     describe,
-    label_maps,
+    label_maps_for_splits,
     resolve_last_trainable,
+    resolve_vocab_train_only,
 )
 from .eval_forward import apply_encoder_trainable
+from .filler_filter import assert_publishable_vocab, filter_mode, filter_unbind_rows
+from .holdout_guard import (
+    assert_no_holdout,
+    filter_holdout_rows,
+    holdout_receipt,
+    load_holdout_spec,
+    log_holdout,
+    require_holdout_for_training,
+)
+from .provenance import provenance
+from .release_set import maybe_release
 from .save_pretrained import (
     collect_encoder_trainable,
     save_heads,
@@ -350,6 +372,22 @@ def resolve_unbind_every_n(raw: str | int | None = None) -> int:
     return n
 
 
+TASK_ROUTING_ENV = "HYPERLEX_TASK_ROUTING"
+TASK_ROUTINGS = ("route_rows", "legacy_split")
+
+
+def task_routing(raw: str | None = None) -> str:
+    """``route_rows`` (default) or ``legacy_split`` (pre-routing loop; reproduces morph75–78).
+
+    ``legacy_split`` selects rows by ``task == "classify"`` / ``task == "unbind"`` only, so
+    ``classify+unbind`` rows are not trained. Unknown values fail closed.
+    """
+    value = (os.environ.get(TASK_ROUTING_ENV, "") if raw is None else raw).strip() or "route_rows"
+    if value not in TASK_ROUTINGS:
+        raise ValueError(f"{TASK_ROUTING_ENV} must be one of {TASK_ROUTINGS}")
+    return value
+
+
 def should_interleave_unbind(classify_batch_index: int, every_n: int) -> bool:
     """True after classify batch `index` (0-based) when every_n > 1."""
     if every_n <= 1:
@@ -362,13 +400,38 @@ def prepare_unbind_splits(rows: list) -> tuple[list, list, dict]:
 
     ``HYPERLEX_UNBIND_FORCE_TRAIN_PATH`` may move authorized OBSERVED exacts
     from val→train (accept-style). Empty/unset → val untouched.
+    ``HLX_HOLDOUT_MANIFESTS`` rows are dropped before that move and before
+    hard-atom copies, then checked again so neither injection can put them back.
     """
-    routed, _ = route_rows(rows)
-    train = routed["unbind"]["train"]
-    val = routed["unbind"]["val"]
+    spec = load_holdout_spec()
+    if task_routing() == "legacy_split":
+        train = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "train"]
+        val = [r for r in rows if r.get("task") == "unbind" and r.get("split") == "val"]
+    else:
+        routed, _ = route_rows(rows)
+        train = routed["unbind"]["train"]
+        val = routed["unbind"]["val"]
+    train, n_train = filter_holdout_rows(train, spec)
+    val, n_val = filter_holdout_rows(val, spec)
     train, val, force_stats = apply_unbind_force_train(train, val)
+    train, n_train_injected = filter_holdout_rows(train, spec)
+    val, n_val_injected = filter_holdout_rows(val, spec)
+    train, filt_train = filter_unbind_rows(train)
+    val, filt_val = filter_unbind_rows(val)
     shaped, stats = shape_unbind_train(train)
-    stats = {**stats, **force_stats}
+    shaped, n_hard = filter_holdout_rows(shaped, spec)
+    assert_no_holdout(shaped, spec, "unbind train")
+    assert_no_holdout(val, spec, "unbind val")
+    stats = {
+        **stats,
+        **force_stats,
+        "filler_filter": filt_train["filler_filter"],
+        "n_filler_rows_dropped_train": filt_train["n_filler_rows_dropped"],
+        "n_filler_rows_dropped_val": filt_val["n_filler_rows_dropped"],
+        "n_holdout_removed_train": n_train + n_train_injected + n_hard,
+        "n_holdout_removed_val": n_val + n_val_injected,
+        "holdout_manifests": [dict(item) for item in spec.manifests],
+    }
     return shaped, val, stats
 
 
@@ -419,23 +482,70 @@ def run_loop(
     include_live: bool = False,
     live_store: Path | None = None,
 ) -> dict:
+    holdout_spec = require_holdout_for_training()
     root = repo_root()
     bundle = export_dataset(root, include_live=include_live, live_store=live_store)
+    release_rows_, release_stats = maybe_release(bundle["rows"])
+    if release_stats["release_set"]:
+        bundle = {**bundle, "rows": release_rows_}
     if any(r.get("role_scheme") == "reviewed_occurrences" for r in bundle["rows"]):
         raise ValueError("reviewed occurrences require occurrence-aware loop alignment")
     routed, task_accounting = route_rows(bundle["rows"])
-    write_export(root / "specs" / "007-hyperlexical-model" / "exports", bundle)
-    classify_tr = routed["classify"]["train"]
-    classify_va = routed["classify"]["val"]
+    task_accounting = {**task_accounting, "task_routing": task_routing()}
+    export_dir = Path(os.environ.get("HYPERLEX_EXPORT_DIR") or (root / "specs" / "007-hyperlexical-model" / "exports"))
+    export_dir.mkdir(parents=True, exist_ok=True)
+    write_export(export_dir, bundle)
+    if task_routing() == "legacy_split":
+        classify_tr = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "train"]
+        classify_va = [r for r in bundle["rows"] if r["task"] == "classify" and r["split"] == "val"]
+    else:
+        classify_tr = routed["classify"]["train"]
+        classify_va = routed["classify"]["val"]
+    classify_tr, classify_va, classify_split_receipt = apply_classify_split_file(
+        classify_tr, classify_va
+    )
     unbind_tr, unbind_va, unbind_recipe = prepare_unbind_splits(bundle["rows"])
+    from .classify_admission import apply_classify_admission
+
+    classify_tr, classify_va, classify_admission_receipt = apply_classify_admission(
+        bundle["rows"], classify_tr, classify_va
+    )
+    classify_tr, n_classify_train = filter_holdout_rows(classify_tr, holdout_spec)
+    classify_va, n_classify_val = filter_holdout_rows(classify_va, holdout_spec)
+    assert_no_holdout(classify_tr, holdout_spec, "classify train")
+    assert_no_holdout(classify_va, holdout_spec, "classify val")
+    assert_no_holdout(unbind_tr, holdout_spec, "unbind train")
+    assert_no_holdout(unbind_va, holdout_spec, "unbind val")
+    holdout_removed = {
+        "classify_train": n_classify_train,
+        "classify_val": n_classify_val,
+        "unbind_train": unbind_recipe.get("n_holdout_removed_train", 0),
+        "unbind_val": unbind_recipe.get("n_holdout_removed_val", 0),
+    }
+    log_holdout(holdout_spec, holdout_removed)
     if len(classify_tr) < 8:
         raise RuntimeError("not enough classify train rows")
+
+    select_metric = resolve_select_metric()
+    select_on_classify = select_metric == SELECT_METRIC_CLASSIFY
+    if select_on_classify:
+        selection_rows = list(classify_va or classify_tr[:8])
+    else:
+        selection_rows = list(unbind_va or unbind_tr[:8])
+    classify_va, unbind_va, force_overlap = enforce_force_train_disjoint(
+        classify_va,
+        unbind_va,
+        selection_rows,
+    )
 
     import torch
     from torch import nn
     from torch.optim import AdamW
 
-    maps = label_maps(unbind_tr + unbind_va)
+    seed_receipt = apply_training_seed(torch)
+    maps = label_maps_for_splits(unbind_tr, unbind_va)
+    if filter_mode() == "strict":
+        assert_publishable_vocab(maps["filler_vocab"])
     tok, encoder = _require_local_model(trunk)
     hidden = int(getattr(encoder.config, "hidden_size", HIDDEN))
     if hidden != HIDDEN:
@@ -548,6 +658,7 @@ def run_loop(
     last_residual_records: list[dict] = []
     save_best_unbind = resolve_save_best_unbind()
     best_exact = float("-inf")
+    best_macro = float("-inf")
     best_metrics: dict | None = None
     best_state: dict | None = None
     best_residual_records: list[dict] = []
@@ -560,13 +671,19 @@ def run_loop(
         classify.eval()
         filler_head.eval()
         hit = tot = 0
+        classify_golds: list[str] = []
+        classify_preds: list[str] = []
         for row in classify_va or classify_tr[:8]:
             out = encoder(**encode_texts([row["text"]]))
             pred = int(classify(out.last_hidden_state[:, 0]).argmax(-1)[0])
             gold = maps["family_of"].get(row["lineage"], maps["family_of"]["none"])
             hit += int(pred == gold)
             tot += 1
+            if select_on_classify:
+                classify_golds.append(FAMILIES[gold] if 0 <= gold < len(FAMILIES) else NONE_LABEL)
+                classify_preds.append(FAMILIES[pred] if 0 <= pred < len(FAMILIES) else NONE_LABEL)
         pairs: list[tuple[list[str], list[str]]] = []
+        strict_pairs: list[tuple[list[str], list[str]]] = []
         residual_records: list[dict] = []
         for row in unbind_va or unbind_tr[:8]:
             fillers = list(row.get("fillers") or [])
@@ -576,13 +693,16 @@ def run_loop(
             states = out.last_hidden_state[0]
             offs = _offsets(tok, row["text"])
             gold_strs: list[str] = []
+            raw_strs: list[str] = []
             pred_strs: list[str] = []
             for fill in fillers:
                 idxs = pool_indices(states.size(0), atom_token_index(row["text"], fill, offs))
                 pred = int(filler_head(states[idxs].mean(0)).argmax())
                 gold_strs.append(mapped_filler(maps, fill))
+                raw_strs.append(str(fill).lower())
                 pred_strs.append(mapped_pred(maps, pred))
             pairs.append((gold_strs, pred_strs))
+            strict_pairs.append((raw_strs, pred_strs))
             if residual_dump_path:
                 rec = residual_row_record(
                     text=str(row.get("text") or ""),
@@ -596,9 +716,12 @@ def run_loop(
         encoder.train()
         classify.train()
         filler_head.train()
-        metrics = summarize_unbind_pairs(pairs)
+        metrics = summarize_unbind_pairs(pairs, strict_pairs=strict_pairs)
         metrics["classify_acc"] = hit / max(1, tot)
         metrics["n_classify_eval"] = tot
+        if select_on_classify:
+            metrics["classify_macro_f1_nonnone"] = macro_f1_nonnone(classify_golds, classify_preds)
+            metrics["none_fpr"] = none_false_positive_rate(classify_golds, classify_preds)
         return metrics
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -637,7 +760,59 @@ def run_loop(
             # One host sync per epoch (not per step).
             losses.append(float(last_train_loss.item()))
         saved_best = False
-        if save_best_unbind and exact > best_exact:
+        if select_on_classify:
+            if metrics.get("classify_macro_f1_nonnone") is None:
+                raise RuntimeError(
+                    "HLX_SELECT_METRIC=classify_macro_f1_nonnone but val has no "
+                    "non-none gold; macro-F1 is NOT_COMPUTABLE"
+                )
+            score_now = float(metrics["classify_macro_f1_nonnone"])
+            if score_now > best_macro:
+                if device.type == "cuda":
+                    torch.cuda.synchronize()
+                best_macro = score_now
+                best_metrics = dict(metrics)
+                best_state = _build_weight_state(
+                    encoder, classify, role_head, filler_head, maps, layout
+                )
+                best_residual_records = list(last_residual_records)
+                best_dir = out_dir / "best"
+                write_skeleton(best_dir, maps=maps)
+                save_heads(best_dir, best_state)
+                (best_dir / "best-checkpoint.json").write_text(
+                    json.dumps(
+                        {
+                            "metric": SELECT_METRIC_CLASSIFY,
+                            "epoch": ep,
+                            "classify_macro_f1_nonnone": score_now,
+                            "none_fpr": metrics.get("none_fpr"),
+                            "unbind_exact": exact,
+                            "unbind_token_f1": best_metrics.get("unbind_token_f1"),
+                            "unbind_slot_f1": best_metrics.get("unbind_slot_f1"),
+                            "unbind_exact_strict": best_metrics.get("unbind_exact_strict"),
+                            "unbind_token_f1_strict": best_metrics.get("unbind_token_f1_strict"),
+                            "unbind_slot_f1_strict": best_metrics.get("unbind_slot_f1_strict"),
+                            "classify_acc": best_metrics.get("classify_acc"),
+                        },
+                        indent=2,
+                        sort_keys=True,
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+                saved_best = True
+                if device.type == "cuda":
+                    torch.cuda.synchronize()
+                    torch.cuda.empty_cache()
+            none_fpr = metrics.get("none_fpr")
+            none_fpr_text = "null" if none_fpr is None else f"{float(none_fpr):.6f}"
+            best_text = None if best_macro == float("-inf") else best_macro
+            print(
+                f"[epoch {ep}] classify_macro_f1_nonnone={score_now:.6f} "
+                f"none_fpr={none_fpr_text} best={best_text} saved_best={saved_best}",
+                flush=True,
+            )
+        elif save_best_unbind and exact > best_exact:
             if device.type == "cuda":
                 torch.cuda.synchronize()
             best_exact = exact
@@ -657,6 +832,9 @@ def run_loop(
                         "unbind_exact": exact,
                         "unbind_token_f1": best_metrics.get("unbind_token_f1"),
                         "unbind_slot_f1": best_metrics.get("unbind_slot_f1"),
+                        "unbind_exact_strict": best_metrics.get("unbind_exact_strict"),
+                        "unbind_token_f1_strict": best_metrics.get("unbind_token_f1_strict"),
+                        "unbind_slot_f1_strict": best_metrics.get("unbind_slot_f1_strict"),
                         "classify_acc": best_metrics.get("classify_acc"),
                     },
                     indent=2,
@@ -679,20 +857,29 @@ def run_loop(
             "unbind_phase": phase_meta["phase"],
             "classify_acc": metrics.get("classify_acc"),
         }
+        if select_on_classify:
+            progress["classify_macro_f1_nonnone"] = metrics.get("classify_macro_f1_nonnone")
+            progress["none_fpr"] = metrics.get("none_fpr")
+            progress["best_classify_macro_f1_nonnone"] = (
+                None if best_macro == float("-inf") else best_macro
+            )
+        if seed_receipt is not None:
+            progress["seed"] = seed_receipt["seed"]
         with progress_path.open("a", encoding="utf-8") as pf:
             pf.write(json.dumps(progress, sort_keys=True) + "\n")
             pf.flush()
-        print(
-            f"[epoch {ep}] unbind_exact={exact:.6f} best={best_exact if best_exact != float('-inf') else None} saved_best={saved_best}",
-            flush=True,
-        )
+        if not select_on_classify:
+            print(
+                f"[epoch {ep}] unbind_exact={exact:.6f} best={best_exact if best_exact != float('-inf') else None} saved_best={saved_best}",
+                flush=True,
+            )
 
     final_state = _build_weight_state(
         encoder, classify, role_head, filler_head, maps, layout
     )
     # Always write final epoch weights under a distinct name when best-save is on,
     # then promote best → primary model.safetensors (fixes morph35 peak-not-saved).
-    if save_best_unbind and best_state is not None:
+    if (save_best_unbind or select_on_classify) and best_state is not None:
         final_file = save_heads(out_dir, final_state)
         # rename primary final dump aside, then write best as primary
         final_path = out_dir / final_file
@@ -703,7 +890,9 @@ def run_loop(
             final_path.replace(aside)
         weight_file = save_heads(out_dir, best_state)
         primary_val = best_metrics or {}
-        gated_from = "best_unbind_exact"
+        gated_from = (
+            "best_classify_macro_f1_nonnone" if select_on_classify else "best_unbind_exact"
+        )
         residual_for_dump = best_residual_records
     else:
         weight_file = save_heads(out_dir, final_state)
@@ -728,6 +917,7 @@ def run_loop(
         "device": str(device),
         "cuda": bool(torch.cuda.is_available()),
         "epochs": epochs,
+        **provenance(root),
         "n_train_classify": len(classify_tr),
         "task_accounting": task_accounting,
         "n_train_unbind": len(unbind_tr),
@@ -760,6 +950,10 @@ def run_loop(
         "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
         "n_unbind_hard_atoms_matched": unbind_recipe.get("n_unbind_hard_atoms_matched", 0),
         "unbind_force_train_path": unbind_recipe.get("unbind_force_train_path", ""),
+        "release_set": release_stats,
+        "filler_filter": unbind_recipe.get("filler_filter"),
+        "n_filler_rows_dropped_train": unbind_recipe.get("n_filler_rows_dropped_train", 0),
+        "n_filler_rows_dropped_val": unbind_recipe.get("n_filler_rows_dropped_val", 0),
         "n_unbind_force_train": unbind_recipe.get("n_unbind_force_train", 0),
         "n_unbind_force_train_keys": unbind_recipe.get("n_unbind_force_train_keys", 0),
         "n_unbind_val_after_force_train": unbind_recipe.get(
@@ -793,6 +987,8 @@ def run_loop(
         "weight_file": weight_file,
         "aligner": "char_span + offset_mapping",
         "data_sha256": bundle["sha256"],
+        "holdout": holdout_receipt(holdout_spec, holdout_removed),
+        "classify_admission": classify_admission_receipt,
         "include_live": include_live,
         "live_included": bundle["counts"].get("live_included", 0),
         "name_gate": False,
@@ -801,57 +997,76 @@ def run_loop(
         "forecast_eligible": False,
         "note": "HF-shaped dump. Not Hyperlexical until E2.",
     }
+    if classify_split_receipt is not None:
+        receipt["classify_split"] = classify_split_receipt
+    if seed_receipt is not None:
+        receipt["seed"] = seed_receipt
+    if select_on_classify:
+        receipt["select_metric"] = SELECT_METRIC_CLASSIFY
+    if force_overlap.get("disjoint"):
+        receipt["force_train_disjoint"] = {
+            "n_overlap": force_overlap["n_overlap"],
+            "n_in_val": force_overlap["n_in_val"],
+            "n_in_selection": force_overlap["n_in_selection"],
+            "n_force_rows": force_overlap["n_force_rows"],
+            "n_dropped_classify_val": force_overlap["n_dropped_classify_val"],
+            "n_dropped_unbind_val": force_overlap["n_dropped_unbind_val"],
+            "n_classify_val": force_overlap["n_classify_val"],
+            "n_unbind_val": force_overlap["n_unbind_val"],
+        }
+    if resolve_vocab_train_only():
+        receipt["vocab_train_only"] = True
     (out_dir / "layout.json").write_text(json.dumps(layout, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (out_dir / "train-receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    train_config = {
+        "lr": os.environ.get("HYPERLEX_TRAIN_LR", "2e-5"),
+        "epochs": epochs,
+        "batch": batch,
+        "max_len": MAX_LEN,
+        "last_trainable": last_trainable_used,
+        "unbind_loss_weight": unbind_loss_weight,
+        "unbind_every_n": unbind_every_n,
+        "unbind_primary": slot_ce_mode["unbind_primary"],
+        "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
+        "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
+        "unbind_head_slot_weight": head_slot_weight,
+        "unbind_second_slot_weight": second_slot_weight,
+        "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
+        "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
+        "unbind_inferred_weight": inferred_weight,
+        "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
+        "unbind_morph_margin": morph_margin,
+        "unbind_curriculum": curriculum_plan["enabled"],
+        "unbind_curriculum_pos_epochs": curriculum_plan["pos_epochs"],
+        "unbind_curriculum_type_epochs": curriculum_plan["type_epochs"],
+        "unbind_filler_denylist_lineages": unbind_recipe.get(
+            "unbind_filler_denylist_lineages", 0
+        ),
+        "unbind_hard_atoms_path": unbind_recipe.get("unbind_hard_atoms_path", ""),
+        "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
+        "n_unbind_hard_atoms_matched": unbind_recipe.get(
+            "n_unbind_hard_atoms_matched", 0
+        ),
+        "n_unbind_hard_extra_copies": unbind_recipe.get(
+            "n_unbind_hard_extra_copies", 0
+        ),
+        "unbind_force_train_path": unbind_recipe.get("unbind_force_train_path", ""),
+        "n_unbind_force_train": unbind_recipe.get("n_unbind_force_train", 0),
+        "n_unbind_force_train_keys": unbind_recipe.get(
+            "n_unbind_force_train_keys", 0
+        ),
+        "n_unbind_val_after_force_train": unbind_recipe.get(
+            "n_unbind_val_after_force_train", 0
+        ),
+        "save_best_unbind": save_best_unbind,
+        "holdout": holdout_receipt(holdout_spec, holdout_removed),
+        "init_from": init_receipt.get("init_from"),
+        "warm_start": bool(init_receipt.get("warm_start")),
+    }
+    if seed_receipt is not None:
+        train_config["seed"] = seed_receipt["seed"]
     (out_dir / "config-train.json").write_text(
-        json.dumps(
-            {
-                "lr": os.environ.get("HYPERLEX_TRAIN_LR", "2e-5"),
-                "epochs": epochs,
-                "batch": batch,
-                "max_len": MAX_LEN,
-                "last_trainable": last_trainable_used,
-                "unbind_loss_weight": unbind_loss_weight,
-                "unbind_every_n": unbind_every_n,
-                "unbind_primary": slot_ce_mode["unbind_primary"],
-                "unbind_slot_ce_armed": slot_ce_mode["unbind_slot_ce_armed"],
-                "unbind_slot_ce_aux_lambda": slot_ce_mode["unbind_slot_ce_aux_lambda"],
-                "unbind_head_slot_weight": head_slot_weight,
-                "unbind_second_slot_weight": second_slot_weight,
-                "unbind_observed_upsample": unbind_recipe["unbind_observed_upsample"],
-                "unbind_inferred_cap": unbind_recipe["unbind_inferred_cap"],
-                "unbind_inferred_weight": inferred_weight,
-                "n_unbind_morph_negatives": unbind_recipe["n_unbind_morph_negatives"],
-                "unbind_morph_margin": morph_margin,
-                "unbind_curriculum": curriculum_plan["enabled"],
-                "unbind_curriculum_pos_epochs": curriculum_plan["pos_epochs"],
-                "unbind_curriculum_type_epochs": curriculum_plan["type_epochs"],
-                "unbind_filler_denylist_lineages": unbind_recipe.get(
-                    "unbind_filler_denylist_lineages", 0
-                ),
-                "unbind_hard_atoms_path": unbind_recipe.get("unbind_hard_atoms_path", ""),
-                "unbind_hard_upsample": unbind_recipe.get("unbind_hard_upsample", 1),
-                "n_unbind_hard_atoms_matched": unbind_recipe.get(
-                    "n_unbind_hard_atoms_matched", 0
-                ),
-                "n_unbind_hard_extra_copies": unbind_recipe.get(
-                    "n_unbind_hard_extra_copies", 0
-                ),
-                "unbind_force_train_path": unbind_recipe.get("unbind_force_train_path", ""),
-                "n_unbind_force_train": unbind_recipe.get("n_unbind_force_train", 0),
-                "n_unbind_force_train_keys": unbind_recipe.get(
-                    "n_unbind_force_train_keys", 0
-                ),
-                "n_unbind_val_after_force_train": unbind_recipe.get(
-                    "n_unbind_val_after_force_train", 0
-                ),
-                "save_best_unbind": save_best_unbind,
-                "init_from": init_receipt.get("init_from"),
-                "warm_start": bool(init_receipt.get("warm_start")),
-            },
-            indent=2,
-        )
-        + "\n",
+        json.dumps(train_config, indent=2) + "\n",
         encoding="utf-8",
     )
     return receipt

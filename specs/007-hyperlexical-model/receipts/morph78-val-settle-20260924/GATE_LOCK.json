@@ -1,0 +1,19 @@
+{
+  "gate_owner": "morph78-val-settle",
+  "finished_at": "2026-09-24T16:11:55.044207+00:00",
+  "status": "done",
+  "decision": "PROMOTE_BEST",
+  "promote": true,
+  "best_unbind_exact": 1.0,
+  "best_epoch": 15,
+  "fair_morph65": 1.0,
+  "fair_n": 164,
+  "gate": "soft_ceiling_tiebreak",
+  "gate_mode": "ceiling_escape",
+  "broad_exact": 0.98828125,
+  "broad_n": 256,
+  "e2_pass": true,
+  "surface_ok": true,
+  "val_n": 164,
+  "reason": "ceiling escape: broad 0.98828125 > baseline 0.88671875 (src=live_prior_broad) n=256 + E2 (force_fair=1.0 advisory)"
+}

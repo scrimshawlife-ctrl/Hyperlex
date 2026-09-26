@@ -72,7 +72,7 @@ Published site: https://scrimshawlife-ctrl.github.io/Hyperlex/
 - Invent a numeric Brier on open analysis. Empty series → `NOT_COMPUTABLE`.
 - Auto-settle forecasts. Settlement is a human step (`TRUE` / `FALSE` / `VOID` / `CONFLICT`).
 - Add a **ninth** lineage family.
-- Claim Hub publish, `name_gate: true`, or the name **Hyperlexical** (E2 on Spark has not passed).
+- Claim Hub publish, or the name **Hyperlexical** for anything other than `seed-morph78` (`name_gate` yes is scoped to that pin; amendment A6).
 - Rewrite historical receipt hashes.
 - Treat Phase 5 or Spec 007 packets as measurement.
 

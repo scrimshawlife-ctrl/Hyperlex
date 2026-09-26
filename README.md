@@ -14,8 +14,8 @@ Hermes skill is what you **run today**. Spec 007 Hyperlexical encoder is **SHADO
 | **Owns** | memetic ingest · classify · receipts · virality / hyperstition signals · Spec 007 encoder specify |
 | **Honesty** | `OBSERVED` / `INFERRED` / `SPECULATIVE` (+ provenance; settled Brier only where calibrated) |
 | **Shape** | Hermes skill **live** (v0.4.0). Spec 007 T0→T1 **gated**. Not a chatbot mind. |
-| **Anti** | Efficacy theater · inventing Brier · naming artifacts **Hyperlexical** before E2 · Hub without `ALLOW_HUB` |
-| **Lane** | Skill ready · encoder SHADOW · `name_gate` **false** · Hub not published |
+| **Anti** | Efficacy theater · inventing Brier · naming any artifact other than the gated pin **Hyperlexical** · Hub without `ALLOW_HUB` |
+| **Lane** | Skill ready · encoder SHADOW · `name_gate` **true** (`seed-morph78`) · Hub not published |
 | **Version** | `0.4.0` — prefer [`STATUS.md`](STATUS.md) |
 
 Docs site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.github.io/Hyperlex/) · status mirror: [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/).
@@ -24,7 +24,7 @@ Docs site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.gi
 
 **OBSERVED dual-home:** this repository (`scrimshawlife-ctrl/Hyperlex`) is the canonical train and work remote. [`Zero-State-LLC/Hyperlex`](https://github.com/Zero-State-LLC/Hyperlex) is the company mirror and may lag. Do not treat the org Hyperlex as the train source of truth.
 
-Pinned BEST receipt on `main`: [`specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md`](specs/007-hyperlexical-model/receipts/20260915-morph36-promote-best.md) (`name_gate=false` / no Hub).
+Pinned BEST receipt on `main`: [`specs/007-hyperlexical-model/receipts/20260924-morph78-soft-ceiling-promote-best.md`](specs/007-hyperlexical-model/receipts/20260924-morph78-soft-ceiling-promote-best.md) — `seed-morph78`, 2026-09-24 (`name_gate=false` / no Hub). Earlier pins (morph36, morph65) stay in `receipts/` as history.
 
 Funding and demo language must match Zero State [Public Claims & Boundaries](https://app.notion.com/p/ecd794b1226b4dd89abe1ccd928dd35c) (Notion) and [Core Model Spine](https://app.notion.com/p/3dc3e8ba2f5c810db2f6f72a8ffe50eb). Do not claim: Nemotron integrated, Hub Hyperlexical card, Abraxas-named 7B, or free Inception GPUs.
 
@@ -34,32 +34,34 @@ Full pointer: [`docs/CANONICAL.md`](docs/CANONICAL.md).
 
 Repo **Hyperlex** is the transitional monorepo shell. Do not use bare public **Hyperlex** as a product name — it collides with French legaltech CLM / DiliTrust.
 
+**Durable lock:** [`docs/NAMING.md`](docs/NAMING.md) · Notion [Naming lock](https://app.notion.com/p/3e53e8ba2f5c81a7bc81fdd3edb06678) · receipt `specs/007-hyperlexical-model/receipts/20260924-name-ne0l0gist-as-in-repo.md`.
+
 | Name | Role |
 |------|------|
 | **Hyperlexical** | Spec 007 model / train / eval / E2 / `name_gate` product claim |
-| **ne0l0gist** | Slang ingest tool: Crawl4AI harvest, `ingest_tap`, export/settle, civilian and live phrase harvest |
+| **ne0l0gist** | Slang ingest tool (zeros spelling): Crawl4AI harvest, `ingest_tap`, export/settle — **operator-named 2026-09-24** |
 | **Hyperlex** (repo) | Transitional monorepo shell. GitHub repo name, `~/.hyperlex` paths, `HYPERLEX_*` env vars, and the `hyperlexical` Python package stay as-is |
 
-`name_gate` stays **false**. This split does not name a trained artifact Hyperlexical-gated-true.
+`name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). Naming **ne0l0gist** was a separate sentence and did not flip it. Hub card `hyperlex-structure-149m`; Hub and T13 not authorized.
 
 ## What ships / what does not
 
 | Ships now | Does **not** ship |
 |-----------|-------------------|
 | Hermes skill install + CLI (`install.sh`, `scripts/hyperlex.py`) | Artifact named **Hyperlexical** |
-| Spec 007 SHADOW encoder code path | `name_gate` true / Hub publish |
+| Spec 007 SHADOW encoder code path · `seed-morph78` named Hyperlexical | Hub publish · T13 promote |
 | Local SoT classify volume (operator machine) | Full SoT in git |
 | Pages static run history / Phase 5 research hooks | Paid Firecrawl by default (Crawl4AI is default) |
 
-## Current state (OBSERVED 2026-09-10/11 PT)
+## Current state (harvest rows OBSERVED 2026-09-10/11 PT · Spec 007 row 2026-09-24)
 
 Snapshot — full scoreboard in [`STATUS.md`](STATUS.md).
 
 | Area | State |
 |------|-------|
 | Hermes skill | Ready **v0.4.0** |
-| Spec 007 | SHADOW on main · T0 specified · T1 blocked on Spark E2 |
-| `name_gate` | **false** (volume ≠ name) |
+| Spec 007 | SHADOW · BEST `seed-morph78` (PROMOTE_BEST 2026-09-24) · trained E2 **PASS** · named **Hyperlexical** (`name_gate` yes, A6) |
+| `name_gate` | **true** for `seed-morph78` (Danny 2026-09-24) |
 | Hub | Not published |
 | Local SoT | `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` — **4333** (**not in git**) |
 | Export classify (include-live) | **2437** family-labeled (harvest gate) |
@@ -139,7 +141,7 @@ Spark trains from **local SoT** / `export --include-live`, not from the tracked 
 
 Do **not** without Danny/operator yes:
 
-- Call an artifact **Hyperlexical** or flip `name_gate`
+- Call any artifact other than `seed-morph78` **Hyperlexical**, or extend `name_gate` to another checkpoint
 - Publish to Hub (`ALLOW_HUB`)
 - Commit the 4333 SoT into git
 - Invent Brier scores (settled calibration only)

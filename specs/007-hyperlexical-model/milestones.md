@@ -9,7 +9,7 @@
 Live classify counts stay on Notion Tasks 007 / Operator Hub and the local store.
 A harvest number moving does not rewrite a gate here.
 
-Operator note **2026-09-10 PT evening** (Danny-locked): local SoT **4333** (402 OBSERVED / 3931 INFERRED); `--include-live` classify **2437** / unbind **1345** / negatives **208**; name_gate gaps **0/0/0**. Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **superseded**. `name_gate` stays **false** until E2 on Spark. Tracked `exports/civilian.v0.1.jsonl` is a seed, not the SoT.
+Operator note **2026-09-10 PT evening** (Danny-locked): local SoT **4333** (402 OBSERVED / 3931 INFERRED); `--include-live` classify **2437** / unbind **1345** / negatives **208**; name_gate gaps **0/0/0**. Danny ~2500 candidate bar: **met**. Hermes 913 / “gap to 2500” is **superseded**. Dataset buckets met; `name_gate` stays **false** until Danny yes (trained E2 PASS on Spark does not flip). Tracked `exports/civilian.v0.1.jsonl` is a seed, not the SoT.
 
 ## Name-gate (dataset wall before T1 train)
 
@@ -22,7 +22,7 @@ Operator-settled gold only.
 | negatives | 200 |
 
 - OBSERVED only after settle. Harvest / tap / weak-tag mapper stay INFERRED.
-- `name_gate` stays false until all three buckets are settled.
+- Dataset buckets above are the floor to *plan* a T1 name. The public `name_gate` flag stays false until Danny yes (E2 PASS alone does not flip). Danny yes recorded 2026-09-24 for `seed-morph78` (A6).
 - Weak harvest inflation is not progress against 2k.
 
 Minimum to *plan* implement remains 200 / 40 / 50 (`spec.md` dataset contract).
@@ -33,7 +33,7 @@ Minimum to *name* a T1 card is this table.
 | Tier | Meaning | Name allowed |
 |------|---------|--------------|
 | T0 | 22–40M encoder baseline | `hyperlex-encoder-*` — not Hyperlexical |
-| T1 | 60–150M + unbind heads; E2 beats Spec 004 probe; A1 ceiling 150M; A2 trunk `answerdotai/ModernBERT-base` | first artifact that may be called Hyperlexical |
+| T1 | 60–150M + unbind heads; E2 beats Spec 004 probe; A1 ceiling 150M (trunk params, A7); A2 trunk `answerdotai/ModernBERT-base` | first artifact that may be called Hyperlexical |
 | T2 | generative LoRA | out of this implement cycle |
 
 ## Implement units (plan)

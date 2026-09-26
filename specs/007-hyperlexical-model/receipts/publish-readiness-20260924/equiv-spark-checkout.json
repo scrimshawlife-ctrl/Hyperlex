@@ -1,0 +1,28 @@
+{
+  "code_commit": null,
+  "code_dir": "/home/morpheus/Hyperlex/scripts/shadow/hyperlexical",
+  "code_tree_sha256": null,
+  "data_content_match_train_export": true,
+  "diff": {},
+  "equivalent": true,
+  "now": {
+    "classify_routing": "split_filter",
+    "data_content_sha256": "7246224c16295c9a02a17baf4883a2df73ab5c5bed60b5e480b54d4b20b3c70e",
+    "data_sha256": "b703fd144d79825cd69feb7b436e27264dccd0eb46672fadbb27c4e01ea7e438",
+    "live_included": 4258,
+    "n_train_classify": 4062,
+    "n_train_unbind": 15536,
+    "n_unbind_force_train": 193,
+    "n_unbind_force_train_keys": 236,
+    "n_unbind_hard_atoms_matched": 267,
+    "n_unbind_hard_extra_copies": 1317,
+    "n_unbind_inferred": 1939,
+    "n_unbind_morph_negatives": 325,
+    "n_unbind_observed": 1228,
+    "n_unbind_val_after_force_train": 164,
+    "train_export_content_sha256": "7246224c16295c9a02a17baf4883a2df73ab5c5bed60b5e480b54d4b20b3c70e"
+  },
+  "receipt": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph78/train-receipt.json",
+  "root": "/home/morpheus/Hyperlex",
+  "schema": "hyperlex.recipe_equivalence.v0.1"
+}

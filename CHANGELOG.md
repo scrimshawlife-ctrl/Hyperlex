@@ -2,6 +2,63 @@
 
 ## Unreleased
 
+- **Release-candidate tooling (Spec 007):** `release_set.py` (`HYPERLEX_RELEASE_SET=1`
+  drops CC BY-SA rows and same-text rows from train and every eval surface);
+  `HYPERLEX_EXPORT_DIR` keeps train runs from rewriting tracked exports;
+  `score_holdout.py` (scores once, verifies manifest hashes, copy/majority
+  baselines, val-fitted calibration); `launch_train.py` (canonical launcher,
+  refuses if busy / no ALLOW_TRAIN / receipt exists); `rc1-train-env.json`
+  (morph78 recipe, cold start, strict filler filter, release set).
+
+- **D1 / D5(a) / D8 / A7 (Spec 007):** `license_relabel.py` marks Wiktionary-
+  sourced rows `CC BY-SA 4.0`; `filler_filter.py` (`HYPERLEX_FILLER_FILTER`,
+  default `strict`) keeps handles, links, and wiki scraps out of the shipped
+  filler vocab; amendment A7 (A1 counts trunk parameters); receipts record the
+  filter. morph78 recipe pins `HYPERLEX_FILLER_FILTER=off` for reproduction.
+
+- **Publish readiness (Spec 007):** canonical soft_ceiling chain (`soft_ceiling.py`,
+  `val_settle.py`, `scripts/spark/soft_ceiling/`) with contamination-safe gate;
+  train receipts record code commit / tree hash / env; `HYPERLEX_TASK_ROUTING`
+  switch reproduces morph75–78 data prep exactly; order-stable export typology
+  (data_sha256 was hash-seed dependent); calibrated lineage (`infer --calibration`);
+  Hub remote-code loader. Results: `specs/007-hyperlexical-model/PUBLISH-READINESS-RESULTS-20260924.md`.
+
+- **Publish audit (Spec 007):** recommend keeping `seed-morph78` weights local-only.
+  Soft_ceiling broad val shares 193/256 rows with force-train; leak-free val
+  (n=63) ties morph78 and morph65 at 1.0. Training ran from an uncommitted Spark
+  checkout plus off-git scripts. See `specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`.
+
+- **Trained inference (Spec 007):** `hyperlexical.infer --model-dir` runs a local
+  checkpoint (lazy torch, local trunk, fail-closed exit 2) and emits a
+  `MODEL_EMBEDDING` inference packet; only the approved pin carries
+  `hyperlex-structure-149m`. Default CLI stays the offline stub.
+
+- **Card rename (Spec 007):** Hub card `hyperlex-structure-149m` for `seed-morph78`.
+  `name_gate.py` pins the approved checkpoint; `eval_unbind` sets `name_gate`
+  true only for a trunk-forward eval of that pin; eval schema field is boolean.
+  Training contract and HF dump writer unchanged (new checkpoints stay unnamed).
+
+- **`name_gate` yes (`seed-morph78`):** Danny `flip name_gate` — pin may be called
+  **Hyperlexical** (amendment A6; receipt `specs/007-hyperlexical-model/receipts/20260924-name-gate-yes-morph78.md`). Card IDs, packet/schema
+  field, Hub, and T13 unchanged.
+
+- **Naming persistence lock:** `docs/NAMING.md` + Notion Naming lock page +
+  Public Claims CLAIM-HLX-NAME-001/002/003. Operator Hub / Spine Owner /
+  Core Model Spine updated. Org mirror stays lag (do not train from it).
+  Does **not** flip Hyperlexical `name_gate`.
+
+- **Operator name ne0l0gist (ingest):** Danny `name neologist as in repo` —
+  public ingest product **`ne0l0gist`** (repo spelling). Receipt
+  `specs/007-hyperlexical-model/receipts/20260924-name-ne0l0gist-as-in-repo.md`.
+  Does **not** flip Hyperlexical `name_gate`.
+
+- **Hygiene + name-gate plan:** `pyproject.toml` version aligned to `VERSION`
+  **0.4.0**; ROADMAP trained-E2 line (no stale Spark-blocked checkbox); drop tracked
+  `__pycache__`, tip probe, `.tmp` restore junk. Draft
+  `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md` (morph77 HOLD
+  phrases already settled; morph78/reprobe empty; Danny yes still required).
+  Does not flip `name_gate`.
+
 - **Spec 007 tip CI: restore unbind force-train API:** `loop.py` imported
   `apply_unbind_force_train` but tip `unbind_recipe.py` lacked the helpers
   (`HYPERLEX_UNBIND_FORCE_TRAIN_PATH`, resolve/load/apply). Restored + tests

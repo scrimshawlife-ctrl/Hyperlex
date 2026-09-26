@@ -1,0 +1,47 @@
+{
+  "_publication": {
+    "source_file": "jev_sense_contract.json",
+    "source_sha256": "ab20da884e08ffb79feec8bc9b8ab213b450294434d6fb803a2db7043b10ca8c",
+    "note": "Published copy for documentation. Sanitized on 2026-09-25 PT: local file paths, cache paths, account names and people's names were removed or generalized; the question text, closed sets, thresholds and fail-closed rules are unchanged. This contract embeds NO real posts, X post text, author handles, term example posts, holdout ids or database contents: the {term}/{pid}/STATE fields are template placeholders filled at run time. The illustrative state under 'synthetic_example' (where present) is invented and clearly synthetic."
+  },
+  "contract_id": "vernacular-observation-sense",
+  "version": "rebuilt-sense-v1",
+  "provenance": "NEW 2026-09-25 10:53 PT (no original existed; rebuilt-series label for consistency). Per-post SLANG_SENSE vs OTHER_SENSE labels, used to compute sense_purity and to count evidence metrics on slang-sense posts only. General instructions; no term-specific hints.",
+  "approved_by": "operator, 2026-09-25 PT (standing Jev permission; feature approved 10:50 PT)",
+  "model": "jev-latest",
+  "batch_size": 25,
+  "max_post_chars": 280,
+  "min_top_probability": 0.5,
+  "closed_set": [
+    "SLANG_SENSE",
+    "OTHER_SENSE"
+  ],
+  "fail_closed_rules": [
+    "Call-level Jev error/timeout/not-real-typesafe: no rows written for that batch; the term's observations stay unlabeled and the export fails the term closed (note untouched).",
+    "Per post: answer missing, outside closed_set, or top probability < min_top_probability -> stored as UNKNOWN (excluded from slang-sense metrics; counted in sense_unknown_share)."
+  ],
+  "question_template": {
+    "type": "choice",
+    "instructions": "Post {pid} in STATE.posts: is the term '{term}' used there in its slang sense (the recorded slang meaning in STATE, or a close slang variant/extension of it), or is it an unrelated same-spelling use (a name, school, team, company, product, ticker/token symbol, technical or scientific term, the literal ordinary word, part of another word, or another language)? Mentioning, explaining or asking about the slang term counts as SLANG_SENSE. Judge only post {pid}.",
+    "criteria": {
+      "SLANG_SENSE": "uses, mentions or discusses the term in its slang sense",
+      "OTHER_SENSE": "unrelated same-spelling use (name, school, company, ticker, technical term, literal ordinary word, other language), not the slang sense"
+    }
+  },
+  "related": "rebuilt-sense-anchored-v1: same question, but for terms with an operator definition the definition is passed as the anchor sense and a slang sense not in the definition counts as OTHER_SENSE (labels keyed by definition sha256).",
+  "synthetic_example": {
+    "_synthetic": true,
+    "STATE": {
+      "term": "zorblet",
+      "meaning": "SYNTHETIC: impressive",
+      "posts": {
+        "p1": "SYNTHETIC: that fit is zorblet",
+        "p2": "SYNTHETIC: Zorblet Inc. reports Q3 earnings"
+      }
+    },
+    "expected_labels": {
+      "p1": "SLANG_SENSE",
+      "p2": "OTHER_SENSE"
+    }
+  }
+}

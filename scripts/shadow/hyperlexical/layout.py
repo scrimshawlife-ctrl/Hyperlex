@@ -24,6 +24,7 @@ FAMILIES = (
 )
 
 UNK = "<unk>"
+VOCAB_TRAIN_ONLY_ENV = "HLX_VOCAB_TRAIN_ONLY"
 
 
 def _last_trainable_cap(layer_count: int | None) -> int:
@@ -52,9 +53,22 @@ def resolve_last_trainable(
     return min(n, cap)
 
 
-def label_maps(unbind_rows: list[dict]) -> dict:
+def resolve_vocab_train_only(raw: str | None = None) -> bool:
+    """Filler vocab from train rows only. Default off: train+val, same map as before."""
+    if raw is None:
+        raw = os.environ.get(VOCAB_TRAIN_ONLY_ENV)
+    return raw == "1"
+
+
+def label_maps(unbind_rows: list[dict], *, filler_rows: list[dict] | None = None) -> dict:
+    """Role vocab from ``unbind_rows``. Fillers from ``filler_rows`` or those same rows.
+
+    ``filler_rows is None`` is the historical map (one row list supplies both).
+    An empty list is a real filler source and yields ``["<unk>"]`` only.
+    """
     roles = sorted({r for row in unbind_rows for r in (row.get("roles") or [])})
-    fillers = sorted({f for row in unbind_rows for f in (row.get("fillers") or [])})
+    filler_source = unbind_rows if filler_rows is None else filler_rows
+    fillers = sorted({f for row in filler_source for f in (row.get("fillers") or [])})
     role_vocab = [UNK] + roles
     filler_vocab = [UNK] + fillers
     return {
@@ -65,6 +79,25 @@ def label_maps(unbind_rows: list[dict]) -> dict:
         "role_of": {r: i for i, r in enumerate(role_vocab)},
         "filler_of": {f: i for i, f in enumerate(filler_vocab)},
     }
+
+
+def label_maps_for_splits(
+    train_rows: list[dict],
+    val_rows: list[dict],
+    *,
+    train_only: bool | None = None,
+) -> dict:
+    """Train+val label maps. ``HLX_VOCAB_TRAIN_ONLY=1`` limits fillers to train.
+
+    Roles stay on train+val in both modes. With the flag off this is
+    ``label_maps(train + val)``.
+    """
+    combined = list(train_rows) + list(val_rows)
+    if train_only is None:
+        train_only = resolve_vocab_train_only()
+    if train_only:
+        return label_maps(combined, filler_rows=list(train_rows))
+    return label_maps(combined)
 
 
 def describe(maps: dict) -> dict:

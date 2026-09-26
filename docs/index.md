@@ -20,7 +20,7 @@ The Hermes skill is the <em>current operator surface</em>. Spec 007 is the
 <em>model path</em> (T0, then T1 after E2) — still SHADOW, not named Hyperlexical.
 Repo <strong>Hyperlex</strong> is the transitional monorepo shell. Public products:
 <strong>Hyperlexical</strong> (model / train / eval) and <strong>ne0l0gist</strong> (slang ingest).
-<code>name_gate</code> stays false.
+<code>name_gate</code> is true for pin <code>seed-morph78</code> (2026-09-24).
 </p>
 
 ## Skill now, model next
@@ -29,10 +29,10 @@ Repo <strong>Hyperlex</strong> is the transitional monorepo shell. Public produc
 |-------|--------|
 | **Hermes skill** | Shipping v0.4.0 — ingest, 8-family lineage, receipts, settle → Brier |
 | **T0 encoder** | Specified baseline (`hyperlex-encoder-*`). Not a Hyperlexical name. |
-| **T1 encoder** | Allowed to take the Hyperlexical name **only after E2** on Spark. Not there. |
-| **`name_gate` / Hub** | **false** / not published |
+| **T1 encoder** | Hyperlexical name needs trained E2 **and** Danny's `name_gate` yes. Both met for `seed-morph78` (2026-09-24) — **named Hyperlexical**. |
+| **`name_gate` / Hub** | **true** (`seed-morph78`) / not published |
 
-Classify volume is ready. E2 is Spark-blocked. [SHADOW encoder (007)](shadow-hyperlexical.md) · [Status](status.md).
+Classify volume is ready. Spark BEST `seed-morph78` passes trained E2; the name is still gated. [SHADOW encoder (007)](shadow-hyperlexical.md) · [Status](status.md).
 
 ## What happens on a run
 
@@ -47,7 +47,7 @@ flowchart LR
   B -.-> H[007 model path]
 ```
 
-Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5). Spec 007 is **SHADOW / advisory**: classify volume is ready; `name_gate` is false; E2 is Spark-blocked. Do not call the encoder Hyperlexical.
+Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [glossary](start/glossary.md#phase-5). Spec 007 is **SHADOW / advisory**: classify volume is ready; trained E2 passed on `seed-morph78` and Danny approved the name, so that pin is **Hyperlexical**. No other checkpoint is.
 
 | Stage | What you get |
 |-------|----------------|
@@ -56,7 +56,7 @@ Phase 5 is optional and always **SPECULATIVE** with `brier: null` — see [gloss
 | **Forecasts** | Open probabilities waiting for settlement |
 | **Settle → score** | Real Brier only after operator outcome |
 | **Phase 5** | Speculative sims — never Brier |
-| **007 model path** | SHADOW T0→T1 — `name_gate` false; not named Hyperlexical |
+| **007 model path** | SHADOW T0→T1 — `seed-morph78` named Hyperlexical; no Hub |
 
 ## Start here — three actions
 
@@ -135,7 +135,7 @@ Golden receipts, archive snapshots, featured example.
 
 - **No fabricated Brier** — open analysis always has `brier: null`.
 - **Phase 5 is SPECULATIVE** — research tooling, not measurement.
-- **Spec 007 is the model path, still SHADOW** — T0 then T1 after E2; `name_gate` false; no Hub.
+- **Spec 007 is the model path, still SHADOW** — T0 then T1 after E2; `name_gate` true for `seed-morph78`; no Hub.
 - **No Abraxas hard import** — hosts may import Hyperlex; not the reverse.
 - **Local-first** — durable state in `~/.hyperlex/`; Pages is static history.
 

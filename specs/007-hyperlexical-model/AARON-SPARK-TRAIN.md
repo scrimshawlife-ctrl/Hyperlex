@@ -6,7 +6,7 @@ Owner of this run: Aaron on the DGX Spark.
 Owner of the spec: Danny.  
 Use current **`main`**. Do not use the old `007-hyperlexical-model` branch.
 
-This is a **seed smoke** for harness wiring, not a Hyperlexical card. E2 has not passed. Name-gate is false. Do not upload to Hugging Face. Do not say the model is Hyperlexical.
+This is a **seed smoke** for harness wiring, not a Hyperlexical card. A seed smoke is not an E2 result (trained E2 PASS lives on the climb BEST — see `STATUS.md`). A seed smoke is never Hyperlexical — `name_gate` yes covers pin `seed-morph78` only. Do not upload to Hugging Face.
 
 **Train data:** T1 / E2 work uses the **local SoT** (`~/.hyperlex/hyperlexical/ingest_candidates.jsonl`). Export it with `PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live`. Train the same rows with an explicit opt-in — default remains the tracked/seed export (smoke-safe):
 

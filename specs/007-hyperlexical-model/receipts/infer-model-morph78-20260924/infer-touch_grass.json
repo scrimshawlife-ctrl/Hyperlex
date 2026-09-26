@@ -1,0 +1,43 @@
+{
+  "auto_fire": false,
+  "brier": null,
+  "class": "INFERRED",
+  "embed_mode": "MODEL_EMBEDDING",
+  "forecast_eligible": false,
+  "input_hash": "fc403ee9d4d380573defc9817ebf7e312fe278bc1c127ab7ad1ab62afa945212",
+  "lineage_confidence": 0.9783,
+  "lineage_family": "gaming-meta",
+  "model_id": "hyperlex-structure-149m",
+  "model_version": "seed-morph78",
+  "param_count": 150546889,
+  "payload_ref": null,
+  "restricted_intent_suspected": false,
+  "role_scheme": "positional",
+  "routes_claimed": [
+    "form",
+    "lexical"
+  ],
+  "schema": "hyperlex.hyperlexical.inference.v0.1",
+  "selection_proxy": "unspecified",
+  "stage": null,
+  "surface": "touch grass",
+  "typology": [],
+  "unbind": {
+    "atoms": [
+      {
+        "filler": "touch",
+        "filler_pred": "touch",
+        "role": "pos_0",
+        "role_pred": "pos_0"
+      },
+      {
+        "filler": "grass",
+        "filler_pred": "grass",
+        "role": "pos_1",
+        "role_pred": "pos_1"
+      }
+    ]
+  },
+  "unbind_ok": true,
+  "vector_hash": "88ed068b3c8e4a62e5fe4fd1e473f260fe94c24a56402cb3a382574fe8e939ae"
+}

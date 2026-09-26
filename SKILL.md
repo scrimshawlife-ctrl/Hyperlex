@@ -53,7 +53,7 @@ See out/batch_moltbook_memetics.json and out/arxiv_moltbook_cross.json for examp
 
 ## Hyperlexical Model (007 / U2) Integration
 
-**Naming:** train / eval = **Hyperlexical**. Live harvest / `ingest_tap` = **ne0l0gist**. Repo **Hyperlex** is the transitional shell. `name_gate` stays false.
+**Naming:** train / eval = **Hyperlexical**. Live harvest / `ingest_tap` = **ne0l0gist**. Repo **Hyperlex** is the transitional shell. `name_gate` is true for pin `seed-morph78` only (2026-09-24).
 
 - Train SoT is **local-only**: `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` (4333 rows as of 2026-09-10 PT evening). Tracked `exports/civilian.v0.1.jsonl` is an 883-row seed, not the SoT.
 - Operator `--include-live`: n=6506 · classify family **2437** · `name_gate` false. See `STATUS.md`.
@@ -87,7 +87,7 @@ PYTHONPATH=scripts/shadow python3 -m hyperlexical.export --include-live
 
 `--source firecrawl` aliases to Crawl4AI (0.9.3 default). No paid Firecrawl without Danny yes.
 
-Honesty: INFERRED until operator settle. No auto-OBSERVED. `name_gate` false until Spark E2. **8** families only. Tracked `exports/civilian.v0.1.jsonl` is a seed, not the SoT.
+Honesty: INFERRED until operator settle. No auto-OBSERVED. `name_gate` true only for `seed-morph78` (Spark E2 + Danny yes). **8** families only. Tracked `exports/civilian.v0.1.jsonl` is a seed, not the SoT.
 
 Gates: `STATUS.md`. Train: `specs/007-hyperlexical-model/AARON-SPARK-TRAIN.md`.
 

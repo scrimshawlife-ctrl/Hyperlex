@@ -179,11 +179,17 @@ def _offsets(tok, text: str):
         return None
 
 
-def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> dict:
-    """Same per-row exact filler metric as train val, plus token/slot F1."""
+def _predict_unbind_pair_views(
+    encoder, filler_head, tok, maps, rows, device
+) -> tuple[list[tuple[list[str], list[str]]], list[tuple[list[str], list[str]]]]:
+    """Legacy ``(mapped gold, pred)`` and strict ``(raw lowercased gold, pred)``.
+
+    Same forward as train val. Empty gold rows are skipped. Inference only.
+    """
     encoder.eval()
     filler_head.eval()
-    pairs: list[tuple[list[str], list[str]]] = []
+    legacy: list[tuple[list[str], list[str]]] = []
+    strict: list[tuple[list[str], list[str]]] = []
     for row in rows:
         fillers = list(row.get("fillers") or [])
         if not fillers:
@@ -199,14 +205,36 @@ def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> dict:
         states = encoder(**enc).last_hidden_state[0]
         offs = _offsets(tok, row["text"])
         gold_strs: list[str] = []
+        raw_strs: list[str] = []
         pred_strs: list[str] = []
         for fill in fillers:
             idxs = pool_indices(states.size(0), atom_token_index(row["text"], fill, offs))
             pred = int(filler_head(states[idxs].mean(0)).argmax())
             gold_strs.append(mapped_filler(maps, fill))
+            raw_strs.append(str(fill).lower())
             pred_strs.append(mapped_pred(maps, pred))
-        pairs.append((gold_strs, pred_strs))
-    return summarize_unbind_pairs(pairs)
+        legacy.append((gold_strs, pred_strs))
+        strict.append((raw_strs, pred_strs))
+    return legacy, strict
+
+
+def predict_unbind_pairs(encoder, filler_head, tok, maps, rows, device) -> list[tuple[list[str], list[str]]]:
+    """Per-row ``(mapped gold, pred)`` filler strings. Skips empty gold.
+
+    Same alignment as train val / ``score_unbind_exact``. Inference only.
+    """
+    legacy, _strict = _predict_unbind_pair_views(encoder, filler_head, tok, maps, rows, device)
+    return legacy
+
+
+def score_unbind_exact(encoder, filler_head, tok, maps, rows, device) -> dict:
+    """Same per-row exact filler metric as train val, plus token/slot F1.
+
+    Legacy keys use mapped gold. Strict keys use the raw lowercased filler
+    and count a ``<unk>`` prediction as a miss.
+    """
+    legacy, strict = _predict_unbind_pair_views(encoder, filler_head, tok, maps, rows, device)
+    return summarize_unbind_pairs(legacy, strict_pairs=strict)
 
 
 def run_unbind_exact(
