@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .align import atom_token_index, offsets_from_tokenizer, pool_indices
 from .export import export_dataset, repo_root, write_export
+from .train_input import load_training_bundle, peek_train_input_mode, train_input_receipt
 from .classify_metrics import (
     NONE_LABEL,
     SELECT_METRIC_CLASSIFY,
@@ -482,9 +483,17 @@ def run_loop(
     include_live: bool = False,
     live_store: Path | None = None,
 ) -> dict:
+    # Controlled experiments must bind a pinned export before any rebuild.
+    peek_train_input_mode()
     holdout_spec = require_holdout_for_training()
     root = repo_root()
-    bundle = export_dataset(root, include_live=include_live, live_store=live_store)
+    bundle = load_training_bundle(
+        root,
+        include_live=include_live,
+        live_store=live_store,
+        export_dataset=export_dataset,
+    )
+    input_receipt = train_input_receipt(bundle)
     release_rows_, release_stats = maybe_release(bundle["rows"])
     if release_stats["release_set"]:
         bundle = {**bundle, "rows": release_rows_}
@@ -986,7 +995,13 @@ def run_loop(
         "epoch_metrics": epoch_metrics,
         "weight_file": weight_file,
         "aligner": "char_span + offset_mapping",
-        "data_sha256": bundle["sha256"],
+        "data_sha256": input_receipt["data_sha256"],
+        "training_input_mode": input_receipt["training_input_mode"],
+        "training_export_path": input_receipt["training_export_path"],
+        "training_export_sha256_expected": input_receipt["training_export_sha256_expected"],
+        "training_export_sha256_actual": input_receipt["training_export_sha256_actual"],
+        "training_export_rows": input_receipt["training_export_rows"],
+        "live_export_generation_enabled": input_receipt["live_export_generation_enabled"],
         "holdout": holdout_receipt(holdout_spec, holdout_removed),
         "classify_admission": classify_admission_receipt,
         "include_live": include_live,

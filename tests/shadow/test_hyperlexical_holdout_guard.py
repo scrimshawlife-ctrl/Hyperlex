@@ -37,6 +37,9 @@ def _clear_holdout_env(monkeypatch):
         "HLX_HOLDOUT_MANIFESTS",
         "HLX_ALLOW_NO_HOLDOUT",
         "HLX_EXPERIMENT_ID",
+        "HLX_TRAIN_EXPORT_PATH",
+        "HLX_TRAIN_EXPORT_SHA256",
+        "HLX_TRAIN_EXPORT_ROWS",
         "HYPERLEX_ALLOW_TRAIN",
         "HYPERLEX_RELEASE_SET",
         "HYPERLEX_TASK_ROUTING",
@@ -294,9 +297,14 @@ def test_cli_manifest_and_run_loop_log(monkeypatch, tmp_path, capsys):
     monkeypatch.setenv("HYPERLEX_TRUNK_DIR", str(tmp_path))
     monkeypatch.setenv("HYPERLEX_EXPORT_DIR", str(tmp_path / "export"))
     (tmp_path / "config.json").write_text("{}\n", encoding="utf-8")
+    pinned = tmp_path / "pinned.jsonl"
+    payload = "".join(json.dumps(row, sort_keys=True) + "\n" for row in (classify, unbind))
+    pinned.write_text(payload, encoding="utf-8")
+    monkeypatch.setenv("HLX_TRAIN_EXPORT_PATH", str(pinned))
+    monkeypatch.setenv("HLX_TRAIN_EXPORT_SHA256", hashlib.sha256(pinned.read_bytes()).hexdigest())
 
     def _export(*_args, **_kwargs):
-        return {"rows": [classify, unbind], "sha256": "abc", "counts": {}}
+        raise AssertionError("export_dataset must not run for a pinned experiment")
 
     monkeypatch.setattr("hyperlexical.loop.export_dataset", _export)
     monkeypatch.setattr("hyperlexical.loop.write_export", lambda *_a, **_k: None)
