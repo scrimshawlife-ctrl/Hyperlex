@@ -421,6 +421,8 @@ def test_cli_blank_sheet_writes_zero_receipt_without_a_ledger(tmp_path):
             str(log),
             "--settled-at",
             "2026-09-26T16:00:00Z",
+            "--stream-run-id",
+            "hs-unit",
         ]
     )
     assert code == 0
@@ -430,12 +432,18 @@ def test_cli_blank_sheet_writes_zero_receipt_without_a_ledger(tmp_path):
     assert body["vendor_calls"] == 0
     assert body["ledger_mutated"] is False
     assert body["evaluation_enabled"] is False
+    assert body["stream_run_id"] == "hs-unit"
+    assert body["settled_at"] == "2026-09-26T16:00:00Z"
+    assert body["input_sheets"][0]["identity"] == "holding.tsv"
+    assert len(body["input_sheets"][0]["sha256"]) == 64
+    assert body["unset_row_count"] == 1
+    assert body["unresolved_row_count"] == 0
     assert log.read_text(encoding="utf-8") == ""
     assert not (tmp_path / "ledger.json").exists()
     assert "phrase cli" not in receipt.read_text(encoding="utf-8")
 
 
-def test_private_lane_sheets_are_blank_when_present():
+def test_private_lane_sheets_parse_without_rewriting():
     root = Path.home() / "hlx-private" / "heldout-stream"
     stream_path = root / "store" / "rows.jsonl"
     attest = root / "attest"
@@ -462,7 +470,6 @@ def test_private_lane_sheets_are_blank_when_present():
             provenance="blank-sheet validation",
             settled_at="2026-09-26T16:00:00Z",
         )
-        assert parsed["records"] == []
-        assert parsed["unset_row_count"] == expected[lane]
+        assert parsed["unset_row_count"] + len(parsed["records"]) == expected[lane]
         assert parsed["lane_rows"] == {lane: expected[lane]}
         assert path.read_bytes() == before

@@ -802,6 +802,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     settle.add_argument("--receipt", required=True)
     settle.add_argument("--settlement-log", required=True)
     settle.add_argument("--settled-at", required=True)
+    settle.add_argument("--stream-run-id", default="")
     settle.add_argument("--activated-family", action="append", default=[])
     args = parser.parse_args(list(argv) if argv is not None else None)
     if args.cmd == "settlement-apply":

@@ -147,3 +147,24 @@ Evaluation settlement is a separate command, `python -m hyperlexical.identity_le
 `settlement-apply` reads completed operator cells. It does not fill them. `source_hint`, `semantic_family`, and `attest` are separate fields. `ACCEPT` stores the attest the operator entered and does not promote existing evidence to `OBSERVED`. `RECLASSIFY` requires an explicit family that differs from the proposed evidence. `NONE` stores `semantic_family=none` and is not `reject`. `UNRESOLVED` stores null family and null attest. A second decision for the same row is refused. The log and the receipt are append-only and contain no row text.
 
 `taxonomy.active`, `evaluation.enabled`, and `production.enabled` are three flags. The eighteen families stay taxonomy-active only. Both enable flags stay false. `layout.FAMILIES` is unchanged. Lanes A–D and the hint-only holding sheet were validated with every decision cell empty (204 / 65 / 21 / 16 / 33). Rows settled: 0. Unresolved decisions: 0. Reserve added: 0. Vendor calls: 0. The identity ledger was not mutated. SELECT-003 stays undrafted.
+
+
+## Operator settlement HLX-EVAL-SETTLE-2026-09-26-002
+
+The five private sheets for stream `hs-20260925T211358Z` were filled with an explicit decision on every row, then applied with `python -m hyperlexical.identity_ledger settlement-apply`. Production `attest-apply` was not run. `layout.FAMILIES` was not edited. No row text is in this file.
+
+Blank and `UNRESOLVED` stay distinct. Blank means the operator has not reviewed the row. `UNRESOLVED` means the operator reviewed the row and declined to settle it. This pass left blank at 0 and `UNRESOLVED` at 84.
+
+Counts: settled 255 (`ACCEPT` 204, `RECLASSIFY` 32, `NONE` 19), `UNRESOLVED` 84, blank 0. `OBSERVED` 128. `INFERRED` 127. Rights-blocked settled 14. Those 14 stay out of `EVAL_RESERVE`. Rights status was not changed by the semantic decision.
+
+`OBSERVED` was used only when a stored gloss or the row text directly states the settled family, the atom is slangish or multiword jargon, and the primary stored sense is that family. A category, a topic, or `source_hint` did not set family or attest. Accepting a family did not promote an existing `INFERRED` label. Encyclopedic `none` rows stayed `INFERRED`.
+
+Settled support by unique canonical text, including zeros: gaming-meta 60 (OBSERVED 38, INFERRED 22, cleared 60, blocked 0); betting-sharp 58 (41, 17, 53, 5); crypto-degen 4 (3, 1, 3, 1); internet-slang 19 (10, 9, 19, 0); memetic 3 (0, 3, 2, 1); social-status 6 (3, 3, 6, 0); relationship-dating 0; approval-disapproval 1 (0, 1, 1, 0); conflict-aggression 0; technology-ai 4 (1, 3, 4, 0); workplace-career 10 (9, 1, 10, 0); sports-competition 1 (0, 1, 0, 1); music-entertainment 1 (0, 1, 1, 0); fashion-aesthetic 0; regional-cultural 0; spiritual-mystic 0; identity-affiliation 16 (13, 3, 16, 0); politics-civic 13 (10, 3, 13, 0); none 59 (0, 59, 53, 6).
+
+Rights-cleared settled non-none identities: 188. Quantitative support thresholds are `NOT_COMPUTABLE`, so no `UNREPRESENTED` / `LOW_SUPPORT` / `REPRESENTED` flag is assigned. `OBSERVED` total 128, all non-none; `OBSERVED` none is 0.
+
+One workplace-lane row describes retail product reformulation and price-tier inflation. `finance-retail` remains a candidate and was not activated. That row is `UNRESOLVED`.
+
+Admission used `identity_ledger admit` under `hyperlex.eval_reserve.v1`, batch `HLX-EVAL-ADMIT-2026-09-26-002`. Admitted to `EVAL_RESERVE`: 241. Rejected existing identities: 0. Slice counts after admission: classify 241, classify_observed 123, classify_non_none 188, unbind_clean 0. `clean_unbind_support` is 0. This stream has no unbind target and none was fabricated. SELECT-003 was not drafted. The gate reports `eligible: false` because `unbind_clean` is unrepresented. Reserve identities are text-disjoint from the pinned train export.
+
+Receipt `HLX-EVAL-SETTLE-2026-09-26-002` sha256 `1b0fb54a5de0fb708f74ad278037458c15e0abea5a7eb6b4b151b7e7fb34567e`. `settlement-apply` still records `reserve_added: 0`; admission is the separate ledger command. Vendor calls: 0. BEST was not moved. Do not train.

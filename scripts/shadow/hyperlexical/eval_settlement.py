@@ -587,6 +587,9 @@ def build_receipt(
     provenance: str,
     unset_row_count: int,
     lane_rows: Mapping[str, int],
+    stream_run_id: str = "",
+    settled_at: str = "",
+    input_sheets: Sequence[Mapping[str, str]] | None = None,
 ) -> dict[str, Any]:
     if not str(batch_id or "").strip():
         refuse("batch_id is required")
@@ -616,6 +619,21 @@ def build_receipt(
         "evaluation_enabled": False,
         "lane_rows": dict(lane_rows),
     }
+    run_id = str(stream_run_id or "").strip()
+    if run_id:
+        body["stream_run_id"] = run_id
+    stamp = str(settled_at or "").strip()
+    if stamp:
+        body["settled_at"] = stamp
+    if input_sheets:
+        sheets = []
+        for item in input_sheets:
+            identity = str(item.get("identity") or "").strip()
+            digest = str(item.get("sha256") or "").strip()
+            if not identity or len(digest) != 64:
+                refuse("input sheet identity is incomplete")
+            sheets.append({"identity": identity, "sha256": digest})
+        body["input_sheets"] = sheets
     _walk_forbid(body)
     return seal_receipt(body)
 
@@ -800,6 +818,12 @@ def run_settlement_apply(args: Any) -> int:
                 refuse(f"duplicate settlement for {record['row_id']}")
             decided.add(record["row_id"])
             records.append(record)
+    sheet_identities = []
+    for sheet in sheets:
+        raw = Path(sheet).read_bytes()
+        sheet_identities.append(
+            {"identity": Path(sheet).name, "sha256": hashlib.sha256(raw).hexdigest()}
+        )
     receipt = build_receipt(
         records,
         batch_id=args.batch_id,
@@ -807,6 +831,9 @@ def run_settlement_apply(args: Any) -> int:
         provenance=args.provenance,
         unset_row_count=unset,
         lane_rows=lane_rows,
+        stream_run_id=str(getattr(args, "stream_run_id", "") or ""),
+        settled_at=str(args.settled_at or ""),
+        input_sheets=sheet_identities,
     )
     sealed = commit_settlement(
         records,

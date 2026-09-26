@@ -352,3 +352,10 @@ The operator sheets stay the interface: lane A CONFIRM, lane B PROPOSED FAMILY, 
 The apply command is `python -m hyperlexical.identity_ledger settlement-apply`. It does not call production `attest-apply` and does not change that command. `ACCEPT` means the operator-entered settlement, including an explicit `attest` of `INFERRED` or `OBSERVED`. `NONE` writes `semantic_family=none`. `UNRESOLVED` stays null and cannot enter `EVAL_RESERVE`. A row with `RIGHTS_UNRESOLVED` cannot enter `EVAL_RESERVE` even when the family and attest are filled. `source_hint` is not copied into `semantic_family`.
 
 `taxonomy.active`, `evaluation.enabled`, and `production.enabled` are independent. The eighteen families are `taxonomy.active=true`, `evaluation.enabled=false`, `production.enabled=false`. Candidate names stay inactive unless a later activation names them. `layout.FAMILIES` is unchanged. No row was settled. `EVAL_RESERVE` stays 0. Vendor calls: 0. SELECT-003 was not drafted.
+
+
+## Row settlement — 2026-09-26
+
+Stream `hs-20260925T211358Z` was settled through `identity_ledger settlement-apply`, not `attest-apply`. Every row has an explicit decision. Blank is 0. `UNRESOLVED` is 84. Settled is 255 (`ACCEPT` 204, `RECLASSIFY` 32, `NONE` 19). `OBSERVED` 128 and `INFERRED` 127 are separate from the decision. `source_hint` was not copied into `semantic_family`.
+
+The eighteen families were not expanded. One economics row was left `UNRESOLVED` because the fitting region is the inactive candidate `finance-retail`. `brainrot-aura` was not added. `evaluation.enabled` stays false. Rights-blocked rows can carry a semantic decision and still cannot enter `EVAL_RESERVE`. Vendor calls: 0. SELECT-003 was not drafted. Do not train.
