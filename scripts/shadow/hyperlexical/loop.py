@@ -43,6 +43,11 @@ from .holdout_guard import (
     log_holdout,
     require_holdout_for_training,
 )
+from .identity_ledger import (
+    RESERVE_LEDGER_ENV,
+    IdentityLedger,
+    assert_training_disjoint_from_reserve,
+)
 from .provenance import provenance
 from .release_set import maybe_release
 from .save_pretrained import (
@@ -499,6 +504,12 @@ def run_loop(
     disjoint_receipt = None
     if os.environ.get(EXPERIMENT_ID_ENV, "").strip():
         disjoint_receipt = assert_pinned_holdout_disjoint(bundle["rows"], holdout_spec)
+    reserve_receipt = None
+    reserve_ledger = os.environ.get(RESERVE_LEDGER_ENV, "").strip()
+    if reserve_ledger:
+        reserve_receipt = assert_training_disjoint_from_reserve(
+            bundle["rows"], IdentityLedger.load(reserve_ledger)
+        )
     release_rows_, release_stats = maybe_release(bundle["rows"])
     if release_stats["release_set"]:
         bundle = {**bundle, "rows": release_rows_}
@@ -1018,6 +1029,8 @@ def run_loop(
         "forecast_eligible": False,
         "note": "HF-shaped dump. Not Hyperlexical until E2.",
     }
+    if reserve_receipt is not None:
+        receipt["eval_reserve_disjoint"] = reserve_receipt
     if classify_split_receipt is not None:
         receipt["classify_split"] = classify_split_receipt
     if seed_receipt is not None:

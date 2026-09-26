@@ -53,3 +53,8 @@ Any held-out manifest must be frozen and its sha256 recorded before any weights 
 - Box: DGX Spark per `hardware.md`.
 - Train only after name-gate true on `milestones.md`.
 - E2 vs 004 probe is the T1 *artifact* name gate, separate from the dataset name-gate.
+
+## Evaluation reserve (2026-09-26)
+
+The live evaluation universe is exhausted. Doctrine, the text-identity ledger, and the admission command are `evaluation-reserve.md`. Contamination identity is `normalized_text_sha256`, not row id. SELECT-001 and SELECT-002 holdouts are `UNSCORED_ABANDONED` and are not reopened. No statistical holdout minimum is declared. The SELECT-002 shape (606 / 287 / 604 / 250) is a planning target only. Do not train on `EVAL_RESERVE`.
+
