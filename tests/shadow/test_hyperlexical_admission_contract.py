@@ -14,6 +14,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from admission_fixtures import arm_controlled, classify_row, sha256_bytes  # noqa: E402
 from hyperlexical.admission import (  # noqa: E402
+    LAUNCH_OVERLAY_KEYS,
+    METADATA_KEYS,
     AdmissionError,
     admit_training_run,
     schedule_bundle,
@@ -168,6 +170,13 @@ def _spend(ledger: IdentityLedger, digest: str) -> None:
     ledger.transition(digest, "EVAL_SPENT", source_artifact="fixture", provenance="spend")
 
 
+def _raw_scientific_diff(baseline: dict, candidate: dict) -> list[str]:
+    """Main's single-variable diff: one key per sealed field, metadata excluded."""
+    skip = set(METADATA_KEYS) | set(LAUNCH_OVERLAY_KEYS)
+    keys = (set(baseline) | set(candidate)) - skip
+    return sorted(key for key in keys if baseline.get(key) != candidate.get(key))
+
+
 def test_schedule_tokens_match_the_trainer():
     from hyperlexical.admission import _SCHEDULE_OFF, _SCHEDULE_ON
 
@@ -181,6 +190,14 @@ def test_select005_schedule_bundle_is_one_variable(monkeypatch, tmp_path):
     base = json.loads((tmp_path / "baseline-env.json").read_text(encoding="utf-8"))
     cand = json.loads((tmp_path / "candidate-env.json").read_text(encoding="utf-8"))
     assert schedule_bundle(base) != schedule_bundle(cand)
+    assert _raw_scientific_diff(base, cand) == [
+        "HYPERLEX_EARLY_STOP",
+        "HYPERLEX_EARLY_STOP_MIN_EPOCHS",
+        "HYPERLEX_EARLY_STOP_PATIENCE",
+        "HYPERLEX_TRAIN_EPOCHS",
+    ]
+    assert "HYPERLEX_EARLY_STOP_PATIENCE" not in base
+    assert "HYPERLEX_EARLY_STOP_MIN_EPOCHS" not in base
     result = _admit()
     assert result.admission_result == "ADMISSION_PASS"
     assert result.status == "PREREGISTERED"
