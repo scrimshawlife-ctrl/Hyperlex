@@ -359,24 +359,24 @@ def test_historical_spent_identity_is_not_the_controlled_reserve(monkeypatch, tm
 
 
 def test_reserve_identity_that_left_eval_reserve_rejects_both(monkeypatch, tmp_path, capsys):
-    from hyperlexical.identity_ledger import IdentityLedger, derived_state
+    from hyperlexical.identity_ledger import IdentityLedger, derived_state, slices_of
 
     armed = arm_controlled(monkeypatch, tmp_path, [classify_row("train row")])
     ledger = IdentityLedger.load(armed["reserve"]["ledger"])
-    reserved = [
+    classify = [
         digest
         for digest, record in ledger.identities.items()
-        if derived_state(record) == "EVAL_RESERVE"
+        if derived_state(record) == "EVAL_RESERVE" and "classify" in slices_of(record)
     ]
     ledger.transition(
-        reserved[0],
+        classify[0],
         "EVAL_BOUND",
         source_artifact="fixture",
         provenance="fixture",
     )
     _rebind_ledger(monkeypatch, tmp_path, armed, ledger)
     pre = _assert_same_failure(monkeypatch, capsys)
-    assert "EVAL_BOUND" in pre["error"]
+    assert "reserve slice classify is absent" in pre["error"]
     assert pre["failed_gate"] == "holdout_reserve"
 
 

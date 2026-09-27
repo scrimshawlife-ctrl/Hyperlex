@@ -32,6 +32,7 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
+from .classify_metrics import SELECT_METRIC_CLASSIFY
 from .export import repo_root
 from .holdout_guard import (
     HoldoutSpec,
@@ -65,6 +66,19 @@ BEST_WEIGHTS_ENV = "HLX_BEST_WEIGHTS"
 TRUNK_SHA_ENV = "HLX_TRUNK_SHA256"
 TRAIN_OUT_ENV = "HYPERLEX_TRAIN_OUT"
 SELECT_METRIC_KEY = "HLX_SELECT_METRIC"
+SCIENTIFIC_VARIABLE_KEY = "HLX_SCIENTIFIC_VARIABLE"
+DECLARED_SELECT_METRIC = SELECT_METRIC_KEY
+DECLARED_TRAIN_SCHEDULE = "train_schedule"
+# The only composite. These four trainer fields are one variable, not a
+# caller-supplied grouping of arbitrary keys.
+SCHEDULE_BUNDLE_KEYS = (
+    "HYPERLEX_TRAIN_EPOCHS",
+    "HYPERLEX_EARLY_STOP",
+    "HYPERLEX_EARLY_STOP_PATIENCE",
+    "HYPERLEX_EARLY_STOP_MIN_EPOCHS",
+)
+_SCHEDULE_OFF = frozenset({"0", "false", "no", "off"})
+_SCHEDULE_ON = frozenset({"1", "true", "yes", "on"})
 THRESHOLD_AUTHORIZATION_ENV = "HLX_THRESHOLD_AUTHORIZATION"
 THRESHOLD_SCHEMA = "hyperlex.threshold_authorization.v1"
 THRESHOLDS_BLOCKED = "BLOCKED_PENDING_OPERATOR_AUTHORIZATION"
@@ -115,6 +129,7 @@ METADATA_KEYS = frozenset(
         "HLX_RESERVE_BINDING",
         "HLX_BASELINE_ENV",
         "HLX_CANDIDATE_ENV",
+        SCIENTIFIC_VARIABLE_KEY,
     }
 )
 LAUNCH_OVERLAY_KEYS = frozenset({"HYPERLEX_ALLOW_TRAIN", ADMISSION_ONLY_ENV})
@@ -520,7 +535,22 @@ def _gate_reserve(ctx: _Context) -> tuple[IdentityLedger, dict[str, Any]]:
             "ADMISSION FAIL: reserve ledger events sha256 does not match the binding",
         )
     ledger = IdentityLedger.load(ledger_dir)
-    counts = ledger.reserve_counts()
+    # Digest above covers the full append-only log. Counts below use only the
+    # active reserve for this experiment.
+    active = ledger.active_reserve_records(ctx.experiment_id)
+    counts = ledger.active_reserve_counts(ctx.experiment_id)
+    if not active:
+        foreign = [
+            record
+            for record in ledger.identities.values()
+            if derived_state(record) == "EVAL_RESERVE"
+        ]
+        if foreign:
+            ctx.fail(
+                "holdout_reserve",
+                "ADMISSION FAIL: active reserve is bound to another experiment",
+            )
+        ctx.fail("holdout_reserve", "ADMISSION FAIL: missing active reserve")
     expected_counts = binding.get("counts")
     if not isinstance(expected_counts, dict):
         ctx.fail("holdout_reserve", "ADMISSION FAIL: reserve binding counts are missing")
@@ -532,34 +562,13 @@ def _gate_reserve(ctx: _Context) -> tuple[IdentityLedger, dict[str, Any]]:
                 "holdout_reserve",
                 f"ADMISSION FAIL: reserve slice {key} does not match the binding",
             )
-    # The sealed reserve is EVAL_RESERVE. Historical spent and abandoned
-    # identities share the ledger and are not that reserve. An identity that
-    # still carries evaluation_reserved but has moved off EVAL_RESERVE fails.
-    reserved = [
-        record
-        for record in ledger.identities.values()
-        if record.get("evaluation_reserved") or derived_state(record) == "EVAL_RESERVE"
-    ]
-    if not reserved:
-        ctx.fail("holdout_reserve", "ADMISSION FAIL: sealed evaluation reserve has no identities")
-    for record in reserved:
-        state = derived_state(record)
-        if state != "EVAL_RESERVE":
-            ctx.fail(
-                "holdout_reserve",
-                f"ADMISSION FAIL: reserve lifecycle {state} is not EVAL_RESERVE",
-            )
-    if "identities" in binding and int(binding["identities"]) != len(reserved):
+    if "identities" in binding and int(binding["identities"]) != len(active):
         ctx.fail("holdout_reserve", "ADMISSION FAIL: reserve identity count does not match the binding")
     return ledger, binding
 
 
 def _gate_disjoint(ctx: _Context, bundle: Mapping[str, Any], ledger: IdentityLedger) -> dict[str, int]:
-    reserved = [
-        record
-        for record in ledger.identities.values()
-        if derived_state(record) == "EVAL_RESERVE"
-    ]
+    reserved = ledger.active_reserve_records(ctx.experiment_id)
     hashes = {record["normalized_text_sha256"] for record in reserved}
     ids: set[str] = set()
     for record in reserved:
@@ -591,6 +600,67 @@ def _scientific_items(payload: Mapping[str, str]) -> dict[str, str]:
     return {key: value for key, value in payload.items() if key not in METADATA_KEYS and key not in LAUNCH_OVERLAY_KEYS}
 
 
+def _declaration_value(payload: Mapping[str, str]) -> str:
+    raw = payload.get(SCIENTIFIC_VARIABLE_KEY)
+    if raw is None:
+        return ""
+    return str(raw).strip()
+
+
+def _canon_schedule_int(raw: str | None) -> str | None:
+    if raw is None or not str(raw).strip():
+        return None
+    text = str(raw).strip()
+    sign = ""
+    digits = text
+    if text[0] in "+-":
+        sign, digits = text[0], text[1:]
+    if not digits or not digits.isdigit():
+        raise ValueError(f"schedule field must be an integer, got {raw!r}")
+    return str(int(sign + digits))
+
+
+def _canon_early_stop(raw: str | None) -> str:
+    if raw is None or not str(raw).strip():
+        return "0"
+    token = str(raw).strip().lower()
+    if token in _SCHEDULE_OFF:
+        return "0"
+    if token in _SCHEDULE_ON:
+        return "1"
+    raise ValueError(
+        f"HYPERLEX_EARLY_STOP must be off or on, got {raw!r}"
+    )
+
+
+def schedule_bundle(payload: Mapping[str, str]) -> tuple[str | None, str, str | None, str | None]:
+    """One normalized schedule. Absent early-stop is off. Absent integers stay absent."""
+    return (
+        _canon_schedule_int(payload.get("HYPERLEX_TRAIN_EPOCHS")),
+        _canon_early_stop(payload.get("HYPERLEX_EARLY_STOP")),
+        _canon_schedule_int(payload.get("HYPERLEX_EARLY_STOP_PATIENCE")),
+        _canon_schedule_int(payload.get("HYPERLEX_EARLY_STOP_MIN_EPOCHS")),
+    )
+
+
+def _require_schedule_shape(side: str, bundle: tuple[str | None, str, str | None, str | None]) -> None:
+    epochs, stop, patience, minimum = bundle
+    if epochs is None or int(epochs) < 1:
+        raise ValueError(f"{side} HYPERLEX_TRAIN_EPOCHS must be an integer >= 1")
+    if stop == "0":
+        return
+    if patience is None or int(patience) < 0:
+        raise ValueError(f"{side} HYPERLEX_EARLY_STOP_PATIENCE must be an integer >= 0")
+    if minimum is None or int(minimum) < 1 or int(minimum) > int(epochs):
+        raise ValueError(
+            f"{side} HYPERLEX_EARLY_STOP_MIN_EPOCHS must be in 1..HYPERLEX_TRAIN_EPOCHS"
+        )
+
+
+def _metric_value(payload: Mapping[str, str]) -> str:
+    return str(payload.get(SELECT_METRIC_KEY) or "").strip()
+
+
 def _gate_single_variable(ctx: _Context) -> None:
     baseline_path = os.environ.get(BASELINE_ENV, "").strip()
     candidate_path = os.environ.get(CANDIDATE_ENV, "").strip()
@@ -607,16 +677,74 @@ def _gate_single_variable(ctx: _Context) -> None:
                 "single_variable",
                 "ADMISSION FAIL: launch overlay is persisted in the sealed environment",
             )
+    declared_baseline = _declaration_value(baseline)
+    declared_candidate = _declaration_value(candidate)
+    if declared_baseline != declared_candidate:
+        ctx.fail(
+            "single_variable",
+            "ADMISSION FAIL: scientific variable declaration does not match",
+        )
+    if declared_baseline not in ("", DECLARED_SELECT_METRIC, DECLARED_TRAIN_SCHEDULE):
+        ctx.fail(
+            "single_variable",
+            "ADMISSION FAIL: scientific variable declaration is not "
+            f"{DECLARED_SELECT_METRIC} or {DECLARED_TRAIN_SCHEDULE}",
+        )
+    process_declaration = str(os.environ.get(SCIENTIFIC_VARIABLE_KEY) or "").strip()
+    if process_declaration != declared_baseline:
+        ctx.fail(
+            "single_variable",
+            "ADMISSION FAIL: process environment "
+            f"{SCIENTIFIC_VARIABLE_KEY} does not match the sealed declaration",
+        )
+    try:
+        base_bundle = schedule_bundle(baseline)
+        cand_bundle = schedule_bundle(candidate)
+    except ValueError as exc:
+        ctx.fail("single_variable", f"ADMISSION FAIL: {exc}")
+    bundle_differs = base_bundle != cand_bundle
+    declared = declared_baseline or DECLARED_SELECT_METRIC
+    if declared == DECLARED_TRAIN_SCHEDULE:
+        try:
+            _require_schedule_shape("baseline", base_bundle)
+            _require_schedule_shape("candidate", cand_bundle)
+        except ValueError as exc:
+            ctx.fail("single_variable", f"ADMISSION FAIL: {exc}")
+        if _metric_value(baseline) != _metric_value(candidate) or _metric_value(candidate) != SELECT_METRIC_CLASSIFY:
+            ctx.fail(
+                "single_variable",
+                "ADMISSION FAIL: selection metric difference is not part of train_schedule; "
+                f"both arms must set {SELECT_METRIC_KEY}={SELECT_METRIC_CLASSIFY}",
+            )
+    elif bundle_differs:
+        ctx.fail(
+            "single_variable",
+            "ADMISSION FAIL: undeclared schedule difference",
+        )
     base_sci = _scientific_items(baseline)
     cand_sci = _scientific_items(candidate)
     changed = sorted(set(base_sci) | set(cand_sci))
     changed = [key for key in changed if base_sci.get(key) != cand_sci.get(key)]
-    if changed != [SELECT_METRIC_KEY]:
+    if not bundle_differs:
+        changed = [key for key in changed if key not in SCHEDULE_BUNDLE_KEYS]
+    if declared == DECLARED_TRAIN_SCHEDULE:
+        parts = ["train_schedule"] if bundle_differs else []
+        parts.extend(key for key in changed if key not in SCHEDULE_BUNDLE_KEYS)
+        if parts != ["train_schedule"]:
+            ctx.fail(
+                "single_variable",
+                "ADMISSION FAIL: scientific variable count is "
+                f"{len(parts)}: {','.join(parts) or 'none'}",
+            )
+    elif changed != [SELECT_METRIC_KEY]:
         ctx.fail(
             "single_variable",
             "ADMISSION FAIL: scientific variable count is "
             f"{len(changed)}: {','.join(changed) or 'none'}",
         )
+    skip_on_baseline = {SELECT_METRIC_KEY}
+    if declared == DECLARED_TRAIN_SCHEDULE:
+        skip_on_baseline.update(SCHEDULE_BUNDLE_KEYS)
     for key, value in cand_sci.items():
         if os.environ.get(key) != value:
             ctx.fail(
@@ -624,7 +752,7 @@ def _gate_single_variable(ctx: _Context) -> None:
                 f"ADMISSION FAIL: process environment {key} does not match the sealed candidate",
             )
     for key, value in base_sci.items():
-        if key == SELECT_METRIC_KEY:
+        if key in skip_on_baseline:
             continue
         if os.environ.get(key) != value:
             ctx.fail(
