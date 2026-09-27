@@ -419,3 +419,12 @@ A second join of the 339 settlement events to the 7964 ledger identities found n
 All 6761 unique hashes in the pinned export are already in the ledger. Of the 98 settlement events absent from the ledger, none are in that export. Those 98 are 82 `UNRESOLVED` with cleared rights, 2 `UNRESOLVED` with unresolved rights, 7 `ACCEPT` with unresolved rights, 6 `NONE` with unresolved rights, and 1 `RECLASSIFY` with unresolved rights. `UNRESOLVED` means the operator reviewed the row and declined to settle it. Unresolved-rights rows stay out of `EVAL_RESERVE`. There are 0 novel `CC-BY-SA` rows with decision `ACCEPT`, `RECLASSIFY`, or `NONE`.
 
 The 28 promoted-accept files are training gold under an older family set and were not remapped. WordNet can still supply `unbind_clean` and was not admitted alone, because a classify-absent reserve fails the slice gate. No preregistration, arm directory, reserve binding, or admission receipt was created. The optimizer was not constructed. Epochs and gradient steps for `HLX-EXP-2026-09-27-SELECT-005` remain 0. `training_launch_authorized` is false. BEST was not moved.
+
+
+## SELECT-005 classify candidates blocked — HLX-EVAL-REVIEW-2026-09-27-001
+
+Admission requires each active slice count to be at least 1. The classify floors are classify 1, classify_observed 1, and classify_non_none 1. Planning targets 606, 287, and 604 are not that floor. This pass did not lower the floor.
+
+Packet `HLX-EVAL-REVIEW-2026-09-27-001` is an operator-review packet, not a reserve. Ready rows: 0. Other screened rows: label unresolved 10, rights blocked 69, provenance blocked 4, cohort duplicate 1. Previously declined rights-cleared rows and unresolved-rights events were not reopened. WordNet and the older promoted-accept files were not used. No operator decision was written.
+
+Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The ledger was not appended. `HLX-EXP-2026-09-27-SELECT-005` was not sealed. BEST was not moved.
