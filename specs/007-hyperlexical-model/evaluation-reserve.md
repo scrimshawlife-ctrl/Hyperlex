@@ -456,3 +456,7 @@ Slang classification and structure unbinding stay orthogonal. On the same 20-sur
 ## Unbind screen v2 — 2026-09-27
 
 `RUNE.UNBIND_SCREEN.v2` replaces the v1 proposal as the screening hypothesis. It is not authorized as the SELECT-005 screen. Surface patterns remain candidate-generation heuristics. Hard exclusions are proper name, titled entity, taxonomy, productive number, and unconstrained free composition. Agreement after the revision is 20/20 on the first preview and 32/32 on the reviewed sample. That agreement is fit, not held-out precision. A new validation sample excludes all 52 reviewed surfaces and carries `gold` null. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-002`.
+
+## Unbind screen v3 — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v3` is a hypothesis. It is not authorized as the SELECT-005 screen. Candidate-generation patterns do not assign high-value. The automatic screen emits reject or unresolved only. v2 pool counts stay frozen at high-value 1977, secondary 55427, reject 6478, over 63882 positional surfaces, and were not recomputed. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-003`.
