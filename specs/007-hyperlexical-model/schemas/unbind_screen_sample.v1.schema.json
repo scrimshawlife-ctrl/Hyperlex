@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.unbind_screen_sample_row.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "evaluation_id",
+    "sample_id",
+    "row_id",
+    "surface",
+    "pos",
+    "token_count",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "const": "hyperlex.unbind_screen_sample_row.v1"
+    },
+    "evaluation_id": {
+      "type": "string"
+    },
+    "sample_id": {
+      "type": "string"
+    },
+    "row_id": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "surface": {
+      "type": "string"
+    },
+    "pos": {
+      "type": "string"
+    },
+    "token_count": {
+      "type": "integer",
+      "minimum": 2,
+      "maximum": 6
+    },
+    "provenance": {
+      "type": "object"
+    }
+  }
+}

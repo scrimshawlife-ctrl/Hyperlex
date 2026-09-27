@@ -468,3 +468,7 @@ Slang classification and structure unbinding stay orthogonal. On the same 20-sur
 ## Unbind held-out frozen — 2026-09-27
 
 The 29-row v3 application is frozen. Sample sha256 `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. It was produced by one application of `RUNE.UNBIND_SCREEN.v3` and was not hand-corrected. Operator labels are pending. Held-out precision is `NOT_COMPUTABLE`. v3 was not revised. Development data remain 52 rows. Validation-development data remain 32 rows. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not authorized and is not sealed.
+
+## Unbind screen evaluation lane — 2026-09-27
+
+`HLX-EVAL-UNBIND-SCREEN-V3-001` evaluates the frozen 29-row v3 application. Source sample sha256 remains `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. Prediction, operator judgment, gold, admission, and settlement are separate artifacts. The blind review does not carry the predicted bucket. Operator labels are pending. Held-out precision and the confusion matrix are `NOT_COMPUTABLE`. A scored report does not authorize `HLX-EXP-2026-09-27-SELECT-005`. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
