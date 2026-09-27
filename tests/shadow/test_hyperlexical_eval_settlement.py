@@ -380,8 +380,38 @@ def test_blank_sheet_settles_nothing_and_does_not_fill_decisions(tmp_path):
     assert sheet.read_bytes() == before
 
 
+def test_ai_native_is_taxonomy_active_and_the_head_stays_nine():
+    assert "ai-native" in ACTIVE_FAMILIES
+    assert family_flags("ai-native") == {
+        "taxonomy.active": True,
+        "evaluation.enabled": False,
+        "production.enabled": False,
+    }
+    assert len(PRODUCTION_FAMILIES) == 9
+    assert "ai-native" in PRODUCTION_FAMILIES
+    stream = _stream(
+        "phrase native",
+        hint="ai-native",
+        label=None,
+        label_source="UNLABELLED",
+    )
+    record = _apply(
+        stream,
+        _decision(
+            stream,
+            semantic_family="ai-native",
+            proposed_family="ai-native",
+            lane="B",
+            decision="ACCEPT FAMILY",
+        ),
+    )["records"][0]
+    assert record["semantic_family"] == "ai-native"
+    assert record["source_hint"] == "ai-native"
+    assert record["attest"] == "INFERRED"
+
+
 def test_three_taxonomy_flags_stay_distinct():
-    assert len(ACTIVE_FAMILIES) == 18
+    assert len(ACTIVE_FAMILIES) == 19
     for name in ACTIVE_FAMILIES:
         assert family_flags(name) == {
             "taxonomy.active": True,

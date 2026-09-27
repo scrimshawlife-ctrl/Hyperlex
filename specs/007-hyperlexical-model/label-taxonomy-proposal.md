@@ -359,3 +359,10 @@ The apply command is `python -m hyperlexical.identity_ledger settlement-apply`. 
 Stream `hs-20260925T211358Z` was settled through `identity_ledger settlement-apply`, not `attest-apply`. Every row has an explicit decision. Blank is 0. `UNRESOLVED` is 84. Settled is 255 (`ACCEPT` 204, `RECLASSIFY` 32, `NONE` 19). `OBSERVED` 128 and `INFERRED` 127 are separate from the decision. `source_hint` was not copied into `semantic_family`.
 
 The eighteen families were not expanded. One economics row was left `UNRESOLVED` because the fitting region is the inactive candidate `finance-retail`. `brainrot-aura` was not added. `evaluation.enabled` stays false. Rights-blocked rows can carry a semantic decision and still cannot enter `EVAL_RESERVE`. Vendor calls: 0. SELECT-003 was not drafted. Do not train.
+
+
+## ai-native activated — 2026-09-27
+
+The operator authorized `ai-native` as its own evaluation family. It is `taxonomy.active`. `evaluation.enabled` stays false. `production.enabled` stays false. `layout.FAMILIES` is unchanged and still has nine names, including the existing `ai-native` slot. This activation does not settle a row, does not append a ledger, and does not enable evaluation.
+
+A hint of `ai-native` may still be settled as `technology-ai` when the operator writes that family. Writing `semantic_family=ai-native` is now a valid explicit choice. The stored registry class is not promoted to `OBSERVED`.

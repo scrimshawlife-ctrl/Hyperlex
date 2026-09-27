@@ -1,4 +1,4 @@
-"""Evaluation-settlement apply path for the eighteen-family taxonomy.
+"""Evaluation-settlement apply path for the evaluation taxonomy.
 
 ``source_hint``, ``semantic_family``, and ``attest`` are separate fields.
 A confirm settlement may store the same family string in both ``source_hint``
@@ -43,6 +43,7 @@ ACTIVE_FAMILIES: tuple[str, ...] = (
     "spiritual-mystic",
     "identity-affiliation",
     "politics-civic",
+    "ai-native",
 )
 CANDIDATE_FAMILIES: tuple[str, ...] = (
     "finance-retail",
