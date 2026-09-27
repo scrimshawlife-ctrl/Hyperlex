@@ -42,6 +42,7 @@ def _clear(monkeypatch):
         "HLX_TRUNK_SHA256",
         "HYPERLEX_ALLOW_TRAIN",
         "HYPERLEX_INCLUDE_LIVE",
+        "HYPERLEX_LIVE_STORE",
         "HYPERLEX_EXPORT_DIR",
         "HYPERLEX_TRAIN_OUT",
         "HYPERLEX_TRUNK_DIR",
@@ -71,13 +72,53 @@ def _pair(monkeypatch, capsys):
 
 
 def _launch(capsys):
+    """Compare admission receipts. Do not request a live store.
+
+    ``--include-live`` is a separate fail-closed contract: a missing required
+    store returns 2 and writes JSON to stderr. These fixtures parse stdout
+    only when the trainer returns an admission receipt.
+    """
     try:
-        code = train_mod.main(["--offline", "--run", "--include-live"])
+        code = train_mod.main(["--offline", "--run"])
     except SystemExit as exc:
-        err = capsys.readouterr()
-        return exc, err
-    out = json.loads(capsys.readouterr().out)
-    return code, out
+        return exc, capsys.readouterr()
+    captured = capsys.readouterr()
+    if code != 0:
+        raise AssertionError(
+            f"trainer returned {code} without an admission receipt: {captured.err}"
+        )
+    return code, json.loads(captured.out)
+
+
+def test_missing_required_live_store_fails_closed(monkeypatch, tmp_path, capsys):
+    """A required live store that is absent must not become ADMISSION_PASS."""
+    arm_controlled(monkeypatch, tmp_path, [classify_row("train row")])
+    monkeypatch.setenv("HLX_ADMISSION_ONLY", "1")
+    monkeypatch.setattr("hyperlexical.preflight.export_dataset", _refuse_export)
+    monkeypatch.setattr("hyperlexical.loop.export_dataset", _refuse_export)
+    monkeypatch.setattr("hyperlexical.loop._enter_training_execution", _refuse_train)
+    missing = tmp_path / "missing-ingest.jsonl"
+
+    def _abort(argv):
+        code = train_mod.main(argv)
+        captured = capsys.readouterr()
+        assert code == 2
+        assert captured.out.strip() == ""
+        assert "ADMISSION_PASS" not in captured.out
+        report = json.loads(captured.err)
+        assert report["abort"] is True
+        assert report["include_live"] is True
+        assert report.get("admission_result") != "ADMISSION_PASS"
+        assert "live store missing" in report["error"]
+        assert str(missing) in report["error"]
+        return report
+
+    flagged = _abort(
+        ["--offline", "--run", "--include-live", "--live-store", str(missing)]
+    )
+    assert flagged["include_live"] is True
+    monkeypatch.setenv("HYPERLEX_INCLUDE_LIVE", "1")
+    _abort(["--offline", "--run", "--live-store", str(missing)])
 
 
 def test_environment_hash_includes_launch_overlay_and_skips_admission_only(monkeypatch):

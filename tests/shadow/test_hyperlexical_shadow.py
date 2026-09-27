@@ -89,16 +89,49 @@ def test_cli_offline_rizz(tmp_path):
     assert pkt["brier"] is None
 
 
+_BANNED_PACKAGE_ROOTS = frozenset({"hyperlex", "abraxas"})
+
+
+def _import_roots(src: str) -> set[str]:
+    """Top-level module names of import statements. ``hyperlexical`` is not ``hyperlex``."""
+    roots: set[str] = set()
+    for node in ast.walk(ast.parse(src)):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                roots.add(alias.name.split(".")[0])
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            roots.add(node.module.split(".")[0])
+    return roots
+
+
 def test_no_hyperlex_or_abraxas_imports():
-    banned_all = ("import hyperlex", "from hyperlex", "import abraxas", "from abraxas")
-    banned_ci = ("import torch", "from torch")
     for path in SHADOW.glob("*.py"):
-        src = path.read_text()
-        for token in banned_all:
-            assert token not in src
+        roots = _import_roots(path.read_text())
+        banned = roots & _BANNED_PACKAGE_ROOTS
+        assert not banned, f"{path.name} imports {sorted(banned)}"
         if path.name not in TORCH_ALLOWED:
-            for token in banned_ci:
-                assert token not in src, path.name
+            assert "torch" not in roots, path.name
+
+
+def test_import_boundary_permits_hyperlexical_and_rejects_hyperlex_and_abraxas():
+    hyperlexical = "from hyperlexical.holdout_eligibility import census\n"
+    assert _import_roots(hyperlexical) == {"hyperlexical"}
+    mentioned = (
+        'note = "from hyperlex import hidden"\n'
+        "# import abraxas\n"
+        "from hyperlexical.packet import build_packet\n"
+    )
+    assert _import_roots(mentioned) == {"hyperlexical"}
+    rejected = (
+        "import hyperlex\n",
+        "import hyperlex.analysis\n",
+        "from hyperlex import detect_memetic_patterns\n",
+        "from hyperlex.analysis.mutation import predict_mutations\n",
+        "import abraxas\n",
+        "from abraxas.compat import foo\n",
+    )
+    for src in rejected:
+        assert _import_roots(src) & _BANNED_PACKAGE_ROOTS, src
 
 
 def test_no_network_calls_in_source():
