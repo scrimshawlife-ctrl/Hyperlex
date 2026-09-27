@@ -411,3 +411,11 @@ A fresh reserve needs all four slices from text that is absent from the ledger a
 
 No optimizer was constructed. Epochs and gradient steps for this id are zero. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Launch is not authorized.
 
+
+## SELECT-005 census — fresh reserve still unavailable
+
+A second join of the 339 settlement events to the 7964 ledger identities found no novel rights-cleared classify row. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The ledger was not appended. `evaluation_reserved` was not cleared. The SELECT-004 reserve was not reused.
+
+All 6761 unique hashes in the pinned export are already in the ledger. Of the 98 settlement events absent from the ledger, none are in that export. Those 98 are 82 `UNRESOLVED` with cleared rights, 2 `UNRESOLVED` with unresolved rights, 7 `ACCEPT` with unresolved rights, 6 `NONE` with unresolved rights, and 1 `RECLASSIFY` with unresolved rights. `UNRESOLVED` means the operator reviewed the row and declined to settle it. Unresolved-rights rows stay out of `EVAL_RESERVE`. There are 0 novel `CC-BY-SA` rows with decision `ACCEPT`, `RECLASSIFY`, or `NONE`.
+
+The 28 promoted-accept files are training gold under an older family set and were not remapped. WordNet can still supply `unbind_clean` and was not admitted alone, because a classify-absent reserve fails the slice gate. No preregistration, arm directory, reserve binding, or admission receipt was created. The optimizer was not constructed. Epochs and gradient steps for `HLX-EXP-2026-09-27-SELECT-005` remain 0. `training_launch_authorized` is false. BEST was not moved.
