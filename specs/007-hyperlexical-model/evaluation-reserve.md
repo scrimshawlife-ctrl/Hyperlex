@@ -435,3 +435,8 @@ Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571
 Public `main` is `ca9403efe8470d46566abbcd098640f07b33b759`. `ai-native` is taxonomy-active. `evaluation.enabled` stays false. The production head stays nine names. No row was settled. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
 
 The review packet `HLX-EVAL-REVIEW-2026-09-27-001` now has 10 ready rows proposing `ai-native`. Their stored class stays `INFERRED`. `classify_observed` is still short by 1 until an operator attests `OBSERVED`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed.
+
+
+## Operator attested the ready rows observed
+
+The operator attested `OBSERVED` on all 10 ready rows in packet `HLX-EVAL-REVIEW-2026-09-27-001`. The proposed family is `ai-native`. Rights-blocked, provenance-blocked, and duplicate rows were not attested. No `ACCEPT`, `RECLASSIFY`, or `NONE` was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed.
