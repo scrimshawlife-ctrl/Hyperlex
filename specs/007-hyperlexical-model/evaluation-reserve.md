@@ -440,3 +440,7 @@ The review packet `HLX-EVAL-REVIEW-2026-09-27-001` now has 10 ready rows proposi
 ## Operator attested the ready rows observed
 
 The operator attested `OBSERVED` on all 10 ready rows in packet `HLX-EVAL-REVIEW-2026-09-27-001`. The proposed family is `ai-native`. Rights-blocked, provenance-blocked, and duplicate rows were not attested. No `ACCEPT`, `RECLASSIFY`, or `NONE` was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed.
+
+## Unbind preview refused as slang — 2026-09-27
+
+The operator reviewed the first 20 positional surfaces from the novel WordNet unbind pool. None are admitted as slang. Eighteen are refused. `give a damn` and `in one's birthday suit` are quarantined for provenance review. Slang, idiom, colloquialism, and profanity stay distinct. No `ACCEPT`, `REJECT`, `CORRECT_TARGET`, or `UNRESOLVED` was written to the unbind settlement log. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. These rows are not classify gold and must not be trained as slang. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Disposition packet `HLX-EVAL-UNBIND-PREVIEW-2026-09-27-001`.
