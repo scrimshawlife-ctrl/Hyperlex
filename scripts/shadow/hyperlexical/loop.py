@@ -1,1 +1,1 @@
-PLACEHOLDER
+"""Spark train loop. Gate only."""
