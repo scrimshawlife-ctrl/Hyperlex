@@ -369,3 +369,15 @@ The 491 sealed reserve identities moved `EVAL_RESERVE` to `EVAL_BOUND` to `EVAL_
 Representation completeness is `PASS`. Evaluation quality is `LIMITED`. This promotion does not establish performance across the eighteen-family ontology. The production head cannot name nine of the twelve sealed gold families. That limitation is separate from the checkpoint pointer. Vendor calls: 0. No further experiment was started.
 
 Promotion receipt sha256 `2e1f84b476f7355e31380419afad00d0b16d372235a0da6be85adc17fcf92d01`.
+
+## SELECT-005 blocked — HLX-EXP-2026-09-27-SELECT-005
+
+`HLX-EXP-2026-09-27-SELECT-005` is the next unclaimed experiment id. Claimed ids are `HLX-EXP-2026-09-26-SELECT-001` through `HLX-EXP-2026-09-26-SELECT-004`. This id is recorded and not sealed. No preregistration file, arm directory, reserve, or admission receipt was created.
+
+`TRAINING_BLOCKED`. The proposed variable is the composite `train_schedule`. Control would be `max_epochs=40`, early stopping disabled, restore best. Candidate would be `max_epochs=12`, `minimum_epochs=4` scored epochs through epoch index 3, `early_stopping_patience=4`, strict increase, ties keep the earlier checkpoint, restore best. Both arms would pin `classify_macro_f1_nonnone`, warm start `hyperlex-encoder-modernbert-base-seed-morph65`, and export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430` at 9150 rows.
+
+The canonical trainer does not implement that candidate. `scripts/shadow/hyperlexical/loop.py` scores `for ep in range(epochs)` and never stops early. `score_now > best_macro` already keeps the earlier checkpoint on ties, and best weights are written back after the loop when the selection metric is `classify_macro_f1_nonnone`. `epoch-progress.jsonl` records the metric and not wall-clock. Spark and public `main` have the same `loop.py` sha256 `f51e7aaff69e9033cc9ba16eee7225bfeefcf521e32236bdb791cc7900e130a5`. Spark HEAD `098ece4d9e8ebb27b0b0d3410b1280ed072d4847` was clean. Public `main` is `2f73f30010cc16ee014ed8d88de73131eb80d0a9`.
+
+The smallest separate change is an optional break in that epoch loop, default off: after a scored epoch, stop when at least 4 epochs have been scored and `epoch - best_epoch >= 4`, still capped by `max_epochs`, and append per-epoch wall-clock seconds to `epoch-progress.jsonl`. Setting `HYPERLEX_TRAIN_EPOCHS=12` is not that schedule. This record does not apply the change.
+
+SELECT-004 artifacts were not modified. Its reserve stays `EVAL_SPENT` and was not reused. No new reserve was allocated. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. No optimizer was constructed. Epochs and gradient steps for this id are zero. Launch is not authorized.
