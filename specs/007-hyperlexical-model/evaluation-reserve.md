@@ -464,3 +464,7 @@ Slang classification and structure unbinding stay orthogonal. On the same 20-sur
 ## Unbind screen v3 held out — 2026-09-27
 
 `RUNE.UNBIND_SCREEN.v3` stays a proposed refinement. Fifty-two surfaces are frozen as development data and thirty-two as validation-development data. Agreement on those eighty-four is fit, not held-out precision. A fresh sample of 29 admissible positional surfaces excludes all 84. Predictions were not hand-corrected. Held-out precision is not computed. v2 pool counts stay frozen at high-value 1977, secondary 55427, reject 6478, over 63882 positional surfaces. The v3 screen was not run on that pool. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-004`.
+
+## Unbind held-out frozen — 2026-09-27
+
+The 29-row v3 application is frozen. Sample sha256 `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. It was produced by one application of `RUNE.UNBIND_SCREEN.v3` and was not hand-corrected. Operator labels are pending. Held-out precision is `NOT_COMPUTABLE`. v3 was not revised. Development data remain 52 rows. Validation-development data remain 32 rows. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not authorized and is not sealed.
