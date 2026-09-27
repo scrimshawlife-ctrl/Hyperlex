@@ -428,3 +428,10 @@ Admission requires each active slice count to be at least 1. The classify floors
 Packet `HLX-EVAL-REVIEW-2026-09-27-001` is an operator-review packet, not a reserve. Ready rows: 0. Other screened rows: label unresolved 10, rights blocked 69, provenance blocked 4, cohort duplicate 1. Previously declined rights-cleared rows and unresolved-rights events were not reopened. WordNet and the older promoted-accept files were not used. No operator decision was written.
 
 Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The ledger was not appended. `HLX-EXP-2026-09-27-SELECT-005` was not sealed. BEST was not moved.
+
+
+## ai-native evaluation family — 2026-09-27
+
+Public `main` is `ca9403efe8470d46566abbcd098640f07b33b759`. `ai-native` is taxonomy-active. `evaluation.enabled` stays false. The production head stays nine names. No row was settled. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+The review packet `HLX-EVAL-REVIEW-2026-09-27-001` now has 10 ready rows proposing `ai-native`. Their stored class stays `INFERRED`. `classify_observed` is still short by 1 until an operator attests `OBSERVED`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed.
