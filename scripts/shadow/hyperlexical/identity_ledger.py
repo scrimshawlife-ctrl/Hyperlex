@@ -380,6 +380,34 @@ class IdentityLedger:
                     counts[key] += 1
         return counts
 
+    def active_reserve_records(self, experiment_id: str) -> list[dict[str, Any]]:
+        """Current EVAL_RESERVE identities bound only to this experiment.
+
+        ``evaluation_reserved`` is historical evidence. Spent and abandoned
+        identities keep that flag and are not members. ``EVAL_BOUND`` is not
+        an active reserve. A binding list that names another experiment does
+        not satisfy this experiment.
+        """
+        wanted = str(experiment_id or "")
+        if not wanted:
+            return []
+        selected: list[dict[str, Any]] = []
+        for record in self.identities.values():
+            if derived_state(record) != "EVAL_RESERVE":
+                continue
+            bindings = [str(item) for item in record.get("experiment_bindings") or [] if str(item)]
+            if bindings == [wanted]:
+                selected.append(record)
+        return selected
+
+    def active_reserve_counts(self, experiment_id: str) -> dict[str, int]:
+        counts = {key: 0 for key in REQUIRED_SLICES}
+        for record in self.active_reserve_records(experiment_id):
+            for key in slices_of(record):
+                if key in counts:
+                    counts[key] += 1
+        return counts
+
     def screen(
         self,
         rows: Sequence[Mapping[str, Any]],

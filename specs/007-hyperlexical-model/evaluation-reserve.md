@@ -295,7 +295,11 @@ BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, sha256 `fc53676bd3
 
 The canonical controlled-experiment holdout contract is `CONTROLLED_RESERVE`. A launch with `HLX_EXPERIMENT_ID` set is admitted by `admit_training_run`, which both preflight and `run_loop` call, in this order: experiment binding, launch gate, sealed reserve, pinned training input, train/reserve disjointness, single scientific variable, BEST and trunk digests, output directory, then ready.
 
-A sealed reserve binding satisfies the holdout requirement when the ledger is `EVAL_RESERVE`, all four slices are present, the binding digest matches `events.jsonl`, and training overlap by row id and by normalized text hash is 0. Overlap rejects the run. It does not drop training rows. `HLX_HOLDOUT_MANIFESTS` is not a second requirement. `HLX_ALLOW_NO_HOLDOUT` does not admit a controlled experiment. Legacy launches that are not controlled experiments still use the manifest gate.
+A sealed reserve binding satisfies the holdout requirement when the active reserve is `EVAL_RESERVE` for the current experiment, all four slices are present on that active set, the binding digest matches the full `events.jsonl`, and training overlap by row id and by normalized text hash is 0 against that active set. Overlap rejects the run. It does not drop training rows. `HLX_HOLDOUT_MANIFESTS` is not a second requirement. `HLX_ALLOW_NO_HOLDOUT` does not admit a controlled experiment. Legacy launches that are not controlled experiments still use the manifest gate.
+
+Active membership is the derived lifecycle `EVAL_RESERVE` whose experiment binding is only the current experiment. `evaluation_reserved` stays historical evidence and is not cleared when the lifecycle is `EVAL_SPENT`. Spent identities do not count, do not satisfy overlap, and cannot be reserved again. A ledger with no active identities is a missing active reserve. A live `EVAL_RESERVE` bound to another experiment does not satisfy the current experiment. Slice counts and the binding identity count use the active set. The events digest still covers the append-only log.
+
+The default scientific variable remains `HLX_SELECT_METRIC`: that key is the only allowed difference. `HLX_SCIENTIFIC_VARIABLE=train_schedule`, set to the same value on the baseline, the candidate, and the process, is the only composite. It normalizes `HYPERLEX_TRAIN_EPOCHS`, `HYPERLEX_EARLY_STOP`, `HYPERLEX_EARLY_STOP_PATIENCE`, and `HYPERLEX_EARLY_STOP_MIN_EPOCHS` into one variable. Both arms must set `HLX_SELECT_METRIC=classify_macro_f1_nonnone`. Any other difference fails. An undeclared schedule difference fails. A selection-metric difference is not part of `train_schedule`. Declaring the variable does not register or authorize an experiment.
 
 `HYPERLEX_ALLOW_TRAIN=1` is part of the effective environment hash. `HLX_ADMISSION_ONLY=1` is not. With that flag, `python -m hyperlexical.train --run` returns after admission and does not construct an optimizer, enter epoch 0, or take a gradient step. `TRAINING_READY` means that same admission returned `ADMISSION_PASS`.
 
@@ -395,4 +399,15 @@ The spent ledger cannot supply a new `EVAL_RESERVE`. Events sha256 remains `96b7
 No optimizer was constructed. Epochs and gradient steps for this id are zero. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Launch is not authorized.
 
 The smallest separate change is an admission-contract patch: accept one declared schedule variable while both arms share `classify_macro_f1_nonnone`, and treat historical `EVAL_SPENT` identities as outside the current reserve without clearing `evaluation_reserved`. Do not allocate a reserve before that contract exists.
+
+
+## SELECT-005 still unsealed — admission contract synced, fresh reserve unavailable
+
+Public `main` is `fab0de03d75e3280dc34feed425c4783ccf7e2b5`, the squash merge of the admission contract. Spark carries that `admission.py` sha256 `6ae7b63ca1b6e0459d9b795c731668b3eff524269d81bcb92181c0c9d407ab78` and `identity_ledger.py` sha256 `ac49b7240a895952b99b3ef9046f7a8185c8647badac7a45c8640d592057d1c5`. `scripts/shadow/hyperlexical/loop.py` remains sha256 `1aa395081d7709be3844bf2568d12100d73d931ecbc51af43c3d6e01dba77e2a`. The private ledger file was not replaced.
+
+`HLX-EXP-2026-09-27-SELECT-005` is still not sealed. No preregistration file, arm directory, reserve binding, or admission receipt was created. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `evaluation_reserved` was not cleared. The SELECT-004 reserve stays `EVAL_SPENT` and was not reused.
+
+A fresh reserve needs all four slices from text that is absent from the ledger and from the pinned export. The ledger has no `EVAL_RESERVE`, `EVAL_BOUND`, or `AVAILABLE` identities. The remaining settled hashes from the held-out stream that are absent from the ledger are `UNRESOLVED`, `NONE`, `RECLASSIFY`, or `ACCEPT` with `RIGHTS_UNRESOLVED`. Unresolved-rights rows stay out of `EVAL_RESERVE`. No novel rights-cleared classify settlement remains. A classify-absent reserve was not written. The WordNet unbind source was not admitted by itself.
+
+No optimizer was constructed. Epochs and gradient steps for this id are zero. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Launch is not authorized.
 
