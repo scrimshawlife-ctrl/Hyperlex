@@ -381,3 +381,18 @@ The canonical trainer does not implement that candidate. `scripts/shadow/hyperle
 The smallest separate change is an optional break in that epoch loop, default off: after a scored epoch, stop when at least 4 epochs have been scored and `epoch - best_epoch >= 4`, still capped by `max_epochs`, and append per-epoch wall-clock seconds to `epoch-progress.jsonl`. Setting `HYPERLEX_TRAIN_EPOCHS=12` is not that schedule. This record does not apply the change.
 
 SELECT-004 artifacts were not modified. Its reserve stays `EVAL_SPENT` and was not reused. No new reserve was allocated. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. No optimizer was constructed. Epochs and gradient steps for this id are zero. Launch is not authorized.
+
+## SELECT-005 still blocked — trainer synced, admission refused
+
+Spark now carries public `main` `a7d254e8981695072f5be36ab7ebdcc46cbd672c` for the trainer. `scripts/shadow/hyperlexical/loop.py` sha256 `1aa395081d7709be3844bf2568d12100d73d931ecbc51af43c3d6e01dba77e2a`. Early stopping remains default-off. `HLX-EXP-2026-09-27-SELECT-005` is still not sealed. No preregistration file, arm directory, reserve, or admission receipt was created. The private ledger sections above were not replaced by the public projection.
+
+`TRAINING_BLOCKED`. The trainer can express the candidate schedule. Canonical admission cannot seal it.
+
+`admit_training_run` allows exactly one scientific difference, and that difference must be `HLX_SELECT_METRIC`. A non-mutating probe pinned both arms to `classify_macro_f1_nonnone` and changed only `HYPERLEX_TRAIN_EPOCHS` (`40` versus `12`) and `HYPERLEX_EARLY_STOP` (`0` versus `1`). Patience and minimum epochs were the same on both arms. The gate `single_variable` failed: `scientific variable count is 2: HYPERLEX_EARLY_STOP,HYPERLEX_TRAIN_EPOCHS`.
+
+The spent ledger cannot supply a new `EVAL_RESERVE`. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. Live reserve counts are classify 0, classify_observed 0, classify_non_none 0, unbind_clean 0. The same probe failed at `holdout_reserve`: `reserve slice classify is absent`. The reserve scan also includes every identity with `evaluation_reserved` set. That scan is 491 identities, all derived `EVAL_SPENT`. A new reserve written onto this ledger would still fail that lifecycle check. The flag was not cleared. The SELECT-004 reserve was not reused.
+
+No optimizer was constructed. Epochs and gradient steps for this id are zero. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Launch is not authorized.
+
+The smallest separate change is an admission-contract patch: accept one declared schedule variable while both arms share `classify_macro_f1_nonnone`, and treat historical `EVAL_SPENT` identities as outside the current reserve without clearing `evaluation_reserved`. Do not allocate a reserve before that contract exists.
+
