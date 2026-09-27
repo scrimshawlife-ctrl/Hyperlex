@@ -70,6 +70,21 @@ export HYPERLEX_OFFLINE=1
 export TOKENIZERS_PARALLELISM=false
 export HYPERLEX_TRAIN_OUT="$HOME/.hyperlex/models/hyperlex-encoder-modernbert-base-seed"
 export HYPERLEX_TRAIN_EPOCHS=2
+# HYPERLEX_TRAIN_EPOCHS is the max-epoch cap. It does not enable early stopping.
+# Early stop is optional and default-off. Turn it on only with the classify
+# selection metric. Improvement is a strict increase; ties keep the earlier
+# checkpoint. After the epoch is scored, stop when
+# epoch_index - best_epoch >= patience and at least MIN_EPOCHS epochs have
+# been scored (0-based epoch_index). The best checkpoint is still restored.
+# epoch-progress.jsonl gains observational seconds rounded to 6 decimal places
+# (epoch_wallclock_seconds, training_elapsed_seconds). They do not affect
+# selection or stopping. A completed train-receipt.json records stop_reason
+# (max_epochs or early_stopping) and training_elapsed_seconds. A failed loop
+# still raises and does not write that completion receipt.
+# export HLX_SELECT_METRIC=classify_macro_f1_nonnone
+# export HYPERLEX_EARLY_STOP=1
+# export HYPERLEX_EARLY_STOP_PATIENCE=4
+# export HYPERLEX_EARLY_STOP_MIN_EPOCHS=4
 export HYPERLEX_TRAIN_BATCH=8
 export HYPERLEX_TRAIN_LR=2e-5
 # optional recipe bump (default 2, clamp 1..min(encoder layers, 8)):
