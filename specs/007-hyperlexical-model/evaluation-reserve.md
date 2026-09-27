@@ -355,3 +355,17 @@ One run finished under the sealed contract. Container `hlx-train-select004-17904
 Reserve scoring used the sealed twelve-family universe `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`. seed-morph78 macro-F1 0.022395727019119547, accuracy 0.14107883817427386, OBSERVED accuracy 0.032520325203252036, unbind clean exact 0.092. The candidate macro-F1 0.07245710784313726, accuracy 0.15767634854771784, OBSERVED accuracy 0.08130081300813008, unbind clean exact 0.100. Deltas are +0.05006138082401771, +0.01659751037344398, +0.048780487804878044, and +0.008. The char 3–5 baseline macro-F1 was 0.0, so CHAR_WINS did not occur. Decision **PROMOTE**. State `PROMOTION_ELIGIBLE`. `--apply-best` was not run. BEST remains `seed-morph78` / `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`.
 
 Representation completeness is `PASS`. Evaluation quality is `LIMITED`. The production head still emits the nine training families, so nine of the twelve gold families cannot be named and pull the absolute macro-F1 down for both checkpoints. The claim stays inside the sealed slices. Vendor calls: 0. The 40-epoch schedule was left as sealed. A later duration study can measure best-epoch locations; it is not a change to this result.
+
+## SELECT-004 promoted — HLX-EXP-2026-09-26-SELECT-004
+
+Operator authorization applied the selected epoch-3 checkpoint as BEST. The promoted object is `hyperlex-encoder-modernbert-base-seed-select004/model.safetensors`, sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. `model.final.safetensors` (`d5be46be6611e382d837bab8868bb373cbead4f9caa3a666ca06f2b2cda1925b`) was not promoted. Epoch 39 was not promoted. No training ran. The reserve was not rescored.
+
+Previous BEST `hyperlex-encoder-modernbert-base-seed-morph78` remains in place, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`.
+
+Decision receipt sha256 `ee493b7d73b5e00ae27ec681bb52405bbcf2983a16a0297edad225aec52b7225`. Decision `PROMOTE`. Selection metric `classify_macro_f1_nonnone` `0.64448782942204`. Primary macro-F1 baseline `0.022395727019119547`, candidate `0.07245710784313726`, delta `0.05006138082401771`. Preservation deltas: classification accuracy `0.01659751037344398`, OBSERVED accuracy `0.048780487804878044`, unbind clean exact `0.008`. CHAR_WINS did not occur. Integrity `PASS`.
+
+The 491 sealed reserve identities moved `EVAL_RESERVE` to `EVAL_BOUND` to `EVAL_SPENT` through `IdentityLedger.transition` and `persist_append`. Events sha256 before `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`, after `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. Projection sha256 before `d071b7aec8154203ce7f9ae9531639b8d638f86c2ac0c3af38bead9b3c4a48f9`, after `77e22433203879b252f7a9e309d2013d7550101d1c4a014b494d2c96df87d0e0`. The sealed binding file `c16e69559dd6582f687532ce6e2a2e9b52a70db1aa066d11e7e68e723936b371` was not rewritten. Historical consumed, spent, and abandoned identities outside this reserve were not changed.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. This promotion does not establish performance across the eighteen-family ontology. The production head cannot name nine of the twelve sealed gold families. That limitation is separate from the checkpoint pointer. Vendor calls: 0. No further experiment was started.
+
+Promotion receipt sha256 `2e1f84b476f7355e31380419afad00d0b16d372235a0da6be85adc17fcf92d01`.
