@@ -1,0 +1,369 @@
+{
+  "authorization": "THRESHOLD_ARTIFACT_SCHEMA_HARDENING_AUTHORIZATION",
+  "calibration_evidence_modified": false,
+  "changed_artifacts": [],
+  "historical_artifact_mutated": false,
+  "mode": "VALIDATE_ONLY",
+  "outcome": "HISTORICAL_VALIDATION_COMPLETE",
+  "results": [
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_DRAW_RECEIPT.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "surface-draw-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_FAILURE.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "calibration-failure.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_LABELS.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "operator-label-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_MANIFEST.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "surface-manifest-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_RESOLUTION.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "resolution-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_SCORES.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "score-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_SCORE_RECEIPT.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "score-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_THRESHOLD_SEARCH.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "threshold-search.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_COMPLETION_FAILURE.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "calibration-failure.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_COMPLETION_RECEIPT.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "completion-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_CONFOUND_ANALYSIS.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "confound-analysis.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_FAILURE.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "calibration-failure.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_LABELS.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "operator-label-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_MANIFEST.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "surface-manifest-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_RESOLUTION.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "resolution-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_RESOLUTION_RECEIPT.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "resolution-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_SCORES.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "score-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_SCORE_RECEIPT.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "score-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_SUPPORT_JOIN.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "support-join-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_SUPPORT_REASSESSMENT.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "support-reassessment.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_COMPLETION_THRESHOLD_SEARCH.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "threshold-search.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CONFOUND_ANALYSIS.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "confound-analysis.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CONFOUND_DECISION.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "confound-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_DIRECTION_ANALYSIS.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "direction-analysis.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_DIRECTION_DECISION.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "direction-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_MEASUREMENT_MANIFEST.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "surface-manifest-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_OPERATOR_LABELING_RECEIPT.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "operator-labeling-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_OPERATOR_LABELS.jsonl",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "operator-label-row.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_SURFACE_DRAW_RECEIPT.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "surface-draw-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_THRESHOLD_SEARCH.json",
+      "errors": [],
+      "historical_artifact_mutated": false,
+      "schema": "threshold-search.schema.json",
+      "status": "PASS"
+    }
+  ],
+  "schema_conformance_gaps": [],
+  "scientific_remediation": false,
+  "semantic": [
+    {
+      "check": "calibration_manifest_rows",
+      "detail": "rows=200",
+      "status": "PASS"
+    },
+    {
+      "check": "operator_label_rows",
+      "detail": "rows=200",
+      "status": "PASS"
+    },
+    {
+      "check": "support_join_rows",
+      "detail": "rows=200",
+      "status": "PASS"
+    },
+    {
+      "check": "ready_plus_unknown",
+      "detail": "ready=60 unknown=140",
+      "status": "PASS"
+    },
+    {
+      "check": "row_set_equality",
+      "detail": "manifest=200 labels=200 join=200",
+      "status": "PASS"
+    },
+    {
+      "check": "manifest_order",
+      "detail": "calibration global_draw_order",
+      "status": "PASS"
+    },
+    {
+      "check": "calibration_synset_unique",
+      "detail": "synsets=200",
+      "status": "PASS"
+    },
+    {
+      "check": "label_inventory_total",
+      "detail": "total=200",
+      "status": "PASS"
+    },
+    {
+      "check": "measurement_rows",
+      "detail": "rows=200",
+      "status": "PASS"
+    },
+    {
+      "check": "measurement_synset_unique",
+      "detail": "synsets=200",
+      "status": "PASS"
+    },
+    {
+      "check": "synset_set_isolation",
+      "detail": "calibration and measurement synsets",
+      "status": "PASS"
+    },
+    {
+      "check": "measurement_row_isolation",
+      "detail": "calibration and measurement row ids",
+      "status": "PASS"
+    },
+    {
+      "check": "measurement_manifest_unchanged",
+      "detail": "78ca09ab14912681d028e8b9b1c77a8daf1d0c8c81561434eb9b6ade45a753e5",
+      "status": "PASS"
+    },
+    {
+      "check": "measurement_order",
+      "detail": "measurement global_draw_order",
+      "status": "PASS"
+    },
+    {
+      "check": "join_receipt_manifest_hash",
+      "detail": "34bc70b93039fc6a5ba4bb58685e0fbfe6f91dd1f86a64fec8326a84013a6465",
+      "status": "PASS"
+    },
+    {
+      "check": "join_receipt_label_hash",
+      "detail": "f9901e334543dac2e9bf258208097cf4c9b48af9dc8b497ff42fe4f1f106e1fc",
+      "status": "PASS"
+    },
+    {
+      "check": "join_receipt_score_hash",
+      "detail": "01c758af570264c190f4af7805d43d734c9e9a36779f0e0b82675709f213e07c",
+      "status": "PASS"
+    },
+    {
+      "check": "join_receipt_resolution_hash",
+      "detail": "491b854bcf04d20624e560b63c01823b5634716ec266a4d3a7396d5514defd8d",
+      "status": "PASS"
+    },
+    {
+      "check": "draw_receipt_measurement_hash",
+      "detail": "78ca09ab14912681d028e8b9b1c77a8daf1d0c8c81561434eb9b6ade45a753e5",
+      "status": "PASS"
+    },
+    {
+      "check": "draw_receipt_manifest_hash",
+      "detail": "34bc70b93039fc6a5ba4bb58685e0fbfe6f91dd1f86a64fec8326a84013a6465",
+      "status": "PASS"
+    },
+    {
+      "check": "direction_join_hash",
+      "detail": "02088379b5ebe0f26106e830a730e8a90b2281d83c37bf1e750e1846bffa128b",
+      "status": "PASS"
+    },
+    {
+      "check": "resolution_parent_totals",
+      "detail": "parents=200 ready=60 unknown=140",
+      "status": "PASS"
+    }
+  ],
+  "semantic_conformance_gaps": [],
+  "skipped_not_applicable": [
+    "RESIDUAL_THRESHOLD_V1_ACCEPTANCE.json",
+    "RESIDUAL_THRESHOLD_V1_ARTIFACT_SCHEMA.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_ANALYSIS.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_CONTRACT.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_DESIGN_CLOSURE.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_ISOLATION_REPORT.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_LABEL_AVAILABILITY_REVIEW.json",
+    "RESIDUAL_THRESHOLD_V1_MEASUREMENT_CONTRACT.json",
+    "RESIDUAL_THRESHOLD_V1_PREREGISTRATION.json",
+    "RESIDUAL_THRESHOLD_V1_SELECTION_PROCEDURE.json",
+    "RESIDUAL_THRESHOLD_V1_SURFACE_ISOLATION_POLICY.json",
+    "RESIDUAL_THRESHOLD_V2_ACCEPTANCE.json",
+    "RESIDUAL_THRESHOLD_V2_ARTIFACT_SCHEMA.json",
+    "RESIDUAL_THRESHOLD_V2_BLIND_OPERATOR_PACKET.jsonl",
+    "RESIDUAL_THRESHOLD_V2_BLIND_OPERATOR_PACKET_RECEIPT.json",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_ANALYSIS.json",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_CONTRACT.json",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_LABELS.jsonl",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_LABEL_AVAILABILITY_REVIEW.json",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_RESOLUTION.jsonl",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_SCORES.jsonl",
+    "RESIDUAL_THRESHOLD_V2_MEASUREMENT_CONTRACT.json",
+    "RESIDUAL_THRESHOLD_V2_OPERATOR_LABELS.jsonl",
+    "RESIDUAL_THRESHOLD_V2_PREREGISTRATION.json",
+    "RESIDUAL_THRESHOLD_V2_SAMPLE_SIZE.json",
+    "RESIDUAL_THRESHOLD_V2_SELECTION_PROCEDURE.json",
+    "RESIDUAL_THRESHOLD_V2_SURFACE_DISTRIBUTION_REPORT.json",
+    "RESIDUAL_THRESHOLD_V2_SURFACE_ISOLATION_POLICY.json",
+    "RESIDUAL_THRESHOLD_V2_SURFACE_ISOLATION_REPORT.json"
+  ],
+  "threshold_decision_emitted": false,
+  "threshold_redesign": false,
+  "training_authorized": false
+}
