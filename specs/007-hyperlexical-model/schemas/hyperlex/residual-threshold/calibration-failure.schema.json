@@ -1,0 +1,52 @@
+{
+  "title": "Calibration failure",
+  "type": "object",
+  "additionalProperties": true,
+  "allOf": [
+    {
+      "$ref": "common.schema.json#/$defs/unfrozenThresholdInvariant"
+    }
+  ],
+  "required": [
+    "failed_gate",
+    "failure_state",
+    "schema",
+    "threshold_frozen",
+    "threshold_value"
+  ],
+  "properties": {
+    "failed_gate": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_state": {
+      "$ref": "common.schema.json#/$defs/threshold_state"
+    },
+    "json_schema_document": {
+      "type": "null"
+    },
+    "json_schema_exists": {
+      "const": false
+    },
+    "measurement_touched": {
+      "const": false
+    },
+    "schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "threshold_frozen": {
+      "const": false
+    },
+    "threshold_value": {
+      "type": "null"
+    }
+  },
+  "patternProperties": {
+    "_sha256$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/calibration-failure.schema.json"
+}
