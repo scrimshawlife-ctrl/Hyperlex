@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/residual-threshold-decision.schema.json",
+  "title": "Residual-threshold decision",
+  "description": "An unfrozen decision requires a null threshold. A frozen decision requires the numeric threshold and its metrics. No frozen success record has been emitted.",
+  "allOf": [
+    {"$ref": "residual-threshold-common.schema.json#/$defs/unfrozenThresholdInvariant"},
+    {"$ref": "residual-threshold-common.schema.json#/$defs/frozenThresholdInvariant"},
+    {
+      "oneOf": [
+        {"$ref": "#/$defs/directionDecision"},
+        {"$ref": "#/$defs/confoundDecision"},
+        {"$ref": "#/$defs/failureDecision"},
+        {"$ref": "#/$defs/supportDecision"},
+        {"$ref": "#/$defs/closureDecision"}
+      ]
+    }
+  ],
+  "$defs": {
+    "directionDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admitted",
+        "analysis_scope",
+        "analysis_sha256",
+        "confound_analysis_run",
+        "direction_result",
+        "evaluation_id",
+        "gold",
+        "json_schema_document",
+        "json_schema_exists",
+        "measurement_state",
+        "next_legal_transition",
+        "next_transition_authorized",
+        "redraw_authorized",
+        "runtime_integration",
+        "select_005_authorized",
+        "selected_source",
+        "settled",
+        "state",
+        "threshold_frozen",
+        "threshold_search_run",
+        "threshold_value",
+        "uncertainty"
+      ],
+      "properties": {
+        "admitted": {"const": 0},
+        "analysis_scope": {"const": "DIRECTION_ONLY"},
+        "analysis_sha256": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+        "confound_analysis_run": {"const": false},
+        "direction_result": {
+          "enum": ["SUPPORTED_DIRECTION", "INVERTED_DIRECTION", "NO_DIRECTIONAL_SEPARATION"]
+        },
+        "evaluation_id": {"type": "string", "minLength": 1},
+        "gold": {"const": 0},
+        "json_schema_document": {"type": "null"},
+        "json_schema_exists": {"const": false},
+        "measurement_state": {"$ref": "residual-threshold-common.schema.json#/$defs/measurement_state"},
+        "next_legal_transition": {"type": "string"},
+        "next_transition_authorized": {"const": false},
+        "redraw_authorized": {"const": false},
+        "runtime_integration": {"const": false},
+        "select_005_authorized": {"const": false},
+        "selected_source": {"const": "none"},
+        "settled": {"const": 0},
+        "state": {"type": "string"},
+        "threshold_frozen": {"const": false},
+        "threshold_search_run": {"const": false},
+        "threshold_value": {"type": "null"},
+        "uncertainty": {"const": "UNCERTAINTY_INTERVAL_NOT_COMPUTED"}
+      }
+    },
+    "confoundDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "analysis_sha256",
+        "confound_result",
+        "evaluation_id",
+        "frozen_stop_conditions",
+        "json_schema_document",
+        "json_schema_exists",
+        "next_stage_authorized_by_this_pass",
+        "state",
+        "threshold_search_run"
+      ],
+      "properties": {
+        "analysis_sha256": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+        "confound_result": {"enum": ["PASS", "STOP"]},
+        "evaluation_id": {"type": "string", "minLength": 1},
+        "frozen_stop_conditions": {
+          "type": "array",
+          "items": {"enum": ["extreme_driven", "pos_partitioned", "tier3_concentrated"]},
+          "minItems": 3,
+          "uniqueItems": true
+        },
+        "json_schema_document": {"type": "null"},
+        "json_schema_exists": {"const": false},
+        "next_stage_authorized_by_this_pass": {"type": "boolean"},
+        "state": {"enum": ["PASS", "CALIBRATION_CONFOUND_REVIEW"]},
+        "threshold_search_run": {"type": "boolean"}
+      }
+    },
+    "failureDecision": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["failed_gate", "failure_state", "schema", "threshold_frozen", "threshold_value"],
+      "properties": {
+        "failed_gate": {"type": "string", "minLength": 1},
+        "failure_state": {"$ref": "residual-threshold-common.schema.json#/$defs/threshold_state"},
+        "gate_pass_counts": {"type": "object"},
+        "json_schema_document": {"type": "null"},
+        "json_schema_exists": {"type": "boolean"},
+        "schema": {"type": "string", "minLength": 1},
+        "threshold_frozen": {"const": false},
+        "threshold_value": {"type": "null"}
+      },
+      "patternProperties": {
+        "_sha256$": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"}
+      }
+    },
+    "supportDecision": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "schema",
+        "state",
+        "support_gate_passed",
+        "threshold_frozen",
+        "threshold_value"
+      ],
+      "properties": {
+        "schema": {"type": "string", "minLength": 1},
+        "state": {"type": "string"},
+        "support_gate_passed": {"type": "boolean"},
+        "threshold_frozen": {"const": false},
+        "threshold_value": {"type": "null"}
+      },
+      "patternProperties": {
+        "_sha256$": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"}
+      }
+    },
+    "closureDecision": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["disposition", "schema", "threshold_frozen", "threshold_value"],
+      "properties": {
+        "disposition": {"type": "string", "minLength": 1},
+        "preserved_execution_sha256": {
+          "type": "object",
+          "additionalProperties": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"}
+        },
+        "schema": {"type": "string", "minLength": 1},
+        "threshold_frozen": {"const": false},
+        "threshold_value": {"type": "null"}
+      }
+    }
+  }
+}

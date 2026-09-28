@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/residual-threshold-threshold-search.schema.json",
+  "title": "Residual-threshold search record",
+  "type": "object",
+  "required": [
+    "candidate_count",
+    "candidates_evaluated",
+    "schema",
+    "search_executed",
+    "selected_threshold"
+  ],
+  "properties": {
+    "algorithm_id": {"type": "string"},
+    "candidate_count": {"type": ["integer", "null"], "minimum": 0},
+    "candidates_evaluated": {"type": "boolean"},
+    "execution_001_search_sha256": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+    "execution_001_search_unchanged": {"type": "boolean"},
+    "gate_pass_counts": {
+      "anyOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        }
+      ]
+    },
+    "json_schema_document": {"type": "null"},
+    "json_schema_exists": {"type": "boolean"},
+    "precision_denominator": {"type": "string"},
+    "reason": {"type": "string"},
+    "schema": {"type": "string", "minLength": 1},
+    "search_executed": {"type": "boolean"},
+    "selected_threshold": {
+      "anyOf": [
+        {"type": "null"},
+        {"$ref": "residual-threshold-common.schema.json#/$defs/residual_decimal"}
+      ]
+    },
+    "selection_algorithm_id": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"search_executed": {"const": false}},
+        "required": ["search_executed"]
+      },
+      "then": {
+        "properties": {
+          "candidate_count": {"type": "null"},
+          "candidates_evaluated": {"const": false},
+          "selected_threshold": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"search_executed": {"const": true}},
+        "required": ["search_executed"]
+      },
+      "then": {
+        "properties": {
+          "candidate_count": {"type": "integer", "minimum": 0},
+          "candidates_evaluated": {"const": true}
+        },
+        "required": ["candidate_count", "gate_pass_counts"]
+      }
+    }
+  ]
+}
