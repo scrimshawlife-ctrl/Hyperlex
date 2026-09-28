@@ -1,0 +1,109 @@
+{
+  "title": "Threshold decision",
+  "description": "Unfrozen decisions require a null threshold. A frozen decision requires the numeric residual string and its frozen metrics. No frozen success record was emitted.",
+  "allOf": [
+    {
+      "$ref": "common.schema.json#/$defs/unfrozenThresholdInvariant"
+    },
+    {
+      "$ref": "common.schema.json#/$defs/frozenThresholdInvariant"
+    }
+  ],
+  "oneOf": [
+    {
+      "$ref": "#/$defs/unfrozen"
+    },
+    {
+      "$ref": "#/$defs/frozen"
+    }
+  ],
+  "$defs": {
+    "unfrozen": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "schema",
+        "threshold_frozen",
+        "threshold_value"
+      ],
+      "properties": {
+        "schema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "threshold_frozen": {
+          "const": false
+        },
+        "threshold_value": {
+          "type": "null"
+        }
+      }
+    },
+    "frozen": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "schema",
+        "threshold_frozen",
+        "threshold_value",
+        "false_high",
+        "high_recall",
+        "leave_one_out_result",
+        "precision",
+        "predicted_yes_support",
+        "quarantine_predicted_yes",
+        "reject_predicted_yes",
+        "true_high",
+        "wilson_lower",
+        "wilson_upper"
+      ],
+      "properties": {
+        "schema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "threshold_frozen": {
+          "const": true
+        },
+        "threshold_value": {
+          "$ref": "common.schema.json#/$defs/residual_decimal"
+        },
+        "false_high": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "high_recall": {
+          "$ref": "common.schema.json#/$defs/effect_decimal"
+        },
+        "leave_one_out_result": {
+          "const": "PASS"
+        },
+        "precision": {
+          "$ref": "common.schema.json#/$defs/effect_decimal"
+        },
+        "predicted_yes_support": {
+          "type": "integer",
+          "minimum": 8
+        },
+        "quarantine_predicted_yes": {
+          "const": 0
+        },
+        "reject_predicted_yes": {
+          "const": 0
+        },
+        "true_high": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "wilson_lower": {
+          "$ref": "common.schema.json#/$defs/effect_decimal"
+        },
+        "wilson_upper": {
+          "$ref": "common.schema.json#/$defs/effect_decimal"
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/threshold-decision.schema.json"
+}

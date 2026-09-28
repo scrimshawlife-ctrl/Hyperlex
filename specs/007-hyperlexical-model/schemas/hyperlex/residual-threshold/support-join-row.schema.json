@@ -1,0 +1,92 @@
+{
+  "title": "Support join row",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "calibration_row_id",
+    "operator_label",
+    "pos",
+    "pwn30_synset",
+    "residual_score",
+    "row_id",
+    "row_resolution_status",
+    "surface"
+  ],
+  "properties": {
+    "calibration_row_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "operator_label": {
+      "$ref": "common.schema.json#/$defs/operator_label"
+    },
+    "pos": {
+      "$ref": "common.schema.json#/$defs/pos"
+    },
+    "pwn30_synset": {
+      "$ref": "common.schema.json#/$defs/pwn30_synset"
+    },
+    "residual_score": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "common.schema.json#/$defs/residual_decimal"
+        }
+      ]
+    },
+    "row_id": {
+      "$ref": "common.schema.json#/$defs/row_id"
+    },
+    "row_resolution_status": {
+      "$ref": "common.schema.json#/$defs/row_resolution_status"
+    },
+    "surface": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "row_resolution_status": {
+            "const": "UNKNOWN"
+          }
+        },
+        "required": [
+          "row_resolution_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "residual_score": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "row_resolution_status": {
+            "const": "RESIDUAL_READY"
+          }
+        },
+        "required": [
+          "row_resolution_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "residual_score": {
+            "$ref": "common.schema.json#/$defs/residual_decimal"
+          }
+        }
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/support-join-row.schema.json"
+}
