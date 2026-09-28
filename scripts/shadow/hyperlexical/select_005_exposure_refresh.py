@@ -1,9 +1,10 @@
 """SELECT-005 exposure refresh stops when the box-side generator is absent.
 
 The canonical command is ``heldout-stream-daily`` on the box. It is not on
-this host, and its documented second step is ``hs_run.py run``. This module
-does not generate exposure rows, does not copy an old snapshot forward, and
-does not harvest.
+this host, and its documented second step is ``hs_run.py run``. A Notion
+term/event census is not a substitute for that command. This module does not
+generate exposure rows, does not copy an old snapshot forward, and does not
+harvest.
 """
 
 from __future__ import annotations
@@ -22,16 +23,27 @@ CANONICAL_PROCEDURE = (
 )
 CANONICAL_HOST = "box"
 PREVIOUS_SNAPSHOT_ID = "20260925T211351Z"
+NOTION_NOT_JEV_HASH_LIST = (
+    "notion term and event registries are not the jev-lane hash list"
+)
 _ID = re.compile(r"^[0-9]{8}T[0-9]{6}Z$")
 _VERN = re.compile(r"^vern-texts-([0-9]{8}T[0-9]{6}Z)\.jsonl$")
 _BOX = re.compile(r"^box-jev-hashes-([0-9]{8}T[0-9]{6}Z)\.txt$")
+_LANE_FLAGS = (
+    "candidates_database_present",
+    "discovery_lane_export_present",
+    "jev_lane_hash_generator_present",
+    "observations_database_present",
+    "obsidian_export_present",
+)
 
 
 def workflow_gate(observation: Mapping[str, Any]) -> dict[str, Any]:
     """Classify whether a canonical snapshot-only generator can be run.
 
     A present daily script is not enough: the documented command also starts
-    ``hs_run.py run``. This function never executes either step.
+    ``hs_run.py run``. Notion term and event rows do not supply the box hash
+    list. This function never executes either step.
     """
     missing = []
     if str(observation.get("host") or "") != CANONICAL_HOST:
@@ -42,7 +54,11 @@ def workflow_gate(observation: Mapping[str, Any]) -> dict[str, Any]:
         missing.append(
             "no snapshot-only entrypoint; the documented command also runs hs_run.py run"
         )
-    if observation.get("vernacular_source_present") is not True:
+    source_kind = str(observation.get("vernacular_source_kind") or "")
+    if source_kind == "notion":
+        if observation.get("jev_lane_hash_generator_present") is not True:
+            missing.append(NOTION_NOT_JEV_HASH_LIST)
+    elif observation.get("vernacular_source_present") is not True:
         missing.append("vernacular sqlite source is absent")
     unavailable = bool(missing)
     return {
@@ -59,6 +75,52 @@ def workflow_gate(observation: Mapping[str, Any]) -> dict[str, Any]:
         "snapshot_id": None,
         "state": UNAVAILABLE if unavailable else "EXPOSURE_REFRESH_NOT_RUN",
         "training_run": False,
+        "transition": TRANSITION,
+    }
+
+
+def notion_registry_gap(census: Mapping[str, Any]) -> dict[str, Any]:
+    """Refuse a pair built from Notion term and event counts alone.
+
+    The box hash list is the over-inclusive Jev-lane exposure set. Term and
+    event registries are a different object. This function does not read
+    Notion and does not write snapshot bytes.
+    """
+    terms = census.get("terms")
+    events = census.get("events")
+    counted = (
+        isinstance(terms, int)
+        and not isinstance(terms, bool)
+        and isinstance(events, int)
+        and not isinstance(events, bool)
+        and terms >= 0
+        and events >= 0
+    )
+    missing = []
+    if not counted:
+        missing.append("notion census is incomplete")
+    if census.get("candidates_database_present") is not True:
+        missing.append("notion has no candidates database")
+    if census.get("observations_database_present") is not True:
+        missing.append("notion has no observations database")
+    if census.get("discovery_lane_export_present") is not True:
+        missing.append("discovery lane export is absent")
+    if census.get("obsidian_export_present") is not True:
+        missing.append("obsidian export is absent")
+    if census.get("jev_lane_hash_generator_present") is not True:
+        missing.append(NOTION_NOT_JEV_HASH_LIST)
+    lanes_present = all(census.get(key) is True for key in _LANE_FLAGS)
+    return {
+        "events": events if counted else None,
+        "harvest_run": False,
+        "missing": missing,
+        "network_requests": 0,
+        "pair_written": False,
+        "previous_pair_overwritten": False,
+        "previous_pair_reused": False,
+        "snapshot_id": None,
+        "state": UNAVAILABLE if missing or not lanes_present else "EXPOSURE_REFRESH_NOT_RUN",
+        "terms": terms if counted else None,
         "transition": TRANSITION,
     }
 

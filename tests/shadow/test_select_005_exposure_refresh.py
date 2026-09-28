@@ -111,3 +111,44 @@ def test_refresh_module_does_not_invoke_harvest_and_harvest_file_is_unchanged():
         assert banned not in text
     harvest = REPO / "scripts/shadow/hyperlexical/select_005_harvest.py"
     assert hashlib.sha256(harvest.read_bytes()).hexdigest() == HARVEST_SHA256
+
+
+def test_notion_term_and_event_registries_do_not_bind_a_pair():
+    from hyperlexical.select_005_exposure_refresh import (
+        NOTION_NOT_JEV_HASH_LIST,
+        notion_registry_gap,
+    )
+
+    gap = notion_registry_gap(
+        {
+            "candidates_database_present": False,
+            "discovery_lane_export_present": False,
+            "events": 120,
+            "jev_lane_hash_generator_present": False,
+            "observations_database_present": False,
+            "obsidian_export_present": False,
+            "terms": 44,
+        }
+    )
+    assert gap["state"] == UNAVAILABLE
+    assert gap["snapshot_id"] is None
+    assert gap["pair_written"] is False
+    assert gap["harvest_run"] is False
+    assert gap["previous_pair_reused"] is False
+    assert gap["network_requests"] == 0
+    assert gap["terms"] == 44
+    assert gap["events"] == 120
+    assert NOTION_NOT_JEV_HASH_LIST in gap["missing"]
+
+    record = workflow_gate(
+        _obs(
+            vernacular_source_present=True,
+            vernacular_source_kind="notion",
+            jev_lane_hash_generator_present=False,
+        )
+    )
+    assert record["state"] == UNAVAILABLE
+    assert record["snapshot_id"] is None
+    assert record["harvest_run"] is False
+    assert NOTION_NOT_JEV_HASH_LIST in record["missing"]
+    assert all("sqlite" not in item for item in record["missing"])
