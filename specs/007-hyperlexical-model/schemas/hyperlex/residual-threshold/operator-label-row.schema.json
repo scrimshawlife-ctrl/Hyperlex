@@ -1,0 +1,126 @@
+{
+  "title": "Operator label row",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calibration_row_id",
+        "operator_bucket",
+        "operator_label_present",
+        "score_status"
+      ],
+      "properties": {
+        "calibration_row_id": {
+          "$ref": "common.schema.json#/$defs/row_id"
+        },
+        "operator_bucket": {
+          "type": "null"
+        },
+        "operator_label_present": {
+          "const": false
+        },
+        "score_status": {
+          "$ref": "common.schema.json#/$defs/score_status"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operator_bucket",
+        "operator_label_present",
+        "row_id",
+        "score_status"
+      ],
+      "properties": {
+        "operator_bucket": {
+          "type": "null"
+        },
+        "operator_label_present": {
+          "const": false
+        },
+        "row_id": {
+          "$ref": "common.schema.json#/$defs/row_id"
+        },
+        "score_status": {
+          "$ref": "common.schema.json#/$defs/score_status"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calibration_row_id",
+        "operator_evidence",
+        "operator_label",
+        "operator_note",
+        "pos",
+        "pwn30_synset",
+        "review_status",
+        "row_id",
+        "schema",
+        "surface"
+      ],
+      "properties": {
+        "calibration_row_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "operator_evidence": {
+          "enum": [
+            "AMBIGUOUS_SENSE",
+            "CONVENTIONALIZED_SHIFT",
+            "DOMAIN_LEXICALIZED",
+            "FIXED_COMPOSITIONAL",
+            "FIXED_NONLITERAL",
+            "LEXICALIZED_TRANSPARENT",
+            "ORGANIZATION",
+            "PERSON_NAME",
+            "PHRASAL_BINDING",
+            "PRODUCTIVE_NUMBER",
+            "PROVENANCE_UNCLEAR",
+            "REFERENTIAL_DOMINANCE",
+            "SPECIES_COMMON_NAME",
+            "STRONG_IDIOM",
+            "TAXONOMY",
+            "TECHNICAL_MEASUREMENT",
+            "TECHNICAL_PROCEDURE",
+            "TITLE_OR_DESIGNATION",
+            "VARIABLE_SLOT"
+          ]
+        },
+        "operator_label": {
+          "$ref": "common.schema.json#/$defs/operator_label"
+        },
+        "operator_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pos": {
+          "$ref": "common.schema.json#/$defs/pos"
+        },
+        "pwn30_synset": {
+          "$ref": "common.schema.json#/$defs/pwn30_synset"
+        },
+        "review_status": {
+          "const": "REVIEWED"
+        },
+        "row_id": {
+          "$ref": "common.schema.json#/$defs/row_id"
+        },
+        "schema": {
+          "const": "hyperlex.residual_threshold_v2_operator_label.v1"
+        },
+        "surface": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/operator-label-row.schema.json"
+}

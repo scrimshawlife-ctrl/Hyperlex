@@ -1,0 +1,129 @@
+{
+  "title": "Residual score row",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "abstention_reason",
+        "row_id",
+        "score_status"
+      ],
+      "properties": {
+        "abstention_reason": {
+          "enum": [
+            "ambiguous_content_constituent",
+            "fewer_than_two_content_constituents",
+            "unresolved_content_constituent"
+          ]
+        },
+        "row_id": {
+          "$ref": "common.schema.json#/$defs/row_id"
+        },
+        "score_status": {
+          "const": "UNKNOWN"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "composed_vector_hash",
+        "constituent_representation_texts",
+        "constituent_resolution_tiers",
+        "constituent_vector_hashes",
+        "content_constituents",
+        "integrated_resolution_sha256",
+        "pos",
+        "residual_candidate_spec_sha256",
+        "residual_score",
+        "resolved_constituent_synsets",
+        "row_id",
+        "score_status",
+        "surface",
+        "synset",
+        "uses_tier3",
+        "whole_representation_text",
+        "whole_vector_hash"
+      ],
+      "properties": {
+        "composed_vector_hash": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        },
+        "constituent_representation_texts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2
+        },
+        "constituent_resolution_tiers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2
+        },
+        "constituent_vector_hashes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sha256"
+          },
+          "minItems": 2
+        },
+        "content_constituents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2
+        },
+        "integrated_resolution_sha256": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        },
+        "pos": {
+          "$ref": "common.schema.json#/$defs/pos"
+        },
+        "residual_candidate_spec_sha256": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        },
+        "residual_score": {
+          "$ref": "common.schema.json#/$defs/residual_decimal"
+        },
+        "resolved_constituent_synsets": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/pwn30_synset"
+          },
+          "minItems": 2
+        },
+        "row_id": {
+          "$ref": "common.schema.json#/$defs/row_id"
+        },
+        "score_status": {
+          "const": "SCORED"
+        },
+        "surface": {
+          "type": "string",
+          "minLength": 1
+        },
+        "synset": {
+          "$ref": "common.schema.json#/$defs/pwn30_synset"
+        },
+        "uses_tier3": {
+          "type": "boolean"
+        },
+        "whole_representation_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "whole_vector_hash": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        }
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/score-row.schema.json"
+}
