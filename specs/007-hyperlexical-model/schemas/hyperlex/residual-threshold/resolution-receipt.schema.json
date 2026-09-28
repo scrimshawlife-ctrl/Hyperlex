@@ -1,0 +1,64 @@
+{
+  "title": "Resolution receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "calibration_rows",
+    "json_schema_document",
+    "json_schema_exists",
+    "parent_rows",
+    "residual_ready_rows",
+    "resolution_sha256",
+    "schema",
+    "unknown_rows"
+  ],
+  "properties": {
+    "calibration_rows": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "json_schema_document": {
+      "type": "null"
+    },
+    "json_schema_exists": {
+      "const": false
+    },
+    "measurement_touched": {
+      "const": false
+    },
+    "parent_rows": {
+      "type": "array",
+      "minItems": 1
+    },
+    "residual_ready_rows": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "resolution_sha256": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unknown_rows": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "patternProperties": {
+    "(^|_)sha256$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "_hash$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "common.schema.json#/$defs/sealedMeasurementInvariant"
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/resolution-receipt.schema.json"
+}

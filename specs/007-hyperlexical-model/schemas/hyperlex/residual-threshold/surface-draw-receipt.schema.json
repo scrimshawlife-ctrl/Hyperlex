@@ -1,0 +1,63 @@
+{
+  "title": "Surface draw receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "json_schema_document",
+    "json_schema_exists",
+    "schema",
+    "threshold_frozen",
+    "threshold_value"
+  ],
+  "properties": {
+    "draw_seed": {
+      "type": "null"
+    },
+    "json_schema_document": {
+      "type": "null"
+    },
+    "json_schema_exists": {
+      "const": false
+    },
+    "measurement_state": {
+      "$ref": "common.schema.json#/$defs/measurement_state"
+    },
+    "schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selected_source": {
+      "const": "none"
+    },
+    "threshold_frozen": {
+      "type": "boolean"
+    },
+    "threshold_value": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "patternProperties": {
+    "(^|_)sha256$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "_hash$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "common.schema.json#/$defs/unfrozenThresholdInvariant"
+    },
+    {
+      "$ref": "common.schema.json#/$defs/frozenThresholdInvariant"
+    },
+    {
+      "$ref": "common.schema.json#/$defs/sealedMeasurementInvariant"
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/surface-draw-receipt.schema.json"
+}
