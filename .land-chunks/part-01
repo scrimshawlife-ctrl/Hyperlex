@@ -1,0 +1,192 @@
+A sealed reserve binding satisfies the holdout requirement when the active reserve is `EVAL_RESERVE` for the current experiment, all four slices are present on that active set, the binding digest matches the full `events.jsonl`, and training overlap by row id and by normalized text hash is 0 against that active set. Overlap rejects the run. It does not drop training rows. `HLX_HOLDOUT_MANIFESTS` is not a second requirement. `HLX_ALLOW_NO_HOLDOUT` does not admit a controlled experiment. Legacy launches that are not controlled experiments still use the manifest gate.
+
+Active membership is the derived lifecycle `EVAL_RESERVE` whose experiment binding is only the current experiment. `evaluation_reserved` stays historical evidence and is not cleared when the lifecycle is `EVAL_SPENT`. Spent identities do not count, do not satisfy overlap, and cannot be reserved again. A ledger with no active identities is a missing active reserve. A live `EVAL_RESERVE` bound to another experiment does not satisfy the current experiment. Slice counts and the binding identity count use the active set. The events digest still covers the append-only log.
+
+The default scientific variable remains `HLX_SELECT_METRIC`: that key is the only allowed difference. `HLX_SCIENTIFIC_VARIABLE=train_schedule`, set to the same value on the baseline, the candidate, and the process, is the only composite. It normalizes `HYPERLEX_TRAIN_EPOCHS`, `HYPERLEX_EARLY_STOP`, `HYPERLEX_EARLY_STOP_PATIENCE`, and `HYPERLEX_EARLY_STOP_MIN_EPOCHS` into one variable. Both arms must set `HLX_SELECT_METRIC=classify_macro_f1_nonnone`. Any other difference fails. An undeclared schedule difference fails. A selection-metric difference is not part of `train_schedule`. Declaring the variable does not register or authorize an experiment.
+
+`HYPERLEX_ALLOW_TRAIN=1` is part of the effective environment hash. `HLX_ADMISSION_ONLY=1` is not. With that flag, `python -m hyperlexical.train --run` returns after admission and does not construct an optimizer, enter epoch 0, or take a gradient step. `TRAINING_READY` means that same admission returned `ADMISSION_PASS`.
+
+```text
+RUNE.PREFLIGHT_LAUNCH_PARITY(x) =
+    effective_environment_hash(preflight) == effective_environment_hash(launch)
+    AND admission_gate_sequence(preflight) == admission_gate_sequence(launch)
+    AND admission_result(preflight) == admission_result(launch)
+```
+
+## SELECT-004 readiness
+
+`HLX-EXP-2026-09-26-SELECT-004` is not preregistered and is not authorized to run. It may be drafted. SELECT-001, SELECT-002, and SELECT-003 produced no scientific evidence about `HLX_SELECT_METRIC`. A draft may test the same hypothesis: baseline unset, which resolves to `unbind_exact` with `HYPERLEX_SAVE_BEST_UNBIND=1`; candidate `classify_macro_f1_nonnone`.
+
+No canonical rule carries numeric thresholds across experiments. SELECT-003's floors do not transfer. SELECT-004 decision thresholds are `BLOCKED_PENDING_OPERATOR_AUTHORIZATION` until a fresh authorization is sealed for that id.
+
+The draft must keep the pinned export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, 9150 rows, BEST sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`, and trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. The GEN-0 reserve stays classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491. It is not scored and its lifecycle is not changed. Admission uses that reserve. It does not draw another one and it does not attach a legacy manifest.
+
+Vendor calls: 0. BEST was not moved. Do not train.
+## SELECT-004 preregistered — HLX-EXP-2026-09-26-SELECT-004
+
+`HLX-EXP-2026-09-26-SELECT-004` is `PREREGISTERED`. Preregistration sha256 `365f7ce7141e8ee899fc52d85584a32c21ecfcb596e316b1438463bd8db85c4a`. That seal records repository commit `493c75981bf443baf2899b71b504fe7c7a529cf9` and a clean tree. Later documentation does not edit the sealed file.
+
+Predecessors are not evidence. SELECT-001 remains `CLOSED_AT_LAUNCH_GATE`. SELECT-002 remains `EXECUTION_INVALID` with epochs 0 and gradient steps 0. SELECT-003 remains `EXECUTION_INVALID`, cause `PREFLIGHT_LAUNCH_HOLDOUT_GATE_MISMATCH`, epochs 0, gradient steps 0, candidate checkpoint none, reserve not scored. The hypothesis is `UNTESTED`.
+
+The single scientific variable is `HLX_SELECT_METRIC`. Baseline is unset, which resolves to `unbind_exact` with `HYPERLEX_SAVE_BEST_UNBIND=1`. Candidate is `classify_macro_f1_nonnone`. Experiment diff sha256 `aa6e42e50a9547908edfe4860371a2ec05f7ec20ea87dfa829555d9e7b05bc4c`. `experimental_variable_count` is 1. Metadata differences are the experiment id, the output directory, and the residual-dump path.
+
+`CONTROLLED_RESERVE` binding sha256 `c16e69559dd6582f687532ce6e2a2e9b52a70db1aa066d11e7e68e723936b371`. Ledger events sha256 `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`. Projection sha256 `d071b7aec8154203ce7f9ae9531639b8d638f86c2ac0c3af38bead9b3c4a48f9`. Counts remain classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491, lifecycle `EVAL_RESERVE`. Training row-id overlap is 0. Training canonical-text overlap is 0. The reserve was not scored, spent, abandoned, or relabeled. Historical spent and abandoned identities in the same ledger are not this reserve.
+
+Training input is the pinned export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, mode `PINNED_EXPORT`. Declared rows, consumed rows, and effective optimization rows are 9150. No runtime exclusion reduced the set. `HLX_ALLOW_NO_HOLDOUT` stayed unset. No legacy holdout manifest was attached.
+
+BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`. Trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. BEST was not moved.
+
+Decision thresholds are `BLOCKED_PENDING_OPERATOR_AUTHORIZATION`. SELECT-003 numeric floors do not transfer. The prepared preservation metric names are `unbind_clean_exact`, `classification_accuracy`, and `observed_label_accuracy`. Those names have no active numeric thresholds.
+
+Admission-only parity passed. Preflight and the trainer entrypoint, both under `HYPERLEX_ALLOW_TRAIN=1` with `HLX_ADMISSION_ONLY=1`, share environment hash `759c591151c88074973c3ba2a555be551d3460c04c8cedf59ab36624de215885`. `admission_result` is `ADMISSION_PASS`. Status is `PREREGISTERED`. `optimizer_loaded` is false. Epochs 0. Gradient steps 0. The SELECT-004 output directory was absent before and after. `HLX_ADMISSION_ONLY` is excluded from the environment hash.
+
+`TRAINING_READY` exists only when all three are true: the scientific contract is sealed, the decision rule is sealed, and real entrypoint admission passes. SELECT-004 stays below `TRAINING_READY` until a fresh threshold authorization for this experiment id. `training_launch_authorized` is false.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. Classification support is 188 rights-cleared non-none identities. Clean unbind is 250 identities, 125 targets, 2 role-scheme surfaces per target, from Princeton WordNet 3.0 only. Unsupported families remain relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, and spiritual-mystic. A later result must not claim those families. Label universe sha256 `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`. Absent-class policy `omit_when_gold_support_is_zero`.
+
+Vendor calls: 0. Do not train. The next decision is a fresh SELECT-004 threshold authorization.
+## SELECT-004 thresholds authorized — HLX-EXP-2026-09-26-SELECT-004
+
+Fresh operator authorization for `HLX-EXP-2026-09-26-SELECT-004` only. It does not inherit authority from SELECT-001, SELECT-002, or SELECT-003. The sealed preregistration bytes stay `365f7ce7141e8ee899fc52d85584a32c21ecfcb596e316b1438463bd8db85c4a`.
+
+`PROMOTE` requires `classify_macro_f1_nonnone` strictly greater than `seed-morph78` on the sealed twelve-class universe, sha256 `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`, absent-class policy `omit_when_gold_support_is_zero`. Equality does not promote. The new SELECT-004 preservation floors are unbind clean exact within 0.01 on 250 identities, classification accuracy within 0.02 on 241 identities, and OBSERVED-label accuracy within 0.05 on 123 identities. A primary decrease, a preservation breach, or a hard integrity failure is `REJECT`. Equal primary metrics with every guard passing are `INCONCLUSIVE`. An inconclusive result is not resolved by changing thresholds.
+
+Authorization artifact sha256 `7389783b52a5d5cf14ceca874cc12351d3f6571b6be8a8666c2040be38972625`. Post-authorization admission used `HYPERLEX_ALLOW_TRAIN=1` and `HLX_ADMISSION_ONLY=1`. Preflight and the trainer entrypoint share environment hash `a2b18512be8329ee63ad06e98f894c6138cf7eac05f6e82d53d4132e99a27f5d`. `admission_result` is `ADMISSION_PASS`. Status is `TRAINING_READY` because the scientific contract is sealed, the decision rule is sealed, and the real entrypoint passed. `optimizer_loaded` is false. Epochs 0. Gradient steps 0. Training was not started. Output directory stayed absent. BEST sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1` was not moved. Trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. `training_launch_authorized` is false. `HLX_ALLOW_NO_HOLDOUT` stayed unset.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. The decision covers classify 241, classify_observed 123, classify_non_none 188, and unbind_clean 250. It does not establish performance for relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, or spiritual-mystic. Clean unbind stays limited to the sealed WordNet slice. Vendor calls: 0. Do not train. The next decision is launch authorization only.
+
+## SELECT-004 scored — HLX-EXP-2026-09-26-SELECT-004
+
+One run finished under the sealed contract. Container `hlx-train-select004-1790448703` exited 0 after 40 epochs. The training schedule was not shortened. Checkpoint selection used `classify_macro_f1_nonnone` on the training-export validation surface. The selected checkpoint is epoch 3 at 0.64448782942204. Epoch 39 scored 0.5864567286803334. Candidate weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Consumed export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, 9150 rows, reserve filter removed 0. The reserve ledger was not modified during training.
+
+Reserve scoring used the sealed twelve-family universe `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`. seed-morph78 macro-F1 0.022395727019119547, accuracy 0.14107883817427386, OBSERVED accuracy 0.032520325203252036, unbind clean exact 0.092. The candidate macro-F1 0.07245710784313726, accuracy 0.15767634854771784, OBSERVED accuracy 0.08130081300813008, unbind clean exact 0.100. Deltas are +0.05006138082401771, +0.01659751037344398, +0.048780487804878044, and +0.008. The char 3–5 baseline macro-F1 was 0.0, so CHAR_WINS did not occur. Decision **PROMOTE**. State `PROMOTION_ELIGIBLE`. `--apply-best` was not run. BEST remains `seed-morph78` / `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. The production head still emits the nine training families, so nine of the twelve gold families cannot be named and pull the absolute macro-F1 down for both checkpoints. The claim stays inside the sealed slices. Vendor calls: 0. The 40-epoch schedule was left as sealed. A later duration study can measure best-epoch locations; it is not a change to this result.
+
+## SELECT-004 promoted — HLX-EXP-2026-09-26-SELECT-004
+
+Operator authorization applied the selected epoch-3 checkpoint as BEST. The promoted object is `hyperlex-encoder-modernbert-base-seed-select004/model.safetensors`, sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. `model.final.safetensors` (`d5be46be6611e382d837bab8868bb373cbead4f9caa3a666ca06f2b2cda1925b`) was not promoted. Epoch 39 was not promoted. No training ran. The reserve was not rescored.
+
+Previous BEST `hyperlex-encoder-modernbert-base-seed-morph78` remains in place, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`.
+
+Decision receipt sha256 `ee493b7d73b5e00ae27ec681bb52405bbcf2983a16a0297edad225aec52b7225`. Decision `PROMOTE`. Selection metric `classify_macro_f1_nonnone` `0.64448782942204`. Primary macro-F1 baseline `0.022395727019119547`, candidate `0.07245710784313726`, delta `0.05006138082401771`. Preservation deltas: classification accuracy `0.01659751037344398`, OBSERVED accuracy `0.048780487804878044`, unbind clean exact `0.008`. CHAR_WINS did not occur. Integrity `PASS`.
+
+The 491 sealed reserve identities moved `EVAL_RESERVE` to `EVAL_BOUND` to `EVAL_SPENT` through `IdentityLedger.transition` and `persist_append`. Events sha256 before `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`, after `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. Projection sha256 before `d071b7aec8154203ce7f9ae9531639b8d638f86c2ac0c3af38bead9b3c4a48f9`, after `77e22433203879b252f7a9e309d2013d7550101d1c4a014b494d2c96df87d0e0`. The sealed binding file `c16e69559dd6582f687532ce6e2a2e9b52a70db1aa066d11e7e68e723936b371` was not rewritten. Historical consumed, spent, and abandoned identities outside this reserve were not changed.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. This promotion does not establish performance across the eighteen-family ontology. The production head cannot name nine of the twelve sealed gold families. That limitation is separate from the checkpoint pointer. Vendor calls: 0. No further experiment was started.
+
+Promotion receipt sha256 `2e1f84b476f7355e31380419afad00d0b16d372235a0da6be85adc17fcf92d01`.
+
+## SELECT-005 blocked — HLX-EXP-2026-09-27-SELECT-005
+
+`HLX-EXP-2026-09-27-SELECT-005` is the next unclaimed experiment id. Claimed ids are `HLX-EXP-2026-09-26-SELECT-001` through `HLX-EXP-2026-09-26-SELECT-004`. This id is recorded and not sealed. No preregistration file, arm directory, reserve, or admission receipt was created.
+
+`TRAINING_BLOCKED`. The proposed variable is the composite `train_schedule`. Control would be `max_epochs=40`, early stopping disabled, restore best. Candidate would be `max_epochs=12`, `minimum_epochs=4` scored epochs through epoch index 3, `early_stopping_patience=4`, strict increase, ties keep the earlier checkpoint, restore best. Both arms would pin `classify_macro_f1_nonnone`, warm start `hyperlex-encoder-modernbert-base-seed-morph65`, and export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430` at 9150 rows.
+
+The canonical trainer does not implement that candidate. `scripts/shadow/hyperlexical/loop.py` scores `for ep in range(epochs)` and never stops early. `score_now > best_macro` already keeps the earlier checkpoint on ties, and best weights are written back after the loop when the selection metric is `classify_macro_f1_nonnone`. `epoch-progress.jsonl` records the metric and not wall-clock. Spark and public `main` have the same `loop.py` sha256 `f51e7aaff69e9033cc9ba16eee7225bfeefcf521e32236bdb791cc7900e130a5`. Spark HEAD `098ece4d9e8ebb27b0b0d3410b1280ed072d4847` was clean. Public `main` is `2f73f30010cc16ee014ed8d88de73131eb80d0a9`.
+
+The smallest separate change is an optional break in that epoch loop, default off: after a scored epoch, stop when at least 4 epochs have been scored and `epoch - best_epoch >= 4`, still capped by `max_epochs`, and append per-epoch wall-clock seconds to `epoch-progress.jsonl`. Setting `HYPERLEX_TRAIN_EPOCHS=12` is not that schedule. This record does not apply the change.
+
+SELECT-004 artifacts were not modified. Its reserve stays `EVAL_SPENT` and was not reused. No new reserve was allocated. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. No optimizer was constructed. Epochs and gradient steps for this id are zero. Launch is not authorized.
+
+## SELECT-005 still blocked — trainer synced, admission refused
+
+Spark now carries public `main` `a7d254e8981695072f5be36ab7ebdcc46cbd672c` for the trainer. `scripts/shadow/hyperlexical/loop.py` sha256 `1aa395081d7709be3844bf2568d12100d73d931ecbc51af43c3d6e01dba77e2a`. Early stopping remains default-off. `HLX-EXP-2026-09-27-SELECT-005` is still not sealed. No preregistration file, arm directory, reserve, or admission receipt was created. The private ledger sections above were not replaced by the public projection.
+
+`TRAINING_BLOCKED`. The trainer can express the candidate schedule. Canonical admission cannot seal it.
+
+`admit_training_run` allows exactly one scientific difference, and that difference must be `HLX_SELECT_METRIC`. A non-mutating probe pinned both arms to `classify_macro_f1_nonnone` and changed only `HYPERLEX_TRAIN_EPOCHS` (`40` versus `12`) and `HYPERLEX_EARLY_STOP` (`0` versus `1`). Patience and minimum epochs were the same on both arms. The gate `single_variable` failed: `scientific variable count is 2: HYPERLEX_EARLY_STOP,HYPERLEX_TRAIN_EPOCHS`.
+
+The spent ledger cannot supply a new `EVAL_RESERVE`. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. Live reserve counts are classify 0, classify_observed 0, classify_non_none 0, unbind_clean 0. The same probe failed at `holdout_reserve`: `reserve slice classify is absent`. The reserve scan also includes every identity with `evaluation_reserved` set. That scan is 491 identities, all derived `EVAL_SPENT`. A new reserve written onto this ledger would still fail that lifecycle check. The flag was not cleared. The SELECT-004 reserve was not reused.
+
+No optimizer was constructed. Epochs and gradient steps for this id are zero. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Launch is not authorized.
+
+The smallest separate change is an admission-contract patch: accept one declared schedule variable while both arms share `classify_macro_f1_nonnone`, and treat historical `EVAL_SPENT` identities as outside the current reserve without clearing `evaluation_reserved`. Do not allocate a reserve before that contract exists.
+
+
+## SELECT-005 still unsealed — admission contract synced, fresh reserve unavailable
+
+Public `main` is `fab0de03d75e3280dc34feed425c4783ccf7e2b5`, the squash merge of the admission contract. Spark carries that `admission.py` sha256 `6ae7b63ca1b6e0459d9b795c731668b3eff524269d81bcb92181c0c9d407ab78` and `identity_ledger.py` sha256 `ac49b7240a895952b99b3ef9046f7a8185c8647badac7a45c8640d592057d1c5`. `scripts/shadow/hyperlexical/loop.py` remains sha256 `1aa395081d7709be3844bf2568d12100d73d931ecbc51af43c3d6e01dba77e2a`. The private ledger file was not replaced.
+
+`HLX-EXP-2026-09-27-SELECT-005` is still not sealed. No preregistration file, arm directory, reserve binding, or admission receipt was created. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `evaluation_reserved` was not cleared. The SELECT-004 reserve stays `EVAL_SPENT` and was not reused.
+
+A fresh reserve needs all four slices from text that is absent from the ledger and from the pinned export. The ledger has no `EVAL_RESERVE`, `EVAL_BOUND`, or `AVAILABLE` identities. The remaining settled hashes from the held-out stream that are absent from the ledger are `UNRESOLVED`, `NONE`, `RECLASSIFY`, or `ACCEPT` with `RIGHTS_UNRESOLVED`. Unresolved-rights rows stay out of `EVAL_RESERVE`. No novel rights-cleared classify settlement remains. A classify-absent reserve was not written. The WordNet unbind source was not admitted by itself.
+
+No optimizer was constructed. Epochs and gradient steps for this id are zero. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Launch is not authorized.
+
+
+## SELECT-005 census — fresh reserve still unavailable
+
+A second join of the 339 settlement events to the 7964 ledger identities found no novel rights-cleared classify row. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The ledger was not appended. `evaluation_reserved` was not cleared. The SELECT-004 reserve was not reused.
+
+All 6761 unique hashes in the pinned export are already in the ledger. Of the 98 settlement events absent from the ledger, none are in that export. Those 98 are 82 `UNRESOLVED` with cleared rights, 2 `UNRESOLVED` with unresolved rights, 7 `ACCEPT` with unresolved rights, 6 `NONE` with unresolved rights, and 1 `RECLASSIFY` with unresolved rights. `UNRESOLVED` means the operator reviewed the row and declined to settle it. Unresolved-rights rows stay out of `EVAL_RESERVE`. There are 0 novel `CC-BY-SA` rows with decision `ACCEPT`, `RECLASSIFY`, or `NONE`.
+
+The 28 promoted-accept files are training gold under an older family set and were not remapped. WordNet can still supply `unbind_clean` and was not admitted alone, because a classify-absent reserve fails the slice gate. No preregistration, arm directory, reserve binding, or admission receipt was created. The optimizer was not constructed. Epochs and gradient steps for `HLX-EXP-2026-09-27-SELECT-005` remain 0. `training_launch_authorized` is false. BEST was not moved.
+
+
+## SELECT-005 classify candidates blocked — HLX-EVAL-REVIEW-2026-09-27-001
+
+Admission requires each active slice count to be at least 1. The classify floors are classify 1, classify_observed 1, and classify_non_none 1. Planning targets 606, 287, and 604 are not that floor. This pass did not lower the floor.
+
+Packet `HLX-EVAL-REVIEW-2026-09-27-001` is an operator-review packet, not a reserve. Ready rows: 0. Other screened rows: label unresolved 10, rights blocked 69, provenance blocked 4, cohort duplicate 1. Previously declined rights-cleared rows and unresolved-rights events were not reopened. WordNet and the older promoted-accept files were not used. No operator decision was written.
+
+Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The ledger was not appended. `HLX-EXP-2026-09-27-SELECT-005` was not sealed. BEST was not moved.
+
+
+## ai-native evaluation family — 2026-09-27
+
+Public `main` is `ca9403efe8470d46566abbcd098640f07b33b759`. `ai-native` is taxonomy-active. `evaluation.enabled` stays false. The production head stays nine names. No row was settled. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+The review packet `HLX-EVAL-REVIEW-2026-09-27-001` now has 10 ready rows proposing `ai-native`. Their stored class stays `INFERRED`. `classify_observed` is still short by 1 until an operator attests `OBSERVED`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed.
+
+
+## Operator attested the ready rows observed
+
+The operator attested `OBSERVED` on all 10 ready rows in packet `HLX-EVAL-REVIEW-2026-09-27-001`. The proposed family is `ai-native`. Rights-blocked, provenance-blocked, and duplicate rows were not attested. No `ACCEPT`, `RECLASSIFY`, or `NONE` was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed.
+
+## Unbind preview refused as slang — 2026-09-27
+
+The operator reviewed the first 20 positional surfaces from the novel WordNet unbind pool. None are admitted as slang. Eighteen are refused. `give a damn` and `in one's birthday suit` are quarantined for provenance review. Slang, idiom, colloquialism, and profanity stay distinct. No `ACCEPT`, `REJECT`, `CORRECT_TARGET`, or `UNRESOLVED` was written to the unbind settlement log. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. These rows are not classify gold and must not be trained as slang. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Disposition packet `HLX-EVAL-UNBIND-PREVIEW-2026-09-27-001`.
+
+## Unbind preview roles — 2026-09-27
+
+Slang classification and structure unbinding stay orthogonal. On the same 20-surface preview, the operator marked 7 high-value unbind candidates, 8 secondary candidates, and 5 rejects. The rejects are `beta vulgaris`, `gulf of oman`, `u. s. air force`, `department of the federal government`, and `court of assize and nisi prius`. The slang disposition is unchanged: none admitted, 18 refused, and `give a damn` plus `in one's birthday suit` quarantined as slang. No unbind settlement decision was written. The 15 candidates are not admitted. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-PREVIEW-2026-09-27-001`.
+
+## Unbind screen specified — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v1` is a candidate-selection rule, not an admission filter. Specification agreement with the 20-item preview is 20/20. That figure is specification fit, not held-out precision. A held-out validation sample of 32 admissible positional surfaces, excluding those 20, is recorded with proposed buckets and `gold` null. Provisional screen counts on 63882 admissible positional surfaces are high-value 1965, secondary 60559, reject 1358. Those counts are not a draw. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-001`.
+
+## Unbind screen v2 — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v2` replaces the v1 proposal as the screening hypothesis. It is not authorized as the SELECT-005 screen. Surface patterns remain candidate-generation heuristics. Hard exclusions are proper name, titled entity, taxonomy, productive number, and unconstrained free composition. Agreement after the revision is 20/20 on the first preview and 32/32 on the reviewed sample. That agreement is fit, not held-out precision. A new validation sample excludes all 52 reviewed surfaces and carries `gold` null. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-002`.
+
+## Unbind screen v3 — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v3` is a hypothesis. It is not authorized as the SELECT-005 screen. Candidate-generation patterns do not assign high-value. The automatic screen emits reject or unresolved only. v2 pool counts stay frozen at high-value 1977, secondary 55427, reject 6478, over 63882 positional surfaces, and were not recomputed. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-003`.
+
+## Unbind screen v3 held out — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v3` stays a proposed refinement. Fifty-two surfaces are frozen as development data and thirty-two as validation-development data. Agreement on those eighty-four is fit, not held-out precision. A fresh sample of 29 admissible positional surfaces excludes all 84. Predictions were not hand-corrected. Held-out precision is not computed. v2 pool counts stay frozen at high-value 1977, secondary 55427, reject 6478, over 63882 positional surfaces. The v3 screen was not run on that pool. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-004`.
+
+## Unbind held-out frozen — 2026-09-27
+
+The 29-row v3 application is frozen. Sample sha256 `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. It was produced by one application of `RUNE.UNBIND_SCREEN.v3` and was not hand-corrected. Operator labels are pending. Held-out precision is `NOT_COMPUTABLE`. v3 was not revised. Development data remain 52 rows. Validation-development data remain 32 rows. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not authorized and is not sealed.
+
+## Unbind screen evaluation lane — 2026-09-27
+
+`HLX-EVAL-UNBIND-SCREEN-V3-001` evaluates the frozen 29-row v3 application. Source sample sha256 remains `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. Prediction, operator judgment, gold, admission, and settlement are separate artifacts. The blind review does not carry the predicted bucket. Operator labels are pending. Held-out precision and the confusion matrix are `NOT_COMPUTABLE`. A scored report does not authorize `HLX-EXP-2026-09-27-SELECT-005`. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen held-out scored — 2026-09-27
+
+Operator labels for HLX-EVAL-UNBIND-SCREEN-V3-001 are frozen. Label sha256 `4e7bae5986e6345de62086af270a1d1a6902103d69a50d8f0b1e4e0fe01ecde5`. The source sample sha256 remains `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. Resolved accuracy is 16/29. High precision is 1 and recall is 6/13. Secondary precision is 4/17 and recall is 1. Reject precision is 1 and recall is 6/12. Quarantine support is 0. Every error is false secondary: 7 operator-high and 6 operator-reject. False high and false reject are 0. revision_eligible stays false. SELECT-005 is not authorized. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v4 hypothesis — 2026-09-28
+
+The v3 held-out score stays 16/29. All 13 errors are false secondary: 7 operator-high and 6 operator-reject. False high and false reject are 0. Those 29 rows are now v4 development evidence, not a validation set. `RUNE.UNBIND_SCREEN.v4` is drafted and not encoded, applied, or authorized. It would only add coverage around the secondary basin: normalized productive numbers, multi-token personal names, organization glosses, species common names, and medical technical phrases on one side; nonliteral and conventionalized gloss evidence on the other. Existing high and reject decisions stay in place. `revision_eligible` stays false. SELECT-005 is not authorized. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v4 acceptance frozen — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v4.ACCEPTANCE` is frozen and the screen is not encoded. Acceptance sha256 `ffb39e38784a56ae15bae51718c61b78fc861e48399936dbed57fb7d0754c55b`. v4 may only move additional secondary fall-throughs, and only by semantic evidence classes. It must not reinterpret v3 high or reject logic, redefine secondary, or train on a future validation sample. Phrase-specific exceptions are prohibited. The 113 reviewed surfaces are the later regression set. The next measurement sample must exclude them and be frozen before inspection. `revision_eligible` stays false. SELECT-005 is not authorized. The v3 sample and label hashes are unchanged. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v4 encoded — 2026-09-28
+
