@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.unbind_screen_report.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "status",
+    "select_authorized",
+    "admitted",
+    "settled",
+    "gold"
+  ],
+  "properties": {
+    "schema": {
+      "const": "hyperlex.unbind_screen_report.v1"
+    },
+    "status": {
+      "enum": [
+        "NOT_COMPUTABLE",
+        "SCORED"
+      ]
+    },
+    "select_authorized": {
+      "const": false
+    },
+    "revision_eligible": {
+      "type": "boolean"
+    },
+    "admitted": {
+      "const": 0
+    },
+    "settled": {
+      "const": 0
+    },
+    "gold": {
+      "const": 0
+    },
+    "held_out_precision": {},
+    "confusion_matrix": {},
+    "overall_accuracy": {},
+    "per_bucket": {
+      "type": "object"
+    },
+    "error_classes": {
+      "type": "object"
+    },
+    "unresolved_count": {
+      "type": "integer"
+    }
+  }
+}

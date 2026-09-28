@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.unbind_screen_operator_label.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "evaluation_id",
+    "row_id",
+    "operator_bucket",
+    "reason_code",
+    "labeled_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "hyperlex.unbind_screen_operator_label.v1"
+    },
+    "evaluation_id": {
+      "type": "string"
+    },
+    "row_id": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "operator_bucket": {
+      "enum": [
+        "HIGH",
+        "SECONDARY",
+        "REJECT",
+        "QUARANTINE",
+        "UNRESOLVED"
+      ]
+    },
+    "reason_code": {
+      "type": "string"
+    },
+    "note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "labeled_at": {
+      "type": "string"
+    }
+  }
+}
