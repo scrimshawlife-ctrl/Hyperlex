@@ -72,8 +72,8 @@ _TIER_UNIQUE = "no structural target and one lemma synset across noun, verb, adj
 _TIER_UNRESOLVED = "no structural target and no lemma synset"
 _READY_REQUIRES = "at_least_two_content_constituents_and_each_is_EXACT_or_RESOLVED"
 _EMPTY_ROW = (
-    "A row with fewer than two content constituents emits one abstention record "
-    "and no constituent resolution."
+    "Every content constituent is resolved. A row with fewer than two content "
+    "constituents stays UNKNOWN. A row with none emits one abstention record."
 )
 
 

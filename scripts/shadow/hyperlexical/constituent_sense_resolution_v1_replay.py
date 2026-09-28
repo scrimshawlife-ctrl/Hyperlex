@@ -223,7 +223,7 @@ def resolve_once(rows: list[dict], by_id: dict, index: dict, exceptions: dict[st
         pointers = pointer_tuples(parent, by_id)
         extraction = extract_constituents(row["surface"])
         content = extraction["content_constituents"]
-        if len(content) < 2:
+        if not content:
             records.append(
                 {
                     "baseline_resolution_status": None,
