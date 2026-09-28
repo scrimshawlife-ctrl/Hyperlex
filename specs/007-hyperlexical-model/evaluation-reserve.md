@@ -1,1 +1,839 @@
-PLACEHOLDER_WILL_NOT_USE
+# Evaluation reserve (GEN-0)
+
+Text identity is `hyperlexical.holdout_guard.normalized_text_sha256`.
+That is SHA-256 of `heldout_census.normalize_group_text`: NFKC, casefold, URL strip, non-alphanumeric to space, whitespace collapse. Empty normalized text still hashes. No second normalizer is an identity. `soft_ceiling.clean_surface` remains the unbind-clean slice predicate only.
+
+Row ids are historical labels. One text identity may carry many row ids. Contamination, spending, abandonment, and reserve membership attach to the text hash.
+
+## Exhaustion
+
+On 2026-09-26 the live store (`01c1b38fd6e926962e47a520228e884ae7d99ea0ad6bbe188dc9980064254ac2`, 5005 rows) had **zero** rows eligible for a fresh holdout after split=test, the pinned morph78 export (`64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, 9150 rows), spent v2, rc1 unbind rows, and the abandoned SELECT-001 / SELECT-002 holdouts. The 440 `split=test` rows are also training-consumed under the canonical hash, so dropping the split gate does not open a fresh classify set. Classify OBSERVED and classify non-none in that eligible universe are 0.
+
+SELECT-001 is `CLOSED_AT_LAUNCH_GATE`. SELECT-002 is `EXECUTION_INVALID` (0 epochs, 0 gradient steps). Both holdouts are `UNSCORED_ABANDONED`: never scored, not reusable, not `SCORED_SPENT`. Manifest bytes stay as sealed. Do not reopen either experiment.
+
+## Lifecycle
+
+New text is routed **before** training exposure. Records are append-only. Flags that mean consumed, spent, or abandoned only turn on.
+
+```text
+NEW
+ |
+ +--> TRAIN_CANDIDATE
+ |       |
+ |       +--> TRAIN_CONSUMED
+ |
+ +--> EVAL_RESERVE
+         |
+         +--> EVAL_BOUND
+                 |
+                 +--> EVAL_SPENT
+                 |
+                 +--> EVAL_ABANDONED
+```
+
+`AVAILABLE` is catalogued text with none of those flags. It may still be routed to `TRAIN_CANDIDATE` or `EVAL_RESERVE`.
+
+Forbidden without a governed generation reset:
+
+- `EVAL_RESERVE` or `EVAL_BOUND` later entering training
+- training-consumed text later used as unseen evaluation
+- spent or abandoned text returning to the fresh reserve
+
+A generation-reset **request** can be recorded. It does not clear flags and it does not create a new baseline. GEN-1 is not opened by this policy.
+
+## Assignment
+
+Policy id: `hyperlex.eval_reserve.v1`. Fixed before any candidate output is observed. Model scores, errors, and predictions are refused as admission inputs.
+
+Within a batch, identities are ordered by `sha256(GEN-0 | batch_id | normalized_text_sha256)`. A new identity is `EVAL_RESERVE` when it still fills at least one open required slice. Otherwise it is `TRAIN_CANDIDATE`. Quotas are unique text identities, not raw rows. A second row id on an existing hash does not increase the evaluation sample size. A new hash that reuses an old row id stays a different identity and is reported as a collision.
+
+Required slices, because checkpoint selection needs each of them:
+
+- `classify` (classification accuracy)
+- `classify_observed` (OBSERVED-label accuracy)
+- `classify_non_none` (`classify_macro_f1_nonnone`)
+- `unbind_clean` (unbind clean exact)
+
+## Coverage classes
+
+| Claim | Class |
+| --- | --- |
+| Canonical text hash is the contamination identity | CANONICAL_REQUIREMENT |
+| Fresh evaluation text is disjoint from training, spent, and abandoned text | CANONICAL_REQUIREMENT |
+| Each required slice is represented before SELECT-003 can be drafted | CANONICAL_REQUIREMENT |
+| Statistical minimum n for those metrics | NOT_COMPUTABLE |
+| v2 `DRAW_READY_MIN` 470 | HISTORICAL_PRECEDENT (unbind census target; PR #113 sets no v2 size) |
+| Name-gate 2500 | CANONICAL_REQUIREMENT for the name gate, not for this holdout |
+| rc1 classify_clean 444 / OBSERVED 72 / unbind_clean 306 | HISTORICAL_PRECEDENT (spent test) |
+| SELECT-002 eligibility 606 classify / 287 OBSERVED / 604 non-none / 250 clean unbind | HISTORICAL_PRECEDENT and the PLANNING_TARGET |
+
+The planning target restores that SELECT-002 shape. It is not a validity theorem. Gap versus a statistical minimum is `NOT_COMPUTABLE`.
+
+## Admission
+
+```sh
+PYTHONPATH=scripts/shadow python -m hyperlexical.identity_ledger admit \
+  --ledger /path/to/ledger --rows new.jsonl --batch-id BATCH --source acquire
+```
+
+A row is accepted only when its canonical hash is absent from `TRAIN_CONSUMED`, `EVAL_SPENT`, `EVAL_ABANDONED`, and the existing reserve. The command reports raw rows and unique canonical text identities. Reserve rows must not be used for training, checkpoint selection, hyperparameter tuning, candidate-specific error review, or repeated scoring. Aggregate census counts are allowed. When `HLX_EVAL_RESERVE_LEDGER` is set, the trainer refuses if a loaded training row is still `EVAL_RESERVE` or `EVAL_BOUND`.
+
+## SELECT-003
+
+Do not draft SELECT-003 until a new reserve exists, the four slices are represented, the reserve is text-disjoint from the pinned training export, the reserve is not spent or abandoned, and this policy stays sealed. The unresolved hypothesis, if a later authorization allows it, is still `HLX_SELECT_METRIC`: `unbind_exact` versus `classify_macro_f1_nonnone`. Authorization is a separate act. Meeting a planning target does not grant it.
+
+## GEN-0 and GEN-1
+
+GEN-0 keeps `seed-morph78` and the pinned 9150-row export as the training baseline. New material is evaluation-only until the reserve slices are filled. Overflow may become `TRAIN_CANDIDATE` and must not be pulled back into the reserve.
+
+GEN-0 becomes impractical only if, after a real acquisition attempt:
+
+- new classify evidence cannot represent OBSERVED and non-none together
+- new text keeps colliding with the pinned export or with spent/abandoned hashes
+- accepted training candidates grow while the reserve slices stay empty
+- the reserve cannot hold the four slices at once
+- the historical baseline is no longer the system under test
+
+Convenience is not one of those conditions. This document does not create GEN-1.
+
+## Ledger
+
+`scripts/shadow/hyperlexical/build_identity_ledger.py` catalogues receipt-backed artifacts. It does not infer lifecycle from filenames. The populated ledger stays on the host store, not in git, and does not contain raw text.
+
+## Acquisition batch HLX-EVAL-ACQ-2026-09-26-001
+
+Screened local rights-cleared and operator-labeled corpora. The ledger was not mutated. Decision `REJECT_BATCH`. The reserve stays empty.
+
+- 2026 backfill atoms: 67/67 unique hashes already `TRAIN_CONSUMED`.
+- Harvest multiword file: 890/890 unique hashes already `TRAIN_CONSUMED`.
+- Civilian seed: 17 novel identities, all lineage `ai-native`. A registry export marked `OBSERVED` is not an operator settlement, so those rows were held. Class imbalance is severe. No balance threshold is declared.
+- 2026-09-16 structure gold: the authorized train rows are already consumed. Four novel leftovers carry model predictions and were excluded.
+- Agent-memetics seeds: rights are unresolved and task labels are absent.
+
+New `OBSERVED` coverage is `NOT_COMPUTABLE` until an operator harvest settlement exists. This record does not settle phrases. SELECT-003 stays undrafted. GEN-1 was not created. In-repo settled gold is exhausted. That alone does not reset GEN-0.
+
+## Acquisition batch HLX-EVAL-ACQ-2026-09-26-002
+
+The held-out stream (`hs-20260925T211358Z`, 339 rows) is the shelf that sits beside the Jev lane. Every canonical text hash is absent from the identity ledger. Overlap with the box Jev exposure list is 0. The ledger was not mutated. Decision: not admitted. The reserve stays empty.
+
+Jev in this batch is the exposure fence. `hs_run.py` and each row policy forbid evaluating Jev, the lineage rule, or any other model on these rows. `JEV_API_KEY` is unset on this host. No vendor call was made. A Jev family call is not an operator settlement.
+
+- Rights-cleared INFERRED labels: gaming-meta 99, betting-sharp 61, crypto-degen 5, plus 40 encyclopedic `none`. Five families have no independent label.
+- 134 rows are `UNLABELLED`. The attest column is empty on all 339 rows, so new `OBSERVED` coverage is `NOT_COMPUTABLE`.
+- 16 Reddit and Know Your Meme rows have unresolved rights.
+- Class imbalance on the rights-cleared non-none subset is severe. No balance threshold is declared. Admitting it would open `classify_macro_f1_nonnone` on three families.
+
+SELECT-003 stays undrafted. GEN-1 was not created. Novel yield against `TRAIN_CONSUMED` is 339/339, so GEN-0 is not collision-blocked. The next label step is operator `attest-apply` on the queued sheet.
+
+## Taxonomy proposal HLX-EVAL-TAXON-2026-09-26-001
+
+The next label step is no longer `attest-apply`. The operator directed a taxonomy expansion first. Draft: `label-taxonomy-proposal.md`. Private remap receipt has no row text. The ledger was not mutated. Nothing was admitted. Jev was not called. `attest-apply` was not run.
+
+The production head stays the nine-way `layout.FAMILIES` list. The proposal adds sixteen non-none names as a draft active set, with `attest`, `register`, and `function` as separate surfaces. `evaluation.enabled` is false on every name. Support minimum is `NOT_COMPUTABLE`.
+
+Of the 339 stream rows, 204 keep the same family as a `PROPOSED_REMAP` (gaming-meta 98, betting-sharp 61, crypto-degen 5, none 40). 135 are `LABEL_UNRESOLVED`. `brainrot-aura` is not split. Kinship hints are not mapped to `relationship-dating`. Eleven of the sixteen names have no row on this shelf. Row settlement is not ready. SELECT-003 stays undrafted.
+
+## Taxonomy acceptance HLX-EVAL-TAXON-2026-09-26-002
+
+The operator accepted the ontology structure and amended it. Active non-none families are eighteen, including `identity-affiliation` and `politics-civic`. `work-hustle` is renamed `workplace-career`. `brainrot-aura` is not a family. Six names stay candidates. `taxonomy.active` is true and `evaluation.enabled` is false on all eighteen. `none` stays abstain. `source_hint` is evidence, not `semantic_family`.
+
+Lanes are prepared and unsettled: A 204, B 65, C 21, D 16. Thirty-three Wiktionary hint-only rows sit outside those lanes and stay `LABEL_UNRESOLVED`. Decision cells are empty. `attest-apply` was not run. The current command would force `OBSERVED` and would reject the new names, so it must not be used on these sheets. Vendor calls: 0. Reserve stays 0. SELECT-003 stays undrafted.
+
+
+## Settlement tool HLX-EVAL-SETTLE-2026-09-26-001
+
+Evaluation settlement is a separate command, `python -m hyperlexical.identity_ledger settlement-apply`. Production `attest-apply` was not modified and was not run. That command still accepts only the production families plus `none` or `reject`, and it still writes `label_source=OBSERVED` for an accepted value.
+
+`settlement-apply` reads completed operator cells. It does not fill them. `source_hint`, `semantic_family`, and `attest` are separate fields. `ACCEPT` stores the attest the operator entered and does not promote existing evidence to `OBSERVED`. `RECLASSIFY` requires an explicit family that differs from the proposed evidence. `NONE` stores `semantic_family=none` and is not `reject`. `UNRESOLVED` stores null family and null attest. A second decision for the same row is refused. The log and the receipt are append-only and contain no row text.
+
+`taxonomy.active`, `evaluation.enabled`, and `production.enabled` are three flags. The eighteen families stay taxonomy-active only. Both enable flags stay false. `layout.FAMILIES` is unchanged. Lanes A–D and the hint-only holding sheet were validated with every decision cell empty (204 / 65 / 21 / 16 / 33). Rows settled: 0. Unresolved decisions: 0. Reserve added: 0. Vendor calls: 0. The identity ledger was not mutated. SELECT-003 stays undrafted.
+
+
+## Operator settlement HLX-EVAL-SETTLE-2026-09-26-002
+
+The five private sheets for stream `hs-20260925T211358Z` were filled with an explicit decision on every row, then applied with `python -m hyperlexical.identity_ledger settlement-apply`. Production `attest-apply` was not run. `layout.FAMILIES` was not edited. No row text is in this file.
+
+Blank and `UNRESOLVED` stay distinct. Blank means the operator has not reviewed the row. `UNRESOLVED` means the operator reviewed the row and declined to settle it. This pass left blank at 0 and `UNRESOLVED` at 84.
+
+Counts: settled 255 (`ACCEPT` 204, `RECLASSIFY` 32, `NONE` 19), `UNRESOLVED` 84, blank 0. `OBSERVED` 128. `INFERRED` 127. Rights-blocked settled 14. Those 14 stay out of `EVAL_RESERVE`. Rights status was not changed by the semantic decision.
+
+`OBSERVED` was used only when a stored gloss or the row text directly states the settled family, the atom is slangish or multiword jargon, and the primary stored sense is that family. A category, a topic, or `source_hint` did not set family or attest. Accepting a family did not promote an existing `INFERRED` label. Encyclopedic `none` rows stayed `INFERRED`.
+
+Settled support by unique canonical text, including zeros: gaming-meta 60 (OBSERVED 38, INFERRED 22, cleared 60, blocked 0); betting-sharp 58 (41, 17, 53, 5); crypto-degen 4 (3, 1, 3, 1); internet-slang 19 (10, 9, 19, 0); memetic 3 (0, 3, 2, 1); social-status 6 (3, 3, 6, 0); relationship-dating 0; approval-disapproval 1 (0, 1, 1, 0); conflict-aggression 0; technology-ai 4 (1, 3, 4, 0); workplace-career 10 (9, 1, 10, 0); sports-competition 1 (0, 1, 0, 1); music-entertainment 1 (0, 1, 1, 0); fashion-aesthetic 0; regional-cultural 0; spiritual-mystic 0; identity-affiliation 16 (13, 3, 16, 0); politics-civic 13 (10, 3, 13, 0); none 59 (0, 59, 53, 6).
+
+Rights-cleared settled non-none identities: 188. Quantitative support thresholds are `NOT_COMPUTABLE`, so no `UNREPRESENTED` / `LOW_SUPPORT` / `REPRESENTED` flag is assigned. `OBSERVED` total 128, all non-none; `OBSERVED` none is 0.
+
+One workplace-lane row describes retail product reformulation and price-tier inflation. `finance-retail` remains a candidate and was not activated. That row is `UNRESOLVED`.
+
+Admission used `identity_ledger admit` under `hyperlex.eval_reserve.v1`, batch `HLX-EVAL-ADMIT-2026-09-26-002`. Admitted to `EVAL_RESERVE`: 241. Rejected existing identities: 0. Slice counts after admission: classify 241, classify_observed 123, classify_non_none 188, unbind_clean 0. `clean_unbind_support` is 0. This stream has no unbind target and none was fabricated. SELECT-003 was not drafted. The gate reports `eligible: false` because `unbind_clean` is unrepresented. Reserve identities are text-disjoint from the pinned train export.
+
+Receipt `HLX-EVAL-SETTLE-2026-09-26-002` sha256 `1b0fb54a5de0fb708f74ad278037458c15e0abea5a7eb6b4b151b7e7fb34567e`. `settlement-apply` still records `reserve_added: 0`; admission is the separate ledger command. Vendor calls: 0. BEST was not moved. Do not train.
+
+
+## Clean-unbind contract — 2026-09-26
+
+Phase: clean-unbind capacity recovery. The 241 classify reserve identities stay protected. This section does not retune `semantic_family`, `attest`, or `evaluation.enabled`.
+
+Executed shape: `hyperlexical.export._unbind_dual_scheme_rows`. Fillers are the source atom's own tokens. Positional text is those tokens joined by spaces, with roles `pos_0..pos_n-1`. Type-slot text is `TOKEN:` / `SLOT:` / `MARKER:` prefixed by index, and the fillers stay the same tokens. Role schemes are only `positional` and `type_slot`. Token count is 2 through `LIVE_UNBIND_MAX_TOKENS` (6). Atom length is at most `LIVE_UNBIND_MAX_LEN` (80). A gloss is not unbind gold. `class` is copied, not invented; this acquisition uses `INFERRED` and `lineage=none`.
+
+Contamination identity: `hyperlexical.holdout_guard.normalized_text_sha256` (NFKC, casefold, URL and punctuation stripped, SHA-256).
+
+Clean predicate: `soft_ceiling.clean_surface` on rows whose `split` is `train`, which is the call in `holdout_eligibility.census`. Definition string: `unbind_clean_definition = soft_ceiling.clean_surface`. The clean predicate is whitespace-collapsed lowercase equality of the row text against train text. It is not the contamination hash. `oov_filler_surface` is a different surface and is not this predicate.
+
+Scorer, not run in this phase: `hyperlexical.eval_forward.score_unbind_exact`. Gold is the filler list. Empty filler lists are skipped. Metrics are `unbind_exact`, `unbind_token_f1`, `unbind_slot_f1`, and the strict variants, including `by_role_scheme`. Baseline name: `unbind_copy_token`.
+
+Synthetic row, placeholders only:
+
+```json
+{
+  "text": "EXAMPLE_TOKEN_A EXAMPLE_TOKEN_B",
+  "split": "eval",
+  "lineage": "none",
+  "typology": [],
+  "stage": "noise",
+  "roles": ["pos_0", "pos_1"],
+  "fillers": ["EXAMPLE_TOKEN_A", "EXAMPLE_TOKEN_B"],
+  "role_scheme": "positional",
+  "task": "unbind",
+  "provenance": "source:EXAMPLE_LOCATOR",
+  "class": "INFERRED",
+  "license": "EXAMPLE_RIGHTS_GRANT",
+  "target_origin": "source_lemma_tokens"
+}
+```
+
+The type-slot twin uses text `TOKEN:EXAMPLE_TOKEN_A SLOT:EXAMPLE_TOKEN_B`, roles `TOKEN` and `SLOT`, and the same fillers. Unbind settlement decisions are `ACCEPT`, `CORRECT_TARGET`, `REJECT`, and `UNRESOLVED` in `hyperlex.eval_unbind_settlement.v1`. That log is not the classify settlement schema. Admission still goes through `IdentityLedger.admit`. `unbind_clean` is set only for hashes kept by `clean_surface`.
+
+
+
+## Clean-unbind admission HLX-EVAL-ADMIT-2026-09-26-003
+
+Source: Princeton WordNet 3.0 index lemmas (`index.noun`, `index.verb`, `index.adj`, `index.adv`). Glosses in `data.*` were not read and were not used as targets. Raw artifact sha256 `cbda5ea6eef7f36a97a43d4a75f85e07fccbb4f23657d27b4ccbc93e2646ab59`. License file sha256 `7731175a77952e259390b496fab905e57118b8d19ad3a8383c67eee724ff443f`. Rights: WordNet 3.0 Copyright 2006 by Princeton University, with permission to use, copy, modify, and distribute for any purpose without fee or royalty when the notice is preserved. Unresolved-rights rows were not in this source.
+
+Fillers are the source lemma tokens (`target_origin=source_lemma_tokens`). Operator settlement `HLX-EVAL-UNBIND-SETTLE-2026-09-26-001` appended 250 `ACCEPT` events on that basis. `CORRECT_TARGET` 0. `REJECT` 0. `UNRESOLVED` 0. Settlement receipt sha256 `3ada2dae58bde22ef1ed1ac5a4004be75d7bf3f52cac590f24900de71015194b`. The classify settlement log was not rewritten.
+
+Screen of shaped dual-scheme rows: 128233 unique texts. Novel and clean: 128044. Rejected `TRAIN_CONSUMED` 184. Rejected existing `EVAL_RESERVE` 5. Those 5 were not reused. Novelty rate among shaped rows: 0.9985. Planning cap admitted 250 of the admissible set. `IdentityLedger.admit` appended 500 events. Events sha256 before `f5e0008f27a80b11bc7e5b98e48e9e99cada04ee8f9455ed5ece6f99c1de3266`, after `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`. Routed to `TRAIN_CANDIDATE`: 0. Acquisition receipt sha256 `be5671d4cf586b7a9ce3f45b4f5b8b5d0574edd4d1eaeef0c9644ca8ad2678a8`. Admission receipt sha256 `53df5397a13974e03bd60310fca2c29589e7a0fa6236dd576cf4ddf43a75bf15`. Census receipt sha256 `a5e9ae8ef6b65b5c187633e09b8700a5ef800eb1d97bd7a78aa2a9db26cf0a16`.
+
+Reserve after admission: classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250. The first three did not decrease. Admitted rows are `class=INFERRED`, `lineage=none`. Role schemes: positional 125, type_slot 125. Filler counts: 2 tokens 64, 3 tokens 56, 4 tokens 56, 5 tokens 46, 6 tokens 28. Source-index metadata, not a Hyperlex family: noun 72, verb 68, adv 62, adj 48. Unique filler targets: 125. Each target has 2 surfaces (the two role schemes). Maximum surfaces per target: 2.
+
+Planning progress, not a validity threshold: classify 241/606, OBSERVED 123/287, non-none 188/604, clean unbind 250/250. Statistical minimum remains `NOT_COMPUTABLE`.
+
+`select_003_gate.eligible` is true. `training_overlap_identities` is 0. `spent_or_abandoned_in_reserve` is 0. Reserve identities 491. SELECT-003 was not drafted. This is representation completeness, not training readiness. Evaluation quality is still one lexicon, `INFERRED`, `lineage=none`. These rights-cleared active families still have zero settled classify support and were not collected here: relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, spiritual-mystic.
+
+
+Vendor calls: 0. BEST was not moved. Do not train.
+
+
+## SELECT-003 preregistration HLX-EXP-2026-09-26-SELECT-003
+
+Phase: preregistration only. Experiment id `HLX-EXP-2026-09-26-SELECT-003`. Training is not authorized. BEST is not moved. No holdout is scored. Vendor calls: 0.
+
+Predecessors are not evidence for or against the hypothesis. SELECT-001 closed at the launch gate with the hypothesis `UNTESTED`. SELECT-002 is `EXECUTION_INVALID` with epochs 0 and gradient steps 0, hypothesis `UNTESTED`.
+
+Hypothesis: with training otherwise equivalent to the reconstructed `seed-morph78` baseline, does selecting checkpoints by `classify_macro_f1_nonnone` improve non-none classification macro-F1 while preserving the established unbind and classification safeguards?
+
+The single scientific variable is `HLX_SELECT_METRIC`. Baseline: unset, which resolves to `unbind_exact`, with `HYPERLEX_SAVE_BEST_UNBIND=1`. Candidate: `classify_macro_f1_nonnone`. Frozen with the reconstructed recipe: `HYPERLEX_FILLER_FILTER=off`, `HYPERLEX_TASK_ROUTING=legacy_split`, `HYPERLEX_UNBIND_LOSS_WEIGHT=1.0`, init `seed-morph65`, `HLX_SEED` unset, `HLX_E2_DISJOINT` absent, `HLX_VOCAB_TRAIN_ONLY` absent, `HLX_ALLOW_NO_HOLDOUT` unset, `HYPERLEX_RELEASE_SET` absent. Pinned-export execution is infrastructure, not a scientific variable. Checkpoint selection inside the trainer still uses the pinned export's val split. The reserve is the comparison surface for the decision rule. Substituting the reserve for that val split is a second variable and is not part of this experiment.
+
+Training input: pinned export, 9150 rows, sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`. Rows before the reserve filter 9150, after 9150. Reserve/training row-id overlap 0. Reserve/training text-hash overlap 0. Any difference is an admission failure.
+
+BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, weights sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`. Trunk weights sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. `layout.FAMILIES` was not edited.
+
+The bound GEN-0 reserve is unchanged: classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491. Events sha256 `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`. Ledger projection sha256 `d071b7aec8154203ce7f9ae9531639b8d638f86c2ac0c3af38bead9b3c4a48f9`. Spent 0. Abandoned 0. Text-disjoint from training. Rights-cleared. No identities are added or removed under this experiment id.
+
+Receipts bound with the reserve: classification settlement `HLX-EVAL-SETTLE-2026-09-26-002` canonical sha256 `1b0fb54a5de0fb708f74ad278037458c15e0abea5a7eb6b4b151b7e7fb34567e`; classification admission `HLX-EVAL-ADMIT-2026-09-26-002` sha256 `9898d13140b1adf9e496ce4a7e71f9573d3a0f87e97355ea01de3ecafb66e836`; clean-unbind acquisition `be5671d4cf586b7a9ce3f45b4f5b8b5d0574edd4d1eaeef0c9644ca8ad2678a8`; clean-unbind settlement `3ada2dae58bde22ef1ed1ac5a4004be75d7bf3f52cac590f24900de71015194b`; clean-unbind admission `53df5397a13974e03bd60310fca2c29589e7a0fa6236dd576cf4ddf43a75bf15`; census `a5e9ae8ef6b65b5c187633e09b8700a5ef800eb1d97bd7a78aa2a9db26cf0a16`.
+
+Primary metric:
+
+```text
+name: classify_macro_f1_nonnone
+label_universe_sha256: 227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175
+absent_class_policy: omit_when_gold_support_is_zero
+scorer: hyperlexical.classify_metrics.macro_f1_nonnone
+```
+
+The sealed class set is the non-none lineages present on the bound reserve, with identity support: approval-disapproval 1, betting-sharp 53, crypto-degen 3, gaming-meta 60, identity-affiliation 16, internet-slang 19, memetic 2, music-entertainment 1, politics-civic 13, social-status 6, technology-ai 4, workplace-career 10. Sum 188. The scorer's macro is the unweighted mean of per-class F1 over gold labels other than `none` that have support n>0. Classes with gold support 0 are omitted. They are not entered as F1=0. A later taxonomy expansion does not enter this experiment's metric. The six families with zero rights-cleared settled support stay outside the universe: relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, spiritual-mystic.
+
+Slice mapping, one contamination function for every slice (`normalized_text_sha256`):
+
+- `classify_macro_f1_nonnone` uses the 188 `classify_non_none` identities. Gold is `lineage`. The 53 `none` identities are not in this row set.
+- Classification accuracy uses the 241 `classify` identities. Gold is `lineage`, including `none`. Scorer: `accuracy`.
+- OBSERVED-label accuracy uses the 123 `classify_observed` identities. Gold is `lineage`. Scorer: `accuracy`. These three slices share classification settlement `HLX-EVAL-SETTLE-2026-09-26-002` and admission `HLX-EVAL-ADMIT-2026-09-26-002`.
+- Unbind clean exact uses the 250 `unbind_clean` identities. Gold is the filler list. Scorer: `score_unbind_exact` (`unbind_exact`). Settlement is `HLX-EVAL-UNBIND-SETTLE-2026-09-26-001`, not the classify log. Clean predicate remains `soft_ceiling.clean_surface`.
+
+Decision thresholds are `BLOCKED_PENDING_OPERATOR_AUTHORIZATION`. Inherited authorization from SELECT-002 is `NOT_COMPUTABLE`. No canonical rule carries numeric margins across an execution-invalid predecessor, and SELECT-002 sealed its margins for that experiment id only. Preservation names are prepared and inactive: unbind clean exact, classification accuracy, OBSERVED-label accuracy. Promote and reject thresholds are not set.
+
+Representation completeness passes. Training provenance passes. Holdout disjointness passes. Rights and provenance pass. Clean-unbind capacity passes. Evaluation quality is limited and disclosed: non-none support is 188 and imbalanced, and the 250 clean-unbind rows are Princeton WordNet 3.0 only, all `INFERRED`, `lineage=none`, 125 filler targets, 2 surfaces per target. The experiment is not authorized to run.
+
+## SELECT-003 threshold authorization — 2026-09-26
+
+Operator decision for `HLX-EXP-2026-09-26-SELECT-003` only. This is a new authorization. It does not transfer SELECT-001 or SELECT-002 margins. The sealed preregistration file is not edited. Training is not authorized. BEST is not moved. The reserve is not scored.
+
+Primary metric remains `classify_macro_f1_nonnone`. Label universe sha256 `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`. Absent-class policy `omit_when_gold_support_is_zero`. The universe stays the twelve supported non-none classes on the sealed reserve.
+
+Comparison baseline is `hyperlex-encoder-modernbert-base-seed-morph78`, weights sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`, scored later on the same GEN-0 reserve: classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250.
+
+`PROMOTE` requires every condition. Primary: candidate `classify_macro_f1_nonnone` strictly greater than seed-morph78. Equality does not promote. Unbind clean exact on the 250 sealed identities stays within 0.01 below seed-morph78. Classification accuracy on the 241 sealed identities stays within 0.02. OBSERVED-label accuracy on the 123 sealed identities stays within 0.05. Integrity must also pass: one scientific variable, pinned export exact, 9150 rows before and after the reserve filter, row-id overlap 0, canonical text-hash overlap 0, no reserve identity spent or abandoned before scoring, sealed ledger unchanged, sealed class universe unchanged, checkpoint selection follows `HLX_SELECT_METRIC`, complete provenance, no contamination-guard failure, no schema or name-gate failure, and no `CHAR_WINS`.
+
+`REJECT` if the candidate primary metric is lower, or the unbind delta is below -0.01, or classification accuracy delta is below -0.02, or OBSERVED-label accuracy delta is below -0.05, or any hard failure occurs: `CHAR_WINS`, more than one scientific variable, training input other than the sealed pin, effective training rows other than 9150, reserve binding change, class-universe change, unverifiable reserve or execution provenance, or a hard integrity or contamination guard failure.
+
+`INCONCLUSIVE` if the primary metrics are equal and the preservation and integrity guards pass. Also `INCONCLUSIVE` when execution and scoring are valid but the sealed rule cannot be applied deterministically, and that reason is not itself a hard integrity failure. An inconclusive result is not resolved by changing thresholds.
+
+These floors are new SELECT-003 rules. A later promote would mean checkpoint selection by non-none macro-F1 improved the sealed twelve supported families without exceeding the three allowed regressions. It would not mean improvement across the eighteen-family ontology. Families outside the gold universe remain relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, and spiritual-mystic. Representation completeness passes. Evaluation quality stays limited. Vendor calls: 0. Do not train.
+
+
+## SELECT-003 execution HLX-EXP-2026-09-26-SELECT-003
+
+One launch was authorized from Spark commit `53f128a68a6603a98d9d5a3e56cc357f4a17aa0c` with a clean tree. The sealed preregistration, threshold authorization, candidate environment, and non-launching preflight were not edited. `HYPERLEX_ALLOW_TRAIN=1` was a process overlay only. `HLX_ALLOW_NO_HOLDOUT` stayed unset.
+
+Container `hlx-train-select003-1790441469` on `lmsysorg/sglang:dev-qwen38-27b-dflash2` (`sha256:616a3e97f45191af975896cfa644279096cb31bd408a071c2e99ca7209c3cafe`) started 2026-09-26T16:51:09Z and exited 1 at 2026-09-26T16:51:12Z. The trainer refused before `load_training_bundle`: `HYPERLEX_ALLOW_TRAIN=1` with no holdout manifest. Epochs 0. Gradient steps 0. No candidate checkpoint. The pinned export was not consumed. The reserve was not scored and was not spent. Decision `EXECUTION_INVALID`. The hypothesis is `UNTESTED`. This is not `PROMOTE`, `REJECT`, or `INCONCLUSIVE`.
+
+BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`. Vendor calls: 0. Do not retry this experiment id. Do not train.
+## SELECT-003 closed — PREFLIGHT_LAUNCH_HOLDOUT_GATE_MISMATCH
+
+`HLX-EXP-2026-09-26-SELECT-003` is permanently `EXECUTION_INVALID`. Cause: `PREFLIGHT_LAUNCH_HOLDOUT_GATE_MISMATCH`. The non-launching preflight reported `TRAINING_READY` without running `require_holdout_for_training` under `HYPERLEX_ALLOW_TRAIN=1`. The trainer then refused before `load_training_bundle` because the sealed candidate had no `HLX_HOLDOUT_MANIFESTS` and `HLX_ALLOW_NO_HOLDOUT` stayed unset. Epochs 0. Gradient steps 0. Candidate checkpoint: none. Reserve scored: false. `BEST_moved`: false. Hypothesis: `UNTESTED`. The sealed preregistration and threshold authorization are not rewritten. This id is not retried.
+
+## Controlled-experiment admission — CONTROLLED_RESERVE
+
+The canonical controlled-experiment holdout contract is `CONTROLLED_RESERVE`. A launch with `HLX_EXPERIMENT_ID` set is admitted by `admit_training_run`, which both preflight and `run_loop` call, in this order: experiment binding, launch gate, sealed reserve, pinned training input, train/reserve disjointness, single scientific variable, BEST and trunk digests, output directory, then ready.
+
+A sealed reserve binding satisfies the holdout requirement when the active reserve is `EVAL_RESERVE` for the current experiment, all four slices are present on that active set, the binding digest matches the full `events.jsonl`, and training overlap by row id and by normalized text hash is 0 against that active set. Overlap rejects the run. It does not drop training rows. `HLX_HOLDOUT_MANIFESTS` is not a second requirement. `HLX_ALLOW_NO_HOLDOUT` does not admit a controlled experiment. Legacy launches that are not controlled experiments still use the manifest gate.
+
+Active membership is the derived lifecycle `EVAL_RESERVE` whose experiment binding is only the current experiment. `evaluation_reserved` stays historical evidence and is not cleared when the lifecycle is `EVAL_SPENT`. Spent identities do not count, do not satisfy overlap, and cannot be reserved again. A ledger with no active identities is a missing active reserve. A live `EVAL_RESERVE` bound to another experiment does not satisfy the current experiment. Slice counts and the binding identity count use the active set. The events digest still covers the append-only log.
+
+The default scientific variable remains `HLX_SELECT_METRIC`: that key is the only allowed difference. `HLX_SCIENTIFIC_VARIABLE=train_schedule`, set to the same value on the baseline, the candidate, and the process, is the only composite. It normalizes `HYPERLEX_TRAIN_EPOCHS`, `HYPERLEX_EARLY_STOP`, `HYPERLEX_EARLY_STOP_PATIENCE`, and `HYPERLEX_EARLY_STOP_MIN_EPOCHS` into one variable. Both arms must set `HLX_SELECT_METRIC=classify_macro_f1_nonnone`. Any other difference fails. An undeclared schedule difference fails. A selection-metric difference is not part of `train_schedule`. Declaring the variable does not register or authorize an experiment.
+
+`HYPERLEX_ALLOW_TRAIN=1` is part of the effective environment hash. `HLX_ADMISSION_ONLY=1` is not. With that flag, `python -m hyperlexical.train --run` returns after admission and does not construct an optimizer, enter epoch 0, or take a gradient step. `TRAINING_READY` means that same admission returned `ADMISSION_PASS`.
+
+```text
+RUNE.PREFLIGHT_LAUNCH_PARITY(x) =
+    effective_environment_hash(preflight) == effective_environment_hash(launch)
+    AND admission_gate_sequence(preflight) == admission_gate_sequence(launch)
+    AND admission_result(preflight) == admission_result(launch)
+```
+
+## SELECT-004 readiness
+
+`HLX-EXP-2026-09-26-SELECT-004` is not preregistered and is not authorized to run. It may be drafted. SELECT-001, SELECT-002, and SELECT-003 produced no scientific evidence about `HLX_SELECT_METRIC`. A draft may test the same hypothesis: baseline unset, which resolves to `unbind_exact` with `HYPERLEX_SAVE_BEST_UNBIND=1`; candidate `classify_macro_f1_nonnone`.
+
+No canonical rule carries numeric thresholds across experiments. SELECT-003's floors do not transfer. SELECT-004 decision thresholds are `BLOCKED_PENDING_OPERATOR_AUTHORIZATION` until a fresh authorization is sealed for that id.
+
+The draft must keep the pinned export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, 9150 rows, BEST sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`, and trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. The GEN-0 reserve stays classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491. It is not scored and its lifecycle is not changed. Admission uses that reserve. It does not draw another one and it does not attach a legacy manifest.
+
+Vendor calls: 0. BEST was not moved. Do not train.
+## SELECT-004 preregistered — HLX-EXP-2026-09-26-SELECT-004
+
+`HLX-EXP-2026-09-26-SELECT-004` is `PREREGISTERED`. Preregistration sha256 `365f7ce7141e8ee899fc52d85584a32c21ecfcb596e316b1438463bd8db85c4a`. That seal records repository commit `493c75981bf443baf2899b71b504fe7c7a529cf9` and a clean tree. Later documentation does not edit the sealed file.
+
+Predecessors are not evidence. SELECT-001 remains `CLOSED_AT_LAUNCH_GATE`. SELECT-002 remains `EXECUTION_INVALID` with epochs 0 and gradient steps 0. SELECT-003 remains `EXECUTION_INVALID`, cause `PREFLIGHT_LAUNCH_HOLDOUT_GATE_MISMATCH`, epochs 0, gradient steps 0, candidate checkpoint none, reserve not scored. The hypothesis is `UNTESTED`.
+
+The single scientific variable is `HLX_SELECT_METRIC`. Baseline is unset, which resolves to `unbind_exact` with `HYPERLEX_SAVE_BEST_UNBIND=1`. Candidate is `classify_macro_f1_nonnone`. Experiment diff sha256 `aa6e42e50a9547908edfe4860371a2ec05f7ec20ea87dfa829555d9e7b05bc4c`. `experimental_variable_count` is 1. Metadata differences are the experiment id, the output directory, and the residual-dump path.
+
+`CONTROLLED_RESERVE` binding sha256 `c16e69559dd6582f687532ce6e2a2e9b52a70db1aa066d11e7e68e723936b371`. Ledger events sha256 `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`. Projection sha256 `d071b7aec8154203ce7f9ae9531639b8d638f86c2ac0c3af38bead9b3c4a48f9`. Counts remain classify 241, classify_observed 123, classify_non_none 188, unbind_clean 250, identities 491, lifecycle `EVAL_RESERVE`. Training row-id overlap is 0. Training canonical-text overlap is 0. The reserve was not scored, spent, abandoned, or relabeled. Historical spent and abandoned identities in the same ledger are not this reserve.
+
+Training input is the pinned export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, mode `PINNED_EXPORT`. Declared rows, consumed rows, and effective optimization rows are 9150. No runtime exclusion reduced the set. `HLX_ALLOW_NO_HOLDOUT` stayed unset. No legacy holdout manifest was attached.
+
+BEST remains `hyperlex-encoder-modernbert-base-seed-morph78`, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`. Trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. BEST was not moved.
+
+Decision thresholds are `BLOCKED_PENDING_OPERATOR_AUTHORIZATION`. SELECT-003 numeric floors do not transfer. The prepared preservation metric names are `unbind_clean_exact`, `classification_accuracy`, and `observed_label_accuracy`. Those names have no active numeric thresholds.
+
+Admission-only parity passed. Preflight and the trainer entrypoint, both under `HYPERLEX_ALLOW_TRAIN=1` with `HLX_ADMISSION_ONLY=1`, share environment hash `759c591151c88074973c3ba2a555be551d3460c04c8cedf59ab36624de215885`. `admission_result` is `ADMISSION_PASS`. Status is `PREREGISTERED`. `optimizer_loaded` is false. Epochs 0. Gradient steps 0. The SELECT-004 output directory was absent before and after. `HLX_ADMISSION_ONLY` is excluded from the environment hash.
+
+`TRAINING_READY` exists only when all three are true: the scientific contract is sealed, the decision rule is sealed, and real entrypoint admission passes. SELECT-004 stays below `TRAINING_READY` until a fresh threshold authorization for this experiment id. `training_launch_authorized` is false.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. Classification support is 188 rights-cleared non-none identities. Clean unbind is 250 identities, 125 targets, 2 role-scheme surfaces per target, from Princeton WordNet 3.0 only. Unsupported families remain relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, and spiritual-mystic. A later result must not claim those families. Label universe sha256 `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`. Absent-class policy `omit_when_gold_support_is_zero`.
+
+Vendor calls: 0. Do not train. The next decision is a fresh SELECT-004 threshold authorization.
+## SELECT-004 thresholds authorized — HLX-EXP-2026-09-26-SELECT-004
+
+Fresh operator authorization for `HLX-EXP-2026-09-26-SELECT-004` only. It does not inherit authority from SELECT-001, SELECT-002, or SELECT-003. The sealed preregistration bytes stay `365f7ce7141e8ee899fc52d85584a32c21ecfcb596e316b1438463bd8db85c4a`.
+
+`PROMOTE` requires `classify_macro_f1_nonnone` strictly greater than `seed-morph78` on the sealed twelve-class universe, sha256 `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`, absent-class policy `omit_when_gold_support_is_zero`. Equality does not promote. The new SELECT-004 preservation floors are unbind clean exact within 0.01 on 250 identities, classification accuracy within 0.02 on 241 identities, and OBSERVED-label accuracy within 0.05 on 123 identities. A primary decrease, a preservation breach, or a hard integrity failure is `REJECT`. Equal primary metrics with every guard passing are `INCONCLUSIVE`. An inconclusive result is not resolved by changing thresholds.
+
+Authorization artifact sha256 `7389783b52a5d5cf14ceca874cc12351d3f6571b6be8a8666c2040be38972625`. Post-authorization admission used `HYPERLEX_ALLOW_TRAIN=1` and `HLX_ADMISSION_ONLY=1`. Preflight and the trainer entrypoint share environment hash `a2b18512be8329ee63ad06e98f894c6138cf7eac05f6e82d53d4132e99a27f5d`. `admission_result` is `ADMISSION_PASS`. Status is `TRAINING_READY` because the scientific contract is sealed, the decision rule is sealed, and the real entrypoint passed. `optimizer_loaded` is false. Epochs 0. Gradient steps 0. Training was not started. Output directory stayed absent. BEST sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1` was not moved. Trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. `training_launch_authorized` is false. `HLX_ALLOW_NO_HOLDOUT` stayed unset.
+
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. The decision covers classify 241, classify_observed 123, classify_non_none 188, and unbind_clean 250. It does not establish performance for relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, or spiritual-mystic. Clean unbind stays limited to the sealed WordNet slice. Vendor calls: 0. Do not train. The next decision is launch authorization only.
+
+## SELECT-004 scored — HLX-EXP-2026-09-26-SELECT-004
+
+One run finished under the sealed contract. Container `hlx-train-select004-1790448703` exited 0 after 40 epochs. The training schedule was not shortened. Checkpoint selection used `classify_macro_f1_nonnone` on the training-export validation surface. The selected checkpoint is epoch 3 at 0.64448782942204. Epoch 39 scored 0.5864567286803334. Candidate weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Consumed export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430`, 9150 rows, reserve filter removed 0. The reserve ledger was not modified during training.
+
+Reserve scoring used the sealed twelve-family universe `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`. seed-morph78 macro-F1 0.022395727019119547, accuracy 0.14107883817427386, OBSERVED accuracy 0.032520325203252036, unbind clean exact 0.092. The candidate macro-F1 0.07245710784313726, accuracy 0.15767634854771784, OBSERVED accuracy 0.08130081300813008, unbind clean exact 0.100. Deltas are +0.05006138082401771, +0.01659751037344398, +0.048780487804878044, and +0.008. The char 3–5 baseline macro-F1 was 0.0, so CHAR_WINS did not occur. Decision **PROMOTE**. State `PROMOTION_ELIGIBLE`. `--apply-best` was not run. BEST remains `seed-morph78` / `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. The production head still emits the nine training families, so nine of the twelve gold families cannot be named and pull the absolute macro-F1 down for both checkpoints. The claim stays inside the sealed slices. Vendor calls: 0. The 40-epoch schedule was left as sealed. A later duration study can measure best-epoch locations; it is not a change to this result.
+
+## SELECT-004 promoted — HLX-EXP-2026-09-26-SELECT-004
+
+Operator authorization applied the selected epoch-3 checkpoint as BEST. The promoted object is `hyperlex-encoder-modernbert-base-seed-select004/model.safetensors`, sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. `model.final.safetensors` (`d5be46be6611e382d837bab8868bb373cbead4f9caa3a666ca06f2b2cda1925b`) was not promoted. Epoch 39 was not promoted. No training ran. The reserve was not rescored.
+
+Previous BEST `hyperlex-encoder-modernbert-base-seed-morph78` remains in place, sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1`.
+
+Decision receipt sha256 `ee493b7d73b5e00ae27ec681bb52405bbcf2983a16a0297edad225aec52b7225`. Decision `PROMOTE`. Selection metric `classify_macro_f1_nonnone` `0.64448782942204`. Primary macro-F1 baseline `0.022395727019119547`, candidate `0.07245710784313726`, delta `0.05006138082401771`. Preservation deltas: classification accuracy `0.01659751037344398`, OBSERVED accuracy `0.048780487804878044`, unbind clean exact `0.008`. CHAR_WINS did not occur. Integrity `PASS`.
+
+The 491 sealed reserve identities moved `EVAL_RESERVE` to `EVAL_BOUND` to `EVAL_SPENT` through `IdentityLedger.transition` and `persist_append`. Events sha256 before `8223ae11bb42bd1a98ebcd739d1cfbc470085e241826b662703faefdfe752da6`, after `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. Projection sha256 before `d071b7aec8154203ce7f9ae9531639b8d638f86c2ac0c3af38bead9b3c4a48f9`, after `77e22433203879b252f7a9e309d2013d7550101d1c4a014b494d2c96df87d0e0`. The sealed binding file `c16e69559dd6582f687532ce6e2a2e9b52a70db1aa066d11e7e68e723936b371` was not rewritten. Historical consumed, spent, and abandoned identities outside this reserve were not changed.
+
+Representation completeness is `PASS`. Evaluation quality is `LIMITED`. This promotion does not establish performance across the eighteen-family ontology. The production head cannot name nine of the twelve sealed gold families. That limitation is separate from the checkpoint pointer. Vendor calls: 0. No further experiment was started.
+
+Promotion receipt sha256 `2e1f84b476f7355e31380419afad00d0b16d372235a0da6be85adc17fcf92d01`.
+
+## SELECT-005 blocked — HLX-EXP-2026-09-27-SELECT-005
+
+`HLX-EXP-2026-09-27-SELECT-005` is the next unclaimed experiment id. Claimed ids are `HLX-EXP-2026-09-26-SELECT-001` through `HLX-EXP-2026-09-26-SELECT-004`. This id is recorded and not sealed. No preregistration file, arm directory, reserve, or admission receipt was created.
+
+`TRAINING_BLOCKED`. The proposed variable is the composite `train_schedule`. Control would be `max_epochs=40`, early stopping disabled, restore best. Candidate would be `max_epochs=12`, `minimum_epochs=4` scored epochs through epoch index 3, `early_stopping_patience=4`, strict increase, ties keep the earlier checkpoint, restore best. Both arms would pin `classify_macro_f1_nonnone`, warm start `hyperlex-encoder-modernbert-base-seed-morph65`, and export sha256 `64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430` at 9150 rows.
+
+The canonical trainer does not implement that candidate. `scripts/shadow/hyperlexical/loop.py` scores `for ep in range(epochs)` and never stops early. `score_now > best_macro` already keeps the earlier checkpoint on ties, and best weights are written back after the loop when the selection metric is `classify_macro_f1_nonnone`. `epoch-progress.jsonl` records the metric and not wall-clock. Spark and public `main` have the same `loop.py` sha256 `f51e7aaff69e9033cc9ba16eee7225bfeefcf521e32236bdb791cc7900e130a5`. Spark HEAD `098ece4d9e8ebb27b0b0d3410b1280ed072d4847` was clean. Public `main` is `2f73f30010cc16ee014ed8d88de73131eb80d0a9`.
+
+The smallest separate change is an optional break in that epoch loop, default off: after a scored epoch, stop when at least 4 epochs have been scored and `epoch - best_epoch >= 4`, still capped by `max_epochs`, and append per-epoch wall-clock seconds to `epoch-progress.jsonl`. Setting `HYPERLEX_TRAIN_EPOCHS=12` is not that schedule. This record does not apply the change.
+
+SELECT-004 artifacts were not modified. Its reserve stays `EVAL_SPENT` and was not reused. No new reserve was allocated. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. No optimizer was constructed. Epochs and gradient steps for this id are zero. Launch is not authorized.
+
+## SELECT-005 still blocked — trainer synced, admission refused
+
+Spark now carries public `main` `a7d254e8981695072f5be36ab7ebdcc46cbd672c` for the trainer. `scripts/shadow/hyperlexical/loop.py` sha256 `1aa395081d7709be3844bf2568d12100d73d931ecbc51af43c3d6e01dba77e2a`. Early stopping remains default-off. `HLX-EXP-2026-09-27-SELECT-005` is still not sealed. No preregistration file, arm directory, reserve, or admission receipt was created. The private ledger sections above were not replaced by the public projection.
+
+`TRAINING_BLOCKED`. The trainer can express the candidate schedule. Canonical admission cannot seal it.
+
+`admit_training_run` allows exactly one scientific difference, and that difference must be `HLX_SELECT_METRIC`. A non-mutating probe pinned both arms to `classify_macro_f1_nonnone` and changed only `HYPERLEX_TRAIN_EPOCHS` (`40` versus `12`) and `HYPERLEX_EARLY_STOP` (`0` versus `1`). Patience and minimum epochs were the same on both arms. The gate `single_variable` failed: `scientific variable count is 2: HYPERLEX_EARLY_STOP,HYPERLEX_TRAIN_EPOCHS`.
+
+The spent ledger cannot supply a new `EVAL_RESERVE`. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. Live reserve counts are classify 0, classify_observed 0, classify_non_none 0, unbind_clean 0. The same probe failed at `holdout_reserve`: `reserve slice classify is absent`. The reserve scan also includes every identity with `evaluation_reserved` set. That scan is 491 identities, all derived `EVAL_SPENT`. A new reserve written onto this ledger would still fail that lifecycle check. The flag was not cleared. The SELECT-004 reserve was not reused.
+
+No optimizer was constructed. Epochs and gradient steps for this id are zero. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Launch is not authorized.
+
+The smallest separate change is an admission-contract patch: accept one declared schedule variable while both arms share `classify_macro_f1_nonnone`, and treat historical `EVAL_SPENT` identities as outside the current reserve without clearing `evaluation_reserved`. Do not allocate a reserve before that contract exists.
+
+
+## SELECT-005 still unsealed — admission contract synced, fresh reserve unavailable
+
+Public `main` is `fab0de03d75e3280dc34feed425c4783ccf7e2b5`, the squash merge of the admission contract. Spark carries that `admission.py` sha256 `6ae7b63ca1b6e0459d9b795c731668b3eff524269d81bcb92181c0c9d407ab78` and `identity_ledger.py` sha256 `ac49b7240a895952b99b3ef9046f7a8185c8647badac7a45c8640d592057d1c5`. `scripts/shadow/hyperlexical/loop.py` remains sha256 `1aa395081d7709be3844bf2568d12100d73d931ecbc51af43c3d6e01dba77e2a`. The private ledger file was not replaced.
+
+`HLX-EXP-2026-09-27-SELECT-005` is still not sealed. No preregistration file, arm directory, reserve binding, or admission receipt was created. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `evaluation_reserved` was not cleared. The SELECT-004 reserve stays `EVAL_SPENT` and was not reused.
+
+A fresh reserve needs all four slices from text that is absent from the ledger and from the pinned export. The ledger has no `EVAL_RESERVE`, `EVAL_BOUND`, or `AVAILABLE` identities. The remaining settled hashes from the held-out stream that are absent from the ledger are `UNRESOLVED`, `NONE`, `RECLASSIFY`, or `ACCEPT` with `RIGHTS_UNRESOLVED`. Unresolved-rights rows stay out of `EVAL_RESERVE`. No novel rights-cleared classify settlement remains. A classify-absent reserve was not written. The WordNet unbind source was not admitted by itself.
+
+No optimizer was constructed. Epochs and gradient steps for this id are zero. BEST was not moved. It still names `hyperlex-encoder-modernbert-base-seed-select004`, weights sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. Launch is not authorized.
+
+
+## SELECT-005 census — fresh reserve still unavailable
+
+A second join of the 339 settlement events to the 7964 ledger identities found no novel rights-cleared classify row. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The ledger was not appended. `evaluation_reserved` was not cleared. The SELECT-004 reserve was not reused.
+
+All 6761 unique hashes in the pinned export are already in the ledger. Of the 98 settlement events absent from the ledger, none are in that export. Those 98 are 82 `UNRESOLVED` with cleared rights, 2 `UNRESOLVED` with unresolved rights, 7 `ACCEPT` with unresolved rights, 6 `NONE` with unresolved rights, and 1 `RECLASSIFY` with unresolved rights. `UNRESOLVED` means the operator reviewed the row and declined to settle it. Unresolved-rights rows stay out of `EVAL_RESERVE`. There are 0 novel `CC-BY-SA` rows with decision `ACCEPT`, `RECLASSIFY`, or `NONE`.
+
+The 28 promoted-accept files are training gold under an older family set and were not remapped. WordNet can still supply `unbind_clean` and was not admitted alone, because a classify-absent reserve fails the slice gate. No preregistration, arm directory, reserve binding, or admission receipt was created. The optimizer was not constructed. Epochs and gradient steps for `HLX-EXP-2026-09-27-SELECT-005` remain 0. `training_launch_authorized` is false. BEST was not moved.
+
+
+## SELECT-005 classify candidates blocked — HLX-EVAL-REVIEW-2026-09-27-001
+
+Admission requires each active slice count to be at least 1. The classify floors are classify 1, classify_observed 1, and classify_non_none 1. Planning targets 606, 287, and 604 are not that floor. This pass did not lower the floor.
+
+Packet `HLX-EVAL-REVIEW-2026-09-27-001` is an operator-review packet, not a reserve. Ready rows: 0. Other screened rows: label unresolved 10, rights blocked 69, provenance blocked 4, cohort duplicate 1. Previously declined rights-cleared rows and unresolved-rights events were not reopened. WordNet and the older promoted-accept files were not used. No operator decision was written.
+
+Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The ledger was not appended. `HLX-EXP-2026-09-27-SELECT-005` was not sealed. BEST was not moved.
+
+
+## ai-native evaluation family — 2026-09-27
+
+Public `main` is `ca9403efe8470d46566abbcd098640f07b33b759`. `ai-native` is taxonomy-active. `evaluation.enabled` stays false. The production head stays nine names. No row was settled. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+The review packet `HLX-EVAL-REVIEW-2026-09-27-001` now has 10 ready rows proposing `ai-native`. Their stored class stays `INFERRED`. `classify_observed` is still short by 1 until an operator attests `OBSERVED`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed.
+
+
+## Operator attested the ready rows observed
+
+The operator attested `OBSERVED` on all 10 ready rows in packet `HLX-EVAL-REVIEW-2026-09-27-001`. The proposed family is `ai-native`. Rights-blocked, provenance-blocked, and duplicate rows were not attested. No `ACCEPT`, `RECLASSIFY`, or `NONE` was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed.
+
+## Unbind preview refused as slang — 2026-09-27
+
+The operator reviewed the first 20 positional surfaces from the novel WordNet unbind pool. None are admitted as slang. Eighteen are refused. `give a damn` and `in one's birthday suit` are quarantined for provenance review. Slang, idiom, colloquialism, and profanity stay distinct. No `ACCEPT`, `REJECT`, `CORRECT_TARGET`, or `UNRESOLVED` was written to the unbind settlement log. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. These rows are not classify gold and must not be trained as slang. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Disposition packet `HLX-EVAL-UNBIND-PREVIEW-2026-09-27-001`.
+
+## Unbind preview roles — 2026-09-27
+
+Slang classification and structure unbinding stay orthogonal. On the same 20-surface preview, the operator marked 7 high-value unbind candidates, 8 secondary candidates, and 5 rejects. The rejects are `beta vulgaris`, `gulf of oman`, `u. s. air force`, `department of the federal government`, and `court of assize and nisi prius`. The slang disposition is unchanged: none admitted, 18 refused, and `give a damn` plus `in one's birthday suit` quarantined as slang. No unbind settlement decision was written. The 15 candidates are not admitted. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-PREVIEW-2026-09-27-001`.
+
+## Unbind screen specified — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v1` is a candidate-selection rule, not an admission filter. Specification agreement with the 20-item preview is 20/20. That figure is specification fit, not held-out precision. A held-out validation sample of 32 admissible positional surfaces, excluding those 20, is recorded with proposed buckets and `gold` null. Provisional screen counts on 63882 admissible positional surfaces are high-value 1965, secondary 60559, reject 1358. Those counts are not a draw. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-001`.
+
+## Unbind screen v2 — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v2` replaces the v1 proposal as the screening hypothesis. It is not authorized as the SELECT-005 screen. Surface patterns remain candidate-generation heuristics. Hard exclusions are proper name, titled entity, taxonomy, productive number, and unconstrained free composition. Agreement after the revision is 20/20 on the first preview and 32/32 on the reviewed sample. That agreement is fit, not held-out precision. A new validation sample excludes all 52 reviewed surfaces and carries `gold` null. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-002`.
+
+## Unbind screen v3 — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v3` is a hypothesis. It is not authorized as the SELECT-005 screen. Candidate-generation patterns do not assign high-value. The automatic screen emits reject or unresolved only. v2 pool counts stay frozen at high-value 1977, secondary 55427, reject 6478, over 63882 positional surfaces, and were not recomputed. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-003`.
+
+## Unbind screen v3 held out — 2026-09-27
+
+`RUNE.UNBIND_SCREEN.v3` stays a proposed refinement. Fifty-two surfaces are frozen as development data and thirty-two as validation-development data. Agreement on those eighty-four is fit, not held-out precision. A fresh sample of 29 admissible positional surfaces excludes all 84. Predictions were not hand-corrected. Held-out precision is not computed. v2 pool counts stay frozen at high-value 1977, secondary 55427, reject 6478, over 63882 positional surfaces. The v3 screen was not run on that pool. No settlement was written. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not sealed. Packet `HLX-EVAL-UNBIND-SCREEN-2026-09-27-004`.
+
+## Unbind held-out frozen — 2026-09-27
+
+The 29-row v3 application is frozen. Sample sha256 `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. It was produced by one application of `RUNE.UNBIND_SCREEN.v3` and was not hand-corrected. Operator labels are pending. Held-out precision is `NOT_COMPUTABLE`. v3 was not revised. Development data remain 52 rows. Validation-development data remain 32 rows. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `HLX-EXP-2026-09-27-SELECT-005` is not authorized and is not sealed.
+
+## Unbind screen evaluation lane — 2026-09-27
+
+`HLX-EVAL-UNBIND-SCREEN-V3-001` evaluates the frozen 29-row v3 application. Source sample sha256 remains `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. Prediction, operator judgment, gold, admission, and settlement are separate artifacts. The blind review does not carry the predicted bucket. Operator labels are pending. Held-out precision and the confusion matrix are `NOT_COMPUTABLE`. A scored report does not authorize `HLX-EXP-2026-09-27-SELECT-005`. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen held-out scored — 2026-09-27
+
+Operator labels for HLX-EVAL-UNBIND-SCREEN-V3-001 are frozen. Label sha256 `4e7bae5986e6345de62086af270a1d1a6902103d69a50d8f0b1e4e0fe01ecde5`. The source sample sha256 remains `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e`. Resolved accuracy is 16/29. High precision is 1 and recall is 6/13. Secondary precision is 4/17 and recall is 1. Reject precision is 1 and recall is 6/12. Quarantine support is 0. Every error is false secondary: 7 operator-high and 6 operator-reject. False high and false reject are 0. revision_eligible stays false. SELECT-005 is not authorized. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v4 hypothesis — 2026-09-28
+
+The v3 held-out score stays 16/29. All 13 errors are false secondary: 7 operator-high and 6 operator-reject. False high and false reject are 0. Those 29 rows are now v4 development evidence, not a validation set. `RUNE.UNBIND_SCREEN.v4` is drafted and not encoded, applied, or authorized. It would only add coverage around the secondary basin: normalized productive numbers, multi-token personal names, organization glosses, species common names, and medical technical phrases on one side; nonliteral and conventionalized gloss evidence on the other. Existing high and reject decisions stay in place. `revision_eligible` stays false. SELECT-005 is not authorized. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v4 acceptance frozen — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v4.ACCEPTANCE` is frozen and the screen is not encoded. Acceptance sha256 `ffb39e38784a56ae15bae51718c61b78fc861e48399936dbed57fb7d0754c55b`. v4 may only move additional secondary fall-throughs, and only by semantic evidence classes. It must not reinterpret v3 high or reject logic, redefine secondary, or train on a future validation sample. Phrase-specific exceptions are prohibited. The 113 reviewed surfaces are the later regression set. The next measurement sample must exclude them and be frozen before inspection. `revision_eligible` stays false. SELECT-005 is not authorized. The v3 sample and label hashes are unchanged. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v4 encoded — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v4` is encoded as a wrapper over a frozen v3 bucket. It inspects a row only when that bucket is secondary. Patch A may move secondary to reject. Patch B may move secondary to high. Existing high and reject decisions are not reopened. The acceptance contract is unchanged, sha256 `ffb39e38784a56ae15bae51718c61b78fc861e48399936dbed57fb7d0754c55b`.
+
+The 113 reviewed surfaces were replayed as a regression suite. Gate A through Gate E passed. High rows unchanged: 39. Reject rows unchanged: 28. Secondary moves: 13 to high and 6 to reject. Each move has one Patch A or Patch B evidence code. No phrase-specific rule fired. Operator conflict on those moves: 0. This replay is not a new precision estimate.
+
+Success criteria were frozen before the measurement draw, sha256 `4fcbebfad7797eb22393fa94a389f1ef41402612e359b63d3a3a4b031c6cf8be`. High and reject precision floors are the v3 held-out floors of 1. The false-secondary rate must be strictly below 13/29. False high and false reject are not allowed. Perfect accuracy is not required.
+
+The measurement sample excludes all 113 reviewed surfaces and duplicate normalized lexical identities. It is stratified by source part of speech and token count, two rows from each occupied cell. Occupied cells produced 28 rows. Sample sha256 `dae8851134aa960a13e072ae017428054c68b988c8d7e6f86d8cab2d16c2586b`. v4 was applied once. Hand corrections are 0. Operator labels are absent. Precision is `NOT_COMPUTABLE`. `revision_eligible` stays false. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The v3 sample sha256 `8af5644061a7a60fc5620c217e15a4ec8145f170edee9d8ff4e2999e7b86605e` and label sha256 `4e7bae5986e6345de62086af270a1d1a6902103d69a50d8f0b1e4e0fe01ecde5` are unchanged.
+
+## Unbind screen v4 measurement scored — 2026-09-28
+
+Operator labels for the 28-row v4 measurement sample are frozen. Label sha256 `023691f8349f0dda12c234691f235ae109289fcf9eab86ec20be1e23bfed9463`. The sample sha256 remains `dae8851134aa960a13e072ae017428054c68b988c8d7e6f86d8cab2d16c2586b`. The prediction sha256 remains `a854847e516fbcd37fbb221456e8caf8c420552795ac7fc6225960bb5434084f`. Labels were recorded at `2026-09-28T02:17:00Z`, after the sample freeze at `2026-09-28T01:07:34Z`. Hand corrections are 0. v4 was not applied again.
+
+Resolved accuracy is 16/28. High precision is 1 (7/7) and recall is 7/13. Reject precision is 1 (5/5) and recall is 5/11. Secondary precision is 4/16 and recall is 4/4. Quarantine support is 0. False high is 0. False reject is 0. False secondary is 12/28, which is below the frozen floor of 13/29. Every error is a secondary fall-through. The pre-registered success criteria pass, so `revision_eligible` is true. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v5 hypothesis — 2026-09-28
+
+The v4 measurement artifact and score receipt stay frozen. Sample sha256 `dae8851134aa960a13e072ae017428054c68b988c8d7e6f86d8cab2d16c2586b`. Prediction sha256 `a854847e516fbcd37fbb221456e8caf8c420552795ac7fc6225960bb5434084f`. Label sha256 `023691f8349f0dda12c234691f235ae109289fcf9eab86ec20be1e23bfed9463`. Acceptance sha256 `ffb39e38784a56ae15bae51718c61b78fc861e48399936dbed57fb7d0754c55b`. Resolved accuracy remains 16/28. High precision remains 1. Reject precision remains 1. False secondary remains 12/28. `revision_eligible` on that measurement remains true.
+
+Those 28 rows are now v5 development evidence, not a validation set. Evidence sha256 `dcab832038c3209a54a4159b23caf4eecfb94864cef7188af28f1ae3b0ff80c0`. The twelve secondary fall-throughs are two escape routes only: referential or terminological rows that stayed secondary, and lexicalized noncompositional rows that stayed secondary. They are not a fit list.
+
+`RUNE.UNBIND_SCREEN.v5` is drafted and not encoded, applied, or authorized. It is a wrapper over a frozen v4 bucket. It inspects a row only when that bucket is secondary. One referential/terminological dominance test may move secondary to reject. One lexicalized noncompositionality test may move secondary to high, and only when the surface is conventionalized and the gloss is not compositionally recoverable. A lexicalized and mostly compositional surface stays secondary. Existing high and reject decisions stay in place. A separate rule for each miss is prohibited. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v5 acceptance frozen — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v5.ACCEPTANCE` is frozen and the screen is not encoded. Acceptance sha256 `752fd459658f636df91a8da9f1a701a0de8e3240d6df12072bbd2b7ac4cc0b7a`. The draft hypothesis sha256 is `c3d3f8081e18582158eab7a1bf154a02aed38614b9801df6a83f7eaf3875da7b`. v5 may only move additional secondary fall-throughs, and only through the two general tests named in the contract. It must not reinterpret v3 or v4 high or reject logic, redefine secondary, redesign the classifier, or train on a future validation sample. Phrase-specific exceptions are prohibited. One executable rule per observed miss is prohibited.
+
+The later regression replays all 141 reviewed surfaces: 52 development, 32 validation-development, 29 from the v3 held-out application, and 28 from the v4 measurement. The 113-row v4 replay and the 28-row measurement sample are disjoint. Every previously correct high stays high. Every previously correct reject stays reject. Every new move originates from secondary. The next measurement sample must exclude all 141 and be frozen before inspection. v5 is applied once. Operator labels are collected independently.
+
+The pre-registered bar is high precision 1, reject precision 1, and a false-secondary rate strictly below 12/28. No accuracy-gain target is registered. Perfect accuracy is not required. `revision_eligible` on the v4 measurement stays true and does not authorize `HLX-EXP-2026-09-27-SELECT-005`. The v4 sample, prediction, label, and acceptance hashes are unchanged. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v5 encoded — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v5` is encoded as a wrapper over a frozen v4 bucket. It inspects a row only when that bucket is secondary. Referential or terminological dominance may move secondary to reject. A conventionalized surface whose gloss is not recoverable from the ordinary first senses of its constituents may move secondary to high. Existing high and reject decisions are not reopened. The acceptance contract is unchanged, sha256 `752fd459658f636df91a8da9f1a701a0de8e3240d6df12072bbd2b7ac4cc0b7a`.
+
+The 141 reviewed surfaces were replayed as a regression suite. High rows unchanged: 59. Reject rows unchanged: 39. Secondary moves: 4 to high and 7 to reject. Each move has the one evidence code for its patch. No phrase-specific rule fired. Operator conflict on those moves: 0. This replay is not a new precision estimate. Gate report sha256 `c70214ac1ea3f24b0b8c5590b015a64de4f5a7a632cf372f02aa9e88bd5b2977`.
+
+The pre-registered bar is unchanged: high precision 1, reject precision 1, and a false-secondary rate strictly below 12/28. Criteria sha256 `49e179db537a738bb7370404167c7ec1c7019fcd251d77e6a916f4426a0ecccb`. No accuracy-gain target was added.
+
+The measurement sample excludes all 141 reviewed surfaces and duplicate normalized lexical identities. It is stratified by source part of speech and token count, two rows from each occupied cell. Occupied cells produced 28 rows. Sample sha256 `a462f08307e62b09fdfe1dfb6e9a86ec3ea207db27e917730b0d244c47c73359`. Prediction sha256 `51bcf051fb1a4b9bf67a28fe7d1235c8922e3a887bb908de32e5ac0d78a6408f`. v5 was applied once. Hand corrections are 0. Operator labels are absent. Precision is `NOT_COMPUTABLE`. State is `MEASUREMENT_ELIGIBLE`. `revision_eligible` on this screen stays false. `revision_eligible` on the v4 measurement stays true. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v5 measurement scored — 2026-09-28
+
+Operator labels for the 28-row v5 measurement sample are frozen. Each label carries only the row identity, the surface, the operator bucket, and the operator reason. Label sha256 `b05dc1c35d3d10eed4b615ca1ee8251a875a450f57560fef4b5a84b3e1fc075f`. The row table is high 11, secondary 8, reject 9, quarantine 0, unresolved 0. The seal line said high 10, secondary 8, reject 10. The frozen artifact follows the row table.
+
+The sample sha256 remains `a462f08307e62b09fdfe1dfb6e9a86ec3ea207db27e917730b0d244c47c73359`. The prediction sha256 remains `51bcf051fb1a4b9bf67a28fe7d1235c8922e3a887bb908de32e5ac0d78a6408f`. Labels were recorded at `2026-09-28T03:03:27Z`, after the sample freeze at `2026-09-28T02:44:48Z`. Hand corrections are 0. v5 was not applied again. The 141-row regression remains a regression result and is not a generalization estimate.
+
+Resolved accuracy is 17/28. High precision is 6/7 and recall is 6/11. Reject precision is 5/6 and recall is 5/9. Secondary precision is 6/15 and recall is 6/8. Quarantine support is 0. False high is 1. False reject is 1. False secondary is 9/28: 5 operator-high and 4 operator-reject. Accuracy was recorded and was not part of the bar.
+
+False high is 1 and false reject is 1, so the outer-bucket bar fails. The false high is `keep out`, which v4 had already marked high and v5 passed through. The false reject is `on the job`, which v5 moved from secondary to reject on referential/terminological dominance. `revision_eligible` stays false. The screen was not retuned. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `revision_eligible` on the v4 measurement stays true. Acceptance sha256 remains `752fd459658f636df91a8da9f1a701a0de8e3240d6df12072bbd2b7ac4cc0b7a`.
+
+## Unbind screen v6 hypothesis — 2026-09-28
+
+The v5 measurement stays scored as an outer-bucket failure. Sample sha256 `a462f08307e62b09fdfe1dfb6e9a86ec3ea207db27e917730b0d244c47c73359`. Prediction sha256 `51bcf051fb1a4b9bf67a28fe7d1235c8922e3a887bb908de32e5ac0d78a6408f`. Label sha256 `b05dc1c35d3d10eed4b615ca1ee8251a875a450f57560fef4b5a84b3e1fc075f`. False high is 1. False reject is 1. High precision is 6/7. Reject precision is 5/6. False secondary is 9/28. Resolved accuracy is 17/28 and is descriptive only. `revision_eligible` on v5 stays false.
+
+The error analysis is frozen and authorizes no fix. Analysis sha256 `ecb229dccec627af958d12537ab153d35de9e3e58d71bb8d3f0a8835077b26ac`. One inherited high overreach: `keep out` was already high at v4, and v5 passed it through against an operator secondary label. One new reject overreach: `on the job` moved from secondary to reject under referential/terminological dominance against an operator secondary label. Secondary undercoverage remains 5 operator-high rows and 4 operator-reject rows. These 28 rows are v6 development evidence, not a validation set. Evidence sha256 `daf512dd331216fecb87ec4d4890c83a03afaf78b5fc1ca6dae6e46e1a9f63a9`.
+
+`RUNE.UNBIND_SCREEN.v6` is drafted and not encoded, applied, or authorized. Draft sha256 `942eeab825d1c89c21e91af84da0d753281a91012e9ff219a633d27fe6648aa5`. It is a structural revision, not another secondary-only wrapper. A frozen v5 bucket is provisional. High may fall to secondary only with compositional recoverability. Reject may fall to secondary only with nonreferential lexical use. A demotion stops at secondary for that application. A provisional secondary row may still move by the two existing evidences: lexicalized noncompositional to high, and referential/terminological dominance to reject. High and reject do not swap directly. The motivating surfaces are not a required fit. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v6 acceptance frozen — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v6.ACCEPTANCE` is frozen and the screen is not encoded. Acceptance sha256 `68c60dfe9efaf9f79bc445b974c5436d31b60b77fe7374b17103f3b74865610f`. The draft hypothesis sha256 is `942eeab825d1c89c21e91af84da0d753281a91012e9ff219a633d27fe6648aa5`. The error analysis sha256 is `ecb229dccec627af958d12537ab153d35de9e3e58d71bb8d3f0a8835077b26ac`. The development evidence sha256 is `daf512dd331216fecb87ec4d4890c83a03afaf78b5fc1ca6dae6e46e1a9f63a9`.
+
+The replay set is all 169 reviewed surfaces: 52 development, 32 validation-development, 29 from the v3 held-out application, 28 from the v4 measurement, and 28 from the v5 measurement. The v5 measurement is disjoint from the prior 141. Previously operator-correct rows must remain operator-correct. High falls to secondary only with compositional recoverability. Reject falls to secondary only with nonreferential lexical use. Secondary rises to high only with lexicalized noncompositional evidence. Secondary falls to reject only with referential/terminological dominance. Direct movement between high and reject is prohibited. Phrase-specific rules are prohibited.
+
+The pre-registered measurement bar is high precision 1 and reject precision 1, with false high and false reject at 0. No false-secondary quota and no accuracy-gain target are registered. The next measurement sample must exclude all 169 reviewed surfaces and be frozen before inspection. `revision_eligible` on v5 stays false. `revision_eligible` on the v4 measurement stays true. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. The v5 sample, prediction, label, and acceptance hashes are unchanged. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v6 encoded — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v6` is encoded over a frozen v5 bucket. High may fall to secondary only when the gloss is recoverable from the ordinary first senses of at least two constituents and the synset has no unrelated single-word mapping. Reject may fall to secondary only when a pertainym is used as a state or relation whose gloss meets those ordinary senses, and not when the gloss is a relational designation. A demotion stops at secondary for that application. A provisional secondary row may still move by lexicalized noncompositional evidence or referential/terminological dominance. High and reject do not swap. The acceptance contract is unchanged, sha256 `68c60dfe9efaf9f79bc445b974c5436d31b60b77fe7374b17103f3b74865610f`.
+
+The 169 reviewed surfaces were replayed. Previously correct rows lost: 0. Direct swaps between high and reject: 0. High to secondary: 0. Reject to secondary: 1. That row is `on the job`, evidence `nonreferential_lexical_use`, and the operator label is secondary. Secondary to high: 0. Secondary to reject: 0. No phrase-specific rule fired. `keep out` stays high. Its gloss is not covered by the ordinary first senses of its constituents, and the synset maps it to an unrelated word, so compositional recoverability does not fire. That miss is not a required fit. Unchanged disagreements: 16. This replay is not a precision estimate. Gate report sha256 `66e4f3859738dfaa63a21ec2e69025b568ea097c17f509ceed4277022d979ffb`. Prediction sha256 `7398254bd62253129153e7b57c99122ed7cc7157520788cc60bb0e80f0b356e8`. Diff sha256 `3af430bb9261c1cedc1bd6181f5e928e01eef22bccea0b81c3c435073fabff59`.
+
+The pre-registered bar is unchanged: high precision 1, reject precision 1, false high 0, and false reject 0. No false-secondary floor and no accuracy target are registered. Criteria sha256 `3a511ffb49f32930ead14ca2f1e2f6639122c47a7ceec9d1bc29815dd7b490dd`.
+
+The measurement sample excludes all 169 reviewed surfaces and duplicate normalized lexical identities. It is stratified by source part of speech and token count, two rows from each occupied cell. Occupied cells produced 28 rows. Sample sha256 `8ee516423f002a355759eed788bfe3bef81332fad61b1f19c7e46bd0722a29f2`. Prediction sha256 `476c5526b18fcb999f2a5397d0674ec07e29b199d5a5259afb555bf608d245ee`. v6 was applied once. Hand corrections are 0. Operator labels are absent. Precision is `NOT_COMPUTABLE`. State is `MEASUREMENT_ELIGIBLE`. `revision_eligible` on this screen stays false. `revision_eligible` on v5 stays false. `revision_eligible` on the v4 measurement stays true. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v6 measurement scored — 2026-09-28
+
+Operator labels for the 28-row v6 measurement sample are frozen. Each label carries only the row identity, the surface, the operator bucket, and the operator reason. Label sha256 `feed0ee131a513f2801bd1725f553bb6274df1378b28fdea1cb13e238ea9eb11`. The row table is high 12, secondary 4, reject 12, quarantine 0, unresolved 0. The seal line said high 11, secondary 4, reject 13. The frozen artifact follows the row table.
+
+The sample sha256 remains `8ee516423f002a355759eed788bfe3bef81332fad61b1f19c7e46bd0722a29f2`. The prediction sha256 remains `476c5526b18fcb999f2a5397d0674ec07e29b199d5a5259afb555bf608d245ee`. Labels were recorded at `2026-09-28T03:34:48Z`, after the sample freeze at `2026-09-28T03:25:47Z`. Hand corrections are 0. v6 was not applied again. The 169-row regression remains a regression result and is not a generalization estimate.
+
+Resolved accuracy is 21/28 and is descriptive only. High precision is 9/10 and recall is 9/12. Reject precision is 1 (9/9) and recall is 9/12. Secondary precision is 3/9 and recall is 3/4. Quarantine support is 0. False high is 1. False reject is 0. False secondary is 6/28: 3 operator-high and 3 operator-reject. Recall and accuracy were not part of the bar.
+
+A false high or false reject is present, so the outer-bucket bar fails. `revision_eligible` stays false. The screen was not retuned. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `revision_eligible` on v5 stays false. `revision_eligible` on the v4 measurement stays true. Acceptance sha256 remains `68c60dfe9efaf9f79bc445b974c5436d31b60b77fe7374b17103f3b74865610f`.
+
+## Unbind screen v7 hypothesis — 2026-09-28
+
+The v6 measurement stays scored as an outer-bucket failure. Sample sha256 `8ee516423f002a355759eed788bfe3bef81332fad61b1f19c7e46bd0722a29f2`. Prediction sha256 `476c5526b18fcb999f2a5397d0674ec07e29b199d5a5259afb555bf608d245ee`. Label sha256 `feed0ee131a513f2801bd1725f553bb6274df1378b28fdea1cb13e238ea9eb11`. High precision is 9/10. Reject precision is 1 (9/9). False high is 1. False reject is 0. False secondary is 6/28. Resolved accuracy is 21/28 and is descriptive only. `revision_eligible` on v6 stays false. `revision_eligible` on v5 stays false. `revision_eligible` on the v4 measurement stays true.
+
+The only false high in that measurement is `to a lesser extent`. The operator bucket is secondary. v3, v4, v5, and v6 are high, and v6 recorded no evidence code. A prior inherited high disagreement, `keep out`, stays high in the 169-row replay. Its operator bucket is secondary and `compositional_recoverability` did not fire. That v6 predicate is not redefined. Secondary fall-throughs are 13/29 at v3, 12/28 at v4, 9/28 at v5, and 6/28 at v6. Coverage is not the next question.
+
+The error analysis is frozen and authorizes no fix. Analysis sha256 `06a2f10493640d6536b45ef3d9405470c12623bfa787f7fba49b3f64498fb766`. These 28 rows are v7 development evidence, not a validation set. Evidence sha256 `3d457801203c69ceb13c6cefbf5d82fe9cac0daea48f26eb2642d8673585a3a3`. The six false-secondary rows stay unresolved and are not a fit list: `to the letter`, `with child`, `dressed to the nines`, `union jack`, `atomic number 98`, and `law of definite proportions`. Known reviewed inventory is 197: the prior 169 plus these 28. Normalized overlap is 0.
+
+`RUNE.UNBIND_SCREEN.v7` is specified and not encoded, applied, or authorized. State is `SPEC_FROZEN`. Draft sha256 `c168bf975e26804a032956d570e39a3d2c7078b407ef966da33083adecf5585b`. It keeps the frozen v6 phase order and replaces only the high challenge. A provisional high may fall to secondary only with `ordinary_compositional_derivation`: the WordNet sense can be derived by ordinary grammatical, syntactic, comparative, or phrasal composition without a stored conventionalized or nonliteral lexical binding. The test does not require recovery from only the ordinary first sense of each token. It asks whether lexicalized binding is required at all. A demotion stops at secondary for that application. Reject may still fall to secondary only with `nonreferential_lexical_use`. A provisional secondary row may still move by the unchanged v6 evidences. High and reject do not swap. `to a lesser extent` and `keep out` motivate the question and are not required fits, and neither is special-cased. No SELECT-005 admission surface exists. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v7 acceptance frozen — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v7.ACCEPTANCE` is frozen and the screen is not encoded. State is `SPEC_FROZEN`. Acceptance sha256 `562c0756b0337e2fb10643f4fd6689ea4421977a345d12fe33d8a1504161cac5`. The draft hypothesis sha256 is `c168bf975e26804a032956d570e39a3d2c7078b407ef966da33083adecf5585b`. The error analysis sha256 is `06a2f10493640d6536b45ef3d9405470c12623bfa787f7fba49b3f64498fb766`. The development evidence sha256 is `3d457801203c69ceb13c6cefbf5d82fe9cac0daea48f26eb2642d8673585a3a3`.
+
+The replay set is all 197 reviewed surfaces: 52 development, 32 validation-development, 29 from the v3 held-out application, 28 from the v4 measurement, 28 from the v5 measurement, and 28 from the v6 measurement. The v6 measurement is disjoint from the prior 169. Previously operator-correct rows must remain operator-correct. A previously correct high stays high. High falls to secondary only with ordinary compositional derivation. The frozen v6 transitions for secondary to high, secondary to reject, and reject to secondary are unchanged. Direct movement between high and reject is prohibited. A high demotion stops at secondary and is not re-promoted in the same application. Phrase-specific rules, row-id rules, and surface-hash rules are prohibited.
+
+No measurement sample was drawn. The bar proposed for a later unseen sample is high precision 1 and reject precision 1, with false high and false reject at 0. No false-secondary quota, no accuracy target, and no recall target are registered. That sample must exclude all 197 reviewed normalized identities and be frozen before inspection. `revision_eligible` stays false on v7, v6, and v5. `revision_eligible` on the v4 measurement stays true. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. No admission surface for that experiment exists. The v6 sample, prediction, label, criteria, and acceptance hashes are unchanged. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v7 encoded — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v7` is encoded over a frozen v6 bucket. The only new predicate is `ordinary_compositional_derivation`. It inspects a provisional high. The recorded sense must be a comparative, syntactic, or phrasal composition, and the synset must not store an unrelated single-word synonym. A gloss that merely shares constituent stems does not fire, and a metaphorical retelling does not fire. A demotion stops at secondary. Reject rows still use the v6 reject challenge. Secondary rows are not reopened, so a demotion v6 already stopped stays stopped. `compositional_recoverability` is not a v7 transition. The acceptance contract is unchanged, sha256 `562c0756b0337e2fb10643f4fd6689ea4421977a345d12fe33d8a1504161cac5`.
+
+The 197 reviewed surfaces were replayed as development and regression evidence, not as a generalization estimate. Previously correct rows lost: 0. Previously correct high rows demoted: 0. Direct swaps between high and reject: 0. High to secondary: 1. Reject to secondary: 0. Secondary to high: 0. Secondary to reject: 0. One row moves. `to a lesser extent` goes from high to secondary with `ordinary_compositional_derivation`, and the operator bucket is secondary. That firing is not a required fit. `keep out` stays high. No phrase-specific rule fired. This replay is not a precision estimate. Gate report sha256 `78225b68c639694bb4c17342c87320ccb44faac557a9145ea117603da0d545ed`. Prediction sha256 `24f266e16b80da602b011bf7cca13774ce9f76c0c52e81e600a1d9743d61d197`. Diff sha256 `b86ae6611a5fcd233b6e92b3def4cdd0680018902532a0a0d5fb02659ad092ae`.
+
+State is `REGRESSION_VERIFIED`. `measurement_eligible` stays false. The unseen sample was not drawn. The pre-registered bar remains high precision 1, reject precision 1, false high 0, and false reject 0, with no false-secondary quota, no accuracy target, and no recall target. No measurement sample was drawn. `revision_eligible` stays false on v7, v6, and v5. `revision_eligible` on the v4 measurement stays true. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v7 measurement frozen — 2026-09-28
+
+The 197-row regression stays `REGRESSION_VERIFIED`. One unseen measurement sample excludes those 197 normalized identities. Normalized overlap with the reviewed set is 0. Duplicate normalized identities inside the sample are 0. The draw is deterministic and stratified by source part of speech and token count, two rows from each occupied cell. Occupied cells produced 28 rows. No occupied cell was exhausted. Each occupied cell contributed 2 rows.
+
+The sample was frozen before v7 was applied. Sample sha256 `2b4414e2a6db3acf2967603e3ef4552c631803285633fbae5f3f3d50451724b1`. v7 was then applied once. Hand corrections are 0. Prediction sha256 `d201affe0c87206227bc211a6071a25e639c0ffb7cbcfdc8dac0572155a4da47`. The blind rows carry surface, part of speech, token count, and gloss. They do not carry a bucket or an evidence code. Operator labels are absent. Precision is `NOT_COMPUTABLE`. State is `MEASUREMENT_ELIGIBLE`.
+
+The acceptance bar is unchanged: high precision 1, reject precision 1, false high 0, and false reject 0. No false-secondary floor, no accuracy target, and no recall target were added. Criteria sha256 `3b22449874f2384d843e4f16cb7e5c28b6acfc83273aec44542e0bc5b0c3ef37`. `revision_eligible` stays false. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind screen v7 measurement scored — 2026-09-28
+
+Operator labels for the 28-row v7 measurement sample are frozen. Each label carries only the row identity, the surface, the operator bucket, and the operator reason. Label sha256 `0ce39dffad49b28b5adebfbe3514fcf81f9ca39689d3eadf0695975496b6adb5`. The row table is high 14, secondary 5, reject 9, quarantine 0, unresolved 0. The seal line said high 13, secondary 5, reject 10. The frozen artifact follows the row table.
+
+The sample sha256 remains `2b4414e2a6db3acf2967603e3ef4552c631803285633fbae5f3f3d50451724b1`. The prediction sha256 remains `d201affe0c87206227bc211a6071a25e639c0ffb7cbcfdc8dac0572155a4da47`. Labels were recorded at `2026-09-28T04:14:27Z`, after the sample freeze at `2026-09-28T04:05:23Z`. Hand corrections are 0. v7 was not applied again. The 197-row regression remains a regression result and is not a generalization estimate.
+
+Resolved accuracy is 21/28 and is descriptive only. High precision is 10/11 and recall is 10/14. Reject precision is 7/8 and recall is 7/9. Secondary precision is 4/9 and recall is 4/5. Quarantine support is 0. False high is 1. False reject is 1. False secondary is 5/28: 3 operator-high and 2 operator-reject. Recall, accuracy, and false secondary were not part of the bar.
+
+A false high or false reject is present, so the outer-bucket bar fails. `revision_eligible` stays false. The screen was not retuned. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `revision_eligible` on v6 stays false. `revision_eligible` on v5 stays false. `revision_eligible` on the v4 measurement stays true. Acceptance sha256 remains `562c0756b0337e2fb10643f4fd6689ea4421977a345d12fe33d8a1504161cac5`.
+
+## Unbind screen lineage retired — 2026-09-28
+
+`RUNE.UNBIND_SCREEN.v3` through `RUNE.UNBIND_SCREEN.v7` stay sealed. They are a completed experimental lineage. The lineage showed that further surface-pattern patches are the wrong instrument. No `RUNE.UNBIND_SCREEN.v8` exists. Historical scores are not results for the sense-first screen. v7 remains `SCORED`, outcome `OUTER_BUCKET_FAILURE`, `revision_eligible` false. v7 was not retuned. v6 and v5 `revision_eligible` stay false. The v4 measurement `revision_eligible` stays true. Source sha256 values remain v3 `179d8dcc112214c70566bd3c9a0397e1ebab9131666b0ca1f2a3817973aaccc6`, v4 `f1e86e2f21544655cda6a136885a186b20885d501cb7ea9c75e18b3dd4a42377`, v5 `70504574523f2e8fde0fb974e3027205dded2c96213dd997f44475ea6856f948`, v6 `59699496c15aaedfbe69a7e49b5c6e62d1e543ce5a1e0e9a0255a98a62036fba`, v7 `73335bde8eec262ebecfedfc0d0ecb0a965da5c6b66e53c16f2aee2f38b061ab`. Retirement sha256 `fd5d9ebb94d7a6e6ea69609c4e2125ec9914f6705ae256b780223bbea2e26f6f`.
+
+The v7 measurement disagreements are not one failure class. The frozen error analysis separates three questions: whether the bound sense designates a referent, whether that sense requires conventionalized lexical binding, and whether that sense is compositionally recoverable. Error analysis sha256 `ebc56d4d4499efee19bc368365b0d6d3a7afc27ede4e78f40fb9d0fd15fcb9c8`. The canonical v7 operator counts from the row artifact are high 14, secondary 5, reject 9. The handwritten seal does not override those rows.
+
+## Unbind sense screen v1 specified — 2026-09-28
+
+`RUNE.UNBIND_SENSE_SCREEN.v1` is `SPEC_FROZEN`. It is a new screen family. It is not encoded, not applied, and no measurement sample was drawn. The unit of analysis is the specific lexical sense: surface, part of speech, WordNet synset, and the frozen first-sense gloss. Another sense of the same surface, a historical v3-v7 bucket, and a referential origin that is not the predicated sense are outside that unit.
+
+The five classes are `REFERENTIAL`, `LEXICALIZED_NONCOMPOSITIONAL`, `LEXICALIZED_COMPOSITIONAL`, `ORDINARY_COMPOSITIONAL`, and `AMBIGUOUS`. The procedure assigns exactly one class. Empty or unmatched sense evidence is `AMBIGUOUS`. A figurative gloss is not referential merely because the wording mentions a place or story; `road to damascus` is the protected illustration and is not a required fit. Ordinary syntax, comparison, degree, and phrasal composition are `ORDINARY_COMPOSITIONAL`; a WordNet lemma by itself is not lexicalization. `as far as possible` motivates that distinction and is not a required fit. Insufficient evidence stays `AMBIGUOUS`.
+
+The frozen mapping is referential to reject, lexicalized noncompositional to high, both compositional classes to secondary, and ambiguous to quarantine. Ordinary composition does not map to reject. That would hide a second classifier. The two compositional classes remain distinct before the mapping. No historical bucket may override the sense class.
+
+The reviewed positional inventory is 225: the prior 197 plus the 28 v7 measurement rows. Normalized overlap between those sets is 0. The 28 rows are development evidence, not validation, and not a required fit. 225 rows bind a synset offset whose first-sense gloss equals the frozen gloss. 0 rows keep the frozen gloss with no offset. A future measurement must exclude all 225 normalized identities and be frozen before inspection. The proposed pass/fail bar is high precision 1, reject precision 1, false high 0, and false reject 0. Sense-class confusion, bucket confusion, per-class support, the ambiguous rate, high recall, reject recall, and secondary precision and recall are descriptive. This pass does not make them pass/fail criteria.
+
+Draft hypothesis sha256 `93375446b1f4a1f70c60f747a56b626ae667c8944d0eea54deddb9d57d3d9e38`. Acceptance sha256 `cff6af0f05ec5e12fb29ddfd2ec321addc94c73258c31860345f6d49960065b0`. Development evidence sha256 `0e9b3c1af9dd573bf6e2034640e468e8ab9074e1e76c90cef1f39f68d607bc03`. Tracker sha256 `4145848a2e1368b23f28f645249a9a8c55bf113a43763d31a434f1389b9e1154`. No JSON Schema exists for this hypothesis family. The older unbind sample, label, and report schemas are a different contract and were not applied. The next named transition is `ENCODED`. This pass does not authorize it.
+
+## Lexeme structure screen v1 architecture — 2026-09-28
+
+`RUNE.LEXEME_STRUCTURE_SCREEN.v1` is an architecture note for a sibling lane. It evaluates one orthographic lexeme for internal structure. Candidate classes are atomic, compound, affixed, blend, clipping, respelling, reduplicated, borrowed, and unknown. A single token is not evidence of an atomic lexeme. A string split is not evidence of a valid morphological decomposition. Conceptual illustrations are not a corpus and not a required fit. This lane is not mixed into positional unbind. It is not encoded. No corpus was populated, no sample was drawn, and no gold was created. Architecture sha256 `529defbc2b56152c3290d5b09f309764128b035906797229dab54857cd249df0`.
+
+`HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+## Unbind sense screen v1 procedure frozen — 2026-09-28
+
+`RUNE.UNBIND_SENSE_SCREEN.v1` moves from `SPEC_FROZEN` to `PROCEDURE_FROZEN`. The screen is not encoded and not applied. No development replay was run. No row received a sense class. No measurement sample was drawn.
+
+The companion artifact is `hyperlex.unbind_sense_screen_v1_classification_procedure.v1`, sha256 `4d9dad77d8d315e810863101041229c53570ed16970074c86abaecd0cc3012ad`. The sealed acceptance stays `cff6af0f05ec5e12fb29ddfd2ec321addc94c73258c31860345f6d49960065b0`. The sealed draft stays `93375446b1f4a1f70c60f747a56b626ae667c8944d0eea54deddb9d57d3d9e38`. The acceptance does not embed this procedure, so its bytes were not revised. The tracker now points at the procedure. Tracker sha256 `f9c4757b6eec558b5e1baf644bcf33c27c949807e7f00cd15df869eb6411de31`.
+
+WordNet membership is not evidence that a surface is a conventional lexical unit. A conventional unit requires an unrelated single-word co-lemma or a lexical pointer on the whole lemma. A productive frame requires a one-token lemma alternation stored on the synset, or a gloss that starts with the comparative or superlative operator formula. Anything else at that test is `AMBIGUOUS`. A stored unrelated equivalent is the noncompositional mapping. A derivation or pertainym from the whole lemma to one of its constituents, with no unrelated equivalent, is the compositional lexical unit. Referential designation requires an instance-hypernym pointer or a parenthetical four-digit lifespan. A geographic or religious allusion does not qualify, and neither does the capital letter in `road_to_Damascus`. Ordinary composition still maps only to secondary. Ambiguity maps to quarantine and is a normal class.
+
+The lexeme-structure note stays `529defbc2b56152c3290d5b09f309764128b035906797229dab54857cd249df0`. Reviewed positional inventory remains 225. v3 through v7 sources are unchanged. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The next named transition is `ENCODE_AUTHORIZATION`. This pass does not authorize it.
+
+## Unbind sense screen v1 development replay — 2026-09-28
+
+`RUNE.UNBIND_SENSE_SCREEN.v1` is encoded and the 225-row development replay is analyzed. The frozen classification procedure is unchanged, sha256 `4d9dad77d8d315e810863101041229c53570ed16970074c86abaecd0cc3012ad`. The sealed acceptance stays `cff6af0f05ec5e12fb29ddfd2ec321addc94c73258c31860345f6d49960065b0`. The sealed draft stays `93375446b1f4a1f70c60f747a56b626ae667c8944d0eea54deddb9d57d3d9e38`. The development manifest stays `0e9b3c1af9dd573bf6e2034640e468e8ab9074e1e76c90cef1f39f68d607bc03`. No sense class was written onto that manifest.
+
+The encoder follows the frozen tests. An instance-hypernym pointer or a parenthetical four-digit lifespan is referential. An unrelated single-word co-lemma is lexicalized noncompositional. A derivation or pertainym from the whole lemma back to a constituent, with no unrelated equivalent, is lexicalized compositional. A stored one-token lemma alternation, or a gloss that starts with the comparative or superlative operator formula, is ordinary compositional. Anything else is ambiguous. A yes-signal together with a no-signal is a conflict and stays ambiguous. Absence of a signal is not secondary. No gloss-keyword list, technical-term dictionary, or phrase exception was added. A high ambiguous rate was not repaired.
+
+Each development row was classified once from its frozen synset. The replay is development evidence, not validation. The measurement bar was not applied. Prediction sha256 `69ea6b8714f3cb6105222d636af3f17bd5c5caac7b290c3c3d87e4efaeedd0ef`. Report sha256 `38ada8bc32d8b19361cc974346d5972f6020eb0c32c2ca537abff4d17f66c7f0`. Tracker sha256 `b3690de5c957f019224c7ea980bf6e27b25ba1f1c519347f72a327fa3ea399a2`.
+
+Sense classes are referential 26, lexicalized noncompositional 72, lexicalized compositional 0, ordinary compositional 25, and ambiguous 102. The ambiguous rate is 102/225. Buckets are high 72, secondary 25, reject 26, and quarantine 102. Evidence codes are referential designation 26, noncompositional semantic mapping 72, compositional lexical unit 0, productive grammatical frame 25, and insufficient record evidence 102. The determinate sources are instance hypernym 26, unrelated single-word co-lemma 72, and productive alternation 25. No lifespan marker and no grammatical-operator gloss fired on this inventory.
+
+Lexicalized compositional support is 0. One development row stores a pertainym from the whole lemma to a constituent token and also stores a one-token lemma alternation. The frozen conflict rule returns ambiguous. That zero records the frozen test. It is not a missing dictionary.
+
+Operator labels already on the manifest, joined after classification: of 101 operator-high rows, 32 stay high, 17 go to secondary, and 52 go to quarantine. Of 46 operator-secondary rows, 22 go to high, 3 stay secondary, and 21 go to quarantine. Of 77 operator-reject rows, 18 go to high, 4 go to secondary, 26 stay reject, and 29 go to quarantine. The one operator-quarantine row goes to secondary. Descriptive precision and recall, not pass/fail criteria: high 32/72 and 32/101, secondary 3/25 and 3/46, reject 26/26 and 26/77. Operator quarantine support is 1. False high is 40. False reject is 0. False secondary is 22 and is descriptive only.
+
+`road to damascus` is ambiguous and quarantined. The bound record has no instance pointer and no lifespan marker. `as far as possible` is ordinary compositional and secondary, from the stored far/much alternation. Neither row is a required fit.
+
+State is `DEVELOPMENT_ANALYZED`. The path was `PROCEDURE_FROZEN`, `ENCODE_AUTHORIZED`, `ENCODED`, `225_ROW_DEVELOPMENT_REPLAY`, `DEVELOPMENT_ANALYZED`. `measurement_sample_drawn` stays false. `measurement_eligible` stays false. `revision_eligible` stays false. The lexeme-structure note stays `529defbc2b56152c3290d5b09f309764128b035906797229dab54857cd249df0`. v3 through v7 sources are unchanged. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The next named transition is `MEASUREMENT_AUTHORIZATION`. This pass does not authorize it.
+
+## Unbind sense screen procedure v2 frozen — 2026-09-28
+
+The encoded v1 screen stays `DEVELOPMENT_ANALYZED`. Procedure v1 stays frozen, sha256 `4d9dad77d8d315e810863101041229c53570ed16970074c86abaecd0cc3012ad`. The companion procedure `hyperlex.unbind_sense_screen_v1_classification_procedure.v2` is `PROCEDURE_V2_FROZEN`. It is not encoded and not applied. No v2 development replay was run. No row received a v2 sense class. No measurement sample was drawn.
+
+The v1 development replay mapped an unrelated single-word co-lemma to lexicalized noncompositional, and therefore to high. All 40 development false highs used that path. A stored whole-expression synonym can show that the phrase is a lexical unit. It does not show that the sense is semantically noncompositional.
+
+Procedure v2 keeps the five classes and the sealed bucket map. Before the class, it records three states: referential, lexicalized, and compositional. Each state is yes, no, unknown, or conflict. An unknown state is not a no. Referential yes, from an instance-hypernym pointer or a parenthetical four-digit lifespan, remains referential and reject. A co-lemma or a whole-lemma lexical pointer is lexicalized yes. A derivation or pertainym back to a constituent, a stored one-token alternation, or a comparative or superlative operator gloss is compositional yes. The alternation does not set lexicalized to no. The operator gloss sets lexicalized to no and compositional to yes, so when referential is not yes the class is ordinary compositional. Lexicalized yes together with compositional yes, when referential is not yes, is lexicalized compositional. That cell is reachable. The procedure does not force rows into it.
+
+WordNet 3.0 has no structural noncompositionality field once the co-lemma shortcut is retired. The compositional no-signal set is empty, so the lexicalized-noncompositional cell stays defined and does not fire. A later encoder must not invent a replacement signal. Missing lexicalization evidence stays unknown. On the record already frozen in procedure v1, `as far as possible` is therefore ambiguous under v2, and `road to damascus` stays ambiguous. Neither illustration is a required fit, and neither class was written onto the development manifest. An insufficient record stays ambiguous and maps to quarantine. A lower ambiguous rate is not a success criterion. Referential precision is not traded for coverage, and no technical-term gloss list was added.
+
+No JSON Schema document exists for procedure v2. The schema name on the artifact is not a JSON Schema file. Older unbind sample, label, and report schemas were not applied. Procedure sha256 `3f4071640d0c9f29cf56f53969a88ec25c635444b87765e77e1b9158470e5662`. v1 error analysis sha256 `471bc27b89f550fae36b3471daaad282a6dd8735414846cb18aafe1195e0a52e`. Change note sha256 `443ce2964d4e4fcd8257055cb1404965faa70b838264b1f623be192d1cae085c`. Tracker sha256 `af11d20ebefec5629718617ebacc07d8b4cc36c61e59e829d153b05b9397ca40`.
+
+The reviewed positional inventory remains 225. A future encoded replay of those same rows may report lexicalized-compositional support, the false-high count, the ambiguous rate, referential precision and coverage, the sense-class distribution, the evidence-state distribution, and the operator confusion tables. This freeze sets no accuracy threshold. Lexicalized-compositional support above zero would be a structural readiness signal, not a hard pass/fail rule.
+
+The lexeme-structure note stays `529defbc2b56152c3290d5b09f309764128b035906797229dab54857cd249df0`. The procedure records the shared invariant that lexicalized identity, compositionality, and semantic shift are different questions. That note was not edited, and the lexeme screen was not implemented. v3 through v7 sources are unchanged. The v1 implementation, v1 predictions, and v1 report are unchanged. Acceptance stays `cff6af0f05ec5e12fb29ddfd2ec321addc94c73258c31860345f6d49960065b0`. Prediction sha256 remains `69ea6b8714f3cb6105222d636af3f17bd5c5caac7b290c3c3d87e4efaeedd0ef`. Report sha256 remains `38ada8bc32d8b19361cc974346d5972f6020eb0c32c2ca537abff4d17f66c7f0`. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. `measurement_sample_drawn` stays false. `measurement_eligible` stays false. `revision_eligible` stays false.
+
+The next named transition is `ENCODE_PROCEDURE_V2_AUTHORIZATION`. This pass does not authorize it. An unseen measurement stays deferred until an encoded v2 replay of these 225 rows has been examined.
+
+## Unbind sense screen procedure v2 development replay — 2026-09-28
+
+Procedure v2 is encoded and the same 225 development rows were replayed once. State is `DEVELOPMENT_ANALYZED_V2`. The path was `PROCEDURE_V2_FROZEN`, `ENCODE_PROCEDURE_V2_AUTHORIZATION`, `ENCODED`, `225_ROW_DEVELOPMENT_REPLAY`, `DEVELOPMENT_ANALYZED_V2`. The encoded v1 screen stays `DEVELOPMENT_ANALYZED`. Procedure v2 bytes stay `3f4071640d0c9f29cf56f53969a88ec25c635444b87765e77e1b9158470e5662`. Procedure v1 stays `4d9dad77d8d315e810863101041229c53570ed16970074c86abaecd0cc3012ad`. No sense class was written onto the development manifest. No measurement sample was drawn.
+
+The replay asks whether the frozen WordNet record can instantiate the five classes, and `LEXICALIZED_NONCOMPOSITIONAL` in particular, without treating a single-word co-lemma as compositional NO. It does not instantiate that class. High support is 0. Compositional NO count is 0. False high is 0. A co-lemma sets lexicalized YES and leaves the row ambiguous when compositionality is unknown. Ninety-five rows are lexicalized YES. One hundred eighty-two rows are compositionally unknown.
+
+Sense classes are referential 27, lexicalized noncompositional 0, lexicalized compositional 16, ordinary compositional 0, and ambiguous 182. The ambiguous rate is 182/225. Buckets are high 0, secondary 16, reject 27, and quarantine 182. Of the 16 lexicalized-compositional rows, 15 are a stored one-token alternation on a lexicalized synset and 1 is a derivation or pertainym back to a constituent. That support is a readiness signal. It is not a pass/fail result. Ordinary compositional support is 0 because no row has lexicalized NO. The one grammatical-operator gloss also has an unrelated co-lemma, so lexicalized state is conflict and the class is ambiguous.
+
+Referential yes remains an instance-hypernym pointer. All 27 referential rows use that pointer. Descriptive reject precision is 27/27 and recall is 27/77. False reject is 0. One of those 27 was quarantined by procedure v1 because the instance pointer shared the synset with a one-token alternation. Procedure v2 keeps the instance pointer decisive and records the alternation as compositional yes. Secondary precision is 7/16 and recall is 7/46. False secondary is 9 and is descriptive only. High precision is not computable, because no row was predicted high. High recall is 0/101.
+
+Evidence states: referential yes 27, no 97, unknown 101. Lexicalized yes 95, no 0, unknown 129, conflict 1. Compositional yes 43, no 0, unknown 182, conflict 0. `as far as possible` is referential no, lexicalized unknown, compositional yes, and ambiguous. `road to damascus` is unknown on all three states and ambiguous. Neither illustration was written onto the manifest.
+
+Prediction sha256 `1f7fc03547d24de851326a4848d93f1dbef16714e74e3e9f86d8c8aa6f8aaa8a`. Report sha256 `93d8fb76da8aa7155fb0ce57b0841ca455eca3e904edf50b9f76e595dd095ca5`. Tracker sha256 `6ecb7e16bbe2ea3be2efca51c46cc970f2a5ba8ec8cd9c101eaef8398f5a0e61`. Acceptance stays `cff6af0f05ec5e12fb29ddfd2ec321addc94c73258c31860345f6d49960065b0`. The v1 prediction and report hashes stay `69ea6b8714f3cb6105222d636af3f17bd5c5caac7b290c3c3d87e4efaeedd0ef` and `38ada8bc32d8b19361cc974346d5972f6020eb0c32c2ca537abff4d17f66c7f0`. The development manifest stays `0e9b3c1af9dd573bf6e2034640e468e8ab9074e1e76c90cef1f39f68d607bc03`. The lexeme-structure note stays `529defbc2b56152c3290d5b09f309764128b035906797229dab54857cd249df0`. v3 through v7 sources and the v1 implementation are unchanged.
+
+These figures are development evidence. No accuracy threshold was applied. `measurement_sample_drawn` stays false. `measurement_eligible` stays false. `revision_eligible` stays false. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. The next named transition is `V2_DEVELOPMENT_RESULT_REVIEW`. This pass does not authorize it, and it does not authorize an unseen measurement.
+
+## Semantic evidence source v1 specified — 2026-09-28
+
+The procedure-v2 development result is reviewed and frozen. WordNet 3.0 structural evidence supports referentiality, whole-expression lexicalization, and some positive compositionality. Under the frozen procedure it does not provide a deterministic structural signal for semantic noncompositionality at useful coverage. That is a source-capability limitation. Procedure v2 was not retuned.
+
+Observed on the 225 development rows: compositional NO 0, lexicalized noncompositional 0, high 0, ambiguous 182/225, whole-expression lexicalization 95, positive compositionality 43, referential 27. Descriptive reject precision remains 27/27. False reject is 0. False high is 0. No measurement bar was applied. Review sha256 `77ae2c0491def0b75cd4213cc23fdcb6f2eec18dc2d0641764a276a583ee537d`. Limitation sha256 `3c05cd9d6301fab0791e31b542d767cc757307cf3e304065362b479cc40e964a`. Status is `WORDNET_STRUCTURAL_SOURCE_LIMITATION_CONFIRMED`.
+
+`RUNE.UNBIND_SEMANTIC_EVIDENCE_SOURCE.v1` is `SPEC_FROZEN`. It is an evidence-source evaluation framework, not an unbind classifier. The research question is which additional source can establish semantic noncompositionality independently of WordNet whole-expression lexicalization, with provenance and precision enough to become eligible input to a future sense-first screen. No source is selected. Nothing was encoded or applied. No external resource was downloaded. The only local lexical source is WordNet 3.0, and that source is the one whose limitation was just confirmed.
+
+Five candidate families are specified and left unselected: explicit lexical-semantic resources, a deterministic comparison of the bound sense with a composition of its parts, a curated linguistic annotation, a model-based judgment, and a later hybrid of WordNet structure plus one independent semantic source. An LLM completion is not runtime truth. A source must pass provenance, target alignment, sense alignment, label independence, reproducibility, abstention, a ban on phrase exceptions, development evaluation before integration, and isolation of any later generalization rows. The future output can be YES, NO, or UNKNOWN. UNKNOWN stays valid. No hard accuracy target is frozen. A high unknown rate is acceptable when false semantic claims stay low. Reducing ambiguity is not a reason to select a source.
+
+The same 225 rows remain development evidence for a future candidate test. They were not mutated and no source was run on them. False high and false reject stay the safety priority for a later integration specification. That specification does not exist yet, and no unseen-measurement bar was registered.
+
+A shared primitive, `RUNE.SEMANTIC_COMPOSITIONALITY`, is architecture only. The phrase lane would eventually use constituent words, phrase structure, and the bound sense. The single-lexeme lane would use morphemes or compound constituents and the bound sense. Lexicalized identity, compositionality, and semantic shift remain different questions. `RUNE.LEXEME_STRUCTURE_SCREEN.v1` was not implemented. Its architecture note stays `529defbc2b56152c3290d5b09f309764128b035906797229dab54857cd249df0`.
+
+No JSON Schema document exists for this source-evaluation family. Hypothesis sha256 `39127a810d38ede96d7947c33dbc3e5491c9e1cc9b3f76b1064d9e0dd04a7787`. Acceptance sha256 `1252c8c20ce3f49fe61ed8aeeec3157df7f4185b3aa7c468938ff47342d81b94`. Evaluation plan sha256 `472b3819c050bbc9b1dd2eec3183cdb27c3659521408c321acb12b9c1b69dc8a`. Architecture sha256 `180b6721c4e19847516364f441ecc2101ed9a7758643889673dfdb7be6f41d36`. Tracker sha256 `521eccb8bd068d4697a3ffdc06e3b44feb4eec3c8a3bd6aebcea11dd288b7dfc`.
+
+Procedure v2 stays `3f4071640d0c9f29cf56f53969a88ec25c635444b87765e77e1b9158470e5662`, predictions `1f7fc03547d24de851326a4848d93f1dbef16714e74e3e9f86d8c8aa6f8aaa8a`, and report `93d8fb76da8aa7155fb0ce57b0841ca455eca3e904edf50b9f76e595dd095ca5`. Procedure v1, the sense-screen acceptance, and the 225-row manifest are unchanged. The encoded v1 screen stays `DEVELOPMENT_ANALYZED`. Procedure v2 stays `DEVELOPMENT_ANALYZED_V2`. `measurement_sample_drawn` stays false. `measurement_eligible` stays false. `revision_eligible` stays false. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`. No procedure v3 was created.
+
+The next named transition is `CANDIDATE_SOURCE_EVALUATION_AUTHORIZATION`. This pass does not authorize it. Selecting or integrating a source is a later decision.
+
+## MAGPIE candidate evaluation — 2026-09-28
+
+`RUNE.UNBIND_SEMANTIC_EVIDENCE_SOURCE.v1` is `CANDIDATE_SOURCE_EVALUATED` for one candidate, MAGPIE. The candidate remains unselected. `selected_source` is `none`. Runtime integration is false. The encoded sense screen and procedure v2 were not modified.
+
+The evaluated artifact is the author corpus `MAGPIE_unfiltered.jsonl` from `https://github.com/hslh/magpie-corpus` at commit `7fa677b82b9a772dfa54bbdd0fb414412d73db3b` (2020-06-07T09:57:12Z). The file was acquired from that commit on 2026-09-28T05:50:00Z. It contains 56,622 instances and 1,756 potentially idiomatic expression types. Assigned labels are idiomatic 40,011, literal 16,168, other 436, and unclear 7. The filtered split files were not acquired and were not mixed into the evaluation. No Hugging Face package was used. No other repository named magpie was used.
+
+Licenses are recorded per artifact. The LREC 2020 PDF, sha256 `8247c926909772ce317d5f33cddb83caa51969eb5ef928bcbadbbcf05e39c979`, states on page 1 that the ELRA proceedings text is licensed under CC-BY-NC. That statement is the publication license. The dataset LICENSE file in the pinned commit is Creative Commons Attribution 4.0 International, sha256 `05ab88f3f9da1d05f9c5bf0a7c45c49a9007f877dd9c237a5bf668276fe04c3b`. That file is also the only code license in the commit. The evaluated jsonl sha256 is `541ee535e93d71eff85351351665115e2a9f22ad736423881da5774a93bc880e`. Provenance sha256 `bf0dd1dd747a6423406d97393f375f99620894a20af6bd4758e2de738d5c82dd`. License receipt sha256 `8813818aa3704ba1e764121d2f66ff1630862a66d6c0c0b959b6afa35e0c3972`.
+
+Surface comparison is orthographic. Case and separator folding produced 25 exact matches. One normalized match folds a comma: `day in day out` corresponds to the MAGPIE type `day in, day out`. `to a t` casefolds onto `to a T` and is counted as exact. Recorded variant categories such as inflection, dashes, and possessive describe occurrences of a type. They are not alternate expression strings, so variant matches are 0. Ambiguous collisions are 0. Unmatched rows are 199. Surface coverage is 26/225.
+
+Sense alignment requires equality between a source sense identifier and the supplied WordNet synset. The pinned instances have no synset, sense key, or gloss field. Alignment coverage is 0/225. Every row is UNKNOWN. Semantic noncompositionality is YES 0, NO 0, UNKNOWN 225. Abstention is 225/225. Evidence codes are `magpie_surface_only` 26 and `magpie_no_match` 199. A surface hit does not assign YES. Fifteen matched rows have only idiomatic instance labels, including `throw in the towel` and `dressed to the nines`, and they stay UNKNOWN. Ten matched types contain both literal and idiomatic instances, including `round the bend` and `to the letter`. Those counts stay on the match record. They are not a MIXED sense alignment and they are not semantic YES. `as luck would have it` is an exact match with only idiomatic labels, and the historical operator bucket is secondary. The idiomatic labels were not converted into YES.
+
+Operator labels were joined after the semantic evidence file was written. They are not runtime evidence. The descriptive proxy, stated as a proxy, treats operator HIGH as the comparison class for semantic YES and operator SECONDARY as the comparison class for semantic NO. YES precision is `NOT_COMPUTABLE`. NO precision is `NOT_COMPUTABLE`. False YES is 0. False NO is 0. Both counts are zero because no YES or NO claim was emitted. Operator REJECT is its own row in the joint table: 77 unknown. It was not read as compositional NO or as semantic YES. The joint table is HIGH 101 unknown, SECONDARY 46 unknown, REJECT 77 unknown, and quarantine 1 unknown.
+
+Development status is `CANDIDATE_INSUFFICIENT`. Coverage of familiar phrases is not a reason to select the source. The readiness question, non-zero semantic YES with a defensible sense alignment, is not met. Match sha256 `84c847cfa545883de5a31979133fed87b0cdf9a7d13074c74cf227d9bfcadc83`. Sense-alignment sha256 `037b0f4d96d463aa7c5fbecdbef06a530ffbf770735232c92bd6abd0dd71fc66`. Semantic-evidence sha256 `89f7227e1098407c7aaae6d9876b1f5780dbfe5b6a2eb3c3b09357d57822b577`. Evaluation sha256 `74e2174d15c486dc60e9ad6be338199ff66a2d0950ed268105119323711108ba`. Decision sha256 `6eaa968b6260946998dba13e5c423f178d3349cdfe06e5ea401717f5a9bcdd0d`. Tracker sha256 `c3fe6f2fd21d07b8b45d9f26ffeebbcfbe3cb68a1f5a7952dee94d9a2c995936`.
+
+No JSON Schema document exists for this source-evaluation family. The schema names on the artifacts name those artifacts. Older unbind sample, label, and report schemas were not applied. Procedure v2 stays `3f4071640d0c9f29cf56f53969a88ec25c635444b87765e77e1b9158470e5662`. The 225-row manifest stays `0e9b3c1af9dd573bf6e2034640e468e8ab9074e1e76c90cef1f39f68d607bc03`. No sense class was written onto it. v3 through v7 sources are unchanged. The lexeme-structure note stays `529defbc2b56152c3290d5b09f309764128b035906797229dab54857cd249df0`. `measurement_sample_drawn` stays false. `measurement_eligible` stays false. `revision_eligible` stays false. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+The next named transition is `NEXT_CANDIDATE_SOURCE_EVALUATION_AUTHORIZATION`. This pass does not authorize it. A later authorization may name one curated resource whose entries carry a WordNet synset offset or sense key for the expression sense. PARSEME, STREUSLE, PIE, EPIE, and NCS were not downloaded and are not selected.
+
+## Korkontzelos–Manandhar candidate evaluation — 2026-09-28
+
+`RUNE.UNBIND_SEMANTIC_EVIDENCE_SOURCE.v1` stays `CANDIDATE_SOURCE_EVALUATED`. A second candidate, the Korkontzelos–Manandhar 2009 compositionality set, was evaluated and not selected. `selected_source` remains `none`. Runtime integration remains false. MAGPIE stays `CANDIDATE_INSUFFICIENT`. Its artifacts were not modified.
+
+The pinned source is Table 1 of Korkontzelos and Manandhar, “Detecting Compositionality in Multi-Word Expressions,” ACL-IJCNLP 2009 short papers, pages 65–68, anthology `P09-2017`. Canonical URL `https://aclanthology.org/P09-2017/`. PDF sha256 `046da9fc26cfdf220e41ad914314f0703ea3c84cd86e045b20146b34189113d1`, acquired 2026-09-28T06:41:05Z. The paper states that the items were drawn from WordNet 3.0. The bibliography cites Miller 1995 for WordNet in general. That citation is not a second version number. Reconstruction used the local Princeton WordNet 3.0 data files and no other WordNet release. The suggested counts of about 60 compositional and 56 noncompositional items do not match this table. The verified inventory is 19 compositional and 19 noncompositional. A later 2010 sample by the same authors was not acquired.
+
+The PDF header reads `c©2009 ACL and AFNLP`. The ACL Anthology states that materials prior to 2016 are licensed under CC-BY-NC-SA 3.0 and that copies may be made for teaching and research. That is the publication license of the acquired PDF. No separate dataset license exists. The evaluation list is the table inside the paper. No code artifact was published with the table, and none was acquired. Bold, underline, and italic marks in the table report system detections. They were not read as gold labels.
+
+Table 1 preserves the surface and the section label. It does not preserve a synset offset, sense key, lemma key, part of speech, or gloss. Source sense identity is therefore absent on all 38 items. A lookup key folds case, underscore, and apostrophe shape, and it keeps hyphens. That key is not a sense choice. The key matches exactly one PWN 3.0 synset for 30 items: `EXACT_UNIQUE_RECONSTRUCTION`. Those 30 are the 19 compositional items and 11 noncompositional items. Eight noncompositional items match two synsets each: `black maria`, `dead end`, `dutch oven`, `goat's rue`, `green light`, `high jump`, `living rock`, and `prince Albert`. They are `AMBIGUOUS_MULTIPLE_SYNSETS`. No gloss, operator label, or frequency was used to pick one. `EXACT_SOURCE_ID` is 0. `NO_PWN3_MATCH` is 0. `VERSION_CONFLICT` is 0. On the inventory, the conservative map gives semantic YES 11, NO 19, and UNKNOWN 8. Only the unique reconstructions carry YES or NO.
+
+None of those 30 synsets occurs in the frozen 225 development rows. Surface keys also do not meet any development row. The join is synset identity, so the Hyperlex result is YES 0, NO 0, UNKNOWN 225. Sense-aligned coverage is 0/225. Abstention is 225/225. Evidence codes on the 225 rows are `km_no_match` 225. Operator labels were joined after the evidence file was written. Under the stated proxy, YES precision and NO precision are `NOT_COMPUTABLE`. False YES is 0. False NO is 0. The joint table is HIGH 101 unknown, SECONDARY 46 unknown, REJECT 77 unknown, and quarantine 1 unknown. Reject and quarantine were not read as compositionality.
+
+Development status is `CANDIDATE_INSUFFICIENT`. The inventory can reconstruct monosemous PWN 3.0 identity, which MAGPIE could not, and that reconstruction still supplies no YES row on this development set. The stop-condition finding `WORDNET_DERIVED_BUT_SENSE_IDENTITY_NOT_PRESERVED` was not frozen. Eight of 38 items are polysemous, not most of them, and 30 items do reconstruct one synset. The development sample and this table are disjoint. MAGPIE remains surface coverage 26/225, sense-aligned coverage 0/225, YES 0, NO 0, abstention 225/225. This candidate is surface coverage 0/225, sense-aligned coverage 0/225, YES 0, NO 0, abstention 225/225. Coverage is not the comparison. Neither candidate puts a sense-aligned YES on a development row.
+
+Provenance sha256 `88fbfa077d2394b8ce631ec700c482ad98a0f62f0ab06964f4f43a77d906f9aa`. License receipt sha256 `eb4c9406aab7f9021d346ebd24634cad1dcf0e6076f069e73b1d4b2702dbe2f8`. Inventory sha256 `3a35ddc0b2c04a5386c6112a2bb3cdf22735edbe2fd791f0c2ec542fe9184d81`. PWN 3.0 alignment sha256 `531d13cf1bdbc939fc11d9ef5864c6878a9f58210368c596c0aad08ff75e61c9`. Hyperlex semantic evidence sha256 `4e98f8f06713ffcf02549305aef140e92b9b8b2790f471f3ce1f41fe208b2f7a`. Evaluation sha256 `00a1d1f667635354e20e5002c4ece846fe3a8125a7ca12ebe09bb7e28dedd1a7`. Comparison sha256 `240b3ea468d22a80ac5e5765521cc691b80f914b7baff6bb1ae4819475f54965`. Decision sha256 `93a07e3c78b53a69965497410c34ddb52c2a5d3add3fb2f3cd3fd9ca84eb3d9f`. Tracker sha256 `b3546102410058d3596c4563604998685753a698b2bc533b353e1f039440f704`.
+
+No JSON Schema document exists for this source-evaluation family. Procedure v2 stays `3f4071640d0c9f29cf56f53969a88ec25c635444b87765e77e1b9158470e5662`. The 225-row manifest stays `0e9b3c1af9dd573bf6e2034640e468e8ab9074e1e76c90cef1f39f68d607bc03`. v3 through v7, the lexeme-structure note, and the WordNet source-limitation finding are unchanged. `measurement_sample_drawn` stays false. `measurement_eligible` stays false. `revision_eligible` stays false. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+The next named transition is `NEXT_CANDIDATE_SOURCE_EVALUATION_AUTHORIZATION`. This pass does not authorize it. A later candidate has to carry a PWN synset identity that can meet the development rows. Surface-only MWE corpora are not the next step. `CANDIDATE_SOURCE_SELECTION_REVIEW` is not the next step, because this candidate is not promising and is not selected.
+
+## Semantic compositionality residual candidate evaluation — 2026-09-28
+
+`NEXT_CANDIDATE_SOURCE_EVALUATION_AUTHORIZATION` applies only to `RUNE.SEMANTIC_COMPOSITIONALITY_RESIDUAL.v1`. The candidate is an evaluation of a continuous residual. It is not selected, it is not integrated into `UNBIND_SENSE_SCREEN`, and it does not create procedure v3. Procedure v2 stays `3f4071640d0c9f29cf56f53969a88ec25c635444b87765e77e1b9158470e5662`. No unseen measurement sample is drawn. No training gold is created. No row is admitted or settled. `HLX-EXP-2026-09-27-SELECT-005` is not authorized. MAGPIE and the 2009 Korkontzelos–Manandhar artifacts stay frozen, and both remain `CANDIDATE_INSUFFICIENT`.
+
+The design was hashed before any development row was encoded. The whole sense is the supplied surface, its POS, and the frozen gloss, in the form `{surface} ({pos}): {gloss}`. A constituent uses the same form on the resolved PWN 3.0 lemma, POS, and first gloss clause. Whitespace tokenization keeps a hyphen inside one token. A frozen closed class of determiners, prepositions, pronouns, auxiliaries, and other structural tokens is ignored. A row needs two content tokens. Sense resolution accepts one derivation or pertainym pointer whose target word number is nonzero and whose lemma matches the constituent or a one-hop exception neighbor. That result is `EXACT`. With no exact target, one lexical synset across noun, verb, adjective, and adverb is `UNIQUE`. Several targets are `AMBIGUOUS`. None is `UNRESOLVED`. A target word number of zero does not name a lemma. The source word number is not a filter. An ambiguous or unresolved content constituent makes the row `UNKNOWN`. The pass does not use an arbitrary first sense, gloss similarity, an embedding to choose a sense, an operator label, or a manual sense choice. Composition is one operator, `normalized_mean_v1`: binary64 L2-normalize each constituent vector, take the mean, and L2-normalize the mean. Duplicate synsets stay, one vector per content token. The residual is `1 - cosine`, recorded with `format(value, '.10f')` and no clamp. A vector hash is sha256 of little-endian binary32 bytes. No semantic-noncompositionality threshold is chosen, and the residual is not turned into YES or NO.
+
+The pinned model is `sentence-transformers/all-MiniLM-L6-v2`, revision `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`, acquired locally at `2026-09-28T06:52:00Z` from the Hugging Face revision. The model license is Apache-2.0. Weights sha256 `53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db`. `tokenizer.json` sha256 `be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037`. `vocab.txt` sha256 `07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3`. Pooling is mean tokens into 384 dimensions, and the stack includes a normalize module. Encode uses CPU, float32, `normalize_embeddings=True`, batch size 1, seed 0, one thread, and eval mode. `use_deterministic_algorithms` stays false. The effective maximum sequence length is 256; overflow would abstain rather than truncate, and no row overflowed. Runtime versions are Python 3.12.3, torch `2.14.0+cpu` (Apache-2.0 with additional component licenses), sentence-transformers 6.1.0 (Apache-2.0), transformers 5.17.0 (Apache 2.0), tokenizers 0.23.2 (Apache), and NumPy 2.5.3 (BSD-3-Clause and other component licenses). ONNX, OpenVINO, and TensorFlow weight copies were not acquired. No API embedding service was called. Constituent glosses come from Princeton WordNet 3.0, whose license is separate from the model license. The encoder was run twice and the float32 hashes matched before the score file was written.
+
+Constituent extraction is `EXTRACTED` 166 and `UNKNOWN` 59. The 59 are rows with fewer than two content tokens. Across content constituents the resolution counts are `EXACT` 4, `UNIQUE` 60, `AMBIGUOUS` 370, and `UNRESOLVED` 70. Row abstentions are ambiguous content 145, fewer than two content tokens 59, and unresolved content 18. Three rows are `SCORED` and 222 are `UNKNOWN`. Ten representation texts were encoded. Six content tokens contain a character outside letters, digits, hyphen, and apostrophe; the extractor did not strip them. The three scored rows are operator `REJECT`: `california fern` residual `0.2139784896`, `monoamine oxidase inhibitor` residual `0.1768095281`, and `.22 caliber` residual `0.1309395496`. Reject is a referential axis, not semantic no. Their descriptive distribution is count 3, min `0.1309395496`, p25 `0.1538745388`, median `0.1768095281`, p75 `0.1953940088`, max `0.2139784896`, mean `0.1739091891`. Operator `HIGH` has 0 scored rows of 101, so the primary comparison is `NOT_COMPUTABLE`. `SECONDARY` has 0 of 46. `QUARANTINE` has 0 of 1. No threshold was fit to these labels.
+
+Development status is `CANDIDATE_DISTRIBUTION_FROZEN` because the preregistered rule uses that status whenever the scored count is greater than zero. The status freezes the score distribution. It does not say the residual separates noncompositionality, and the empty HIGH distribution supplies no such comparison. `selected_source` remains `none`. Candidate spec sha256 `39c2914e32557ffe1a456a56f8742ea4fe8f1aaec1dc1da451656cd22f0db32d`. Provenance sha256 `2c34a7d0d480cde564bda694dbaa349550814c5fb7c647bfa3bbbc9db5e26886`. License receipt sha256 `323a5bad21ac74d6a1fd94c54dba95a0046b633cd7328dd6680972525abc0909`. Score artifact sha256 `cea638679faeee1bc1c689823e7c0c08562c4d7ef1f8230bbbf4079239e7c3e7`. Evaluation sha256 `ba782622d4c68d23c53ae0ffb5f54f1e43c8cf059b44b7adb34e0eb356ef3896`. Decision sha256 `45922eba294b0b7d7238ce71c6157641259ea292f65743ba2ee1324ff9b52617`. Tracker sha256 `14d4daaab1e4740a596acaef7f4dbd9ed11edaf2182ff22f7aa339325febf591`. Every score row carries the spec hash, and the spec contains no residual. Operator labels were joined only after the score file was hashed.
+
+No JSON Schema document exists for this source-evaluation family. The 225-row manifest stays `0e9b3c1af9dd573bf6e2034640e468e8ab9074e1e76c90cef1f39f68d607bc03`. Sense classes on those rows stay null. v3 through v7, the lexeme-structure note, and the WordNet source-limitation finding are unchanged. `measurement_sample_drawn` stays false. `measurement_eligible` stays false. `revision_eligible` stays false. Admitted 0. Settled 0. Gold 0. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+The next named transition is `RESIDUAL_THRESHOLD_FREEZE_AUTHORIZATION`. This pass does not authorize it. A threshold is not supported by a HIGH distribution, because no HIGH row was scored. `CANDIDATE_SOURCE_SELECTION_REVIEW` is not the next step. `selected_source` remains `none`.
+
+## Residual v1 coverage limitation — 2026-09-28
+
+`RESIDUAL_DEVELOPMENT_RESULT_REVIEW` is authorized for the frozen residual distribution only. `RESIDUAL_THRESHOLD_FREEZE_AUTHORIZATION` is not authorized. The residual has not been falsified. The experiment could not test HIGH against SECONDARY because constituent sense ambiguity collapsed coverage. Scored rows are 3, all operator REJECT. Unknown rows are 222. HIGH scored 0 of 101. SECONDARY scored 0 of 46. REJECT scored 3 of 77. Ambiguous content abstains 145 rows, fewer than two content tokens abstain 59, and unresolved content abstains 18. `threshold_eligible` is false. `source_selection_eligible` is false. The primary limitation is `constituent_sense_resolution`. The finding is `SEMANTIC_RESIDUAL_V1_COVERAGE_LIMITATION_CONFIRMED`: the dominant blocker is deterministic constituent sense resolution, not the residual model. The model, revision, normalized mean, and `1 - cosine` residual stay frozen. No residual score was recomputed.
+
+## Constituent sense resolution v1 — 2026-09-28
+
+`RUNE.CONSTITUENT_SENSE_RESOLUTION.v1` starts from that limitation. The question is whether a frozen deterministic resolver can give enough content constituents a PWN 3.0 sense to make a later residual replay testable. Operator labels, residual scores, unbind buckets, phrase exceptions, manual choices, an LLM, and the residual embedding model are not inputs. The specification and procedure were hashed before the replay. The resolver then ran twice from that specification. The two artifacts matched, so determinism is `IDENTICAL`.
+
+Tier 1 is structural. A lexical pointer in the frozen set `! + \ ^ * & < $` whose target word number is nonzero and whose lemma matches the constituent, or one exception hop, is structural evidence. One such synset is `EXACT` by `STRUCTURAL_EXACT`. More than one is `AMBIGUOUS` and Extended Lesk does not override it. With no structural target, one lemma synset across noun, verb, adjective, and adverb is `EXACT` by `UNIQUE_LEMMA`. No synset is `UNRESOLVED`. The extra pointer symbols did not raise structural exact above the residual baseline: structural exact stays 4 and unique lemma stays 60.
+
+Extended Lesk v1 runs only when several lemma synsets remain. Candidate text is the full PWN 3.0 gloss, including quoted examples, plus the first gloss clause of each depth-1 synset reached by `@ + \ & ^ =`. Context is the parent frozen gloss plus the first gloss clause of other constituents in the row that tier 1 already resolved. Lesk output is not reused as context. Normalization casefolds, folds apostrophes, and splits on characters outside letters, digits, apostrophe, and hyphen. Stopwords are the residual v1 structural class. Tokens shorter than two characters are dropped. There is no stemmer and no lemmatizer. The score is the sum of squares of greedy longest contiguous overlaps, and matched tokens are not reused. Scores are integers. The minimum margin is 1, so a tie, including a zero-overlap tie, is `AMBIGUOUS`. A strict win is `RESOLVED`. The parent gloss is local context only. Parent sense is not constituent sense.
+
+Every one of the 504 content constituents was attempted. Status counts are `EXACT` 64, `RESOLVED` 121, `AMBIGUOUS` 249, and `UNRESOLVED` 70. Against the residual baseline of `EXACT` 4, `UNIQUE` 60, `AMBIGUOUS` 370, and `UNRESOLVED` 70, the 60 unique lemmas are the same senses under the new `EXACT` label, unresolved stays 70, and 121 of the 370 ambiguous constituents become `RESOLVED`. The other 249 stay `AMBIGUOUS`. The tie rate on Lesk attempts is 249/370. Exact proportion is 64/504. Context-resolved proportion is 121/504. Unresolved rate is 70/504. Abstention, ambiguous plus unresolved, is 319/504. There is no constituent-sense gold, so these figures are coverage, determinism, tie behavior, and provenance. They are not accuracy.
+
+A row is `RESIDUAL_READY` only when it has at least two content constituents and every one is `EXACT` or `RESOLVED`. That holds for 20 rows. The other 205 are `UNKNOWN`. After the resolution file was hashed, operator labels give HIGH 4 ready and 97 unknown, SECONDARY 4 ready and 42 unknown, REJECT 12 ready and 65 unknown, and quarantine 0 ready and 1 unknown. The necessary condition, at least one ready HIGH row and one ready SECONDARY row, is met. It is not sufficient. Because 249 of 370 baseline-ambiguous constituents remain AMBIGUOUS, which is more than half, the preregistered finding is `CONSTITUENT_WSD_COVERAGE_INSUFFICIENT`. No second resolver was added. A projection, not a replay, says 20 rows could enter a later residual pass: HIGH 4, SECONDARY 4, REJECT 12. The residual was not rerun.
+
+Resolver state is `DEVELOPMENT_ANALYZED`. Candidate status is `COVERAGE_INSUFFICIENT`. `selected_source` remains `none`. Residual state remains `CANDIDATE_DISTRIBUTION_FROZEN` with coverage limitation `CONFIRMED`. Limitation sha256 `fc8839c15a7638b2bfca1cf0548bfb4d5f433434bae0fea2944a528dd15d6142`. Review sha256 `1c1b69856dd88567167fd5c958cd8db6d39ab9ec74a4e0ed3e667a521c82e6fa`. Resolver spec sha256 `176e6219ddc3127814a25d39ad26e3571817f7ea8323d685e081d2e0fd867acb`. Procedure sha256 `9f76b64aa6aac09bd56ca9cc8a847cda12b31a58eea8c4b51426733917d54248`. Replay sha256 `a0c707ab55e02f627a698c33ddc0ca398e34aa0bafc19b13e72422bc26d97d0a`. Analysis sha256 `6d47610014f74094394355a50419fe24441103bec09458b6f25ea392fb57151c`. Decision sha256 `ff8b90ebe5d48151dc68ddbf676e1f27d4cee5e3be2730f999c9b089f1392caa`. Tracker sha256 `c72e55c8096143b8675d4aa995c5d4b19de95d256dd234d32a421ba098bc7d4f`.
+
+No JSON Schema document exists for this source-evaluation family. No residual threshold was created. No semantic YES or NO was emitted. No unseen sample was drawn. `measurement_sample_drawn` and `measurement_eligible` stay false. SELECT-005 stays unauthorized. Admitted 0. Settled 0. Gold 0. The 225-row manifest, procedure v2, MAGPIE, Korkontzelos–Manandhar, and the residual v1 artifacts are unchanged. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+The next named transition is `MODEL_BASED_WSD_CANDIDATE_EVALUATION_AUTHORIZATION`. This pass does not authorize it. `RESIDUAL_REPLAY_WITH_RESOLVED_SENSES_AUTHORIZATION` is not the next step while the constituent-coverage finding stands. `selected_source` remains `none`.
+
+## Model-based constituent WSD candidate v1 — 2026-09-28
+
+`MODEL_BASED_WSD_CANDIDATE_EVALUATION_AUTHORIZATION` evaluates one WordNet-native model on the 249 constituents that Extended Lesk v1 left `AMBIGUOUS`. The model is `kanishka/GlossBERT`, family GlossBERT, canonical source `https://huggingface.co/kanishka/GlossBERT`, revision `0cc3b83af5496e27ebcc95ef0cf37ea0a9281a7a`. It is a BERT sequence classifier fine-tuned on SemCor 3.0. Each decision is a score over a supplied Princeton WordNet 3.0 gloss, so the output is a candidate synset or an abstention. The card license is MIT. The checkpoint is a third-party Hugging Face upload, not the authors' Google Drive file. The original code repository `https://github.com/HSLCY/GlossBERT` is MIT. Inference is local. Device is CPU. Dtype is float32. Batch size is 1. One thread is used and mkldnn is disabled. Runtime is Python 3.12.3, torch 2.14.0+cpu, transformers 5.17.0, tokenizers 0.23.2, and numpy 2.5.3. The positive class is index 1. A non-Hyperlex polarity control fixed that index before any development constituent was scored: a financial sentence selects `noun:08420278`, and a river sentence selects `noun:09213565`.
+
+The candidate specification was hashed before those 249 constituents were scored. Spec sha256 `c861ff7fff11ae6a790531267229c18d6e6e0a171a9bf6c34cfb6f7e7b14498c`. Weight sha256 `60706c7618f8ccbfa7d0a6d1d1009765a7146ea5f4232924ed9f1c46d521c898`. Vocab sha256 `07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3`. Tokenizer config sha256 `09e49d0e788d25991da77d37b10eaa6a86a4e94e2127de8bedc94eb45baf2d84`. Each constituent is scored only among its frozen PWN 3.0 candidate synsets. The context is the parent surface with the target content token in double quotes. The paired text is the matched lemma, a colon, and the first gloss clause. The parent gloss is not appended. Operator labels, residual scores, and the residual embedding are not inputs. The score is the class-1 softmax probability, quantized to six decimal places, half even. The abstention rule, frozen before scoring, requires a top probability of at least 0.50 and a top-versus-second margin of at least 0.10. An equal top score stays `AMBIGUOUS`. A sense outside the candidate set would be `INVALID`. The same inference then ran a second time. The two raw artifacts matched, so determinism is `IDENTICAL`.
+
+Tier 3 attempted 249 constituents. It resolved 153, left 96 ambiguous, and produced 0 invalid outputs and 0 errors. The 153 resolutions use evidence `model_margin`. The 96 abstentions use evidence `model_abstention`. Exact score ties are 0. Top-score bins are 81 below 0.50, 30 from 0.50 to 0.60, 35 from 0.60 to 0.70, 26 from 0.70 to 0.80, 32 from 0.80 to 0.90, and 45 from 0.90 to 1.00. Margin bins are 50 below 0.10, 56 from 0.10 to 0.25, 56 from 0.25 to 0.50, and 87 at 0.50 or more. There is no constituent-sense gold on these rows, so the figures are coverage, validity, determinism, confidence, and abstention. They are not accuracy, precision, recall, or F1.
+
+Combined with the frozen earlier tiers, constituent counts are `EXACT` 64, `LESK_RESOLVED` 121, `MODEL_RESOLVED` 153, `AMBIGUOUS` 96, and `UNRESOLVED` 70. Tier 3 did not replace a structural exact, a unique lemma, or an Extended Lesk decision that had already cleared its margin. A row is projected `RESIDUAL_READY` only when it has at least two content constituents and every one is exact, Lesk-resolved, or model-resolved. That projection was hashed before operator labels were joined. Projected ready rows are 73. Unknown rows are 152. After the join, HIGH is 28 ready and 73 unknown, SECONDARY is 11 ready and 35 unknown, REJECT is 34 ready and 43 unknown, and quarantine is 0 ready and 1 unknown. Against the lexical baseline of HIGH 4, SECONDARY 4, and total 20, the deltas are +24, +7, and +53. Invalid outputs are 0 and the repeat is identical, so the preregistered coverage gate returns `CANDIDATE_PROMISING`. The gate is a readiness projection. It does not say the selected senses are correct, and it does not replay the residual.
+
+`selected_source` remains `none`. The model is not integrated into runtime. `RUNE.CONSTITUENT_SENSE_RESOLUTION.v1` stays `DEVELOPMENT_ANALYZED` with lexical status `COVERAGE_INSUFFICIENT`. `RUNE.SEMANTIC_COMPOSITIONALITY_RESIDUAL.v1` stays `CANDIDATE_DISTRIBUTION_FROZEN`. `threshold_eligible` stays false. No residual score was recomputed and no residual threshold was created. No semantic YES or NO was emitted. No unseen sample was drawn. `measurement_sample_drawn` and `measurement_eligible` stay false. SELECT-005 stays unauthorized. Admitted 0. Settled 0. Gold 0. The resolver artifacts, residual artifacts, MAGPIE artifacts, Korkontzelos–Manandhar artifacts, procedure v2, and the 225-row manifest are unchanged. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+No JSON Schema document exists for this source-evaluation family. Provenance sha256 `6d91283244a88f44477c836e6549118d5d96a36bb878bf448fcadb13ff765e11`. License receipt sha256 `67d45243959e3e76643a675d49b508a73d0f7f0bf8fbf060ce7b83c9200c621b`. Raw output sha256 `a0e508c225e6db4cdbcae701682202b1d854f3762546dbfe10b84a15e0e9e17c`. Resolution sha256 `ed945989cf4947ac84633ba2c4aa10c1ba381d2396da0b573a844f83ec367a18`. Readiness projection sha256 `c75834faf4a84d36e83246244e0aa7c6c7788c3a57cfdb7f77c7628a52023328`. Analysis sha256 `8ca0d8c8dd7e510a04daef6b3fbd78ace6d20b173e88d2a3d0c2e10fdaafe30b`. Decision sha256 `c8ed0b8acaaa415277c5f9bdbf982d075136b795b5d95fd8813d5a3010072dbb`. Tracker sha256 `6da1e9730c785d2784d23433455515989d312ed8c76f4763b3a2dd6a1f2c4b2d`.
+
+The next named transition is `RESIDUAL_REPLAY_WITH_MODEL_RESOLVED_SENSES_AUTHORIZATION`. This pass does not authorize it. The residual is not replayed. `selected_source` remains `none`.
+## Residual replay with model-resolved senses — 2026-09-28
+
+`RESIDUAL_REPLAY_WITH_MODEL_RESOLVED_SENSES_AUTHORIZATION` runs one residual replay on the frozen Tier 1, Tier 2, and Tier 3 constituent senses. The question is whether operator-HIGH rows then show larger frozen semantic-compositionality residuals than operator-SECONDARY rows. This is a development distribution. It is not a classifier, and it does not train a composition function. The residual model stays `sentence-transformers/all-MiniLM-L6-v2` at revision `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`. Settings stay CPU, float32, seed 0, batch size 1, one thread, eval mode, normalized embeddings, and maximum sequence length 256. Composition stays `normalized_mean_v1`. The residual stays `1 - cosine_similarity(whole_sense_vector, normalized_mean(constituent_sense_vectors))`, stored at 10 decimal places. Constituent extraction, structural exact, unique lemma, Extended Lesk v1, and GlossBERT are not retuned. No confidence or margin rule changes. No second embedding, pooling, distance, or weight scheme is tried.
+
+The integrated resolution is built from the frozen resolver replay and the frozen GlossBERT resolution, then checked against the frozen readiness projection before any vector is computed. The projection reproduces: 73 `RESIDUAL_READY` rows and 152 `UNKNOWN` rows. The integrated file is hashed before scoring. Integrated sha256 `0f5dafc3676a4071ce8c889e58958b90203589aa3e91d78111b4e3292bdd87fb`. Only ready rows are scored. Representation text, lemma choice, gloss fields, example inclusion, normalization, and the residual formula are the frozen residual v1 functions. The encoder then runs twice. Row readiness, representation texts, vector hashes, and 10-decimal scores match, so determinism is `IDENTICAL`. No ready row exceeds 256 tokens. Scored rows are 73 and scoring abstentions are 0. The score file is hashed before operator labels are read. The receipt records that sequence with `operator_labels_joined` false. Score sha256 `16c0a9eaa918ac4a6e8223cafcbf4b1918cb212769063e262cf29a279f1048f6`. Receipt sha256 `675b1b8b8f1b1e6f19c7d320e7b8fe516eae92b60e966afbce407c1f0482e736`.
+
+After that hash, the historical operator labels join. Ready counts are HIGH 28, SECONDARY 11, REJECT 34, and quarantine 0. REJECT stays out of the primary comparison. HIGH residuals have count 28, minimum 0.1169573790, p10 0.2930005820, p25 0.3564342144, median 0.4040327275, p75 0.4404865614, p90 0.5184032344, maximum 0.5908804826, mean 0.3943616308, and sample standard deviation 0.1017789927. SECONDARY residuals have count 11, minimum 0.1768283745, p10 0.2079496807, p25 0.2436642596, median 0.3307873412, p75 0.4000929338, p90 0.4561366947, maximum 0.5587792172, mean 0.3299980313, and sample standard deviation 0.1186719529. The HIGH mean exceeds the SECONDARY mean by 0.0643635995. The HIGH median exceeds the SECONDARY median by 0.0732453863. Mann-Whitney U for HIGH, with half credit for ties, is 207. There are 207 pairs in which the HIGH residual is larger, 101 in which it is smaller, and 0 ties, out of 308 pairs. The rank-biserial correlation is 0.344156. Descriptive ROC AUC, with HIGH as the positive class and a larger residual as the HIGH-like score, is 0.672078. The hypothesized direction `HIGH residual > SECONDARY residual` is `SUPPORTED_DIRECTION` on these point estimates. That direction is not a semantic YES or NO.
+
+Uncertainty uses the bootstrap frozen before the label join: seed 0 and 10000 resamples, with interpolated 2.5 and 97.5 percentiles. The AUC interval is 0.451299 to 0.870130. The mean-difference interval is -0.0155777495 to 0.1373246447. The median-difference interval is -0.0445612032 to 0.1742972287. Each interval includes a null or reversed value. The preregistered status rule does not require the interval to exclude the null, and no stronger AUC floor is added after seeing the scores.
+
+Tier 3 dependence, among ready rows, is HIGH with Tier 3: 24, HIGH without Tier 3: 4, SECONDARY with Tier 3: 7, and SECONDARY without Tier 3: 4. The no-Tier-3 group has HIGH n=4 and SECONDARY n=4, median difference 0.1435511609, rank-biserial 0.500000, and AUC 0.750000, direction `SUPPORTED_DIRECTION`. The Tier-3 group has HIGH n=24 and SECONDARY n=7, median difference 0.0595389352, rank-biserial 0.083333, and AUC 0.541667, also `SUPPORTED_DIRECTION`. The gap is not concentrated in the GlossBERT subgroup. The within-Tier-3 separation is small. Dropping the largest HIGH residual and the smallest SECONDARY residual does not remove the overall directional result, so the comparison is not extreme-driven. HIGH and SECONDARY are not confined to disjoint parts of speech. The only part of speech with at least three rows in each class is adverb: HIGH 5 and SECONDARY 6, median difference 0.0797654836, AUC 0.733333. Adjective, noun, and verb cells are `NOT_COMPUTABLE`. Whitespace token count has HIGH median 4 and SECONDARY median 3, with Spearman against the residual of 0.092940 for HIGH and 0.603202 for SECONDARY. Character length has HIGH median 17 and SECONDARY median 12, with Spearman -0.059115 and 0.165145. Content-constituent count is 2 for every SECONDARY row and for almost every HIGH row. Maximum candidate-synset count has Spearman 0.390077 for HIGH and 0.073060 for SECONDARY. Where GlossBERT supplies a constituent, minimum confidence and minimum margin have Spearman near 0 for HIGH. These diagnostics do not retune the residual.
+
+REJECT is reported separately and is not semantic compositionality NO. REJECT count is 34, minimum 0.1036592522, p10 0.1240175180, p25 0.1569692084, median 0.2174387191, p75 0.2995541264, p90 0.3474576871, maximum 0.5180572821, mean 0.2343664094, and sample standard deviation 0.0963240560. The largest HIGH residual is `on the other hand` (`adv:00119578`, row `1d19d96bfedbade746610820599e28166b4ef6c291fd4d186b95055e0cf22074`) at 0.5908804826, tiers GlossBERT then Extended Lesk. The smallest HIGH residual is `naked as a jaybird` (`adj:00458266`, row `d479d3da8dd2b87a7b30c9710abefd1e87f2706a7ac032dde17fc337bef8ac4c`) at 0.1169573790, tiers Extended Lesk then unique lemma. The largest SECONDARY residual is `at one time` (`adv:00153261`, row `0f1c15024e09410a3336e3910351d2cfe6143b0a98b88ab561b8dedcbe64a5fc`) at 0.5587792172, both constituents GlossBERT. The smallest SECONDARY residual is `sneak thief` (`noun:10616204`, row `00152611a0b327fd51c12b1c9a80ab838874fb68692c7e988e7970e41557c9bb`) at 0.1768283745, tiers Extended Lesk then unique lemma. The largest REJECT residual is `three times` (`adv:00476680`, row `0e17c819392a00600e3089202fef9b2e74036b73b6429724dfe91d14f7334b2b`) at 0.5180572821, both Extended Lesk. The smallest REJECT residual is `family ascaphidae` (`noun:01644542`, row `00181b47ec5143e4625569c7b41909401ccb940250f8138c775be0000ec3ff93`) at 0.1036592522, tiers GlossBERT then unique lemma. These rows are descriptive. They do not become phrase rules.
+
+All six preregistered conditions hold: readiness reproduces, the replay is deterministic, the HIGH median is larger, the rank separation is positive, AUC is above one half, and the separation is not solely one preregistered confound. Residual development state is `RESIDUAL_DEVELOPMENT_ANALYZED_V2`. Candidate status is `CANDIDATE_PROMISING`. `threshold_eligible` stays false because these 225 rows remain a reused development surface. No threshold is frozen. No row receives `semantic_noncompositional` YES or NO. The original residual state stays `CANDIDATE_DISTRIBUTION_FROZEN`. `MODEL_BASED_WSD_CANDIDATE_V1` stays `CANDIDATE_PROMISING`. `RUNE.CONSTITUENT_SENSE_RESOLUTION.v1` stays `DEVELOPMENT_ANALYZED` with lexical status `COVERAGE_INSUFFICIENT`. `selected_source` remains `none`. There is no runtime integration. `measurement_sample_drawn` and `measurement_eligible` stay false. SELECT-005 stays unauthorized. Admitted 0. Settled 0. Gold 0.
+
+No JSON Schema document exists for this replay family. Original residual spec sha256 remains `39c2914e32557ffe1a456a56f8742ea4fe8f1aaec1dc1da451656cd22f0db32d`. Original residual scores sha256 remains `cea638679faeee1bc1c689823e7c0c08562c4d7ef1f8230bbbf4079239e7c3e7`. Analysis sha256 `4367930648a68c2f84a1fd8e011fa07d9f3bf111303079f3ec07688f7d5425fb`. Confound analysis sha256 `d0f2496ca7623050eb5519969abcf7c5e2d0e23e0c1961859c40cae4dcdb7021`. Decision sha256 `ed0296fe6888e7c9fe864a2c6c7ab6cecbd4f490d6b7d650e442dafc0bd0976d`. Tracker sha256 `6500394d24543d1797eb9a2a05ba31868e035ffcbc7ae568f53116d4b016e62a`. The 225-row manifest, procedure v2, GlossBERT artifacts, resolver artifacts, MAGPIE artifacts, and Korkontzelos–Manandhar artifacts are unchanged. The ledger was not appended. Events sha256 remains `96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c`.
+
+The next named transition is `RESIDUAL_THRESHOLD_PREREGISTRATION_AUTHORIZATION`. This pass does not authorize it. A threshold still requires a later preregistered stage. `selected_source` remains `none`.
