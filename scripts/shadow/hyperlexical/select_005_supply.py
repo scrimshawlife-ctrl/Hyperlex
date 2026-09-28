@@ -189,3 +189,4 @@ def threshold_authorization_proposal() -> dict[str, Any]:
         "threshold_authorization_json_schema_exists": THRESHOLD_AUTHORIZATION_JSON_SCHEMA_EXISTS,
         "training_launch_authorized": False,
     }
+
