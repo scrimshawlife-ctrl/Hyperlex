@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/residual-threshold-surface-manifest.schema.json",
+  "title": "Residual-threshold surface manifest row",
+  "oneOf": [
+    {"$ref": "#/$defs/v1Row"},
+    {"$ref": "#/$defs/v2Row"}
+  ],
+  "$defs": {
+    "v1Row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calibration_row_id",
+        "draw_order",
+        "draw_seed",
+        "frozen_gloss",
+        "normalized_text_sha256",
+        "pos",
+        "pwn30_synset",
+        "sampling_rule_id",
+        "source_identity",
+        "surface"
+      ],
+      "properties": {
+        "calibration_row_id": {"$ref": "residual-threshold-common.schema.json#/$defs/row_id"},
+        "draw_order": {"type": "integer", "minimum": 1},
+        "draw_seed": {"type": "null"},
+        "frozen_gloss": {"type": "string", "minLength": 1},
+        "normalized_text_sha256": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+        "pos": {"$ref": "residual-threshold-common.schema.json#/$defs/pos"},
+        "pwn30_synset": {"$ref": "residual-threshold-common.schema.json#/$defs/pwn30_synset"},
+        "sampling_rule_id": {"const": "positional_stratified_hash_prefix_v1"},
+        "source_identity": {"const": "wordnet-3.0"},
+        "surface": {"type": "string", "minLength": 1}
+      }
+    },
+    "v2Row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allocation_rule_id",
+        "frozen_gloss",
+        "global_draw_order",
+        "normalized_text_sha256",
+        "pos",
+        "pwn30_synset",
+        "row_id",
+        "source_identity",
+        "stratum_id",
+        "surface",
+        "surface_role",
+        "token_count",
+        "within_stratum_order"
+      ],
+      "properties": {
+        "allocation_rule_id": {"const": "positional_stratified_hash_round_robin_quota_v2"},
+        "frozen_gloss": {"type": "string", "minLength": 1},
+        "global_draw_order": {"type": "integer", "minimum": 1},
+        "normalized_text_sha256": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+        "pos": {"$ref": "residual-threshold-common.schema.json#/$defs/pos"},
+        "pwn30_synset": {"$ref": "residual-threshold-common.schema.json#/$defs/pwn30_synset"},
+        "row_id": {"$ref": "residual-threshold-common.schema.json#/$defs/row_id"},
+        "source_identity": {"const": "wordnet-3.0"},
+        "stratum_id": {"type": "string", "pattern": "^(noun|verb|adj|adv):[0-9]+$"},
+        "surface": {"type": "string", "minLength": 1},
+        "surface_role": {"enum": ["CALIBRATION_V2", "MEASUREMENT_V2"]},
+        "token_count": {"type": "integer", "minimum": 1},
+        "within_stratum_order": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "title": "Constituent resolution row",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "constituent_index",
+    "constituent_pos",
+    "constituent_surface",
+    "parent_row_id",
+    "parent_surface",
+    "parent_synset",
+    "resolution_provenance",
+    "resolution_status",
+    "resolution_tier",
+    "selected_pwn30_synset",
+    "selected_sense_key_if_available"
+  ],
+  "properties": {
+    "constituent_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "constituent_pos": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "common.schema.json#/$defs/pos"
+        }
+      ]
+    },
+    "constituent_surface": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_row_id": {
+      "$ref": "common.schema.json#/$defs/row_id"
+    },
+    "parent_surface": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_synset": {
+      "$ref": "common.schema.json#/$defs/pwn30_synset"
+    },
+    "resolution_provenance": {
+      "enum": [
+        "extended_lesk_margin",
+        "model_abstention",
+        "model_margin",
+        "no_candidate_synset",
+        "structural_exact_pointer",
+        "structural_pointer_conflict",
+        "unique_lemma_synset"
+      ]
+    },
+    "resolution_status": {
+      "$ref": "common.schema.json#/$defs/constituent_resolution_status"
+    },
+    "resolution_tier": {
+      "enum": [
+        "TIER1_UNIQUE_LEMMA",
+        "TIER1_STRUCTURAL",
+        "TIER2_EXTENDED_LESK",
+        "TIER3_GLOSSBERT",
+        "UNRESOLVED"
+      ]
+    },
+    "selected_pwn30_synset": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "common.schema.json#/$defs/pwn30_synset"
+        }
+      ]
+    },
+    "selected_sense_key_if_available": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "resolution_status": {
+            "enum": [
+              "AMBIGUOUS",
+              "UNRESOLVED"
+            ]
+          }
+        },
+        "required": [
+          "resolution_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selected_pwn30_synset": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "resolution_status": {
+            "enum": [
+              "EXACT",
+              "RESOLVED"
+            ]
+          }
+        },
+        "required": [
+          "resolution_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "selected_pwn30_synset": {
+            "$ref": "common.schema.json#/$defs/pwn30_synset"
+          }
+        }
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/resolution-row.schema.json"
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/residual-threshold-completion-receipt.schema.json",
+  "title": "Residual-threshold calibration completion receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {"$ref": "residual-threshold-common.schema.json#/$defs/unfrozenThresholdInvariant"},
+    {"$ref": "residual-threshold-common.schema.json#/$defs/frozenThresholdInvariant"}
+  ],
+  "required": [
+    "calibration_redraw",
+    "confound_gate",
+    "direction_gate",
+    "json_schema_document",
+    "json_schema_exists",
+    "measurement_eligible",
+    "measurement_state",
+    "operator_labeling",
+    "runtime_integration",
+    "select_005_authorized",
+    "selected_source",
+    "support_gate",
+    "surface_draw",
+    "threshold_frozen",
+    "threshold_search",
+    "threshold_value",
+    "training_authorized",
+    "training_readiness"
+  ],
+  "properties": {
+    "calibration_redraw": {"const": false},
+    "confound_gate": {"enum": ["PASS", "STOP", "NOT_RUN"]},
+    "direction_gate": {
+      "enum": ["SUPPORTED_DIRECTION", "INVERTED_DIRECTION", "NO_DIRECTIONAL_SEPARATION", "NOT_RUN"]
+    },
+    "false_high": {"type": "integer", "minimum": 0},
+    "high_recall": {"$ref": "residual-threshold-common.schema.json#/$defs/effect_decimal"},
+    "json_schema_document": {"type": "null"},
+    "json_schema_exists": {"const": false},
+    "leave_one_out_result": {"const": "PASS"},
+    "measurement_eligible": {"type": "boolean"},
+    "measurement_state": {"$ref": "residual-threshold-common.schema.json#/$defs/measurement_state"},
+    "operator_labeling": {"const": "LABELS_FROZEN"},
+    "precision": {"$ref": "residual-threshold-common.schema.json#/$defs/effect_decimal"},
+    "predicted_yes_support": {"type": "integer", "minimum": 0},
+    "quarantine_predicted_yes": {"type": "integer", "minimum": 0},
+    "reject_predicted_yes": {"type": "integer", "minimum": 0},
+    "runtime_integration": {"const": false},
+    "select_005_authorized": {"const": false},
+    "selected_source": {"const": "none"},
+    "support_gate": {"const": "SUPPORT_GATE_PASSED"},
+    "surface_draw": {"const": "SURFACES_FROZEN"},
+    "threshold_frozen": {"type": "boolean"},
+    "threshold_search": {
+      "anyOf": [
+        {"$ref": "residual-threshold-common.schema.json#/$defs/threshold_state"},
+        {"const": "NOT_RUN"}
+      ]
+    },
+    "threshold_value": {
+      "anyOf": [
+        {"type": "null"},
+        {"$ref": "residual-threshold-common.schema.json#/$defs/residual_decimal"}
+      ]
+    },
+    "training_authorized": {"const": false},
+    "training_readiness": {
+      "enum": [
+        "BLOCKED_BY_THRESHOLD_V2_CALIBRATION",
+        "CALIBRATION_COMPLETE_MEASUREMENT_PENDING",
+        "THRESHOLD_EVIDENCE_COMPLETE"
+      ]
+    },
+    "true_high": {"type": "integer", "minimum": 0}
+  }
+}
