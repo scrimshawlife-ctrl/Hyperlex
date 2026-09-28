@@ -1,0 +1,305 @@
+{
+  "authorization": "THRESHOLD_ARTIFACT_SCHEMA_HARDENING_AUTHORIZATION",
+  "calibration_evidence_modified": false,
+  "calibration_state": "NO_THRESHOLD_PASSES_PRECISION_GATE",
+  "changed_artifacts": [],
+  "json_schema_family": [
+    "residual-threshold-completion-receipt.schema.json",
+    "residual-threshold-confound-analysis.schema.json",
+    "residual-threshold-decision.schema.json",
+    "residual-threshold-direction-analysis.schema.json",
+    "residual-threshold-receipt.schema.json",
+    "residual-threshold-support-join.schema.json",
+    "residual-threshold-surface-manifest.schema.json",
+    "residual-threshold-threshold-search.schema.json",
+    "residual-threshold-common.schema.json"
+  ],
+  "outcome": "PASS",
+  "results": [
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_DESIGN_CLOSURE.json",
+      "errors": [],
+      "schema": "residual-threshold-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_DRAW_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_FAILURE.json",
+      "errors": [],
+      "schema": "residual-threshold-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_MANIFEST.jsonl",
+      "errors": [],
+      "schema": "residual-threshold-surface-manifest.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_SCORE_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V1_CALIBRATION_THRESHOLD_SEARCH.json",
+      "errors": [],
+      "schema": "residual-threshold-threshold-search.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_BLIND_OPERATOR_PACKET_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_COMPLETION_FAILURE.json",
+      "errors": [],
+      "schema": "residual-threshold-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_COMPLETION_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-completion-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_CONFOUND_ANALYSIS.json",
+      "errors": [],
+      "schema": "residual-threshold-confound-analysis.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_FAILURE.json",
+      "errors": [],
+      "schema": "residual-threshold-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_MANIFEST.jsonl",
+      "errors": [],
+      "schema": "residual-threshold-surface-manifest.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_RESOLUTION_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_SCORE_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_SUPPORT_JOIN.jsonl",
+      "errors": [],
+      "schema": "residual-threshold-support-join.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_SUPPORT_JOIN_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CALIBRATION_SUPPORT_REASSESSMENT.json",
+      "errors": [],
+      "schema": "residual-threshold-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_COMPLETION_THRESHOLD_SEARCH.json",
+      "errors": [],
+      "schema": "residual-threshold-threshold-search.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CONFOUND_ANALYSIS.json",
+      "errors": [],
+      "schema": "residual-threshold-confound-analysis.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_CONFOUND_DECISION.json",
+      "errors": [],
+      "schema": "residual-threshold-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_DIRECTION_ANALYSIS.json",
+      "errors": [],
+      "schema": "residual-threshold-direction-analysis.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_DIRECTION_DECISION.json",
+      "errors": [],
+      "schema": "residual-threshold-decision.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_MEASUREMENT_MANIFEST.jsonl",
+      "errors": [],
+      "schema": "residual-threshold-surface-manifest.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_OPERATOR_LABELING_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_SURFACE_DRAW_RECEIPT.json",
+      "errors": [],
+      "schema": "residual-threshold-receipt.schema.json",
+      "status": "PASS"
+    },
+    {
+      "artifact": "RESIDUAL_THRESHOLD_V2_THRESHOLD_SEARCH.json",
+      "errors": [],
+      "schema": "residual-threshold-threshold-search.schema.json",
+      "status": "PASS"
+    }
+  ],
+  "schema_conformance_gaps": [],
+  "scientific_remediation": false,
+  "semantic": [
+    {
+      "check": "support_join_rows",
+      "detail": "rows=200",
+      "status": "PASS"
+    },
+    {
+      "check": "ready_plus_unknown",
+      "detail": "ready=60 unknown=140",
+      "status": "PASS"
+    },
+    {
+      "check": "row_id_sets",
+      "detail": "manifest=200 labels=200 join=200",
+      "status": "PASS"
+    },
+    {
+      "check": "measurement_disjoint",
+      "detail": "measurement_rows=200",
+      "status": "PASS"
+    },
+    {
+      "check": "measurement_manifest_unchanged",
+      "detail": "78ca09ab14912681d028e8b9b1c77a8daf1d0c8c81561434eb9b6ade45a753e5",
+      "status": "PASS"
+    },
+    {
+      "check": "join_receipt_manifest_hash",
+      "detail": "34bc70b93039fc6a5ba4bb58685e0fbfe6f91dd1f86a64fec8326a84013a6465",
+      "status": "PASS"
+    },
+    {
+      "check": "join_receipt_label_hash",
+      "detail": "f9901e334543dac2e9bf258208097cf4c9b48af9dc8b497ff42fe4f1f106e1fc",
+      "status": "PASS"
+    },
+    {
+      "check": "join_receipt_score_hash",
+      "detail": "01c758af570264c190f4af7805d43d734c9e9a36779f0e0b82675709f213e07c",
+      "status": "PASS"
+    },
+    {
+      "check": "direction_join_hash",
+      "detail": "02088379b5ebe0f26106e830a730e8a90b2281d83c37bf1e750e1846bffa128b",
+      "status": "PASS"
+    },
+    {
+      "check": "operator_labels_closed",
+      "detail": "labels stay inside the emitted enum",
+      "status": "PASS"
+    },
+    {
+      "check": "v1_labels_unlabeled",
+      "detail": "rows=27",
+      "status": "PASS"
+    },
+    {
+      "check": "v1_manifest_identity",
+      "detail": "rows=27",
+      "status": "PASS"
+    },
+    {
+      "check": "v2_manifest_identity",
+      "detail": "row_id matches normalized_text_sha256",
+      "status": "PASS"
+    },
+    {
+      "check": "draw_receipt_measurement_hash",
+      "detail": "78ca09ab14912681d028e8b9b1c77a8daf1d0c8c81561434eb9b6ade45a753e5",
+      "status": "PASS"
+    },
+    {
+      "check": "draw_receipt_manifest_hash",
+      "detail": "34bc70b93039fc6a5ba4bb58685e0fbfe6f91dd1f86a64fec8326a84013a6465",
+      "status": "PASS"
+    },
+    {
+      "check": "events_unchanged",
+      "detail": "96b74a92d44f1cf9fe152b18e5207176f161ba3bfce528dac38aa4571a742f9c",
+      "status": "PASS"
+    },
+    {
+      "check": "ledger_unchanged",
+      "detail": "77e22433203879b252f7a9e309d2013d7550101d1c4a014b494d2c96df87d0e0",
+      "status": "PASS"
+    },
+    {
+      "check": "tracker_unchanged",
+      "detail": "e674c207d9eb160159a673c23f7e2a2e8262b5bfc963ccf81b216d8291dc4b0f",
+      "status": "PASS"
+    }
+  ],
+  "semantic_conformance_gaps": [],
+  "skipped_not_applicable": [
+    "RESIDUAL_THRESHOLD_V1_ACCEPTANCE.json",
+    "RESIDUAL_THRESHOLD_V1_ARTIFACT_SCHEMA.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_ANALYSIS.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_CONTRACT.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_ISOLATION_REPORT.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_LABELS.jsonl",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_LABEL_AVAILABILITY_REVIEW.json",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_RESOLUTION.jsonl",
+    "RESIDUAL_THRESHOLD_V1_CALIBRATION_SCORES.jsonl",
+    "RESIDUAL_THRESHOLD_V1_MEASUREMENT_CONTRACT.json",
+    "RESIDUAL_THRESHOLD_V1_PREREGISTRATION.json",
+    "RESIDUAL_THRESHOLD_V1_SELECTION_PROCEDURE.json",
+    "RESIDUAL_THRESHOLD_V1_SURFACE_ISOLATION_POLICY.json",
+    "RESIDUAL_THRESHOLD_V2_ACCEPTANCE.json",
+    "RESIDUAL_THRESHOLD_V2_ARTIFACT_SCHEMA.json",
+    "RESIDUAL_THRESHOLD_V2_BLIND_OPERATOR_PACKET.jsonl",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_ANALYSIS.json",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_CONTRACT.json",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_LABELS.jsonl",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_LABEL_AVAILABILITY_REVIEW.json",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_RESOLUTION.jsonl",
+    "RESIDUAL_THRESHOLD_V2_CALIBRATION_SCORES.jsonl",
+    "RESIDUAL_THRESHOLD_V2_MEASUREMENT_CONTRACT.json",
+    "RESIDUAL_THRESHOLD_V2_OPERATOR_LABELS.jsonl",
+    "RESIDUAL_THRESHOLD_V2_PREREGISTRATION.json",
+    "RESIDUAL_THRESHOLD_V2_SAMPLE_SIZE.json",
+    "RESIDUAL_THRESHOLD_V2_SELECTION_PROCEDURE.json",
+    "RESIDUAL_THRESHOLD_V2_SURFACE_DISTRIBUTION_REPORT.json",
+    "RESIDUAL_THRESHOLD_V2_SURFACE_ISOLATION_POLICY.json",
+    "RESIDUAL_THRESHOLD_V2_SURFACE_ISOLATION_REPORT.json"
+  ],
+  "threshold_redesign": false,
+  "training_authorized": false
+}
