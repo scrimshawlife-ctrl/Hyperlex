@@ -370,6 +370,774 @@ def draw_calibration() -> tuple[list[dict], dict]:
     accounting = {
         "eligible_before_draw": len(bound_rows),
         "exclusion_counts": dict(sorted(exclusion.items())),
-        "magpie_km_overlap_with_development_row_id": first_account_placeholder,
+        "magpie_km_overlap_with_development_row_id": magpie_overlap_with_development,
+        "measurement_reserve_files": 0,
+        "strata": strata,
     }
     return manifest, accounting
+
+
+def _isolation(manifest: list[dict]) -> dict:
+    fences = _identity_fences()
+    from hyperlexical.heldout_census import normalize_group_text
+    from hyperlexical.unbind_screen_v4 import normalize_lexical
+
+    hashes = [row["normalized_text_sha256"] for row in manifest]
+    synsets = [row["pwn30_synset"] for row in manifest]
+    overlap = {
+        "development_normalized_text": 0,
+        "development_row_id": len(set(hashes) & fences["development_hashes"]),
+        "development_synset": len(set(synsets) & fences["development_synsets"]),
+        "internal_duplicate_row_id": len(hashes) - len(set(hashes)),
+        "internal_duplicate_synset": len(synsets) - len(set(synsets)),
+        "magpie_km_row_id": len(set(hashes) & fences["magpie_km_hashes"]),
+        "magpie_km_synset": len(set(synsets) & fences["magpie_km_synsets"]),
+        "measurement_reserve": 0,
+    }
+    for row in manifest:
+        lexical = normalize_lexical(row["surface"])
+        grouped = normalize_group_text(row["surface"])
+        if (
+            lexical in fences["development_lexical"]
+            or grouped in fences["development_grouped"]
+            or grouped in fences["development_stored_identity"]
+        ):
+            overlap["development_normalized_text"] += 1
+        if set(row) != set(MANIFEST_FIELDS):
+            refuse("manifest row carries a field outside the pre-score contract")
+        if "operator_bucket" in row:
+            refuse("manifest contains an operator label")
+    overlap["total"] = sum(overlap.values())
+    return overlap
+
+
+def freeze_draw() -> dict:
+    if MANIFEST_PATH.exists() or DRAW_RECEIPT.exists() or ISOLATION_PATH.exists():
+        refuse("calibration draw already exists; redraw is not authorized")
+    verify_sealed()
+    print("draw pass 1", file=sys.stderr, flush=True)
+    first_manifest, first_account = draw_calibration()
+    print("draw pass 2", file=sys.stderr, flush=True)
+    second_manifest, second_account = draw_calibration()
+    if first_manifest != second_manifest or first_account != second_account:
+        _write_failure_early("NOT_DETERMINISTIC", "draw_reconstruction")
+    from hyperlexical.unbind_screen_v3 import gloss_for
+
+    for row in first_manifest:
+        bound_pos, gloss = gloss_for(row["surface"], row["pos"], str(WORDNET))
+        if bound_pos != row["pos"] or gloss != row["frozen_gloss"]:
+            refuse(f"frozen gloss drifted from gloss_for: {row['surface']}")
+    overlap = _isolation(first_manifest)
+    if overlap["total"] != 0:
+        refuse(f"calibration surface leaks development material: {overlap}")
+    manifest_sha = write_jsonl(MANIFEST_PATH, first_manifest)
+    isolation = {
+        "admitted": 0,
+        "authorization": AUTHORIZATION,
+        "gold": 0,
+        "json_schema_document": JSON_SCHEMA_DOCUMENT,
+        "json_schema_exists": False,
+        "manifest_sha256": manifest_sha,
+        "measurement_surface_drawn": False,
+        "operator_labels_consulted": False,
+        "overlap": overlap,
+        "schema": "hyperlex.residual_threshold_v1_calibration_isolation.v1",
+        "scores_consulted": False,
+        "selected_source": "none",
+        "select_005_authorized": False,
+        "settled": 0,
+    }
+    isolation_sha = write_json(ISOLATION_PATH, isolation)
+    receipt = {
+        "admitted": 0,
+        "authorization": AUTHORIZATION,
+        "calibration_surface_drawn": True,
+        "calibration_surface_frozen": True,
+        "determinism": "IDENTICAL",
+        "draw_passes": 2,
+        "draw_seed": DRAW_SEED,
+        "eligible_universe_before_draw": first_account["eligible_before_draw"],
+        "exclusion_counts": first_account["exclusion_counts"],
+        "gold": 0,
+        "isolation_sha256": isolation_sha,
+        "json_schema_document": JSON_SCHEMA_DOCUMENT,
+        "json_schema_exists": False,
+        "magpie_km_overlap_with_development_row_id": first_account["magpie_km_overlap_with_development_row_id"],
+        "manifest_row_count": len(first_manifest),
+        "manifest_sha256": manifest_sha,
+        "measurement_reserve_files": 0,
+        "measurement_surface_drawn": False,
+        "operator_labels_consulted": False,
+        "ordering": ORDERING,
+        "per_cell": PER_CELL,
+        "redraw_authorized": False,
+        "replacement": REPLACEMENT,
+        "sample_size_source": "historical positional draw_measurement default; not derived from operator labels",
+        "sampling_rule_id": SAMPLING_RULE_ID,
+        "schema": "hyperlex.residual_threshold_v1_calibration_draw_receipt.v1",
+        "scores_consulted": False,
+        "select_005_authorized": False,
+        "selected_source": "none",
+        "settled": 0,
+        "strata": first_account["strata"],
+        "stratification": STRATIFICATION,
+        "threshold_frozen": False,
+        "threshold_value": None,
+    }
+    receipt_sha = write_json(DRAW_RECEIPT, receipt)
+    receipt["draw_receipt_sha256"] = receipt_sha
+    return receipt
+
+
+def _write_failure_early(state: str, gate: str) -> None:
+    if FAILURE_PATH.exists():
+        refuse(state)
+    payload = {
+        "failure_state": state,
+        "failed_gate": gate,
+        "json_schema_document": JSON_SCHEMA_DOCUMENT,
+        "observed_confounds": None,
+        "observed_direction": None,
+        "observed_support": None,
+        "observed_threshold_candidate_count": None,
+        "schema": "hyperlex.residual_threshold_v1_calibration_failure.v1",
+        "threshold_frozen": False,
+        "threshold_value": None,
+    }
+    write_json(FAILURE_PATH, payload)
+    refuse(state)
+
+
+def _sealed_rows(manifest: list[dict]) -> list[dict]:
+    rows = []
+    for row in manifest:
+        pos, offset = row["pwn30_synset"].split(":", 1)
+        rows.append(
+            {
+                "gloss": row["frozen_gloss"],
+                "pos": row["pos"],
+                "row_id": row["calibration_row_id"],
+                "sense_class": None,
+                "surface": row["surface"],
+                "synset_offset": offset,
+                "synset_pos": pos,
+            }
+        )
+    return rows
+
+
+def _tier3_pool(resolver_rows: list[dict], by_id: dict, exceptions: dict, sense_index: dict) -> list[dict]:
+    from hyperlexical.model_based_wsd_candidate_v1 import candidate_gloss_text, gloss_lemma, quoted_context
+    from hyperlexical.model_based_wsd_candidate_v1_replay import sense_keys_for
+
+    pool = []
+    for row in resolver_rows:
+        if row["constituent_index"] is None:
+            continue
+        if row["resolution_status"] != "AMBIGUOUS":
+            continue
+        if row["resolution_method"] != "EXTENDED_LESK_V1":
+            refuse("ambiguous constituent is not an extended lesk tie")
+        pairs = []
+        for synset_id in row["candidate_synsets"]:
+            record = by_id.get(synset_id)
+            if record is None:
+                refuse(f"missing candidate synset {synset_id}")
+            lemma = gloss_lemma(record["lemmas"], row["constituent_surface"], exceptions)
+            if lemma is None:
+                refuse(f"candidate lemma missing for {synset_id}")
+            pairs.append(
+                {
+                    "gloss_text": candidate_gloss_text(lemma, record["gloss_first"]),
+                    "sense_keys": sense_keys_for(synset_id, row["constituent_surface"], exceptions, sense_index),
+                    "synset": synset_id,
+                }
+            )
+        pool.append(
+            {
+                "candidate_pwn30_synsets": list(row["candidate_synsets"]),
+                "candidate_sense_keys": {item["synset"]: list(item["sense_keys"]) for item in pairs},
+                "constituent_index": row["constituent_index"],
+                "constituent_pos": row["constituent_pos"],
+                "constituent_surface": row["constituent_surface"],
+                "context": quoted_context(row["parent_surface"], row["constituent_index"], row["constituent_surface"]),
+                "pairs": pairs,
+                "parent_row_id": row["parent_row_id"],
+                "parent_surface": row["parent_surface"],
+                "parent_synset": row["parent_synset"],
+                "prior_lesk_margin": row["margin"],
+                "prior_lesk_second_score": row["second_score"],
+                "prior_lesk_top_score": row["top_score"],
+                "prior_resolution_status": "AMBIGUOUS",
+            }
+        )
+    return pool
+
+
+def resolve_and_score() -> dict:
+    if not MANIFEST_PATH.exists() or not DRAW_RECEIPT.exists():
+        refuse("manifest was not frozen before resolution")
+    if SCORES_PATH.exists() or SCORE_RECEIPT.exists():
+        refuse("scores already exist")
+    verify_sealed()
+    manifest = read_jsonl(MANIFEST_PATH)
+    if sha256(MANIFEST_PATH) != json.loads(DRAW_RECEIPT.read_text(encoding="utf-8"))["manifest_sha256"]:
+        refuse("manifest hash does not match the draw receipt")
+    from hyperlexical.constituent_sense_resolution_v1_replay import (
+        PROCEDURE_PATH,
+        SPEC_PATH,
+        build_catalog,
+        resolve_once,
+    )
+    from hyperlexical.model_based_wsd_candidate_v1_replay import (
+        import_runtime,
+        infer_pass,
+        load_sense_index,
+        resolution_rows,
+    )
+    from hyperlexical.residual_model_resolved_replay_v1 import TIER3_GLOSSBERT
+    from hyperlexical.residual_model_resolved_replay_v1_replay import (
+        RESIDUAL_SPEC_SHA,
+        apply_overflow,
+        assemble_scores,
+        build_integrated,
+        encode_needed,
+        prepare_jobs,
+        public_integrated,
+        score_jobs,
+    )
+    from hyperlexical.semantic_compositionality_residual_replay import build_indexes, load_encoder
+    from hyperlexical.unbind_sense_screen_v1 import load_exceptions
+
+    sealed = _sealed_rows(manifest)
+    print("resolver catalog", file=sys.stderr, flush=True)
+    by_id, index = build_catalog()
+    exceptions = load_exceptions(WORDNET)
+    spec_sha = sha256(SPEC_PATH)
+    procedure_sha = sha256(PROCEDURE_PATH)
+    wsd_spec_sha = sha256(SOURCE / "MODEL_BASED_WSD_CANDIDATE_SPEC.json")
+    print("resolver pass 1", file=sys.stderr, flush=True)
+    resolved_first = resolve_once(sealed, by_id, index, exceptions, spec_sha, procedure_sha)
+    print("resolver pass 2", file=sys.stderr, flush=True)
+    resolved_second = resolve_once(sealed, by_id, index, exceptions, spec_sha, procedure_sha)
+    if resolved_first != resolved_second:
+        _write_failure_early("NOT_DETERMINISTIC", "integrated_resolution")
+    sense_index = load_sense_index(WORDNET / "index.sense")
+    pool_first = _tier3_pool(resolved_first, by_id, exceptions, sense_index)
+    pool_second = _tier3_pool(resolved_second, by_id, exceptions, sense_index)
+    if pool_first != pool_second:
+        _write_failure_early("NOT_DETERMINISTIC", "tier3_pool")
+    model_rows: list[dict] = []
+    if pool_first:
+        print(f"glossbert pool {len(pool_first)}", file=sys.stderr, flush=True)
+        torch, tokenizer, model = import_runtime()
+        raw_first = infer_pass(torch, tokenizer, model, pool_first, wsd_spec_sha)
+        raw_second = infer_pass(torch, tokenizer, model, pool_second, wsd_spec_sha)
+        if raw_first != raw_second:
+            _write_failure_early("NOT_DETERMINISTIC", "glossbert_scores")
+        model_first = resolution_rows(pool_first, raw_first)
+        model_second = resolution_rows(pool_second, raw_second)
+        if model_first != model_second:
+            _write_failure_early("NOT_DETERMINISTIC", "glossbert_resolution")
+        model_rows = model_first
+    integrated_first, by_parent_first = build_integrated(resolved_first, model_rows, exceptions, sense_index)
+    integrated_second, _by_parent_second = build_integrated(resolved_second, model_rows, exceptions, sense_index)
+    if integrated_first != integrated_second:
+        _write_failure_early("NOT_DETERMINISTIC", "integrated_resolution")
+    public_rows = [public_integrated(item) for item in integrated_first]
+    if RESOLUTION_PATH.exists():
+        if read_jsonl(RESOLUTION_PATH) != public_rows:
+            _write_failure_early("NOT_DETERMINISTIC", "integrated_resolution")
+        resolution_sha = sha256(RESOLUTION_PATH)
+    else:
+        resolution_sha = write_jsonl(RESOLUTION_PATH, public_rows)
+    residual_by_id, _residual_index = build_indexes()
+    # prepare_jobs uses constituent_representation from the replay module, which
+    # closes over the residual index built above. Rebind by calling prepare_jobs
+    # after the replay's own index loader is the frozen path: prepare_jobs calls
+    # constituent_representation, and that function expects by_id from build_indexes.
+    jobs, unknown = prepare_jobs(sealed, by_parent_first, residual_by_id, exceptions, {
+        (row["parent_row_id"], row["constituent_index"]): row for row in model_rows
+    })
+    encoder = load_encoder()
+    kept, overflow = apply_overflow(encoder, jobs)
+    print("residual encode pass 1", file=sys.stderr, flush=True)
+    vectors_first = encode_needed(encoder, kept)
+    scored_first = score_jobs(kept, vectors_first, resolution_sha)
+    print("residual encode pass 2", file=sys.stderr, flush=True)
+    vectors_second = encode_needed(encoder, kept)
+    scored_second = score_jobs(kept, vectors_second, resolution_sha)
+    if vectors_first != vectors_second or scored_first != scored_second:
+        RESOLUTION_PATH.unlink()
+        _write_failure_early("NOT_DETERMINISTIC", "residual_scores")
+    scores = assemble_scores(sealed, scored_first, unknown, overflow)
+    for row in scores:
+        if row["score_status"] == "SCORED" and "constituent_resolution_tiers" in row:
+            row["uses_tier3"] = TIER3_GLOSSBERT in row["constituent_resolution_tiers"]
+    if any(row.get("operator_bucket") for row in scores):
+        refuse("score artifact contains an operator label")
+    score_sha = write_jsonl(SCORES_PATH, scores)
+    receipt = {
+        "admitted": 0,
+        "determinism": "IDENTICAL",
+        "gold": 0,
+        "integrated_resolution_sha256": resolution_sha,
+        "json_schema_document": JSON_SCHEMA_DOCUMENT,
+        "json_schema_exists": False,
+        "manifest_sha256": sha256(MANIFEST_PATH),
+        "operator_labels_joined": False,
+        "ready_rows": sum(1 for row in scores if row["score_status"] == "SCORED"),
+        "residual_candidate_spec_sha256": RESIDUAL_SPEC_SHA,
+        "schema": "hyperlex.residual_threshold_v1_calibration_score_receipt.v1",
+        "score_passes": 2,
+        "score_sha256": score_sha,
+        "selected_source": "none",
+        "settled": 0,
+        "tier3_pool": len(pool_first),
+        "unknown_rows": sum(1 for row in scores if row["score_status"] != "SCORED"),
+    }
+    receipt_sha = write_json(SCORE_RECEIPT, receipt)
+    if json.loads(SCORE_RECEIPT.read_text(encoding="utf-8"))["operator_labels_joined"] is not False:
+        refuse("score receipt joined labels early")
+    receipt["score_receipt_sha256"] = receipt_sha
+    return receipt
+
+
+def _label_index() -> dict[str, str]:
+    found: dict[str, str] = {}
+
+    def add(row_id: str, bucket: str) -> None:
+        prior = found.get(row_id)
+        if prior is not None and prior != bucket:
+            refuse(f"operator labels disagree for {row_id}")
+        found[row_id] = bucket
+
+    evidence = json.loads(EVIDENCE.read_text(encoding="utf-8"))
+    for row in evidence["rows"]:
+        add(row["row_id"], row["operator_bucket"])
+    root = LEDGER / "operator-review"
+    for path in sorted(root.rglob("*labels*.jsonl")):
+        for row in read_jsonl(path):
+            if "operator_bucket" not in row or "row_id" not in row:
+                continue
+            add(row["row_id"], row["operator_bucket"])
+    return found
+
+
+def _support(labels: list[dict]) -> dict:
+    ready = Counter()
+    unknown = Counter()
+    unlabeled = {"SCORED": 0, "UNKNOWN": 0}
+    for row in labels:
+        bucket = row["operator_bucket"]
+        status = row["score_status"]
+        if bucket is None:
+            unlabeled[status] += 1
+            continue
+        if status == "SCORED":
+            ready[bucket] += 1
+        else:
+            unknown[bucket] += 1
+    return {
+        "ready": {name: ready[name] for name in OPERATOR_CLASSES},
+        "unlabeled_scored": unlabeled["SCORED"],
+        "unlabeled_unknown": unlabeled["UNKNOWN"],
+        "unknown_by_class": {name: unknown[name] for name in OPERATOR_CLASSES},
+    }
+
+
+def join_and_judge() -> dict:
+    if not SCORE_RECEIPT.exists() or not SCORES_PATH.exists():
+        refuse("scores were not frozen before the label join")
+    if LABELS_PATH.exists() or ANALYSIS_PATH.exists() or SEARCH_PATH.exists():
+        refuse("label join artifacts already exist")
+    if FROZEN_PATH.exists() or FAILURE_PATH.exists():
+        refuse("threshold outcome already exists")
+    receipt = json.loads(SCORE_RECEIPT.read_text(encoding="utf-8"))
+    if receipt["operator_labels_joined"] is not False:
+        refuse("score receipt does not record a pre-label freeze")
+    if sha256(SCORES_PATH) != receipt["score_sha256"]:
+        refuse("score hash drifted before the label join")
+    verify_sealed()
+    labels_by_id = _label_index()
+    scores = read_jsonl(SCORES_PATH)
+    manifest = {row["calibration_row_id"]: row for row in read_jsonl(MANIFEST_PATH)}
+    joined = []
+    for score in scores:
+        row_id = score["row_id"]
+        manifest_row = manifest[row_id]
+        bucket = labels_by_id.get(row_id)
+        joined.append(
+            {
+                "calibration_row_id": row_id,
+                "development_row": False,
+                "draw_order": manifest_row["draw_order"],
+                "operator_bucket": bucket,
+                "operator_label_present": bucket is not None,
+                "pos": score.get("pos", manifest_row["pos"]),
+                "residual_score": score.get("residual_score"),
+                "score_status": score["score_status"],
+                "surface": manifest_row["surface"],
+                "uses_tier3": score.get("uses_tier3"),
+            }
+        )
+    label_rows = [
+        {
+            "calibration_row_id": row["calibration_row_id"],
+            "operator_bucket": row["operator_bucket"],
+            "operator_label_present": row["operator_label_present"],
+            "score_status": row["score_status"],
+        }
+        for row in joined
+    ]
+    label_sha = write_jsonl(LABELS_PATH, label_rows)
+    support = _support(joined)
+    ready_high = support["ready"]["HIGH"]
+    ready_secondary = support["ready"]["SECONDARY"]
+    analysis = {
+        "admitted": 0,
+        "confound_result": "NOT_RUN",
+        "direction_result": "NOT_RUN",
+        "gold": 0,
+        "json_schema_document": JSON_SCHEMA_DOCUMENT,
+        "json_schema_exists": False,
+        "label_sha256": label_sha,
+        "measurement_surface_drawn": False,
+        "schema": "hyperlex.residual_threshold_v1_calibration_analysis.v1",
+        "score_receipt_sha256": sha256(SCORE_RECEIPT),
+        "score_sha256": sha256(SCORES_PATH),
+        "select_005_authorized": False,
+        "selected_source": "none",
+        "settled": 0,
+        "support": support,
+        "support_gate": {
+            "minimum_ready_high": MIN_CALIBRATION_HIGH,
+            "minimum_ready_secondary": MIN_CALIBRATION_SECONDARY,
+            "passed": ready_high >= MIN_CALIBRATION_HIGH and ready_secondary >= MIN_CALIBRATION_SECONDARY,
+        },
+    }
+    if not analysis["support_gate"]["passed"]:
+        analysis["calibration_state"] = "CALIBRATION_INSUFFICIENT_SUPPORT"
+        analysis_sha = write_json(ANALYSIS_PATH, analysis)
+        search = {
+            "candidate_count": None,
+            "candidates_evaluated": False,
+            "gate_pass_counts": None,
+            "json_schema_document": JSON_SCHEMA_DOCUMENT,
+            "reason": "CALIBRATION_INSUFFICIENT_SUPPORT",
+            "schema": "hyperlex.residual_threshold_v1_calibration_threshold_search.v1",
+            "search_executed": False,
+            "selected_threshold": None,
+        }
+        search_sha = write_json(SEARCH_PATH, search)
+        failure = {
+            "analysis_sha256": analysis_sha,
+            "failure_state": "CALIBRATION_INSUFFICIENT_SUPPORT",
+            "failed_gate": "support",
+            "json_schema_document": JSON_SCHEMA_DOCUMENT,
+            "json_schema_exists": False,
+            "label_sha256": label_sha,
+            "observed_confounds": None,
+            "observed_direction": None,
+            "observed_support": support,
+            "observed_threshold_candidate_count": None,
+            "schema": "hyperlex.residual_threshold_v1_calibration_failure.v1",
+            "search_sha256": search_sha,
+            "threshold_frozen": False,
+            "threshold_value": None,
+        }
+        failure_sha = write_json(FAILURE_PATH, failure)
+        return _finish_tracker(failure["failure_state"], None, failure_sha, {
+            "analysis": analysis_sha,
+            "failure": failure_sha,
+            "labels": label_sha,
+            "search": search_sha,
+        })
+    return _select(joined, analysis, label_sha)
+
+
+def _select(joined: list[dict], analysis: dict, label_sha: str) -> dict:
+    from hyperlexical.residual_threshold_v1 import select_threshold
+
+    selectable = []
+    for row in joined:
+        if row["operator_bucket"] not in OPERATOR_CLASSES:
+            continue
+        if row["uses_tier3"] is None or row["pos"] is None:
+            refuse("labeled calibration row is missing tier or pos provenance")
+        selectable.append(
+            {
+                "development_row": False,
+                "operator_bucket": row["operator_bucket"],
+                "pos": row["pos"],
+                "residual_score": row["residual_score"],
+                "score_status": row["score_status"],
+                "uses_tier3": row["uses_tier3"],
+            }
+        )
+    print("threshold selection pass 1", file=sys.stderr, flush=True)
+    first = select_threshold(selectable)
+    print("threshold selection pass 2", file=sys.stderr, flush=True)
+    second = select_threshold(selectable)
+    if first != second:
+        analysis["calibration_state"] = "NOT_DETERMINISTIC"
+        analysis_sha = write_json(ANALYSIS_PATH, analysis)
+        failure = {
+            "analysis_sha256": analysis_sha,
+            "failure_state": "NOT_DETERMINISTIC",
+            "failed_gate": "threshold_selection",
+            "json_schema_document": JSON_SCHEMA_DOCUMENT,
+            "observed_confounds": None,
+            "observed_direction": None,
+            "observed_support": analysis["support"],
+            "observed_threshold_candidate_count": None,
+            "schema": "hyperlex.residual_threshold_v1_calibration_failure.v1",
+            "threshold_frozen": False,
+            "threshold_value": None,
+        }
+        failure_sha = write_json(FAILURE_PATH, failure)
+        return _finish_tracker("NOT_DETERMINISTIC", None, failure_sha, {"analysis": analysis_sha, "failure": failure_sha, "labels": label_sha})
+    state = first["calibration_state"]
+    analysis["calibration_state"] = state
+    analysis["direction_result"] = first.get("direction", "NOT_RUN")
+    analysis["confound_result"] = first.get("confound", "NOT_RUN")
+    analysis["selection"] = first
+    analysis_sha = write_json(ANALYSIS_PATH, analysis)
+    search, search_sha = _search_artifact(selectable, first)
+    if state != "THRESHOLD_FROZEN":
+        failure = {
+            "analysis_sha256": analysis_sha,
+            "failure_state": state,
+            "failed_gate": _failed_gate(state),
+            "json_schema_document": JSON_SCHEMA_DOCUMENT,
+            "json_schema_exists": False,
+            "label_sha256": label_sha,
+            "observed_confounds": first.get("confound"),
+            "observed_direction": first.get("direction"),
+            "observed_support": analysis["support"],
+            "observed_threshold_candidate_count": search["candidate_count"],
+            "schema": "hyperlex.residual_threshold_v1_calibration_failure.v1",
+            "search_sha256": search_sha,
+            "threshold_frozen": False,
+            "threshold_value": None,
+        }
+        failure_sha = write_json(FAILURE_PATH, failure)
+        return _finish_tracker(state, None, failure_sha, {
+            "analysis": analysis_sha,
+            "failure": failure_sha,
+            "labels": label_sha,
+            "search": search_sha,
+        })
+    metrics = first["selection_metrics"]
+    frozen = {
+        "algorithm_id": ALGORITHM_ID,
+        "calibration_label_hash": label_sha,
+        "calibration_manifest_hash": sha256(MANIFEST_PATH),
+        "calibration_resolution_hash": sha256(RESOLUTION_PATH),
+        "calibration_score_hash": sha256(SCORES_PATH),
+        "confound_result": first.get("confound"),
+        "direction_result": first.get("direction"),
+        "false_high": metrics["false_high"],
+        "high_recall": metrics["high_recall"],
+        "json_schema_document": JSON_SCHEMA_DOCUMENT,
+        "json_schema_exists": False,
+        "leave_one_out_result": "PASS",
+        "measurement_surface_drawn": False,
+        "precision": metrics["precision"],
+        "predicted_yes_support": metrics["predicted_yes_support"],
+        "ready_quarantine_yes": metrics["quarantine_predicted_yes"],
+        "ready_reject_yes": metrics["reject_predicted_yes"],
+        "residual_candidate_spec_hash": json.loads(SCORE_RECEIPT.read_text(encoding="utf-8"))["residual_candidate_spec_sha256"],
+        "resolver_stack_hashes": {
+            "constituent_resolution_replay_sha256": ANCESTORS[SOURCE / "CONSTITUENT_SENSE_RESOLUTION_V1_REPLAY.jsonl"],
+            "constituent_resolution_spec_sha256": ANCESTORS[SOURCE / "CONSTITUENT_SENSE_RESOLUTION_V1_SPEC.json"],
+            "glossbert_resolution_sha256": ANCESTORS[SOURCE / "MODEL_BASED_WSD_RESOLUTION.jsonl"],
+            "glossbert_spec_sha256": ANCESTORS[SOURCE / "MODEL_BASED_WSD_CANDIDATE_SPEC.json"],
+        },
+        "runtime_integration": False,
+        "schema": "hyperlex.residual_threshold_v1_threshold_frozen.v1",
+        "select_005_authorized": False,
+        "selected_source": "none",
+        "selection_algorithm_id": ALGORITHM_ID,
+        "selection_receipt": first,
+        "threshold_frozen": True,
+        "threshold_id": "T_HIGH",
+        "threshold_value": first["threshold_value"],
+        "true_high": metrics["true_high"],
+        "wilson_lower": metrics["precision_interval"][0],
+        "wilson_upper": metrics["precision_interval"][1],
+    }
+    frozen_sha = write_json(FROZEN_PATH, frozen)
+    return _finish_tracker("THRESHOLD_FROZEN", first["threshold_value"], frozen_sha, {
+        "analysis": analysis_sha,
+        "labels": label_sha,
+        "search": search_sha,
+        "threshold": frozen_sha,
+    })
+
+
+def _failed_gate(state: str) -> str:
+    return {
+        "CALIBRATION_INSUFFICIENT_SUPPORT": "support",
+        "NO_DIRECTIONAL_SIGNAL": "direction",
+        "CALIBRATION_CONFOUND_REVIEW": "confound",
+        "NO_THRESHOLD_PASSES_PRECISION_GATE": "precision_gate",
+        "NOT_DETERMINISTIC": "determinism",
+    }[state]
+
+
+def _search_artifact(selectable: list[dict], selection: dict) -> tuple[dict, str]:
+    from decimal import Decimal
+
+    from hyperlexical.residual_threshold_v1 import (
+        MIN_PREDICTED_YES,
+        PRECISION_FLOOR,
+        WILSON_LOWER_FLOOR,
+        _candidate_thresholds,
+        _high_recall,
+        _passes_candidate,
+        _precision_terms,
+        _ready_rows,
+        _safety_counts,
+        _stable,
+        precision_gates,
+        wilson_interval,
+    )
+
+    if selection["calibration_state"] in {"CALIBRATION_INSUFFICIENT_SUPPORT", "NO_DIRECTIONAL_SIGNAL", "CALIBRATION_CONFOUND_REVIEW"}:
+        payload = {
+            "candidate_count": None,
+            "candidates_evaluated": False,
+            "gate_pass_counts": None,
+            "json_schema_document": JSON_SCHEMA_DOCUMENT,
+            "reason": selection["calibration_state"],
+            "schema": "hyperlex.residual_threshold_v1_calibration_threshold_search.v1",
+            "search_executed": False,
+            "selected_threshold": None,
+        }
+        return payload, write_json(SEARCH_PATH, payload)
+    ready = _ready_rows(selectable)
+    comparison = [row for row in ready if row["operator_bucket"] in {"HIGH", "SECONDARY"}]
+    candidates = _candidate_thresholds(ready)
+    counts = Counter()
+    passing = []
+    for threshold in candidates:
+        true_high, support = _precision_terms(comparison, threshold)
+        precision_ok = precision_gates(
+            true_high,
+            support,
+            minimum_yes=MIN_PREDICTED_YES,
+            precision_floor=PRECISION_FLOOR,
+            wilson_floor=WILSON_LOWER_FLOOR,
+        )
+        safety = _safety_counts(ready, threshold)
+        reject_ok = safety["reject_predicted_yes"] == 0
+        quarantine_ok = safety["quarantine_predicted_yes"] == 0
+        stable = _stable(
+            comparison,
+            threshold,
+            minimum_yes=MIN_PREDICTED_YES,
+            precision_floor=PRECISION_FLOOR,
+            wilson_floor=WILSON_LOWER_FLOOR,
+        )
+        interval = wilson_interval(true_high, support)
+        wilson_ok = interval is not None and interval[0] >= WILSON_LOWER_FLOOR
+        support_ok = support >= MIN_PREDICTED_YES
+        counts["candidates"] += 1
+        counts["predicted_yes_support"] += int(support_ok)
+        counts["precision"] += int(precision_ok and support_ok)
+        counts["wilson_lower"] += int(wilson_ok)
+        counts["leave_one_out"] += int(stable)
+        counts["reject_veto"] += int(reject_ok)
+        counts["quarantine_veto"] += int(quarantine_ok)
+        if _passes_candidate(ready, comparison, threshold):
+            counts["all_gates"] += 1
+            passing.append((str(_high_recall(comparison, threshold)), threshold))
+    selected = selection.get("threshold_value")
+    if passing:
+        best = max(passing, key=lambda item: (Decimal(item[0]), Decimal(item[1])))
+        if selected != best[1]:
+            refuse("threshold search disagrees with select_threshold")
+    elif selected is not None:
+        refuse("select_threshold returned a value with no passing candidate")
+    payload = {
+        "candidate_count": len(candidates),
+        "candidates_evaluated": True,
+        "gate_pass_counts": dict(sorted(counts.items())),
+        "json_schema_document": JSON_SCHEMA_DOCUMENT,
+        "schema": "hyperlex.residual_threshold_v1_calibration_threshold_search.v1",
+        "search_executed": True,
+        "selected_threshold": selected,
+        "selection_algorithm_id": ALGORITHM_ID,
+    }
+    return payload, write_json(SEARCH_PATH, payload)
+
+
+def _finish_tracker(state: str, threshold_value, outcome_sha: str, hashes: dict) -> dict:
+    verify_sealed()
+    tracker = json.loads(TRACKER.read_text(encoding="utf-8"))
+    prior = sha256(TRACKER)
+    if prior != ANCESTORS[TRACKER]:
+        refuse("tracker hash drifted before the calibration update")
+    tracker["previous_tracker_sha256"] = prior
+    tracker["residual_threshold_state"] = state
+    tracker["residual_threshold_value"] = threshold_value
+    tracker["residual_threshold_frozen"] = state == "THRESHOLD_FROZEN"
+    tracker["residual_threshold_calibration_surface_drawn"] = True
+    tracker["residual_threshold_calibration_surface_frozen"] = True
+    tracker["residual_threshold_measurement_surface_drawn"] = False
+    tracker["residual_threshold_redraw_authorized"] = False
+    tracker["measurement_sample_drawn"] = False
+    tracker["measurement_eligible"] = False
+    tracker["selected_source"] = "none"
+    tracker["select_authorized"] = False
+    tracker["admitted"] = 0
+    tracker["settled"] = 0
+    tracker["gold"] = 0
+    tracker["next_legal_transition"] = "NONE"
+    tracker["next_transition_authorized"] = False
+    tracker["residual_threshold_json_schema_document"] = None
+    tracker["residual_threshold_calibration_draw_receipt_sha256"] = sha256(DRAW_RECEIPT)
+    tracker["residual_threshold_calibration_manifest_sha256"] = sha256(MANIFEST_PATH)
+    tracker["residual_threshold_calibration_isolation_sha256"] = sha256(ISOLATION_PATH)
+    tracker["residual_threshold_calibration_resolution_sha256"] = sha256(RESOLUTION_PATH)
+    tracker["residual_threshold_calibration_scores_sha256"] = sha256(SCORES_PATH)
+    tracker["residual_threshold_calibration_score_receipt_sha256"] = sha256(SCORE_RECEIPT)
+    tracker["residual_threshold_calibration_labels_sha256"] = hashes["labels"]
+    tracker["residual_threshold_calibration_analysis_sha256"] = hashes["analysis"]
+    if "search" in hashes:
+        tracker["residual_threshold_calibration_search_sha256"] = hashes["search"]
+    if state == "THRESHOLD_FROZEN":
+        tracker["residual_threshold_frozen_sha256"] = outcome_sha
+    else:
+        tracker["residual_threshold_calibration_failure_sha256"] = outcome_sha
+    text = json.dumps(tracker, indent=2, sort_keys=True, ensure_ascii=True) + "\n"
+    TRACKER.write_text(text, encoding="utf-8")
+    TRACKER.chmod(0o600)
+    verify_sealed(include_tracker=False)
+    if sha256(EVENTS) != ANCESTORS[EVENTS] or sha256(LEDGER_FILE) != ANCESTORS[LEDGER_FILE]:
+        refuse("events or ledger changed")
+    report = {
+        "determinism": "IDENTICAL",
+        "hashes": {key: value for key, value in hashes.items()},
+        "outcome_sha256": outcome_sha,
+        "state": state,
+        "threshold_value": threshold_value,
+        "tracker_sha256": sha256(TRACKER),
+    }
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return report
+
+
+def main() -> None:
+    os.umask(0o077)
+    if not MANIFEST_PATH.exists():
+        freeze_draw()
+    if not SCORES_PATH.exists():
+        resolve_and_score()
+    if not FAILURE_PATH.exists() and not FROZEN_PATH.exists():
+        join_and_judge()
+
+
+if __name__ == "__main__":
+    main()
