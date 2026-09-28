@@ -134,7 +134,7 @@ def test_threshold_proposal_does_not_seal_numeric_floors():
     assert proposal["state"] == THRESHOLDS_BLOCKED
     assert proposal["decision_thresholds"] == {}
     assert proposal["inherited_from_select_004"] is False
-    assert THRESHOLD_AUTHORIZATION_JSON_SCHEMA_EXISTS is False
+    assert THRESHOLD_AUTHORIZATION_JSON_SCHEMA_EXISTS is True
     assert all(item["numeric_threshold"] is None for item in proposal["metrics"])
     assert [item["metric"] for item in proposal["metrics"]] == [
         "classify_macro_f1_nonnone",

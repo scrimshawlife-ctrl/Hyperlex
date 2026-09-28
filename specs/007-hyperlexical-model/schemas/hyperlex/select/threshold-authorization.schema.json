@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex.threshold_authorization.v1",
+  "title": "SELECT metric threshold authorization",
+  "description": "Contract shape already read by admission. This schema does not assign SELECT-005 numbers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_thresholds",
+    "experiment_id",
+    "schema",
+    "sealed"
+  ],
+  "properties": {
+    "schema": {"const": "hyperlex.threshold_authorization.v1"},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "sealed": {"type": "boolean"},
+    "artifact_sha256": {"$ref": "#/$defs/sha256"},
+    "authorization_state": {
+      "enum": ["BLOCKED_PENDING_OPERATOR_AUTHORIZATION", "SEALED"]
+    },
+    "comparison_baseline": {"type": "string"},
+    "evaluation_quality": {"type": "string"},
+    "decision_thresholds": {
+      "type": "object",
+      "additionalProperties": {"type": "number"},
+      "properties": {
+        "classification_accuracy": {"type": "number"},
+        "classify_macro_f1_nonnone": {"type": "number"},
+        "observed_label_accuracy": {"type": "number"},
+        "unbind_clean_exact": {"type": "number"}
+      }
+    },
+    "baseline": {"type": "object"},
+    "decision_rule": {"type": "object"},
+    "derivation": {"type": "string"},
+    "direction": {"type": "string"},
+    "inherited_from_select_001": {"type": "boolean"},
+    "inherited_from_select_002": {"type": "boolean"},
+    "inherited_from_select_003": {"type": "boolean"},
+    "inherited_from_select_004": {"type": "boolean"},
+    "metrics": {"type": "array"},
+    "not_seed_morph78": {"type": "boolean"},
+    "operator": {"type": "object"},
+    "preregistration_edited": {"type": "boolean"},
+    "preregistration_sha256": {"$ref": "#/$defs/sha256"},
+    "primary_comparison_supported_by_schedule_design": {"type": "string"},
+    "primary_metric": {"type": "object"},
+    "provenance": {"type": "string"},
+    "reason_unsealed": {"type": "string"},
+    "quality_limit": {"type": "object"},
+    "repository_commit_at_authorization": {"type": "string"},
+    "repository_dirty_state": {"type": "string"},
+    "sealed_preregistration_commit": {"type": "string"},
+    "state": {"type": "string"},
+    "threshold_authorization_json_schema_exists": {"type": "boolean"},
+    "timestamp": {"type": "string"},
+    "training_launch_authorized": {"type": "boolean"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"sealed": {"const": true}},
+        "required": ["sealed"]
+      },
+      "then": {
+        "properties": {
+          "decision_thresholds": {"minProperties": 1}
+        }
+      }
+    }
+  ]
+}

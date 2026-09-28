@@ -1,0 +1,59 @@
+{
+  "admission_receipt_created": false,
+  "admission_schema_path": "specs/007-hyperlexical-model/schemas/hyperlex/select/admission.schema.json",
+  "admission_schema_sha256": "6f20efe73b74207243474724261c985d4e6dde888df497a1ef723dda02a42077",
+  "best_changed": false,
+  "conformance_report_path": "specs/007-hyperlexical-model/schemas/hyperlex/select/CONFORMANCE.json",
+  "conformance_report_sha256": "fac5dacf06f1257137bfd72b91c728191840ce291d2c8e953292f4313dddcd2b",
+  "contract_id": "hyperlex.eval_routing.v1",
+  "contract_spec_path": "specs/007-hyperlexical-model/select-eval-routing-contract.md",
+  "contract_spec_sha256": "002e2ac67e5ee00c27ecedd4566b9e7d900852c51e3ac57aac957ac095899d96",
+  "determinism": "IDENTICAL",
+  "epochs": 0,
+  "experiment_id": "HLX-EXP-2026-09-27-SELECT-005",
+  "exposure_fence_bypassed": false,
+  "gradient_steps": 0,
+  "historical_validation": "SCHEMA_CONFORMANCE_GAP",
+  "identity_ledger_modified": false,
+  "optimizer_constructed": false,
+  "procedure_id": "select_eval_routing_v1",
+  "procedure_sha256": "ad187d262eba280dd4b88d2204e03d4dfb255f9b0fb443bd250a0e441a7ea6db",
+  "reserve_recensus": false,
+  "routing_schema_path": "specs/007-hyperlexical-model/schemas/hyperlex/select/eval-routing.schema.json",
+  "routing_schema_sha256": "147e2787e6e66ba47acd185fa6602a10bd5d57c15ea446f574b2e750277d31a0",
+  "routing_schema_validation": "PASS",
+  "routing_semantic_validation": "PASS",
+  "routing_store_written": false,
+  "routing_version": "v1",
+  "schema": "hyperlex.eval_routing_contract_receipt.v1",
+  "schema_conformance_gaps": [
+    {
+      "artifact": "exp-20260926-select-003/threshold-authorization.json",
+      "message": "'decision_thresholds' is a required property",
+      "schema": "hyperlex.threshold_authorization.v1"
+    },
+    {
+      "artifact": "exp-20260926-select-003/threshold-authorization.json",
+      "message": "'sealed' is a required property",
+      "schema": "hyperlex.threshold_authorization.v1"
+    }
+  ],
+  "select_005_thresholds_sealed": false,
+  "settlement_events_modified": false,
+  "source_harvest": false,
+  "state": "ROUTING_VALIDATION_COMPLETE",
+  "states_reached": [
+    "ROUTING_CONTRACT_DRAFTED",
+    "ROUTING_CONTRACT_FROZEN",
+    "ROUTING_VALIDATION_COMPLETE"
+  ],
+  "threshold_authorization_schema_path": "specs/007-hyperlexical-model/schemas/hyperlex/select/threshold-authorization.schema.json",
+  "threshold_authorization_schema_sha256": "35a1b70cc805cf4271831a2414fd9ac85dcc15e5d23ec951d2d37665e89109a1",
+  "threshold_authorization_state": "BLOCKED_PENDING_OPERATOR_AUTHORIZATION",
+  "threshold_v2_measurement_sha256": "78ca09ab14912681d028e8b9b1c77a8daf1d0c8c81561434eb9b6ade45a753e5",
+  "threshold_v2_measurement_state": "SEALED",
+  "training_authorized": false,
+  "training_launch_authorized": false,
+  "transition": "SELECT_005_SETTLEMENT_ROUTING_CONTRACT_EXTENSION_AUTHORIZATION",
+  "weights_mutated": false
+}

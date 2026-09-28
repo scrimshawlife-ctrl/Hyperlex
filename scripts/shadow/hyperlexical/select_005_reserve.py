@@ -31,7 +31,7 @@ ADMISSION_FLOORS = {key: 1 for key in REQUIRED_SLICES}
 FAILURE_QUOTA = "RESERVE_QUOTA_UNFILLED"
 FAILURE_ISOLATION = "RESERVE_ISOLATION_FAILURE"
 FAILURE_PROVENANCE = "RESERVE_PROVENANCE_FAILURE"
-SELECT_ADMISSION_JSON_SCHEMA_EXISTS = False
+SELECT_ADMISSION_JSON_SCHEMA_EXISTS = True
 TRAINING_AUTHORIZED = False
 
 # The written SELECT-005 proposal. Unset trainer fields stay unset.
@@ -169,10 +169,15 @@ def census(
     *,
     fences: Mapping[str, Mapping[str, set[str]]] | None = None,
     batch_id: str = BATCH_ID,
+    routing_by_row: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    """Route a settlement universe twice and freeze a reserve only when it qualifies."""
-    first = _once(events, ledger_state, export_hashes, fences or {}, batch_id)
-    second = _once(events, ledger_state, export_hashes, fences or {}, batch_id)
+    """Route a settlement universe twice and freeze a reserve only when it qualifies.
+
+    ``routing_by_row`` supplies derivative SELECT routing records. Omitting it
+    preserves the embedded-slice census. Routing is not a quota input.
+    """
+    first = _once(events, ledger_state, export_hashes, fences or {}, batch_id, routing_by_row)
+    second = _once(events, ledger_state, export_hashes, fences or {}, batch_id, routing_by_row)
     if first != second:
         failed = dict(first)
         failed["determinism"] = "NOT_DETERMINISTIC"
@@ -184,17 +189,44 @@ def census(
     return first
 
 
+def _census_reason(
+    event: Mapping[str, Any],
+    ledger_state: Mapping[str, str],
+    export_hashes: set[str],
+    routing_by_row: Mapping[str, Mapping[str, Any]] | None,
+) -> tuple[str, list[str]]:
+    """Settlement exclusions stay first. Routing fills slices the settlement lacks."""
+    reason = exclusion_reason(event, ledger_state, export_hashes)
+    embedded = sorted(_slices(event))
+    if routing_by_row is None:
+        return reason, embedded
+    routing = routing_by_row.get(str(event.get("row_id") or ""))
+    if embedded and routing is not None and list(routing.get("slices") or []) != embedded:
+        return "ROUTING_SLICE_MISMATCH", []
+    if reason != "SLICE_LABELS_ABSENT":
+        return reason, embedded
+    if routing is None:
+        return "SLICE_LABELS_ABSENT", []
+    from .eval_routing import authorize_for_census
+
+    routed = authorize_for_census(event, routing)
+    if routed != "ELIGIBLE":
+        return routed, []
+    return "ELIGIBLE", list(routing.get("slices") or [])
+
+
 def _once(
     events: Sequence[Mapping[str, Any]],
     ledger_state: Mapping[str, str],
     export_hashes: set[str],
     fences: Mapping[str, Mapping[str, set[str]]],
     batch_id: str,
+    routing_by_row: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
     reasons: Counter[str] = Counter()
     eligible: list[dict[str, Any]] = []
     for event in events:
-        reason = exclusion_reason(event, ledger_state, export_hashes)
+        reason, slices = _census_reason(event, ledger_state, export_hashes, routing_by_row)
         reasons[reason] += 1
         if reason != "ELIGIBLE":
             continue
@@ -205,7 +237,7 @@ def _once(
                 "pwn30_synset": str(event.get("pwn30_synset") or ""),
                 "rights": str(event.get("rights") or ""),
                 "row_id": str(event["row_id"]),
-                "slices": sorted(_slices(event)),
+                "slices": slices,
                 "source_identity": str(event.get("source_identity") or ""),
                 "text_hash": digest,
             }

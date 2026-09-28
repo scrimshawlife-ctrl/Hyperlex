@@ -67,7 +67,7 @@ def test_schedule_proposal_is_unsealed_and_does_not_invent_trainer_fields():
     }
     assert "learning_rate" not in PROPOSED_SCHEDULE
     assert schedule_spec_sha256() == schedule_spec_sha256()
-    assert SELECT_ADMISSION_JSON_SCHEMA_EXISTS is False
+    assert SELECT_ADMISSION_JSON_SCHEMA_EXISTS is True
     assert TRAINING_AUTHORIZED is False
     assert ADMISSION_FLOORS == {
         "classify": 1,

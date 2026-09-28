@@ -1,0 +1,42 @@
+{
+  "admission_schema_path": "specs/007-hyperlexical-model/schemas/hyperlex/select/admission.schema.json",
+  "admission_schema_sha256": "6f20efe73b74207243474724261c985d4e6dde888df497a1ef723dda02a42077",
+  "checked_artifacts": [
+    "exp-20260926-select-004/admission-only-authorized.json",
+    "exp-20260926-select-004/admission-only-receipt.json",
+    "exp-20260926-select-004/preflight-authorized.json",
+    "exp-20260926-select-004/preflight.json",
+    "exp-20260926-select-003/threshold-authorization.json",
+    "exp-20260926-select-004/threshold-authorization.json",
+    "exp-20260927-select-005/source-001/THRESHOLD_AUTHORIZATION_PROPOSAL.json",
+    "exp-20260927-select-005/supply-001/THRESHOLD_AUTHORIZATION_PROPOSAL.json"
+  ],
+  "gaps": [
+    {
+      "artifact": "exp-20260926-select-003/threshold-authorization.json",
+      "message": "'decision_thresholds' is a required property",
+      "schema": "hyperlex.threshold_authorization.v1"
+    },
+    {
+      "artifact": "exp-20260926-select-003/threshold-authorization.json",
+      "message": "'sealed' is a required property",
+      "schema": "hyperlex.threshold_authorization.v1"
+    }
+  ],
+  "mode": "VALIDATE_ONLY",
+  "mutated": false,
+  "note": "Historical artifacts were read and not rewritten. The only gap is SELECT-003, which lacks sealed and decision_thresholds.",
+  "result": "SCHEMA_CONFORMANCE_GAP",
+  "schema": "hyperlex.schema_conformance_report.v1",
+  "threshold_authorization_schema_path": "specs/007-hyperlexical-model/schemas/hyperlex/select/threshold-authorization.schema.json",
+  "threshold_authorization_schema_sha256": "35a1b70cc805cf4271831a2414fd9ac85dcc15e5d23ec951d2d37665e89109a1",
+  "validated_artifacts": [
+    "exp-20260926-select-004/admission-only-authorized.json",
+    "exp-20260926-select-004/admission-only-receipt.json",
+    "exp-20260926-select-004/preflight-authorized.json",
+    "exp-20260926-select-004/preflight.json",
+    "exp-20260926-select-004/threshold-authorization.json",
+    "exp-20260927-select-005/source-001/THRESHOLD_AUTHORIZATION_PROPOSAL.json",
+    "exp-20260927-select-005/supply-001/THRESHOLD_AUTHORIZATION_PROPOSAL.json"
+  ]
+}
