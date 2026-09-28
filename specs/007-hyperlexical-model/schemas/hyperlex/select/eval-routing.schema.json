@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex.eval_routing.v1",
+  "title": "SELECT evaluation routing record",
+  "description": "Derivative of one canonical settlement. It does not rewrite the settlement.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "class",
+    "created_from_frozen_artifact",
+    "derivation_procedure_hash",
+    "derivation_procedure_id",
+    "lineage",
+    "normalized_identity",
+    "provenance_state",
+    "rights_state",
+    "routing_reason_codes",
+    "routing_status",
+    "routing_version",
+    "row_id",
+    "schema",
+    "settlement_decision",
+    "settlement_registry_class",
+    "slices",
+    "source_identity",
+    "source_settlement_hash",
+    "source_settlement_id",
+    "task",
+    "unbind_clean"
+  ],
+  "properties": {
+    "schema": {"const": "hyperlex.eval_routing.v1"},
+    "routing_version": {"const": "v1"},
+    "row_id": {"type": "string", "minLength": 1},
+    "normalized_identity": {"$ref": "#/$defs/sha256"},
+    "source_identity": {"type": "string"},
+    "source_settlement_id": {"type": "string", "minLength": 1},
+    "source_settlement_hash": {"$ref": "#/$defs/sha256"},
+    "settlement_decision": {
+      "enum": ["ACCEPT", "RECLASSIFY", "NONE", "UNRESOLVED"]
+    },
+    "settlement_registry_class": {"$ref": "#/$defs/registry_class"},
+    "rights_state": {"type": "string"},
+    "provenance_state": {"enum": ["COMPLETE", "INCOMPLETE"]},
+    "task": {"$ref": "#/$defs/task"},
+    "class": {"$ref": "#/$defs/registry_class"},
+    "lineage": {"$ref": "#/$defs/lineage"},
+    "unbind_clean": {"type": ["boolean", "null"]},
+    "routing_status": {"enum": ["ELIGIBLE", "INELIGIBLE"]},
+    "routing_reason_codes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/reason_code"},
+      "uniqueItems": true
+    },
+    "derivation_procedure_id": {"const": "select_eval_routing_v1"},
+    "derivation_procedure_hash": {"$ref": "#/$defs/sha256"},
+    "created_from_frozen_artifact": {"const": true},
+    "slices": {
+      "type": "array",
+      "items": {
+        "enum": ["classify", "classify_non_none", "classify_observed", "unbind_clean"]
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "task": {
+      "anyOf": [
+        {"type": "null"},
+        {"enum": ["classify", "unbind"]}
+      ]
+    },
+    "registry_class": {
+      "anyOf": [
+        {"type": "null"},
+        {"enum": ["INFERRED", "OBSERVED"]}
+      ]
+    },
+    "lineage": {
+      "anyOf": [
+        {"type": "null"},
+        {
+          "enum": [
+            "ai-native",
+            "approval-disapproval",
+            "betting-sharp",
+            "conflict-aggression",
+            "crypto-degen",
+            "fashion-aesthetic",
+            "gaming-meta",
+            "identity-affiliation",
+            "internet-slang",
+            "memetic",
+            "music-entertainment",
+            "none",
+            "politics-civic",
+            "regional-cultural",
+            "relationship-dating",
+            "social-status",
+            "spiritual-mystic",
+            "sports-competition",
+            "technology-ai",
+            "workplace-career"
+          ]
+        }
+      ]
+    },
+    "reason_code": {
+      "enum": [
+        "CLASS_PROMOTION_REFUSED",
+        "DUPLICATE_IDENTITY",
+        "IDENTITY_CONFLICT",
+        "LINEAGE_ABSENT",
+        "LINEAGE_CONFLICT",
+        "NO_SELECT_SLICE",
+        "PROVENANCE_INCOMPLETE",
+        "REGISTRY_CLASS_ABSENT",
+        "RIGHTS_NOT_CLEARED",
+        "SETTLEMENT_DECISION_NOT_ADMISSIBLE",
+        "SETTLEMENT_UNRESOLVED",
+        "SLICE_CLASSIFY",
+        "SLICE_CLASSIFY_NON_NONE",
+        "SLICE_CLASSIFY_OBSERVED",
+        "SLICE_UNBIND_CLEAN",
+        "TASK_ABSENT",
+        "UNBIND_CLEAN_DERIVATION_ABSENT",
+        "UNBIND_CLEAN_TASK_MISMATCH"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"routing_status": {"const": "ELIGIBLE"}},
+        "required": ["routing_status"]
+      },
+      "then": {
+        "properties": {
+          "class": {"enum": ["INFERRED", "OBSERVED"]},
+          "lineage": {"type": "string", "minLength": 1},
+          "provenance_state": {"const": "COMPLETE"},
+          "rights_state": {"const": "CC-BY-SA"},
+          "routing_reason_codes": {"minItems": 1},
+          "slices": {"minItems": 1},
+          "source_identity": {"minLength": 1},
+          "task": {"enum": ["classify", "unbind"]},
+          "unbind_clean": {"type": "boolean"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"routing_status": {"const": "INELIGIBLE"}},
+        "required": ["routing_status"]
+      },
+      "then": {
+        "properties": {
+          "routing_reason_codes": {"minItems": 1},
+          "slices": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "slices": {"contains": {"const": "classify_observed"}}
+        },
+        "required": ["slices"]
+      },
+      "then": {
+        "properties": {"class": {"const": "OBSERVED"}}
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "slices": {"contains": {"const": "unbind_clean"}}
+        },
+        "required": ["slices"]
+      },
+      "then": {
+        "properties": {
+          "task": {"const": "unbind"},
+          "unbind_clean": {"const": true}
+        }
+      }
+    }
+  ]
+}
