@@ -220,7 +220,6 @@ Planning progress, not a validity threshold: classify 241/606, OBSERVED 123/287,
 
 `select_003_gate.eligible` is true. `training_overlap_identities` is 0. `spent_or_abandoned_in_reserve` is 0. Reserve identities 491. SELECT-003 was not drafted. This is representation completeness, not training readiness. Evaluation quality is still one lexicon, `INFERRED`, `lineage=none`. These rights-cleared active families still have zero settled classify support and were not collected here: relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, spiritual-mystic.
 
-
 Vendor calls: 0. BEST was not moved. Do not train.
 
 
@@ -350,7 +349,6 @@ Fresh operator authorization for `HLX-EXP-2026-09-26-SELECT-004` only. It does n
 `PROMOTE` requires `classify_macro_f1_nonnone` strictly greater than `seed-morph78` on the sealed twelve-class universe, sha256 `227b782011aad7e693fde253e103a24b3ca0bd6b04e090d446656fa943bf0175`, absent-class policy `omit_when_gold_support_is_zero`. Equality does not promote. The new SELECT-004 preservation floors are unbind clean exact within 0.01 on 250 identities, classification accuracy within 0.02 on 241 identities, and OBSERVED-label accuracy within 0.05 on 123 identities. A primary decrease, a preservation breach, or a hard integrity failure is `REJECT`. Equal primary metrics with every guard passing are `INCONCLUSIVE`. An inconclusive result is not resolved by changing thresholds.
 
 Authorization artifact sha256 `7389783b52a5d5cf14ceca874cc12351d3f6571b6be8a8666c2040be38972625`. Post-authorization admission used `HYPERLEX_ALLOW_TRAIN=1` and `HLX_ADMISSION_ONLY=1`. Preflight and the trainer entrypoint share environment hash `a2b18512be8329ee63ad06e98f894c6138cf7eac05f6e82d53d4132e99a27f5d`. `admission_result` is `ADMISSION_PASS`. Status is `TRAINING_READY` because the scientific contract is sealed, the decision rule is sealed, and the real entrypoint passed. `optimizer_loaded` is false. Epochs 0. Gradient steps 0. Training was not started. Output directory stayed absent. BEST sha256 `fc53676bd347cccd4d0ac9a429f3469c36436f8eb0e09954e0c347c7b133a4a1` was not moved. Trunk sha256 `340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9`. `training_launch_authorized` is false. `HLX_ALLOW_NO_HOLDOUT` stayed unset.
-
 
 Representation completeness is `PASS`. Evaluation quality is `LIMITED`. The decision covers classify 241, classify_observed 123, classify_non_none 188, and unbind_clean 250. It does not establish performance for relationship-dating, conflict-aggression, sports-competition, fashion-aesthetic, regional-cultural, or spiritual-mystic. Clean unbind stays limited to the sealed WordNet slice. Vendor calls: 0. Do not train. The next decision is launch authorization only.
 
