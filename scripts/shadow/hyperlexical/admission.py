@@ -401,6 +401,14 @@ def _admit_controlled(ctx: _Context) -> AdmissionResult:
     _gate_best_trunk(ctx)
     _gate_output(ctx)
     decision_sealed, decision_state = _decision_authorization(ctx)
+    evidence: dict[str, Any] = {}
+    if ctx.experiment_id == "HLX-EXP-2026-09-29-SELECT-006":
+        from .select_006_admission import Select006AdmissionError, select006_admission_evidence
+
+        try:
+            evidence = select006_admission_evidence()
+        except Select006AdmissionError as exc:
+            ctx.fail("ready", str(exc), admission_reason=exc.code)
     status = "TRAINING_READY" if decision_sealed else "PREREGISTERED"
     spec = _empty_spec()
     disjoint = {
@@ -427,6 +435,7 @@ def _admit_controlled(ctx: _Context) -> AdmissionResult:
         **proof,
         **overlap,
         **disjoint,
+        **evidence,
     )
     return AdmissionResult(
         ready=True,
@@ -455,6 +464,15 @@ def _decision_authorization(ctx: _Context) -> tuple[bool, str]:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         ctx.fail("ready", "ADMISSION FAIL: threshold authorization is not JSON")
+    if isinstance(payload, dict) and payload.get("schema") == "hyperlex.select_006_threshold_authorization.v1":
+        from .select_006_admission import Select006AdmissionError, select006_threshold_is_sealed
+
+        try:
+            if not select006_threshold_is_sealed(payload, ctx.experiment_id):
+                ctx.fail("ready", "ADMISSION FAIL: threshold authorization schema is not " + THRESHOLD_SCHEMA)
+        except Select006AdmissionError as exc:
+            ctx.fail("ready", str(exc), admission_reason=exc.code)
+        return True, "SEALED"
     if not isinstance(payload, dict) or payload.get("schema") != THRESHOLD_SCHEMA:
         ctx.fail(
             "ready",
