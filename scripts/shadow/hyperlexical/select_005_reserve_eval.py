@@ -199,9 +199,14 @@ def score_arm(arm_dir: Path) -> dict[str, Any]:
         raise SystemExit("EVALUATION_FAILURE: classify slice count")
     if unbind_n != EXPECTED_COUNTS["unbind_clean"]:
         raise SystemExit("EVALUATION_FAILURE: unbind slice count")
+    slice_counts: dict[str, int] = {}
+    for example in examples:
+        for name in example["slices"]:
+            slice_counts[name] = slice_counts.get(name, 0) + 1
+    for name, expected in EXPECTED_COUNTS.items():
+        if slice_counts.get(name) != expected:
+            raise SystemExit("EVALUATION_FAILURE: slice count")
     non_none = sum(1 for gold in classify_golds if gold != "none")
-    if non_none != EXPECTED_COUNTS["classify_non_none"]:
-        raise SystemExit("EVALUATION_FAILURE: non-none slice count")
     macro = macro_f1_nonnone(classify_golds, classify_preds)
     if macro is None:
         raise SystemExit("METRIC_NONCOMPUTABLE: classify_macro_f1_nonnone")
@@ -211,7 +216,8 @@ def score_arm(arm_dir: Path) -> dict[str, Any]:
         / len(classify_golds),
         "classify_macro_f1_nonnone": float(macro),
         "n_classify": len(classify_golds),
-        "n_classify_non_none": non_none,
+        "n_classify_non_none": slice_counts["classify_non_none"],
+        "n_head_non_none": non_none,
         "n_classify_observed": observed_n,
         "n_unbind_clean": unbind_n,
         "observed_label_accuracy": observed_hit / observed_n,
