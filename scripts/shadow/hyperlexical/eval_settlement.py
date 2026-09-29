@@ -96,6 +96,7 @@ _CLEARED_SOURCES = {
     "wikipedia_prose": "CC-BY-SA",
     "wiktionary_sense_gloss": "CC-BY-SA",
     "wiktionary_multiword_lemma": "CC-BY-SA",
+    "wiktionary_labeled_sense": "CC-BY-SA",
 }
 _BLOCKED_SOURCES = {
     "reddit_title": "RIGHTS_UNRESOLVED",
