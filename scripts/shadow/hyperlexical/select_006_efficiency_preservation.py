@@ -131,6 +131,7 @@ def vocabulary_expansion_pin() -> dict[str, Any]:
         "ordering_policy": "unk_then_sorted_labels",
         "unk_token": "<unk>",
         "unk_token_is_not_a_new_role": True,
+        "warm_start_only_roles": 0,
         "schema": "hyperlex.select_006_vocabulary_expansion.v1",
         "target_role_count": 13,
         "warm_start_role_count": 10,

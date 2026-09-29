@@ -137,8 +137,10 @@ def main() -> None:
                 wanted = True
             elif key in expected_filler:
                 wanted = expected_filler[key]
-            else:
+            elif key in pin:
                 wanted = pin[key]
+            else:
+                raise SystemExit(f"{VOCAB_EXPANSION_SPEC_INCOMPLETE}: unpinned {key}")
             if observed[key] != wanted:
                 raise SystemExit(f"{VOCAB_EXPANSION_SPEC_INCOMPLETE}: {key}")
     if control["new_role_names_in_sorted_order"] != candidate["new_role_names_in_sorted_order"]:

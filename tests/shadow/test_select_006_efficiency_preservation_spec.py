@@ -71,6 +71,7 @@ def test_vocabulary_pin_names_the_three_new_roles_and_blocks_the_loader():
     assert pin["target_role_count"] == 13
     assert pin["mapped_existing_roles"] == 10
     assert pin["newly_initialized_roles"] == 3
+    assert pin["warm_start_only_roles"] == 0
     assert pin["init_expand_vocab"] is True
     assert pin["initialization_policy"]["new_rows"] == "zeros"
     assert pin["initialization_policy"]["seed_used"] is False
