@@ -197,6 +197,16 @@ The morph78 classify train split has no positive row for those fifteen families.
 
 Fresh Wiktionary rows were admitted under the frozen sense-label and definitional-gloss map in `classification_v2_acquire.py`. Evidence seal `8b30c98ad8eac7c136e391103450c9d0d20a3499220e9b48f923eab8218581f1`. MediaWiki supplied each `revision_id`. Jev was off. No evaluation identity was copied. The historical morph78 export is unchanged.
 
-The new export is `/home/morpheus/hlx-private/classification-v2-acquire-20260929/civilian.v0.1.jsonl`, sha256 `aa21415adab0c6ea488c7bdc3ea5495d20126017a094a5df33406f30eccd7e3e`, 9263 rows, 113 fresh OBSERVED rows, 0 fresh INFERRED rows. Fourteen target families have 8 OBSERVED rows. `memetic` has 1 OBSERVED row and remains below the preferred target of 8. Readiness is `READY`. The next action is one `TRAIN CLASSIFICATION V2` run. That run does not move BEST.
+The new export is `/home/morpheus/hlx-private/classification-v2-acquire-20260929/civilian.v0.1.jsonl`, sha256 `aa21415adab0c6ea488c7bdc3ea5495d20126017a094a5df33406f30eccd7e3e`, 9263 rows, 113 fresh OBSERVED rows, 0 fresh INFERRED rows. Fourteen target families have 8 OBSERVED rows. `memetic` has 1 OBSERVED row and remains below the preferred target of 8. Readiness is `READY`. The training run does not move BEST.
+
+### Training run 2026-09-29
+
+One `HYPERLEX_CLASSIFICATION=v2` run used that export, the SELECT-006 candidate schedule, `last_trainable` 2, and a warm start from the production checkpoint. Jev stayed off. The run restored the best checkpoint by `selection_score` and wrote `classification-v2-calibration.json` from the validation split only. Output is `/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v2`, primary weights sha256 `405107de9b9ca580fc578f47314d3a18490e598c56c988cfc5f8ac53409cecea`. BEST remains the select004 checkpoint, sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`.
+
+Early stopping ended the run after 7 epochs. The best epoch is 2, validation `selection_score` 0.8077923974493622. Applicability temperature 1.83, applicability threshold 0.7803025403596302, family temperature 1.19, family emit threshold 0.07590847237608982. Calibration used no reserve rows and no training rows.
+
+No comparison hypothesis was preregistered, so the run is not `SETTLED_PASS` or `SETTLED_FAIL`. Execution matched the contract, so it is not `SETTLED_INVALID`. Promotion is a later explicit action.
+
+The frozen `EVAL_RESERVE` identities do not retain original text. An independent reserve evaluation was not run. SELECT-006 and SELECT-007 were not reopened.
 
 
