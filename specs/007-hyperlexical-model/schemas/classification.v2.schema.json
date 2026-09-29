@@ -10,11 +10,14 @@
     "family",
     "applicability",
     "applicability_score",
-    "ambiguity",
-    "ambiguity_score",
+    "applicability_threshold",
     "family_distribution",
-    "confidence",
     "family_confidence",
+    "family_emit_threshold",
+    "confidence",
+    "margin",
+    "ambiguous_candidate",
+    "ambiguity_emission",
     "provenance_context",
     "stage",
     "brier",
@@ -27,17 +30,20 @@
     "family": { "type": ["string", "null"], "minLength": 1 },
     "applicability": { "enum": ["NONE", "FAMILY_PRESENT"] },
     "applicability_score": { "type": "number", "minimum": 0, "maximum": 1 },
-    "ambiguity": { "enum": ["SINGLE", "MULTI_OR_UNCLEAR"] },
-    "ambiguity_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "applicability_threshold": { "type": "number", "minimum": 0, "maximum": 1 },
     "family_distribution": {
       "type": "object",
       "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
     },
-    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
     "family_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "family_emit_threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "margin": { "type": "number", "minimum": 0, "maximum": 1 },
+    "ambiguous_candidate": { "type": "boolean" },
+    "ambiguity_emission": { "const": "DISABLED_PENDING_GOLD" },
     "provenance_context": { "enum": ["OBSERVED", "INFERRED", "UNKNOWN"] },
     "stage": {
-      "enum": ["Q1_EVIDENCE", "Q2_APPLICABILITY", "Q3_AMBIGUITY", "Q4_FAMILY", "Q5_CONFIDENCE"]
+      "enum": ["Q1_APPLICABILITY", "Q2_NONE", "Q4_FAMILY", "Q5_FAMILY_CONFIDENCE"]
     },
     "brier": { "type": "null" },
     "forecast_eligible": { "const": false },
@@ -53,18 +59,5 @@
         "rejection": { "type": ["string", "null"] }
       }
     }
-  },
-  "allOf": [
-    {
-      "if": { "properties": { "decision": { "const": "FAMILY" } }, "required": ["decision"] },
-      "then": { "properties": { "family": { "type": "string" } } }
-    },
-    {
-      "if": {
-        "properties": { "decision": { "enum": ["NONE", "ABSTAIN", "AMBIGUOUS"] } },
-        "required": ["decision"]
-      },
-      "then": { "properties": { "family": { "type": "null" } } }
-    }
-  ]
+  }
 }

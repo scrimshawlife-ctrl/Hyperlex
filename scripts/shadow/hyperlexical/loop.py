@@ -489,8 +489,17 @@ def _cpu_module_state(module) -> dict:
     return {k: v.detach().cpu().contiguous() for k, v in module.state_dict().items()}
 
 
-def _build_weight_state(encoder, classify, role_head, filler_head, maps, layout) -> dict:
-    return {
+def _build_weight_state(
+    encoder,
+    classify,
+    role_head,
+    filler_head,
+    maps,
+    layout,
+    applicability=None,
+    family_head=None,
+) -> dict:
+    state = {
         "classify": _cpu_module_state(classify),
         "role_head": _cpu_module_state(role_head),
         "filler_head": _cpu_module_state(filler_head),
@@ -498,6 +507,11 @@ def _build_weight_state(encoder, classify, role_head, filler_head, maps, layout)
         "maps": {k: v for k, v in maps.items() if k not in {"family_of", "role_of", "filler_of"}},
         "layout": layout,
     }
+    if applicability is not None:
+        state["applicability"] = _cpu_module_state(applicability)
+    if family_head is not None:
+        state["family_head"] = _cpu_module_state(family_head)
+    return state
 
 
 def resolve_unbind_loss_weight(raw: str | float | int | None = None) -> float:
@@ -647,8 +661,15 @@ def run_loop(
 ) -> dict:
     # Same gates as preflight. Admission-only returns before any optimizer.
     # The schedule is fixed first so admission records the schedule that will run.
+    from .classification_v2 import classification_version, require_v2_schedule
+
     select_metric = resolve_select_metric()
-    schedule = resolve_training_schedule(select_metric=select_metric)
+    v2_on = classification_version() == "v2"
+    schedule = resolve_training_schedule(
+        select_metric=SELECT_METRIC_CLASSIFY if v2_on else select_metric
+    )
+    if v2_on:
+        require_v2_schedule(schedule.as_dict())
     if schedule.source == "select-006-candidate":
         install_default_schedule(os.environ)
     admission = admit_training_run(
@@ -713,6 +734,7 @@ def run_loop(
 
     select_metric = resolve_select_metric()
     select_on_classify = select_metric == SELECT_METRIC_CLASSIFY
+    v2_checkpoint = v2_on
     if select_on_classify:
         selection_rows = list(classify_va or classify_tr[:8])
     else:
@@ -736,6 +758,8 @@ def run_loop(
     if hidden != HIDDEN:
         raise RuntimeError(f"hidden {hidden} != {HIDDEN}")
     n_unfrozen, last_trainable_used = freeze_encoder(encoder)
+    if v2_on and last_trainable_used != 2:
+        raise RuntimeError("classification v2 keeps last_trainable = 2")
     classify = nn.Linear(hidden, len(FAMILIES))
     role_head = nn.Linear(hidden, len(maps["role_vocab"]))
     filler_head = nn.Linear(hidden, len(maps["filler_vocab"]))
@@ -757,9 +781,26 @@ def run_loop(
     select006_training_init_guard(maps, role_head, filler_head, init_receipt)
     if pre_optimizer_stop_requested():
         return pre_optimizer_receipt(role_head, filler_head, maps, init_receipt)
-    trainable = [p for p in encoder.parameters() if p.requires_grad] + list(classify.parameters()) + list(role_head.parameters()) + list(filler_head.parameters())
+    applicability_head = None
+    family_head = None
+    v2_contract = None
+    if v2_on:
+        from .classification_v2 import freeze_training_contract
+        from .classification_v2_runtime import build_v2_heads
+
+        v2_contract = freeze_training_contract(classify_tr)
+        applicability_head, family_head, init_receipt["classification_v2_rows"] = build_v2_heads(
+            hidden, classify, list(FAMILIES)
+        )
+    classify_parameters = list(classify.parameters())
+    if v2_on:
+        classify_parameters = list(applicability_head.parameters()) + list(family_head.parameters())
+    trainable = [p for p in encoder.parameters() if p.requires_grad] + classify_parameters + list(role_head.parameters()) + list(filler_head.parameters())
     epochs = schedule.max_epochs
-    early_stop = resolve_early_stop_config(max_epochs=epochs, select_metric=select_metric)
+    early_stop = resolve_early_stop_config(
+        max_epochs=epochs,
+        select_metric=SELECT_METRIC_CLASSIFY if v2_on else select_metric,
+    )
     if (
         early_stop.enabled != schedule.early_stopping
         or early_stop.patience != schedule.patience
@@ -784,8 +825,15 @@ def run_loop(
     global_step = 0
     loss_sum = torch.zeros((), device=device)
     loss_steps = 0
-    for mod in (encoder, classify, role_head, filler_head):
+    modules = [encoder, classify, role_head, filler_head]
+    if v2_on:
+        modules.extend([applicability_head, family_head])
+    for mod in modules:
         mod.to(device)
+    app_loss_sum = torch.zeros((), device=device)
+    fam_loss_sum = torch.zeros((), device=device)
+    unb_loss_sum = torch.zeros((), device=device)
+    app_loss_steps = fam_loss_steps = unb_loss_steps = 0
     encoder.train()
     losses = []
     epoch_metrics = []
@@ -861,6 +909,9 @@ def run_loop(
         global_step += 1
         loss_sum = loss_sum + scaled.detach()
         loss_steps += 1
+        if v2_on:
+            unb_loss_sum = unb_loss_sum + scaled.detach()
+            unb_loss_steps += 1
         last_train_loss = scaled.detach()
 
     residual_dump_path = resolve_unbind_residual_dump_path()
@@ -942,6 +993,30 @@ def run_loop(
         if select_on_classify:
             metrics["classify_macro_f1_nonnone"] = macro_f1_nonnone(classify_golds, classify_preds)
             metrics["none_fpr"] = none_false_positive_rate(classify_golds, classify_preds)
+        if v2_on:
+            from .classification_v2 import ACTIVE_FAMILY_VOCABULARY, epoch_selection_metrics
+
+            kept_rows = []
+            app_preds = []
+            fam_preds = []
+            applicability_head.eval()
+            family_head.eval()
+            for row in classify_va or classify_tr[:8]:
+                lineage = row.get("lineage")
+                if lineage not in ACTIVE_FAMILY_VOCABULARY and lineage != "none":
+                    continue
+                out = encoder(**encode_texts([row["text"]]))
+                pooled = out.last_hidden_state[:, 0]
+                app_logit = applicability_head(pooled)[0]
+                fam_logit = family_head(pooled)[0]
+                app_preds.append(
+                    "FAMILY_PRESENT" if float(app_logit[1]) > float(app_logit[0]) else "NONE"
+                )
+                fam_preds.append(ACTIVE_FAMILY_VOCABULARY[int(fam_logit.argmax())])
+                kept_rows.append(row)
+            applicability_head.train()
+            family_head.train()
+            metrics.update(epoch_selection_metrics(kept_rows, app_preds, fam_preds))
         return metrics
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -972,15 +1047,37 @@ def run_loop(
         classify_batch_i = 0
         for i in range(0, len(epoch_rows), batch):
             chunk = epoch_rows[i : i + batch]
-            y = torch.tensor([maps["family_of"].get(c["lineage"], maps["family_of"]["none"]) for c in chunk], device=device)
             out = encoder(**encode_texts([c["text"] for c in chunk]))
-            loss = nn.functional.cross_entropy(classify(out.last_hidden_state[:, 0]), y)
+            if v2_on:
+                from .classification_v2_runtime import batch_classify_loss
+
+                parts = batch_classify_loss(
+                    applicability_head,
+                    family_head,
+                    out.last_hidden_state[:, 0],
+                    chunk,
+                    v2_contract,
+                )
+                if parts is None:
+                    classify_batch_i += 1
+                    continue
+                loss = parts["total"]
+            else:
+                y = torch.tensor([maps["family_of"].get(c["lineage"], maps["family_of"]["none"]) for c in chunk], device=device)
+                loss = nn.functional.cross_entropy(classify(out.last_hidden_state[:, 0]), y)
             opt.zero_grad()
             loss.backward()
             opt.step()
             global_step += 1
             loss_sum = loss_sum + loss.detach()
             loss_steps += 1
+            if v2_on:
+                if parts["applicability"] is not None:
+                    app_loss_sum = app_loss_sum + parts["applicability"].detach()
+                    app_loss_steps += 1
+                if parts["family"] is not None:
+                    fam_loss_sum = fam_loss_sum + parts["family"].detach()
+                    fam_loss_steps += 1
             last_train_loss = loss.detach()
             if should_interleave_unbind(classify_batch_i, unbind_every_n) and phase_rows:
                 step_unbind(phase_rows[unbind_cycle % len(phase_rows)])
@@ -999,13 +1096,18 @@ def run_loop(
             # One host sync per epoch (not per step).
             losses.append(float(last_train_loss.item()))
         saved_best = False
-        if select_on_classify:
-            if metrics.get("classify_macro_f1_nonnone") is None:
+        if v2_checkpoint or select_on_classify:
+            if v2_checkpoint:
+                if metrics.get("selection_score") is None:
+                    raise RuntimeError("classification v2 selection_score is NOT_COMPUTABLE")
+                score_now = float(metrics["selection_score"])
+            elif metrics.get("classify_macro_f1_nonnone") is None:
                 raise RuntimeError(
                     "HLX_SELECT_METRIC=classify_macro_f1_nonnone but val has no "
                     "non-none gold; macro-F1 is NOT_COMPUTABLE"
                 )
-            score_now = float(metrics["classify_macro_f1_nonnone"])
+            else:
+                score_now = float(metrics["classify_macro_f1_nonnone"])
             best_macro, best_epoch_index, improved = note_strict_improvement(
                 best_macro,
                 best_epoch_index,
@@ -1017,7 +1119,9 @@ def run_loop(
                     torch.cuda.synchronize()
                 best_metrics = dict(metrics)
                 best_state = _build_weight_state(
-                    encoder, classify, role_head, filler_head, maps, layout
+                    encoder, classify, role_head, filler_head, maps, layout,
+                    applicability=applicability_head,
+                    family_head=family_head,
                 )
                 best_residual_records = list(last_residual_records)
                 best_dir = out_dir / "best"
@@ -1028,9 +1132,10 @@ def run_loop(
                 (best_dir / "best-checkpoint.json").write_text(
                     json.dumps(
                         {
-                            "metric": SELECT_METRIC_CLASSIFY,
+                            "metric": "selection_score" if v2_checkpoint else SELECT_METRIC_CLASSIFY,
                             "epoch": ep,
-                            "classify_macro_f1_nonnone": score_now,
+                            "classify_macro_f1_nonnone": None if v2_checkpoint else score_now,
+                            "selection_score": score_now if v2_checkpoint else None,
                             "none_fpr": metrics.get("none_fpr"),
                             "unbind_exact": exact,
                             "unbind_token_f1": best_metrics.get("unbind_token_f1"),
@@ -1064,7 +1169,9 @@ def run_loop(
             best_exact = exact
             best_metrics = dict(metrics)
             best_state = _build_weight_state(
-                encoder, classify, role_head, filler_head, maps, layout
+                encoder, classify, role_head, filler_head, maps, layout,
+                applicability=applicability_head,
+                family_head=family_head,
             )
             best_residual_records = list(last_residual_records)
             best_dir = out_dir / "best"
@@ -1103,7 +1210,7 @@ def run_loop(
             "unbind_phase": phase_meta["phase"],
             "classify_acc": metrics.get("classify_acc"),
         }
-        if select_on_classify:
+        if select_on_classify or v2_checkpoint:
             progress["classify_macro_f1_nonnone"] = metrics.get("classify_macro_f1_nonnone")
             progress["none_fpr"] = metrics.get("none_fpr")
             progress["best_classify_macro_f1_nonnone"] = (
@@ -1126,7 +1233,7 @@ def run_loop(
             max_epochs=epochs,
         )
         tie = False
-        if select_on_classify:
+        if select_on_classify or v2_checkpoint:
             tie = (not saved_best) and score_now == (
                 None if best_macro == float("-inf") else best_macro
             )
@@ -1148,6 +1255,38 @@ def run_loop(
                 "unbind_clean_exact": None,
             }
         )
+        if v2_checkpoint:
+            def _mean(total, steps):
+                return None if steps == 0 else float((total / steps).item())
+
+            progress.update(
+                {
+                    "total_loss": training_loss,
+                    "applicability_loss": _mean(app_loss_sum, app_loss_steps),
+                    "family_loss": _mean(fam_loss_sum, fam_loss_steps),
+                    "unbind_loss": _mean(unb_loss_sum, unb_loss_steps),
+                    "applicability_macro_f1": metrics.get("applicability_macro_f1"),
+                    "none_precision": metrics.get("none_precision"),
+                    "none_recall": metrics.get("none_recall"),
+                    "none_f1": metrics.get("none_f1"),
+                    "family_present_precision": metrics.get("family_present_precision"),
+                    "family_present_recall": metrics.get("family_present_recall"),
+                    "family_present_f1": metrics.get("family_present_f1"),
+                    "active_family_macro_f1": metrics.get("active_family_macro_f1"),
+                    "observed_active_family_macro_f1": metrics.get("observed_active_family_macro_f1"),
+                    "per_family": metrics.get("per_family"),
+                    "predicted_none_rate": metrics.get("predicted_none_rate"),
+                    "family_emission_rate": metrics.get("family_emission_rate"),
+                    "selection_score": metrics.get("selection_score"),
+                    "checkpoint_identity": best_checkpoint_sha,
+                    "observed_slice": metrics.get("observed_slice"),
+                    "inferred_slice": metrics.get("inferred_slice"),
+                }
+            )
+            app_loss_sum = torch.zeros((), device=device)
+            fam_loss_sum = torch.zeros((), device=device)
+            unb_loss_sum = torch.zeros((), device=device)
+            app_loss_steps = fam_loss_steps = unb_loss_steps = 0
         progress.update(
             epoch_timing_fields(
                 epoch_started=epoch_started,
@@ -1158,7 +1297,7 @@ def run_loop(
         with progress_path.open("a", encoding="utf-8") as pf:
             pf.write(json.dumps(progress, sort_keys=True) + "\n")
             pf.flush()
-        if not select_on_classify:
+        if not select_on_classify and not v2_checkpoint:
             print(
                 f"[epoch {ep}] unbind_exact={exact:.6f} best={best_exact if best_exact != float('-inf') else None} saved_best={saved_best}",
                 flush=True,
@@ -1169,11 +1308,13 @@ def run_loop(
 
     training_elapsed_seconds = round_seconds(monotonic_seconds() - training_started)
     final_state = _build_weight_state(
-        encoder, classify, role_head, filler_head, maps, layout
+        encoder, classify, role_head, filler_head, maps, layout,
+        applicability=applicability_head,
+        family_head=family_head,
     )
     # Always write final epoch weights under a distinct name when best-save is on,
     # then promote best → primary model.safetensors (fixes morph35 peak-not-saved).
-    if (save_best_unbind or select_on_classify) and best_state is not None:
+    if (save_best_unbind or select_on_classify or v2_checkpoint) and best_state is not None:
         final_file = save_heads(out_dir, final_state)
         # rename primary final dump aside, then write best as primary
         final_path = out_dir / final_file
@@ -1185,7 +1326,7 @@ def run_loop(
         weight_file = save_heads(out_dir, best_state)
         primary_val = best_metrics or {}
         gated_from = (
-            "best_classify_macro_f1_nonnone" if select_on_classify else "best_unbind_exact"
+            "selection_score" if v2_checkpoint else "best_classify_macro_f1_nonnone" if select_on_classify else "best_unbind_exact"
         )
         residual_for_dump = best_residual_records
     else:
@@ -1194,6 +1335,58 @@ def run_loop(
         gated_from = "final_epoch"
         residual_for_dump = last_residual_records
         aside = None
+
+    calibration_artifact = None
+    if v2_checkpoint:
+        if best_state is None:
+            raise RuntimeError("classification v2 restore-best is required before calibration")
+        if not classify_va:
+            raise RuntimeError("classification v2 calibration requires the validation split")
+        applicability_head.load_state_dict(best_state["applicability"])
+        family_head.load_state_dict(best_state["family_head"])
+        apply_encoder_trainable(encoder, best_state.get("encoder") or {})
+        from .classification_v2 import ACTIVE_FAMILY_VOCABULARY, freeze_calibration
+
+        prohibited = {"held_out", "evaluation_reserve", "settlement", "measurement"}
+        applicability_rows = []
+        family_rows = []
+        applicability_head.eval()
+        family_head.eval()
+        encoder.eval()
+        with torch.no_grad():
+            for row in classify_va:
+                if (
+                    row.get("split") == "test"
+                    or row.get("evaluation_reserve")
+                    or row.get("held_out")
+                    or row.get("surface") in prohibited
+                ):
+                    raise RuntimeError("classification v2 calibration refused a non-validation row")
+                lineage = row.get("lineage")
+                if lineage not in ACTIVE_FAMILY_VOCABULARY and lineage != "none":
+                    continue
+                encoded = encoder(**encode_texts([row["text"]]))
+                pooled = encoded.last_hidden_state[:, 0]
+                applicability_logit = [
+                    float(value) for value in applicability_head(pooled)[0].detach().cpu()
+                ]
+                applicability_rows.append((applicability_logit, 0 if lineage == "none" else 1))
+                if lineage in ACTIVE_FAMILY_VOCABULARY:
+                    family_logit = [float(value) for value in family_head(pooled)[0].detach().cpu()]
+                    family_rows.append((family_logit, ACTIVE_FAMILY_VOCABULARY.index(lineage)))
+        encoder.train()
+        applicability_head.train()
+        family_head.train()
+        calibration_artifact = freeze_calibration(
+            applicability_rows=applicability_rows,
+            family_rows=family_rows,
+            surface="validation",
+            checkpoint_identity=best_checkpoint_sha,
+        )
+        (out_dir / "classification-v2-calibration.json").write_text(
+            json.dumps(calibration_artifact, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
 
     last = epoch_metrics[-1] if epoch_metrics else {}
     residual_receipt: dict = {
@@ -1317,6 +1510,8 @@ def run_loop(
         receipt["classify_split"] = classify_split_receipt
     if seed_receipt is not None:
         receipt["seed"] = seed_receipt
+    if calibration_artifact is not None:
+        receipt["classification_v2_calibration"] = calibration_artifact
     if select_on_classify:
         receipt["select_metric"] = SELECT_METRIC_CLASSIFY
     if force_overlap.get("disjoint"):
