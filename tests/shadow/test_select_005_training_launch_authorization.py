@@ -6,16 +6,28 @@ from pathlib import Path
 import pytest
 
 from hyperlexical.select_005_training_launch_authorization import (
+    ACTIVE_EVAL_RESERVE,
     ADMISSION_RECEIPT_SHA256,
+    BEST_SHA256,
     ENVIRONMENT_SHA256,
+    ISOLATION_SHA256,
     LAUNCH_TRANSITION,
+    LEDGER_EVENTS_SHA256,
+    LEDGER_PROJECTION_SHA256,
     PREREGISTRATION_SHA256,
+    PROVENANCE_SHA256,
+    REQUIRED_PINS,
+    RESERVE_COUNTS,
     RESERVE_MANIFEST_SHA256,
+    SPEC_RECEIPT_SHA256,
     THRESHOLD_AUTHORIZATION_SHA256,
     WARM_START_SHA256,
     _validate,
     launch_authorization_spec,
+    require_authorization_record,
+    seal_training_launch_authorization,
     spec_receipt,
+    training_launch_authorization,
 )
 from hyperlexical.select_contract_schema import (
     training_launch_authorization_schema_errors,
@@ -26,31 +38,35 @@ REPO = Path(__file__).resolve().parents[2]
 
 
 def _authorization_record() -> dict:
-    spec = launch_authorization_spec()
-    pins = spec["required_pins"]
+    return training_launch_authorization()
+
+
+def _evidence() -> dict:
     return {
-        "admission_receipt_sha256": pins["admission_receipt_sha256"],
+        "active_eval_reserve": ACTIVE_EVAL_RESERVE,
+        "admission_result": "ADMISSION_PASS",
         "best_changed": False,
-        "environment_sha256": pins["environment_sha256"],
+        "best_sha256": BEST_SHA256,
         "epochs": 0,
-        "executes_training": False,
-        "experiment_id": pins["experiment_id"],
         "gradient_steps": 0,
-        "next_legal_transition": LAUNCH_TRANSITION,
-        "operator_decision": spec["authorization_record"]["operator_decision_required"],
+        "isolation_sha256": ISOLATION_SHA256,
+        "ledger_events_sha256": LEDGER_EVENTS_SHA256,
+        "ledger_projection_sha256": LEDGER_PROJECTION_SHA256,
+        "ledger_replay": "PASS",
         "optimizer_constructed": False,
-        "preregistration_sha256": pins["preregistration_sha256"],
+        "output_absent": True,
+        "pins": dict(REQUIRED_PINS),
+        "provenance_sha256": PROVENANCE_SHA256,
         "ready_to_train": True,
-        "reserve_manifest_sha256": pins["reserve_manifest_sha256"],
-        "schedule": spec["sealed_schedule"],
-        "schema": spec["authorization_record"]["schema"],
-        "scientific_variable": "train_schedule",
-        "state": "TRAINING_LAUNCH_AUTHORIZED",
-        "threshold_authorization_sha256": pins["threshold_authorization_sha256"],
-        "training_launch_authorized": True,
+        "reserve_counts": dict(RESERVE_COUNTS),
+        "reserve_isolation": "PASS",
+        "reserve_provenance": "PASS",
+        "schedule": launch_authorization_spec()["sealed_schedule"],
+        "spec_receipt_sha256": SPEC_RECEIPT_SHA256,
+        "spec_state": "TRAINING_LAUNCH_AUTHORIZATION_SPEC_SEALED",
+        "status": "TRAINING_READY",
+        "training_launch_authorized": False,
         "training_started": False,
-        "transition": "SELECT_005_TRAINING_LAUNCH_AUTHORIZATION",
-        "warm_start_sha256": pins["warm_start_sha256"],
         "weights_mutated": False,
     }
 
@@ -155,6 +171,55 @@ def test_refuses_to_record_operator_authorization_on_the_spec():
     spec["operator_decision"] = "AUTHORIZE"
     with pytest.raises(SystemExit, match="AUTHORIZE"):
         _validate(spec)
+
+
+def test_authorization_seals_operator_decision_without_training(tmp_path):
+    target = tmp_path / "launch-authorization-001" / "TRAINING_LAUNCH_AUTHORIZATION.json"
+    record = seal_training_launch_authorization(str(target), _evidence())
+    assert record["operator_decision"] == "AUTHORIZE"
+    assert record["state"] == "TRAINING_LAUNCH_AUTHORIZED"
+    assert record["training_launch_authorized"] is True
+    assert record["training_started"] is False
+    assert record["executes_training"] is False
+    assert record["optimizer_constructed"] is False
+    assert record["epochs"] == 0
+    assert record["gradient_steps"] == 0
+    assert record["next_legal_transition"] == LAUNCH_TRANSITION
+    assert json.loads(target.read_text()) == record
+    assert launch_authorization_spec()["training_launch_authorized"] is False
+    with pytest.raises(SystemExit, match="LAUNCH_AUTHORIZATION_SEAL_FAILURE"):
+        seal_training_launch_authorization(str(target), _evidence())
+
+
+def test_pin_or_precondition_failure_does_not_seal(tmp_path):
+    target = tmp_path / "TRAINING_LAUNCH_AUTHORIZATION.json"
+    mismatched = _evidence()
+    mismatched["pins"]["warm_start_sha256"] = "0" * 64
+    with pytest.raises(SystemExit, match="LAUNCH_AUTHORIZATION_PIN_MISMATCH"):
+        seal_training_launch_authorization(str(target), mismatched)
+    assert not target.exists()
+    schedule = _evidence()
+    schedule["schedule"]["candidate"]["HYPERLEX_TRAIN_EPOCHS"] = "40"
+    with pytest.raises(SystemExit, match="LAUNCH_AUTHORIZATION_PIN_MISMATCH"):
+        seal_training_launch_authorization(str(target), schedule)
+    assert not target.exists()
+    replay = _evidence()
+    replay["ledger_replay"] = "FAIL"
+    with pytest.raises(SystemExit, match="LAUNCH_AUTHORIZATION_PRECONDITION_FAILURE"):
+        seal_training_launch_authorization(str(target), replay)
+    assert not target.exists()
+    short = _evidence()
+    short["active_eval_reserve"] = 77
+    with pytest.raises(SystemExit, match="LAUNCH_AUTHORIZATION_PRECONDITION_FAILURE"):
+        seal_training_launch_authorization(str(target), short)
+    assert not target.exists()
+
+
+def test_schema_failure_rejects_a_training_record():
+    record = training_launch_authorization()
+    record["gradient_steps"] = 1
+    with pytest.raises(SystemExit, match="LAUNCH_AUTHORIZATION_SCHEMA_FAILURE"):
+        require_authorization_record(record)
 
 
 def test_receipt_is_deterministic_and_module_has_no_trainer():
