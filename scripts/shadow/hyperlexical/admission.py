@@ -69,6 +69,8 @@ SELECT_METRIC_KEY = "HLX_SELECT_METRIC"
 SCIENTIFIC_VARIABLE_KEY = "HLX_SCIENTIFIC_VARIABLE"
 DECLARED_SELECT_METRIC = SELECT_METRIC_KEY
 DECLARED_TRAIN_SCHEDULE = "train_schedule"
+DECLARED_CLASSIFY_SAMPLING = "classify_sampling"
+SAMPLING_KEY = "HYPERLEX_CLASSIFY_SAMPLING"
 # The only composite. These four trainer fields are one variable, not a
 # caller-supplied grouping of arbitrary keys.
 SCHEDULE_BUNDLE_KEYS = (
@@ -719,11 +721,17 @@ def _gate_single_variable(ctx: _Context) -> None:
             "single_variable",
             "ADMISSION FAIL: scientific variable declaration does not match",
         )
-    if declared_baseline not in ("", DECLARED_SELECT_METRIC, DECLARED_TRAIN_SCHEDULE):
+    if declared_baseline not in (
+        "",
+        DECLARED_SELECT_METRIC,
+        DECLARED_TRAIN_SCHEDULE,
+        DECLARED_CLASSIFY_SAMPLING,
+    ):
         ctx.fail(
             "single_variable",
             "ADMISSION FAIL: scientific variable declaration is not "
-            f"{DECLARED_SELECT_METRIC} or {DECLARED_TRAIN_SCHEDULE}",
+            f"{DECLARED_SELECT_METRIC}, {DECLARED_TRAIN_SCHEDULE}, "
+            f"or {DECLARED_CLASSIFY_SAMPLING}",
         )
     process_declaration = str(os.environ.get(SCIENTIFIC_VARIABLE_KEY) or "").strip()
     if process_declaration != declared_baseline:
@@ -771,6 +779,19 @@ def _gate_single_variable(ctx: _Context) -> None:
                 "ADMISSION FAIL: scientific variable count is "
                 f"{len(parts)}: {','.join(parts) or 'none'}",
             )
+    elif declared == DECLARED_CLASSIFY_SAMPLING:
+        if _metric_value(baseline) != _metric_value(candidate) or _metric_value(candidate) != SELECT_METRIC_CLASSIFY:
+            ctx.fail(
+                "single_variable",
+                "ADMISSION FAIL: selection metric difference is not part of classify_sampling; "
+                f"both arms must set {SELECT_METRIC_KEY}={SELECT_METRIC_CLASSIFY}",
+            )
+        if changed != [SAMPLING_KEY]:
+            ctx.fail(
+                "single_variable",
+                "ADMISSION FAIL: scientific variable count is "
+                f"{len(changed)}: {','.join(changed) or 'none'}",
+            )
     elif changed != [SELECT_METRIC_KEY]:
         ctx.fail(
             "single_variable",
@@ -780,6 +801,8 @@ def _gate_single_variable(ctx: _Context) -> None:
     skip_on_baseline = {SELECT_METRIC_KEY}
     if declared == DECLARED_TRAIN_SCHEDULE:
         skip_on_baseline.update(SCHEDULE_BUNDLE_KEYS)
+    elif declared == DECLARED_CLASSIFY_SAMPLING:
+        skip_on_baseline.add(SAMPLING_KEY)
     try:
         arm = schedule_arm()
     except ValueError as exc:
@@ -793,6 +816,8 @@ def _gate_single_variable(ctx: _Context) -> None:
             if key in baseline:
                 expected[key] = baseline[key]
         absent_schedule = tuple(key for key in SCHEDULE_BUNDLE_KEYS if key not in baseline)
+        if declared == DECLARED_CLASSIFY_SAMPLING:
+            expected[SAMPLING_KEY] = baseline[SAMPLING_KEY]
     for key, value in expected.items():
         if os.environ.get(key) != value:
             ctx.fail(

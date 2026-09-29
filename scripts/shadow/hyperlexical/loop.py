@@ -21,6 +21,7 @@ from .classify_metrics import (
     none_false_positive_rate,
     resolve_select_metric,
 )
+from .classify_sampling import epoch_classify_rows
 from .training_schedule import install_default_schedule, resolve_training_schedule
 from .classify_split import apply_classify_split_file
 from .seed_control import apply_training_seed
@@ -951,13 +952,26 @@ def run_loop(
 
     training_started = monotonic_seconds()
     stop_reason = STOP_REASON_MAX_EPOCHS
+    classify_sampling_epochs: list[dict] = []
+    sampling_log_path = out_dir / "classify-sampling.jsonl"
     for ep in range(epochs):
         epoch_started = monotonic_seconds()
         phase_rows, phase_meta = select_unbind_for_epoch(unbind_tr, ep, curriculum)
+        epoch_rows, sampling_record = epoch_classify_rows(classify_tr, epoch_index=ep)
+        classify_sampling_epochs.append(
+            {
+                key: value
+                for key, value in sampling_record.items()
+                if key != "selected_identity_sha256"
+            }
+        )
+        with sampling_log_path.open("a", encoding="utf-8") as sampling_handle:
+            sampling_handle.write(json.dumps(sampling_record, sort_keys=True) + "\n")
+            sampling_handle.flush()
         unbind_cycle = 0
         classify_batch_i = 0
-        for i in range(0, len(classify_tr), batch):
-            chunk = classify_tr[i : i + batch]
+        for i in range(0, len(epoch_rows), batch):
+            chunk = epoch_rows[i : i + batch]
             y = torch.tensor([maps["family_of"].get(c["lineage"], maps["family_of"]["none"]) for c in chunk], device=device)
             out = encoder(**encode_texts([c["text"] for c in chunk]))
             loss = nn.functional.cross_entropy(classify(out.last_hidden_state[:, 0]), y)
@@ -1125,6 +1139,9 @@ def run_loop(
                 "global_step": global_step,
                 "improved": saved_best,
                 "learning_rate": float(os.environ.get("HYPERLEX_TRAIN_LR", "2e-5")),
+                "classify_sampling_rule": sampling_record["rule"],
+                "classify_sampling_selection_sha256": sampling_record["selection_sha256"],
+                "inferred_none_selected": sampling_record["inferred_none_selected"],
                 "observed_label_accuracy": metrics.get("observed_label_accuracy"),
                 "tie": tie,
                 "training_loss": training_loss,
@@ -1201,6 +1218,10 @@ def run_loop(
             _sha256_file(out_dir / weight_file) if (out_dir / weight_file).is_file() else None
         ),
         "stop_reason": stop_reason,
+        "classify_sampling": {
+            "epochs": classify_sampling_epochs,
+            "policy": os.environ.get("HYPERLEX_CLASSIFY_SAMPLING") or "uncapped",
+        },
         "training_schedule": schedule.as_dict(),
         "training_elapsed_seconds": training_elapsed_seconds,
         **provenance(root),
