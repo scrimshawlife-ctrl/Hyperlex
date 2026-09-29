@@ -697,12 +697,15 @@ def _softmax(logits: Sequence[float], temperature: float) -> list[float]:
 
 
 def _mean_nll(rows: Sequence[tuple[Sequence[float], int]], temperature: float) -> float:
+    """Mean NLL. Log-sum-exp stays finite when a class probability underflows."""
     total = 0.0
     for logits, label in rows:
         if label < 0 or label >= len(logits):
             raise ClassificationContractError("calibration_label_invalid")
-        logp = math.log(_softmax(logits, temperature)[label])
-        total -= logp
+        scaled = [value / temperature for value in logits]
+        peak = max(scaled)
+        log_partition = math.log(sum(math.exp(value - peak) for value in scaled))
+        total -= scaled[label] - peak - log_partition
     return total / len(rows)
 
 

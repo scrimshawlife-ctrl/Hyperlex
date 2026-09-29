@@ -406,3 +406,21 @@ def test_reserved_positives_cannot_supply_training_support():
     assert census["counts"]["internet-slang"]["training_eligible"] == 0
     assert census["counts"]["gaming-meta"]["training_eligible"] == 1
     assert "conflict-aggression" in census["no_settled_positive"]
+
+
+
+def test_calibration_nll_matches_log_softmax_and_survives_underflow():
+    import math
+
+    from hyperlexical.classification_v2 import _mean_nll, _softmax, fit_temperature
+
+    logits = [0.2, -0.4, 1.5]
+    expected = -math.log(_softmax(logits, 1.0)[2])
+    assert abs(_mean_nll([(logits, 2)], 1.0) - expected) < 1e-12
+    extreme = _mean_nll([([0.0, 1000.0], 0)], 0.05)
+    assert extreme > 1000
+    chosen = fit_temperature(
+        [([0.0, 1000.0], 0), ([1000.0, 0.0], 1)],
+        surface="validation",
+    )
+    assert 0.05 <= chosen <= 5.0
