@@ -3,7 +3,8 @@
 A row is eligible only when an English Wiktionary definition line carries
 one of these sense labels, or a frozen definitional gloss, and no second
 family. Category membership, bare keywords, and model output do not qualify.
-This module does not fetch, train, or touch BEST.
+The training string is that definition. The page title is kept only when the
+definition prose is empty. This module does not fetch, train, or touch BEST.
 """
 
 from __future__ import annotations
@@ -647,7 +648,7 @@ def _english_section(wikitext: str) -> str:
 
 
 def classify_wikitext(wikitext: str) -> dict[str, Any]:
-    """Admit a headword only when its English senses name one target family."""
+    """Admit a page only when its English senses name one target family."""
     refused = {
         "status": "absent",
         "family": None,
@@ -726,6 +727,7 @@ def training_row(title: str, decision: Mapping[str, Any], revision: Mapping[str,
     revid = revision.get("revision_id")
     if not isinstance(revid, int):
         raise ValueError("mediawiki revision id is required")
+    prose = str(decision.get("definition_prose") or "").strip()
     return {
         "class": "OBSERVED",
         "fillers": [],
@@ -739,6 +741,7 @@ def training_row(title: str, decision: Mapping[str, Any], revision: Mapping[str,
             "revision_timestamp": revision.get("revision_timestamp"),
             "sense_labels": list(decision.get("sense_label_arguments") or []),
             "definition_prose": decision.get("definition_prose") or "",
+            "training_text": "definition_prose" if prose else "title",
             "evidence": decision.get("evidence"),
             "evidence_seal": evidence_seal(),
             "rights": "CC BY-SA 4.0 and GFDL",
@@ -749,7 +752,7 @@ def training_row(title: str, decision: Mapping[str, Any], revision: Mapping[str,
         "split": "train",
         "stage": "circulating",
         "task": "classify",
-        "text": title,
+        "text": prose or title,
         "typology": [],
     }
 

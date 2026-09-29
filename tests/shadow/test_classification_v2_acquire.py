@@ -64,6 +64,9 @@ def test_definitional_gloss_is_admitted_without_a_category():
     assert row["split"] == "train"
     assert row["provenance"]["revision_id"] == 10
     assert row["provenance"]["oldid_from_mediawiki"] is True
+    assert row["text"] == "An internet meme"
+    assert row["provenance"]["page"] == "loss.jpg"
+    assert row["provenance"]["training_text"] == "definition_prose"
 
 
 def test_conflicting_senses_on_one_page_are_not_admitted():
@@ -86,3 +89,20 @@ def test_every_target_has_a_frozen_pattern():
             ("relationship-dating", ""),
         )}
         assert has_label or has_gloss
+
+
+def test_empty_definition_prose_keeps_the_page_title():
+    row = training_row(
+        "u",
+        {
+            "status": "unique",
+            "family": "internet-slang",
+            "evidence": "sense_label",
+            "sense_label_arguments": ["Internet slang"],
+            "definition_prose": "",
+        },
+        {"revision_id": 11},
+    )
+    assert row["text"] == "u"
+    assert row["provenance"]["page"] == "u"
+    assert row["provenance"]["training_text"] == "title"

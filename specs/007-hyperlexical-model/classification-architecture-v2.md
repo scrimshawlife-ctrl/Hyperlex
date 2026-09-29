@@ -212,3 +212,8 @@ The frozen classify `EVAL_RESERVE` is 115 identities. Their stored strings were 
 On that pass, applicability macro-F1 is 0.5656, `NONE` F1 is 0.320, and active-family macro-F1 is 0.1360 where gold support exists. Coverage is 0.8348, selective accuracy is 0.1875, and the abstention rate is 0.1652. The applicability threshold sits above 0.5, so the decision `NONE` branch did not fire. Applicability Brier is 0.2062 and 10-bin ECE is 0.1976. Packet `brier` stays null. `unbind_clean_exact` is null on this classify reserve. The receipt is `/home/morpheus/hlx-private/classification-v2-train-20260929/RESERVE_EVAL.json`.
 
 
+### Sense-text continuation
+
+The first run stored the Wiktionary page title in `text` while the family decision came from one tagged sense. Short titles such as `fruit` and `iron` then trained as if the whole headword were that family. Validation gold for the fifteen new families was zero, so checkpoint selection could not see those emissions.
+
+The evidence map is unchanged. Where `definition_prose` is stored and its identity is disjoint from the historical export and from the evaluation reserve, the training string is that prose. Empty prose, and one prose string that duplicated another fresh row, keep the page title. Twenty-seven prose rows, chosen by sorting `normalized_text_sha256` and holding out two when a family has at least four prose rows or one when it has two or three, are `split=val`. Title fallbacks stay in train. `memetic` has a single prose row, so it stays in train. The run uses the same schedule, warm start, and loss. It does not move BEST and it does not score the evaluation reserve.
