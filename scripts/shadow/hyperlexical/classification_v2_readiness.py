@@ -89,12 +89,19 @@ def audit(export_path: Path | None = None, config_path: Path | None = None, prot
     prototype_report = None
     if prototype_witness is not None and prototype_witness.is_file():
         prototype_report = assess_witness(json.loads(prototype_witness.read_text(encoding="utf-8")))
+    from .classification_v2 import PROVENANCE_WEIGHTS
+    from .classification_v2_surface import representation_leak, surface_cell_weights, surface_census
+
+    surface_report = surface_census(loaded)
+    surface_report["representation_leaks"] = representation_leak(loaded)
+    surface_report["cell_weights"] = surface_cell_weights(rows, PROVENANCE_WEIGHTS)
     report = readiness(
         rows,
         loader_status=witness["status"],
         prototype_report=prototype_report,
         validation_report=validation_family_support(route_rows(loaded)[0]["classify"]["val"], identity_state=identity_state),
         definition_report=definition_string_report(loaded),
+        surface_report=surface_report,
     )
     report["loader_witness"] = witness
     report["n_classify_train"] = len(rows)

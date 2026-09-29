@@ -212,6 +212,7 @@ def decision_seal() -> dict[str, Any]:
         "active_family_vocabulary": list(ACTIVE_FAMILY_VOCABULARY),
         "ambiguity_emission": AMBIGUITY_EMISSION,
         "applicability_balance": "inverse_square_root_mean_one",
+        "applicability_surface_balance": "four_cell_inverse_support_mean_one",
         "exact_copy_families": list(EXACT_COPY_FAMILIES),
         "family_weight_clip": [FAMILY_WEIGHT_FLOOR, FAMILY_WEIGHT_CAP],
         "family_weight_rule": "sqrt(median/effective)_then_mean_one_then_clip",
@@ -221,6 +222,8 @@ def decision_seal() -> dict[str, Any]:
         "provenance_weights": PROVENANCE_WEIGHTS,
         "schedule": V2_SCHEDULE,
         "selection_score": "0.50*active_family_macro_f1+0.25*applicability_macro_f1+0.25*observed_active_family_macro_f1",
+        "surface_rule": "hyperlex.classification.v2.surface.v1",
+        "surface_shortcut_abs_correlation_max": 0.30,
         "vocabulary_id": VOCABULARY_ID,
     }
     return {"sha256": sha256_text(canonical_json(body)), "body": body}
@@ -523,14 +526,58 @@ def freeze_training_contract(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any
         raise ActiveFamilyWithoutTrainingSupport(audit["missing_support"])
     family_weights = family_loss_weights(audit)
     applicability = applicability_class_weights(audit)
+    from .classification_v2_surface import surface_cell_weights
+
     return {
         "status": "FROZEN",
         "provenance_weights": dict(PROVENANCE_WEIGHTS),
         "family_weights": family_weights,
         "applicability_weights": applicability,
+        "surface_cell_weights": surface_cell_weights(rows, PROVENANCE_WEIGHTS),
         "audit": audit,
         "reserve_rows_used": 0,
     }
+
+
+
+def _surface_of(row: Mapping[str, Any]) -> str | None:
+    if "text" not in row:
+        return None
+    from .classification_v2_surface import surface_form
+
+    return surface_form(str(row.get("text") or ""))
+
+
+def _applicability_multiplier(
+    row: Mapping[str, Any],
+    contract: Mapping[str, Any],
+    target: str,
+) -> float | None:
+    """Provenance authority inside a surface cell.
+
+    Rows that predate surface metadata keep the two-class applicability weight.
+    Ambiguous text is masked out of the applicability objective.
+    """
+    provenance = contract["provenance_weights"]
+    klass = _class_of(row)
+    if target == APPLICABILITY_NONE:
+        key = "observed_none_applicability" if klass == "OBSERVED" else "inferred_none_applicability"
+    else:
+        prefix = "observed_non_none" if klass == "OBSERVED" else "inferred_non_none"
+        key = prefix + "_applicability"
+    base = provenance[key]
+    if "text" not in row:
+        return base * contract["applicability_weights"][target]
+    from .classification_v2_surface import SURFACE_AMBIGUOUS, cell_name, surface_form
+
+    form = surface_form(str(row.get("text") or ""))
+    if form == SURFACE_AMBIGUOUS:
+        return None
+    weights = contract.get("surface_cell_weights") or {}
+    name = cell_name(target, form)
+    if name not in weights:
+        raise ClassificationContractError("applicability_surface_cell_missing", name)
+    return base * weights[name]
 
 
 def example_loss(row: Mapping[str, Any], contract: Mapping[str, Any]) -> dict[str, Any]:
@@ -549,19 +596,15 @@ def example_loss(row: Mapping[str, Any], contract: Mapping[str, Any]) -> dict[st
         "trained_class_ambiguous": False,
     }
     if lineage == V1_NONE_CLASS:
-        key = "observed_none_applicability" if klass == "OBSERVED" else "inferred_none_applicability"
         plan["applicability_target"] = APPLICABILITY_NONE
-        plan["applicability_weight"] = (
-            provenance[key] * contract["applicability_weights"][APPLICABILITY_NONE]
-        )
+        plan["applicability_weight"] = _applicability_multiplier(row, contract, APPLICABILITY_NONE)
+        plan["surface"] = _surface_of(row)
         return plan
     if lineage in ACTIVE_FAMILY_VOCABULARY:
         prefix = "observed_non_none" if klass == "OBSERVED" else "inferred_non_none"
         plan["applicability_target"] = APPLICABILITY_PRESENT
-        plan["applicability_weight"] = (
-            provenance[prefix + "_applicability"]
-            * contract["applicability_weights"][APPLICABILITY_PRESENT]
-        )
+        plan["applicability_weight"] = _applicability_multiplier(row, contract, APPLICABILITY_PRESENT)
+        plan["surface"] = _surface_of(row)
         plan["family_target"] = lineage
         plan["family_weight"] = provenance[prefix + "_family"] * contract["family_weights"][lineage]
         return plan
@@ -1126,6 +1169,7 @@ def readiness(
     prototype_report: Mapping[str, Any] | None = None,
     validation_report: Mapping[str, Any] | None = None,
     definition_report: Mapping[str, Any] | None = None,
+    surface_report: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """One audit. Incomplete families are returned together. Training stays off."""
     audit = support_audit(rows)
@@ -1151,6 +1195,8 @@ def readiness(
         "prototype_witness_pass": prototype_pass and bool(prototype_report and prototype_report.get("determinism") == "pass"),
         "family_weight_table_frozen": family_weights is not None and not missing,
         "applicability_weight_table_frozen": applicability is not None and not missing,
+        "applicability_surface_cells_populated": surface_report is None or bool(surface_report.get("pass")),
+        "representation_lineage_isolated": surface_report is None or not surface_report.get("representation_leaks"),
         "provenance_weights_frozen": True,
         "loader_witness_pass": loader_status == "PASS",
         "no_random_new_rows": not random_new_rows,
@@ -1182,6 +1228,10 @@ def readiness(
         blockers.append("FAMILY_PROTOTYPE_UNAVAILABLE")
     if not validation_pass:
         blockers.append("VALIDATION_FAMILY_SUPPORT_INSUFFICIENT")
+    if surface_report is not None and surface_report.get("representation_leaks"):
+        blockers.append("REPRESENTATION_LEAK")
+    if surface_report is not None and not surface_report.get("pass"):
+        blockers.append("APPLICABILITY_SURFACE_SHORTCUT")
     if loader_status != "PASS":
         blockers.append("LOADER_WITNESS")
     if random_new_rows:
@@ -1204,6 +1254,9 @@ def readiness(
         "audit": audit,
         "family_weights": family_weights,
         "applicability_weights": applicability,
+        "surface_cells": None if surface_report is None else surface_report.get("cells"),
+        "surface_cell_weights": None if surface_report is None else surface_report.get("cell_weights"),
+        "surface_ambiguous": None if surface_report is None else surface_report.get("ambiguous"),
         "provenance_weights": dict(PROVENANCE_WEIGHTS),
         "authorizes_training": ready,
         "moves_best": False,

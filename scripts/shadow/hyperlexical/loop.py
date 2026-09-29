@@ -1003,6 +1003,7 @@ def run_loop(
             kept_rows = []
             app_preds = []
             fam_preds = []
+            surface_probabilities = []
             applicability_head.eval()
             family_head.eval()
             for row in classify_va or classify_tr[:8]:
@@ -1013,14 +1014,38 @@ def run_loop(
                 pooled = out.last_hidden_state[:, 0]
                 app_logit = applicability_head(pooled)[0]
                 fam_logit = family_head(pooled)[0]
-                app_preds.append(
-                    "FAMILY_PRESENT" if float(app_logit[1]) > float(app_logit[0]) else "NONE"
-                )
-                fam_preds.append(ACTIVE_FAMILY_VOCABULARY[int(fam_logit.argmax())])
+                present = "FAMILY_PRESENT" if float(app_logit[1]) > float(app_logit[0]) else "NONE"
+                app_preds.append(present)
+                family_name = ACTIVE_FAMILY_VOCABULARY[int(fam_logit.argmax())]
+                fam_preds.append(family_name)
                 kept_rows.append(row)
+                from .classification_v2_surface import calibrated_present_probability
+
+                surface_probabilities.append(
+                    calibrated_present_probability(
+                        [float(app_logit[0]), float(app_logit[1])],
+                        1.0,
+                    )
+                )
             applicability_head.train()
             family_head.train()
             metrics.update(epoch_selection_metrics(kept_rows, app_preds, fam_preds))
+            from .classification_v2_surface import applicability_surface_report
+
+            metrics["applicability_surface"] = applicability_surface_report(
+                [
+                    {
+                        "family_prediction": family,
+                        "lineage": row.get("lineage"),
+                        "prediction": prediction,
+                        "probability": probability,
+                        "text": row.get("text"),
+                    }
+                    for row, prediction, family, probability in zip(
+                        kept_rows, app_preds, fam_preds, surface_probabilities
+                    )
+                ]
+            )
         return metrics
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1282,6 +1307,15 @@ def run_loop(
                     "predicted_none_rate": metrics.get("predicted_none_rate"),
                     "family_emission_rate": metrics.get("family_emission_rate"),
                     "selection_score": metrics.get("selection_score"),
+                    "corr_word_count_p_family_present": (metrics.get("applicability_surface") or {}).get(
+                        "corr_word_count_p_family_present"
+                    ),
+                    "family_macro_f1_by_surface": (metrics.get("applicability_surface") or {}).get(
+                        "family_macro_f1_by_surface"
+                    ),
+                    "applicability_by_cell": (metrics.get("applicability_surface") or {}).get(
+                        "applicability_by_cell"
+                    ),
                     "checkpoint_identity": best_checkpoint_sha,
                     "observed_slice": metrics.get("observed_slice"),
                     "inferred_slice": metrics.get("inferred_slice"),
@@ -1341,6 +1375,7 @@ def run_loop(
         aside = None
 
     calibration_artifact = None
+    surface_artifact = None
     if v2_checkpoint:
         if best_state is None:
             raise RuntimeError("classification v2 restore-best is required before calibration")
@@ -1389,6 +1424,47 @@ def run_loop(
         )
         (out_dir / "classification-v2-calibration.json").write_text(
             json.dumps(calibration_artifact, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        from .classification_v2_surface import (
+            applicability_surface_report,
+            calibrated_present_probability,
+        )
+
+        surface_records = []
+        temperature = float(calibration_artifact["applicability_temperature"])
+        family_cursor = 0
+        for row, (logits, label) in zip(
+            [
+                item
+                for item in classify_va
+                if item.get("lineage") in ACTIVE_FAMILY_VOCABULARY or item.get("lineage") == "none"
+            ],
+            applicability_rows,
+        ):
+            probability = calibrated_present_probability(logits, temperature)
+            prediction = "FAMILY_PRESENT" if logits[1] > logits[0] else "NONE"
+            family_prediction = None
+            if row.get("lineage") in ACTIVE_FAMILY_VOCABULARY:
+                family_logits, _family_label = family_rows[family_cursor]
+                family_cursor += 1
+                family_prediction = ACTIVE_FAMILY_VOCABULARY[max(
+                    range(len(family_logits)), key=family_logits.__getitem__
+                )]
+            surface_records.append(
+                {
+                    "family_prediction": family_prediction,
+                    "lineage": row.get("lineage"),
+                    "prediction": prediction,
+                    "probability": probability,
+                    "text": row.get("text"),
+                }
+            )
+        surface_artifact = applicability_surface_report(surface_records)
+        surface_artifact["checkpoint_identity"] = best_checkpoint_sha
+        surface_artifact["reserve_used"] = False
+        (out_dir / "classification-v2-surface.json").write_text(
+            json.dumps(surface_artifact, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
 
@@ -1516,6 +1592,7 @@ def run_loop(
         receipt["seed"] = seed_receipt
     if calibration_artifact is not None:
         receipt["classification_v2_calibration"] = calibration_artifact
+        receipt["classification_v2_surface"] = surface_artifact
     if select_on_classify:
         receipt["select_metric"] = SELECT_METRIC_CLASSIFY
     if force_overlap.get("disjoint"):

@@ -26,6 +26,7 @@ from hyperlexical.classification_v2 import (  # noqa: E402
     build_result,
     decide_v2,
     example_loss,
+    decision_seal,
     family_emit_threshold,
     family_loss_weights,
     freeze_calibration,
@@ -424,3 +425,147 @@ def test_calibration_nll_matches_log_softmax_and_survives_underflow():
         surface="validation",
     )
     assert 0.05 <= chosen <= 5.0
+
+
+
+def test_surface_form_ignores_family_and_splits_atom_from_prose():
+    from hyperlexical.classification_v2_surface import (
+        SURFACE_AMBIGUOUS,
+        SURFACE_ATOM,
+        SURFACE_PROSE,
+        SURFACE_SHORTCUT_ABS_CORRELATION_MAX,
+        surface_form,
+    )
+
+    assert surface_form("equip") == SURFACE_ATOM
+    assert surface_form("pick 'em") == SURFACE_ATOM
+    assert surface_form("meme") == SURFACE_ATOM
+    assert surface_form("It is next to the River Avon, two miles upstream from Bristol Bridge.") == SURFACE_PROSE
+    assert surface_form("An Internet meme depicting such an animal") == SURFACE_PROSE
+    assert surface_form("404 coded sybau canon event") == SURFACE_AMBIGUOUS
+    assert SURFACE_SHORTCUT_ABS_CORRELATION_MAX == 0.30
+
+
+def test_surface_cells_share_applicability_authority():
+    from hyperlexical.classification_v2_surface import surface_cell_weights
+
+    rows = []
+    rows.extend(
+        {"lineage": "ai-native", "class": "OBSERVED", "split": "train", "text": "equip"}
+        for _ in range(2)
+    )
+    rows.append(
+        {
+            "lineage": "ai-native",
+            "class": "OBSERVED",
+            "split": "train",
+            "text": "A short lexical note about play, written as a definition.",
+        }
+    )
+    rows.extend(
+        {"lineage": "none", "class": "OBSERVED", "split": "train", "text": "stone"}
+        for _ in range(4)
+    )
+    rows.append(
+        {
+            "lineage": "none",
+            "class": "INFERRED",
+            "split": "train",
+            "text": "The house stands beside a stone bridge in the village.",
+        }
+    )
+    weights = surface_cell_weights(rows, PROVENANCE_WEIGHTS)
+    assert abs(sum(weights.values()) / len(weights) - 1.0) < 1e-12
+    expected_support = {
+        "FAMILY_PRESENT/ATOM": 2.0,
+        "FAMILY_PRESENT/PROSE": 1.0,
+        "NONE/ATOM": 4.0,
+        "NONE/PROSE": PROVENANCE_WEIGHTS["inferred_none_applicability"],
+    }
+    aggregates = [weights[name] * expected_support[name] for name in expected_support]
+    assert max(aggregates) - min(aggregates) < 1e-9
+
+
+def test_ambiguous_text_is_masked_and_family_weights_stay_on_the_formula():
+    atom = {"lineage": "ai-native", "class": "OBSERVED", "split": "train", "text": "gyatt"}
+    prose = {
+        "lineage": "ai-native",
+        "class": "OBSERVED",
+        "split": "train",
+        "text": "A clipped definition of a vernacular atom in ordinary prose.",
+    }
+    none_atom = {"lineage": "none", "class": "OBSERVED", "split": "train", "text": "granite"}
+    none_prose = {
+        "lineage": "none",
+        "class": "OBSERVED",
+        "split": "train",
+        "text": "Granite is a common igneous rock.",
+    }
+    ambiguous = {
+        "lineage": "ai-native",
+        "class": "OBSERVED",
+        "split": "train",
+        "text": "404 coded sybau canon event",
+    }
+    rows = [atom, prose, none_atom, none_prose, ambiguous]
+    rows.extend(_row(name) for name in ACTIVE_FAMILY_VOCABULARY if name != "ai-native")
+    contract = freeze_training_contract(rows)
+    masked = example_loss(ambiguous, contract)
+    assert masked["applicability_weight"] is None
+    assert masked["family_weight"] is not None
+    assert masked["surface"] == "AMBIGUOUS"
+    present = example_loss(atom, contract)
+    assert present["applicability_weight"] == contract["surface_cell_weights"]["FAMILY_PRESENT/ATOM"]
+    assert present["applicability_weight"] != (
+        PROVENANCE_WEIGHTS["observed_non_none_applicability"]
+        * contract["applicability_weights"]["FAMILY_PRESENT"]
+    )
+    audit = support_audit(rows)
+    assert contract["family_weights"] == family_loss_weights(audit)
+
+
+def test_surface_shortcut_guard_is_preregistered_at_point_three():
+    from hyperlexical.classification_v2_surface import applicability_surface_report
+
+    assert decision_seal()["body"]["surface_shortcut_abs_correlation_max"] == 0.30
+    flat = [
+        {"text": "one", "lineage": "ai-native", "probability": 0.40, "prediction": "NONE", "family_prediction": "ai-native"},
+        {"text": "two", "lineage": "none", "probability": 0.60, "prediction": "FAMILY_PRESENT"},
+        {
+            "text": "This prose sentence keeps the same probability band as the atoms.",
+            "lineage": "ai-native",
+            "probability": 0.45,
+            "prediction": "NONE",
+            "family_prediction": "ai-native",
+        },
+        {
+            "text": "This other prose sentence also stays near the middle of the range.",
+            "lineage": "none",
+            "probability": 0.55,
+            "prediction": "FAMILY_PRESENT",
+        },
+    ]
+    balanced = applicability_surface_report(flat)
+    assert balanced["pass"] is True
+    assert abs(balanced["corr_word_count_p_family_present"]) <= 0.30
+    assert balanced["applicability_by_cell"]["NONE/PROSE"]["support"] == 1
+    assert balanced["family_macro_f1_by_surface"]["ATOM"] == 1.0
+
+
+def test_missing_surface_cell_blocks_readiness():
+    from hyperlexical.classification_v2_surface import surface_census
+
+    rows = [_row(name) for name in ACTIVE_FAMILY_VOCABULARY]
+    rows.append(_row("none"))
+    report = readiness(
+        rows,
+        loader_status="PASS",
+        surface_report={"pass": False, "representation_leaks": [], "cells": {}, "ambiguous": {}},
+    )
+    assert report["ready"] is False
+    assert "APPLICABILITY_SURFACE_SHORTCUT" in report["blockers"]
+    empty = surface_census(
+        [{"task": "classify", "split": "train", "lineage": "none", "text": "stone"}]
+    )
+    assert empty["pass"] is False
+    assert "FAMILY_PRESENT/ATOM" in empty["missing"]["train"]

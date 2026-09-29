@@ -255,3 +255,11 @@ On the 115 reserve identities, both this checkpoint and the first v2 checkpoint 
 Applicability on this reserve does not separate the classes. The correlation of calibrated P(FAMILY_PRESENT) with gold family-present is -0.067. The correlation of word count with gold family-present is -0.884. Sixty-nine of the one- and two-word rows are family atoms, and all 40 none rows are longer sentences. Mean P(FAMILY_PRESENT) is 0.707 on those short atoms and 0.829 on the sentences of 13 words or more. In the training export, none text is a short headword, median 1 word, and fresh family text is definition prose. Reserve none text is an encyclopedic sentence, median 15 words. Validation applicability macro-F1 0.9413 measures the export surface, where both classes are short Wiktionary strings.
 
 The next training variable is that surface. Encyclopedic none sentences and short family atoms are not in the current export as a pair, so another definition harvest would not test this gap. No such run is started here.
+
+### Applicability surface balance
+
+The ready checkpoint showed an applicability shortcut: training NONE rows are short headwords and fresh family rows are definition prose, while the reserve is the inverse. Validation applicability macro-F1 0.9413 stays a property of that export surface. The preregistered guard, chosen before the surface-balanced run, is `abs(corr(word_count, P(FAMILY_PRESENT))) <= 0.30` on the validation split after calibration. The reserve is not a fitting surface for that correlation.
+
+Surface form is structural. ATOM is one to four whitespace tokens with no sentence terminator and no comma or semicolon. PROSE is six or more tokens, or any sentence terminator, or a comma or semicolon. Five-token strings with neither are AMBIGUOUS and are masked out of the applicability objective. The family label is not an input. Rule id `hyperlex.classification.v2.surface.v1`.
+
+Applicability loss gives each populated cell equal aggregate authority: cell weight is `1 / effective_cell_support`, then the populated cell weights are scaled to mean 1. Provenance authority is applied inside the cell. Family class weights keep the existing formula. Prototype initialization, calibration, schedule, ontology, and BEST are unchanged. Jev stays off.
