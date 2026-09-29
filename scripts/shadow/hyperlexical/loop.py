@@ -296,7 +296,7 @@ def resolve_init_expand_vocab(raw: str | None = None) -> bool:
 
     Default fail-closed on vocab mismatch. Opt-in via HYPERLEX_INIT_EXPAND_VOCAB=1
     so a smaller prior seed (e.g. morph65 max pos_5) can warm a harvest that added
-    pos_6+/new fillers: copy overlapping labels by name, leave new rows at init.
+    pos_6+/new fillers: copy overlapping labels by name, and set new rows to exact zero.
     """
     if raw is None:
         raw = os.environ.get(INIT_EXPAND_VOCAB_ENV)
@@ -333,53 +333,18 @@ def _read_init_vocabs(init_dir: Path) -> tuple[list | None, list | None]:
     return None, None
 
 
-def _remap_linear_rows(module, state: dict, init_labels: list, current_labels: list, head: str) -> dict:
-    """Copy overlapping out-rows from init Linear state into current module by label name."""
-    weight = state.get("weight")
-    if weight is None:
-        raise ValueError(f"{INIT_FROM_ENV} {head} missing weight")
-    if int(getattr(weight, "shape", [0])[0]) != len(init_labels):
-        raise ValueError(
-            f"{INIT_FROM_ENV} {head} weight rows {tuple(weight.shape)} != "
-            f"init vocab {len(init_labels)}"
-        )
-    if int(module.weight.shape[0]) != len(current_labels):
-        raise ValueError(
-            f"{INIT_FROM_ENV} {head} module rows {tuple(module.weight.shape)} != "
-            f"current vocab {len(current_labels)}"
-        )
-    current_of = {lab: i for i, lab in enumerate(current_labels)}
-    mapped = 0
-    skipped = 0
-    for ii, lab in enumerate(init_labels):
-        ci = current_of.get(lab)
-        if ci is None:
-            skipped += 1
-            continue
-        module.weight.data[ci].copy_(weight[ii].detach())
-        mapped += 1
-    bias = state.get("bias")
-    if bias is not None and module.bias is not None:
-        if int(getattr(bias, "shape", [0])[0]) != len(init_labels):
-            raise ValueError(
-                f"{INIT_FROM_ENV} {head} bias rows != init vocab {len(init_labels)}"
-            )
-        for ii, lab in enumerate(init_labels):
-            ci = current_of.get(lab)
-            if ci is None:
-                continue
-            module.bias.data[ci].copy_(bias[ii].detach())
-    if mapped == 0:
-        raise ValueError(
-            f"{INIT_FROM_ENV} {head} expand remap matched 0/{len(init_labels)} labels"
-        )
-    return {
-        "mapped": mapped,
-        "skipped_init_only": skipped,
-        "new_current_rows": len(current_labels) - mapped,
-        "init_n": len(init_labels),
-        "current_n": len(current_labels),
-    }
+def _remap_linear_rows(module, state: dict, init_labels: list, current_labels: list, head: str, expected: dict | None = None) -> dict:
+    """Copy overlapping out-rows by label name. New target rows are exact zeros."""
+    from .zero_init_loader import expand_named_linear
+
+    return expand_named_linear(
+        module,
+        state,
+        list(init_labels),
+        list(current_labels),
+        head,
+        expected=expected,
+    )
 
 
 def warm_load_checkpoint(
@@ -395,8 +360,8 @@ def warm_load_checkpoint(
     """Load heads + trainable encoder tensors from a prior seed dump. Fail closed.
 
     When expand_vocab is true (or HYPERLEX_INIT_EXPAND_VOCAB=1), role/filler heads
-    remap overlapping labels by name into the current larger vocab; classify still
-    loads strict. Default remains exact-vocab match.
+    remap overlapping labels by name into the current vocabulary and set new rows
+    to exact zero. Classify still loads strict. Default remains exact-vocab match.
     """
     if expand_vocab is None:
         expand_vocab = resolve_init_expand_vocab()
@@ -423,6 +388,9 @@ def warm_load_checkpoint(
                 f"{INIT_EXPAND_VOCAB_ENV}=1 requires init role_vocab+filler_vocab "
                 f"in {init_dir}/config.json (or layout.json)"
             )
+    from .zero_init_loader import expansion_expected, select006_guard_vocab
+
+    select006_guard_vocab(bool(expand_vocab), bool(vocab_match))
 
     if weight_path.name == "model.safetensors":
         from safetensors.torch import load_file
@@ -478,10 +446,20 @@ def warm_load_checkpoint(
         if not role_state or not filler_state:
             raise ValueError(f"{weight_path} missing role_head/filler_head tensors")
         expand_receipt["role"] = _remap_linear_rows(
-            role_head, role_state, list(init_roles), cur_roles, "role_head"
+            role_head,
+            role_state,
+            list(init_roles),
+            cur_roles,
+            "role_head",
+            expected=expansion_expected("role_head"),
         )
         expand_receipt["filler"] = _remap_linear_rows(
-            filler_head, filler_state, list(init_fillers), cur_fillers, "filler_head"
+            filler_head,
+            filler_state,
+            list(init_fillers),
+            cur_fillers,
+            "filler_head",
+            expected=expansion_expected("filler_head"),
         )
 
     applied = apply_encoder_trainable(encoder, split.get("encoder") or {})
@@ -736,7 +714,6 @@ def run_loop(
     _enter_training_execution()
     import torch
     from torch import nn
-    from torch.optim import AdamW
 
     seed_receipt = apply_training_seed(torch)
     maps = label_maps_for_splits(unbind_tr, unbind_va)
@@ -759,9 +736,20 @@ def run_loop(
                 encoder, classify, role_head, filler_head, maps, init_from
             ),
         }
+    from .zero_init_loader import (
+        pre_optimizer_receipt,
+        pre_optimizer_stop_requested,
+        select006_training_init_guard,
+    )
+
+    select006_training_init_guard(maps, role_head, filler_head, init_receipt)
+    if pre_optimizer_stop_requested():
+        return pre_optimizer_receipt(role_head, filler_head, maps, init_receipt)
     trainable = [p for p in encoder.parameters() if p.requires_grad] + list(classify.parameters()) + list(role_head.parameters()) + list(filler_head.parameters())
     epochs = int(os.environ.get("HYPERLEX_TRAIN_EPOCHS", "2"))
     early_stop = resolve_early_stop_config(max_epochs=epochs, select_metric=select_metric)
+    from torch.optim import AdamW
+
     opt = AdamW(trainable, lr=float(os.environ.get("HYPERLEX_TRAIN_LR", "2e-5")))
     batch = int(os.environ.get("HYPERLEX_TRAIN_BATCH", "8"))
     unbind_loss_weight = resolve_unbind_loss_weight()
