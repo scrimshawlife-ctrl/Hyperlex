@@ -16,7 +16,7 @@ from .classification_v2 import (
 from .training_routing import route_rows
 
 DEFAULT_EXPORT = Path(
-    "/home/morpheus/hlx-private/d1-spark-tree-20260924T213846Z/morph78-train-export.jsonl"
+    "/home/morpheus/hlx-private/classification-v2-acquire-20260929/civilian.v0.1.jsonl"
 )
 BEST_CONFIG = Path(
     "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004/config.json"

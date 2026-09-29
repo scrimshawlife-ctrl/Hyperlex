@@ -193,3 +193,10 @@ The next action is one bounded acquisition of positive training examples for eve
 
 The morph78 classify train split has no positive row for those fifteen families. Positives that already exist in the identity ledger are `evaluation_reserved` (`EVAL_SPENT` or `EVAL_RESERVE`). They are not training support. Copying them into the export is an isolation failure. `conflict-aggression`, `regional-cultural`, and `spiritual-mystic` have no settled positive in that ledger either. The acquisition has to be new rows, disjoint from reserved identities, for all fifteen families together. Legacy near-matches stay unmapped.
 
+### Training acquisition 2026-09-29
+
+Fresh Wiktionary rows were admitted under the frozen sense-label and definitional-gloss map in `classification_v2_acquire.py`. Evidence seal `8b30c98ad8eac7c136e391103450c9d0d20a3499220e9b48f923eab8218581f1`. MediaWiki supplied each `revision_id`. Jev was off. No evaluation identity was copied. The historical morph78 export is unchanged.
+
+The new export is `/home/morpheus/hlx-private/classification-v2-acquire-20260929/civilian.v0.1.jsonl`, sha256 `aa21415adab0c6ea488c7bdc3ea5495d20126017a094a5df33406f30eccd7e3e`, 9263 rows, 113 fresh OBSERVED rows, 0 fresh INFERRED rows. Fourteen target families have 8 OBSERVED rows. `memetic` has 1 OBSERVED row and remains below the preferred target of 8. Readiness is `READY`. The next action is one `TRAIN CLASSIFICATION V2` run. That run does not move BEST.
+
+
