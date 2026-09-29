@@ -39,6 +39,7 @@ HARVEST_RAW = Path(
     "/home/morpheus/hlx-private/exp-20260927-select-005/harvest-002/RAW_HARVEST.jsonl"
 )
 TRUNK = Path("/home/morpheus/.hyperlex/models/trunks/ModernBERT-base")
+WARM = Path("/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-morph65")
 EXPECTED_COUNTS = {
     "classify": 51,
     "classify_non_none": 11,
@@ -135,7 +136,18 @@ def _load(arm_dir: Path):
     classify = nn.Linear(HIDDEN, len(FAMILIES))
     role_head = nn.Linear(HIDDEN, len(role_vocab))
     filler_head = nn.Linear(HIDDEN, len(filler_vocab))
-    warm_load_checkpoint(encoder, classify, role_head, filler_head, maps, arm_dir)
+    # The arm file stores heads plus requires_grad encoder tensors. Frozen
+    # warm-start layers stay in the morph65 load and are not in that file.
+    warm_load_checkpoint(
+        encoder, classify, role_head, filler_head, maps, WARM, expand_vocab=True
+    )
+    overlay = warm_load_checkpoint(
+        encoder, classify, role_head, filler_head, maps, arm_dir, expand_vocab=False
+    )
+    loaded = overlay.get("encoder_trainable_loaded")
+    present = overlay.get("encoder_trainable_present")
+    if not loaded or loaded != present:
+        raise SystemExit("EVALUATION_FAILURE: checkpoint encoder tensors did not load")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     for module in (encoder, classify, role_head, filler_head):
         module.to(device)
