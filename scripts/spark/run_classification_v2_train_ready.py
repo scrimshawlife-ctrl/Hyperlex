@@ -18,6 +18,7 @@ REPO = Path("/home/morpheus/Hyperlex")
 PINS = Path("/home/morpheus/hlx-private/classification-v2-validation-20260929/VALIDATION_EXPORT.json")
 WITNESS = Path("/home/morpheus/hlx-private/classification-v2-prototype-20260929/PROTOTYPE_WITNESS.json")
 WITNESS_SHA = "7faa98239b2d4f39bf722c776543ded9a6c5959646c09c5db1e977cd7e69855d"
+WITNESS_FILE_SHA = "fa2c1a33bb1e5a11becb113490078b4d80d4cc46b284f5aa4a819c5ccaf98dc3"
 BEST_WEIGHTS = Path(
     "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004/model.safetensors"
 )
@@ -74,8 +75,11 @@ def preflight(pins: dict) -> dict:
         fail("export digest mismatch")
     if pins["evidence_seal"] != SEAL:
         fail("evidence seal mismatch")
-    if sha256_file(WITNESS) != WITNESS_SHA:
-        fail("prototype witness digest mismatch")
+    if sha256_file(WITNESS) != WITNESS_FILE_SHA:
+        fail("prototype witness file digest mismatch")
+    witness_body = json.loads(WITNESS.read_text(encoding="utf-8"))
+    if witness_body.get("witness_sha256") != WITNESS_SHA:
+        fail("prototype witness hash mismatch")
     rows = []
     with export.open(encoding="utf-8") as handle:
         for line in handle:
