@@ -1263,3 +1263,7 @@ EPSILON stayed 0. Primary preservation passed. The three preservation gates pass
 Ledger events sha256 remained `4471e3339b3708f0f494f7fe60a0d30118609e7312d5d0334b946d2bbc4efbf1`. Projection sha256 remained `dad556c7f6bba58c7456a6b88b607c72ebe8149e36c176a602e0def2edfdc435`. Reserve manifest sha256 remained `33ee588bdd13a322020e2a0105a71265899b856b44b6c3fcde40eb943b36cab6`. Active SELECT-006 identities remain 37 and `EVAL_RESERVE`. BEST sha256 remained `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. No further SELECT-006 transition is authorized.
 
 Comparable runs that select `classify_macro_f1_nonnone` and do not preregister a schedule now use this candidate schedule: max 12 epochs, minimum 4, patience 4, strict improvement, ties keep the earlier checkpoint, and restore best. A preregistered schedule replaces that default. The sealed SELECT-006 control schedule was not rewritten.
+
+## SELECT-007
+
+`HLX-EXP-2026-09-29-SELECT-007` built a fresh Wiktionary sense-label reserve. The SELECT-006 reserve was not reused. Settlement is `SETTLED_FAIL` and BEST did not move. Ledger events after the SELECT-007 binding are `0a9611b224866a8bcdbbc792bba9808969d4812b580e63a395b867baa81be88e`. SELECT-006 active identities stayed 37.
