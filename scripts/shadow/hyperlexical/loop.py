@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
@@ -235,6 +236,14 @@ def early_stop_break(
     if epochs_scored < minimum_epochs:
         return False
     return (epoch_index - best_epoch) >= patience
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def round_seconds(value: float) -> float:
@@ -766,6 +775,9 @@ def run_loop(
     curriculum = resolve_curriculum_schedule()
     curriculum_plan = plan_unbind_curriculum(unbind_tr, epochs, curriculum)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    global_step = 0
+    loss_sum = torch.zeros((), device=device)
+    loss_steps = 0
     for mod in (encoder, classify, role_head, filler_head):
         mod.to(device)
     encoder.train()
@@ -829,7 +841,7 @@ def run_loop(
     last_train_loss = None
 
     def step_unbind(row) -> None:
-        nonlocal last_train_loss
+        nonlocal last_train_loss, global_step, loss_sum, loss_steps
         if unbind_loss_weight == 0:
             return
         uloss = unbind_loss(row)
@@ -840,6 +852,9 @@ def run_loop(
         opt.zero_grad()
         scaled.backward()
         opt.step()
+        global_step += 1
+        loss_sum = loss_sum + scaled.detach()
+        loss_steps += 1
         last_train_loss = scaled.detach()
 
     residual_dump_path = resolve_unbind_residual_dump_path()
@@ -850,6 +865,7 @@ def run_loop(
     best_epoch_index: int | None = None
     best_metrics: dict | None = None
     best_state: dict | None = None
+    best_checkpoint_sha: str | None = None
     best_residual_records: list[dict] = []
     progress_path = out_dir / "epoch-progress.jsonl"
 
@@ -860,14 +876,19 @@ def run_loop(
         classify.eval()
         filler_head.eval()
         hit = tot = 0
+        obs_hit = obs_tot = 0
         classify_golds: list[str] = []
         classify_preds: list[str] = []
         for row in classify_va or classify_tr[:8]:
             out = encoder(**encode_texts([row["text"]]))
             pred = int(classify(out.last_hidden_state[:, 0]).argmax(-1)[0])
             gold = maps["family_of"].get(row["lineage"], maps["family_of"]["none"])
-            hit += int(pred == gold)
+            matched = int(pred == gold)
+            hit += matched
             tot += 1
+            if str(row.get("class") or "") == "OBSERVED":
+                obs_tot += 1
+                obs_hit += matched
             if select_on_classify:
                 classify_golds.append(FAMILIES[gold] if 0 <= gold < len(FAMILIES) else NONE_LABEL)
                 classify_preds.append(FAMILIES[pred] if 0 <= pred < len(FAMILIES) else NONE_LABEL)
@@ -907,7 +928,11 @@ def run_loop(
         filler_head.train()
         metrics = summarize_unbind_pairs(pairs, strict_pairs=strict_pairs)
         metrics["classify_acc"] = hit / max(1, tot)
+        metrics["classification_accuracy"] = metrics["classify_acc"]
         metrics["n_classify_eval"] = tot
+        metrics["observed_label_accuracy"] = None if obs_tot == 0 else obs_hit / obs_tot
+        metrics["n_observed_eval"] = obs_tot
+        metrics["unbind_clean_exact"] = None
         if select_on_classify:
             metrics["classify_macro_f1_nonnone"] = macro_f1_nonnone(classify_golds, classify_preds)
             metrics["none_fpr"] = none_false_positive_rate(classify_golds, classify_preds)
@@ -934,6 +959,9 @@ def run_loop(
             opt.zero_grad()
             loss.backward()
             opt.step()
+            global_step += 1
+            loss_sum = loss_sum + loss.detach()
+            loss_steps += 1
             last_train_loss = loss.detach()
             if should_interleave_unbind(classify_batch_i, unbind_every_n) and phase_rows:
                 step_unbind(phase_rows[unbind_cycle % len(phase_rows)])
@@ -975,7 +1003,9 @@ def run_loop(
                 best_residual_records = list(last_residual_records)
                 best_dir = out_dir / "best"
                 write_skeleton(best_dir, maps=maps)
-                save_heads(best_dir, best_state)
+                best_weight_name = save_heads(best_dir, best_state)
+                best_weight_path = best_dir / best_weight_name
+                best_checkpoint_sha = _sha256_file(best_weight_path) if best_weight_path.is_file() else None
                 (best_dir / "best-checkpoint.json").write_text(
                     json.dumps(
                         {
@@ -1062,6 +1092,40 @@ def run_loop(
             )
         if seed_receipt is not None:
             progress["seed"] = seed_receipt["seed"]
+        training_loss = None
+        if loss_steps:
+            training_loss = float((loss_sum / loss_steps).item())
+            loss_sum = torch.zeros((), device=device)
+            loss_steps = 0
+        will_stop = early_stop_break(
+            enabled=early_stop.enabled,
+            epoch_index=ep,
+            best_epoch=best_epoch_index,
+            epochs_scored=ep + 1,
+            minimum_epochs=early_stop.minimum_epochs,
+            patience=early_stop.patience,
+            max_epochs=epochs,
+        )
+        tie = False
+        if select_on_classify:
+            tie = (not saved_best) and score_now == (
+                None if best_macro == float("-inf") else best_macro
+            )
+        progress.update(
+            {
+                "checkpoint_sha256": best_checkpoint_sha,
+                "classification_accuracy": metrics.get("classification_accuracy"),
+                "early_stop": will_stop,
+                "epochs_since_best": None if best_epoch_index is None else ep - best_epoch_index,
+                "global_step": global_step,
+                "improved": saved_best,
+                "learning_rate": float(os.environ.get("HYPERLEX_TRAIN_LR", "2e-5")),
+                "observed_label_accuracy": metrics.get("observed_label_accuracy"),
+                "tie": tie,
+                "training_loss": training_loss,
+                "unbind_clean_exact": None,
+            }
+        )
         progress.update(
             epoch_timing_fields(
                 epoch_started=epoch_started,
@@ -1077,15 +1141,7 @@ def run_loop(
                 f"[epoch {ep}] unbind_exact={exact:.6f} best={best_exact if best_exact != float('-inf') else None} saved_best={saved_best}",
                 flush=True,
             )
-        if early_stop_break(
-            enabled=early_stop.enabled,
-            epoch_index=ep,
-            best_epoch=best_epoch_index,
-            epochs_scored=ep + 1,
-            minimum_epochs=early_stop.minimum_epochs,
-            patience=early_stop.patience,
-            max_epochs=epochs,
-        ):
+        if will_stop:
             stop_reason = STOP_REASON_EARLY_STOPPING
             break
 
@@ -1133,6 +1189,12 @@ def run_loop(
         "device": str(device),
         "cuda": bool(torch.cuda.is_available()),
         "epochs": epochs,
+        "epochs_completed": len(epoch_metrics),
+        "global_steps": global_step,
+        "best_checkpoint_sha256": best_checkpoint_sha,
+        "primary_weights_sha256": (
+            _sha256_file(out_dir / weight_file) if (out_dir / weight_file).is_file() else None
+        ),
         "stop_reason": stop_reason,
         "training_elapsed_seconds": training_elapsed_seconds,
         **provenance(root),

@@ -77,6 +77,8 @@ SCHEDULE_BUNDLE_KEYS = (
     "HYPERLEX_EARLY_STOP_PATIENCE",
     "HYPERLEX_EARLY_STOP_MIN_EPOCHS",
 )
+# Not part of the environment hash. Unset means candidate, the historical launch.
+SCHEDULE_ARM_ENV = "HLX_SCHEDULE_ARM"
 _SCHEDULE_OFF = frozenset({"0", "false", "no", "off"})
 _SCHEDULE_ON = frozenset({"1", "true", "yes", "on"})
 THRESHOLD_AUTHORIZATION_ENV = "HLX_THRESHOLD_AUTHORIZATION"
@@ -633,6 +635,21 @@ def _canon_early_stop(raw: str | None) -> str:
     )
 
 
+def schedule_arm() -> str:
+    """Which sealed schedule the process is executing.
+
+    Unset stays ``candidate`` so existing launches do not change. ``control``
+    is the other sealed schedule in the same ``train_schedule`` variable.
+    """
+    raw = os.environ.get(SCHEDULE_ARM_ENV)
+    if raw is None or not str(raw).strip():
+        return "candidate"
+    token = str(raw).strip().lower()
+    if token not in {"candidate", "control"}:
+        raise ValueError(f"{SCHEDULE_ARM_ENV} must be candidate or control, got {raw!r}")
+    return token
+
+
 def schedule_bundle(payload: Mapping[str, str]) -> tuple[str | None, str, str | None, str | None]:
     """One normalized schedule. Absent early-stop is off. Absent integers stay absent."""
     return (
@@ -745,14 +762,33 @@ def _gate_single_variable(ctx: _Context) -> None:
     skip_on_baseline = {SELECT_METRIC_KEY}
     if declared == DECLARED_TRAIN_SCHEDULE:
         skip_on_baseline.update(SCHEDULE_BUNDLE_KEYS)
-    for key, value in cand_sci.items():
+    try:
+        arm = schedule_arm()
+    except ValueError as exc:
+        ctx.fail("single_variable", f"ADMISSION FAIL: {exc}")
+    if arm == "candidate":
+        expected = dict(cand_sci)
+        absent_schedule: tuple[str, ...] = ()
+    else:
+        expected = {key: value for key, value in cand_sci.items() if key not in SCHEDULE_BUNDLE_KEYS}
+        for key in SCHEDULE_BUNDLE_KEYS:
+            if key in baseline:
+                expected[key] = baseline[key]
+        absent_schedule = tuple(key for key in SCHEDULE_BUNDLE_KEYS if key not in baseline)
+    for key, value in expected.items():
         if os.environ.get(key) != value:
             ctx.fail(
                 "single_variable",
-                f"ADMISSION FAIL: process environment {key} does not match the sealed candidate",
+                f"ADMISSION FAIL: process environment {key} does not match the sealed {arm}",
+            )
+    for key in absent_schedule:
+        if os.environ.get(key) not in (None, ""):
+            ctx.fail(
+                "single_variable",
+                f"ADMISSION FAIL: process environment {key} is set but the sealed {arm} leaves it absent",
             )
     for key, value in base_sci.items():
-        if key in skip_on_baseline:
+        if key in skip_on_baseline or key in SCHEDULE_BUNDLE_KEYS:
             continue
         if os.environ.get(key) != value:
             ctx.fail(
