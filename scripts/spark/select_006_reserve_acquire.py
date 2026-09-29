@@ -11,6 +11,8 @@ import hashlib
 import json
 import os
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from collections import Counter
@@ -111,10 +113,25 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
 def _api(params: dict[str, str]) -> dict[str, Any]:
     query = urllib.parse.urlencode({"format": "json", "formatversion": "2", **params})
     request = urllib.request.Request(API + "?" + query, headers={"User-Agent": UA})
-    with urllib.request.urlopen(request, timeout=60) as response:
-        payload = json.loads(response.read().decode("utf-8"))
-    if not isinstance(payload, dict) or "error" in payload:
+    delay = 2.0
+    for _attempt in range(6):
+        try:
+            with urllib.request.urlopen(request, timeout=60) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code not in {429, 503}:
+                raise SystemExit(f"{FAILURE_SOURCE}: mediawiki http {exc.code}") from exc
+            time.sleep(delay)
+            delay *= 2
+    else:
+        raise SystemExit(f"{FAILURE_SOURCE}: mediawiki rate limit")
+    time.sleep(1.0)
+    if not isinstance(payload, dict):
         raise SystemExit(f"{FAILURE_SOURCE}: mediawiki query failed")
+    if "error" in payload:
+        code = str(payload.get("error", {}).get("code") or "error")
+        raise SystemExit(f"{FAILURE_SOURCE}: mediawiki {code}")
     return payload
 
 
@@ -246,7 +263,6 @@ def _fetch_pages(chosen: list[tuple[str, str]]) -> list[dict[str, Any]]:
             {
                 "action": "query",
                 "prop": "revisions",
-                "rvlimit": "1",
                 "rvprop": "ids|timestamp|sha1|content",
                 "rvslots": "main",
                 "titles": "|".join(batch),
