@@ -1,6 +1,6 @@
 """SELECT-006 launch checks reject a drifted schedule and a drifted loader."""
 
-from hyperlexical.select_006_reserve_eval import EXPECTED_COUNTS, reserve_examples
+from hyperlexical.select_006_reserve_eval import EXPECTED_COUNTS, MANIFEST, reserve_examples
 from hyperlexical.select_006_training_launch import (
     LaunchFailure,
     require_witness,
@@ -87,6 +87,7 @@ def test_witness_mismatch_fails_closed():
         )
 
 
+@pytest.mark.skipif(not MANIFEST.is_file(), reason="sealed reserve is on the training host")
 def test_frozen_reserve_join_keeps_the_sealed_slices():
     examples = reserve_examples()
     assert len(examples) == 37
