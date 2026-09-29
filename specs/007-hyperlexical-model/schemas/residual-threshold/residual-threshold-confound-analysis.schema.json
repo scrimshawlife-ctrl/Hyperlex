@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/residual-threshold-confound-analysis.schema.json",
+  "title": "Residual-threshold confound analysis",
+  "oneOf": [
+    {"$ref": "#/$defs/notRun"},
+    {"$ref": "#/$defs/executed"}
+  ],
+  "$defs": {
+    "stopFlags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["extreme_driven", "pos_partitioned", "tier3_concentrated"],
+      "properties": {
+        "extreme_driven": {"type": "boolean"},
+        "pos_partitioned": {"type": "boolean"},
+        "tier3_concentrated": {"type": "boolean"}
+      }
+    },
+    "notRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "confound_gate_executed",
+        "confound_result",
+        "frozen_stop_conditions",
+        "json_schema_document",
+        "json_schema_exists",
+        "reason",
+        "schema"
+      ],
+      "properties": {
+        "confound_gate_executed": {"const": false},
+        "confound_result": {"const": "NOT_RUN"},
+        "frozen_stop_conditions": {
+          "type": "array",
+          "items": {"enum": ["tier3_concentrated", "extreme_driven", "pos_partitioned"]},
+          "minItems": 3,
+          "uniqueItems": true
+        },
+        "json_schema_document": {"type": "null"},
+        "json_schema_exists": {"const": false},
+        "reason": {"$ref": "residual-threshold-common.schema.json#/$defs/threshold_state"},
+        "schema": {"type": "string", "minLength": 1}
+      }
+    },
+    "executed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "analysis_scope",
+        "confound_gate_executed",
+        "confound_result",
+        "direction_analysis_sha256",
+        "direction_result",
+        "frozen_stop_conditions",
+        "json_schema_document",
+        "json_schema_exists",
+        "nuisance_changes_stop_decision",
+        "nuisance_field_provenance",
+        "report",
+        "residual_recomputed",
+        "rows_excluded",
+        "schema",
+        "source_label_hash",
+        "source_score_hash",
+        "source_support_join_hash",
+        "threshold_search_run"
+      ],
+      "properties": {
+        "analysis_scope": {"const": "CONFOUND_THEN_THRESHOLD_IF_PASS"},
+        "confound_gate_executed": {"const": true},
+        "confound_result": {"enum": ["PASS", "STOP"]},
+        "direction_analysis_sha256": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+        "direction_result": {"const": "SUPPORTED_DIRECTION"},
+        "frozen_stop_conditions": {"$ref": "#/$defs/stopFlags"},
+        "json_schema_document": {"type": "null"},
+        "json_schema_exists": {"const": false},
+        "nuisance_changes_stop_decision": {"const": false},
+        "nuisance_field_provenance": {"type": "object"},
+        "report": {
+          "type": "object",
+          "required": ["extreme_driven", "nuisance", "pos", "pos_partitioned", "tier3", "tier3_counts"],
+          "properties": {
+            "extreme_driven": {"type": "boolean"},
+            "nuisance": {"type": "object"},
+            "pos": {"type": "object"},
+            "pos_partitioned": {"type": "boolean"},
+            "tier3": {"type": "object"},
+            "tier3_counts": {"type": "object"}
+          }
+        },
+        "residual_recomputed": {"const": false},
+        "rows_excluded": {"const": 0},
+        "schema": {"type": "string", "minLength": 1},
+        "source_label_hash": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+        "source_score_hash": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+        "source_support_join_hash": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+        "threshold_search_run": {"type": "boolean"}
+      }
+    }
+  }
+}

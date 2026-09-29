@@ -1,0 +1,63 @@
+{
+  "title": "Confound decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "analysis_sha256",
+    "confound_result",
+    "evaluation_id",
+    "frozen_stop_conditions",
+    "json_schema_document",
+    "json_schema_exists",
+    "next_stage_authorized_by_this_pass",
+    "state",
+    "threshold_search_run"
+  ],
+  "properties": {
+    "analysis_sha256": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "confound_result": {
+      "enum": [
+        "PASS",
+        "STOP"
+      ]
+    },
+    "evaluation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "frozen_stop_conditions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "extreme_driven",
+          "pos_partitioned",
+          "tier3_concentrated"
+        ]
+      },
+      "minItems": 3,
+      "uniqueItems": true
+    },
+    "json_schema_document": {
+      "type": "null"
+    },
+    "json_schema_exists": {
+      "const": false
+    },
+    "next_stage_authorized_by_this_pass": {
+      "type": "boolean"
+    },
+    "state": {
+      "enum": [
+        "PASS",
+        "CALIBRATION_CONFOUND_REVIEW"
+      ]
+    },
+    "threshold_search_run": {
+      "type": "boolean"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/confound-decision.schema.json"
+}

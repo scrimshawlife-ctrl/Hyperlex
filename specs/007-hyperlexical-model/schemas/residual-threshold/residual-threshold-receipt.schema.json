@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/residual-threshold-receipt.schema.json",
+  "title": "Residual-threshold receipt",
+  "description": "Common receipt constraints. Receipts keep the extra fields they were emitted with.",
+  "type": "object",
+  "allOf": [
+    {"$ref": "residual-threshold-common.schema.json#/$defs/unfrozenThresholdInvariant"}
+  ],
+  "required": ["schema"],
+  "properties": {
+    "joined_rows": {"type": "integer", "minimum": 0},
+    "json_schema_document": {"type": "null"},
+    "json_schema_exists": {"type": "boolean"},
+    "measurement_state": {"$ref": "residual-threshold-common.schema.json#/$defs/measurement_state"},
+    "schema": {"type": "string", "minLength": 1},
+    "selected_source": {"const": "none"},
+    "threshold_frozen": {"type": "boolean"},
+    "threshold_value": {"type": ["string", "null"]}
+  },
+  "patternProperties": {
+    "(^|_)sha256$": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"},
+    "_hash$": {"$ref": "residual-threshold-common.schema.json#/$defs/sha256"}
+  },
+  "additionalProperties": true
+}

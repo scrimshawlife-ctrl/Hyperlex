@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/residual-threshold-common.schema.json",
+  "title": "Shared residual-threshold contract terms",
+  "description": "Retrospective definitions for artifacts already emitted. This file does not change those artifacts.",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "row_id": {
+      "$ref": "#/$defs/sha256"
+    },
+    "pwn30_synset": {
+      "type": "string",
+      "pattern": "^(noun|verb|adj|adv):[0-9]{8}$"
+    },
+    "pos": {
+      "enum": ["noun", "verb", "adj", "adv"]
+    },
+    "operator_label": {
+      "enum": ["HIGH", "SECONDARY", "REJECT", "QUARANTINE", "UNRESOLVED"]
+    },
+    "row_resolution_status": {
+      "enum": ["RESIDUAL_READY", "UNKNOWN"]
+    },
+    "measurement_state": {
+      "enum": ["SEALED"]
+    },
+    "threshold_state": {
+      "enum": [
+        "CALIBRATION_INSUFFICIENT_SUPPORT",
+        "NO_DIRECTIONAL_SIGNAL",
+        "CALIBRATION_CONFOUND_REVIEW",
+        "NO_THRESHOLD_PASSES_PRECISION_GATE",
+        "THRESHOLD_FROZEN"
+      ]
+    },
+    "residual_decimal": {
+      "type": "string",
+      "pattern": "^-?[0-9]+\\.[0-9]{10}$"
+    },
+    "effect_decimal": {
+      "type": "string",
+      "pattern": "^-?[0-9]+\\.[0-9]{6}$"
+    },
+    "artifact_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "sha256"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "max", "mean", "median", "min", "p10", "p25", "p75", "p90", "status", "std"],
+      "properties": {
+        "count": {"type": "integer", "minimum": 0},
+        "max": {"$ref": "#/$defs/residual_decimal"},
+        "mean": {"$ref": "#/$defs/residual_decimal"},
+        "median": {"$ref": "#/$defs/residual_decimal"},
+        "min": {"$ref": "#/$defs/residual_decimal"},
+        "p10": {"$ref": "#/$defs/residual_decimal"},
+        "p25": {"$ref": "#/$defs/residual_decimal"},
+        "p75": {"$ref": "#/$defs/residual_decimal"},
+        "p90": {"$ref": "#/$defs/residual_decimal"},
+        "status": {"enum": ["DESCRIPTIVE", "NOT_COMPUTABLE"]},
+        "std": {"$ref": "#/$defs/residual_decimal"}
+      }
+    },
+    "unfrozenThresholdInvariant": {
+      "if": {
+        "properties": {"threshold_frozen": {"const": false}},
+        "required": ["threshold_frozen"]
+      },
+      "then": {
+        "properties": {"threshold_value": {"type": "null"}},
+        "required": ["threshold_value"]
+      }
+    },
+    "frozenThresholdInvariant": {
+      "if": {
+        "properties": {"threshold_frozen": {"const": true}},
+        "required": ["threshold_frozen"]
+      },
+      "then": {
+        "required": [
+          "false_high",
+          "high_recall",
+          "leave_one_out_result",
+          "precision",
+          "predicted_yes_support",
+          "quarantine_predicted_yes",
+          "reject_predicted_yes",
+          "threshold_value",
+          "true_high"
+        ],
+        "properties": {
+          "false_high": {"type": "integer", "minimum": 0},
+          "high_recall": {"$ref": "#/$defs/effect_decimal"},
+          "leave_one_out_result": {"const": "PASS"},
+          "precision": {"$ref": "#/$defs/effect_decimal"},
+          "predicted_yes_support": {"type": "integer", "minimum": 1},
+          "quarantine_predicted_yes": {"const": 0},
+          "reject_predicted_yes": {"const": 0},
+          "threshold_value": {"$ref": "#/$defs/residual_decimal"},
+          "true_high": {"type": "integer", "minimum": 0}
+        }
+      }
+    }
+  }
+}

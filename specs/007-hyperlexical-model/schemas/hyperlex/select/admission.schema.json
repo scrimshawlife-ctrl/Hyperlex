@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex.admission.v1",
+  "title": "Training admission receipt",
+  "description": "Fields emitted by admit_training_run. Schema creation does not admit SELECT-005.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_gate_sequence",
+    "best_moved",
+    "controlled_holdout_contract",
+    "epochs",
+    "gradient_steps",
+    "hlx_allow_no_holdout",
+    "holdout_admitted",
+    "launch_armed",
+    "optimizer_loaded",
+    "schema",
+    "training_started"
+  ],
+  "properties": {
+    "schema": {"const": "hyperlex.admission.v1"},
+    "controlled_holdout_contract": {
+      "enum": ["CONTROLLED_RESERVE", "LEGACY_MANIFEST", "UNCONTROLLED"]
+    },
+    "admission_gate_sequence": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 9
+    },
+    "failed_gate": {"type": ["string", "null"]},
+    "environment_hash": {"$ref": "#/$defs/sha256"},
+    "experiment_id": {"type": ["string", "null"]},
+    "launch_armed": {"type": "boolean"},
+    "training_started": {"const": false},
+    "epochs": {"const": 0},
+    "gradient_steps": {"const": 0},
+    "optimizer_loaded": {"type": "boolean"},
+    "best_moved": {"type": "boolean"},
+    "hlx_allow_no_holdout": {"type": "boolean"},
+    "holdout_admitted": {"type": "boolean"},
+    "admission_result": {
+      "enum": ["ADMISSION_PASS", "NOT_ARMED", "NOT_READY"]
+    },
+    "status": {
+      "anyOf": [
+        {"type": "null"},
+        {"enum": ["NOT_READY", "PREREGISTERED", "TRAINING_READY"]}
+      ]
+    },
+    "ready_to_train": {"type": "boolean"},
+    "scientific_contract_sealed": {"type": "boolean"},
+    "decision_rule_sealed": {"type": "boolean"},
+    "decision_threshold_state": {"type": "string"},
+    "training_launch_authorized": {"type": "boolean"},
+    "holdout_state": {"type": ["string", "null"]},
+    "holdout_experiment_id": {"type": ["string", "null"]},
+    "holdout_manifest_sha256": {
+      "anyOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]
+    },
+    "reserve_lifecycle": {"type": "string"},
+    "reserve_events_sha256": {"$ref": "#/$defs/sha256"},
+    "reserve_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classify", "classify_non_none", "classify_observed", "unbind_clean"],
+      "properties": {
+        "classify": {"type": "integer", "minimum": 0},
+        "classify_non_none": {"type": "integer", "minimum": 0},
+        "classify_observed": {"type": "integer", "minimum": 0},
+        "unbind_clean": {"type": "integer", "minimum": 0}
+      }
+    },
+    "data_sha256": {"$ref": "#/$defs/sha256"},
+    "holdout_filter_training_rows_removed": {"type": "integer", "minimum": 0},
+    "holdout_train_row_id_overlap": {"type": "integer", "minimum": 0},
+    "holdout_train_text_hash_overlap": {"type": "integer", "minimum": 0},
+    "holdout_training_disjoint": {"type": "boolean"},
+    "live_export_generation_enabled": {"type": "boolean"},
+    "reserve_train_row_id_overlap": {"type": "integer", "minimum": 0},
+    "reserve_train_text_hash_overlap": {"type": "integer", "minimum": 0},
+    "training_export_path": {"type": "string"},
+    "training_export_rows": {"type": "integer", "minimum": 0},
+    "training_export_sha256_actual": {"$ref": "#/$defs/sha256"},
+    "training_export_sha256_expected": {"$ref": "#/$defs/sha256"},
+    "training_input_mode": {"type": "string"},
+    "training_rows_removed": {"type": "integer", "minimum": 0},
+    "allow_train": {"type": "boolean"},
+    "brier": {"type": ["number", "null"]},
+    "machine": {"type": "string"},
+    "name_gate": {"type": "boolean"},
+    "note": {"type": "string"},
+    "python": {"type": "string"},
+    "trunk_config": {"type": "boolean"},
+    "trunk_dir": {"type": "string"},
+    "trunk_dir_exists": {"type": "boolean"},
+    "trunk_id": {"type": "string"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

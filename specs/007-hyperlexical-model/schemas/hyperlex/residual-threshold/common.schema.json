@@ -1,0 +1,250 @@
+{
+  "title": "Shared residual-threshold contract terms",
+  "description": "Canonical terms already emitted by the threshold lane. This schema does not migrate frozen artifacts.",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "row_id": {
+      "$ref": "#/$defs/sha256"
+    },
+    "pwn30_synset": {
+      "type": "string",
+      "pattern": "^(noun|verb|adj|adv):[0-9]{8}$"
+    },
+    "pos": {
+      "enum": [
+        "noun",
+        "verb",
+        "adj",
+        "adv"
+      ]
+    },
+    "operator_label": {
+      "enum": [
+        "HIGH",
+        "SECONDARY",
+        "REJECT",
+        "QUARANTINE",
+        "UNRESOLVED"
+      ]
+    },
+    "row_resolution_status": {
+      "enum": [
+        "RESIDUAL_READY",
+        "UNKNOWN"
+      ]
+    },
+    "constituent_resolution_status": {
+      "enum": [
+        "EXACT",
+        "RESOLVED",
+        "AMBIGUOUS",
+        "UNRESOLVED"
+      ]
+    },
+    "score_status": {
+      "enum": [
+        "SCORED",
+        "UNKNOWN"
+      ]
+    },
+    "measurement_state": {
+      "enum": [
+        "SEALED",
+        "ELIGIBLE",
+        "EXECUTED"
+      ]
+    },
+    "threshold_state": {
+      "enum": [
+        "THRESHOLD_PROCEDURE_PREREGISTERED",
+        "SURFACES_FROZEN",
+        "CALIBRATION_INSUFFICIENT_SUPPORT",
+        "SUPPORT_GATE_PASSED",
+        "SUPPORTED_DIRECTION",
+        "NO_DIRECTIONAL_SIGNAL",
+        "CALIBRATION_CONFOUND_REVIEW",
+        "NO_THRESHOLD_PASSES_PRECISION_GATE",
+        "THRESHOLD_FROZEN"
+      ]
+    },
+    "direction_result": {
+      "enum": [
+        "SUPPORTED_DIRECTION",
+        "INVERTED_DIRECTION",
+        "NO_DIRECTIONAL_SEPARATION"
+      ]
+    },
+    "residual_decimal": {
+      "type": "string",
+      "pattern": "^-?[0-9]+\\.[0-9]{10}$"
+    },
+    "effect_decimal": {
+      "type": "string",
+      "pattern": "^-?[0-9]+\\.[0-9]{6}$"
+    },
+    "distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "max", "mean", "median", "min", "p10", "p25", "p75", "p90", "status", "std"],
+      "properties": {
+        "count": {"type": "integer", "minimum": 0},
+        "max": {"$ref": "#/$defs/residual_decimal"},
+        "mean": {"$ref": "#/$defs/residual_decimal"},
+        "median": {"$ref": "#/$defs/residual_decimal"},
+        "min": {"$ref": "#/$defs/residual_decimal"},
+        "p10": {"$ref": "#/$defs/residual_decimal"},
+        "p25": {"$ref": "#/$defs/residual_decimal"},
+        "p75": {"$ref": "#/$defs/residual_decimal"},
+        "p90": {"$ref": "#/$defs/residual_decimal"},
+        "status": {"enum": ["DESCRIPTIVE", "NOT_COMPUTABLE"]},
+        "std": {"$ref": "#/$defs/residual_decimal"}
+      }
+    },
+    "artifact_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "sha256"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "unfrozenThresholdInvariant": {
+      "if": {
+        "properties": {
+          "threshold_frozen": {
+            "const": false
+          }
+        },
+        "required": [
+          "threshold_frozen"
+        ]
+      },
+      "then": {
+        "properties": {
+          "threshold_value": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "threshold_value"
+        ]
+      }
+    },
+    "frozenThresholdInvariant": {
+      "if": {
+        "properties": {
+          "threshold_frozen": {
+            "const": true
+          }
+        },
+        "required": [
+          "threshold_frozen"
+        ]
+      },
+      "then": {
+        "required": [
+          "false_high",
+          "high_recall",
+          "leave_one_out_result",
+          "precision",
+          "predicted_yes_support",
+          "quarantine_predicted_yes",
+          "reject_predicted_yes",
+          "threshold_value",
+          "true_high",
+          "wilson_lower",
+          "wilson_upper"
+        ],
+        "properties": {
+          "false_high": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "high_recall": {
+            "$ref": "#/$defs/effect_decimal"
+          },
+          "leave_one_out_result": {
+            "const": "PASS"
+          },
+          "precision": {
+            "$ref": "#/$defs/effect_decimal"
+          },
+          "predicted_yes_support": {
+            "type": "integer",
+            "minimum": 8
+          },
+          "quarantine_predicted_yes": {
+            "const": 0
+          },
+          "reject_predicted_yes": {
+            "const": 0
+          },
+          "threshold_value": {
+            "$ref": "#/$defs/residual_decimal"
+          },
+          "true_high": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "wilson_lower": {
+            "$ref": "#/$defs/effect_decimal"
+          },
+          "wilson_upper": {
+            "$ref": "#/$defs/effect_decimal"
+          }
+        }
+      }
+    },
+    "sealedMeasurementInvariant": {
+      "if": {
+        "properties": {
+          "measurement_state": {
+            "const": "SEALED"
+          }
+        },
+        "required": [
+          "measurement_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "measurement_glossbert_run": {
+            "const": false
+          },
+          "measurement_labeled": {
+            "const": false
+          },
+          "measurement_labels_loaded": {
+            "const": false
+          },
+          "measurement_minilm_run": {
+            "const": false
+          },
+          "measurement_resolved": {
+            "const": false
+          },
+          "measurement_scored": {
+            "const": false
+          },
+          "measurement_touched": {
+            "const": false
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/common.schema.json"
+}

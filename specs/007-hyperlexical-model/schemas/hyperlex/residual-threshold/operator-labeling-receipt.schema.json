@@ -1,0 +1,63 @@
+{
+  "title": "Operator labeling receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "json_schema_document",
+    "json_schema_exists",
+    "label_sha256",
+    "labeling_state",
+    "measurement_state",
+    "schema",
+    "threshold_frozen",
+    "threshold_value"
+  ],
+  "properties": {
+    "json_schema_document": {
+      "type": "null"
+    },
+    "json_schema_exists": {
+      "const": false
+    },
+    "label_sha256": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "labeling_state": {
+      "const": "LABELS_FROZEN"
+    },
+    "measurement_state": {
+      "$ref": "common.schema.json#/$defs/measurement_state"
+    },
+    "schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selected_source": {
+      "const": "none"
+    },
+    "threshold_frozen": {
+      "const": false
+    },
+    "threshold_value": {
+      "type": "null"
+    }
+  },
+  "patternProperties": {
+    "(^|_)sha256$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "_hash$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "common.schema.json#/$defs/unfrozenThresholdInvariant"
+    },
+    {
+      "$ref": "common.schema.json#/$defs/sealedMeasurementInvariant"
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/operator-labeling-receipt.schema.json"
+}

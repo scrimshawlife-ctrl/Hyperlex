@@ -1,0 +1,343 @@
+{
+  "title": "Semantic evidence record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_status",
+    "features",
+    "output",
+    "rule"
+  ],
+  "properties": {
+    "evidence_status": {
+      "$ref": "common.schema.json#/$defs/evidence_status"
+    },
+    "features": {
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "output": {
+      "$ref": "common.schema.json#/$defs/output_label"
+    },
+    "rule": {
+      "const": "RUNE.SEMANTIC_COMPOSITIONALITY_EVIDENCE.v2"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "evidence_status": {
+            "const": "UNKNOWN"
+          }
+        },
+        "required": [
+          "evidence_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "features": {
+            "type": "null"
+          },
+          "output": {
+            "const": "UNKNOWN"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence_status": {
+            "const": "READY"
+          }
+        },
+        "required": [
+          "evidence_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "features": {
+            "type": "array",
+            "minItems": 13,
+            "maxItems": 13,
+            "items": false,
+            "prefixItems": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "whole_vs_constituent_mean_cosine"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "whole_vs_constituent_mean_residual"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "whole_vs_each_constituent_min_similarity"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "whole_vs_each_constituent_max_similarity"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "whole_vs_each_constituent_mean_similarity"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "whole_vs_each_constituent_similarity_variance"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "constituent_pair_mean_similarity"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "constituent_pair_min_similarity"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "constituent_pair_variance"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "whole_gloss_vs_composed_gloss_similarity"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": false
+                  },
+                  "name": {
+                    "const": "whole_lemma_vs_composed_constituent_similarity"
+                  },
+                  "value": {
+                    "$ref": "common.schema.json#/$defs/decimal_feature"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": true
+                  },
+                  "name": {
+                    "const": "constituent_count"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "control",
+                  "name",
+                  "value"
+                ],
+                "properties": {
+                  "control": {
+                    "const": true
+                  },
+                  "name": {
+                    "const": "token_count"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            ]
+          },
+          "output": {
+            "const": "UNKNOWN"
+          }
+        }
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/semantic-evidence-v2/evidence-record.schema.json"
+}

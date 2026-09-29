@@ -1,0 +1,47 @@
+{
+  "title": "Score receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "json_schema_document",
+    "json_schema_exists",
+    "schema",
+    "score_sha256"
+  ],
+  "properties": {
+    "json_schema_document": {
+      "type": "null"
+    },
+    "json_schema_exists": {
+      "const": false
+    },
+    "measurement_state": {
+      "$ref": "common.schema.json#/$defs/measurement_state"
+    },
+    "schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "score_sha256": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "selected_source": {
+      "const": "none"
+    }
+  },
+  "patternProperties": {
+    "(^|_)sha256$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "_hash$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "common.schema.json#/$defs/sealedMeasurementInvariant"
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/score-receipt.schema.json"
+}

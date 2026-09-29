@@ -1,0 +1,44 @@
+{
+  "title": "Semantic evidence v2 shared terms",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "feature_name": {
+      "enum": [
+        "whole_vs_constituent_mean_cosine",
+        "whole_vs_constituent_mean_residual",
+        "whole_vs_each_constituent_min_similarity",
+        "whole_vs_each_constituent_max_similarity",
+        "whole_vs_each_constituent_mean_similarity",
+        "whole_vs_each_constituent_similarity_variance",
+        "constituent_pair_mean_similarity",
+        "constituent_pair_min_similarity",
+        "constituent_pair_variance",
+        "whole_gloss_vs_composed_gloss_similarity",
+        "whole_lemma_vs_composed_constituent_similarity",
+        "constituent_count",
+        "token_count"
+      ]
+    },
+    "decimal_feature": {
+      "type": "string",
+      "pattern": "^-?[0-9]+\\.[0-9]{10}$"
+    },
+    "evidence_status": {
+      "enum": [
+        "READY",
+        "UNKNOWN"
+      ]
+    },
+    "output_label": {
+      "enum": [
+        "YES",
+        "UNKNOWN"
+      ]
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/semantic-evidence-v2/common.schema.json"
+}

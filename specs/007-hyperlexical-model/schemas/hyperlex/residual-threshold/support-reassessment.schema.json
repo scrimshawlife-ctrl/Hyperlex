@@ -1,0 +1,56 @@
+{
+  "title": "Support reassessment",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "json_schema_document",
+    "json_schema_exists",
+    "schema",
+    "state",
+    "support_gate_passed",
+    "threshold_frozen",
+    "threshold_value"
+  ],
+  "properties": {
+    "json_schema_document": {
+      "type": "null"
+    },
+    "json_schema_exists": {
+      "const": false
+    },
+    "schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selected_source": {
+      "const": "none"
+    },
+    "state": {
+      "const": "SUPPORT_GATE_PASSED"
+    },
+    "support_gate_passed": {
+      "type": "boolean"
+    },
+    "threshold_frozen": {
+      "const": false
+    },
+    "threshold_value": {
+      "type": "null"
+    }
+  },
+  "patternProperties": {
+    "(^|_)sha256$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    },
+    "_hash$": {
+      "$ref": "common.schema.json#/$defs/sha256"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "common.schema.json#/$defs/unfrozenThresholdInvariant"
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex/residual-threshold/support-reassessment.schema.json"
+}
