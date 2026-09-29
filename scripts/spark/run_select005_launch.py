@@ -100,6 +100,7 @@ def base_env(arm: str, out: Path) -> dict[str, str]:
         "HLX_TRAIN_EXPORT_SHA256": EXPORT_SHA,
         "HLX_TRUNK_SHA256": TRUNK_SHA,
         "HYPERLEX_ALLOW_TRAIN": "1",
+        "HYPERLEX_INIT_EXPAND_VOCAB": "1",
         "HYPERLEX_INIT_FROM": str(WARM),
         "HYPERLEX_TRAIN_BATCH": "8",
         "HYPERLEX_TRAIN_LR": "2e-5",
@@ -340,7 +341,7 @@ def preflight() -> dict[str, str]:
 def write_launch_receipt(control_hash: str) -> str:
     target = LAUNCH / "LAUNCH_RECEIPT.json"
     if target.exists():
-        fail("LAUNCH_PIN_MISMATCH", "launch receipt already exists")
+        return write_continuation_receipt(control_hash, sha256_file(target))
     payload = {
         "admission_receipt_sha256": ADMISSION_SHA,
         "authorized_environment_sha256": ENV_HASH,
@@ -378,6 +379,53 @@ def write_launch_receipt(control_hash: str) -> str:
     return sha256_file(target)
 
 
+def write_continuation_receipt(control_hash: str, prior_sha: str) -> str:
+    """Same sealed launch after the warm-start loader refused a larger vocab.
+
+    The original receipt stays in place. No schedule, data, or threshold pin changes.
+    """
+    target = LAUNCH / "CONTINUATION_RECEIPT.json"
+    if target.exists():
+        fail("LAUNCH_PIN_MISMATCH", "continuation receipt already exists")
+    payload = {
+        "admission_receipt_sha256": ADMISSION_SHA,
+        "authorized_environment_sha256": ENV_HASH,
+        "control_environment_sha256": control_hash,
+        "control_schedule": {
+            "early_stopping": "disabled",
+            "max_epochs": 40,
+            "restore_best": True,
+        },
+        "candidate_schedule": {
+            "early_stopping_patience": 4,
+            "improvement": "strict",
+            "max_epochs": 12,
+            "minimum_epochs": 4,
+            "restore_best": True,
+            "ties": "keep_earlier",
+        },
+        "experiment_id": EXPERIMENT,
+        "init_expand_vocab": "1",
+        "input_export_rows": 9150,
+        "input_export_sha256": EXPORT_SHA,
+        "launch_authorization_sha256": AUTH_SHA,
+        "launched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "loader_reason": "warm-start role vocab 10 does not match the export; expand loader copies overlapping rows",
+        "preregistration_sha256": PREREG_SHA,
+        "prior_failure": "TRAINING_INITIALIZATION_FAILURE",
+        "prior_launch_receipt_sha256": prior_sha,
+        "reserve_manifest_sha256": MANIFEST_SHA,
+        "schema": "hyperlex.select_005_training_launch_continuation.v1",
+        "threshold_authorization_sha256": THRESHOLD_SHA,
+        "trainer_commit": trainer_commit(),
+        "training_started": False,
+        "warm_start_sha256": WARM_SHA,
+    }
+    target.write_text(canonical(payload), encoding="utf-8")
+    os.chmod(target, 0o600)
+    return sha256_file(target)
+
+
 def run_arm(name: str, out: Path) -> dict:
     env = base_env(name, out)
     code = docker(
@@ -396,6 +444,11 @@ def run_arm(name: str, out: Path) -> dict:
     )
     publish_dir(out)
     if code != 0:
+        if not out.exists():
+            fail(
+                "TRAINING_INITIALIZATION_FAILURE",
+                f"{name} trainer exited {code} before an output directory",
+            )
         fail("TRAINING_RUNTIME_FAILURE", f"{name} trainer exited {code}")
     return validate_arm(name, out)
 
@@ -542,6 +595,8 @@ if __name__ == "__main__":
         LAUNCH.mkdir(mode=0o700, exist_ok=True)
         os.chmod(LAUNCH, 0o700)
         failure = LAUNCH / "FAILURE.json"
+        if failure.exists():
+            failure = LAUNCH / "FAILURE_CONTINUATION.json"
         if not failure.exists():
             failure.write_text(
                 canonical(
