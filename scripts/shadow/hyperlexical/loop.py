@@ -21,6 +21,7 @@ from .classify_metrics import (
     none_false_positive_rate,
     resolve_select_metric,
 )
+from .training_schedule import install_default_schedule, resolve_training_schedule
 from .classify_split import apply_classify_split_file
 from .seed_control import apply_training_seed
 from .force_train_overlap import enforce_force_train_disjoint
@@ -120,7 +121,12 @@ def resolve_save_best_unbind(raw: str | None = None) -> bool:
 
 @dataclass(frozen=True)
 class EarlyStopConfig:
-    """Optional classify-metric early stop. Default-off. Does not change the epoch cap."""
+    """Optional classify-metric early stop. This resolver stays off until enabled.
+
+    Comparable classify runs receive the SELECT-006 candidate schedule from
+    ``resolve_training_schedule`` before admission. An explicit schedule
+    environment is left unchanged.
+    """
 
     enabled: bool
     max_epochs: int
@@ -639,6 +645,11 @@ def run_loop(
     live_store: Path | None = None,
 ) -> dict:
     # Same gates as preflight. Admission-only returns before any optimizer.
+    # The schedule is fixed first so admission records the schedule that will run.
+    select_metric = resolve_select_metric()
+    schedule = resolve_training_schedule(select_metric=select_metric)
+    if schedule.source == "select-006-candidate":
+        install_default_schedule(os.environ)
     admission = admit_training_run(
         include_live=include_live,
         live_store=live_store,
@@ -746,8 +757,14 @@ def run_loop(
     if pre_optimizer_stop_requested():
         return pre_optimizer_receipt(role_head, filler_head, maps, init_receipt)
     trainable = [p for p in encoder.parameters() if p.requires_grad] + list(classify.parameters()) + list(role_head.parameters()) + list(filler_head.parameters())
-    epochs = int(os.environ.get("HYPERLEX_TRAIN_EPOCHS", "2"))
+    epochs = schedule.max_epochs
     early_stop = resolve_early_stop_config(max_epochs=epochs, select_metric=select_metric)
+    if (
+        early_stop.enabled != schedule.early_stopping
+        or early_stop.patience != schedule.patience
+        or early_stop.minimum_epochs != schedule.minimum_epochs
+    ):
+        raise ValueError("early stop does not match the training schedule")
     from torch.optim import AdamW
 
     opt = AdamW(trainable, lr=float(os.environ.get("HYPERLEX_TRAIN_LR", "2e-5")))
@@ -1184,6 +1201,7 @@ def run_loop(
             _sha256_file(out_dir / weight_file) if (out_dir / weight_file).is_file() else None
         ),
         "stop_reason": stop_reason,
+        "training_schedule": schedule.as_dict(),
         "training_elapsed_seconds": training_elapsed_seconds,
         **provenance(root),
         "n_train_classify": len(classify_tr),

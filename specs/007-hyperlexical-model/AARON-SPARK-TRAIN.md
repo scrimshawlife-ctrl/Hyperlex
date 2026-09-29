@@ -70,10 +70,13 @@ export HYPERLEX_OFFLINE=1
 export TOKENIZERS_PARALLELISM=false
 export HYPERLEX_TRAIN_OUT="$HOME/.hyperlex/models/hyperlex-encoder-modernbert-base-seed"
 export HYPERLEX_TRAIN_EPOCHS=2
-# HYPERLEX_TRAIN_EPOCHS is the max-epoch cap. It does not enable early stopping.
-# Early stop is optional and default-off. Turn it on only with the classify
-# selection metric. Improvement is a strict increase; ties keep the earlier
-# checkpoint. After the epoch is scored, stop when
+# This export is an explicit schedule override for the 2-epoch smoke.
+# A comparable run (HLX_SELECT_METRIC=classify_macro_f1_nonnone) that does
+# not set a schedule uses the SELECT-006 candidate default: max 12 epochs,
+# patience 4, minimum 4, strict improvement, ties keep the earlier
+# checkpoint, and restore best. HYPERLEX_TRAIN_EPOCHS is the max-epoch cap.
+# Setting it, or HYPERLEX_EARLY_STOP, preregisters a different schedule and
+# is not filled in from that default. After the epoch is scored, stop when
 # epoch_index - best_epoch >= patience and at least MIN_EPOCHS epochs have
 # been scored (0-based epoch_index). The best checkpoint is still restored.
 # epoch-progress.jsonl gains observational seconds rounded to 6 decimal places

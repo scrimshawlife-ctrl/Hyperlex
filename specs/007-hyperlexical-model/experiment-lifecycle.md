@@ -37,3 +37,9 @@ ZERO_INIT_LOADER_VERIFIED      loader evidence
 Those receipts are not rewritten.
 
 The sealed SELECT-006 chain maps to `READY`. Its next action is `RUN`.
+
+## Default schedule
+
+Comparable runs select `classify_macro_f1_nonnone`. With no preregistered schedule, they use the SELECT-006 candidate schedule: max 12 epochs, minimum 4, patience 4, strict improvement, ties keep the earlier checkpoint, and restore best.
+
+A preregistered schedule replaces that default. The sealed SELECT-006 control schedule, 40 epochs with early stopping off, remains that kind of override. Unset unbind runs stay at 2 epochs with early stopping off.
