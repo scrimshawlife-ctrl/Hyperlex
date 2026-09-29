@@ -222,8 +222,12 @@ def decision_seal() -> dict[str, Any]:
         "provenance_weights": PROVENANCE_WEIGHTS,
         "schedule": V2_SCHEDULE,
         "selection_score": "0.50*active_family_macro_f1+0.25*applicability_macro_f1+0.25*observed_active_family_macro_f1",
+        "applicability_surface_f1_min": 0.80,
+        "none_surface_gap_abs_max": 0.10,
+        "residualized_length_correlation_abs_max": 0.30,
         "surface_rule": "hyperlex.classification.v2.surface.v1",
         "surface_shortcut_abs_correlation_max": 0.30,
+        "surface_shortcut_diagnostic": "gold_conditional_residualized",
         "vocabulary_id": VOCABULARY_ID,
     }
     return {"sha256": sha256_text(canonical_json(body)), "body": body}

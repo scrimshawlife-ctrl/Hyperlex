@@ -569,3 +569,130 @@ def test_missing_surface_cell_blocks_readiness():
     )
     assert empty["pass"] is False
     assert "FAMILY_PRESENT/ATOM" in empty["missing"]["train"]
+
+
+def test_corrected_shortcut_diagnostic_conditions_on_gold():
+    from hyperlexical.classification_v2_surface import (
+        APPLICABILITY_SURFACE_F1_MIN,
+        NONE_SURFACE_GAP_ABS_MAX,
+        RESIDUALIZED_LENGTH_CORRELATION_ABS_MAX,
+        applicability_surface_report,
+    )
+
+    body = decision_seal()["body"]
+    assert body["surface_shortcut_abs_correlation_max"] == 0.30
+    assert body["none_surface_gap_abs_max"] == NONE_SURFACE_GAP_ABS_MAX == 0.10
+    assert body["residualized_length_correlation_abs_max"] == RESIDUALIZED_LENGTH_CORRELATION_ABS_MAX == 0.30
+    assert body["applicability_surface_f1_min"] == APPLICABILITY_SURFACE_F1_MIN == 0.80
+    assert body["surface_shortcut_diagnostic"] == "gold_conditional_residualized"
+    prose = "This definition keeps a stable probability inside its gold class."
+    records = []
+    records.extend(
+        {
+            "text": "atom",
+            "lineage": "ai-native",
+            "probability": 0.78,
+            "prediction": "FAMILY_PRESENT",
+            "family_prediction": "ai-native",
+        }
+        for _ in range(6)
+    )
+    records.extend(
+        {
+            "text": prose,
+            "lineage": "ai-native",
+            "probability": 0.91,
+            "prediction": "FAMILY_PRESENT",
+            "family_prediction": "ai-native",
+        }
+        for _ in range(12)
+    )
+    records.extend(
+        {"text": "stone", "lineage": "none", "probability": 0.13, "prediction": "NONE"}
+        for _ in range(12)
+    )
+    records.extend(
+        {"text": prose, "lineage": "none", "probability": 0.13, "prediction": "NONE"}
+        for _ in range(4)
+    )
+    report = applicability_surface_report(records)
+    invariance = report["invariance"]
+    assert report["pass"] is False
+    assert abs(report["corr_word_count_p_family_present"]) > 0.30
+    assert invariance["historical_blunt_guard"]["pass"] is False
+    assert invariance["pass"] is True
+    assert abs(invariance["family_surface_gap"] - 0.13) < 1e-9
+    assert invariance["none_surface_gap"] == 0.0
+    assert invariance["guard_results"]["none_surface_gap"] is True
+    assert abs(invariance["residualized_length_correlation"]["correlation"]) < 1e-9
+    assert invariance["conditional_length_correlation"]["FAMILY_PRESENT"]["correlation"] == 1.0
+    assert invariance["conditional_length_correlation"]["NONE"]["correlation"] is None
+    assert invariance["conditional_length_correlation"]["FAMILY_PRESENT"]["n"] == 18
+    assert invariance["conditional_length_correlation"]["NONE"]["n"] == 16
+    assert "surface_prose" in invariance["residualized_length_correlation"]["columns"]
+    assert "gold_family_present" in invariance["residualized_length_correlation"]["columns"]
+
+
+def test_none_surface_gap_is_the_shortcut_signal():
+    from hyperlexical.classification_v2_surface import applicability_invariance
+
+    prose = "This sentence is prose and should not raise applicability on none."
+    records = [
+        {
+            "text": "atom",
+            "lineage": "ai-native",
+            "probability": 0.80,
+            "prediction": "FAMILY_PRESENT",
+            "family_prediction": "ai-native",
+        },
+        {
+            "text": prose,
+            "lineage": "ai-native",
+            "probability": 0.80,
+            "prediction": "FAMILY_PRESENT",
+            "family_prediction": "ai-native",
+        },
+        {"text": "stone", "lineage": "none", "probability": 0.10, "prediction": "NONE"},
+        {"text": prose, "lineage": "none", "probability": 0.40, "prediction": "NONE"},
+    ]
+    invariance = applicability_invariance(records)
+    assert abs(invariance["none_surface_gap"] - 0.30) < 1e-12
+    assert invariance["family_surface_gap"] == 0.0
+    assert invariance["guard_results"]["none_surface_gap"] is False
+    assert invariance["pass"] is False
+
+
+def test_residual_length_within_gold_fails_when_surface_means_match():
+    from hyperlexical.classification_v2_surface import applicability_invariance
+
+    short = "A short prose note is here."
+    long = "A much longer prose note that keeps adding ordinary words until the count is high."
+    records = [
+        {"text": "atom", "lineage": "none", "probability": 0.20, "prediction": "NONE"},
+        {"text": "rock", "lineage": "none", "probability": 0.20, "prediction": "NONE"},
+        {"text": short, "lineage": "none", "probability": 0.05, "prediction": "NONE"},
+        {"text": long, "lineage": "none", "probability": 0.35, "prediction": "NONE"},
+        {
+            "text": "equip",
+            "lineage": "ai-native",
+            "probability": 0.80,
+            "prediction": "FAMILY_PRESENT",
+            "family_prediction": "ai-native",
+        },
+        {
+            "text": short,
+            "lineage": "ai-native",
+            "probability": 0.80,
+            "prediction": "FAMILY_PRESENT",
+            "family_prediction": "ai-native",
+        },
+    ]
+    invariance = applicability_invariance(records)
+    assert abs(invariance["none_surface_gap"]) < 1e-9
+    assert invariance["guard_results"]["none_surface_gap"] is True
+    assert invariance["within_cell_length_correlation"]["NONE/PROSE"]["n"] == 2
+    prose_correlation = invariance["within_cell_length_correlation"]["NONE/PROSE"]["correlation"]
+    assert prose_correlation is not None and abs(prose_correlation - 1.0) < 1e-12
+    assert abs(invariance["residualized_length_correlation"]["correlation"]) > 0.30
+    assert invariance["guard_results"]["residualized_length_correlation"] is False
+    assert invariance["pass"] is False

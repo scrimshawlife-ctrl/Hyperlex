@@ -222,6 +222,8 @@ def settle(checked: dict) -> dict:
         "shortcut_abs_correlation_max": 0.30,
         "shortcut_correlation": surface.get("corr_word_count_p_family_present"),
         "shortcut_pass": surface.get("pass"),
+        "invariance_pass": (surface.get("invariance") or {}).get("pass"),
+        "invariance_diagnostic": surface.get("invariance"),
         "surface_report": surface,
         "validation": {
             "active_family_macro_f1": best.get("active_family_macro_f1"),

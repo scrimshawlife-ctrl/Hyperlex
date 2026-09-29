@@ -3,6 +3,11 @@
 Text form is ATOM, PROSE, or AMBIGUOUS. The family label is not an input.
 Applicability loss gives each populated label/form cell equal aggregate
 authority. The family-head class-weight formula is not applied here.
+
+The historical shortcut guard correlates word count with P(FAMILY_PRESENT)
+across both gold classes. That result stays recorded. The corrected
+diagnostic conditions on the gold label. It is read-only and does not
+enter the loss.
 """
 
 from __future__ import annotations
@@ -18,6 +23,11 @@ SURFACE_RULE_ID = "hyperlex.classification.v2.surface.v1"
 CELL_LABELS = ("FAMILY_PRESENT", "NONE")
 CELL_FORMS = (SURFACE_ATOM, SURFACE_PROSE)
 SURFACE_SHORTCUT_ABS_CORRELATION_MAX = 0.30
+NONE_SURFACE_GAP_ABS_MAX = 0.10
+RESIDUALIZED_LENGTH_CORRELATION_ABS_MAX = 0.30
+APPLICABILITY_SURFACE_F1_MIN = 0.80
+APPLICABILITY_F1_MIN_SUPPORT = 1
+INVARIANCE_RULE_ID = "hyperlex.classification.v2.surface_invariance.v1"
 LENGTH_BUCKETS = ((1, 2), (3, 6), (7, 12), (13, 10**9))
 
 _PROVENANCE_KEYS = {
@@ -292,6 +302,8 @@ def applicability_surface_report(records: Sequence[Mapping[str, Any]]) -> dict[s
             }
         )
     passed = correlation is not None and abs(correlation) <= SURFACE_SHORTCUT_ABS_CORRELATION_MAX
+    # ``pass`` remains the historical global guard. Corrected settlement reads ``invariance``.
+    invariance = applicability_invariance(records)
     return {
         "abs_correlation_max": SURFACE_SHORTCUT_ABS_CORRELATION_MAX,
         "applicability_by_cell": cells,
@@ -300,6 +312,7 @@ def applicability_surface_report(records: Sequence[Mapping[str, Any]]) -> dict[s
             form: _macro_family(pairs) for form, pairs in family_by_form.items()
         },
         "length_buckets": length_buckets,
+        "invariance": invariance,
         "pass": passed,
         "rule": SURFACE_RULE_ID,
         "surface": "validation",
@@ -325,3 +338,210 @@ def _macro_family(pairs: Sequence[tuple[str, str]]) -> float | None:
     if not scored:
         return None
     return sum(scored) / len(scored)
+
+
+def _prediction(record: Mapping[str, Any], probability: float) -> str:
+    predicted = str(record.get("prediction") or "")
+    if predicted in CELL_LABELS:
+        return predicted
+    return "FAMILY_PRESENT" if probability >= 0.5 else "NONE"
+
+
+def _parsed_probabilities(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    parsed = []
+    for record in records:
+        lineage = str(record.get("lineage") or "")
+        label = applicability_label(lineage)
+        if label is None or "probability" not in record:
+            continue
+        text = str(record.get("text") or "")
+        probability = float(record["probability"])
+        form = surface_form(text)
+        parsed.append(
+            {
+                "form": form,
+                "label": label,
+                "prediction": _prediction(record, probability),
+                "probability": probability,
+                "words": float(word_count(text)),
+            }
+        )
+    return parsed
+
+
+def _pair_correlation(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    xs = [float(row["words"]) for row in rows]
+    ys = [float(row["probability"]) for row in rows]
+    return {"correlation": pearson(xs, ys), "n": len(rows)}
+
+
+def _solve_linear(matrix: list[list[float]], vector: list[float]) -> list[float] | None:
+    size = len(vector)
+    augmented = [row[:] + [vector[index]] for index, row in enumerate(matrix)]
+    for column in range(size):
+        pivot = max(range(column, size), key=lambda row: abs(augmented[row][column]))
+        if abs(augmented[pivot][column]) < 1e-12:
+            return None
+        augmented[column], augmented[pivot] = augmented[pivot], augmented[column]
+        scale = augmented[column][column]
+        for index in range(column, size + 1):
+            augmented[column][index] /= scale
+        for row in range(size):
+            if row == column:
+                continue
+            factor = augmented[row][column]
+            for index in range(column, size + 1):
+                augmented[row][index] -= factor * augmented[column][index]
+    return [augmented[row][size] for row in range(size)]
+
+
+def _residualized_length(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Ordinary least squares of P on gold and surface. Read-only."""
+    names = ["intercept"]
+    columns: list[list[float]] = []
+    if any(row["label"] == "FAMILY_PRESENT" for row in rows) and any(row["label"] == "NONE" for row in rows):
+        names.append("gold_family_present")
+        columns.append([1.0 if row["label"] == "FAMILY_PRESENT" else 0.0 for row in rows])
+    if any(row["form"] == SURFACE_PROSE for row in rows) and any(row["form"] != SURFACE_PROSE for row in rows):
+        names.append("surface_prose")
+        columns.append([1.0 if row["form"] == SURFACE_PROSE else 0.0 for row in rows])
+    if any(row["form"] == SURFACE_AMBIGUOUS for row in rows) and any(
+        row["form"] != SURFACE_AMBIGUOUS for row in rows
+    ):
+        names.append("surface_ambiguous")
+        columns.append([1.0 if row["form"] == SURFACE_AMBIGUOUS else 0.0 for row in rows])
+    width = len(names)
+    empty = {
+        "coefficients": None,
+        "columns": names,
+        "correlation": None,
+        "fit": "ordinary_least_squares",
+        "n": len(rows),
+        "zero_residual_variance": False,
+    }
+    if len(rows) < max(3, width):
+        return empty
+    gram = [[0.0 for _ in range(width)] for _ in range(width)]
+    target = [0.0 for _ in range(width)]
+    for index, row in enumerate(rows):
+        features = [1.0] + [column[index] for column in columns]
+        for left in range(width):
+            target[left] += features[left] * row["probability"]
+            for right in range(width):
+                gram[left][right] += features[left] * features[right]
+    beta = _solve_linear(gram, target)
+    if beta is None:
+        return empty
+    residuals = []
+    words = []
+    for index, row in enumerate(rows):
+        features = [1.0] + [column[index] for column in columns]
+        fitted = sum(weight * value for weight, value in zip(beta, features))
+        residuals.append(row["probability"] - fitted)
+        words.append(row["words"])
+    energy = sum(value * value for value in residuals)
+    if energy <= 1e-24:
+        correlation = 0.0
+        zero = True
+    else:
+        correlation = pearson(words, residuals)
+        zero = False
+    return {
+        "coefficients": beta,
+        "columns": names,
+        "correlation": correlation,
+        "fit": "ordinary_least_squares",
+        "n": len(rows),
+        "zero_residual_variance": zero,
+    }
+
+
+def _mean_probability(rows: Sequence[Mapping[str, Any]]) -> float | None:
+    if not rows:
+        return None
+    return sum(row["probability"] for row in rows) / len(rows)
+
+
+def applicability_invariance(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Corrected shortcut diagnostic. It does not enter training.
+
+    Global correlation mixes gold class with length. These checks ask whether
+    surface or residual length still predicts applicability after the gold
+    label is fixed. A higher probability on longer positive prose is not a
+    failure by itself.
+    """
+    rows = _parsed_probabilities(records)
+    global_correlation = pearson(
+        [row["words"] for row in rows],
+        [row["probability"] for row in rows],
+    )
+    conditional = {
+        label: _pair_correlation([row for row in rows if row["label"] == label])
+        for label in CELL_LABELS
+    }
+    within = {}
+    f1_results = {}
+    means = {}
+    for label in CELL_LABELS:
+        for form in CELL_FORMS:
+            name = cell_name(label, form)
+            chosen = [row for row in rows if row["label"] == label and row["form"] == form]
+            within[name] = _pair_correlation(chosen)
+            means[name] = _mean_probability(chosen)
+            gold_n = len(chosen)
+            form_rows = [row for row in rows if row["form"] == form]
+            predicted_n = sum(1 for row in form_rows if row["prediction"] == label)
+            hit = sum(1 for row in chosen if row["prediction"] == label)
+            f1_results[name] = {
+                "f1": _f1(gold_n, predicted_n, hit),
+                "required": gold_n >= APPLICABILITY_F1_MIN_SUPPORT,
+                "support": gold_n,
+            }
+    family_gap = None
+    if means["FAMILY_PRESENT/PROSE"] is not None and means["FAMILY_PRESENT/ATOM"] is not None:
+        family_gap = means["FAMILY_PRESENT/PROSE"] - means["FAMILY_PRESENT/ATOM"]
+    none_gap = None
+    if means["NONE/PROSE"] is not None and means["NONE/ATOM"] is not None:
+        none_gap = means["NONE/PROSE"] - means["NONE/ATOM"]
+    residual = _residualized_length(rows)
+    residual_value = residual["correlation"]
+    none_gap_pass = none_gap is not None and abs(none_gap) <= NONE_SURFACE_GAP_ABS_MAX
+    residual_pass = (
+        residual_value is not None and abs(residual_value) <= RESIDUALIZED_LENGTH_CORRELATION_ABS_MAX
+    )
+    required_f1 = [item for item in f1_results.values() if item["required"]]
+    f1_pass = bool(required_f1) and all(
+        item["f1"] is not None and item["f1"] >= APPLICABILITY_SURFACE_F1_MIN for item in required_f1
+    )
+    for item in f1_results.values():
+        item["pass"] = (not item["required"]) or (
+            item["f1"] is not None and item["f1"] >= APPLICABILITY_SURFACE_F1_MIN
+        )
+    return {
+        "applicability_f1_by_cell": f1_results,
+        "conditional_length_correlation": conditional,
+        "family_surface_gap": family_gap,
+        "guards": {
+            "applicability_f1_min": APPLICABILITY_SURFACE_F1_MIN,
+            "applicability_f1_min_support": APPLICABILITY_F1_MIN_SUPPORT,
+            "none_surface_gap_abs_max": NONE_SURFACE_GAP_ABS_MAX,
+            "residualized_length_correlation_abs_max": RESIDUALIZED_LENGTH_CORRELATION_ABS_MAX,
+        },
+        "guard_results": {
+            "applicability_f1": f1_pass,
+            "none_surface_gap": none_gap_pass,
+            "residualized_length_correlation": residual_pass,
+        },
+        "historical_blunt_guard": {
+            "abs_correlation_max": SURFACE_SHORTCUT_ABS_CORRELATION_MAX,
+            "correlation": global_correlation,
+            "pass": global_correlation is not None
+            and abs(global_correlation) <= SURFACE_SHORTCUT_ABS_CORRELATION_MAX,
+        },
+        "mean_p_family_present": means,
+        "none_surface_gap": none_gap,
+        "pass": bool(none_gap_pass and residual_pass and f1_pass),
+        "residualized_length_correlation": residual,
+        "rule": INVARIANCE_RULE_ID,
+        "within_cell_length_correlation": within,
+    }

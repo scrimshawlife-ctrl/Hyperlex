@@ -263,3 +263,42 @@ The ready checkpoint showed an applicability shortcut: training NONE rows are sh
 Surface form is structural. ATOM is one to four whitespace tokens with no sentence terminator and no comma or semicolon. PROSE is six or more tokens, or any sentence terminator, or a comma or semicolon. Five-token strings with neither are AMBIGUOUS and are masked out of the applicability objective. The family label is not an input. Rule id `hyperlex.classification.v2.surface.v1`.
 
 Applicability loss gives each populated cell equal aggregate authority: cell weight is `1 / effective_cell_support`, then the populated cell weights are scaled to mean 1. Provenance authority is applied inside the cell. Family class weights keep the existing formula. Prototype initialization, calibration, schedule, ontology, and BEST are unchanged. Jev stays off.
+
+### Applicability shortcut diagnostic correction
+
+The surface-balanced run stays failed under the guard that was preregistered before it. On the validation split after calibration, `abs(corr(word_count, P(FAMILY_PRESENT)))` is 0.42150272051315185. The limit was 0.30. `SETTLEMENT.json` still records `shortcut_pass` false for checkpoint `e3c0545424e7fe9ca93a9b8c5e423698974f5cecab405ed99590c8293a5bb463`. That settlement was not rewritten. The evaluation reserve was not scored. BEST remains select004, sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`.
+
+The global correlation mixes the gold applicability class with length. Longer positive definitions carry more evidence than short positive atoms. The same validation replay, temperature 1.47, production encoder overlay of 48 tensors then the surface encoder overlay of 12 tensors, reproduces the stored cell means with delta 0:
+
+```text
+FAMILY_PRESENT/ATOM   mean P = 0.7852956405720147   F1 = 0.8453608247422681
+FAMILY_PRESENT/PROSE  mean P = 0.911294776451496    F1 = 0.9776119402985074
+NONE/ATOM             mean P = 0.1279144847425886   F1 = 0.918918918918919
+NONE/PROSE            mean P = 0.12663721872007336  F1 = 0.90625
+```
+
+The corrected diagnostic is read-only. Rule id `hyperlex.classification.v2.surface_invariance.v1`. It does not enter the loss, and it does not change the encoder, either head, the prototype witness, the family weights, the surface weights, the schedule, or calibration. Conditional correlations do not pool the two gold classes:
+
+```text
+corr(word_count, P | FAMILY_PRESENT) = 0.24186883570934187   n = 296
+corr(word_count, P | NONE)            = 0.13799315805567047   n = 302
+FAMILY_PRESENT/ATOM                   = -0.015312949853750339 n = 155
+FAMILY_PRESENT/PROSE                  = 0.27285157444473607   n = 135
+NONE/ATOM                             = 0.05213599221711015   n = 268
+NONE/PROSE                            = 0.5504937075122819    n = 31
+```
+
+The preferred scalar fits `P(FAMILY_PRESENT) ~ gold_applicability + surface_class` by ordinary least squares on these 598 validation rows, then correlates the residual with word count. The design columns are intercept, gold FAMILY_PRESENT, surface PROSE, and surface AMBIGUOUS. `corr(residual, word_count)` is 0.09290446228999852.
+
+```text
+family_surface_gap = 0.1259991358794813
+none_surface_gap   = -0.0012772660225152388
+```
+
+The corrected guards, chosen before this replay and not taken from the evaluation reserve, are `abs(none_surface_gap) <= 0.10`, `abs(residualized_length_correlation) <= 0.30`, and FAMILY_PRESENT F1 and NONE F1 at least 0.80 on both populated surfaces. All three pass. The family surface gap is reported and is not a guard. Family atoms and family prose are not required to have the same confidence.
+
+For architecture diagnosis, `APPLICABILITY_SURFACE_SHORTCUT` is `RESOLVED`. That status does not promote the checkpoint and does not turn the historical run into a pass. The receipt is `/home/morpheus/hlx-private/classification-v2-train-surface-20260929/INVARIANCE_DIAGNOSTIC.json`.
+
+The active-family head stays a separate unresolved issue. Active-family macro-F1 is 0.1960828268105939. ATOM family macro-F1 is 0.226814225201322. PROSE family macro-F1 is 0.2664313342411146. The next substantive target is `ACTIVE_FAMILY_DISCRIMINATION`.
+
+The within-NONE/PROSE length correlation, 0.5504937075122819 on 31 rows, is recorded and is not one of the frozen guards. The NONE mean does not move with surface form, and the residualized length correlation stays inside 0.30.
