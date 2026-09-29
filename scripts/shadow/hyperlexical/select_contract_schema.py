@@ -1,4 +1,4 @@
-"""JSON Schema checks for routing, admission, and threshold authorization.
+"""JSON Schema checks for routing, admission, threshold, and launch authorization.
 
 Historical artifacts are validated and not rewritten.
 """
@@ -16,6 +16,10 @@ SCHEMA_DIR = REPO_ROOT / "specs/007-hyperlexical-model/schemas/hyperlex/select"
 ROUTING_SCHEMA_PATH = SCHEMA_DIR / "eval-routing.schema.json"
 THRESHOLD_SCHEMA_PATH = SCHEMA_DIR / "threshold-authorization.schema.json"
 ADMISSION_SCHEMA_PATH = SCHEMA_DIR / "admission.schema.json"
+TRAINING_LAUNCH_AUTHORIZATION_SCHEMA_PATH = SCHEMA_DIR / "training-launch-authorization.schema.json"
+TRAINING_LAUNCH_AUTHORIZATION_SPEC_SCHEMA_PATH = (
+    SCHEMA_DIR / "training-launch-authorization-spec.schema.json"
+)
 
 
 def _validator(path: Path) -> Draft202012Validator:
@@ -34,6 +38,20 @@ def threshold_schema_errors(instance: Mapping[str, Any]) -> list[str]:
 
 def admission_schema_errors(instance: Mapping[str, Any]) -> list[str]:
     return sorted(error.message for error in _validator(ADMISSION_SCHEMA_PATH).iter_errors(instance))
+
+
+def training_launch_authorization_schema_errors(instance: Mapping[str, Any]) -> list[str]:
+    return sorted(
+        error.message
+        for error in _validator(TRAINING_LAUNCH_AUTHORIZATION_SCHEMA_PATH).iter_errors(instance)
+    )
+
+
+def training_launch_authorization_spec_schema_errors(instance: Mapping[str, Any]) -> list[str]:
+    return sorted(
+        error.message
+        for error in _validator(TRAINING_LAUNCH_AUTHORIZATION_SPEC_SCHEMA_PATH).iter_errors(instance)
+    )
 
 
 def historical_schema_report(
