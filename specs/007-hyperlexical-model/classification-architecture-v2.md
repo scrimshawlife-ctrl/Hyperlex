@@ -190,3 +190,6 @@ The first settled v2 run may be promotion-eligible only under a preregistered ac
 The contract, heads, loss masks, weights, calibration, selection score, telemetry fields, and readiness audit are in the tree. The trainer calls them only when `HYPERLEX_CLASSIFICATION=v2`. On the current export that path stops before the optimizer because fifteen active families have no positive training support. When support exists, the same path trains, restores the best checkpoint, and freezes the validation calibration artifact.
 
 The next action is one bounded acquisition of positive training examples for every family in the readiness missing-support list. After that audit returns `READY`, run one `TRAIN CLASSIFICATION V2` job. Do not open a micro-experiment series and do not move BEST inside that job.
+
+The morph78 classify train split has no positive row for those fifteen families. Positives that already exist in the identity ledger are `evaluation_reserved` (`EVAL_SPENT` or `EVAL_RESERVE`). They are not training support. Copying them into the export is an isolation failure. `conflict-aggression`, `regional-cultural`, and `spiritual-mystic` have no settled positive in that ledger either. The acquisition has to be new rows, disjoint from reserved identities, for all fifteen families together. Legacy near-matches stay unmapped.
+

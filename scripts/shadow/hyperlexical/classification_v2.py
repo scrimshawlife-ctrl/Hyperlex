@@ -441,6 +441,47 @@ def support_audit(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     }
 
 
+_RESERVE_STATES = frozenset({"EVAL_RESERVE", "EVAL_SPENT", "EVAL_ABANDONED"})
+
+
+def reserve_positive_census(identities: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Count settled positives that cannot fill v2 training support.
+
+    Evaluation-reserved, spent, and abandoned identities stay out of the
+    training split. This census does not copy them and does not read row text.
+    """
+    counts = {
+        name: {"OBSERVED": 0, "INFERRED": 0, "training_eligible": 0}
+        for name in ACTIVE_FAMILY_VOCABULARY
+    }
+    for identity in identities:
+        excluded = bool(identity.get("evaluation_reserved")) or identity.get("state") in _RESERVE_STATES
+        for label in identity.get("labels") or []:
+            lineage = label.get("lineage")
+            if lineage not in counts:
+                continue
+            if not excluded:
+                counts[lineage]["training_eligible"] += 1
+                continue
+            klass = label.get("class")
+            if klass in ("OBSERVED", "INFERRED"):
+                counts[lineage][klass] += 1
+    absent = [
+        name
+        for name in ACTIVE_FAMILY_VOCABULARY
+        if counts[name]["OBSERVED"] == 0
+        and counts[name]["INFERRED"] == 0
+        and counts[name]["training_eligible"] == 0
+    ]
+    return {
+        "schema": "hyperlex.classification.v2.reserve_exclusion.v1",
+        "counts": counts,
+        "training_eligible_rows": sum(item["training_eligible"] for item in counts.values()),
+        "usable_for_training": False,
+        "no_settled_positive": absent,
+    }
+
+
 def family_loss_weights(audit: Mapping[str, Any]) -> dict[str, float]:
     missing = list(audit["missing_support"])
     if missing:

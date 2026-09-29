@@ -11,6 +11,7 @@ from .classification_v2 import (
     V1_HEAD,
     map_family_rows,
     readiness,
+    reserve_positive_census,
 )
 from .training_routing import route_rows
 
@@ -20,6 +21,7 @@ DEFAULT_EXPORT = Path(
 BEST_CONFIG = Path(
     "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004/config.json"
 )
+LEDGER = Path("/home/morpheus/hlx-private/eval-reserve-20260926/ledger.json")
 
 
 def load_export(path: Path) -> list[dict]:
@@ -67,6 +69,10 @@ def audit(export_path: Path | None = None, config_path: Path | None = None) -> d
     report["loader_witness"] = witness
     report["n_classify_train"] = len(rows)
     report["export"] = str(export)
+    if LEDGER.is_file():
+        ledger = json.loads(LEDGER.read_text(encoding="utf-8"))
+        report["reserve_exclusion"] = reserve_positive_census(ledger.get("identities") or [])
+        report["reserve_exclusion"]["ledger"] = str(LEDGER)
     return report
 
 
@@ -89,6 +95,7 @@ def main(argv: list[str] | None = None) -> int:
         "legacy_excluded": report["audit"]["legacy_excluded"],
         "none": report["audit"]["none"],
         "moves_best": report["moves_best"],
+        "reserve_exclusion": report.get("reserve_exclusion"),
     }
     print(json.dumps(printable, indent=2, sort_keys=True))
     return 0 if report["ready"] else 2

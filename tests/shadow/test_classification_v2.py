@@ -36,6 +36,7 @@ from hyperlexical.classification_v2 import (  # noqa: E402
     map_legacy_jevgate,
     packet_output_hash,
     readiness,
+    reserve_positive_census,
     selection_score,
     support_audit,
     validate_telemetry,
@@ -365,3 +366,41 @@ def test_jev_off_and_shadow_leave_the_canonical_family():
     record["observed_slice"] = {}
     record["inferred_slice"] = {}
     validate_telemetry(record)
+
+
+def test_reserved_positives_cannot_supply_training_support():
+    reserved = [
+        {
+            "lineage": name,
+            "class": "OBSERVED",
+            "split": "train",
+            "evaluation_reserve": True,
+        }
+        for name in ACTIVE_FAMILY_VOCABULARY
+    ]
+    reserved.append(_row("none"))
+    try:
+        readiness(reserved, loader_status="PASS")
+    except Exception as exc:
+        assert exc.reason == "evaluation_isolation"
+    else:
+        raise AssertionError("reserved rows cleared training support")
+    census = reserve_positive_census(
+        [
+            {
+                "state": "EVAL_SPENT",
+                "evaluation_reserved": True,
+                "labels": [{"lineage": "internet-slang", "class": "OBSERVED"}],
+            },
+            {
+                "state": "TRAIN_CONSUMED",
+                "evaluation_reserved": False,
+                "labels": [{"lineage": "gaming-meta", "class": "OBSERVED"}],
+            },
+        ]
+    )
+    assert census["usable_for_training"] is False
+    assert census["counts"]["internet-slang"]["OBSERVED"] == 1
+    assert census["counts"]["internet-slang"]["training_eligible"] == 0
+    assert census["counts"]["gaming-meta"]["training_eligible"] == 1
+    assert "conflict-aggression" in census["no_settled_positive"]
