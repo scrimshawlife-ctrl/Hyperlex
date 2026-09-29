@@ -895,7 +895,7 @@ def run_loop(
     last_train_loss = None
 
     def step_unbind(row) -> None:
-        nonlocal last_train_loss, global_step, loss_sum, loss_steps
+        nonlocal last_train_loss, global_step, loss_sum, loss_steps, unb_loss_sum, unb_loss_steps
         if unbind_loss_weight == 0:
             return
         uloss = unbind_loss(row)
