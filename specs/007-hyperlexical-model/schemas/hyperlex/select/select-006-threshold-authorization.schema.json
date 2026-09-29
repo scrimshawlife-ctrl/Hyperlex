@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex.select_006_threshold_authorization.v1",
+  "title": "SELECT-006 efficiency preservation threshold authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_rule",
+    "epsilon",
+    "experiment_id",
+    "schema",
+    "sealed",
+    "training_launch_authorized"
+  ],
+  "properties": {
+    "authorization_state": {"const": "SEALED"},
+    "decision_rule": {"type": "object"},
+    "efficiency_max_step_ratio": {"const": 0.25},
+    "epsilon": {"const": 0},
+    "experiment_id": {"const": "HLX-EXP-2026-09-29-SELECT-006"},
+    "inherited_from_select_005_settlement": {"const": false},
+    "preregistration_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "schema": {"const": "hyperlex.select_006_threshold_authorization.v1"},
+    "sealed": {"const": true},
+    "training_launch_authorized": {"const": false}
+  }
+}

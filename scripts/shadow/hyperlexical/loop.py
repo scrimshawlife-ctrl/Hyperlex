@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
@@ -20,6 +21,8 @@ from .classify_metrics import (
     none_false_positive_rate,
     resolve_select_metric,
 )
+from .classify_sampling import epoch_classify_rows
+from .training_schedule import install_default_schedule, resolve_training_schedule
 from .classify_split import apply_classify_split_file
 from .seed_control import apply_training_seed
 from .force_train_overlap import enforce_force_train_disjoint
@@ -119,7 +122,12 @@ def resolve_save_best_unbind(raw: str | None = None) -> bool:
 
 @dataclass(frozen=True)
 class EarlyStopConfig:
-    """Optional classify-metric early stop. Default-off. Does not change the epoch cap."""
+    """Optional classify-metric early stop. This resolver stays off until enabled.
+
+    Comparable classify runs receive the SELECT-006 candidate schedule from
+    ``resolve_training_schedule`` before admission. An explicit schedule
+    environment is left unchanged.
+    """
 
     enabled: bool
     max_epochs: int
@@ -237,6 +245,14 @@ def early_stop_break(
     return (epoch_index - best_epoch) >= patience
 
 
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def round_seconds(value: float) -> float:
     """Seconds rounded to 6 decimal places. Observational; not a selection input."""
     return round(float(value), WALLCLOCK_SECONDS_DECIMALS)
@@ -287,7 +303,7 @@ def resolve_init_expand_vocab(raw: str | None = None) -> bool:
 
     Default fail-closed on vocab mismatch. Opt-in via HYPERLEX_INIT_EXPAND_VOCAB=1
     so a smaller prior seed (e.g. morph65 max pos_5) can warm a harvest that added
-    pos_6+/new fillers: copy overlapping labels by name, leave new rows at init.
+    pos_6+/new fillers: copy overlapping labels by name, and set new rows to exact zero.
     """
     if raw is None:
         raw = os.environ.get(INIT_EXPAND_VOCAB_ENV)
@@ -324,53 +340,18 @@ def _read_init_vocabs(init_dir: Path) -> tuple[list | None, list | None]:
     return None, None
 
 
-def _remap_linear_rows(module, state: dict, init_labels: list, current_labels: list, head: str) -> dict:
-    """Copy overlapping out-rows from init Linear state into current module by label name."""
-    weight = state.get("weight")
-    if weight is None:
-        raise ValueError(f"{INIT_FROM_ENV} {head} missing weight")
-    if int(getattr(weight, "shape", [0])[0]) != len(init_labels):
-        raise ValueError(
-            f"{INIT_FROM_ENV} {head} weight rows {tuple(weight.shape)} != "
-            f"init vocab {len(init_labels)}"
-        )
-    if int(module.weight.shape[0]) != len(current_labels):
-        raise ValueError(
-            f"{INIT_FROM_ENV} {head} module rows {tuple(module.weight.shape)} != "
-            f"current vocab {len(current_labels)}"
-        )
-    current_of = {lab: i for i, lab in enumerate(current_labels)}
-    mapped = 0
-    skipped = 0
-    for ii, lab in enumerate(init_labels):
-        ci = current_of.get(lab)
-        if ci is None:
-            skipped += 1
-            continue
-        module.weight.data[ci].copy_(weight[ii].detach())
-        mapped += 1
-    bias = state.get("bias")
-    if bias is not None and module.bias is not None:
-        if int(getattr(bias, "shape", [0])[0]) != len(init_labels):
-            raise ValueError(
-                f"{INIT_FROM_ENV} {head} bias rows != init vocab {len(init_labels)}"
-            )
-        for ii, lab in enumerate(init_labels):
-            ci = current_of.get(lab)
-            if ci is None:
-                continue
-            module.bias.data[ci].copy_(bias[ii].detach())
-    if mapped == 0:
-        raise ValueError(
-            f"{INIT_FROM_ENV} {head} expand remap matched 0/{len(init_labels)} labels"
-        )
-    return {
-        "mapped": mapped,
-        "skipped_init_only": skipped,
-        "new_current_rows": len(current_labels) - mapped,
-        "init_n": len(init_labels),
-        "current_n": len(current_labels),
-    }
+def _remap_linear_rows(module, state: dict, init_labels: list, current_labels: list, head: str, expected: dict | None = None) -> dict:
+    """Copy overlapping out-rows by label name. New target rows are exact zeros."""
+    from .zero_init_loader import expand_named_linear
+
+    return expand_named_linear(
+        module,
+        state,
+        list(init_labels),
+        list(current_labels),
+        head,
+        expected=expected,
+    )
 
 
 def warm_load_checkpoint(
@@ -386,8 +367,8 @@ def warm_load_checkpoint(
     """Load heads + trainable encoder tensors from a prior seed dump. Fail closed.
 
     When expand_vocab is true (or HYPERLEX_INIT_EXPAND_VOCAB=1), role/filler heads
-    remap overlapping labels by name into the current larger vocab; classify still
-    loads strict. Default remains exact-vocab match.
+    remap overlapping labels by name into the current vocabulary and set new rows
+    to exact zero. Classify still loads strict. Default remains exact-vocab match.
     """
     if expand_vocab is None:
         expand_vocab = resolve_init_expand_vocab()
@@ -414,6 +395,9 @@ def warm_load_checkpoint(
                 f"{INIT_EXPAND_VOCAB_ENV}=1 requires init role_vocab+filler_vocab "
                 f"in {init_dir}/config.json (or layout.json)"
             )
+    from .zero_init_loader import expansion_expected, select006_guard_vocab
+
+    select006_guard_vocab(bool(expand_vocab), bool(vocab_match))
 
     if weight_path.name == "model.safetensors":
         from safetensors.torch import load_file
@@ -469,10 +453,20 @@ def warm_load_checkpoint(
         if not role_state or not filler_state:
             raise ValueError(f"{weight_path} missing role_head/filler_head tensors")
         expand_receipt["role"] = _remap_linear_rows(
-            role_head, role_state, list(init_roles), cur_roles, "role_head"
+            role_head,
+            role_state,
+            list(init_roles),
+            cur_roles,
+            "role_head",
+            expected=expansion_expected("role_head"),
         )
         expand_receipt["filler"] = _remap_linear_rows(
-            filler_head, filler_state, list(init_fillers), cur_fillers, "filler_head"
+            filler_head,
+            filler_state,
+            list(init_fillers),
+            cur_fillers,
+            "filler_head",
+            expected=expansion_expected("filler_head"),
         )
 
     applied = apply_encoder_trainable(encoder, split.get("encoder") or {})
@@ -495,8 +489,17 @@ def _cpu_module_state(module) -> dict:
     return {k: v.detach().cpu().contiguous() for k, v in module.state_dict().items()}
 
 
-def _build_weight_state(encoder, classify, role_head, filler_head, maps, layout) -> dict:
-    return {
+def _build_weight_state(
+    encoder,
+    classify,
+    role_head,
+    filler_head,
+    maps,
+    layout,
+    applicability=None,
+    family_head=None,
+) -> dict:
+    state = {
         "classify": _cpu_module_state(classify),
         "role_head": _cpu_module_state(role_head),
         "filler_head": _cpu_module_state(filler_head),
@@ -504,6 +507,11 @@ def _build_weight_state(encoder, classify, role_head, filler_head, maps, layout)
         "maps": {k: v for k, v in maps.items() if k not in {"family_of", "role_of", "filler_of"}},
         "layout": layout,
     }
+    if applicability is not None:
+        state["applicability"] = _cpu_module_state(applicability)
+    if family_head is not None:
+        state["family_head"] = _cpu_module_state(family_head)
+    return state
 
 
 def resolve_unbind_loss_weight(raw: str | float | int | None = None) -> float:
@@ -652,6 +660,18 @@ def run_loop(
     live_store: Path | None = None,
 ) -> dict:
     # Same gates as preflight. Admission-only returns before any optimizer.
+    # The schedule is fixed first so admission records the schedule that will run.
+    from .classification_v2 import classification_version, require_v2_schedule
+
+    select_metric = resolve_select_metric()
+    v2_on = classification_version() == "v2"
+    schedule = resolve_training_schedule(
+        select_metric=SELECT_METRIC_CLASSIFY if v2_on else select_metric
+    )
+    if v2_on:
+        require_v2_schedule(schedule.as_dict())
+    if schedule.source == "select-006-candidate":
+        install_default_schedule(os.environ)
     admission = admit_training_run(
         include_live=include_live,
         live_store=live_store,
@@ -714,6 +734,7 @@ def run_loop(
 
     select_metric = resolve_select_metric()
     select_on_classify = select_metric == SELECT_METRIC_CLASSIFY
+    v2_checkpoint = v2_on
     if select_on_classify:
         selection_rows = list(classify_va or classify_tr[:8])
     else:
@@ -727,7 +748,6 @@ def run_loop(
     _enter_training_execution()
     import torch
     from torch import nn
-    from torch.optim import AdamW
 
     seed_receipt = apply_training_seed(torch)
     maps = label_maps_for_splits(unbind_tr, unbind_va)
@@ -738,6 +758,8 @@ def run_loop(
     if hidden != HIDDEN:
         raise RuntimeError(f"hidden {hidden} != {HIDDEN}")
     n_unfrozen, last_trainable_used = freeze_encoder(encoder)
+    if v2_on and last_trainable_used != 2:
+        raise RuntimeError("classification v2 keeps last_trainable = 2")
     classify = nn.Linear(hidden, len(FAMILIES))
     role_head = nn.Linear(hidden, len(maps["role_vocab"]))
     filler_head = nn.Linear(hidden, len(maps["filler_vocab"]))
@@ -750,9 +772,43 @@ def run_loop(
                 encoder, classify, role_head, filler_head, maps, init_from
             ),
         }
-    trainable = [p for p in encoder.parameters() if p.requires_grad] + list(classify.parameters()) + list(role_head.parameters()) + list(filler_head.parameters())
-    epochs = int(os.environ.get("HYPERLEX_TRAIN_EPOCHS", "2"))
-    early_stop = resolve_early_stop_config(max_epochs=epochs, select_metric=select_metric)
+    from .zero_init_loader import (
+        pre_optimizer_receipt,
+        pre_optimizer_stop_requested,
+        select006_training_init_guard,
+    )
+
+    select006_training_init_guard(maps, role_head, filler_head, init_receipt)
+    if pre_optimizer_stop_requested():
+        return pre_optimizer_receipt(role_head, filler_head, maps, init_receipt)
+    applicability_head = None
+    family_head = None
+    v2_contract = None
+    if v2_on:
+        from .classification_v2 import freeze_training_contract
+        from .classification_v2_runtime import build_v2_heads
+
+        v2_contract = freeze_training_contract(classify_tr)
+        applicability_head, family_head, init_receipt["classification_v2_rows"] = build_v2_heads(
+            hidden, classify, list(FAMILIES)
+        )
+    classify_parameters = list(classify.parameters())
+    if v2_on:
+        classify_parameters = list(applicability_head.parameters()) + list(family_head.parameters())
+    trainable = [p for p in encoder.parameters() if p.requires_grad] + classify_parameters + list(role_head.parameters()) + list(filler_head.parameters())
+    epochs = schedule.max_epochs
+    early_stop = resolve_early_stop_config(
+        max_epochs=epochs,
+        select_metric=SELECT_METRIC_CLASSIFY if v2_on else select_metric,
+    )
+    if (
+        early_stop.enabled != schedule.early_stopping
+        or early_stop.patience != schedule.patience
+        or early_stop.minimum_epochs != schedule.minimum_epochs
+    ):
+        raise ValueError("early stop does not match the training schedule")
+    from torch.optim import AdamW
+
     opt = AdamW(trainable, lr=float(os.environ.get("HYPERLEX_TRAIN_LR", "2e-5")))
     batch = int(os.environ.get("HYPERLEX_TRAIN_BATCH", "8"))
     unbind_loss_weight = resolve_unbind_loss_weight()
@@ -766,8 +822,18 @@ def run_loop(
     curriculum = resolve_curriculum_schedule()
     curriculum_plan = plan_unbind_curriculum(unbind_tr, epochs, curriculum)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    for mod in (encoder, classify, role_head, filler_head):
+    global_step = 0
+    loss_sum = torch.zeros((), device=device)
+    loss_steps = 0
+    modules = [encoder, classify, role_head, filler_head]
+    if v2_on:
+        modules.extend([applicability_head, family_head])
+    for mod in modules:
         mod.to(device)
+    app_loss_sum = torch.zeros((), device=device)
+    fam_loss_sum = torch.zeros((), device=device)
+    unb_loss_sum = torch.zeros((), device=device)
+    app_loss_steps = fam_loss_steps = unb_loss_steps = 0
     encoder.train()
     losses = []
     epoch_metrics = []
@@ -829,7 +895,7 @@ def run_loop(
     last_train_loss = None
 
     def step_unbind(row) -> None:
-        nonlocal last_train_loss
+        nonlocal last_train_loss, global_step, loss_sum, loss_steps, unb_loss_sum, unb_loss_steps
         if unbind_loss_weight == 0:
             return
         uloss = unbind_loss(row)
@@ -840,6 +906,12 @@ def run_loop(
         opt.zero_grad()
         scaled.backward()
         opt.step()
+        global_step += 1
+        loss_sum = loss_sum + scaled.detach()
+        loss_steps += 1
+        if v2_on:
+            unb_loss_sum = unb_loss_sum + scaled.detach()
+            unb_loss_steps += 1
         last_train_loss = scaled.detach()
 
     residual_dump_path = resolve_unbind_residual_dump_path()
@@ -850,6 +922,7 @@ def run_loop(
     best_epoch_index: int | None = None
     best_metrics: dict | None = None
     best_state: dict | None = None
+    best_checkpoint_sha: str | None = None
     best_residual_records: list[dict] = []
     progress_path = out_dir / "epoch-progress.jsonl"
 
@@ -860,14 +933,19 @@ def run_loop(
         classify.eval()
         filler_head.eval()
         hit = tot = 0
+        obs_hit = obs_tot = 0
         classify_golds: list[str] = []
         classify_preds: list[str] = []
         for row in classify_va or classify_tr[:8]:
             out = encoder(**encode_texts([row["text"]]))
             pred = int(classify(out.last_hidden_state[:, 0]).argmax(-1)[0])
             gold = maps["family_of"].get(row["lineage"], maps["family_of"]["none"])
-            hit += int(pred == gold)
+            matched = int(pred == gold)
+            hit += matched
             tot += 1
+            if str(row.get("class") or "") == "OBSERVED":
+                obs_tot += 1
+                obs_hit += matched
             if select_on_classify:
                 classify_golds.append(FAMILIES[gold] if 0 <= gold < len(FAMILIES) else NONE_LABEL)
                 classify_preds.append(FAMILIES[pred] if 0 <= pred < len(FAMILIES) else NONE_LABEL)
@@ -907,10 +985,38 @@ def run_loop(
         filler_head.train()
         metrics = summarize_unbind_pairs(pairs, strict_pairs=strict_pairs)
         metrics["classify_acc"] = hit / max(1, tot)
+        metrics["classification_accuracy"] = metrics["classify_acc"]
         metrics["n_classify_eval"] = tot
+        metrics["observed_label_accuracy"] = None if obs_tot == 0 else obs_hit / obs_tot
+        metrics["n_observed_eval"] = obs_tot
+        metrics["unbind_clean_exact"] = None
         if select_on_classify:
             metrics["classify_macro_f1_nonnone"] = macro_f1_nonnone(classify_golds, classify_preds)
             metrics["none_fpr"] = none_false_positive_rate(classify_golds, classify_preds)
+        if v2_on:
+            from .classification_v2 import ACTIVE_FAMILY_VOCABULARY, epoch_selection_metrics
+
+            kept_rows = []
+            app_preds = []
+            fam_preds = []
+            applicability_head.eval()
+            family_head.eval()
+            for row in classify_va or classify_tr[:8]:
+                lineage = row.get("lineage")
+                if lineage not in ACTIVE_FAMILY_VOCABULARY and lineage != "none":
+                    continue
+                out = encoder(**encode_texts([row["text"]]))
+                pooled = out.last_hidden_state[:, 0]
+                app_logit = applicability_head(pooled)[0]
+                fam_logit = family_head(pooled)[0]
+                app_preds.append(
+                    "FAMILY_PRESENT" if float(app_logit[1]) > float(app_logit[0]) else "NONE"
+                )
+                fam_preds.append(ACTIVE_FAMILY_VOCABULARY[int(fam_logit.argmax())])
+                kept_rows.append(row)
+            applicability_head.train()
+            family_head.train()
+            metrics.update(epoch_selection_metrics(kept_rows, app_preds, fam_preds))
         return metrics
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -921,19 +1027,57 @@ def run_loop(
 
     training_started = monotonic_seconds()
     stop_reason = STOP_REASON_MAX_EPOCHS
+    classify_sampling_epochs: list[dict] = []
+    sampling_log_path = out_dir / "classify-sampling.jsonl"
     for ep in range(epochs):
         epoch_started = monotonic_seconds()
         phase_rows, phase_meta = select_unbind_for_epoch(unbind_tr, ep, curriculum)
+        epoch_rows, sampling_record = epoch_classify_rows(classify_tr, epoch_index=ep)
+        classify_sampling_epochs.append(
+            {
+                key: value
+                for key, value in sampling_record.items()
+                if key != "selected_identity_sha256"
+            }
+        )
+        with sampling_log_path.open("a", encoding="utf-8") as sampling_handle:
+            sampling_handle.write(json.dumps(sampling_record, sort_keys=True) + "\n")
+            sampling_handle.flush()
         unbind_cycle = 0
         classify_batch_i = 0
-        for i in range(0, len(classify_tr), batch):
-            chunk = classify_tr[i : i + batch]
-            y = torch.tensor([maps["family_of"].get(c["lineage"], maps["family_of"]["none"]) for c in chunk], device=device)
+        for i in range(0, len(epoch_rows), batch):
+            chunk = epoch_rows[i : i + batch]
             out = encoder(**encode_texts([c["text"] for c in chunk]))
-            loss = nn.functional.cross_entropy(classify(out.last_hidden_state[:, 0]), y)
+            if v2_on:
+                from .classification_v2_runtime import batch_classify_loss
+
+                parts = batch_classify_loss(
+                    applicability_head,
+                    family_head,
+                    out.last_hidden_state[:, 0],
+                    chunk,
+                    v2_contract,
+                )
+                if parts is None:
+                    classify_batch_i += 1
+                    continue
+                loss = parts["total"]
+            else:
+                y = torch.tensor([maps["family_of"].get(c["lineage"], maps["family_of"]["none"]) for c in chunk], device=device)
+                loss = nn.functional.cross_entropy(classify(out.last_hidden_state[:, 0]), y)
             opt.zero_grad()
             loss.backward()
             opt.step()
+            global_step += 1
+            loss_sum = loss_sum + loss.detach()
+            loss_steps += 1
+            if v2_on:
+                if parts["applicability"] is not None:
+                    app_loss_sum = app_loss_sum + parts["applicability"].detach()
+                    app_loss_steps += 1
+                if parts["family"] is not None:
+                    fam_loss_sum = fam_loss_sum + parts["family"].detach()
+                    fam_loss_steps += 1
             last_train_loss = loss.detach()
             if should_interleave_unbind(classify_batch_i, unbind_every_n) and phase_rows:
                 step_unbind(phase_rows[unbind_cycle % len(phase_rows)])
@@ -952,13 +1096,18 @@ def run_loop(
             # One host sync per epoch (not per step).
             losses.append(float(last_train_loss.item()))
         saved_best = False
-        if select_on_classify:
-            if metrics.get("classify_macro_f1_nonnone") is None:
+        if v2_checkpoint or select_on_classify:
+            if v2_checkpoint:
+                if metrics.get("selection_score") is None:
+                    raise RuntimeError("classification v2 selection_score is NOT_COMPUTABLE")
+                score_now = float(metrics["selection_score"])
+            elif metrics.get("classify_macro_f1_nonnone") is None:
                 raise RuntimeError(
                     "HLX_SELECT_METRIC=classify_macro_f1_nonnone but val has no "
                     "non-none gold; macro-F1 is NOT_COMPUTABLE"
                 )
-            score_now = float(metrics["classify_macro_f1_nonnone"])
+            else:
+                score_now = float(metrics["classify_macro_f1_nonnone"])
             best_macro, best_epoch_index, improved = note_strict_improvement(
                 best_macro,
                 best_epoch_index,
@@ -970,18 +1119,23 @@ def run_loop(
                     torch.cuda.synchronize()
                 best_metrics = dict(metrics)
                 best_state = _build_weight_state(
-                    encoder, classify, role_head, filler_head, maps, layout
+                    encoder, classify, role_head, filler_head, maps, layout,
+                    applicability=applicability_head,
+                    family_head=family_head,
                 )
                 best_residual_records = list(last_residual_records)
                 best_dir = out_dir / "best"
                 write_skeleton(best_dir, maps=maps)
-                save_heads(best_dir, best_state)
+                best_weight_name = save_heads(best_dir, best_state)
+                best_weight_path = best_dir / best_weight_name
+                best_checkpoint_sha = _sha256_file(best_weight_path) if best_weight_path.is_file() else None
                 (best_dir / "best-checkpoint.json").write_text(
                     json.dumps(
                         {
-                            "metric": SELECT_METRIC_CLASSIFY,
+                            "metric": "selection_score" if v2_checkpoint else SELECT_METRIC_CLASSIFY,
                             "epoch": ep,
-                            "classify_macro_f1_nonnone": score_now,
+                            "classify_macro_f1_nonnone": None if v2_checkpoint else score_now,
+                            "selection_score": score_now if v2_checkpoint else None,
                             "none_fpr": metrics.get("none_fpr"),
                             "unbind_exact": exact,
                             "unbind_token_f1": best_metrics.get("unbind_token_f1"),
@@ -1015,7 +1169,9 @@ def run_loop(
             best_exact = exact
             best_metrics = dict(metrics)
             best_state = _build_weight_state(
-                encoder, classify, role_head, filler_head, maps, layout
+                encoder, classify, role_head, filler_head, maps, layout,
+                applicability=applicability_head,
+                family_head=family_head,
             )
             best_residual_records = list(last_residual_records)
             best_dir = out_dir / "best"
@@ -1054,7 +1210,7 @@ def run_loop(
             "unbind_phase": phase_meta["phase"],
             "classify_acc": metrics.get("classify_acc"),
         }
-        if select_on_classify:
+        if select_on_classify or v2_checkpoint:
             progress["classify_macro_f1_nonnone"] = metrics.get("classify_macro_f1_nonnone")
             progress["none_fpr"] = metrics.get("none_fpr")
             progress["best_classify_macro_f1_nonnone"] = (
@@ -1062,6 +1218,75 @@ def run_loop(
             )
         if seed_receipt is not None:
             progress["seed"] = seed_receipt["seed"]
+        training_loss = None
+        if loss_steps:
+            training_loss = float((loss_sum / loss_steps).item())
+            loss_sum = torch.zeros((), device=device)
+            loss_steps = 0
+        will_stop = early_stop_break(
+            enabled=early_stop.enabled,
+            epoch_index=ep,
+            best_epoch=best_epoch_index,
+            epochs_scored=ep + 1,
+            minimum_epochs=early_stop.minimum_epochs,
+            patience=early_stop.patience,
+            max_epochs=epochs,
+        )
+        tie = False
+        if select_on_classify or v2_checkpoint:
+            tie = (not saved_best) and score_now == (
+                None if best_macro == float("-inf") else best_macro
+            )
+        progress.update(
+            {
+                "checkpoint_sha256": best_checkpoint_sha,
+                "classification_accuracy": metrics.get("classification_accuracy"),
+                "early_stop": will_stop,
+                "epochs_since_best": None if best_epoch_index is None else ep - best_epoch_index,
+                "global_step": global_step,
+                "improved": saved_best,
+                "learning_rate": float(os.environ.get("HYPERLEX_TRAIN_LR", "2e-5")),
+                "classify_sampling_rule": sampling_record["rule"],
+                "classify_sampling_selection_sha256": sampling_record["selection_sha256"],
+                "inferred_none_selected": sampling_record["inferred_none_selected"],
+                "observed_label_accuracy": metrics.get("observed_label_accuracy"),
+                "tie": tie,
+                "training_loss": training_loss,
+                "unbind_clean_exact": None,
+            }
+        )
+        if v2_checkpoint:
+            def _mean(total, steps):
+                return None if steps == 0 else float((total / steps).item())
+
+            progress.update(
+                {
+                    "total_loss": training_loss,
+                    "applicability_loss": _mean(app_loss_sum, app_loss_steps),
+                    "family_loss": _mean(fam_loss_sum, fam_loss_steps),
+                    "unbind_loss": _mean(unb_loss_sum, unb_loss_steps),
+                    "applicability_macro_f1": metrics.get("applicability_macro_f1"),
+                    "none_precision": metrics.get("none_precision"),
+                    "none_recall": metrics.get("none_recall"),
+                    "none_f1": metrics.get("none_f1"),
+                    "family_present_precision": metrics.get("family_present_precision"),
+                    "family_present_recall": metrics.get("family_present_recall"),
+                    "family_present_f1": metrics.get("family_present_f1"),
+                    "active_family_macro_f1": metrics.get("active_family_macro_f1"),
+                    "observed_active_family_macro_f1": metrics.get("observed_active_family_macro_f1"),
+                    "per_family": metrics.get("per_family"),
+                    "predicted_none_rate": metrics.get("predicted_none_rate"),
+                    "family_emission_rate": metrics.get("family_emission_rate"),
+                    "selection_score": metrics.get("selection_score"),
+                    "checkpoint_identity": best_checkpoint_sha,
+                    "observed_slice": metrics.get("observed_slice"),
+                    "inferred_slice": metrics.get("inferred_slice"),
+                }
+            )
+            app_loss_sum = torch.zeros((), device=device)
+            fam_loss_sum = torch.zeros((), device=device)
+            unb_loss_sum = torch.zeros((), device=device)
+            app_loss_steps = fam_loss_steps = unb_loss_steps = 0
         progress.update(
             epoch_timing_fields(
                 epoch_started=epoch_started,
@@ -1072,30 +1297,24 @@ def run_loop(
         with progress_path.open("a", encoding="utf-8") as pf:
             pf.write(json.dumps(progress, sort_keys=True) + "\n")
             pf.flush()
-        if not select_on_classify:
+        if not select_on_classify and not v2_checkpoint:
             print(
                 f"[epoch {ep}] unbind_exact={exact:.6f} best={best_exact if best_exact != float('-inf') else None} saved_best={saved_best}",
                 flush=True,
             )
-        if early_stop_break(
-            enabled=early_stop.enabled,
-            epoch_index=ep,
-            best_epoch=best_epoch_index,
-            epochs_scored=ep + 1,
-            minimum_epochs=early_stop.minimum_epochs,
-            patience=early_stop.patience,
-            max_epochs=epochs,
-        ):
+        if will_stop:
             stop_reason = STOP_REASON_EARLY_STOPPING
             break
 
     training_elapsed_seconds = round_seconds(monotonic_seconds() - training_started)
     final_state = _build_weight_state(
-        encoder, classify, role_head, filler_head, maps, layout
+        encoder, classify, role_head, filler_head, maps, layout,
+        applicability=applicability_head,
+        family_head=family_head,
     )
     # Always write final epoch weights under a distinct name when best-save is on,
     # then promote best → primary model.safetensors (fixes morph35 peak-not-saved).
-    if (save_best_unbind or select_on_classify) and best_state is not None:
+    if (save_best_unbind or select_on_classify or v2_checkpoint) and best_state is not None:
         final_file = save_heads(out_dir, final_state)
         # rename primary final dump aside, then write best as primary
         final_path = out_dir / final_file
@@ -1107,7 +1326,7 @@ def run_loop(
         weight_file = save_heads(out_dir, best_state)
         primary_val = best_metrics or {}
         gated_from = (
-            "best_classify_macro_f1_nonnone" if select_on_classify else "best_unbind_exact"
+            "selection_score" if v2_checkpoint else "best_classify_macro_f1_nonnone" if select_on_classify else "best_unbind_exact"
         )
         residual_for_dump = best_residual_records
     else:
@@ -1116,6 +1335,58 @@ def run_loop(
         gated_from = "final_epoch"
         residual_for_dump = last_residual_records
         aside = None
+
+    calibration_artifact = None
+    if v2_checkpoint:
+        if best_state is None:
+            raise RuntimeError("classification v2 restore-best is required before calibration")
+        if not classify_va:
+            raise RuntimeError("classification v2 calibration requires the validation split")
+        applicability_head.load_state_dict(best_state["applicability"])
+        family_head.load_state_dict(best_state["family_head"])
+        apply_encoder_trainable(encoder, best_state.get("encoder") or {})
+        from .classification_v2 import ACTIVE_FAMILY_VOCABULARY, freeze_calibration
+
+        prohibited = {"held_out", "evaluation_reserve", "settlement", "measurement"}
+        applicability_rows = []
+        family_rows = []
+        applicability_head.eval()
+        family_head.eval()
+        encoder.eval()
+        with torch.no_grad():
+            for row in classify_va:
+                if (
+                    row.get("split") == "test"
+                    or row.get("evaluation_reserve")
+                    or row.get("held_out")
+                    or row.get("surface") in prohibited
+                ):
+                    raise RuntimeError("classification v2 calibration refused a non-validation row")
+                lineage = row.get("lineage")
+                if lineage not in ACTIVE_FAMILY_VOCABULARY and lineage != "none":
+                    continue
+                encoded = encoder(**encode_texts([row["text"]]))
+                pooled = encoded.last_hidden_state[:, 0]
+                applicability_logit = [
+                    float(value) for value in applicability_head(pooled)[0].detach().cpu()
+                ]
+                applicability_rows.append((applicability_logit, 0 if lineage == "none" else 1))
+                if lineage in ACTIVE_FAMILY_VOCABULARY:
+                    family_logit = [float(value) for value in family_head(pooled)[0].detach().cpu()]
+                    family_rows.append((family_logit, ACTIVE_FAMILY_VOCABULARY.index(lineage)))
+        encoder.train()
+        applicability_head.train()
+        family_head.train()
+        calibration_artifact = freeze_calibration(
+            applicability_rows=applicability_rows,
+            family_rows=family_rows,
+            surface="validation",
+            checkpoint_identity=best_checkpoint_sha,
+        )
+        (out_dir / "classification-v2-calibration.json").write_text(
+            json.dumps(calibration_artifact, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
 
     last = epoch_metrics[-1] if epoch_metrics else {}
     residual_receipt: dict = {
@@ -1133,7 +1404,18 @@ def run_loop(
         "device": str(device),
         "cuda": bool(torch.cuda.is_available()),
         "epochs": epochs,
+        "epochs_completed": len(epoch_metrics),
+        "global_steps": global_step,
+        "best_checkpoint_sha256": best_checkpoint_sha,
+        "primary_weights_sha256": (
+            _sha256_file(out_dir / weight_file) if (out_dir / weight_file).is_file() else None
+        ),
         "stop_reason": stop_reason,
+        "classify_sampling": {
+            "epochs": classify_sampling_epochs,
+            "policy": os.environ.get("HYPERLEX_CLASSIFY_SAMPLING") or "uncapped",
+        },
+        "training_schedule": schedule.as_dict(),
         "training_elapsed_seconds": training_elapsed_seconds,
         **provenance(root),
         "n_train_classify": len(classify_tr),
@@ -1228,6 +1510,8 @@ def run_loop(
         receipt["classify_split"] = classify_split_receipt
     if seed_receipt is not None:
         receipt["seed"] = seed_receipt
+    if calibration_artifact is not None:
+        receipt["classification_v2_calibration"] = calibration_artifact
     if select_on_classify:
         receipt["select_metric"] = SELECT_METRIC_CLASSIFY
     if force_overlap.get("disjoint"):

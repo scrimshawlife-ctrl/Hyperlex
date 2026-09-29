@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v2",
+  "title": "Hyperlex classification v2 result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "decision",
+    "family",
+    "applicability",
+    "applicability_score",
+    "applicability_threshold",
+    "family_distribution",
+    "family_confidence",
+    "family_emit_threshold",
+    "confidence",
+    "margin",
+    "ambiguous_candidate",
+    "ambiguity_emission",
+    "provenance_context",
+    "stage",
+    "brier",
+    "forecast_eligible",
+    "jev"
+  ],
+  "properties": {
+    "schema": { "const": "hyperlex.classification.v2" },
+    "decision": { "enum": ["FAMILY", "NONE", "ABSTAIN", "AMBIGUOUS"] },
+    "family": { "type": ["string", "null"], "minLength": 1 },
+    "applicability": { "enum": ["NONE", "FAMILY_PRESENT"] },
+    "applicability_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "applicability_threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+    "family_distribution": {
+      "type": "object",
+      "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+    },
+    "family_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "family_emit_threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "margin": { "type": "number", "minimum": 0, "maximum": 1 },
+    "ambiguous_candidate": { "type": "boolean" },
+    "ambiguity_emission": { "const": "DISABLED_PENDING_GOLD" },
+    "provenance_context": { "enum": ["OBSERVED", "INFERRED", "UNKNOWN"] },
+    "stage": {
+      "enum": ["Q1_APPLICABILITY", "Q2_NONE", "Q4_FAMILY", "Q5_FAMILY_CONFIDENCE"]
+    },
+    "brier": { "type": "null" },
+    "forecast_eligible": { "const": false },
+    "jev": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "invoked", "decision_packet_ref", "agreement", "rejection"],
+      "properties": {
+        "mode": { "enum": ["OFF", "SHADOW"] },
+        "invoked": { "type": "boolean" },
+        "decision_packet_ref": { "type": ["string", "null"] },
+        "agreement": { "type": ["object", "null"] },
+        "rejection": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

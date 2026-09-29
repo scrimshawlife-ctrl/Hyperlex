@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex.select_005_training_launch_authorization_spec.v1",
+  "title": "SELECT-005 training launch authorization spec",
+  "description": "Defines the operator-to-compute edge. This spec does not authorize launch and does not train.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_result",
+    "authorization_record",
+    "best_changed",
+    "edge",
+    "epochs",
+    "executes_training",
+    "experiment_id",
+    "gradient_steps",
+    "launch_legal",
+    "next_legal_transition",
+    "optimizer_constructed",
+    "ready_to_train",
+    "required_pins",
+    "schema",
+    "sealed_schedule",
+    "separation",
+    "state",
+    "status",
+    "training_launch_authorized",
+    "training_started",
+    "transition",
+    "weights_mutated"
+  ],
+  "properties": {
+    "schema": {"const": "hyperlex.select_005_training_launch_authorization_spec.v1"},
+    "state": {"const": "TRAINING_LAUNCH_AUTHORIZATION_SPEC_SEALED"},
+    "transition": {"const": "SELECT_005_TRAINING_LAUNCH_AUTHORIZATION_SPEC"},
+    "experiment_id": {"const": "HLX-EXP-2026-09-27-SELECT-005"},
+    "admission_result": {"const": "ADMISSION_PASS"},
+    "status": {"const": "TRAINING_READY"},
+    "ready_to_train": {"const": true},
+    "training_launch_authorized": {"const": false},
+    "training_started": {"const": false},
+    "executes_training": {"const": false},
+    "optimizer_constructed": {"const": false},
+    "epochs": {"const": 0},
+    "gradient_steps": {"const": 0},
+    "weights_mutated": {"const": false},
+    "best_changed": {"const": false},
+    "launch_legal": {"const": false},
+    "next_legal_transition": {"const": "SELECT_005_TRAINING_LAUNCH_AUTHORIZATION"},
+    "edge": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "prefixItems": [
+        {"const": "TRAINING_READY"},
+        {"const": "SELECT_005_TRAINING_LAUNCH_AUTHORIZATION"},
+        {"const": "TRAINING_LAUNCH_AUTHORIZED"},
+        {"const": "SELECT_005_TRAINING_LAUNCH"},
+        {"const": "TRAINING_STARTED"}
+      ]
+    },
+    "separation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ready_to_train", "training_launch_authorized", "training_started"],
+      "properties": {
+        "ready_to_train": {"const": "all scientific and admission gates passed"},
+        "training_launch_authorized": {"const": "operator has explicitly authorized compute"},
+        "training_started": {"const": "training actually began"}
+      }
+    },
+    "required_pins": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admission_receipt_sha256",
+        "environment_sha256",
+        "experiment_id",
+        "preregistration_sha256",
+        "reserve_manifest_sha256",
+        "threshold_authorization_sha256",
+        "warm_start_sha256"
+      ],
+      "properties": {
+        "experiment_id": {"const": "HLX-EXP-2026-09-27-SELECT-005"},
+        "admission_receipt_sha256": {"const": "874ac309f1a51a677a692705aebd8fd48ae25dbdb5ca4d1e5c08c7870bdef382"},
+        "preregistration_sha256": {"const": "c2dcf3b703f50cb8eb80bb6c2c45335071ded3c4ce89cc669e8a869eb3498baf"},
+        "threshold_authorization_sha256": {"const": "e0d8d81b6392692784d92542d0cc5aa6ee6756b93c44bab86e2167ef57cfbc55"},
+        "reserve_manifest_sha256": {"const": "2567b3e2d1a3b95b8ea4a474d4dda3ccbe2b6d55b016dd999b5eedcacd4b1f79"},
+        "environment_sha256": {"const": "ad253140ed539fd664188c472ff95ed42a98a8b6e7cf6389d6188dde8b83206d"},
+        "warm_start_sha256": {"const": "96838b9656a84c3fee1773a41fdf2fbbec2f88f3bc948e4acfbe06c194ac5587"}
+      }
+    },
+    "sealed_schedule": {"$ref": "#/$defs/sealed_schedule"},
+    "authorization_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "next_legal_transition_after_seal",
+        "operator_decision_required",
+        "performs_training",
+        "schema",
+        "sealed_by_this_spec",
+        "training_launch_authorized_required",
+        "training_started_required"
+      ],
+      "properties": {
+        "schema": {"const": "hyperlex.training_launch_authorization.v1"},
+        "sealed_by_this_spec": {"const": false},
+        "operator_decision_required": {"const": "AUTHORIZE"},
+        "training_launch_authorized_required": {"const": true},
+        "training_started_required": {"const": false},
+        "performs_training": {"const": false},
+        "next_legal_transition_after_seal": {"const": "SELECT_005_TRAINING_LAUNCH"}
+      }
+    },
+    "record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "sealed_schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseline", "candidate", "checkpoint_rule", "selection_metric"],
+      "properties": {
+        "baseline": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "HYPERLEX_EARLY_STOP",
+            "HYPERLEX_EARLY_STOP_MIN_EPOCHS",
+            "HYPERLEX_EARLY_STOP_PATIENCE",
+            "HYPERLEX_TRAIN_EPOCHS"
+          ],
+          "properties": {
+            "HYPERLEX_EARLY_STOP": {"const": "0"},
+            "HYPERLEX_EARLY_STOP_MIN_EPOCHS": {"type": "null"},
+            "HYPERLEX_EARLY_STOP_PATIENCE": {"type": "null"},
+            "HYPERLEX_TRAIN_EPOCHS": {"const": "40"}
+          }
+        },
+        "candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "HYPERLEX_EARLY_STOP",
+            "HYPERLEX_EARLY_STOP_MIN_EPOCHS",
+            "HYPERLEX_EARLY_STOP_PATIENCE",
+            "HYPERLEX_TRAIN_EPOCHS"
+          ],
+          "properties": {
+            "HYPERLEX_EARLY_STOP": {"const": "1"},
+            "HYPERLEX_EARLY_STOP_MIN_EPOCHS": {"const": "4"},
+            "HYPERLEX_EARLY_STOP_PATIENCE": {"const": "4"},
+            "HYPERLEX_TRAIN_EPOCHS": {"const": "12"}
+          }
+        },
+        "checkpoint_rule": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["restore_best", "strict_increase", "ties"],
+          "properties": {
+            "restore_best": {"const": true},
+            "strict_increase": {"const": true},
+            "ties": {"const": "keep_earlier"}
+          }
+        },
+        "selection_metric": {"const": "classify_macro_f1_nonnone"}
+      }
+    }
+  }
+}

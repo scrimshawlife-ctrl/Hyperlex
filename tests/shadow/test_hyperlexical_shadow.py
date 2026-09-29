@@ -19,7 +19,21 @@ from hyperlexical.packet import (
 SHADOW = ROOT / "scripts" / "shadow" / "hyperlexical"
 SCHEMA = ROOT / "specs" / "007-hyperlexical-model" / "schemas" / "hyperlexical_inference.v0.1.schema.json"
 CONTRACTS = ROOT / "specs" / "007-hyperlexical-model" / "contracts"
-TORCH_ALLOWED = {"loop.py", "save_pretrained.py", "eval_forward.py", "training_reviewed_loop.py"}
+TORCH_ALLOWED = {
+    "classification_v2_runtime.py",
+    "classify_error_audit.py",
+    "eval_forward.py",
+    "loop.py",
+    "model_based_wsd_candidate_v1_replay.py",
+    "save_pretrained.py",
+    "select_005_reserve_eval.py",
+    "select_006_reserve_eval.py",
+    "select_007_reserve_eval.py",
+    "semantic_compositionality_residual_replay.py",
+    "training_reviewed_loop.py",
+    "zero_init_loader.py",
+}
+NETWORK_ALLOWED = {"classification_v2_acquire_run.py"}
 
 
 def test_e0_rizz_packet():
@@ -137,13 +151,15 @@ def test_import_boundary_permits_hyperlexical_and_rejects_hyperlex_and_abraxas()
 def test_no_network_calls_in_source():
     forbidden_mods = {"requests", "urllib", "http.client", "socket", "huggingface_hub"}
     for path in SHADOW.glob("*.py"):
+        if path.name in NETWORK_ALLOWED:
+            continue
         tree = ast.parse(path.read_text())
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
                 for alias in node.names:
-                    assert alias.name.split(".")[0] not in forbidden_mods
+                    assert alias.name.split(".")[0] not in forbidden_mods, path.name
             if isinstance(node, ast.ImportFrom) and node.module:
-                assert node.module.split(".")[0] not in forbidden_mods
+                assert node.module.split(".")[0] not in forbidden_mods, path.name
 
 
 def test_contracts_and_schema_exist():

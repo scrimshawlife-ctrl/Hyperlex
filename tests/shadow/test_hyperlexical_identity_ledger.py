@@ -200,3 +200,44 @@ def test_same_batch_duplicate_text_counts_once():
     assert report["unique_canonical_text_identities"] == 1
     assert report["unique_admitted_to_eval_reserve"] == 1
     assert report["duplicate_text_rows_not_counted"] == 1
+
+
+def test_eval_reserve_binding_replays(tmp_path):
+    """SELECT reserve binding is observe, then EVAL_RESERVE, then replay."""
+    ledger = IdentityLedger()
+    other = ledger.observe_row(
+        _row("untouched catalog row"),
+        source_artifact="catalog",
+        provenance="catalog",
+        catalogued=True,
+    )
+    before = json.dumps(ledger.identity(other), sort_keys=True)
+    digest = "ab" * 32
+    experiment = "HLX-EXP-TEST-SELECT"
+    ledger.observe(
+        digest,
+        source_artifact="frozen-manifest",
+        row_ids=["reserve-row"],
+        labels=[{"task": "classify", "class": "OBSERVED", "lineage": "gaming-meta", "split": ""}],
+        provenance="frozen reserve",
+        experiment_id=experiment,
+    )
+    ledger.transition(
+        digest,
+        "EVAL_RESERVE",
+        source_artifact="frozen-manifest",
+        provenance="frozen reserve",
+    )
+    assert derived_state(ledger.identity(digest)) == "EVAL_RESERVE"
+    assert ledger.identity(digest)["experiment_bindings"] == [experiment]
+    counts = ledger.active_reserve_counts(experiment)
+    assert counts["classify"] == 1
+    assert counts["classify_observed"] == 1
+    assert counts["classify_non_none"] == 1
+    assert counts["unbind_clean"] == 0
+    assert json.dumps(ledger.identity(other), sort_keys=True) == before
+    (tmp_path / "events.jsonl").write_text("", encoding="utf-8")
+    assert ledger.persist_append(tmp_path, 0) == len(ledger.events)
+    loaded = IdentityLedger.load(tmp_path)
+    assert json.dumps(loaded.project(), sort_keys=True) == json.dumps(ledger.project(), sort_keys=True)
+    assert loaded.active_reserve_counts(experiment) == counts

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex.experiment_readiness.v1",
+  "title": "Experiment readiness evidence",
+  "description": "Why an experiment can or cannot run. A failed check blocks READY. It is not a new lifecycle state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "environment",
+    "isolation",
+    "ledger",
+    "loader",
+    "metric_computability",
+    "operator_authorization",
+    "preregistration",
+    "provenance",
+    "reserve",
+    "schedule",
+    "telemetry_plan",
+    "thresholds",
+    "training_data",
+    "warm_start"
+  ],
+  "properties": {
+    "environment": {"$ref": "#/$defs/check"},
+    "isolation": {"$ref": "#/$defs/check"},
+    "ledger": {"$ref": "#/$defs/check"},
+    "loader": {"$ref": "#/$defs/check"},
+    "metric_computability": {"$ref": "#/$defs/check"},
+    "operator_authorization": {"$ref": "#/$defs/check"},
+    "preregistration": {"$ref": "#/$defs/check"},
+    "provenance": {"$ref": "#/$defs/check"},
+    "reserve": {"$ref": "#/$defs/check"},
+    "schedule": {"$ref": "#/$defs/check"},
+    "telemetry_plan": {"$ref": "#/$defs/check"},
+    "thresholds": {"$ref": "#/$defs/check"},
+    "training_data": {"$ref": "#/$defs/check"},
+    "warm_start": {"$ref": "#/$defs/check"}
+  },
+  "$defs": {
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact", "blocking_reason", "sha256", "status", "timestamp"],
+      "properties": {
+        "artifact": {"type": ["string", "null"]},
+        "blocking_reason": {"type": ["string", "null"]},
+        "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "status": {"enum": ["PASS", "FAIL"]},
+        "timestamp": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

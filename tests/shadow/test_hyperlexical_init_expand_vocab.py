@@ -78,7 +78,7 @@ def test_warm_load_fail_closed_on_vocab_mismatch(tmp_path):
         )
 
 
-def test_warm_load_expand_remaps_shared_rows_keeps_new_init(tmp_path):
+def test_warm_load_expand_copies_shared_rows_and_zeros_new(tmp_path):
     init_roles = ["<unk>", "TOKEN", "pos_0", "pos_1"]
     init_fillers = ["<unk>", "alpha", "beta"]
     _, init_role, init_filler = _write_heads_seed(tmp_path, init_roles, init_fillers)
@@ -94,31 +94,32 @@ def test_warm_load_expand_remaps_shared_rows_keeps_new_init(tmp_path):
         role_head.bias.fill_(-1.0)
         filler_head.weight.fill_(-1.0)
         filler_head.bias.fill_(-1.0)
-        new_role_row = role_head.weight[-1].clone()
-        new_fill_row = filler_head.weight[cur_fillers.index("gamma")].clone()
 
     receipt = warm_load_checkpoint(
         _Enc(), classify, role_head, filler_head, maps, tmp_path, expand_vocab=True
     )
     assert receipt["expand_vocab"] is True
     assert receipt["role"]["mapped"] == 4
+    assert receipt["role"]["new_row_policy"] == "exact_zero"
     assert receipt["filler"]["mapped"] == 3
     assert receipt["filler"]["new_current_rows"] == 1
 
     for lab in init_roles:
         ii = init_roles.index(lab)
         ci = cur_roles.index(lab)
-        assert torch.allclose(role_head.weight[ci], init_role.weight[ii])
-        assert torch.allclose(role_head.bias[ci], init_role.bias[ii])
-    assert torch.allclose(role_head.weight[-1], new_role_row)
+        assert torch.equal(role_head.weight[ci], init_role.weight[ii])
+        assert torch.equal(role_head.bias[ci], init_role.bias[ii])
+    assert torch.equal(role_head.weight[-1], torch.zeros_like(role_head.weight[-1]))
+    assert torch.equal(role_head.bias[-1], torch.zeros_like(role_head.bias[-1]))
 
     for lab in init_fillers:
         ii = init_fillers.index(lab)
         ci = cur_fillers.index(lab)
-        assert torch.allclose(filler_head.weight[ci], init_filler.weight[ii])
-        assert torch.allclose(filler_head.bias[ci], init_filler.bias[ii])
+        assert torch.equal(filler_head.weight[ci], init_filler.weight[ii])
+        assert torch.equal(filler_head.bias[ci], init_filler.bias[ii])
     gi = cur_fillers.index("gamma")
-    assert torch.allclose(filler_head.weight[gi], new_fill_row)
+    assert torch.equal(filler_head.weight[gi], torch.zeros_like(filler_head.weight[gi]))
+    assert torch.equal(filler_head.bias[gi], torch.zeros_like(filler_head.bias[gi]))
 
 
 def test_warm_load_expand_exact_match_still_strict(tmp_path):

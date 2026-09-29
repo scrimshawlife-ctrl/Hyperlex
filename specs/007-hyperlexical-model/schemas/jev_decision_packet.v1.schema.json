@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.jev.decision_packet.v1",
+  "title": "Provider-neutral Jev decision packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_type",
+    "candidate_set",
+    "probabilities",
+    "confidence",
+    "provider",
+    "model",
+    "prompt_schema_version",
+    "timestamp",
+    "input_hash",
+    "output_hash"
+  ],
+  "properties": {
+    "schema_version": { "const": "hyperlex.jev.decision_packet.v1" },
+    "decision_type": { "enum": ["choice", "score", "route"] },
+    "candidate_set": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "probabilities": {
+      "type": "object",
+      "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+    },
+    "abstain_probability": { "type": "number", "minimum": 0, "maximum": 1 },
+    "selected": { "type": ["string", "null"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "provider": { "type": "string", "minLength": 1 },
+    "model": { "type": "string", "minLength": 1 },
+    "prompt_schema_version": { "type": "string", "minLength": 1 },
+    "timestamp": { "type": "string", "minLength": 1 },
+    "input_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "output_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "reason_code": { "type": ["string", "null"] }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["api_key"] },
+      { "required": ["canonical_family"] },
+      { "required": ["semantic_family"] },
+      { "required": ["observed_label"] },
+      { "required": ["reserve_gold"] },
+      { "required": ["best"] }
+    ]
+  }
+}

@@ -191,6 +191,28 @@ def test_select005_schedule_bundle_is_one_variable(monkeypatch, tmp_path):
     assert not armed["out"].exists()
 
 
+def test_control_arm_admits_the_sealed_baseline_schedule(monkeypatch, tmp_path):
+    _arm_schedule(monkeypatch, tmp_path, declared="train_schedule")
+    monkeypatch.setenv("HLX_SCHEDULE_ARM", "control")
+    monkeypatch.setenv("HYPERLEX_TRAIN_EPOCHS", "40")
+    monkeypatch.setenv("HYPERLEX_EARLY_STOP", "0")
+    monkeypatch.delenv("HYPERLEX_EARLY_STOP_PATIENCE", raising=False)
+    monkeypatch.delenv("HYPERLEX_EARLY_STOP_MIN_EPOCHS", raising=False)
+    result = _admit()
+    assert result.admission_result == "ADMISSION_PASS"
+    assert result.receipt["optimizer_loaded"] is False
+    assert result.receipt["epochs"] == 0
+    assert result.receipt["gradient_steps"] == 0
+
+
+def test_control_arm_refuses_the_candidate_schedule(monkeypatch, tmp_path):
+    _arm_schedule(monkeypatch, tmp_path, declared="train_schedule")
+    monkeypatch.setenv("HLX_SCHEDULE_ARM", "control")
+    with pytest.raises(AdmissionError, match="does not match the sealed control") as exc:
+        _admit()
+    assert exc.value.receipt["failed_gate"] == "single_variable"
+
+
 def test_extra_scientific_difference_is_a_second_variable(monkeypatch, tmp_path):
     _arm_schedule(
         monkeypatch,
