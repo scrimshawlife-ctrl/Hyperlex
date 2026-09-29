@@ -18,6 +18,7 @@ from hyperlexical.eval_settlement import (  # noqa: E402
     SURFACES,
     family_flags,
     parse_sheet,
+    rights_of,
     receipt_sha_matches,
     settlement_allows_reserve,
     settle,
@@ -82,7 +83,7 @@ def _sheet(path: Path, stream, *, lane="A", decision="", family="", attest="", r
     hint = stream["family_hint_not_a_label"]
     hint_cell = "NO_HINT" if hint in (None, "") else hint
     label = "UNLABELLED" if stream["label"] is None else str(stream["label"])
-    rights = "CC-BY-SA" if stream["source_type"] in ("wiktionary_category", "wikipedia_prose") else "RIGHTS_UNRESOLVED"
+    rights = rights_of(stream)
     if proposed is None:
         proposed = family or ("" if hint in (None, "") else str(hint))
     row = [
@@ -503,3 +504,11 @@ def test_private_lane_sheets_parse_without_rewriting():
         assert parsed["unset_row_count"] + len(parsed["records"]) == expected[lane]
         assert parsed["lane_rows"] == {lane: expected[lane]}
         assert path.read_bytes() == before
+
+
+def test_preregistered_wiktionary_families_are_cc_by_sa():
+    for source in ("wiktionary_sense_gloss", "wiktionary_multiword_lemma"):
+        assert rights_of({"source_type": source}) == "CC-BY-SA"
+    for source in ("wordnet", "princeton_wordnet", "search_snippet"):
+        with pytest.raises(SystemExit, match="unknown rights source_type"):
+            rights_of({"source_type": source})
