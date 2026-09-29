@@ -207,6 +207,8 @@ Early stopping ended the run after 7 epochs. The best epoch is 2, validation `se
 
 No comparison hypothesis was preregistered, so the run is not `SETTLED_PASS` or `SETTLED_FAIL`. Execution matched the contract, so it is not `SETTLED_INVALID`. Promotion is a later explicit action.
 
-The frozen `EVAL_RESERVE` identities do not retain original text. An independent reserve evaluation was not run. SELECT-006 and SELECT-007 were not reopened.
+The frozen classify `EVAL_RESERVE` is 115 identities. Their stored strings were scored once with the restored checkpoint and the validation calibration. Seventy-five are OBSERVED headwords. Forty are INFERRED `none` sentences. None of those strings are in the training export. The ledger was not changed. SELECT-006 and SELECT-007 were not reopened.
+
+On that pass, applicability macro-F1 is 0.5656, `NONE` F1 is 0.320, and active-family macro-F1 is 0.1360 where gold support exists. Coverage is 0.8348, selective accuracy is 0.1875, and the abstention rate is 0.1652. The applicability threshold sits above 0.5, so the decision `NONE` branch did not fire. Applicability Brier is 0.2062 and 10-bin ECE is 0.1976. Packet `brier` stays null. `unbind_clean_exact` is null on this classify reserve. The receipt is `/home/morpheus/hlx-private/classification-v2-train-20260929/RESERVE_EVAL.json`.
 
 
