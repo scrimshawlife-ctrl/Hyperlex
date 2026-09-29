@@ -28,6 +28,28 @@ STATE = "SOURCE_DESIGN_V2_SEALED"
 SCHEMA = "hyperlex.select_006_reserve_source_design_v2.v1"
 NEXT_TRANSITION = "SELECT_006_RESERVE_ACQUISITION_V2"
 CLEARED_RIGHTS = "CC-BY-SA"
+NO_HEAD_MAPPED_TARGET_FAMILIES = "NO_HEAD_MAPPED_TARGET_FAMILIES"
+SOURCE_RIGHTS_UNRESOLVED = "SOURCE_RIGHTS_UNRESOLVED"
+SOURCE_PROVENANCE_UNRESOLVED = "SOURCE_PROVENANCE_UNRESOLVED"
+OBSERVED_RULE_UNDERSPECIFIED = "OBSERVED_RULE_UNDERSPECIFIED"
+SOURCE_DESIGN_NOT_CAPABLE_OF_CLASSIFICATION = "SOURCE_DESIGN_NOT_CAPABLE_OF_CLASSIFICATION"
+SPEC_SEAL_FAILURE = "SPEC_SEAL_FAILURE"
+PROVENANCE_FIELDS = (
+    "normalized_hash",
+    "normalized_text",
+    "revision_id",
+    "revision_sha1",
+    "revision_timestamp",
+    "rights",
+    "source_url",
+)
+SUPPORTING_ARTIFACTS = (
+    "HEAD_MAPPING_WITNESS.json",
+    "SOURCE_RIGHTS_PROVENANCE_POLICY.json",
+    "FUTURE_ACQUISITION_CONTRACT.json",
+    "ARTIFACT_MANIFEST.json",
+    "SPEC_RECEIPT.json",
+)
 SOURCE_FAMILY = "wiktionary_labeled_sense"
 SPENT_BATCH = "HLX-EVAL-RESERVE-SELECT-006-001"
 SPENT_RECIPES = (
@@ -493,3 +515,218 @@ def freeze_design(path: str, **receipt_pins: str) -> dict[str, Any]:
     target.write_text(canonical_json(receipt), encoding="utf-8")
     os.chmod(target, 0o600)
     return receipt
+
+
+def _seal_fail(code: str, detail: str) -> None:
+    raise SystemExit(f"{code}: {detail}")
+
+
+def design_record_matches(design: Mapping[str, Any]) -> bool:
+    """True when record_sha256 covers every field except itself."""
+    record = design.get("record_sha256")
+    if not isinstance(record, str) or len(record) != 64:
+        return False
+    body = {key: value for key, value in design.items() if key != "record_sha256"}
+    return sha256_text(canonical_json(body)) == record
+
+
+def require_sealable(design: Mapping[str, Any]) -> None:
+    """Fail closed before any companion artifact is written."""
+    if not design_record_matches(design):
+        _seal_fail(SPEC_SEAL_FAILURE, "source design record")
+    targets = list(design.get("target_families") or [])
+    if not targets or targets != list(TARGET_FAMILIES):
+        _seal_fail(NO_HEAD_MAPPED_TARGET_FAMILIES, "target family list")
+    family = design.get("family") or {}
+    if family.get("rights") != CLEARED_RIGHTS or not str(family.get("rights_basis") or "").strip():
+        _seal_fail(SOURCE_RIGHTS_UNRESOLVED, "rights basis")
+    required = list(family.get("provenance_required") or [])
+    if not str(family.get("provenance_mechanism") or "").strip() or required != list(PROVENANCE_FIELDS):
+        _seal_fail(SOURCE_PROVENANCE_UNRESOLVED, "provenance")
+    observed = str(family.get("observed_rule") or "")
+    if "OBSERVED" not in observed or "sense label" not in observed or "INFERRED is not promoted" not in observed:
+        _seal_fail(OBSERVED_RULE_UNDERSPECIFIED, "observed rule")
+    slices = set(family.get("slices") or [])
+    if not set(ACQUISITION_FLOORS) <= slices:
+        _seal_fail(SOURCE_DESIGN_NOT_CAPABLE_OF_CLASSIFICATION, "slices")
+    for name in TARGET_FAMILIES:
+        labels = list((design.get("direct_labels") or {}).get(name) or [])
+        if not labels or named_target_family([labels[0]]) != name:
+            _seal_fail(SOURCE_DESIGN_NOT_CAPABLE_OF_CLASSIFICATION, name)
+    if design.get("epsilon_unchanged") != 0 or design.get("fetch_authorized"):
+        _seal_fail(SPEC_SEAL_FAILURE, "epsilon or fetch")
+    if design.get("execution_loader_status") != "NOT_YET_IMPLEMENTED":
+        _seal_fail(SPEC_SEAL_FAILURE, "loader")
+
+
+def head_mapping_witness(design: Mapping[str, Any]) -> dict[str, Any]:
+    require_sealable(design)
+    return {
+        "active_families_on_head": list(TARGET_FAMILIES),
+        "derivation": (
+            "layout.FAMILIES excluding none, intersected with "
+            "eval_settlement.ACTIVE_FAMILIES, in head order"
+        ),
+        "experiment_id": EXPERIMENT_ID,
+        "head_index": {name: FAMILIES.index(name) for name in TARGET_FAMILIES},
+        "head_mapping_eligibility_rule": design["family"]["head_mapping_eligibility_rule"],
+        "head_outputs": list(HEAD_OUTPUTS),
+        "heads_unchanged": True,
+        "legacy_heads_not_targets": list(LEGACY_HEADS),
+        "schema": "hyperlex.select_006_head_mapping_witness.v1",
+        "source_design_record_sha256": design["record_sha256"],
+        "target_families": list(design["target_families"]),
+    }
+
+
+def rights_provenance_policy(design: Mapping[str, Any]) -> dict[str, Any]:
+    require_sealable(design)
+    family = design["family"]
+    return {
+        "direct_evidence_requirement": family["observed_rule"],
+        "evaluated_sources": design["evaluated_sources"],
+        "experiment_id": EXPERIMENT_ID,
+        "family_id": family["family_id"],
+        "firecrawl": family["firecrawl"],
+        "generated_oldid_trusted": False,
+        "provenance_mechanism": family["provenance_mechanism"],
+        "provenance_required": list(family["provenance_required"]),
+        "refused_evidence": list(family["refused_evidence"]),
+        "rights": family["rights"],
+        "rights_basis": family["rights_basis"],
+        "schema": "hyperlex.select_006_source_rights_provenance_policy.v1",
+        "source_design_record_sha256": design["record_sha256"],
+        "wordnet_admitted": False,
+    }
+
+
+def future_acquisition_contract(design: Mapping[str, Any]) -> dict[str, Any]:
+    require_sealable(design)
+    family = design["family"]
+    return {
+        "acquisition_floors": dict(design["acquisition_floors"]),
+        "direct_labels": design["direct_labels"],
+        "eventual_reserve_still_requires": list(design["eventual_reserve_still_requires"]),
+        "exclusion_fences": list(design["exclusion_fences"]),
+        "executes_in_this_pass": False,
+        "experiment_id": EXPERIMENT_ID,
+        "failure_rule": family["failure_rule"],
+        "fetch_authorized": False,
+        "incidental_unbind_clean": family["incidental_unbind_clean"],
+        "near_miss_labels_not_evidence": list(design["near_miss_labels_not_evidence"]),
+        "next_legal_transition": NEXT_TRANSITION,
+        "routing_procedure_id": family["routing_procedure_id"],
+        "schema": "hyperlex.select_006_future_acquisition_contract.v1",
+        "source_design_record_sha256": design["record_sha256"],
+        "source_family": family["family_id"],
+        "spent_surface": design["spent_surface"],
+        "training_launch_authorized": False,
+        "unbind_clean_acquisition_authorized": False,
+        **forbidden_training(),
+    }
+
+
+def compile_supporting_artifacts(
+    design: Mapping[str, Any],
+    *,
+    design_file_sha256: str,
+    repository_commit: str,
+) -> dict[str, dict[str, Any]]:
+    """Witness, policy, contract, manifest, and receipt. Does not fetch."""
+    require_sealable(design)
+    if len(design_file_sha256) != 64 or len(repository_commit) != 40:
+        _seal_fail(SPEC_SEAL_FAILURE, "design file or commit pin")
+    bodies = {
+        "HEAD_MAPPING_WITNESS.json": head_mapping_witness(design),
+        "SOURCE_RIGHTS_PROVENANCE_POLICY.json": rights_provenance_policy(design),
+        "FUTURE_ACQUISITION_CONTRACT.json": future_acquisition_contract(design),
+    }
+    hashes = {name: sha256_text(canonical_json(body)) for name, body in bodies.items()}
+    hashes["SOURCE_DESIGN_V2.json"] = design_file_sha256
+    manifest = {
+        "artifacts": [{"name": name, "sha256": hashes[name]} for name in sorted(hashes)],
+        "experiment_id": EXPERIMENT_ID,
+        "schema": "hyperlex.select_006_source_design_v2_manifest.v1",
+        "source_design_record_sha256": design["record_sha256"],
+        **forbidden_training(),
+    }
+    hashes["ARTIFACT_MANIFEST.json"] = sha256_text(canonical_json(manifest))
+    receipt = {
+        "artifact_sha256": hashes,
+        "experiment_id": EXPERIMENT_ID,
+        "network_requests": 0,
+        "next_legal_transition": NEXT_TRANSITION,
+        "repository_commit": repository_commit,
+        "rows_fetched": 0,
+        "schema": "hyperlex.select_006_source_design_v2_receipt.v1",
+        "source_design_record_sha256": design["record_sha256"],
+        "state": STATE,
+        "transition": TRANSITION,
+        **forbidden_training(),
+    }
+    bodies["ARTIFACT_MANIFEST.json"] = manifest
+    bodies["SPEC_RECEIPT.json"] = receipt
+    return bodies
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def write_supporting_artifacts(
+    directory: str,
+    design: Mapping[str, Any],
+    *,
+    design_file: str,
+    repository_commit: str,
+) -> dict[str, str]:
+    """Write companion artifacts. Refuses to rewrite the source design."""
+    root = Path(directory)
+    design_path = Path(design_file)
+    before = design_path.read_bytes()
+    bodies = compile_supporting_artifacts(
+        design,
+        design_file_sha256=sha256_file(design_path),
+        repository_commit=repository_commit,
+    )
+    if design_path.name in bodies:
+        _seal_fail(SPEC_SEAL_FAILURE, "companion seal must not rewrite the source design")
+    for name in bodies:
+        if (root / name).exists():
+            _seal_fail(SPEC_SEAL_FAILURE, f"{name} already exists")
+    root.mkdir(mode=0o700, parents=True, exist_ok=True)
+    os.chmod(root, 0o700)
+    temporary = root / ".supporting.tmp"
+    if temporary.exists():
+        _seal_fail(SPEC_SEAL_FAILURE, "temporary artifact directory already exists")
+    temporary.mkdir(mode=0o700)
+    try:
+        for name, body in bodies.items():
+            path = temporary / name
+            path.write_text(canonical_json(body), encoding="utf-8")
+            os.chmod(path, 0o600)
+        manifest = json.loads((temporary / "ARTIFACT_MANIFEST.json").read_text(encoding="utf-8"))
+        for item in manifest["artifacts"]:
+            if item["name"] == design_path.name:
+                observed = sha256_file(design_path)
+            else:
+                observed = sha256_file(temporary / item["name"])
+            if observed != item["sha256"]:
+                _seal_fail(SPEC_SEAL_FAILURE, item["name"])
+        for name, body in bodies.items():
+            os.replace(temporary / name, root / name)
+            os.chmod(root / name, 0o600)
+        temporary.rmdir()
+    except BaseException:
+        if temporary.exists():
+            for child in temporary.iterdir():
+                child.unlink()
+            temporary.rmdir()
+        raise
+    if design_path.read_bytes() != before:
+        _seal_fail(SPEC_SEAL_FAILURE, "source design bytes changed")
+    return {name: sha256_file(root / name) for name in bodies}

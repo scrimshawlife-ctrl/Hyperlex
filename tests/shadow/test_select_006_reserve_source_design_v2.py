@@ -1,5 +1,6 @@
 """SELECT-006 source design v2 is a preregistration, not a harvest."""
 
+import json
 from pathlib import Path
 
 import pytest
@@ -105,6 +106,77 @@ def test_module_has_no_fetch_client():
     for banned in ("urllib", "import requests", "httpx", "urlopen", "import firecrawl", "Popen"):
         assert banned not in text
     assert "does not fetch" in text
+
+
+def test_supporting_artifacts_bind_the_design_and_do_not_rewrite_it(tmp_path):
+    from hyperlexical.select_006_reserve_source_design_v2 import (
+        freeze_design,
+        sha256_file,
+        write_supporting_artifacts,
+    )
+
+    design_path = tmp_path / "SOURCE_DESIGN_V2.json"
+    design = freeze_design(str(design_path), repository_commit="a" * 40)
+    before = design_path.read_bytes()
+    hashes = write_supporting_artifacts(
+        str(tmp_path),
+        design,
+        design_file=str(design_path),
+        repository_commit="b" * 40,
+    )
+    assert design_path.read_bytes() == before
+    assert set(hashes) == {
+        "ARTIFACT_MANIFEST.json",
+        "FUTURE_ACQUISITION_CONTRACT.json",
+        "HEAD_MAPPING_WITNESS.json",
+        "SOURCE_RIGHTS_PROVENANCE_POLICY.json",
+        "SPEC_RECEIPT.json",
+    }
+    witness = json.loads((tmp_path / "HEAD_MAPPING_WITNESS.json").read_text())
+    assert witness["target_families"] == list(TARGET_FAMILIES)
+    assert witness["head_index"]["gaming-meta"] == FAMILIES.index("gaming-meta")
+    policy = json.loads((tmp_path / "SOURCE_RIGHTS_PROVENANCE_POLICY.json").read_text())
+    assert policy["rights"] == "CC-BY-SA"
+    assert policy["generated_oldid_trusted"] is False
+    contract = json.loads((tmp_path / "FUTURE_ACQUISITION_CONTRACT.json").read_text())
+    assert contract["executes_in_this_pass"] is False
+    assert contract["acquisition_floors"]["head_mapped_non_none"] == 1
+    assert contract["spent_surface"]["reuse_authorized"] is False
+    manifest = json.loads((tmp_path / "ARTIFACT_MANIFEST.json").read_text())
+    pinned = {item["name"]: item["sha256"] for item in manifest["artifacts"]}
+    assert pinned["SOURCE_DESIGN_V2.json"] == sha256_file(design_path)
+    for name, digest in pinned.items():
+        if name == "SOURCE_DESIGN_V2.json":
+            continue
+        assert sha256_file(tmp_path / name) == digest
+    receipt = json.loads((tmp_path / "SPEC_RECEIPT.json").read_text())
+    assert receipt["rows_fetched"] == 0
+    assert receipt["network_requests"] == 0
+    assert receipt["next_legal_transition"] == "SELECT_006_RESERVE_ACQUISITION_V2"
+    assert receipt["artifact_sha256"]["ARTIFACT_MANIFEST.json"] == sha256_file(tmp_path / "ARTIFACT_MANIFEST.json")
+
+
+def test_companion_seal_fails_closed():
+    import hyperlexical.select_006_reserve_source_design_v2 as module
+
+    design = module.design_receipt()
+    module.require_sealable(design)
+    broken = dict(design)
+    broken["target_families"] = []
+    broken["record_sha256"] = module.sha256_text(
+        module.canonical_json({key: value for key, value in broken.items() if key != "record_sha256"})
+    )
+    with pytest.raises(SystemExit, match="NO_HEAD_MAPPED_TARGET_FAMILIES"):
+        module.require_sealable(broken)
+    unobserved = dict(design)
+    family = dict(unobserved["family"])
+    family["observed_rule"] = "unspecified"
+    unobserved["family"] = family
+    unobserved["record_sha256"] = module.sha256_text(
+        module.canonical_json({key: value for key, value in unobserved.items() if key != "record_sha256"})
+    )
+    with pytest.raises(SystemExit, match="OBSERVED_RULE_UNDERSPECIFIED"):
+        module.require_sealable(unobserved)
 
 
 def test_wordnet_and_fetch_fail_closed(monkeypatch):
