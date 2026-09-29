@@ -789,8 +789,12 @@ def run_loop(
         from .classification_v2_runtime import build_v2_heads
 
         v2_contract = freeze_training_contract(classify_tr)
+        witness_path = os.environ.get("HLX_V2_PROTOTYPE_WITNESS")
+        if not witness_path:
+            raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
+        witness = json.loads(Path(witness_path).read_text(encoding="utf-8"))
         applicability_head, family_head, init_receipt["classification_v2_rows"] = build_v2_heads(
-            hidden, classify, list(FAMILIES)
+            hidden, classify, list(FAMILIES), witness
         )
     classify_parameters = list(classify.parameters())
     if v2_on:

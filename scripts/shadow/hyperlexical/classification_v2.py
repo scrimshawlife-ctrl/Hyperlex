@@ -134,6 +134,8 @@ TELEMETRY_FIELDS = (
     "family_present_f1",
     "active_family_macro_f1",
     "observed_active_family_macro_f1",
+    "exact_copy_family_macro_f1",
+    "prototype_family_macro_f1",
     "per_family",
     "predicted_none_rate",
     "family_emission_rate",
@@ -215,7 +217,7 @@ def decision_seal() -> dict[str, Any]:
         "family_weight_rule": "sqrt(median/effective)_then_mean_one_then_clip",
         "forbidden_near_matches": [list(pair) for pair in FORBIDDEN_NEAR_MATCHES],
         "legacy_heads": list(LEGACY_HEADS),
-        "new_row_initialization": "exact_zero",
+        "new_row_initialization": "semantic_prototype",
         "provenance_weights": PROVENANCE_WEIGHTS,
         "schedule": V2_SCHEDULE,
         "selection_score": "0.50*active_family_macro_f1+0.25*applicability_macro_f1+0.25*observed_active_family_macro_f1",
@@ -610,6 +612,16 @@ def epoch_selection_metrics(
     app = prf_table(app_gold, app_pred, APPLICABILITY)
     fam = prf_table(fam_gold, fam_pred, ACTIVE_FAMILY_VOCABULARY)
     obs = prf_table(obs_gold, obs_pred, ACTIVE_FAMILY_VOCABULARY)
+    per_label = fam["per_label"]
+
+    def _group_macro(names: Sequence[str]) -> float | None:
+        scored = [float(per_label[name]["f1"]) for name in names if per_label[name]["support"]]
+        if not scored:
+            return None
+        return sum(scored) / len(scored)
+
+    copied = [name for name in ACTIVE_FAMILY_VOCABULARY if name in EXACT_COPY_FAMILIES]
+    prototyped = [name for name in ACTIVE_FAMILY_VOCABULARY if name not in EXACT_COPY_FAMILIES]
     score = None
     if None not in (app["macro_f1"], fam["macro_f1"], obs["macro_f1"]):
         score = selection_score(float(fam["macro_f1"]), float(app["macro_f1"]), float(obs["macro_f1"]))
@@ -621,6 +633,8 @@ def epoch_selection_metrics(
         "applicability_macro_f1": app["macro_f1"],
         "active_family_macro_f1": fam["macro_f1"],
         "observed_active_family_macro_f1": obs["macro_f1"],
+        "exact_copy_family_macro_f1": _group_macro(copied),
+        "prototype_family_macro_f1": _group_macro(prototyped),
         "none_precision": none_stats["precision"],
         "none_recall": none_stats["recall"],
         "none_f1": none_stats["f1"],
@@ -654,7 +668,7 @@ def _prf(gold: int, predicted: int, hit: int) -> dict[str, float | None]:
     precision = hit / predicted if predicted else 0.0
     recall = hit / gold if gold else 0.0
     f1 = 0.0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
-    return {"precision": precision, "recall": recall, "f1": f1, "support": gold}
+    return {"precision": precision, "recall": recall, "f1": f1, "support": gold, "predicted": predicted}
 
 
 def prf_table(golds: Sequence[str], preds: Sequence[str], labels: Sequence[str]) -> dict[str, Any]:
@@ -1106,8 +1120,11 @@ def readiness(
     *,
     loader_status: str,
     random_new_rows: bool = False,
+    prototype_report: Mapping[str, Any] | None = None,
+    validation_report: Mapping[str, Any] | None = None,
+    definition_report: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """One audit. Zero-support families are returned together. Training stays off."""
+    """One audit. Incomplete families are returned together. Training stays off."""
     audit = support_audit(rows)
     missing = list(audit["missing_support"])
     family_weights: dict[str, float] | None = None
@@ -1117,9 +1134,18 @@ def readiness(
         applicability = applicability_class_weights(audit)
     elif audit["family_present_effective"] > 0 and audit["none"]["effective_support"] > 0:
         applicability = applicability_class_weights(audit)
+    prototype_pass = bool(prototype_report and prototype_report.get("pass"))
+    validation_pass = bool(validation_report and validation_report.get("pass"))
+    definition_pass = bool(definition_report and definition_report.get("pass"))
+    copied_pass = bool(prototype_report and prototype_report.get("copied_rows_match"))
     checks = {
         "all_active_family_rows_present": True,
         "all_active_families_have_positive_training_support": not missing,
+        "all_new_rows_have_semantic_prototypes": prototype_pass,
+        "all_copied_rows_match_source": copied_pass,
+        "all_families_have_validation_support": validation_pass,
+        "definition_string_rule_pass": definition_pass,
+        "prototype_witness_pass": prototype_pass and bool(prototype_report and prototype_report.get("determinism") == "pass"),
         "family_weight_table_frozen": family_weights is not None and not missing,
         "applicability_weight_table_frozen": applicability is not None and not missing,
         "provenance_weights_frozen": True,
@@ -1129,7 +1155,10 @@ def readiness(
         "calibration_procedure_frozen": True,
         "selection_metric_frozen": True,
         "evaluation_contract_frozen": True,
-        "telemetry_contract_pass": True,
+        "telemetry_contract_pass": (
+            "exact_copy_family_macro_f1" in TELEMETRY_FIELDS
+            and "prototype_family_macro_f1" in TELEMETRY_FIELDS
+        ),
         "training_evaluation_isolation_pass": True,
         "operator_authorization_present": OPERATOR_AUTHORIZATION["present"] is True,
         "ambiguous_emission_disabled": AMBIGUITY_EMISSION == "DISABLED_PENDING_GOLD",
@@ -1141,11 +1170,33 @@ def readiness(
         for key in checks
         if key not in {"jev_required_for_readiness", "ambiguous_emission_disabled"}
     )
+    blockers: list[str] = []
+    if missing:
+        blockers.append("ACTIVE_FAMILY_WITHOUT_TRAINING_SUPPORT")
+    if not definition_pass:
+        blockers.append("DEFINITION_STRING_RULE")
+    if not prototype_pass or checks["prototype_witness_pass"] is False:
+        blockers.append("FAMILY_PROTOTYPE_UNAVAILABLE")
+    if not validation_pass:
+        blockers.append("VALIDATION_FAMILY_SUPPORT_INSUFFICIENT")
+    if loader_status != "PASS":
+        blockers.append("LOADER_WITNESS")
+    if random_new_rows:
+        blockers.append("RANDOM_NEW_ROWS")
     return {
         "state": "READY" if ready else "PREREGISTERED",
         "ready": ready,
-        "blocker": None if ready else "ACTIVE_FAMILY_WITHOUT_TRAINING_SUPPORT",
+        "blocker": None if ready else blockers[0],
+        "blockers": [] if ready else blockers,
         "missing_support": missing,
+        "deficient_validation": list((validation_report or {}).get("deficient") or []),
+        "validation_support": dict((validation_report or {}).get("support") or {}),
+        "below_preferred_validation": list((validation_report or {}).get("below_preferred") or []),
+        "exact_copy_families": list((prototype_report or {}).get("exact_copy_families") or []),
+        "prototype_families": list((prototype_report or {}).get("prototype_families") or []),
+        "prototype_source_counts": dict((prototype_report or {}).get("source_counts") or {}),
+        "witness_sha256": None if not prototype_report else prototype_report.get("witness_sha256"),
+        "target_norm": None if not prototype_report else prototype_report.get("target_norm"),
         "checks": checks,
         "audit": audit,
         "family_weights": family_weights,

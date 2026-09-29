@@ -31,20 +31,25 @@ def zero_linear(hidden: int, outputs: int):
     return layer
 
 
-def build_v2_heads(hidden: int, v1_classify, source_labels: Sequence[str]):
-    """Build zero heads, then copy exact v1 rows into the 19-family head."""
+def build_v2_heads(hidden: int, v1_classify, source_labels: Sequence[str], witness: dict | None = None):
+    """Copy exact rows and install frozen semantic prototypes. Zeros do not survive."""
     torch, _nn = _torch()
+    from .classification_v2_prototype import verify_witness_against_copy
+
     applicability = zero_linear(hidden, len(APPLICABILITY))
     family = zero_linear(hidden, len(ACTIVE_FAMILY_VOCABULARY))
     weight = v1_classify.weight.detach().cpu().tolist()
     bias = v1_classify.bias.detach().cpu().tolist()
     mapped = map_family_rows(source_labels, weight, bias)
+    if witness is None:
+        raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
+    verified = verify_witness_against_copy(mapped, witness)
     with torch.no_grad():
-        family.weight.copy_(torch.tensor(mapped["weight"], dtype=family.weight.dtype))
-        family.bias.copy_(torch.tensor(mapped["bias"], dtype=family.bias.dtype))
+        family.weight.copy_(torch.tensor(verified["weight"], dtype=family.weight.dtype))
+        family.bias.copy_(torch.tensor(verified["bias"], dtype=family.bias.dtype))
         if not torch.equal(applicability.weight, torch.zeros_like(applicability.weight)):
             raise RuntimeError("applicability head retained a random initialization")
-    return applicability, family, mapped
+    return applicability, family, verified
 
 
 def batch_classify_loss(applicability, family, pooled, rows: Sequence[dict], contract: dict[str, Any]):

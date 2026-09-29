@@ -355,6 +355,8 @@ def test_jev_off_and_shadow_leave_the_canonical_family():
         "family_present_f1",
         "active_family_macro_f1",
         "observed_active_family_macro_f1",
+        "exact_copy_family_macro_f1",
+        "prototype_family_macro_f1",
         "per_family",
         "predicted_none_rate",
         "family_emission_rate",
