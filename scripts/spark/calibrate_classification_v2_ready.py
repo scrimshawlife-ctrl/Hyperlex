@@ -21,9 +21,10 @@ OUT = Path(
     "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v2-ready"
 )
 PRIMARY_SHA = "a8d50a4dcb4d886b3a5daae5740abaae9390595fdbee007da7b0c0372571b4b9"
-BEST_WEIGHTS = Path(
-    "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004/model.safetensors"
+BEST_DIR = Path(
+    "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004"
 )
+BEST_WEIGHTS = BEST_DIR / "model.safetensors"
 BEST_SHA = "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6"
 TRUNK = Path("/home/morpheus/.hyperlex/models/trunks/ModernBERT-base")
 IMAGE = "lmsysorg/sglang:dev-qwen38-27b-dflash2"
@@ -95,10 +96,12 @@ def inner() -> int:
     tokenizer.padding_side = "right"
     encoder = AutoModel.from_pretrained(TRUNK)
     freeze_encoder(encoder)
+    warm = split_weight_tensors(load_file(str(BEST_WEIGHTS)))
     tensors = split_weight_tensors(load_file(OUT / "model.safetensors"))
-    loaded = apply_encoder_trainable(encoder, tensors["encoder"])
-    if loaded["loaded"] != 12:
-        fail(f"encoder overlay loaded {loaded['loaded']} tensors")
+    warm_loaded = apply_encoder_trainable(encoder, warm["encoder"])
+    trained_loaded = apply_encoder_trainable(encoder, tensors["encoder"])
+    if warm_loaded["loaded"] != 48 or trained_loaded["loaded"] != 12:
+        fail(f"encoder overlay {warm_loaded['loaded']}/{trained_loaded['loaded']} != 48/12")
     applicability = torch.nn.Linear(HIDDEN, 2)
     family = torch.nn.Linear(HIDDEN, len(ACTIVE_FAMILY_VOCABULARY))
     applicability.load_state_dict(tensors["applicability"])
@@ -151,6 +154,12 @@ def inner() -> int:
     if artifact["reserve_used"] or artifact["training_rows_used"] or artifact["surface"] != "validation":
         fail("calibration artifact left the validation surface")
     destination = OUT / "classification-v2-calibration.json"
+    misplaced = OUT / "classification-v2-calibration.trunk-only.json"
+    if destination.exists():
+        if misplaced.exists():
+            fail("both calibration artifacts already exist")
+        destination.replace(misplaced)
+    artifact["encoder_overlay"] = {"production": 48, "ready": 12}
     destination.write_text(json.dumps(artifact, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(artifact, sort_keys=True))
     return 0
@@ -159,8 +168,10 @@ def inner() -> int:
 def main() -> int:
     if os.environ.get("HLX_CALIBRATE_INNER") == "1":
         return inner()
-    if (OUT / "classification-v2-calibration.json").exists():
-        fail("calibration artifact already exists")
+    canonical = OUT / "classification-v2-calibration.json"
+    misplaced = OUT / "classification-v2-calibration.trunk-only.json"
+    if canonical.exists() and misplaced.exists():
+        fail("corrected calibration already exists")
     command = [
         "docker",
         "run",
