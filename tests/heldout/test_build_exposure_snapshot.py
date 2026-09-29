@@ -4,9 +4,14 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 
 import pytest
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
+sys.path.insert(0, str(ROOT / "scripts" / "heldout"))
 
 from build_exposure_snapshot import (
     ABSENT_BY_DEFAULT,
