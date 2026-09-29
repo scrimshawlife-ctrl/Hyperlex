@@ -20,6 +20,9 @@ TRAINING_LAUNCH_AUTHORIZATION_SCHEMA_PATH = SCHEMA_DIR / "training-launch-author
 TRAINING_LAUNCH_AUTHORIZATION_SPEC_SCHEMA_PATH = (
     SCHEMA_DIR / "training-launch-authorization-spec.schema.json"
 )
+SELECT_006_TRAINING_LAUNCH_AUTHORIZATION_SCHEMA_PATH = (
+    SCHEMA_DIR / "select-006-training-launch-authorization.schema.json"
+)
 
 
 def _validator(path: Path) -> Draft202012Validator:
@@ -51,6 +54,13 @@ def training_launch_authorization_spec_schema_errors(instance: Mapping[str, Any]
     return sorted(
         error.message
         for error in _validator(TRAINING_LAUNCH_AUTHORIZATION_SPEC_SCHEMA_PATH).iter_errors(instance)
+    )
+
+
+def select_006_training_launch_authorization_schema_errors(instance: Mapping[str, Any]) -> list[str]:
+    return sorted(
+        error.message
+        for error in _validator(SELECT_006_TRAINING_LAUNCH_AUTHORIZATION_SCHEMA_PATH).iter_errors(instance)
     )
 
 

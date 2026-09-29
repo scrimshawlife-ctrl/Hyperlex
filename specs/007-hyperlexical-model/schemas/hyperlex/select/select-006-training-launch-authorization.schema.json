@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyperlex.local/schemas/hyperlex.select_006_training_launch_authorization.v1",
+  "title": "SELECT-006 training launch authorization",
+  "description": "Operator authorization of a future SELECT-006 launch. Sealing this record does not start training, construct an optimizer, or consume the reserve.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admission_receipt_sha256",
+    "admission_result",
+    "best_changed",
+    "best_sha256",
+    "decision_rule",
+    "efficiency_max_step_ratio",
+    "environment",
+    "epochs",
+    "epsilon",
+    "executes_training",
+    "experiment_id",
+    "gradient_steps",
+    "ledger",
+    "next_legal_transition",
+    "operator_decision",
+    "optimizer_constructed",
+    "preregistration_sha256",
+    "ready_to_train",
+    "reserve",
+    "reserve_manifest_sha256",
+    "schedule",
+    "schema",
+    "scientific_variable",
+    "shared_settings",
+    "state",
+    "status",
+    "threshold_authorization_sha256",
+    "training_launch_authorized",
+    "training_output_directory_created",
+    "training_started",
+    "transition",
+    "warm_start_sha256",
+    "weights_mutated_by_training",
+    "zero_init"
+  ],
+  "properties": {
+    "schema": {"const": "hyperlex.select_006_training_launch_authorization.v1"},
+    "state": {"const": "TRAINING_LAUNCH_AUTHORIZED"},
+    "status": {"const": "TRAINING_READY"},
+    "transition": {"const": "SELECT_006_TRAINING_LAUNCH_AUTHORIZATION"},
+    "experiment_id": {"const": "HLX-EXP-2026-09-29-SELECT-006"},
+    "scientific_variable": {"const": "train_schedule"},
+    "operator_decision": {"const": "AUTHORIZE"},
+    "admission_result": {"const": "ADMISSION_PASS"},
+    "admission_receipt_sha256": {"const": "7ff98e8bc9a49a8875e8c7310f18ae9c5bb53ca4ad40e9b954ca89d52a7551bd"},
+    "preregistration_sha256": {"const": "3692ac63425fcbd57e5fdc355a4e565d653ffc3c2a6703cfdda1fde7cc6404b8"},
+    "threshold_authorization_sha256": {"const": "91081de5f9b348102fa5d0359150f9aedca0d53e98c9f4275aeb127c9de3642c"},
+    "reserve_manifest_sha256": {"const": "33ee588bdd13a322020e2a0105a71265899b856b44b6c3fcde40eb943b36cab6"},
+    "warm_start_sha256": {"const": "96838b9656a84c3fee1773a41fdf2fbbec2f88f3bc948e4acfbe06c194ac5587"},
+    "best_sha256": {"const": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6"},
+    "epsilon": {"const": 0},
+    "efficiency_max_step_ratio": {"const": 0.25},
+    "ready_to_train": {"const": true},
+    "training_launch_authorized": {"const": true},
+    "training_started": {"const": false},
+    "executes_training": {"const": false},
+    "optimizer_constructed": {"const": false},
+    "epochs": {"const": 0},
+    "gradient_steps": {"const": 0},
+    "weights_mutated_by_training": {"const": false},
+    "best_changed": {"const": false},
+    "training_output_directory_created": {"const": false},
+    "next_legal_transition": {"const": "SELECT_006_TRAINING_LAUNCH"},
+    "environment": {"$ref": "#/$defs/environment"},
+    "schedule": {"$ref": "#/$defs/schedule"},
+    "shared_settings": {"$ref": "#/$defs/shared_settings"},
+    "decision_rule": {"$ref": "#/$defs/decision_rule"},
+    "reserve": {"$ref": "#/$defs/reserve"},
+    "ledger": {"$ref": "#/$defs/ledger"},
+    "zero_init": {"$ref": "#/$defs/zero_init"}
+  },
+  "$defs": {
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admission_overlay_environment_hash",
+        "baseline_env_sha256",
+        "candidate_config_sha256",
+        "candidate_env_sha256",
+        "configs_agree",
+        "control_config_sha256"
+      ],
+      "properties": {
+        "baseline_env_sha256": {"const": "ca26a7cb12fcd0ce96e0f198fbcd30a1fd3e61fe0164e14dad823a2d17516a9d"},
+        "candidate_env_sha256": {"const": "f67c45774b173d7c894177252f16e3abe39cbdbb6f20f83c4db53b8485bd3ea6"},
+        "control_config_sha256": {"const": "fec14e56789f1c761b5f2e6ab0ef1958a3518b3fc4b1d44d15bd1afeb8f1865b"},
+        "candidate_config_sha256": {"const": "fec14e56789f1c761b5f2e6ab0ef1958a3518b3fc4b1d44d15bd1afeb8f1865b"},
+        "configs_agree": {"const": true},
+        "admission_overlay_environment_hash": {"const": "f51a809664f444050a4ddd7b0f0b1bf2c564865f0988ed801ed1d654d83fda57"}
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate", "control"],
+      "properties": {
+        "control": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["early_stopping", "max_epochs", "restore_best"],
+          "properties": {
+            "early_stopping": {"const": "disabled"},
+            "max_epochs": {"const": 40},
+            "restore_best": {"const": true}
+          }
+        },
+        "candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "early_stopping_patience",
+            "improvement",
+            "max_epochs",
+            "minimum_epochs",
+            "restore_best",
+            "ties"
+          ],
+          "properties": {
+            "early_stopping_patience": {"const": 4},
+            "improvement": {"const": "strict"},
+            "max_epochs": {"const": 12},
+            "minimum_epochs": {"const": 4},
+            "restore_best": {"const": true},
+            "ties": {"const": "keep_earlier"}
+          }
+        }
+      }
+    },
+    "shared_settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "batch_size",
+        "filler_filter",
+        "gradient_accumulation",
+        "last_trainable",
+        "learning_rate",
+        "max_len",
+        "seed_policy",
+        "selection_metric",
+        "unbind_curriculum",
+        "unbind_every_n",
+        "unbind_loss_weight",
+        "unbind_primary"
+      ],
+      "properties": {
+        "batch_size": {"const": 8},
+        "environment_hash_omits": {"type": "array"},
+        "filler_filter": {"const": "strict"},
+        "gradient_accumulation": {"const": 1},
+        "gradient_accumulation_authority": {"type": "string"},
+        "image": {"type": "string"},
+        "image_sha256": {"type": "string"},
+        "last_trainable": {"const": 2},
+        "learning_rate": {"const": "2e-5"},
+        "max_len": {"const": 64},
+        "must_remain_unset": {"type": "array"},
+        "not_in_sealed_env": {"type": "array"},
+        "output_directories_not_reused": {"type": "array"},
+        "seed_policy": {"const": "HLX_SEED_UNSET_FROZEN"},
+        "selection_metric": {"const": "classify_macro_f1_nonnone"},
+        "training_export_path": {"type": "string"},
+        "training_export_rows": {"const": 9150},
+        "training_export_sha256": {"const": "64b7d3dede25047cb6dd2e5b663f7fa72946ec82ac1a8816ae34622d1aaac430"},
+        "trunk_dir": {"type": "string"},
+        "trunk_sha256": {"const": "340ac08b74eef0d7bdec2d7981a6a3d4249bf0e6aab60634b72ad02c2b8023a9"},
+        "unbind_curriculum": {"const": false},
+        "unbind_every_n": {"const": 1},
+        "unbind_loss_weight": {"const": 1.0},
+        "unbind_primary": {"const": "mixed"}
+      }
+    },
+    "decision_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "compensation",
+        "efficiency",
+        "missing_required_metric",
+        "noncomputable_required_metric",
+        "pass_requires",
+        "preservation",
+        "primary_equality",
+        "primary_preservation",
+        "primary_strict_increase_required",
+        "select_005_rule_not_reused"
+      ],
+      "properties": {
+        "compensation": {"const": false},
+        "efficiency": {"const": "candidate_optimizer_steps * 4 <= control_optimizer_steps"},
+        "missing_required_metric": {"const": "FAIL"},
+        "noncomputable_required_metric": {"const": "FAIL"},
+        "pass_requires": {
+          "const": [
+            "classification_accuracy",
+            "efficiency",
+            "observed_label_accuracy",
+            "primary_preservation",
+            "unbind_clean_exact"
+          ]
+        },
+        "preservation": {"const": "candidate >= control on each preservation metric"},
+        "primary_equality": {"const": "PASS"},
+        "primary_preservation": {
+          "const": "candidate_classify_macro_f1_nonnone >= control_classify_macro_f1_nonnone - EPSILON"
+        },
+        "primary_strict_increase_required": {"const": false},
+        "select_005_rule_not_reused": {"const": "primary delta > 0"}
+      }
+    },
+    "reserve": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "active_select_006_eval_reserve",
+        "identities_consumed",
+        "identities_transitioned",
+        "isolation",
+        "ledger_replay",
+        "metric_computability",
+        "provenance",
+        "routing_validation",
+        "slice_counts",
+        "state"
+      ],
+      "properties": {
+        "active_select_006_eval_reserve": {"const": 37},
+        "identities_consumed": {"const": 0},
+        "identities_transitioned": {"const": 0},
+        "isolation": {"const": "PASS"},
+        "ledger_replay": {"const": "PASS"},
+        "metric_computability": {"const": "PASS"},
+        "provenance": {"const": "PASS"},
+        "routing_validation": {"const": "PASS"},
+        "state": {"const": "RESERVE_FROZEN"},
+        "slice_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "classify",
+            "classify_non_none",
+            "classify_observed",
+            "head_mapped_non_none",
+            "unbind_clean"
+          ],
+          "properties": {
+            "classify": {"const": 32},
+            "classify_non_none": {"const": 32},
+            "classify_observed": {"const": 32},
+            "head_mapped_non_none": {"const": 32},
+            "unbind_clean": {"const": 5}
+          }
+        }
+      }
+    },
+    "ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorization_recorded_in_identity_ledger",
+        "event_type",
+        "events_sha256",
+        "projection_sha256",
+        "replay"
+      ],
+      "properties": {
+        "authorization_recorded_in_identity_ledger": {"const": false},
+        "event_type": {"type": "null"},
+        "events_sha256": {"const": "4471e3339b3708f0f494f7fe60a0d30118609e7312d5d0334b946d2bbc4efbf1"},
+        "projection_sha256": {"const": "dad556c7f6bba58c7456a6b88b607c72ebe8149e36c176a602e0def2edfdc435"},
+        "replay": {"const": "PASS"}
+      }
+    },
+    "zero_init": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "combined_witness_sha256",
+        "execution_loader_status",
+        "filler_bias_sha256",
+        "filler_weight_sha256",
+        "historical_vocabulary_pin_rewritten",
+        "historical_vocabulary_pin_sha256",
+        "historical_vocabulary_pin_status",
+        "role_bias_sha256",
+        "role_weight_sha256",
+        "witness_file_sha256"
+      ],
+      "properties": {
+        "execution_loader_status": {"const": "ZERO_INIT_LOADER_VERIFIED"},
+        "historical_vocabulary_pin_status": {"const": "NOT_YET_IMPLEMENTED"},
+        "historical_vocabulary_pin_rewritten": {"const": false},
+        "historical_vocabulary_pin_sha256": {"const": "8e1cce3de9ca6dfd346e926cfa3c8bffd5a9d05dfdc671b7da26e01aa539f076"},
+        "role_weight_sha256": {"const": "94aa92d4c6f17f56a6d7a68a5951ad98bb38764d029ed93916fb9b870c54c20d"},
+        "role_bias_sha256": {"const": "ce7b6ecb2b276d4d5b46ae23f38a749d1939cadc336e82b76548e01065151b93"},
+        "filler_weight_sha256": {"const": "b3d11a8eb1fcfb4f616c36b9f5b32be84aab9c91d642e54294dccfea36a385a3"},
+        "filler_bias_sha256": {"const": "cce2ff11650d8b9734f84f1d05acd65003b68e31adb5e0c9e035beaa7f5a03bf"},
+        "combined_witness_sha256": {"const": "58a3e733087c33c5ffea5909b46098e666337e1b99fb83d87c3744db4aef91b2"},
+        "witness_file_sha256": {"const": "79509a3f1a3fb10bfe2faac66fb6f190b928de98fadadca2923b7b88b8d2fb07"}
+      }
+    }
+  }
+}
