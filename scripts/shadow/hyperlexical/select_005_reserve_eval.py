@@ -104,13 +104,24 @@ def reserve_examples() -> list[dict[str, Any]]:
     return examples
 
 
+def _checkpoint_vocabs(arm_dir: Path) -> tuple[list[str], list[str]]:
+    """Read the restored checkpoint config. The final layout.json has no vocabs."""
+    path = arm_dir / "config.json"
+    if not path.is_file():
+        raise SystemExit("EVALUATION_FAILURE: checkpoint config is absent")
+    config = json.loads(path.read_text(encoding="utf-8"))
+    role = config.get("role_vocab")
+    filler = config.get("filler_vocab")
+    if not isinstance(role, list) or not isinstance(filler, list) or not role or not filler:
+        raise SystemExit("EVALUATION_FAILURE: checkpoint vocabs are absent")
+    return [str(item) for item in role], [str(item) for item in filler]
+
+
 def _load(arm_dir: Path):
     import torch
     from torch import nn
 
-    layout = json.loads((arm_dir / "layout.json").read_text(encoding="utf-8"))
-    role_vocab = list(layout["role_vocab"])
-    filler_vocab = list(layout["filler_vocab"])
+    role_vocab, filler_vocab = _checkpoint_vocabs(arm_dir)
     maps = {
         "families": list(FAMILIES),
         "family_of": {family: index for index, family in enumerate(FAMILIES)},
