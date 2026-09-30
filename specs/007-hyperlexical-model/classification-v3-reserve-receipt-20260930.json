@@ -1,0 +1,57 @@
+{
+  "BEST": "UNCHANGED",
+  "artifact_file_sha256": {
+    "EXIT.json": "3c428e5243c0204d43e459c60941a1f70059b39087ec6e0a385bb6780caa0c8a",
+    "LAUNCH.json": "2fd11203ef09d2bb8aed3e2eebbbfcc7c06ae15d8bbdc25e141f5bad8e921645",
+    "RESERVE_EVAL.json": "648e40f8da9181dcea1f01e1baadb11f067a762d5cfafe574759a217a6aac7c9",
+    "RESERVE_MANIFEST.json": "81cd8666f555943ea4591bb5ffd62789ac14095caeab72fbe63147cac9cdc1b6",
+    "SUMMARY.json": "3f3f70875000d041bea607af8daa0acdb992e122219e97b1cce0f4d3b2816be7",
+    "reserve-rows.jsonl": "abb8bf22012bb450dba05ce3129e32c2f28fabe9911030b28c68c5b99d39b937",
+    "reserve_eval.log": "7909eab496290de0cc6ad4dfacb578d0ec6aec38265981f3d71d95172e67ec12"
+  },
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "decision_counts": {
+    "ABSTAIN": 63,
+    "AMBIGUOUS": 11,
+    "FAMILY": 6,
+    "NONE": 29
+  },
+  "disposition": "RESERVE_FAIL",
+  "false_evidence_entry_rate_on_none": 0.25,
+  "family_emission_coverage": 0.0594059405940594,
+  "family_emission_precision": 0.0,
+  "frozen_thresholds": {
+    "minimum_family_score": 0.96,
+    "minimum_top1_top2_margin": 0.01,
+    "none_threshold": 0.05,
+    "present_threshold": 0.55
+  },
+  "identity_list_sha256": "2e68e20be990bdb2bf2e4898719cae712ea4f73aa0d00c8c01c213e0a7a64fa6",
+  "lifecycle_state": "SETTLED_FAIL",
+  "lineage_counts": {
+    "internet-slang": 97,
+    "memetic": 4,
+    "none": 8
+  },
+  "merged_pr": "https://github.com/scrimshawlife-ctrl/Hyperlex/pull/141",
+  "n": 109,
+  "n_none": 8,
+  "n_present": 101,
+  "next_action": "STOP \u2014 preserve v3 reserve result; do not retune thresholds against the reserve; do not move BEST.",
+  "parent_rule": "HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE",
+  "primary_gate_pass": false,
+  "private_destination": "/home/morpheus/hlx-private/classification-v3-reserve-20260930",
+  "reasons": [
+    "false_evidence_entry_rate_on_none=0.25 > max=0.05",
+    "family_emission_precision=0.0 < min=0.8"
+  ],
+  "recalibrated": false,
+  "receipt_sha256": "61daa47383bb8c711476a3c4100b55897e1099687c5eca869e19d9130fd914ec",
+  "reserve_manifest_sha256": "4a13d7a76352fd0e0008a0b3f36ca2976876c945896e28c945be00f4cabc2ef5",
+  "reserve_rows_sha256": "abb8bf22012bb450dba05ce3129e32c2f28fabe9911030b28c68c5b99d39b937",
+  "rule": "HYPERLEX_CLASSIFICATION_V3_RESERVE_EVAL_V1",
+  "secondary_gate_pass": false,
+  "selective_accuracy": 0.14285714285714285,
+  "spent_v2_reserve_reuse": false,
+  "train": false
+}

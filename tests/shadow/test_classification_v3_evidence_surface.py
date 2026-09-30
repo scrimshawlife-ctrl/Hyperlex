@@ -64,7 +64,7 @@ def _row(
 
 
 def test_preregistration_freezes_gates_and_schemas():
-    assert CURRENT_STATE == "RUNNING"
+    assert CURRENT_STATE == "SETTLED_FAIL"
     contract = preregistration_contract()
     assert contract["state"] == "PREREGISTERED"
     assert contract["false_evidence_entry_rate_on_none_max"] == 0.05
