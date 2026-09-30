@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **Wire V5 Stage-B behind STAGE_A_BEST (Spec 007):**
+  `WIRE_V5_STAGE_B_RETRIEVAL_ON_STAGE_A_BEST` for
+  `HLX-CLASSIFICATION-V5-STAGE-B-001` on V1R9 `8d4be830…`. Retrieval only on
+  Stage-A `EVIDENCE_PRESENT` (UNCERTAIN abstains). Index `3fd6c87a…` from train
+  POSITIVE_EVIDENCE (17 surface families). Calibrated floors score=`0.64` /
+  margin=`0.07`. Primary false-entry `0.042` PASS; family emission precision
+  `0.817` PASS → **`RESERVE_SEAL_AUTHORIZED`**. BEST / STAGE_A_BEST unchanged;
+  no reserve created/scored. Receipt
+  `classification-v5-stage-b-validation-receipt-20260930.json` (`51323ff4…`).
+  Next: `AUTHORIZE_SEAL_NEW_V5_RESERVE_THEN_ONE_SHOT_SCORE`.
+
 - **Promote two-stage Stage-A selected (Spec 007):**
   `PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED` applies component-scoped
   **`STAGE_A_BEST=cd2829c1…`** (epoch 11; Gate1=`0.75` / Gate2=`0.50`;

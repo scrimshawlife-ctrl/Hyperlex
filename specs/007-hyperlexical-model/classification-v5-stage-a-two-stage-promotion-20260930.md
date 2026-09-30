@@ -115,5 +115,6 @@ NEXT_ACTION = STOP_STAGE_A_ARCHITECTURE_WORK
 ```
 
 Stage-A architecture work stops unless production evidence exposes a new
-failure mode. Next engineering focus: Stage-B integration against the promoted
-Stage-A contract.
+failure mode. Stage-B integration against this contract:
+see `classification-v5-stage-b-20260930.md`
+→ **`RESERVE_SEAL_AUTHORIZED`** / `AUTHORIZE_SEAL_NEW_V5_RESERVE_THEN_ONE_SHOT_SCORE`.
