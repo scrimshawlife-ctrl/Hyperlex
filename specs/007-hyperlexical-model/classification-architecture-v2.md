@@ -523,4 +523,11 @@ Sealed artifact sha256 `96a0587c06fac352872e462445f2eaaf773e35a48ab4c987e267b479
 
 ## Classification v2 forward-hub training (2026-09-30)
 
-Rule path: `TRAIN_CLASSIFICATION_V2` after residual hub boundary `96a0587c…` opened the gate. Forward ontology (`HLX_V2_FORWARD_ONTOLOGY=1`, 18 families), hub-filtered export `civilian.v0.7.hub.jsonl`, semantic prototype for `social-evaluation`. Does not score the reserve or move BEST.
+Rule path: `TRAIN_CLASSIFICATION_V2` after residual hub boundary `96a0587c…` opened the gate. Forward ontology (`HLX_V2_FORWARD_ONTOLOGY=1`, 18 families), hub-filtered export `civilian.v0.7.hub.jsonl` sha256 `0d8f4532f84ed9fade3fd4e69af0d1e0717fb1098d40754e95c0090d8282bfe1` (removed 41 DROP train rows), witness `acca1594b49aa624d0d4dc97f03c7ccc69176568dfde0bebb7fb81c5085ca294` with `social-evaluation` = `SEMANTIC_PROTOTYPE`.
+
+Sealed under `/home/morpheus/hlx-private/classification-v2-train-forward-20260930/` and weights `/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v2-forward-hub` (`adf5db93dfe258290be531f0a25035dfaae03873bd800fd929bee43b38c9f89c`).
+
+- best_epoch 3; selection_score 0.360527
+- active_family_macro_f1 0.185630; prototype_family_macro_f1 0.054510
+- BEST unchanged `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`; reserve not scored; promotion not_eligible
+- Next: operator-decide reserve eval / further ontology work — do not move BEST without explicit authorization.
