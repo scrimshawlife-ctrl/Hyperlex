@@ -75,5 +75,9 @@ NEXT_ACTION = STOP_OR_PROMOTE_REVIEW
 
 Do not auto-move BEST. Promotion remains a human decision.
 
+Promotion review (read-only): see
+`classification-v5-stage-a-two-stage-promotion-review-20260930.md`
+→ **`PROMOTION_READY`** / `PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED`.
+
 Receipt: `classification-v5-stage-a-two-stage-train-once-receipt-20260930.json`
 (`9c358d2c…`).

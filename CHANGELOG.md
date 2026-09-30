@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Review two-stage Stage-A promotion (Spec 007):** read-only
+  `REVIEW_V5_STAGE_A_TWO_STAGE_PROMOTION` on SELECTED `cd2829c1…` /
+  epoch 11 / Gate1=`0.75` / Gate2=`0.50`. Settlement integrity **PASS**;
+  cold-load replay (trunk→BEST→SELECTED overlay) exact parity
+  (`replay_hash fc601e69…`); architecture identity PASS (Gate1/Gate2
+  2-logit heads; no flat 3-way). Canonical inference frozen; OBSERVED/ATOM
+  subgroup weaknesses recorded as `KNOWN_LIMITATION`. Recommend
+  `STAGE_A_BEST` (do not overwrite model-wide BEST `9fba0f66…`). Reserve
+  unused / not required by existing Stage-A policy.
+  **`PROMOTION_READY`**; next `PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED`
+  (not performed). Receipt
+  `classification-v5-stage-a-two-stage-promotion-review-receipt-20260930.json`
+  (`7e09c67d…`).
+
 - **Train two-stage Stage-A once (Spec 007):** execute authorized
   `TRAIN_V5_STAGE_A_TWO_STAGE_ONCE` for
   `HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001` on V1R9 `8d4be830…` /

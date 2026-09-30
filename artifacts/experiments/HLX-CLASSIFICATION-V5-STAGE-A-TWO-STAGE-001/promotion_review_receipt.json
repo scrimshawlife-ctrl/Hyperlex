@@ -1,0 +1,240 @@
+{
+  "ARCHITECTURE_RECEIPT_SHA256": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697",
+  "AUTHORIZATION_RECEIPT_SHA256": "c9b262de5e3a33abfd52e29cc92715d7809d9470a205226d93d538cd952f0b57",
+  "BEST": "UNCHANGED",
+  "BEST_SHA256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "5496015af99ec768d8914a282db465abe75e99f2243fbc864d674bb5cad539d6",
+  "CURRENT_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "DATASET_SHA256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001",
+  "NEXT_ACTION": "PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED",
+  "PROMOTION_DECISION": "PROMOTION_READY",
+  "PROMOTION_REVIEW": "VALID",
+  "RESERVE": "unused",
+  "REVIEW_RULE": "REVIEW_V5_STAGE_A_TWO_STAGE_PROMOTION",
+  "RUN_RECEIPT_SHA256": "9c358d2cae25bfe75b4825c30b7334573897eef7ed9615a56f57041db6e444db",
+  "SELECTED_CHECKPOINT_SHA256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "SELECTED_EPOCH": 11,
+  "TRAIN": false,
+  "TRAINING_CONFIG_SHA256": "0117faca8e56501e15cea4f69ce9dffd2900b25cfdc7dcabc427651b18d7b0b6",
+  "TWO_STAGE_SPLIT_WITNESS_SHA256": "ecb88025b1b3355d837a2d81cbd87909d2f961e8800adbef21589c5f3b564fb1",
+  "acceptance_gates": {
+    "EVIDENCE_PRESENT_recall_min": 0.7,
+    "NO_EVIDENCE_recall_min": 0.9,
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "optimize_family_metrics_before_stage_a_pass": false
+  },
+  "architecture_identity": {
+    "checks": {
+      "earlier_layers_not_in_overlay": true,
+      "encoder_trainable_overlay_count_12": true,
+      "gate1_2logit_bias": true,
+      "gate1_weight_shape_hint": true,
+      "gate2_2logit_bias": true,
+      "gate2_weight_shape_hint": true,
+      "has_encoder_tensors": true,
+      "has_gate1_head": true,
+      "has_gate2_head": true,
+      "last_two_layers_adapted": true,
+      "no_flat_evidence_head": true
+    },
+    "encoder_tensor_count": 12,
+    "flat_3way_canonical": false,
+    "last_trainable_layers": 2,
+    "pass": true,
+    "prefixes": [
+      "encoder",
+      "gate1_head",
+      "gate2_head"
+    ],
+    "shared_encoder": true
+  },
+  "best_semantics": {
+    "current_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "current_BEST_meaning": "Broader Hyperlex encoder artifact (hyperlex-encoder-modernbert-base-seed-select004); used as Stage-A initialization parent, not Stage-A decision head.",
+    "overwrite_model_wide_BEST": false,
+    "proposed_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "reason": "Repository BEST currently denotes the broader encoder seed, not the Stage-A evidence decision architecture. Prefer component-scoped STAGE_A_BEST pointing at SELECTED cd2829c1\u2026.",
+    "recommendation": "STAGE_A_BEST"
+  },
+  "canonical_inference_contract": {
+    "gate1_threshold": 0.75,
+    "gate2_present_threshold": 0.5,
+    "policy": "if P(POSSIBLE_EVIDENCE) < 0.75 -> NO_EVIDENCE; else if P(CONFIRMED_PRESENT) >= 0.50 -> EVIDENCE_PRESENT; else UNCERTAIN",
+    "runtime_threshold_search": false,
+    "scalar_three_state_forbidden": true
+  },
+  "code_revision": "7859d6245f4dff67ea8289935d1f7d984a5c0ecf",
+  "compatibility": {
+    "api_compatibility": {
+      "breaking_internal_head_interface": true,
+      "note": "Callers consuming a single P(PRESENT) scalar / flat 3-logit head must migrate to decide_two_stage(p_possible, p_confirmed).",
+      "semantic_outputs_unchanged": [
+        "NO_EVIDENCE",
+        "EVIDENCE_PRESENT",
+        "UNCERTAIN"
+      ]
+    },
+    "canonical_architecture_change": true,
+    "checkpoint_loading_change": true,
+    "downstream_stage_b_entry": {
+      "impact": "CONTRACT_PRESERVED_AT_SEMANTIC_LAYER",
+      "note": "Stage-B / family-retrieval may continue to consume the three semantic labels; probability channel changes from one scalar to two gate probabilities."
+    },
+    "family_retrieval_integration": {
+      "impact": "ADAPTER_REQUIRED_IF_CONSUMING_LOGITS",
+      "semantic_label_vocabulary_unchanged": true
+    },
+    "migration_map": {
+      "from": {
+        "architecture": "flat_3_logit_head",
+        "decision": "decide_evidence(P_EVIDENCE_PRESENT)",
+        "status": "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION"
+      },
+      "to": {
+        "architecture": "gate1_2logit + gate2_2logit",
+        "decision": "if P(POSSIBLE_EVIDENCE) < 0.75 -> NO_EVIDENCE; else if P(CONFIRMED_PRESENT) >= 0.50 -> EVIDENCE_PRESENT; else UNCERTAIN",
+        "outputs": [
+          "NO_EVIDENCE",
+          "EVIDENCE_PRESENT",
+          "UNCERTAIN"
+        ]
+      }
+    },
+    "runtime_decision_packet_change": true,
+    "schemas": {
+      "forward_contract": "hyperlex.classification.v5.stage_a_two_stage_forward.v1",
+      "historical_flat_retained": true
+    }
+  },
+  "parent_train_rule": "HYPERLEX_V5_STAGE_A_TWO_STAGE_TRAIN_V1",
+  "parent_two_stage_rule": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1",
+  "promote": false,
+  "replay": {
+    "SELECTED_CHECKPOINT_SHA256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "cold_load": true,
+    "metrics": {
+      "EVIDENCE_PRESENT_recall": 0.7048665620094191,
+      "NO_EVIDENCE_recall": 0.9089456869009584,
+      "UNCERTAIN_recall": 0.6790123456790124,
+      "false_evidence_entry_rate_on_none": 0.04233226837060703,
+      "gate1_threshold": 0.75,
+      "gate2_present_threshold": 0.5,
+      "stage_a_macro_f1": 0.7411485290305739
+    },
+    "n_validation": 2051,
+    "parity": {
+      "deltas": {
+        "EVIDENCE_PRESENT_recall": {
+          "actual": 0.7048665620094191,
+          "delta": 0.0,
+          "expected": 0.7048665620094191
+        },
+        "NO_EVIDENCE_recall": {
+          "actual": 0.9089456869009584,
+          "delta": 0.0,
+          "expected": 0.9089456869009584
+        },
+        "UNCERTAIN_recall": {
+          "actual": 0.6790123456790124,
+          "delta": 0.0,
+          "expected": 0.6790123456790124
+        },
+        "false_evidence_entry_rate_on_none": {
+          "actual": 0.04233226837060703,
+          "delta": 0.0,
+          "expected": 0.04233226837060703
+        },
+        "stage_a_macro_f1": {
+          "actual": 0.7411485290305739,
+          "delta": 0.0,
+          "expected": 0.7411485290305739
+        }
+      },
+      "pass": true,
+      "tolerance_abs": 1e-09
+    },
+    "pass": true,
+    "replay_hash": "fc601e69569594d55eb150ee9b467eb37ce0c1b3015e29d88d54aecb7eda6474",
+    "schema": "hyperlex.classification.v5.stage_a_two_stage_promotion_replay.v1",
+    "thresholds_match": true
+  },
+  "reserve_policy": {
+    "existing_policy_requires_reserve_before_internal_adoption": false,
+    "existing_policy_requires_reserve_before_production_promotion": false,
+    "fresh_reserve_required_for_internal_canonical_adoption": false,
+    "fresh_reserve_required_for_production_promotion": false,
+    "note": "Stage-A V5 contracts treat reserve as unused/non-authorizing for settlement; no frozen Stage-A rule invents a pre-promotion reserve score for this component. Family-retrieval reserves remain out of scope.",
+    "reserve_consumed": false,
+    "reserve_scored_in_review": false
+  },
+  "residual_risks": {
+    "aggregate_acceptance_unaffected": true,
+    "frozen_subgroup_gates_exist": false,
+    "known_limitations": [
+      {
+        "id": "OBSERVED_PRESENT_RECALL",
+        "note": "Below aggregate PRESENT gate; no frozen OBSERVED subgroup gate.",
+        "status": "KNOWN_LIMITATION",
+        "value": 0.657
+      },
+      {
+        "id": "OBSERVED_NONE_RECALL",
+        "note": "Below aggregate NONE gate; no frozen OBSERVED subgroup gate.",
+        "status": "KNOWN_LIMITATION",
+        "value": 0.883
+      },
+      {
+        "id": "OBSERVED_FALSE_ENTRY",
+        "note": "Above aggregate false-entry gate; no frozen OBSERVED subgroup gate.",
+        "status": "KNOWN_LIMITATION",
+        "value": 0.054
+      },
+      {
+        "id": "ATOM_PRESENT_RECALL",
+        "note": "Near aggregate PRESENT gate; no frozen ATOM subgroup gate.",
+        "status": "KNOWN_LIMITATION",
+        "value": 0.696
+      }
+    ],
+    "note": "Subgroup diagnostics weaker than aggregate gates remain KNOWN_LIMITATION; they do not invalidate SETTLED_PASS absent frozen subgroup acceptance requirements."
+  },
+  "review_receipt_sha256": "7e09c67d474c91af58dd4f2b4f19121ee81e99d5d472282cf0b4880a638908f2",
+  "schema": "hyperlex.classification.v5.stage_a_two_stage_promotion_review.v1",
+  "settlement_integrity": {
+    "checks": {
+      "acceptance_gates_pass": true,
+      "architecture_receipt": true,
+      "authorization_receipt": true,
+      "class_weight_artifact_sha": true,
+      "current_best_unchanged": true,
+      "dataset_sha": true,
+      "experiment_id": true,
+      "n_passing": true,
+      "run_receipt_sha": true,
+      "scientific_settled_pass": true,
+      "selected_checkpoint_hash": true,
+      "selected_epoch": true,
+      "selected_thresholds_frozen_rule": true,
+      "split_witness": true,
+      "threshold_grid_n": true,
+      "training_config_sha": true
+    },
+    "pass": true,
+    "result": "PASS"
+  },
+  "threshold_rule": {
+    "canonical_thresholds": {
+      "gate1_threshold": 0.75,
+      "gate2_present_threshold": 0.5,
+      "policy": "if P(POSSIBLE_EVIDENCE) < 0.75 -> NO_EVIDENCE; else if P(CONFIRMED_PRESENT) >= 0.50 -> EVIDENCE_PRESENT; else UNCERTAIN",
+      "runtime_threshold_search": false,
+      "scalar_three_state_forbidden": true
+    },
+    "pass": true,
+    "selected_thresholds": {
+      "gate1_threshold": 0.75,
+      "gate2_present_threshold": 0.5
+    }
+  }
+}

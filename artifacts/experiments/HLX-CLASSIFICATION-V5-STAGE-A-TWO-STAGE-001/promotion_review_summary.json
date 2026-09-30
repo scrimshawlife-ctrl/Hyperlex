@@ -1,0 +1,15 @@
+{
+  "BEST": "UNCHANGED",
+  "NEXT_ACTION": "PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED",
+  "PROMOTION_DECISION": "PROMOTION_READY",
+  "PROMOTION_REVIEW": "VALID",
+  "RESERVE": "unused",
+  "SELECTED_CHECKPOINT_SHA256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "TRAIN": false,
+  "architecture_pass": true,
+  "integrity_pass": true,
+  "recommended_pointer": "STAGE_A_BEST",
+  "replay_hash": "fc601e69569594d55eb150ee9b467eb37ce0c1b3015e29d88d54aecb7eda6474",
+  "replay_pass": true,
+  "review_receipt_sha256": "7e09c67d474c91af58dd4f2b4f19121ee81e99d5d472282cf0b4880a638908f2"
+}
