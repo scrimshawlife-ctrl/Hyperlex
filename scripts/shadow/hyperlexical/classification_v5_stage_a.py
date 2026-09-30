@@ -617,18 +617,51 @@ def derive_label_provenance(row: Mapping[str, Any]) -> dict[str, Any]:
             ]
         source_labels = ["NONE", subtype] if subtype else ["NONE"]
     elif label == "UNCERTAIN":
-        authority, derivation = "CANONICAL_RULE", "AMBIGUITY_SETTLEMENT"
         rule_id = SUBTYPE_RULE_IDS["AMBIGUOUS_EVIDENCE"]
-        reviewer = "UNREVIEWED_RULE_DERIVED"
-        ambiguity_reason = "MULTIPLE_PLAUSIBLE_INTERPRETATIONS"
-        basis = [
-            {
-                "ambiguity_reason": ambiguity_reason,
-                "reference": "v5-stage-a-ambiguous-contract:AMBIGUOUS_EVIDENCE",
-                "sha256": rule_sha256(rule_id),
-                "type": "CANONICAL_MAPPING",
-            }
-        ]
+        ambiguity_reason = str(row.get("ambiguity_reason") or "")
+        if ambiguity_reason not in AMBIGUITY_REASONS:
+            # Fail closed: do not silently default a reason for gold UNCERTAIN.
+            # Legacy callers without an explicit reason keep the historical
+            # single-reason contract only when no reason field is present.
+            if row.get("ambiguity_reason") is None:
+                ambiguity_reason = "MULTIPLE_PLAUSIBLE_INTERPRETATIONS"
+            else:
+                raise ValueError(
+                    f"LABEL_PROVENANCE_INVALID:ambiguity_reason:{ambiguity_reason}"
+                )
+        if (
+            str(row.get("provenance") or row.get("source_provenance") or "")
+            == "OBSERVED"
+            and row.get("source_url")
+            and str(row.get("label_authority") or "HUMAN_SETTLED") == "HUMAN_SETTLED"
+        ):
+            authority, derivation = "HUMAN_SETTLED", "AMBIGUITY_SETTLEMENT"
+            reviewer = "SETTLED"
+            basis = [
+                {
+                    "ambiguity_reason": ambiguity_reason,
+                    "reference": f"human-settlement:ambiguous:{ambiguity_reason}",
+                    "sha256": sha256_text(str(row.get("source_url"))),
+                    "type": "HUMAN_SETTLEMENT",
+                },
+                {
+                    "ambiguity_reason": ambiguity_reason,
+                    "reference": "v5-stage-a-ambiguous-contract:AMBIGUOUS_EVIDENCE",
+                    "sha256": rule_sha256(rule_id),
+                    "type": "CANONICAL_MAPPING",
+                },
+            ]
+        else:
+            authority, derivation = "CANONICAL_RULE", "AMBIGUITY_SETTLEMENT"
+            reviewer = "UNREVIEWED_RULE_DERIVED"
+            basis = [
+                {
+                    "ambiguity_reason": ambiguity_reason,
+                    "reference": "v5-stage-a-ambiguous-contract:AMBIGUOUS_EVIDENCE",
+                    "sha256": rule_sha256(rule_id),
+                    "type": "CANONICAL_MAPPING",
+                }
+            ]
         source_labels = ["AMBIGUOUS_EVIDENCE"]
     else:
         raise ValueError(f"LABEL_PROVENANCE_INVALID:unknown_label:{label}")
