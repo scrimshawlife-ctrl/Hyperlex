@@ -1550,6 +1550,12 @@ def remediate_uncertain_surface(
         kept_unc.append(row)
     stats["removed_dedupe"] = removed
     working = kept_unc
+    dedupe_witness = {
+        "cross_split_uncertain_near_dup_removed": removed,
+        "method": "hlx.v5.near_duplicate.normalized_jaccard_v1",
+        "preserved_prior_non_uncertain": True,
+        "removed": removed,
+    }
     # Rebuild pair records for final set.
     working, pair_records = pair_for_floors(working)
     rows = sorted(working, key=lambda item: (item["evidence_subtype"], item["identity"]))
