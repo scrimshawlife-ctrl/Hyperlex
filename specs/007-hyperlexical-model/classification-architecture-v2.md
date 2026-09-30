@@ -496,3 +496,15 @@ Sealed under `/home/morpheus/hlx-private/classification-v2-ontology-merge-pair-2
 - Overlap cosine≥0.80: pre 35 → post 34 (absolute −1, 2.86%); collapse component 12 → 12
 - relationship-dating remains `OVERLAP_REMAINS_STRUCTURAL_FUTURE_CANDIDATE` (not merged)
 - Training gate **CLOSED**. Residual: `MATERIAL_OVERLAP_REDUCTION_NOT_MET`, `COLLAPSE_COMPONENT_NOT_WEAKENED`. Next: `RESOLVE_RESIDUAL_BLOCKERS` — do not train.
+
+## Post-merge residual overlap review (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_POST_MERGE_RESIDUAL_REVIEW_V1` diagnoses residual blockers after sealed merge `c901badb…`. Read-only. BEST unchanged `9fba0f66…`. No train / reserve / ontology mutation. relationship-dating is not auto-merged.
+
+Sealed artifact sha256 `617ba9eebfe9955ed3931ab659738a25de99b79a7301bc8a6ed5d952439955bc` at `/home/morpheus/hlx-private/classification-v2-post-merge-residual-review-20260930/POST_MERGE_RESIDUAL_REVIEW.json`.
+
+- SE↔RD cosine ≈0.932 but lexically distinct (shared_token_ratio=0.0) → do **not** merge
+- Collapse component still 12; overlap 35→34 (−2.86%)
+- Hubs by residual degree: internet-slang, spiritual-mystic, social-evaluation, music-entertainment
+- Primary recommendation: **KEEP_SE_RD_SEPARATE_REFINE_HUBS**
+- Training gate **CLOSED**. Next: `APPLY_RESIDUAL_HUB_BOUNDARY_PASS` — do not train.
