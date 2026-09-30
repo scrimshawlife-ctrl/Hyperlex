@@ -654,6 +654,9 @@ def remediate_mixed_surface(
         canonical_json({k: v for k, v in train_contract.items() if k != "contract_sha256"})
     )
 
+    def _count_keys(values) -> dict[str, int]:
+        return dict(Counter(str(v if v is not None else "unspecified") for v in values))
+
     # Source / domain balance witnesses for settlement.
     train_rows = [r for r in rows if r["split"] == "train"]
     ordinary_train = [
@@ -661,10 +664,14 @@ def remediate_mixed_surface(
     ]
     source_balance = {
         "class_x_source": {
-            label: dict(Counter(r.get("source_bucket") for r in rows if r["evidence_label"] == label))
+            label: _count_keys(
+                r.get("source_bucket") for r in rows if r["evidence_label"] == label
+            )
             for label in ("EVIDENCE_PRESENT", "NO_EVIDENCE", "UNCERTAIN")
         },
-        "ordinary_train_source": dict(Counter(r.get("source_bucket") for r in ordinary_train)),
+        "ordinary_train_source": _count_keys(
+            r.get("source_bucket") for r in ordinary_train
+        ),
         "ordinary_wiki_share_among_ordinary_observed": (
             (
                 sum(
@@ -686,12 +693,10 @@ def remediate_mixed_surface(
             )
         ),
         "subtype_x_domain": {
-            subtype: dict(
-                Counter(
-                    r.get("topic_domain")
-                    for r in rows
-                    if r["evidence_subtype"] == subtype
-                )
+            subtype: _count_keys(
+                r.get("topic_domain")
+                for r in rows
+                if r["evidence_subtype"] == subtype
             )
             for subtype in ("ORDINARY_DOMAIN_NONE", "POSITIVE_EVIDENCE")
         },

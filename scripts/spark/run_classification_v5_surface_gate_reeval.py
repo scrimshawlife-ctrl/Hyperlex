@@ -135,11 +135,16 @@ def main() -> int:
     )
 
     try:
-        from hyperlexical.classification_v5_stage_a_surface_remediate import (
-            SURFACE_RULE_V1R7 as REMEDIATED_SURFACE_RULE,
+        from hyperlexical.classification_v5_stage_a_mixed_remediate import (
+            SURFACE_RULE_V1R8 as REMEDIATED_SURFACE_RULE,
         )
     except Exception:
-        REMEDIATED_SURFACE_RULE = LEGACY_SURFACE_RULE
+        try:
+            from hyperlexical.classification_v5_stage_a_surface_remediate import (
+                SURFACE_RULE_V1R7 as REMEDIATED_SURFACE_RULE,
+            )
+        except Exception:
+            REMEDIATED_SURFACE_RULE = LEGACY_SURFACE_RULE
     surface_rule = os.environ.get("HLX_V5_SURFACE_RULE", "").strip() or (
         REMEDIATED_SURFACE_RULE
         if "v1r" in str(PRIVATE)

@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Remediate V5 Stage-A mixed failure to READY (Spec 007):** execute
+  `REMEDIATE_V5_STAGE_A_MIXED_FAILURE_V1` from parent V1R7 `a81ca68a…`
+  under frozen `HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1`. Joint
+  ordinary-NONE + PRESENT support repair: fresh Wiktionary/Wikipedia
+  OBSERVED ordinary acquires (n=1013), train OBSERVED ordinary floor 160
+  (was 0), train OBSERVED PRESENT floor 140 (was 80), Wikipedia source
+  family diversification (`v5_src_wp_*`). Replacement surface V1R8
+  dataset `c0fdd82d…` (train=4340 / validation=1950 / total=6290) passes
+  all 12/12 mandatory gates → **READY**. Receipt `e61621af…`, gate_eval
+  `73680e69…`. No train, reserve, architecture, threshold, or BEST move.
+  Next: `TRAIN_V5_STAGE_A_ONCE`.
+
 - **Diagnose V5 Stage-A SETTLED_FAIL (Spec 007):** read-only
   `DIAGNOSE_V5_STAGE_A_SETTLED_FAIL` + matched-cohort
   `HYPERLEX_V5_STAGE_A_CONTROLLED_COMPARISON_V1` on SELECTED `3b1b574a…`.
