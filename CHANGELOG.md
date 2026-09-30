@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Wire v3 Stage B retrieval (Spec 007):** invoke family exemplar retrieval
+  only on Stage A `EVIDENCE_PRESENT`, calibrate global Stage B floors on the
+  evidence-surface validation split, and report reserve-authorization without
+  creating a reserve. BEST unchanged.
+
 - **Train v3 Stage A evidence gate (Spec 007):** one authorized train on the
   READY `HYPERLEX_V3_EVIDENCE_SURFACE_V1` against the preregistered
   `false_evidence_entry_rate_on_none <= 0.05` gate. No v3 reserve, BEST
