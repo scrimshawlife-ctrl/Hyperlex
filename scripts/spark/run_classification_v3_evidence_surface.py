@@ -143,8 +143,8 @@ def main() -> int:
     )
 
     pin_inputs()
-    if CURRENT_STATE != "PREREGISTERED":
-        fail(f"gate state not PREREGISTERED:{CURRENT_STATE}")
+    if CURRENT_STATE not in {"PREREGISTERED", "READY"}:
+        fail(f"gate state not PREREGISTERED/READY:{CURRENT_STATE}")
     schema_hashes = verify_schema_hashes(SCHEMA_FILES)
     prereg = preregistration_contract()
     if prereg["false_evidence_entry_rate_on_none_max"] != FALSE_EVIDENCE_ENTRY_RATE_ON_NONE_MAX:

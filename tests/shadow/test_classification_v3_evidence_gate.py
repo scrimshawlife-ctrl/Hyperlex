@@ -40,7 +40,7 @@ def _load(name: str) -> dict:
 def test_contract_seals_v2_fail_and_preregisters_gate():
     contract = evidence_gate_contract()
     assert contract["rule"] == RULE
-    assert contract["current_state"] == CURRENT_STATE == "PREREGISTERED"
+    assert contract["current_state"] == CURRENT_STATE == "READY"
     assert contract["train"] is False
     assert contract["spent_v2_reserve_reuse"] is False
     assert contract["false_evidence_entry_rate_on_none_max"] == FALSE_EVIDENCE_ENTRY_RATE_ON_NONE_MAX == 0.05
