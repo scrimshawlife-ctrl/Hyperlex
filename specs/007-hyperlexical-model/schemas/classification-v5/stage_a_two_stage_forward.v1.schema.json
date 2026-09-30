@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v5.stage_a_two_stage_forward.v1",
+  "title": "Two-stage Stage-A forward contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "gate1_logits",
+    "gate2_logits",
+    "gate1_probabilities",
+    "gate2_probabilities"
+  ],
+  "properties": {
+    "gate1_logits": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" },
+      "description": "Order: NO_EVIDENCE, POSSIBLE_EVIDENCE"
+    },
+    "gate2_logits": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" },
+      "description": "Order: UNCERTAIN, CONFIRMED_PRESENT"
+    },
+    "gate1_probabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["NO_EVIDENCE", "POSSIBLE_EVIDENCE"],
+      "properties": {
+        "NO_EVIDENCE": { "type": "number", "minimum": 0, "maximum": 1 },
+        "POSSIBLE_EVIDENCE": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "gate2_probabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["UNCERTAIN", "CONFIRMED_PRESENT"],
+      "properties": {
+        "UNCERTAIN": { "type": "number", "minimum": 0, "maximum": 1 },
+        "CONFIRMED_PRESENT": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

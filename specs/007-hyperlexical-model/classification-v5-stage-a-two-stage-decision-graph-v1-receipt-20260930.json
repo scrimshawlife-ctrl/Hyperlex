@@ -1,0 +1,242 @@
+{
+  "AUTHORIZE_RULE_NEXT": "AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1",
+  "BEST": "UNCHANGED",
+  "BEST_SHA256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "DATASET_SHA256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "DESIGN_STATE": "FROZEN",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE",
+  "PARENT_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-004",
+  "PARENT_PRIMARY_DECISION": "STAGE_A_ARCHITECTURE_REDESIGN_REQUIRED",
+  "RESERVE": "unused",
+  "SURFACE_RULE": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+  "TRAIN": false,
+  "TRAIN_AUTHORIZED": false,
+  "acceptance_gates": {
+    "EVIDENCE_PRESENT_recall_min": 0.7,
+    "NO_EVIDENCE_recall_min": 0.9,
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "optimize_family_metrics_before_stage_a_pass": false
+  },
+  "architecture": {
+    "encoder": "ModernBERT-base",
+    "flat_head_status": "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION",
+    "forbidden_additions": [
+      "mlp_head",
+      "attention_block",
+      "prototype",
+      "retrieval",
+      "family_head"
+    ],
+    "gate1_head": "linear_hidden_to_2_logits",
+    "gate2_head": "linear_hidden_to_2_logits",
+    "head_init": "xavier_uniform_bias_zeros",
+    "last_trainable_encoder_layers": 2,
+    "pooling": "last_hidden_state[:,0]",
+    "shared_encoder": true,
+    "trainable": {
+      "gate1_head": true,
+      "gate2_head": true,
+      "last_trainable_encoder_layers": 2,
+      "mutate_best": false
+    }
+  },
+  "checkpoint_selection": {
+    "formula": "0.50 * Gate1_macro_F1 + 0.50 * Gate2_macro_F1",
+    "gate2_scope": "PRESENT_AND_UNCERTAIN_GOLD_ONLY",
+    "strict_improvement": true,
+    "tie_break": [
+      "lower_gate1_false_possible_entry_rate",
+      "higher_gate2_CONFIRMED_PRESENT_recall",
+      "earlier_epoch"
+    ]
+  },
+  "code_revision": "dc17a73b71d8426174f14bc1517d7e273ced65ac",
+  "compatibility": {
+    "flat_head_status": "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION",
+    "gold_label_rule": "HYPERLEX_V5_STAGE_A_GOLD_LABEL_MAPPING_V1",
+    "historical_flat_artifacts_retained": true,
+    "label_provenance_rule": "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1",
+    "v1r9_dataset_unchanged": true
+  },
+  "demo_weight_witness_only": {
+    "gate1": {
+      "NO_EVIDENCE": 1.1715728752538097,
+      "POSSIBLE_EVIDENCE": 0.8284271247461901
+    },
+    "gate2": {
+      "CONFIRMED_PRESENT": 0.7320508075688773,
+      "UNCERTAIN": 1.2679491924311228
+    },
+    "note": "Witness of formula application on a tiny synthetic set; authorize/train must recompute on full V1R9 train split."
+  },
+  "design_receipt_sha256": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697",
+  "forward": {
+    "fields": [
+      "gate1_logits",
+      "gate2_logits",
+      "gate1_probabilities",
+      "gate2_probabilities"
+    ],
+    "gate1_logits": {
+      "order": [
+        "NO_EVIDENCE",
+        "POSSIBLE_EVIDENCE"
+      ],
+      "shape": [
+        2
+      ]
+    },
+    "gate2_logits": {
+      "order": [
+        "UNCERTAIN",
+        "CONFIRMED_PRESENT"
+      ],
+      "shape": [
+        2
+      ]
+    },
+    "note": "Gate-2 logits may be computed for all rows; loss and canonical decision are masked unless Gate-1 permits entry.",
+    "pooling": "last_hidden_state[:,0]",
+    "schema": "hyperlex.classification.v5.stage_a_two_stage_forward.v1"
+  },
+  "gate1_gold_mapping": {
+    "EVIDENCE_PRESENT": 1,
+    "NO_EVIDENCE": 0,
+    "UNCERTAIN": 1
+  },
+  "gate2_gold_mapping": {
+    "EVIDENCE_PRESENT": 1,
+    "NO_EVIDENCE": "EXCLUDED_FROM_GATE2_LOSS",
+    "UNCERTAIN": 0
+  },
+  "graph": {
+    "canonical_outputs": [
+      "NO_EVIDENCE",
+      "EVIDENCE_PRESENT",
+      "UNCERTAIN"
+    ],
+    "edges": [
+      "encoder -> gate1",
+      "gate1:NO_EVIDENCE -> NO_EVIDENCE",
+      "gate1:POSSIBLE_EVIDENCE -> gate2",
+      "gate2:CONFIRMED_PRESENT -> EVIDENCE_PRESENT",
+      "gate2:UNCERTAIN -> UNCERTAIN"
+    ],
+    "factorization": "architectural_only"
+  },
+  "inference_policy": {
+    "gate1": "if P(POSSIBLE_EVIDENCE) < gate1_threshold -> NO_EVIDENCE else Gate2",
+    "gate2": "if P(CONFIRMED_PRESENT) >= gate2_present_threshold -> EVIDENCE_PRESENT else UNCERTAIN",
+    "scalar_three_state_forbidden": true
+  },
+  "loss": {
+    "L_total": "L_gate1 + lambda_gate2 * L_gate2",
+    "focal_forbidden": true,
+    "gate1": {
+      "loss": "binary_weighted_cross_entropy",
+      "scope": "all_stage_a_rows",
+      "targets": {
+        "NO_EVIDENCE": 0,
+        "POSSIBLE_EVIDENCE": 1
+      }
+    },
+    "gate2": {
+      "loss": "binary_weighted_cross_entropy",
+      "none_rows_contribute": false,
+      "scope": "EVIDENCE_PRESENT_and_UNCERTAIN_gold_only",
+      "targets": {
+        "CONFIRMED_PRESENT": 1,
+        "UNCERTAIN": 0
+      }
+    },
+    "lambda_gate2": 1.0,
+    "name": "two_stage_weighted_binary_ce",
+    "provenance_multipliers": {
+      "INFERRED": 0.5,
+      "OBSERVED": 1.0
+    }
+  },
+  "no_data_rules": {
+    "gate2_zero_eligible": "NO_DATA",
+    "missing_gold_field": "LABEL_MAPPING_INVALID",
+    "missing_probability_or_logit": "NOT_COMPUTABLE",
+    "silent_zero_substitution": false
+  },
+  "resolved_config_schema_sha_witness": "27fe2fb6151b98d91bcb05314be5528104a93a39ae8d52d3f3b6f4aef6b5a341",
+  "rule": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1",
+  "schemas": {
+    "authorization": "hyperlex.classification.v5.stage_a_two_stage_authorization.v1",
+    "config": "hyperlex.classification.v5.stage_a_two_stage_config.v1",
+    "forward": "hyperlex.classification.v5.stage_a_two_stage_forward.v1",
+    "train_receipt": "hyperlex.classification.v5.stage_a_two_stage_train_receipt.v1"
+  },
+  "threshold_grids": {
+    "gate1_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "gate2_present_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "n_combinations": 100
+  },
+  "threshold_selection": {
+    "acceptance_required": [
+      "false_evidence_entry_rate_on_none <= 0.05",
+      "EVIDENCE_PRESENT_recall >= 0.70",
+      "NO_EVIDENCE_recall >= 0.90"
+    ],
+    "fail_if_no_feasible": "SETTLED_FAIL",
+    "maximize_in_order": [
+      "stage_a_macro_f1",
+      "EVIDENCE_PRESENT_recall",
+      "UNCERTAIN_recall",
+      "minimize_false_evidence_entry",
+      "higher_gate1_threshold",
+      "higher_gate2_present_threshold"
+    ],
+    "n_grid_combinations": 100
+  },
+  "train_receipt_schema": {
+    "required_fields": [
+      "EXPERIMENT_ID",
+      "DATASET_SHA256",
+      "TRAINING_CONFIG_SHA256",
+      "SELECTED_CHECKPOINT_SHA256",
+      "RUN_RECEIPT_SHA256",
+      "SCIENTIFIC_RESULT",
+      "acceptance_gates",
+      "gate1_confusion",
+      "gate2_confusion",
+      "end_to_end_confusion",
+      "route_diagnostics",
+      "component_metrics",
+      "threshold_grid",
+      "BEST",
+      "RESERVE",
+      "TRAIN"
+    ],
+    "schema": "hyperlex.classification.v5.stage_a_two_stage_train_receipt.v1",
+    "scientific_result_values": [
+      "SETTLED_PASS",
+      "SETTLED_FAIL"
+    ]
+  }
+}

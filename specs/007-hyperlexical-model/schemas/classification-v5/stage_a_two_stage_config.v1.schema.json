@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v5.stage_a_two_stage_config.v1",
+  "title": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1 resolved training config",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "rule",
+    "experiment_id",
+    "dataset_sha256",
+    "training_config_sha256",
+    "architecture",
+    "loss",
+    "gate1_class_weights",
+    "gate2_class_weights",
+    "threshold_grids",
+    "checkpoint_selection",
+    "threshold_selection",
+    "acceptance_gates",
+    "best_encoder_sha256",
+    "train_run_limit"
+  ],
+  "properties": {
+    "schema": {
+      "const": "hyperlex.classification.v5.stage_a_two_stage_config.v1"
+    },
+    "rule": {
+      "const": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1"
+    },
+    "experiment_id": {
+      "const": "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE"
+    },
+    "dataset_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "training_config_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "best_encoder_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "train_run_limit": { "const": 1 },
+    "loss": {
+      "type": "object",
+      "required": ["lambda_gate2", "focal_forbidden", "L_total"],
+      "properties": {
+        "lambda_gate2": { "const": 1.0 },
+        "focal_forbidden": { "const": true },
+        "L_total": { "const": "L_gate1 + lambda_gate2 * L_gate2" }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "required": [
+        "shared_encoder",
+        "gate1_head",
+        "gate2_head",
+        "pooling",
+        "last_trainable_encoder_layers",
+        "flat_head_status"
+      ],
+      "properties": {
+        "shared_encoder": { "const": true },
+        "gate1_head": { "const": "linear_hidden_to_2_logits" },
+        "gate2_head": { "const": "linear_hidden_to_2_logits" },
+        "pooling": { "const": "last_hidden_state[:,0]" },
+        "last_trainable_encoder_layers": { "const": 2 },
+        "flat_head_status": {
+          "const": "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION"
+        }
+      }
+    },
+    "threshold_grids": {
+      "type": "object",
+      "required": [
+        "gate1_thresholds",
+        "gate2_present_thresholds",
+        "n_combinations"
+      ],
+      "properties": {
+        "n_combinations": { "const": 100 }
+      }
+    }
+  }
+}

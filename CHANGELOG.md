@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Design freeze Stage-A two-stage decision graph (Spec 007):**
+  `HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1` freezes the B_TWO_STAGE
+  redesign as spec only for experiment
+  `HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE` on V1R9 `8d4be830…`. Shared
+  ModernBERT + Gate-1 (NONE vs POSSIBLE) + Gate-2 (UNCERTAIN vs CONFIRMED);
+  `λ_gate2=1.0`; last 2 encoder layers; 10×10 threshold grid; checkpoint score
+  `0.5×G1+0.5×G2` macro-F1; end-to-end gates unchanged. Flat head marked
+  `DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION` (historical receipts retained).
+  No train / authorize / reserve / BEST move (`9fba0f66…` UNCHANGED). Receipt
+  `classification-v5-stage-a-two-stage-decision-graph-v1-receipt-20260930.json`
+  (`631427cc…`). Next: `AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1`.
+
 - **Architecture/objective investigation Stage-A-004 / V1R9 (Spec 007):**
   read-only `ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION` on SELECTED
   `82840630…` / dataset `8d4be830…`. Baseline

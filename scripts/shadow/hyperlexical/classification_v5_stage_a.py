@@ -2,6 +2,13 @@
 
 Authorizes one Stage-A train against a READY V5 surface. Does not train by
 itself, does not score reserves, and does not move BEST.
+
+Flat 3-way head + decide_evidence(P_PRESENT) is retained as historical evidence
+for Stage-A-001..004, but is
+DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION. Canonical Stage-A factorization
+is HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1
+(classification_v5_stage_a_two_stage.py). Do not rewrite flat-head failure
+receipts.
 """
 
 from __future__ import annotations
@@ -21,6 +28,7 @@ from .classification_v5_stage_a_negative_evidence_surface import (
 from .classification_v5_stage_a_surface_remediate import SURFACE_RULE_V1R7
 
 STAGE_A_RULE = "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1"
+FLAT_HEAD_STATUS = "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION"
 LABEL_PROVENANCE_RULE = "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1"
 AUTHORIZE_RULE = "AUTHORIZE_V5_STAGE_A_NEXT_RUN_ON_REMEDIATED_SURFACE"
 EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-004"
@@ -189,6 +197,11 @@ def decide_evidence(
     none_threshold: float,
     present_threshold: float,
 ) -> str:
+    """Historical flat-head decision (DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION).
+
+    Retained for Stage-A-001..004 receipts/replay. New canonical Stage-A
+    inference uses decide_two_stage in classification_v5_stage_a_two_stage.
+    """
     if not (0.0 <= float(evidence_score) <= 1.0):
         raise ValueError("evidence_score_out_of_range")
     if not (0.0 <= float(none_threshold) < float(present_threshold) <= 1.0):
