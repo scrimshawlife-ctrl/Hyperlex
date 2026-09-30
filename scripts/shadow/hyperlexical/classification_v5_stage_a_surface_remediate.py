@@ -308,9 +308,14 @@ def assign_component_splits(
 
 
 def _source_bucket_for(row: Mapping[str, Any], *, shard: int) -> str:
-    if row.get("source_url"):
+    url = str(row.get("source_url") or "")
+    if url:
         domain = str(row.get("topic_domain") or "wiki")
-        return f"v5_src_wik_{domain}_{shard % 4}"
+        if "wikipedia.org" in url:
+            return f"v5_src_wp_{domain}_{shard % 4}"
+        if "wiktionary.org" in url:
+            return f"v5_src_wik_{domain}_{shard % 4}"
+        return f"v5_src_url_{domain}_{shard % 4}"
     if row.get("provenance") == "OBSERVED":
         fam = (row.get("active_family_support") or ["none"])[0]
         return f"v5_src_hub_obs_{fam}_{shard % 3}"
