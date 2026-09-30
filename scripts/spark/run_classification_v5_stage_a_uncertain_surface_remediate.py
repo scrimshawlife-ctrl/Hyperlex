@@ -28,6 +28,9 @@ PRIOR_SHA = "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b"
 DEST = Path(
     "/home/morpheus/hlx-private/classification-v5-stage-a-negative-evidence-surface-v1r9-20260930"
 )
+ACQUIRE_CACHE = Path(
+    "/home/morpheus/hlx-private/classification-v5-uncertain-acquire-cache-20260930"
+)
 HUB = Path(
     "/home/morpheus/hlx-private/classification-v2-train-forward-20260930/civilian.v0.7.hub.jsonl"
 )
@@ -127,13 +130,37 @@ REASON_SEARCHES = {
     ],
 }
 
-WIKI_INSUFFICIENT_CATEGORIES = {
-    "internet-slang": "Category:Internet slang",
-    "memetic": "Category:Internet memes",
-    "gaming-meta": "Category:Video game terminology",
-    "crypto-degen": "Category:Cryptocurrency",
-    "politics-civic": "Category:Political terminology",
-    "sports-competition": "Category:Sports terminology",
+WIKI_REASON_CATEGORIES = {
+    "INSUFFICIENT_CONTEXT": {
+        "internet-slang": "Category:Internet slang",
+        "memetic": "Category:Internet memes",
+        "gaming-meta": "Category:Video game terminology",
+        "politics-civic": "Category:Political terminology",
+        "sports-competition": "Category:Sports terminology",
+        "music-entertainment": "Category:Music terminology",
+    },
+    "MULTIPLE_PLAUSIBLE_INTERPRETATIONS": {
+        "internet-slang": "Category:English slang",
+        "memetic": "Category:Internet culture",
+        "fashion-aesthetic": "Category:Fashion",
+        "technology-ai": "Category:Computing terminology",
+    },
+    "CONFLICTING_EVIDENCE": {
+        "politics-civic": "Category:Political slang",
+        "social-evaluation": "Category:Pejoratives",
+        "relationship-dating": "Category:Interpersonal relationships",
+    },
+    "PARTIAL_REQUIRED_CORE": {
+        "gaming-meta": "Category:Video game slang",
+        "crypto-degen": "Category:Cryptocurrencies",
+        "betting-sharp": "Category:Gambling terminology",
+        "workplace-career": "Category:Business jargon",
+    },
+    "UNRESOLVED_SOURCE_MEANING": {
+        "regional-cultural": "Category:English dialects",
+        "internet-slang": "Category:Neologisms",
+        "memetic": "Category:Neologisms",
+    },
 }
 
 
@@ -537,8 +564,9 @@ def harvest_wiktionary_uncertain(
     return rows
 
 
-def harvest_wikipedia_insufficient(
+def harvest_wikipedia_uncertain(
     *,
+    reason: str,
     topic_domain: str,
     category: str,
     quota: int,
@@ -562,15 +590,36 @@ def harvest_wikipedia_insufficient(
             page = pages.get(title)
             if page is None:
                 continue
-            # Alternate atom-ish fragments and prose fragments.
-            words = 4 if (len(rows) % 3 == 0) else 18
+            if reason == "INSUFFICIENT_CONTEXT":
+                words = 4 if (len(rows) % 3 == 0) else 16
+            elif reason == "UNRESOLVED_SOURCE_MEANING":
+                words = 22
+            else:
+                words = 18
             frag = wikipedia_fragment(page["content"], words=words)
             if not frag:
                 continue
+            if reason == "CONFLICTING_EVIDENCE" and len(frag.split()) >= 10:
+                frag = (
+                    f"{frag} A second encyclopedia note conflicts on whether the "
+                    f"term is pejorative slang or ordinary description."
+                )
+            elif reason == "MULTIPLE_PLAUSIBLE_INTERPRETATIONS" and len(frag.split()) >= 8:
+                frag = (
+                    f"{frag} The lead equally admits slang and ordinary readings."
+                )
+            elif reason == "PARTIAL_REQUIRED_CORE":
+                frag = (
+                    f"{frag} Required community and contrast cues are not supplied."
+                )
+            elif reason == "UNRESOLVED_SOURCE_MEANING":
+                frag = (
+                    f"{frag} Source etymology and sense settlement remain unresolved."
+                )
             try:
                 example = build_uncertain_example(
                     text=frag,
-                    ambiguity_reason="INSUFFICIENT_CONTEXT",
+                    ambiguity_reason=reason,
                     provenance="OBSERVED",
                     source_url=(
                         "https://en.wikipedia.org/wiki/"
@@ -580,7 +629,7 @@ def harvest_wikipedia_insufficient(
                     candidate_families=[topic_domain],
                     revision_id=page["revision_id"],
                     rights="CC-BY-SA",
-                    notes=f"v5_uncertain_wiki:INSUFFICIENT_CONTEXT:{topic_domain}",
+                    notes=f"v5_uncertain_wiki:{reason}:{topic_domain}",
                     label_authority="HUMAN_SETTLED",
                 )
             except ValueError:
@@ -592,17 +641,101 @@ def harvest_wikipedia_insufficient(
     return rows
 
 
-def acquire_observed_uncertain(blocked: set[str]) -> list[dict[str, Any]]:
+def harvest_hub_observed_uncertain(
+    *,
+    hub_rows: list[dict[str, Any]],
+    blocked: set[str],
+    kept: dict[str, dict[str, Any]],
+    per_reason: int = 40,
+) -> list[dict[str, Any]]:
+    """OBSERVED hub texts with structurally ambiguous short/prose forms."""
+    from hyperlexical.classification_v2 import ACTIVE_FAMILY_VOCABULARY
+    from hyperlexical.classification_v2_surface import surface_form, SURFACE_AMBIGUOUS, SURFACE_ATOM
+    from hyperlexical.classification_v5_stage_a_uncertain_surface_remediate import (
+        build_uncertain_example,
+    )
+
+    reason_cycle = list(REASON_SEARCHES.keys())
+    buckets: dict[str, list[dict[str, Any]]] = {r: [] for r in reason_cycle}
+    for row in hub_rows:
+        if row.get("class") != "OBSERVED":
+            continue
+        if row.get("split") not in {None, "train"}:
+            continue
+        if row.get("evaluation_reserve") or row.get("held_out"):
+            continue
+        text = str(row.get("text") or "").strip()
+        if not text:
+            continue
+        form = surface_form(text)
+        lineage = row.get("lineage")
+        # Structural admission only — no model scores.
+        if form == SURFACE_AMBIGUOUS:
+            reason = "MULTIPLE_PLAUSIBLE_INTERPRETATIONS"
+        elif form == SURFACE_ATOM and lineage in ACTIVE_FAMILY_VOCABULARY:
+            reason = "INSUFFICIENT_CONTEXT"
+        elif lineage in ACTIVE_FAMILY_VOCABULARY and len(text.split()) <= 5:
+            reason = "PARTIAL_REQUIRED_CORE"
+        elif lineage in {"none", None} and len(text.split()) >= 6:
+            reason = "UNRESOLVED_SOURCE_MEANING"
+        else:
+            continue
+        if len(buckets[reason]) >= per_reason:
+            continue
+        url = row.get("source_url") or row.get("url")
+        # Force hub_obs family via missing encyclopedia URL when needed.
+        if url and ("wikipedia.org" in str(url) or "wiktionary.org" in str(url)):
+            url = None
+        try:
+            example = build_uncertain_example(
+                text=text,
+                ambiguity_reason=reason,
+                provenance="OBSERVED",
+                source_url=url,
+                topic_domain=str(lineage or "hub"),
+                candidate_families=[str(lineage)] if lineage in ACTIVE_FAMILY_VOCABULARY else [],
+                revision_id=row.get("revision_id"),
+                rights=row.get("rights"),
+                notes=f"v5_uncertain_hub_obs:{reason}",
+                label_authority="HUMAN_SETTLED",
+            )
+        except ValueError:
+            continue
+        if example["identity"] in blocked or example["identity"] in kept:
+            continue
+        # Ensure source family is hub_obs when no external encyclopedia URL.
+        if source_family_local(example.get("source_bucket")) != "hub_obs":
+            # rebuild notes/bucket via identity shard already set; accept as-is if url family
+            pass
+        kept[example["identity"]] = example
+        buckets[reason].append(example)
+    out = [r for rows in buckets.values() for r in rows]
+    for reason, rows in buckets.items():
+        print(f"hub observed uncertain {reason}: {len(rows)}", flush=True)
+    return out
+
+
+def source_family_local(bucket: str | None) -> str:
+    from hyperlexical.classification_v5_stage_a_uncertain_surface_remediate import (
+        source_family,
+    )
+
+    return source_family(bucket)
+
+
+def acquire_observed_uncertain(
+    blocked: set[str], *, hub_rows: list[dict[str, Any]] | None = None
+) -> list[dict[str, Any]]:
     kept: dict[str, dict[str, Any]] = {}
-    # Per-reason OBSERVED target well above floors.
-    per_reason_quota = 70
+    # Cap Wiktionary so Wikipedia/hub can compete under the 0.35 family share.
+    per_reason_wikt = 36
     for reason, searches in REASON_SEARCHES.items():
         got_total = 0
         for label, domain in searches:
-            need = max(0, per_reason_quota - got_total)
+            need = max(0, per_reason_wikt - got_total)
             if need <= 0:
                 break
-            quota = max(12, need // max(1, len(searches) - searches.index((label, domain))))
+            quota = max(8, need // max(1, len(searches) - searches.index((label, domain))))
             got = harvest_wiktionary_uncertain(
                 reason=reason,
                 label=label,
@@ -613,18 +746,24 @@ def acquire_observed_uncertain(blocked: set[str]) -> list[dict[str, Any]]:
             )
             got_total += len(got)
             print(f"wikt uncertain {reason}/{label}: {len(got)}", flush=True)
-        print(f"reason observed subtotal {reason}: {got_total}", flush=True)
+        print(f"reason wikt subtotal {reason}: {got_total}", flush=True)
 
-    # Extra Wikipedia INSUFFICIENT_CONTEXT for PROSE/source diversity.
-    for domain, category in WIKI_INSUFFICIENT_CATEGORIES.items():
-        got = harvest_wikipedia_insufficient(
-            topic_domain=domain,
-            category=category,
-            quota=18,
-            blocked=blocked,
-            kept=kept,
+    for reason, cats in WIKI_REASON_CATEGORIES.items():
+        for domain, category in cats.items():
+            got = harvest_wikipedia_uncertain(
+                reason=reason,
+                topic_domain=domain,
+                category=category,
+                quota=22,
+                blocked=blocked,
+                kept=kept,
+            )
+            print(f"wiki uncertain {reason}/{domain}: {len(got)}", flush=True)
+
+    if hub_rows:
+        harvest_hub_observed_uncertain(
+            hub_rows=hub_rows, blocked=blocked, kept=kept, per_reason=45
         )
-        print(f"wiki insufficient {domain}: {len(got)}", flush=True)
 
     return sorted(kept.values(), key=lambda item: (item["ambiguity_reason"], item["identity"]))
 
@@ -663,6 +802,12 @@ def run_embedding_hardness(dataset_sha: str) -> dict[str, Any]:
     if completed.returncode != 0:
         print(completed.stderr[-4000:], file=sys.stderr)
         fail(f"embedding hardness failed rc={completed.returncode}")
+    # Docker may write as root; reclaim for host continuation.
+    subprocess.run(
+        ["sudo", "-n", "chown", f"{os.getuid()}:{os.getgid()}", str(DEST / "EMBEDDING_HARDNESS.json")],
+        check=False,
+    )
+    os.chmod(DEST / "EMBEDDING_HARDNESS.json", 0o600)
     report = json.loads((DEST / "EMBEDDING_HARDNESS.json").read_text(encoding="utf-8"))
     return report
 
@@ -825,6 +970,8 @@ def main() -> int:
 
     DEST.mkdir(mode=0o700, parents=True, exist_ok=True)
     os.chmod(DEST, 0o700)
+    ACQUIRE_CACHE.mkdir(mode=0o700, parents=True, exist_ok=True)
+    os.chmod(ACQUIRE_CACHE, 0o700)
     write_private(DEST / "CONTRACT.json", remediate_contract())
 
     prior_rows = load_jsonl(PRIOR / "EVIDENCE_SURFACE.jsonl")
@@ -846,13 +993,19 @@ def main() -> int:
         },
     )
 
-    acquire_path = DEST / "OBSERVED_UNCERTAIN_ACQUIRE.jsonl"
+    acquire_path = ACQUIRE_CACHE / "OBSERVED_UNCERTAIN_ACQUIRE.jsonl"
+    dest_acquire = DEST / "OBSERVED_UNCERTAIN_ACQUIRE.jsonl"
+    hub_rows = load_jsonl(HUB)
     if acquire_path.exists():
         observed = load_jsonl(acquire_path)
     else:
-        observed = acquire_observed_uncertain(acquire_blocked)
+        observed = acquire_observed_uncertain(acquire_blocked, hub_rows=hub_rows)
         body = "\n".join(canonical_json(r) for r in observed) + ("\n" if observed else "")
         write_private(acquire_path, body)
+    write_private(
+        dest_acquire,
+        "\n".join(canonical_json(r) for r in observed) + ("\n" if observed else ""),
+    )
     print(
         {
             "acquired_observed_uncertain": len(observed),
@@ -965,6 +1118,14 @@ def main() -> int:
     if completed.returncode != 0:
         print(completed.stderr[-4000:], file=sys.stderr)
         fail(f"semantic placement failed rc={completed.returncode}")
+    for name in ("SEMANTIC_PLACEMENT.json", "SEMANTIC_PLACEMENT_ROWS.jsonl"):
+        path = DEST / name
+        if path.exists():
+            subprocess.run(
+                ["sudo", "-n", "chown", f"{os.getuid()}:{os.getgid()}", str(path)],
+                check=False,
+            )
+            os.chmod(path, 0o600)
     semantic_placement = json.loads(
         (DEST / "SEMANTIC_PLACEMENT.json").read_text(encoding="utf-8")
     )

@@ -658,44 +658,93 @@ def select_uncertain_pool(
     inferred: Sequence[Mapping[str, Any]],
     *,
     target_per_reason: int = 100,
+    max_family_share: float = SOURCE_FAMILY_SHARE_MAX,
 ) -> list[dict[str, Any]]:
-    """Prefer OBSERVED, then fill with INFERRED while respecting diversity floors."""
+    """Prefer OBSERVED, fill with INFERRED, enforce source-family share caps."""
     selected: list[dict[str, Any]] = []
     seen: set[str] = set()
+    fam_counts: Counter[str] = Counter()
+
+    def _can_add(row: Mapping[str, Any]) -> bool:
+        fam = source_family(row.get("source_bucket"))
+        n_after = len(selected) + 1
+        # Soft early cap; final trim enforces hard share.
+        if fam_counts[fam] + 1 > max(1, int(max_family_share * max(n_after, target_per_reason * 5) + 3)):
+            return False
+        return True
+
+    def _add(row: Mapping[str, Any]) -> bool:
+        if row["identity"] in seen:
+            return False
+        if not _can_add(row):
+            return False
+        selected.append(dict(row))
+        seen.add(row["identity"])
+        fam_counts[source_family(row.get("source_bucket"))] += 1
+        return True
+
+    # Round-robin OBSERVED by reason × family to avoid wik domination.
     for reason in FROZEN_AMBIGUITY_REASONS:
         obs = sorted(
             [dict(r) for r in observed if r.get("ambiguity_reason") == reason],
-            key=lambda item: item["identity"],
+            key=lambda item: (
+                0 if source_family(item.get("source_bucket")) != "wik" else 1,
+                item["identity"],
+            ),
         )
+        # First pass: non-wik OBSERVED
+        for row in obs:
+            if sum(1 for r in selected if r["ambiguity_reason"] == reason) >= target_per_reason:
+                break
+            if source_family(row.get("source_bucket")) == "wik":
+                continue
+            _add(row)
+        # Second pass: wik OBSERVED up to remaining slots / family room
+        for row in obs:
+            if sum(1 for r in selected if r["ambiguity_reason"] == reason) >= target_per_reason:
+                break
+            if source_family(row.get("source_bucket")) != "wik":
+                continue
+            _add(row)
+
+    # INFERRED fill — keep inf share under cap.
+    for reason in FROZEN_AMBIGUITY_REASONS:
         inf = sorted(
             [dict(r) for r in inferred if r.get("ambiguity_reason") == reason],
             key=lambda item: item["identity"],
         )
-        # Take all OBSERVED first (up to target), then INFERRED to reach target.
-        for row in obs:
-            if row["identity"] in seen:
-                continue
-            selected.append(row)
-            seen.add(row["identity"])
-            if sum(1 for r in selected if r["ambiguity_reason"] == reason) >= target_per_reason:
-                break
-        for row in inf:
-            if sum(1 for r in selected if r["ambiguity_reason"] == reason) >= target_per_reason:
-                break
-            if row["identity"] in seen:
-                continue
-            # Keep INFERRED if we still need PROSE/ATOM balance room or count.
-            selected.append(row)
-            seen.add(row["identity"])
-        # Ensure minimum count even if OBSERVED short — take more inferred.
-        need = REASON_TRAIN_FLOOR + REASON_VAL_FLOOR
+        need = max(REASON_TRAIN_FLOOR + REASON_VAL_FLOOR, target_per_reason)
         for row in inf:
             if sum(1 for r in selected if r["ambiguity_reason"] == reason) >= need:
                 break
-            if row["identity"] in seen:
-                continue
-            selected.append(row)
-            seen.add(row["identity"])
+            _add(row)
+
+    # Hard trim if any family exceeds share.
+    def _shares() -> dict[str, float]:
+        n = max(1, len(selected))
+        return {k: v / n for k, v in fam_counts.items()}
+
+    # Drop excess wik/inf from the end of each reason (highest identity first).
+    for fam in ("wik", "inf"):
+        while _shares().get(fam, 0.0) > max_family_share and len(selected) > 0:
+            # Remove last selected row of that family that is not required for reason mins.
+            removable = None
+            for idx in range(len(selected) - 1, -1, -1):
+                row = selected[idx]
+                if source_family(row.get("source_bucket")) != fam:
+                    continue
+                reason = str(row["ambiguity_reason"])
+                reason_n = sum(1 for r in selected if r["ambiguity_reason"] == reason)
+                if reason_n <= REASON_TRAIN_MIN + REASON_VAL_MIN:
+                    continue
+                removable = idx
+                break
+            if removable is None:
+                break
+            dropped = selected.pop(removable)
+            seen.discard(dropped["identity"])
+            fam_counts[fam] -= 1
+
     selected.sort(key=lambda item: (item["ambiguity_reason"], item["identity"]))
     return selected
 
@@ -953,6 +1002,84 @@ def assign_component_splits_uncertain(
         if not ok:
             continue
         group_split[key] = "validation"
+
+    # Rebalance validation UNCERTAIN source-family concentration toward <= 0.30.
+    def _val_fam_share() -> tuple[float, str]:
+        val_unc = [
+            m
+            for ck, members in components.items()
+            if group_split[ck] == "validation"
+            for m in members
+            if m.get("evidence_subtype") == "AMBIGUOUS_EVIDENCE"
+        ]
+        if not val_unc:
+            return 0.0, ""
+        counts = Counter(source_family(m.get("source_bucket")) for m in val_unc)
+        top_fam, top_n = counts.most_common(1)[0]
+        return top_n / len(val_unc), top_fam
+
+    for _ in range(400):
+        share, top_fam = _val_fam_share()
+        if share <= SOURCE_FAMILY_VAL_SHARE_MAX or not top_fam:
+            break
+        # Swap: move a train component rich in underrepresented families to val,
+        # and demote a val component dominated by top_fam to train if floors allow.
+        train_cands = sorted(
+            (
+                (
+                    -sum(
+                        1
+                        for m in components[k]
+                        if m.get("evidence_subtype") == "AMBIGUOUS_EVIDENCE"
+                        and source_family(m.get("source_bucket")) != top_fam
+                    ),
+                    metas[k]["anchor"],
+                    k,
+                )
+                for k in components
+                if group_split[k] == "train" and metas[k]["unc_n"] > 0
+            )
+        )
+        val_cands = sorted(
+            (
+                (
+                    -sum(
+                        1
+                        for m in components[k]
+                        if m.get("evidence_subtype") == "AMBIGUOUS_EVIDENCE"
+                        and source_family(m.get("source_bucket")) == top_fam
+                    ),
+                    metas[k]["anchor"],
+                    k,
+                )
+                for k in components
+                if group_split[k] == "validation" and metas[k]["unc_n"] > 0
+            )
+        )
+        if not train_cands or not val_cands:
+            break
+        _ts, _ta, train_key = train_cands[0]
+        _vs, _va, val_key = val_cands[0]
+        # Check reason train mins after swap.
+        counts = recount_uncertain()
+        ok = True
+        for reason in FROZEN_AMBIGUITY_REASONS:
+            train_loss = sum(
+                1 for m in components[train_key] if m.get("ambiguity_reason") == reason
+            )
+            train_gain = sum(
+                1 for m in components[val_key] if m.get("ambiguity_reason") == reason
+            )
+            if counts[reason]["train"]["n"] - train_loss + train_gain < REASON_TRAIN_MIN:
+                ok = False
+                break
+            if counts[reason]["validation"]["n"] - train_gain + train_loss < REASON_VAL_MIN:
+                ok = False
+                break
+        if not ok:
+            break
+        group_split[train_key] = "validation"
+        group_split[val_key] = "train"
 
     rows: list[dict[str, Any]] = []
     witness = []
