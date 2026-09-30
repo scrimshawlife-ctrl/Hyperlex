@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **CLEAR audit: mixed-failure remediation already complete (Spec 007):**
+  re-issued `REMEDIATE_V5_STAGE_A_MIXED_FAILURE` verified against sealed
+  V1R8 READY `c0fdd82d…` / receipt `e61621af…` (12/12 gates). Parent
+  V1R7 pins preserved; no V1R9 created. Ordinary wik aggregate 0.644 is a
+  residual vs this CLEAR’s additional 0.35 target (not a frozen readiness
+  gate). No train/reserve/BEST. Next remains authorized
+  `TRAIN_V5_STAGE_A_003_FOCAL_LOSS_ONCE`.
+
 - **Authorize Stage-A-003 focal objective (Spec 007):** freeze
   `HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS` with `FOCAL_GAMMA=2.0`,
   `FOCAL_ALPHA_POLICY=NONE`, class/provenance weights unchanged from 002.
