@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Remediate Stage-A UNCERTAIN surface → V1R9 READY (Spec 007):**
+  `REMEDIATE_V5_UNCERTAIN_SURFACE` replaces the narrow V1R8 UNCERTAIN bank
+  without mutating V1R8 (`c0fdd82d…` preserved). New surface
+  `HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9` dataset
+  `8d4be830…` (n=6488; train 4437 / val 2051). UNCERTAIN n=442 across all
+  five frozen ambiguity reasons with OBSERVED share 0.704, PROSE-majority
+  surface, and source-family caps ≤0.30/0.35. All original V5 readiness
+  gates + UNCERTAIN-specific gates pass → **READY**. No train / reserve /
+  BEST move / architecture change / checkpoint-driven acquire. Receipt
+  `classification-v5-stage-a-uncertain-surface-remediate-receipt-20260930.json`.
+  Next: `AUTHORIZE_V5_STAGE_A_NEXT_RUN_ON_REMEDIATED_SURFACE`.
+
 - **Audit Stage-A UNCERTAIN label surface (Spec 007):** read-only
   `AUDIT_V5_UNCERTAIN_LABEL_SURFACE` on V1R8 / SELECTED `dba6d491…` with
   fail-closed MISSING_FIELD/NO_DATA/NOT_COMPUTABLE rules. Gold UNCERTAIN

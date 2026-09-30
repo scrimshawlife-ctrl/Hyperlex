@@ -1,0 +1,8 @@
+{
+  "PRESENT_UNCERTAIN_BOUNDARY_CONFLICT": false,
+  "absorbed_sample": [],
+  "n_absorbed_into_non_present": 0,
+  "n_genuine_present_fn": 39,
+  "n_missing_from_surface": 0,
+  "note": "Prior GENUINELY_UNCERTAIN PRESENT FNs must remain gold PRESENT."
+}

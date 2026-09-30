@@ -1,0 +1,129 @@
+{
+  "UNCERTAIN_total": 442,
+  "UNCERTAIN_train": 280,
+  "UNCERTAIN_validation": 162,
+  "atom_share_train": 0.17857142857142858,
+  "atom_share_validation": 0.2345679012345679,
+  "by_ATOM_PROSE": {
+    "all": {
+      "AMBIGUOUS": 13,
+      "ATOM": 88,
+      "PROSE": 341
+    },
+    "train": {
+      "AMBIGUOUS": 7,
+      "ATOM": 50,
+      "PROSE": 223
+    },
+    "validation": {
+      "AMBIGUOUS": 6,
+      "ATOM": 38,
+      "PROSE": 118
+    }
+  },
+  "by_ambiguity_reason": {
+    "CONFLICTING_EVIDENCE": {
+      "ATOM_PROSE": {
+        "ATOM": 9,
+        "PROSE": 90
+      },
+      "observed_train": 32,
+      "observed_validation": 26,
+      "source_families": [
+        "inf",
+        "wik",
+        "wp"
+      ],
+      "total": 99,
+      "train": 58,
+      "validation": 41
+    },
+    "INSUFFICIENT_CONTEXT": {
+      "ATOM_PROSE": {
+        "ATOM": 53,
+        "PROSE": 47
+      },
+      "observed_train": 57,
+      "observed_validation": 43,
+      "source_families": [
+        "hub_obs",
+        "wp"
+      ],
+      "total": 100,
+      "train": 57,
+      "validation": 43
+    },
+    "MULTIPLE_PLAUSIBLE_INTERPRETATIONS": {
+      "ATOM_PROSE": {
+        "AMBIGUOUS": 13,
+        "ATOM": 15,
+        "PROSE": 72
+      },
+      "observed_train": 46,
+      "observed_validation": 19,
+      "source_families": [
+        "hub_obs",
+        "inf",
+        "wik",
+        "wp"
+      ],
+      "total": 100,
+      "train": 67,
+      "validation": 33
+    },
+    "PARTIAL_REQUIRED_CORE": {
+      "ATOM_PROSE": {
+        "ATOM": 7,
+        "PROSE": 75
+      },
+      "observed_train": 27,
+      "observed_validation": 21,
+      "source_families": [
+        "hub_obs",
+        "inf",
+        "wik",
+        "wp"
+      ],
+      "total": 82,
+      "train": 52,
+      "validation": 30
+    },
+    "UNRESOLVED_SOURCE_MEANING": {
+      "ATOM_PROSE": {
+        "ATOM": 4,
+        "PROSE": 57
+      },
+      "observed_train": 31,
+      "observed_validation": 9,
+      "source_families": [
+        "inf",
+        "wik"
+      ],
+      "total": 61,
+      "train": 46,
+      "validation": 15
+    }
+  },
+  "by_provenance": {
+    "INFERRED": 131,
+    "OBSERVED": 311
+  },
+  "max_source_family_share": 0.3009049773755656,
+  "observed_share": 0.7036199095022625,
+  "prose_share_train": 0.7964285714285714,
+  "prose_share_validation": 0.7283950617283951,
+  "source_family_shares": {
+    "hub_obs": 0.10180995475113122,
+    "inf": 0.29638009049773756,
+    "wik": 0.3009049773755656,
+    "wp": 0.3009049773755656
+  },
+  "validation_max_source_family_share": 0.2962962962962963,
+  "validation_observed_share": 0.7283950617283951,
+  "validation_source_family_shares": {
+    "hub_obs": 0.13580246913580246,
+    "inf": 0.2716049382716049,
+    "wik": 0.2962962962962963,
+    "wp": 0.2962962962962963
+  }
+}
