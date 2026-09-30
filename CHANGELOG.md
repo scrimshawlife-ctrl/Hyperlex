@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Preregister v3 evidence gate + fresh surface (Spec 007):** freeze
+  `HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE = PREREGISTERED` (Stage A labels,
+  false-entry ≤ 0.05, family emission ≥ 0.80, schema hashes, decision
+  semantics). Build `HYPERLEX_V3_EVIDENCE_SURFACE_V1` train/validation dataset
+  from unspent hub train rows with five subtypes, leakage witnesses, and
+  readiness receipt. No Stage A train, no v3 reserve, BEST unchanged.
+
 - **Classification v2 final settlement + v3 evidence gate (Spec 007):** seal
   `HYPERLEX_CLASSIFICATION_V2 = RESERVE_FAILED` /
   `APPLICABILITY_GENERALIZATION_FAILURE`; production promotion rejected; BEST

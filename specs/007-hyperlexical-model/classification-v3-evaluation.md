@@ -1,6 +1,6 @@
 # Classification v3 — evaluation contract
 
-Preregistered before any v3 training or acquisition results. State: `DRAFT` → `PREREGISTERED` with this document’s frozen gate.
+Preregistered before any v3 training results. State: `PREREGISTERED` (schemas + gates frozen; see `classification-v3-evidence-gate-preregistration.md`).
 
 ## Surfaces
 

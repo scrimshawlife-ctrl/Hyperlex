@@ -1,6 +1,6 @@
 # Classification v3 — evidence-gate dataset & admission
 
-Companion to `classification-architecture-v3.md`. State: `DRAFT` / preregistration target before acquire.
+Companion to `classification-architecture-v3.md`. State: `PREREGISTERED` (see `classification-v3-evidence-gate-preregistration.md`).
 
 ## Purpose
 

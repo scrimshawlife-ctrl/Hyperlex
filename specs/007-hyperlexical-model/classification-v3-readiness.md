@@ -15,11 +15,14 @@ SETTLED_INVALID
 ## Current
 
 ```text
-HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE = DRAFT
+HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE = PREREGISTERED
 HYPERLEX_CLASSIFICATION_V2 = SETTLED_FAIL
+surface = HYPERLEX_V3_EVIDENCE_SURFACE_V1 (build sealed under hlx-private)
 BEST = UNCHANGED (9fba0f66…)
 train_v3 = false
 ```
+
+Preregistration freeze: `classification-v3-evidence-gate-preregistration.md`.
 
 ## Transition rules
 
