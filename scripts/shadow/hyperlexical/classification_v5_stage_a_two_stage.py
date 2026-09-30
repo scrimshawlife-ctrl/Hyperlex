@@ -117,6 +117,248 @@ NO_DATA = "NO_DATA"
 NOT_COMPUTABLE = "NOT_COMPUTABLE"
 LABEL_MAPPING_INVALID = "LABEL_MAPPING_INVALID"
 
+DATASET_SPLIT_RULE = "HYPERLEX_V5_STAGE_A_TWO_STAGE_DATASET_SPLIT_V1"
+SCHEMA_SPLIT_WITNESS = "hyperlex.classification.v5.stage_a_two_stage_split_witness.v1"
+
+# Frozen V1R9 split identity pins (authoritative; do not regenerate splits).
+EXPECTED_TRAIN_ROWS = 4437
+EXPECTED_VALIDATION_ROWS = 2051
+EXPECTED_GATE1_NO_ROWS = 3554
+EXPECTED_GATE1_POSSIBLE_ROWS = 883
+EXPECTED_GATE2_UNCERTAIN_ROWS = 280
+EXPECTED_GATE2_PRESENT_ROWS = 603
+EXPECTED_GATE2_ELIGIBLE_ROWS = 883
+EXPECTED_TRAIN_SPLIT_SHA256 = (
+    "cee13cbe7412755444a1cd8d831f85ce0607a6e8266fba0e882a4578f3b6db4c"
+)
+EXPECTED_VALIDATION_SPLIT_SHA256 = (
+    "8d56b8c7e72a2fae0582082e9517c29cfa7812ef75cc4f45705c284aefed2678"
+)
+EXPECTED_TRAIN_IDENTITY_LIST_SHA256 = (
+    "c1b22bdfcac3dc3445e2c2f1a8621bea8d44a0e4ce210d07a480a93d7d8ea21f"
+)
+EXPECTED_VALIDATION_IDENTITY_LIST_SHA256 = (
+    "3a24d55056aad96dade8b46da714096472b5f16fc1bd63f2701d87e9adf58c55"
+)
+EXPECTED_GATE2_ELIGIBLE_IDENTITY_SHA256 = (
+    "79bbe523aafdf99d96f92ead776fb41661a932113578033f0f0bd7475d839171"
+)
+
+AUTHORIZED_CLASS_WEIGHT_ARTIFACT_SHA256 = (
+    "5496015af99ec768d8914a282db465abe75e99f2243fbc864d674bb5cad539d6"
+)
+AUTHORIZED_TRAINING_CONFIG_SHA256 = (
+    "0117faca8e56501e15cea4f69ce9dffd2900b25cfdc7dcabc427651b18d7b0b6"
+)
+AUTHORIZED_AUTH_RECEIPT_SHA256 = (
+    "c9b262de5e3a33abfd52e29cc92715d7809d9470a205226d93d538cd952f0b57"
+)
+LITERAL_GATE1_WEIGHTS = {
+    "NO_EVIDENCE": 0.7182189774877286,
+    "POSSIBLE_EVIDENCE": 1.2817810225122714,
+}
+LITERAL_GATE2_WEIGHTS = {
+    "UNCERTAIN": 1.1124229052629504,
+    "CONFIRMED_PRESENT": 0.8875770947370494,
+}
+
+DROP_LAST = False
+SAMPLER = "deterministic_shuffled_full_pass"
+REPLACEMENT = False
+OVERSAMPLING = False
+UNDERSAMPLING = False
+CLASS_BALANCED_SAMPLER = False
+
+
+def identity_list_sha256(identities: Sequence[str]) -> str:
+    ordered = sorted(str(identity) for identity in identities)
+    return sha256_text("\n".join(ordered) + ("\n" if ordered else ""))
+
+
+def split_lines_sha256(dataset_path: str, *, split: str) -> str:
+    """SHA256 over raw jsonl lines for one split (file order)."""
+    import hashlib
+    from pathlib import Path
+
+    digest = hashlib.sha256()
+    with Path(dataset_path).open("rb") as handle:
+        for line in handle:
+            if not line.strip():
+                continue
+            import json
+
+            row = json.loads(line)
+            if row.get("split") == split:
+                digest.update(line if line.endswith(b"\n") else line + b"\n")
+    return digest.hexdigest()
+
+
+def full_pass_batch_indices(
+    n_rows: int,
+    *,
+    batch_size: int,
+    seed: int,
+    drop_last: bool = DROP_LAST,
+) -> list[list[int]]:
+    """Deterministic shuffled full-pass batches; no class rebalancing."""
+    import random
+
+    if n_rows <= 0:
+        raise ValueError("NO_DATA:empty_train_for_batching")
+    if batch_size <= 0:
+        raise ValueError("invalid_batch_size")
+    order = list(range(n_rows))
+    random.Random(int(seed)).shuffle(order)
+    batches: list[list[int]] = []
+    for start in range(0, n_rows, batch_size):
+        chunk = order[start : start + batch_size]
+        if drop_last and len(chunk) < batch_size:
+            break
+        batches.append(chunk)
+    return batches
+
+
+def build_two_stage_split_witness(
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    dataset_sha256: str,
+    dataset_path: str,
+    code_revision: str,
+    disjointness: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Emit HYPERLEX_V5_STAGE_A_TWO_STAGE_DATASET_SPLIT_V1 witness."""
+    if dataset_sha256 != AUTHORIZED_DATASET_SHA:
+        raise ValueError("INPUT_IDENTITY:dataset_mismatch")
+    train_rows = [row for row in rows if row.get("split") == "train"]
+    val_rows = [row for row in rows if row.get("split") == "validation"]
+    if len(train_rows) != EXPECTED_TRAIN_ROWS:
+        raise ValueError(f"INPUT_IDENTITY:train_rows!={EXPECTED_TRAIN_ROWS}")
+    if len(val_rows) != EXPECTED_VALIDATION_ROWS:
+        raise ValueError(f"INPUT_IDENTITY:val_rows!={EXPECTED_VALIDATION_ROWS}")
+
+    train_ids = [str(row["identity"]) for row in train_rows]
+    val_ids = [str(row["identity"]) for row in val_rows]
+    train_id_sha = identity_list_sha256(train_ids)
+    val_id_sha = identity_list_sha256(val_ids)
+    train_split_sha = split_lines_sha256(dataset_path, split="train")
+    val_split_sha = split_lines_sha256(dataset_path, split="validation")
+
+    g1_no = [row for row in train_rows if str(row["evidence_label"]) == "NO_EVIDENCE"]
+    g1_possible = [
+        row
+        for row in train_rows
+        if str(row["evidence_label"]) in {"EVIDENCE_PRESENT", "UNCERTAIN"}
+    ]
+    g2_uncertain = [
+        row for row in train_rows if str(row["evidence_label"]) == "UNCERTAIN"
+    ]
+    g2_present = [
+        row for row in train_rows if str(row["evidence_label"]) == "EVIDENCE_PRESENT"
+    ]
+    g2_eligible_ids = sorted(str(row["identity"]) for row in g1_possible)
+    g1_possible_ids = sorted(str(row["identity"]) for row in g1_possible)
+    if g2_eligible_ids != g1_possible_ids:
+        raise ValueError("INPUT_IDENTITY:gate2_eligible_ne_gate1_possible")
+    gate2_elig_sha = identity_list_sha256(g2_eligible_ids)
+
+    if len(g1_no) != EXPECTED_GATE1_NO_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate1_no_rows")
+    if len(g1_possible) != EXPECTED_GATE1_POSSIBLE_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate1_possible_rows")
+    if len(g1_no) + len(g1_possible) != EXPECTED_TRAIN_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate1_cover")
+    if len(g2_uncertain) != EXPECTED_GATE2_UNCERTAIN_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate2_uncertain_rows")
+    if len(g2_present) != EXPECTED_GATE2_PRESENT_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate2_present_rows")
+    if len(g2_uncertain) + len(g2_present) != EXPECTED_GATE2_ELIGIBLE_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate2_eligible_rows")
+
+    if train_split_sha != EXPECTED_TRAIN_SPLIT_SHA256:
+        raise ValueError("INPUT_IDENTITY:train_split_sha_mismatch")
+    if val_split_sha != EXPECTED_VALIDATION_SPLIT_SHA256:
+        raise ValueError("INPUT_IDENTITY:val_split_sha_mismatch")
+    if train_id_sha != EXPECTED_TRAIN_IDENTITY_LIST_SHA256:
+        raise ValueError("INPUT_IDENTITY:train_identity_list_mismatch")
+    if val_id_sha != EXPECTED_VALIDATION_IDENTITY_LIST_SHA256:
+        raise ValueError("INPUT_IDENTITY:val_identity_list_mismatch")
+    if gate2_elig_sha != EXPECTED_GATE2_ELIGIBLE_IDENTITY_SHA256:
+        raise ValueError("INPUT_IDENTITY:gate2_eligible_identity_mismatch")
+
+    id_overlap = len(set(train_ids) & set(val_ids))
+    if id_overlap != 0:
+        raise ValueError("INPUT_IDENTITY:train_val_identity_overlap")
+
+    lineage_overlap = 0
+    if disjointness is not None:
+        lineage_overlap = int(
+            disjointness.get("parent_lineage_overlap")
+            or (disjointness.get("raw") or {})
+            .get("metrics", {})
+            .get("train_validation_parent_lineage_overlap")
+            or 0
+        )
+        source_overlap = int(disjointness.get("source_hash_overlap") or 0)
+        near_dup = int(
+            (disjointness.get("raw") or {})
+            .get("metrics", {})
+            .get("train_validation_near_duplicate_group_overlap")
+            or 0
+        )
+        if (
+            int(disjointness.get("identity_overlap") or 0) != 0
+            or lineage_overlap != 0
+            or source_overlap != 0
+            or near_dup != 0
+            or disjointness.get("pass") is not True
+        ):
+            raise ValueError("INPUT_IDENTITY:disjointness_fail")
+
+    batch_size = int(TRAIN_HYPERPARAMS["micro_batch_size"])
+    steps = len(
+        full_pass_batch_indices(
+            EXPECTED_TRAIN_ROWS,
+            batch_size=batch_size,
+            seed=int(TRAIN_HYPERPARAMS["seed"]),
+            drop_last=DROP_LAST,
+        )
+    )
+    witness = {
+        "DATASET_SPLIT_RULE": DATASET_SPLIT_RULE,
+        "class_balanced_sampler": CLASS_BALANCED_SAMPLER,
+        "code_revision": code_revision,
+        "dataset_sha256": dataset_sha256,
+        "drop_last": DROP_LAST,
+        "gate1_no_rows": EXPECTED_GATE1_NO_ROWS,
+        "gate1_possible_rows": EXPECTED_GATE1_POSSIBLE_ROWS,
+        "gate2_eligible_identity_sha256": gate2_elig_sha,
+        "gate2_eligible_rows": EXPECTED_GATE2_ELIGIBLE_ROWS,
+        "gate2_present_rows": EXPECTED_GATE2_PRESENT_ROWS,
+        "gate2_uncertain_rows": EXPECTED_GATE2_UNCERTAIN_ROWS,
+        "optimizer_steps_per_epoch": steps,
+        "oversampling": OVERSAMPLING,
+        "replacement": REPLACEMENT,
+        "sampling": SAMPLER,
+        "schema": SCHEMA_SPLIT_WITNESS,
+        "shuffle_seed": int(TRAIN_HYPERPARAMS["seed"]),
+        "train_dataloader_len": steps,
+        "train_identity_list_sha256": train_id_sha,
+        "train_rows": EXPECTED_TRAIN_ROWS,
+        "train_split_sha256": train_split_sha,
+        "train_validation_identity_overlap": id_overlap,
+        "train_validation_lineage_overlap": lineage_overlap,
+        "undersampling": UNDERSAMPLING,
+        "validation_identity_list_sha256": val_id_sha,
+        "validation_rows": EXPECTED_VALIDATION_ROWS,
+        "validation_split_sha256": val_split_sha,
+    }
+    witness["TWO_STAGE_SPLIT_WITNESS_SHA256"] = sha256_text(
+        canonical_json(
+            {k: v for k, v in witness.items() if k != "TWO_STAGE_SPLIT_WITNESS_SHA256"}
+        )
+    )
+    return witness
+
 
 def gate1_target(evidence_label: str) -> int:
     """Map canonical gold → Gate-1 target (0=NONE, 1=POSSIBLE_EVIDENCE)."""

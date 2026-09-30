@@ -20,12 +20,19 @@ from hyperlexical.classification_v5_stage_a import (  # noqa: E402
 from hyperlexical.classification_v5_stage_a_two_stage import (  # noqa: E402
     ARCHITECTURE_RECEIPT_SHA256,
     AUTHORIZE_RULE,
+    AUTHORIZED_CLASS_WEIGHT_ARTIFACT_SHA256,
+    AUTHORIZED_TRAINING_CONFIG_SHA256,
+    DROP_LAST,
     EXPERIMENT_ID,
+    EXPECTED_GATE2_ELIGIBLE_ROWS,
+    EXPECTED_TRAIN_ROWS,
     FLAT_HEAD_STATUS,
     GATE1_THRESHOLDS,
     GATE2_PRESENT_THRESHOLDS,
     LAMBDA_GATE2,
     LAST_TRAINABLE_ENCODER_LAYERS,
+    LITERAL_GATE1_WEIGHTS,
+    LITERAL_GATE2_WEIGHTS,
     NO_DATA,
     TRAIN_ONCE_ACTION,
     TRAIN_RULE,
@@ -34,11 +41,13 @@ from hyperlexical.classification_v5_stage_a_two_stage import (  # noqa: E402
     calibrate_two_stage_thresholds,
     checkpoint_selection_score,
     decide_two_stage,
+    full_pass_batch_indices,
     gate1_target,
     gate2_eligible,
     gate2_target,
     gate1_confusion_matrix,
     gate2_confusion_matrix,
+    identity_list_sha256,
     loss_contract,
     resolve_two_stage_class_weights,
     runner_authorization_checks,
@@ -56,12 +65,32 @@ def test_frozen_constants():
     assert ARCHITECTURE_RECEIPT_SHA256 == (
         "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697"
     )
+    assert AUTHORIZED_TRAINING_CONFIG_SHA256.startswith("0117faca")
+    assert AUTHORIZED_CLASS_WEIGHT_ARTIFACT_SHA256.startswith("5496015a")
+    assert LITERAL_GATE1_WEIGHTS["NO_EVIDENCE"] == pytest.approx(0.7182189774877286)
+    assert LITERAL_GATE2_WEIGHTS["CONFIRMED_PRESENT"] == pytest.approx(
+        0.8875770947370494
+    )
+    assert EXPECTED_TRAIN_ROWS == 4437
+    assert EXPECTED_GATE2_ELIGIBLE_ROWS == 883
+    assert DROP_LAST is False
     assert LAMBDA_GATE2 == 1.0
     assert LAST_TRAINABLE_ENCODER_LAYERS == 2
     assert FLAT_HEAD_STATUS == "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION"
     assert FLAT_STATUS_PARENT == FLAT_HEAD_STATUS
     assert len(GATE1_THRESHOLDS) * len(GATE2_PRESENT_THRESHOLDS) == 100
     assert ACCEPTANCE_GATES["EVIDENCE_PRESENT_recall_min"] == 0.70
+
+
+def test_full_pass_batching_no_rebalance():
+    batches = full_pass_batch_indices(4437, batch_size=8, seed=42, drop_last=False)
+    assert len(batches) == 555
+    assert sum(len(batch) for batch in batches) == 4437
+    assert len(batches[-1]) == 5
+    # Deterministic: same seed → same order.
+    again = full_pass_batch_indices(4437, batch_size=8, seed=42, drop_last=False)
+    assert batches == again
+    assert identity_list_sha256(["b", "a"]) != identity_list_sha256(["a"])
 
 
 def test_gate_gold_mapping():
