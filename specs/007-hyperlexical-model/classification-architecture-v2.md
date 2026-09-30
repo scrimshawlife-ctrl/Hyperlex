@@ -463,3 +463,14 @@ Sealed artifact sha256 `8c9f88b0431b3598d5336bdb7fa25b80e8201c2ad8487d5aea878997
 - Collapse component: 13 → 12
 - SPLIT_CANDIDATE trio: all three `OVERLAP_REMAINS_STRUCTURAL` (no split/merge)
 - Training gate **CLOSED** (required ≥30%). Next: `ONTOLOGY_REFACTOR_REVIEW` — do not train.
+
+
+## Ontology refactor review — structural trio (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_ONTOLOGY_REFACTOR_REVIEW_V1` sealed after boundary redefinition + tightening left the approval-disapproval / social-status / relationship-dating cluster structural. No ontology mutation applied in this pass. BEST unchanged `9fba0f66…`. Training gate remains closed.
+
+Artifact sha256 `ebab1e4d4d5a0f9169def6426de5b6137fb15f0b7c7d6b57d7aa295cbf6b7178` at `/home/morpheus/hlx-private/classification-v2-ontology-refactor-review-20260930/ONTOLOGY_REFACTOR_REVIEW.json`.
+
+Primary recommendation: **`MERGE_PAIR`** — merge `approval-disapproval` and `social-status` into `social-evaluation`; keep `relationship-dating`. Rationale: AD↔SS probe F1≈0.33 and centroid≈0.91 after two cleaning passes; RD remains lexically distinct.
+
+Compatibility map (forward only; historical artifacts untouched): approval-disapproval→social-evaluation, social-status→social-evaluation, relationship-dating→relationship-dating. Next: operator-approve `APPLY_ONTOLOGY_MERGE_PAIR`, then overlap + readiness rerun before any training.
