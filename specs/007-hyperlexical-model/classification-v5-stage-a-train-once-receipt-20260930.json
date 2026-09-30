@@ -1,0 +1,258 @@
+{
+  "ACCEPTANCE_GATES": {
+    "EVIDENCE_PRESENT_recall": {
+      "pass": false,
+      "threshold": 0.7,
+      "value": 0.6477541371158393
+    },
+    "NO_EVIDENCE_recall": {
+      "pass": true,
+      "threshold": 0.9,
+      "value": 0.9286498353457738
+    },
+    "false_evidence_entry_rate_on_none": {
+      "pass": false,
+      "threshold": 0.05,
+      "value": 0.06915477497255763
+    }
+  },
+  "ACTUAL_EPOCHS": 10,
+  "ATOM_PROSE_DIAGNOSTICS": {
+    "AMBIGUOUS": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 11,
+      "stage_a_macro_f1": 0.0,
+      "uncertain_rate": 0.0
+    },
+    "ATOM": {
+      "EVIDENCE_PRESENT_recall": 0.30357142857142855,
+      "NO_EVIDENCE_recall": 0.9933774834437086,
+      "false_evidence_entry_rate_on_none": 0.006622516556291391,
+      "n": 306,
+      "stage_a_macro_f1": 0.40342296254705007,
+      "uncertain_rate": 0.006535947712418301
+    },
+    "PROSE": {
+      "EVIDENCE_PRESENT_recall": 0.7717041800643086,
+      "NO_EVIDENCE_recall": 0.9157894736842105,
+      "false_evidence_entry_rate_on_none": 0.08157894736842106,
+      "n": 1071,
+      "stage_a_macro_f1": 0.5652737143315593,
+      "uncertain_rate": 0.003734827264239029
+    }
+  },
+  "BEST_MUTATED": false,
+  "BY_LABEL": {
+    "EVIDENCE_PRESENT": {
+      "f1": 0.7116883116883117,
+      "fn": 149,
+      "fp": 73,
+      "precision": 0.7896253602305475,
+      "recall": 0.6477541371158393,
+      "support": 423,
+      "tp": 274
+    },
+    "NO_EVIDENCE": {
+      "f1": 0.869475847893114,
+      "fn": 65,
+      "fp": 189,
+      "precision": 0.8173913043478261,
+      "recall": 0.9286498353457738,
+      "support": 911,
+      "tp": 846
+    },
+    "UNCERTAIN": {
+      "f1": 0.03333333333333333,
+      "fn": 53,
+      "fp": 5,
+      "precision": 0.16666666666666666,
+      "recall": 0.018518518518518517,
+      "support": 54,
+      "tp": 1
+    }
+  },
+  "CHECKPOINT_SHA256": "3b1b574acceea183363b8cea41e1b7e4e13dc934bacc66deb4b3b8caeabc90a7",
+  "CODE_REVISION": "1b0264a6ee484068dbd1b284e8d2ff22789a245b",
+  "CURRENT_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "DATASET_SHA256": "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9",
+  "EVIDENCE_PRESENT_RECALL": 0.6477541371158393,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-001",
+  "FALSE_EVIDENCE_ENTRY_RATE_ON_NONE": 0.06915477497255763,
+  "FINAL_CHECKPOINT_SHA256": "be67e7f4d50f93b0d8f56f6a0becffba5436fe803add90f99d41584db8b24f89",
+  "FINAL_RUN_STATE_DIFFERS": true,
+  "LENGTH_BUCKET_DIAGNOSTICS": {
+    "40_79": {
+      "EVIDENCE_PRESENT_recall": 0.569620253164557,
+      "NO_EVIDENCE_recall": 0.9260450160771704,
+      "false_evidence_entry_rate_on_none": 0.0707395498392283,
+      "n": 390,
+      "stage_a_macro_f1": 0.5092769204092249,
+      "uncertain_rate": 0.005128205128205128
+    },
+    "ge_80": {
+      "EVIDENCE_PRESENT_recall": 0.8653846153846154,
+      "NO_EVIDENCE_recall": 0.9133858267716536,
+      "false_evidence_entry_rate_on_none": 0.08398950131233596,
+      "n": 589,
+      "stage_a_macro_f1": 0.5925925925925926,
+      "uncertain_rate": 0.003395585738539898
+    },
+    "lt_40": {
+      "EVIDENCE_PRESENT_recall": 0.3602941176470588,
+      "NO_EVIDENCE_recall": 0.958904109589041,
+      "false_evidence_entry_rate_on_none": 0.0410958904109589,
+      "n": 409,
+      "stage_a_macro_f1": 0.4229315382066805,
+      "uncertain_rate": 0.004889975550122249
+    }
+  },
+  "NEXT_ACTION": "DIAGNOSE_V5_STAGE_A_SETTLED_FAIL",
+  "NONE_THRESHOLD": null,
+  "NO_EVIDENCE_RECALL": 0.9286498353457738,
+  "OBSERVED_INFERRED_DIAGNOSTICS": {
+    "INFERRED": {
+      "EVIDENCE_PRESENT_recall": 0.9647058823529412,
+      "NO_EVIDENCE_recall": 0.9977777777777778,
+      "false_evidence_entry_rate_on_none": 0.0022222222222222222,
+      "n": 666,
+      "stage_a_macro_f1": 0.6501151651898774,
+      "uncertain_rate": 0.0015015015015015015
+    },
+    "OBSERVED": {
+      "EVIDENCE_PRESENT_recall": 0.43478260869565216,
+      "NO_EVIDENCE_recall": 0.8611713665943601,
+      "false_evidence_entry_rate_on_none": 0.13449023861171366,
+      "n": 722,
+      "stage_a_macro_f1": 0.43549389204213673,
+      "uncertain_rate": 0.006925207756232687
+    }
+  },
+  "OPTIMIZER_STEPS": 18180,
+  "PARENT_BEST_SHA256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "PRESENT_THRESHOLD": null,
+  "PRIVATE_RUN_ROOT": "/home/morpheus/hlx-private/classification-v5-stage-a-train-20260930/classification-v5-stage-a-001",
+  "PROMOTION_CANDIDATE": false,
+  "RESERVE_CONSUMED": false,
+  "RESTORED_CHECKPOINT_MATCHES_SELECTED_EPOCH": true,
+  "RESTORED_EPOCH": 6,
+  "RUN_RECEIPT_SHA256": "b429990532ff84aa3eb9fb43ef0ef5b83a633e6a9441efb6807bd6a0c7b02c98",
+  "SCIENTIFIC_DISPOSITION": "SETTLED_FAIL",
+  "SEED": 42,
+  "SELECTED_PATH": "/home/morpheus/hlx-private/classification-v5-stage-a-train-20260930/classification-v5-stage-a-001/selected/model.safetensors",
+  "SHORTCUT_PROBE": {
+    "ATOM_share_of_errors": 0.45318352059925093,
+    "error_form_confusion": {
+      "AMBIGUOUS:UNCERTAIN->EVIDENCE_PRESENT": 1,
+      "AMBIGUOUS:UNCERTAIN->NO_EVIDENCE": 10,
+      "ATOM:EVIDENCE_PRESENT->NO_EVIDENCE": 77,
+      "ATOM:EVIDENCE_PRESENT->UNCERTAIN": 1,
+      "ATOM:NO_EVIDENCE->EVIDENCE_PRESENT": 1,
+      "ATOM:UNCERTAIN->EVIDENCE_PRESENT": 9,
+      "ATOM:UNCERTAIN->NO_EVIDENCE": 33,
+      "PROSE:EVIDENCE_PRESENT->NO_EVIDENCE": 69,
+      "PROSE:EVIDENCE_PRESENT->UNCERTAIN": 2,
+      "PROSE:NO_EVIDENCE->EVIDENCE_PRESENT": 62,
+      "PROSE:NO_EVIDENCE->UNCERTAIN": 2
+    },
+    "n_errors": 267,
+    "note": "diagnostic only; remediated surface shortcuts must not dominate error structure"
+  },
+  "SOURCE_DIAGNOSTICS": {
+    "none": {
+      "EVIDENCE_PRESENT_recall": 0.6559766763848397,
+      "NO_EVIDENCE_recall": 0.9984544049459042,
+      "false_evidence_entry_rate_on_none": 0.0015455950540958269,
+      "n": 1044,
+      "stage_a_macro_f1": 0.5673656514571803,
+      "uncertain_rate": 0.0028735632183908046
+    },
+    "wiktionary": {
+      "EVIDENCE_PRESENT_recall": 0.6125,
+      "NO_EVIDENCE_recall": 0.7575757575757576,
+      "false_evidence_entry_rate_on_none": 0.23484848484848486,
+      "n": 344,
+      "stage_a_macro_f1": 0.4409352014752952,
+      "uncertain_rate": 0.00872093023255814
+    }
+  },
+  "STAGE_A_MACRO_F1": 0.5381658309715863,
+  "SUBTYPE_DIAGNOSTICS": {
+    "AMBIGUOUS_EVIDENCE": {
+      "NO_EVIDENCE_recall": null,
+      "UNCERTAIN_count": 1,
+      "UNCERTAIN_rate": 0.018518518518518517,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": null,
+      "support": 54
+    },
+    "GENERIC_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 71
+    },
+    "HARD_NONE": {
+      "NO_EVIDENCE_recall": 0.9862068965517241,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 2,
+      "false_EVIDENCE_PRESENT_rate": 0.013793103448275862,
+      "support": 145
+    },
+    "LEXICAL_LOOKALIKE_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 102
+    },
+    "NEAR_DOMAIN_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 192
+    },
+    "ORDINARY_DOMAIN_NONE": {
+      "NO_EVIDENCE_recall": 0.8181818181818182,
+      "UNCERTAIN_count": 2,
+      "UNCERTAIN_rate": 0.005865102639296188,
+      "false_EVIDENCE_PRESENT_count": 60,
+      "false_EVIDENCE_PRESENT_rate": 0.17595307917888564,
+      "support": 341
+    },
+    "POSITIVE_EVIDENCE": {
+      "NO_EVIDENCE_recall": null,
+      "UNCERTAIN_count": 3,
+      "UNCERTAIN_rate": 0.0070921985815602835,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": null,
+      "support": 423
+    },
+    "SHORT_ATOM_NONE": {
+      "NO_EVIDENCE_recall": 0.9833333333333333,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 1,
+      "false_EVIDENCE_PRESENT_rate": 0.016666666666666666,
+      "support": 60
+    }
+  },
+  "TERMINATED_NORMALLY": true,
+  "THRESHOLD_FEASIBLE": false,
+  "THRESHOLD_GRID_N_CANDIDATES": 45,
+  "THRESHOLD_GRID_N_PASSING": 0,
+  "TRAINING_CONFIG_SHA256": "4d2eaabd52976da6beecfac1175770a9f3402c82d0b124942638488aa8ab4d7e",
+  "TRAINING_STATUS": "COMPLETE",
+  "UNCERTAIN_RATE": 0.004322766570605188,
+  "note": "No threshold pair on the preregistered grid satisfied all three acceptance gates (n_passing=0). Reported validation metrics use fallback none=0.50/present=0.55 for diagnostic display only; SELECTED checkpoint retained as failed scientific evidence. BEST unchanged; reserve unused.",
+  "schema": "hyperlex.classification.v5.stage_a_train_once.v1",
+  "train": true,
+  "train_authorized": true
+}

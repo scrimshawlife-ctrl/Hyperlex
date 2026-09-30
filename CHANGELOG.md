@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **Train V5 Stage-A once (Spec 007):** execute authorized
+  `TRAIN_V5_STAGE_A_ONCE` for `HLX-CLASSIFICATION-V5-STAGE-A-001` on dataset
+  `a81ca68a…` / config `4d2eaabd…`. Restored epoch 6; SELECTED checkpoint
+  `3b1b574a…`; run receipt `b4299905…`. Threshold grid `n_passing=0` →
+  **`SETTLED_FAIL`** (false-entry `0.069`, PRESENT recall `0.648`, NONE recall
+  `0.929`). BEST unchanged; reserve unused; promotion_candidate=false.
+  Retention: INITIAL/SELECTED/FINAL; intermediates pruned. Next:
+  `DIAGNOSE_V5_STAGE_A_SETTLED_FAIL`.
+
 - **Authorize V5 Stage-A train once (Spec 007):** freeze
   `HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1` recipe +
   `HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1` for dataset `a81ca68a…` /
