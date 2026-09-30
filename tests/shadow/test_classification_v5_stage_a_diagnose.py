@@ -201,3 +201,35 @@ def test_attach_row_features_without_embeddings():
         "17-32",
         "33+",
     }
+
+def test_residual_present_recall_primary_when_false_entry_clears():
+    from hyperlexical.classification_v5_stage_a_diagnose import choose_primary_diagnosis
+
+    decision = choose_primary_diagnosis(
+        controlled={"interpretation": {"state": "INSUFFICIENT_MATCHED_SUPPORT"}},
+        ordinary={"profiles": {"false_PRESENT": {"n": 15}}},
+        provenance_audit={
+            "classifications": {
+                "LABEL_PROVENANCE_CLEAN": 100,
+                "LABEL_SEMANTICS_QUESTIONABLE": 0,
+                "SOURCE_ASSERTION_WEAK": 0,
+            },
+            "n_misclassified_OBSERVED": 100,
+        },
+        source_table={"flagged": {"sources": {}, "domains": {}}},
+        accounting={
+            "minimum_corrections": {
+                "false_PRESENT_to_non_PRESENT": 0,
+                "PRESENT_false_negatives_to_PRESENT": 72,
+                "NONE_to_NONE": 0,
+            },
+            "concentration": {
+                "share_ordinary_among_false_PRESENT": 0.75,
+                "share_observed_among_false_PRESENT": 0.80,
+            },
+        },
+    )
+    assert decision["primary_diagnosis"] == "RESIDUAL_PRESENT_RECALL_FAILURE"
+    assert decision["architecture_change_justified"] is True
+    assert decision["dataset_change_justified"] is False
+

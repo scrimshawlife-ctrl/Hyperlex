@@ -72,6 +72,7 @@ PRIMARY_DIAGNOSES = (
     "SOURCE_DOMAIN_SHIFT_FAILURE",
     "OBSERVED_ACQUISITION_FAILURE",
     "REPRESENTATION_FAILURE",
+    "RESIDUAL_PRESENT_RECALL_FAILURE",
     "MIXED_STAGE_A_FAILURE",
 )
 
@@ -1197,6 +1198,40 @@ def choose_primary_diagnosis(
 
     share_ordinary = accounting["concentration"]["share_ordinary_among_false_PRESENT"]
     share_observed = accounting["concentration"]["share_observed_among_false_PRESENT"]
+    need_false = int(
+        accounting["minimum_corrections"]["false_PRESENT_to_non_PRESENT"]
+    )
+    need_present = int(
+        accounting["minimum_corrections"]["PRESENT_false_negatives_to_PRESENT"]
+    )
+
+    # Binding gate is PRESENT recall while false-entry already clears.
+    # Do not re-open ordinary-NONE acquisition as the primary story.
+    if need_false == 0 and need_present > 0:
+        primary = "RESIDUAL_PRESENT_RECALL_FAILURE"
+        remediation = (
+            "False-entry already clears under sealed diagnostic thresholds; "
+            f"recover at least {need_present} PRESENT false negatives to meet "
+            "recall ≥ 0.70. Prefer architecture/objective investigation over "
+            "another ordinary-NONE dataset remediation loop."
+        )
+        return {
+            "architecture_change_justified": True,
+            "dataset_change_justified": False,
+            "primary_diagnosis": primary,
+            "rationale": {
+                "controlled_interpretation": interp,
+                "need_false_PRESENT_fixes": need_false,
+                "need_PRESENT_fn_fixes": need_present,
+                "share_ordinary_among_false_PRESENT": share_ordinary,
+                "share_observed_among_false_PRESENT": share_observed,
+                "provenance_clean_rate": clean / n_mis,
+                "provenance_questionable_rate": questionable / n_mis,
+                "flagged_source_count": len(flagged_sources),
+                "flagged_domain_count": len(flagged_domains),
+            },
+            "smallest_remediation": remediation,
+        }
 
     # Decision tree under frozen rules — smallest causal explanation.
     if share_ordinary >= 0.70 and (
@@ -1290,6 +1325,11 @@ def assemble_diagnosis(
     enriched: Sequence[Mapping[str, Any]],
     surface_by_id: Mapping[str, Mapping[str, Any]],
     code_revision: str,
+    experiment_id: str | None = None,
+    dataset_sha256: str | None = None,
+    selected_checkpoint_sha256: str | None = None,
+    parent_diagnosis: str | None = None,
+    surface_rule: str | None = None,
 ) -> dict[str, Any]:
     golds = [r["evidence_label"] for r in enriched]
     preds = [r["decision"] for r in enriched]
@@ -1312,15 +1352,17 @@ def assemble_diagnosis(
         "BEST": "UNCHANGED",
         "BEST_MUTATED": False,
         "CURRENT_BEST": BEST_SHA,
-        "EXPERIMENT_ID": EXPERIMENT_ID,
+        "EXPERIMENT_ID": experiment_id or EXPERIMENT_ID,
         "RESERVE_CONSUMED": False,
-        "SELECTED_CHECKPOINT_SHA256": SELECTED_CHECKPOINT_SHA,
+        "SELECTED_CHECKPOINT_SHA256": (
+            selected_checkpoint_sha256 or SELECTED_CHECKPOINT_SHA
+        ),
         "TRAIN": False,
         "acceptance_gates_reference": overall["acceptance"],
         "code_revision": code_revision,
         "controlled_comparison": controlled,
         "counterfactual_gate_accounting": accounting,
-        "dataset_sha256": AUTHORIZED_DATASET_SHA,
+        "dataset_sha256": dataset_sha256 or AUTHORIZED_DATASET_SHA,
         "decision": decision,
         "diagnostic_thresholds": {
             "none_threshold": DIAGNOSTIC_NONE_THRESHOLD,
@@ -1339,10 +1381,12 @@ def assemble_diagnosis(
             ],
             "stage_a_macro_f1": overall["stage_a_macro_f1"],
         },
+        "parent_diagnosis": parent_diagnosis,
         "representation_diagnostics": representation,
         "rule": DIAGNOSE_RULE,
         "schema": "hyperlex.classification.v5.stage_a_diagnose_settled_fail.v1",
         "source_domain_error_table": source_table,
+        "surface_rule": surface_rule,
     }
     payload["receipt_sha256"] = sha256_text(
         canonical_json({k: v for k, v in payload.items() if k != "receipt_sha256"})
