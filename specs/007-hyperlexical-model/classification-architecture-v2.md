@@ -372,3 +372,13 @@ L_total = existing v2 loss + lambda_geometry * L_geometry
 Residual rows still initialize from exact-copy select004 rows where available; every other residual row starts at zero. `last_trainable` remains 2. Boundary artifact sha256 `0ca6f34ce1abf68388e443371672ca36e16028079a175b6775e1968900e1c52f`. Separation sha256 `ab698d342d2d276f81d4baf3fed609bb6f8bf88cd6810bb1d1998c5e409f63c3`.
 
 Internal gates before any reserve score: active-family macro-F1 above 0.1960828268105939, non-exact-copy family macro-F1 above 0.041352657004830914, more than three non-exact-copy families with F1 above 0, median gold-versus-nearest-negative margin above the pre-training median on the same validation rows, fewer high-collision validation rows than the pre-training count, and applicability invariance still passing.
+
+The geometry-repair training run is `HLX-CLASSIFICATION-V2-GEOMETRY-REPAIR-20260930`. Restored checkpoint is epoch 9 of 12, primary weights `449bf3b303c95bc5d6b7d87173d50315616556c1379057414b970f3e5f0b18cf`. Selection score is 0.35176303097380063. Canonical logits stayed on the learned residual head.
+
+Active-family macro-F1 is 0.1750422041280767. Non-exact-copy family macro-F1 is 0.03732057416267942. Three non-exact-copy families have F1 above 0: fashion-aesthetic, spiritual-mystic, and sports-competition. Those family-discrimination gates do not open.
+
+Geometry on the same 296 validation family rows did improve. Pre-training median gold-versus-nearest-negative margin is -0.0238511860370636 with 172 high-collision rows. Post-training median margin is 0.09594389796257019 with 5 high-collision rows. Mean margin moves from -0.023349027127354732 to 0.09320517261575505.
+
+Applicability invariance still passes. `none_surface_gap` is -0.023081016877715937. Residualized length correlation is 0.08844123652989021. Surface-cell F1 values remain at or above 0.80. Architecture validation is `INTERNAL_SHORT`. The reserve was not scored. BEST remains `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`.
+
+The representation is more separable, but the residual head alone did not convert that into family F1. The next authorized step is a max-anchor family scorer on this repaired geometry, not another residual-only CE run and not reserve scoring.
