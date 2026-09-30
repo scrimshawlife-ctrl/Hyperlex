@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -46,6 +47,20 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sudo_sha256(path: Path) -> str:
+    try:
+        return sha256_file(path)
+    except PermissionError:
+        pass
+    completed = subprocess.run(
+        ["sudo", "-n", "sha256sum", str(path)],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return completed.stdout.split()[0]
+
+
 def fail(message: str) -> None:
     print(message, file=sys.stderr)
     raise SystemExit(2)
@@ -65,9 +80,21 @@ def pin_inputs() -> None:
         fail("hub export digest mismatch")
     if sha256_file(PRIOR_ROWS) != PRIOR_ROWS_SHA:
         fail("sealed reserve-eval rows digest mismatch")
-    if sha256_file(BEST_WEIGHTS) != BEST_SHA:
+    if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
         fail("BEST weights changed")
-    if not BEST_LINK.is_symlink() or BEST_LINK.resolve() != INIT_FROM.resolve():
+    try:
+        best_is_link = BEST_LINK.is_symlink()
+        best_target = BEST_LINK.resolve() if best_is_link else None
+    except PermissionError:
+        completed = subprocess.run(
+            ["sudo", "-n", "readlink", "-f", str(BEST_LINK)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        best_is_link = True
+        best_target = Path(completed.stdout.strip())
+    if not best_is_link or best_target != INIT_FROM.resolve():
         fail("BEST symlink is not the production checkpoint")
 
 
