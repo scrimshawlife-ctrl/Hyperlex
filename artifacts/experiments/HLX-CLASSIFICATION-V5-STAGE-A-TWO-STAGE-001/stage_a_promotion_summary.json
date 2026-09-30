@@ -1,0 +1,13 @@
+{
+  "BEST_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "NEXT_ACTION": "STOP_STAGE_A_ARCHITECTURE_WORK",
+  "RESERVE_CONSUMED": false,
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_PROMOTION": "APPLIED",
+  "STAGE_A_PROMOTION_RECEIPT_SHA256": "d4c0cfd648b16a5d3b0bb21791e25434fb7cca9a2d8e5c3d794653d269c1cd4a",
+  "TRAIN": false,
+  "post_replay_hash": "fc601e69569594d55eb150ee9b467eb37ce0c1b3015e29d88d54aecb7eda6474",
+  "post_replay_pass": true,
+  "previous_STAGE_A_BEST": null
+}

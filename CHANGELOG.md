@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Promote two-stage Stage-A selected (Spec 007):**
+  `PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED` applies component-scoped
+  **`STAGE_A_BEST=cd2829c1…`** (epoch 11; Gate1=`0.75` / Gate2=`0.50`;
+  architecture `HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1`). Model-wide
+  BEST `9fba0f66…` **UNCHANGED** (`BEST_MUTATED=false`). Canonical load:
+  trunk→BEST→STAGE_A_BEST layers 20/21→gate heads. Flat runtime marked
+  `DEPRECATED_FOR_CANONICAL_STAGE_A`. Stage-B entry:
+  PRESENT→permit / NONE→stop / UNCERTAIN→ABSTAIN. Post-promotion replay exact
+  parity (`fc601e69…`). Reserve unused. Receipt
+  `classification-v5-stage-a-two-stage-promotion-receipt-20260930.json`
+  (`d4c0cfd6…`). Next: `STOP_STAGE_A_ARCHITECTURE_WORK` (Stage-B integration).
+
 - **Review two-stage Stage-A promotion (Spec 007):** read-only
   `REVIEW_V5_STAGE_A_TWO_STAGE_PROMOTION` on SELECTED `cd2829c1…` /
   epoch 11 / Gate1=`0.75` / Gate2=`0.50`. Settlement integrity **PASS**;

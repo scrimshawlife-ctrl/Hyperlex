@@ -119,7 +119,9 @@ PROMOTION_DECISION = PROMOTION_READY
 NEXT_ACTION = PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED
 ```
 
-Promotion was **not** performed in this review.
+Promotion was **not** performed in this review. Subsequent component promotion:
+see `classification-v5-stage-a-two-stage-promotion-20260930.md`
+→ **`STAGE_A_PROMOTION=APPLIED`** / `STAGE_A_BEST=cd2829c1…`.
 
 Receipt: `classification-v5-stage-a-two-stage-promotion-review-receipt-20260930.json`
 (`7e09c67d…`).
