@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **Diagnose V5 Stage-A SETTLED_FAIL (Spec 007):** read-only
+  `DIAGNOSE_V5_STAGE_A_SETTLED_FAIL` + matched-cohort
+  `HYPERLEX_V5_STAGE_A_CONTROLLED_COMPARISON_V1` on SELECTED `3b1b574a…`.
+  False PRESENT mass is 95% ordinary-domain / 98% OBSERVED; controlled
+  provenance coverage `0.418` → `INSUFFICIENT_MATCHED_SUPPORT`. Primary
+  diagnosis `MIXED_STAGE_A_FAILURE` (dataset change yes; architecture no).
+  Receipt `246bbae7…`. No train, reserve, threshold search, or BEST move.
+  Next: `REMEDIATE_V5_STAGE_A_MIXED_FAILURE`.
+
 - **Train V5 Stage-A once (Spec 007):** execute authorized
   `TRAIN_V5_STAGE_A_ONCE` for `HLX-CLASSIFICATION-V5-STAGE-A-001` on dataset
   `a81ca68a…` / config `4d2eaabd…`. Restored epoch 6; SELECTED checkpoint
