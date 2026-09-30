@@ -1,0 +1,85 @@
+{
+  "BEST": "UNCHANGED",
+  "artifact_file_sha256": {
+    "CALIBRATION.json": "36af7d070503b19465cdf783ba962fcede430ade844e933ccda777485f9392c0",
+    "CONFIG.json": "6df16ec8d74af4f350a6cb20de0540f9a9bca509a510206122006bd2852edb10",
+    "EXIT.json": "3c428e5243c0204d43e459c60941a1f70059b39087ec6e0a385bb6780caa0c8a",
+    "LAUNCH.json": "86c11a842ff812e53f46f6e56bbfcee976ed6a03fb535cf5c03c775dade5da36",
+    "STAGE_A_TRAIN.json": "148e2120d1c996cea42978ec45c6584fec918c6c890051bbc10c26b98d68d239",
+    "stage_a_train.log": "110f765246b517df4867d63e5519855d6a5d11193eee27d94fe5ee70ecccc25d",
+    "weights/model.safetensors": "0b7dbdac1f39e7b7ede1e51e86b9b938aa68e95692bf4b2f062329d487420ce7",
+    "weights/stage_a_calibration.json": "69d372a2a1baa884818fd9a3b089766b6f280dacecd6a9f058102456442d376c",
+    "weights/stage_a_config.json": "6df16ec8d74af4f350a6cb20de0540f9a9bca509a510206122006bd2852edb10"
+  },
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "checkpoint_sha256": "0b7dbdac1f39e7b7ede1e51e86b9b938aa68e95692bf4b2f062329d487420ce7",
+  "config_sha256": "6df16ec8d74af4f350a6cb20de0540f9a9bca509a510206122006bd2852edb10",
+  "confusion": {
+    "EVIDENCE_PRESENT->EVIDENCE_PRESENT": 206,
+    "EVIDENCE_PRESENT->NO_EVIDENCE": 8,
+    "EVIDENCE_PRESENT->UNCERTAIN": 6,
+    "NO_EVIDENCE->EVIDENCE_PRESENT": 3,
+    "NO_EVIDENCE->NO_EVIDENCE": 493,
+    "NO_EVIDENCE->UNCERTAIN": 9,
+    "UNCERTAIN->EVIDENCE_PRESENT": 87,
+    "UNCERTAIN->NO_EVIDENCE": 3,
+    "UNCERTAIN->UNCERTAIN": 12
+  },
+  "dataset_sha256": "7339c044596a4cc2eb5ae17f3fbab185fface9abffb6151bdb0db69eca0d2d3a",
+  "epoch_losses": [
+    0.2725882824378819,
+    0.20052871761131874,
+    0.16008511675935636,
+    0.14186253456241377
+  ],
+  "false_evidence_entry_by_none_subtype": {
+    "GENERIC_NONE": 0.0,
+    "HARD_NONE": 0.015625,
+    "NEAR_DOMAIN_NONE": 0.02531645569620253
+  },
+  "false_evidence_entry_rate_on_none": 0.005940594059405941,
+  "lifecycle_state": "RUNNING",
+  "next_action": "WIRE_STAGE_B_RETRIEVAL_ON_EVIDENCE_PRESENT_THEN_VALIDATE",
+  "none_threshold": 0.05,
+  "parent_rule": "HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE",
+  "present_f1": 0.7984496124031008,
+  "present_threshold": 0.55,
+  "primary_gate_pass": true,
+  "private_destination": "/home/morpheus/hlx-private/classification-v3-stage-a-20260930",
+  "receipt_sha256": "4530628d26d77354a8efcd339350ae496fa8ce6421523debd8e776e904cd961f",
+  "rule": "HYPERLEX_CLASSIFICATION_V3_STAGE_A_TRAIN_V1",
+  "surface_rule": "HYPERLEX_V3_EVIDENCE_SURFACE_V1",
+  "train": true,
+  "uncertain_rate": 0.032648125755743655,
+  "v3_reserve": null,
+  "validation_by_label": {
+    "EVIDENCE_PRESENT": {
+      "f1": 0.7984496124031008,
+      "fn": 14,
+      "fp": 90,
+      "precision": 0.6959459459459459,
+      "recall": 0.9363636363636364,
+      "support": 220,
+      "tp": 206
+    },
+    "NO_EVIDENCE": {
+      "f1": 0.9772051536174429,
+      "fn": 12,
+      "fp": 11,
+      "precision": 0.9781746031746031,
+      "recall": 0.9762376237623762,
+      "support": 505,
+      "tp": 493
+    },
+    "UNCERTAIN": {
+      "f1": 0.18604651162790695,
+      "fn": 90,
+      "fp": 15,
+      "precision": 0.4444444444444444,
+      "recall": 0.11764705882352941,
+      "support": 102,
+      "tp": 12
+    }
+  },
+  "weights_dir": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v3-stage-a"
+}
