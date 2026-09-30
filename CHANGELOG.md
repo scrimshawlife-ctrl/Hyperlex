@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- **Train V5 Stage-A once on V1R8 (Spec 007):** execute authorized
+  `TRAIN_V5_STAGE_A_ONCE` for `HLX-CLASSIFICATION-V5-STAGE-A-002` on READY
+  dataset `c0fdd82d…` / config `2ce1b29b…`. Restored epoch 10; SELECTED
+  `b22e9c20…`; run receipt `c0008f3c…`. Threshold grid `n_passing=0` →
+  **`SETTLED_FAIL`**. False-entry improved to `0.012` (gate pass; ordinary
+  false PRESENT 60→11) but PRESENT recall `0.527` (gate fail; worse than
+  parent `0.648`). Primary diagnosis `RESIDUAL_PRESENT_RECALL_FAILURE`.
+  BEST unchanged; reserve unused; promotion_candidate=false.
+  Architecture investigation justified; no architecture change performed.
+  Next: `ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION`.
+
+- **Authorize V5 Stage-A V1R8 train (Spec 007):** freeze recipe for
+  experiment `HLX-CLASSIFICATION-V5-STAGE-A-002` on READY V1R8
+  `c0fdd82d…`. Resolved config `2ce1b29b…`; authorization receipt
+  `66a0b6f8…`; `train_authorized=true`. Isolated private auth dir; BEST
+  unchanged. Next: `TRAIN_V5_STAGE_A_ONCE`.
+
 - **Remediate V5 Stage-A mixed failure to READY (Spec 007):** execute
   `REMEDIATE_V5_STAGE_A_MIXED_FAILURE_V1` from parent V1R7 `a81ca68a…`
   under frozen `HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1`. Joint
