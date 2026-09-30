@@ -160,17 +160,37 @@ def surface_rows_to_index_source(
     return out
 
 
+def stage_b_family_vocabulary(
+    surface_rows: Sequence[Mapping[str, Any]],
+) -> tuple[str, ...]:
+    """Families with train POSITIVE_EVIDENCE exemplars on the V5 surface."""
+    names = {
+        str(row["candidate_families"][0])
+        for row in surface_rows
+        if is_index_positive_row(row)
+    }
+    return tuple(sorted(names))
+
+
 def build_stage_b_index(
     surface_rows: Sequence[Mapping[str, Any]],
     embeddings_by_identity: Mapping[str, Sequence[float]],
 ) -> dict[str, Any]:
     source = surface_rows_to_index_source(surface_rows)
-    index = build_index_records(source, embeddings_by_identity)
+    vocabulary = stage_b_family_vocabulary(surface_rows)
+    if not vocabulary:
+        raise ValueError("stage_b_index_empty_vocabulary")
+    index = build_index_records(
+        source, embeddings_by_identity, family_vocabulary=vocabulary
+    )
     index["rule"] = STAGE_B_RULE
     index["surface_rule"] = AUTHORIZED_SURFACE_RULE
     index["surface_dataset_sha256"] = AUTHORIZED_DATASET_SHA
     index["stage_a_best_sha256"] = STAGE_A_BEST_SHA256
     index["model_wide_best_sha256"] = MODEL_WIDE_BEST_SHA256
+    index["family_vocabulary"] = list(vocabulary)
+    index["active_ontology_size"] = len(ACTIVE_FAMILY_VOCABULARY)
+    index["surface_family_count"] = len(vocabulary)
     bare = {key: value for key, value in index.items() if key != "index_sha256"}
     index["index_sha256"] = sha256_text(canonical_json(bare))
     return index
