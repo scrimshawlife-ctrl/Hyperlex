@@ -1022,7 +1022,7 @@ def assign_component_splits_uncertain(
         top_fam, top_n = counts.most_common(1)[0]
         return top_n / len(val_unc), top_fam
 
-    for _ in range(400):
+    for _ in range(800):
         share, top_fam = _val_fam_share()
         if share <= SOURCE_FAMILY_VAL_SHARE_MAX or not top_fam:
             break
@@ -1062,28 +1062,44 @@ def assign_component_splits_uncertain(
         )
         if not train_cands or not val_cands:
             break
-        _ts, _ta, train_key = train_cands[0]
-        _vs, _va, val_key = val_cands[0]
-        # Check reason train mins after swap.
-        counts = recount_uncertain()
-        ok = True
-        for reason in FROZEN_AMBIGUITY_REASONS:
-            train_loss = sum(
-                1 for m in components[train_key] if m.get("ambiguity_reason") == reason
-            )
-            train_gain = sum(
-                1 for m in components[val_key] if m.get("ambiguity_reason") == reason
-            )
-            if counts[reason]["train"]["n"] - train_loss + train_gain < REASON_TRAIN_MIN:
-                ok = False
+        swapped = False
+        for _ts, _ta, train_key in train_cands[:40]:
+            for _vs, _va, val_key in val_cands[:40]:
+                counts = recount_uncertain()
+                ok = True
+                for reason in FROZEN_AMBIGUITY_REASONS:
+                    train_loss = sum(
+                        1
+                        for m in components[train_key]
+                        if m.get("ambiguity_reason") == reason
+                    )
+                    train_gain = sum(
+                        1
+                        for m in components[val_key]
+                        if m.get("ambiguity_reason") == reason
+                    )
+                    if (
+                        counts[reason]["train"]["n"] - train_loss + train_gain
+                        < REASON_TRAIN_MIN
+                    ):
+                        ok = False
+                        break
+                    if (
+                        counts[reason]["validation"]["n"] - train_gain + train_loss
+                        < REASON_VAL_MIN
+                    ):
+                        ok = False
+                        break
+                if not ok:
+                    continue
+                group_split[train_key] = "validation"
+                group_split[val_key] = "train"
+                swapped = True
                 break
-            if counts[reason]["validation"]["n"] - train_gain + train_loss < REASON_VAL_MIN:
-                ok = False
+            if swapped:
                 break
-        if not ok:
+        if not swapped:
             break
-        group_split[train_key] = "validation"
-        group_split[val_key] = "train"
 
     rows: list[dict[str, Any]] = []
     witness = []

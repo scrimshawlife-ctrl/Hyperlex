@@ -344,7 +344,46 @@ def main() -> int:
     }}, flush=True)
 
     embedding_report = run_embedding_hardness(built["dataset_sha256"])
-    semantic_placement = run_semantic_placement(built["rows"])
+
+    # Semantic placement requires torch/CUDA — run inside the Spark docker image.
+    cmd = [
+        "docker",
+        "run",
+        "--rm",
+        "--gpus",
+        "all",
+        "-v",
+        f"{REPO}:{REPO}",
+        "-v",
+        "/home/morpheus/hlx-private:/home/morpheus/hlx-private",
+        "-v",
+        "/home/morpheus/.hyperlex:/home/morpheus/.hyperlex",
+        "-w",
+        str(REPO),
+        "-e",
+        "PYTHONPATH=/home/morpheus/Hyperlex/scripts/shadow",
+        IMAGE,
+        "python3",
+        str(REPO / "scripts/spark/run_classification_v5_stage_a_uncertain_surface_remediate.py"),
+        "--semantic-only",
+    ]
+    print({"semantic_placement_cmd": "docker ... --semantic-only"}, flush=True)
+    completed = subprocess.run(cmd, check=False, capture_output=True, text=True)
+    print(completed.stdout[-3000:] if completed.stdout else "", flush=True)
+    if completed.returncode != 0:
+        print(completed.stderr[-4000:], file=sys.stderr)
+        fail(f"semantic placement failed rc={completed.returncode}")
+    for name in ("SEMANTIC_PLACEMENT.json", "SEMANTIC_PLACEMENT_ROWS.jsonl"):
+        path = DEST / name
+        if path.exists():
+            subprocess.run(
+                ["sudo", "-n", "chown", f"{os.getuid()}:{os.getgid()}", str(path)],
+                check=False,
+            )
+            os.chmod(path, 0o600)
+    semantic_placement = json.loads(
+        (DEST / "SEMANTIC_PLACEMENT.json").read_text(encoding="utf-8")
+    )
 
     final = reevaluate_readiness_with_embedding(
         built["rows"],
