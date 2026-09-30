@@ -226,15 +226,21 @@ def build_index_records(
 def family_scores(
     query_embedding: Sequence[float],
     index_records: Sequence[Mapping[str, Any]],
+    *,
+    family_vocabulary: Sequence[str] | None = None,
 ) -> dict[str, Any]:
+    vocabulary = tuple(family_vocabulary or ACTIVE_FAMILY_VOCABULARY)
+    vocab_index = {name: index for index, name in enumerate(vocabulary)}
     hidden = _l2_normalize(query_embedding)
     by_family: dict[str, list[float]] = defaultdict(list)
     for record in index_records:
         family = str(record["family"])
+        if family not in vocab_index:
+            continue
         by_family[family].append(cosine(hidden, record["embedding"]))
     scores: dict[str, float] = {}
     m_used: dict[str, int] = {}
-    for family in ACTIVE_FAMILY_VOCABULARY:
+    for family in vocabulary:
         sims = by_family.get(family) or []
         if not sims:
             raise ValueError(f"family_without_exemplars:{family}")
@@ -243,7 +249,7 @@ def family_scores(
         m_used[family] = m
     ranked = sorted(
         scores.items(),
-        key=lambda item: (-item[1], ACTIVE_FAMILY_VOCABULARY.index(item[0])),
+        key=lambda item: (-item[1], vocab_index[item[0]]),
     )
     return {
         "candidates": [

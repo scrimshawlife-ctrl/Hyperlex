@@ -518,8 +518,14 @@ def next_action_for_stage_b(authorization: Mapping[str, Any]) -> str:
 def retrieval_candidates_from_embedding(
     query_embedding: Sequence[float],
     index_records: Sequence[Mapping[str, Any]],
+    *,
+    family_vocabulary: Sequence[str] | None = None,
 ) -> dict[str, Any]:
-    return family_scores(query_embedding, index_records)
+    return family_scores(
+        query_embedding,
+        index_records,
+        family_vocabulary=family_vocabulary,
+    )
 
 
 def design_freeze_receipt(*, code_revision: str) -> dict[str, Any]:

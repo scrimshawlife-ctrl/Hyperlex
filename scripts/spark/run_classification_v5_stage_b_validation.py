@@ -277,7 +277,11 @@ def inner() -> int:
                 p_confirmed=float(g2["CONFIRMED_PRESENT"]),
             )
             hidden = torch.nn.functional.normalize(pooled, dim=-1)[0].detach().cpu().tolist()
-            ranked = retrieval_candidates_from_embedding(hidden, index["records"])
+            ranked = retrieval_candidates_from_embedding(
+                hidden,
+                index["records"],
+                family_vocabulary=index.get("family_vocabulary"),
+            )
             gold = gold_end_to_end(row)
             candidates = ranked["candidates"]
             top3 = candidates[2] if len(candidates) > 2 else None
