@@ -478,7 +478,7 @@ _INFERRED_PROSE_BANK: dict[str, list[tuple[str, list[str], str]]] = {
         ),
         (
             "His status read in my bag, readable as fashion slang or literal luggage note.",
-            ["fashion-aesthetic", "travel"],
+            ["fashion-aesthetic", "workplace-career"],
             "status",
         ),
         (
@@ -1430,6 +1430,18 @@ def summarize_semantic_placement(
     }
 
 
+def _sanitize_uncertain_families(
+    row: Mapping[str, Any], *, ontology: Sequence[str]
+) -> dict[str, Any]:
+    item = dict(row)
+    allowed = set(ontology)
+    cands = [str(f) for f in (item.get("candidate_families") or []) if str(f) in allowed]
+    support = [str(f) for f in (item.get("active_family_support") or []) if str(f) in allowed]
+    item["candidate_families"] = cands
+    item["active_family_support"] = support[:1]
+    return item
+
+
 def remediate_uncertain_surface(
     *,
     prior_rows: Sequence[Mapping[str, Any]],
@@ -1447,10 +1459,12 @@ def remediate_uncertain_surface(
         "from_inferred_uncertain": 0,
         "dropped_prior_uncertain": 0,
         "removed_dedupe": 0,
+        "preserved_prior_splits": True,
     }
     working: list[dict[str, Any]] = []
     seen: set[str] = set(blocked_ids)
 
+    # Preserve V1R8 non-UNCERTAIN rows AND their splits to keep original gates intact.
     for row in prior_rows:
         if row.get("evidence_subtype") == "AMBIGUOUS_EVIDENCE":
             stats["dropped_prior_uncertain"] += 1
@@ -1458,49 +1472,92 @@ def remediate_uncertain_surface(
         if row.get("identity") in seen:
             continue
         item = dict(row)
-        item.pop("split", None)
-        item.pop("component_id", None)
+        if item.get("split") not in {"train", "validation"}:
+            # Fail closed: prior READY surface must carry splits.
+            continue
         working.append(item)
         seen.add(item["identity"])
         stats["from_prior_non_uncertain"] += 1
 
+    new_uncertain: list[dict[str, Any]] = []
     for row in observed_uncertain_rows:
-        item = dict(row)
+        item = _sanitize_uncertain_families(row, ontology=ontology)
         item.pop("split", None)
         item.pop("component_id", None)
         if item["identity"] in seen:
             continue
-        # Never relabel INFERRED→OBSERVED; acquire path must already be OBSERVED.
         if item.get("provenance") != "OBSERVED":
             continue
-        working.append(item)
+        new_uncertain.append(item)
         seen.add(item["identity"])
         stats["from_observed_uncertain"] += 1
 
     for row in inferred_uncertain_rows:
-        item = dict(row)
+        item = _sanitize_uncertain_families(row, ontology=ontology)
         item.pop("split", None)
         item.pop("component_id", None)
         if item["identity"] in seen:
             continue
         if item.get("provenance") != "INFERRED":
             continue
-        working.append(item)
+        new_uncertain.append(item)
         seen.add(item["identity"])
         stats["from_inferred_uncertain"] += 1
 
-    working, pair_records = pair_for_floors(working)
-    working, dedupe_witness = dedupe_within_label(working)
-    stats["removed_dedupe"] = dedupe_witness["removed"]
-    working, pair_records = pair_for_floors(working)
+    # Pairing among preserved prior rows only (keep existing pair fields).
+    prior_only = [r for r in working]
+    prior_only, pair_records = pair_for_floors(prior_only)
+    # Restore prior_only into working identity map.
+    by_id = {r["identity"]: r for r in prior_only}
+    working = list(by_id.values())
 
-    # Source caps on PRESENT/NONE preserved from parent policy.
-    working = enforce_source_cap(working, label="EVIDENCE_PRESENT", max_share=0.25)
-    working = enforce_source_cap(working, label="NO_EVIDENCE", max_share=0.25)
+    # Assign splits only for new UNCERTAIN components.
+    unc_components = build_near_dup_components(new_uncertain)
+    unc_split = assign_component_splits_uncertain(unc_components)
+    for row in unc_split["rows"]:
+        working.append(row)
 
-    components = build_near_dup_components(working)
-    split_result = assign_component_splits_uncertain(components)
-    rows = split_result["rows"]
+    # Drop near-duplicate UNCERTAIN that collide with preserved opposite-split texts.
+    from .classification_v5_surface_readiness_gates import are_near_duplicates, normalized_text
+
+    prior_by_split = {
+        "train": [r for r in working if r.get("split") == "train" and r.get("evidence_subtype") != "AMBIGUOUS_EVIDENCE"],
+        "validation": [
+            r
+            for r in working
+            if r.get("split") == "validation" and r.get("evidence_subtype") != "AMBIGUOUS_EVIDENCE"
+        ],
+    }
+    kept_unc: list[dict[str, Any]] = []
+    removed = 0
+    for row in working:
+        if row.get("evidence_subtype") != "AMBIGUOUS_EVIDENCE":
+            kept_unc.append(row)
+            continue
+        opposite = "validation" if row["split"] == "train" else "train"
+        collide = False
+        # Cheap prefix filter then frozen near-dup check against opposite preserved rows.
+        prefix = normalized_text(row["text"])[:24]
+        for other in prior_by_split[opposite]:
+            if normalized_text(other["text"])[:24] != prefix:
+                continue
+            if are_near_duplicates(row["text"], other["text"]):
+                collide = True
+                break
+        if collide:
+            removed += 1
+            continue
+        kept_unc.append(row)
+    stats["removed_dedupe"] = removed
+    working = kept_unc
+    # Rebuild pair records for final set.
+    working, pair_records = pair_for_floors(working)
+    rows = sorted(working, key=lambda item: (item["evidence_subtype"], item["identity"]))
+    split_result = {
+        "component_witness": unc_split["component_witness"],
+        "uncertain_reason_counts": unc_split["uncertain_reason_counts"],
+        "rows": rows,
+    }
 
     # Attach required UNCERTAIN fields after split assignment.
     final_rows: list[dict[str, Any]] = []
