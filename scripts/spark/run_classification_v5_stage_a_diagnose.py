@@ -115,7 +115,6 @@ def score_validation() -> dict:
     from hyperlexical.classification_v5_stage_a_diagnose import decide_diagnostic
     from hyperlexical.eval_forward import apply_encoder_trainable
     from hyperlexical.layout import HIDDEN
-    from hyperlexical.loop import freeze_encoder
     from hyperlexical.save_pretrained import split_weight_tensors
 
     rows = [r for r in load_jsonl(DATASET) if r.get("split") == "validation"]
@@ -137,7 +136,9 @@ def score_validation() -> dict:
     )
     if sel_loaded["loaded"] < 1:
         fail("selected encoder overlay empty")
-    freeze_encoder(encoder, last_trainable=0)
+    # Inference-only: freeze every encoder parameter (last_trainable=0 unsupported).
+    for param in encoder.parameters():
+        param.requires_grad = False
     head = nn.Linear(HIDDEN, len(EVIDENCE_LABELS))
     head_w = selected_packed.get("evidence_head") or {}
     if "weight" not in head_w or "bias" not in head_w:
