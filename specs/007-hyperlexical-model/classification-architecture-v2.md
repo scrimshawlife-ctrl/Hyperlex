@@ -530,4 +530,12 @@ Sealed under `/home/morpheus/hlx-private/classification-v2-train-forward-2026093
 - best_epoch 3; selection_score 0.360527
 - active_family_macro_f1 0.185630; prototype_family_macro_f1 0.054510
 - BEST unchanged `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`; reserve not scored; promotion not_eligible
-- Next: operator-decide reserve eval / further ontology work — do not move BEST without explicit authorization.
+- Next: `HYPERLEX_FORWARD_HUB_ERROR_DECOMPOSITION_V1` (read-only) — do not score reserve or move BEST until that pass decides.
+
+## Forward-hub error decomposition (2026-09-30)
+
+Rule `HYPERLEX_FORWARD_HUB_ERROR_DECOMPOSITION_V1` is a read-only validation audit on forward-hub checkpoint `adf5db93…` and export `civilian.v0.7.hub.jsonl` (`0d8f4532…`). It does not train, does not score the evaluation reserve, does not move BEST, and does not mutate prototypes.
+
+Reports per-family precision/recall/F1/support/predicted_count/top confusions/gold logit rank/top-1/top-2, ATOM vs PROSE macro-F1, prediction hubs, social-evaluation attractor audit, deterministic confusion causes, and prototype-vs-residual ranking. Decision enum: `SCORER_REPAIR_JUSTIFIED` | `DATA_REMEDIATION_JUSTIFIED` | `ONTOLOGY_REMEDIATION_JUSTIFIED` | `ENCODER_REMEDIATION_JUSTIFIED` | `RESERVE_EVAL_JUSTIFIED` | `STOP_NO_CLEAR_REMEDIATION`. `RESERVE_EVAL_JUSTIFIED` requires internal AF competitive with prior baseline ≈0.1961 and no major unresolved failure mode.
+
+Seal path: `/home/morpheus/hlx-private/classification-v2-forward-hub-error-decomposition-20260930/FORWARD_HUB_ERROR_DECOMPOSITION.json`.

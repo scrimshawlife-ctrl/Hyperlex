@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Forward-hub error decomposition (Spec 007):** read-only
+  `HYPERLEX_FORWARD_HUB_ERROR_DECOMPOSITION_V1` audits the sealed forward-hub
+  checkpoint (`adf5db93…`) on `civilian.v0.7.hub.jsonl` without training,
+  reserve scoring, BEST moves, or prototype mutation. Emits per-family metrics,
+  confusion causes, prediction hubs, social-evaluation attractor audit, and a
+  single remediation decision.
+
 - **Release-candidate tooling (Spec 007):** `release_set.py` (`HYPERLEX_RELEASE_SET=1`
   drops CC BY-SA rows and same-text rows from train and every eval surface);
   `HYPERLEX_EXPORT_DIR` keeps train runs from rewriting tracked exports;
