@@ -449,3 +449,17 @@ Outputs under `/home/morpheus/hlx-private/classification-v2-boundary-redefinitio
 - Training gate **CLOSED** (material reduction requires ≥30%; no train / reserve / BEST move)
 
 Next action: tighten mutually exclusive definitions for AMBIGUOUS/REVIEW/DROP identities and unresolved split pairs before any clean v2 training run.
+
+
+## Active-family boundary tightening v2 (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_BOUNDARY_TIGHTENING_V2` reclassified only unresolved rows from sealed boundary redefinition `4757d46a…` (REVIEW 425 / AMBIGUOUS 9 / DROP 17 / RELABEL_CANDIDATE 2), plus structural KEEP comparison on the three SPLIT_CANDIDATE families. Already-clean KEEP rows outside that trio were not revisited. Ontology unchanged. BEST unchanged `9fba0f66…`. No train / reserve / Jev.
+
+Sealed artifact sha256 `8c9f88b0431b3598d5336bdb7fa25b80e8201c2ad8487d5aea878997cb6aa5a9` at `/home/morpheus/hlx-private/classification-v2-boundary-tightening-v2-20260930/BOUNDARY_TIGHTENING_V2.json`.
+
+- Unresolved reclass: KEEP 5, DROP 384, RELABEL_CANDIDATE 61, AMBIGUOUS 3
+- Sparse floors held: betting-sharp 13, internet-slang 13, memetic 12
+- Frozen-encoder cosine≥0.80 pairs: pre 39 → post 35 (absolute −4, reduction 10.26%)
+- Collapse component: 13 → 12
+- SPLIT_CANDIDATE trio: all three `OVERLAP_REMAINS_STRUCTURAL` (no split/merge)
+- Training gate **CLOSED** (required ≥30%). Next: `ONTOLOGY_REFACTOR_REVIEW` — do not train.
