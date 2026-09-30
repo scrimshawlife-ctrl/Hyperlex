@@ -194,24 +194,43 @@ def verify_settlement_integrity(
     }
 
 
+# SELECTED safetensors retain only the last-2-layer ModernBERT overlay (no biases)
+# plus Gate1/Gate2 heads — sealed train collect_encoder_trainable contract.
+EXPECTED_ENCODER_OVERLAY_TENSORS = 12
+EXPECTED_ENCODER_LAYER_PREFIXES = ("encoder.layers.20.", "encoder.layers.21.")
+
+
 def verify_architecture_identity(tensor_keys: Sequence[str]) -> dict[str, Any]:
     keys = list(tensor_keys)
     prefixes = sorted({k.split(".")[0] for k in keys})
     encoder_n = sum(1 for k in keys if k.startswith("encoder."))
+    layer20 = sum(1 for k in keys if k.startswith(EXPECTED_ENCODER_LAYER_PREFIXES[0]))
+    layer21 = sum(1 for k in keys if k.startswith(EXPECTED_ENCODER_LAYER_PREFIXES[1]))
+    earlier = any(
+        k.startswith("encoder.layers.")
+        and not k.startswith(EXPECTED_ENCODER_LAYER_PREFIXES[0])
+        and not k.startswith(EXPECTED_ENCODER_LAYER_PREFIXES[1])
+        for k in keys
+    )
     checks = {
         "has_gate1_head": any(k.startswith("gate1_head.") for k in keys),
         "has_gate2_head": any(k.startswith("gate2_head.") for k in keys),
         "no_flat_evidence_head": not any(k.startswith("evidence_head.") for k in keys),
         "has_encoder_tensors": encoder_n > 0,
-        # Trainable overlay retains last-layer encoder params; count is environment-
-        # dependent but must be non-empty and match prior Stage-A trainable set (48).
-        "encoder_trainable_count_expected_48": encoder_n == 48,
+        # Last-2-layer weight overlay only (ModernBERT layers 20/21, 6 tensors each).
+        "encoder_trainable_overlay_count_12": encoder_n
+        == EXPECTED_ENCODER_OVERLAY_TENSORS,
+        "last_two_layers_adapted": layer20 == 6 and layer21 == 6,
+        "earlier_layers_not_in_overlay": not earlier,
         "gate1_weight_shape_hint": "gate1_head.weight" in keys,
         "gate2_weight_shape_hint": "gate2_head.weight" in keys,
+        "gate1_2logit_bias": "gate1_head.bias" in keys,
+        "gate2_2logit_bias": "gate2_head.bias" in keys,
     }
     return {
         "checks": checks,
         "encoder_tensor_count": encoder_n,
+        "last_trainable_layers": 2,
         "pass": all(checks.values()),
         "prefixes": prefixes,
         "shared_encoder": True,

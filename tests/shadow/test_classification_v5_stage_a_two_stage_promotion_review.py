@@ -46,18 +46,43 @@ def test_metric_parity_and_architecture():
         "gate2_head.weight",
         "gate2_head.bias",
     ]
-    # Not 48 encoder tensors → fail count check.
+    # Incomplete last-2-layer overlay → fail.
     bad = verify_architecture_identity(keys)
     assert bad["pass"] is False
-    keys48 = [f"encoder.t{i}" for i in range(48)] + [
+    # Sealed SELECTED overlay: 6 tensors × layers 20/21 + Gate1/Gate2 heads.
+    keys12 = [
+        f"encoder.layers.20.{suffix}"
+        for suffix in (
+            "attn.Wo.weight",
+            "attn.Wqkv.weight",
+            "attn_norm.weight",
+            "mlp.Wi.weight",
+            "mlp.Wo.weight",
+            "mlp_norm.weight",
+        )
+    ] + [
+        f"encoder.layers.21.{suffix}"
+        for suffix in (
+            "attn.Wo.weight",
+            "attn.Wqkv.weight",
+            "attn_norm.weight",
+            "mlp.Wi.weight",
+            "mlp.Wo.weight",
+            "mlp_norm.weight",
+        )
+    ] + [
         "gate1_head.weight",
         "gate1_head.bias",
         "gate2_head.weight",
         "gate2_head.bias",
     ]
-    good = verify_architecture_identity(keys48)
+    good = verify_architecture_identity(keys12)
     assert good["pass"] is True
+    assert good["encoder_tensor_count"] == 12
     assert good["flat_3way_canonical"] is False
+    # Flat 3-way head must not remain canonical.
+    with_flat = keys12 + ["evidence_head.weight", "evidence_head.bias"]
+    assert verify_architecture_identity(with_flat)["pass"] is False
 
 
 def test_decision_and_policies():

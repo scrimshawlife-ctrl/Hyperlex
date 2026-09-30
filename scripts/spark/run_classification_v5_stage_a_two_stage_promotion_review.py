@@ -174,7 +174,7 @@ def cold_load_replay() -> dict:
 
     split = split_weight_tensors(tensors)
     loaded = apply_encoder_trainable(encoder, split.get("encoder") or {})
-    if loaded["loaded"] != 48:
+    if loaded["loaded"] != 12:
         fail(f"encoder_overlay_incomplete:{loaded['loaded']}")
     # Ensure earlier layers remain frozen structurally for inference; freeze call
     # matches train contract (last 2 trainable) without mutating BEST.
