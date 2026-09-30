@@ -508,3 +508,15 @@ Sealed artifact sha256 `617ba9eebfe9955ed3931ab659738a25de99b79a7301bc8a6ed5d952
 - Hubs by residual degree: internet-slang, spiritual-mystic, social-evaluation, music-entertainment
 - Primary recommendation: **KEEP_SE_RD_SEPARATE_REFINE_HUBS**
 - Training gate **CLOSED**. Next: `APPLY_RESIDUAL_HUB_BOUNDARY_PASS` — do not train.
+
+## Residual hub boundary pass (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_RESIDUAL_HUB_BOUNDARY_PASS_V1` follows sealed residual review `617ba9ee…`. KEEP/DROP filtering on forward hubs (internet-slang, spiritual-mystic, social-evaluation, music-entertainment) under frozen encoder cores. SE/RD kept separate. No train / reserve / BEST / historical rewrite.
+
+Sealed artifact sha256 `96a0587c06fac352872e462445f2eaaf773e35a48ab4c987e267b479cab72a83` at `/home/morpheus/hlx-private/classification-v2-residual-hub-boundary-20260930/RESIDUAL_HUB_BOUNDARY.json`.
+
+- Row filter: KEEP 690 / DROP 31 (hub exclusivity + support-floor rescue)
+- Hub post support: internet-slang 12, spiritual-mystic 1, social-evaluation 6, music-entertainment 1
+- Overlap cosine≥0.80: pre 34 → post 23 (absolute −11, reduction 32.35%); collapse 12 → 11
+- SE/RD not merged
+- Training gate **OPEN**. Next: `TRAIN_CLASSIFICATION_V2` — do not score reserve or move BEST in the train pass authorization.
