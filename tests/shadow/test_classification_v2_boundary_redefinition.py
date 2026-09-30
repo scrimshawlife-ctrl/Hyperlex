@@ -22,6 +22,7 @@ from hyperlexical.classification_v2_boundary_redefinition import (  # noqa: E402
     build_pairwise_rule,
     classify_training_row,
     count_high_overlap_family_pairs,
+    enforce_sparse_support_floor,
     next_engineering_action,
     preserved_noise_classifications,
     redefinition_contract,
@@ -130,6 +131,15 @@ def test_row_classifier_preserves_noise_audit_and_flags_collisions():
     )
     assert relabel["decision"] == "RELABEL_CANDIDATE"
     assert relabel["relabel_to"] == "approval-disapproval"
+    sparse_keep = classify_training_row(
+        family="internet-slang",
+        text="zzz obscure online fragment without core cues",
+        identity="sparse001",
+        contracts=contracts,
+        pairwise_rules=rules,
+    )
+    assert sparse_keep["decision"] == "KEEP"
+    assert "sparse_floor_keep_weak_evidence" in sparse_keep["reasons"]
 
 
 def test_overlap_count_and_gate_use_predeclared_threshold():
@@ -173,6 +183,47 @@ def test_overlap_count_and_gate_use_predeclared_threshold():
     gate = training_gate_result(pre=pre_many, post=post_few, support_post=support)
     assert gate["overlap_reduction"] == 0.4
     assert gate["training_gate"] == "OPEN"
+
+
+def test_sparse_floor_promotes_review_not_drop():
+    rows = [
+        {"decision": "KEEP", "family": "internet-slang", "identity": "a", "reasons": []},
+        {"decision": "REVIEW", "family": "internet-slang", "identity": "b", "reasons": ["weak"]},
+        {"decision": "AMBIGUOUS", "family": "internet-slang", "identity": "c", "reasons": ["dual"]},
+        {"decision": "DROP", "family": "internet-slang", "identity": "d", "reasons": ["ex"]},
+        {"decision": "KEEP", "family": "betting-sharp", "identity": "e", "reasons": []},
+    ]
+    # pad internet-slang to allow promotion up toward 12 from available non-DROP rows
+    for index in range(20):
+        rows.append(
+            {
+                "decision": "REVIEW",
+                "family": "internet-slang",
+                "identity": f"z{index:02d}",
+                "reasons": ["weak"],
+            }
+        )
+    for index in range(12):
+        rows.append(
+            {
+                "decision": "KEEP",
+                "family": "betting-sharp",
+                "identity": f"bet{index:02d}",
+                "reasons": [],
+            }
+        )
+        rows.append(
+            {
+                "decision": "KEEP",
+                "family": "memetic",
+                "identity": f"mem{index:02d}",
+                "reasons": [],
+            }
+        )
+    out = enforce_sparse_support_floor(rows, floor=12)
+    internet = [row for row in out if row["family"] == "internet-slang"]
+    assert sum(1 for row in internet if row["decision"] == "KEEP") >= 12
+    assert any(row["decision"] == "DROP" and row["identity"] == "d" for row in internet)
 
 
 def test_preserved_noise_and_split_assessment_helpers():

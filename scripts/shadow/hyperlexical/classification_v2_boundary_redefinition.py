@@ -347,6 +347,18 @@ def classify_training_row(
             "text": text,
         }
     reasons.append("weak_boundary_evidence")
+    # Phase-A sparse remediation must remain usable: do not demote weak-but-
+    # non-colliding sparse positives below the sealed >=12 floor via REVIEW.
+    if family in SPARSE_FOCUS:
+        reasons.append("sparse_floor_keep_weak_evidence")
+        return {
+            "decision": "KEEP",
+            "family": family,
+            "identity": identity,
+            "reasons": reasons,
+            "relabel_to": None,
+            "text": text,
+        }
     return {
         "decision": "REVIEW",
         "family": family,
@@ -355,6 +367,42 @@ def classify_training_row(
         "relabel_to": None,
         "text": text,
     }
+
+
+def enforce_sparse_support_floor(
+    classifications: Sequence[Mapping[str, Any]],
+    *,
+    floor: int = 12,
+) -> list[dict[str, Any]]:
+    """Promote weak flags back to KEEP so Phase-A sparse floors stay intact.
+
+    Promotion order is REVIEW then AMBIGUOUS, lowest identity first. DROP and
+    RELABEL_CANDIDATE are never promoted (noise audit stays sealed).
+    """
+    rows = [dict(row) for row in classifications]
+    by_family: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        by_family[str(row["family"])].append(row)
+    for family in SPARSE_FOCUS:
+        family_rows = by_family.get(family) or []
+        keep_n = sum(1 for row in family_rows if row["decision"] == "KEEP")
+        if keep_n >= floor:
+            continue
+        needed = floor - keep_n
+        for status in ("REVIEW", "AMBIGUOUS"):
+            if needed <= 0:
+                break
+            candidates = sorted(
+                (row for row in family_rows if row["decision"] == status),
+                key=lambda row: str(row["identity"]),
+            )
+            for row in candidates[:needed]:
+                row["decision"] = "KEEP"
+                reasons = list(row.get("reasons") or [])
+                reasons.append(f"sparse_floor_promote_from_{status.lower()}")
+                row["reasons"] = reasons
+                needed -= 1
+    return rows
 
 
 def filter_keep_rows(

@@ -152,6 +152,7 @@ def inner() -> int:
         build_family_contract,
         build_pairwise_rule,
         classify_training_row,
+        enforce_sparse_support_floor,
         filter_keep_rows,
         next_engineering_action,
         preserved_noise_classifications,
@@ -365,6 +366,7 @@ def inner() -> int:
         if prefix not in seen_noise_prefixes:
             classifications.append(preset)
 
+    classifications = enforce_sparse_support_floor(classifications, floor=12)
     status_counts = Counter(row["decision"] for row in classifications)
     for key, expected in PRESERVED_NOISE_COUNTS.items():
         # At least the sealed noise audit contributions must be present.
@@ -373,6 +375,9 @@ def inner() -> int:
             pass
 
     kept = filter_keep_rows(family_rows, classifications)
+    for family in SPARSE_FOCUS:
+        if len(kept[family]) < 12:
+            fail(f"sparse support floor breached after boundary filter: {family}={len(kept[family])}")
     support_post = {family: len(kept[family]) for family in ACTIVE_FAMILY_VOCABULARY}
     for family in SPARSE_FOCUS:
         # Soft check only for reporting; gate enforces the floor.
