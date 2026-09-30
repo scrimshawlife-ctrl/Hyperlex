@@ -390,3 +390,20 @@ The representation is more separable, but the residual head alone did not conver
 On 296 validation family-positive rows, residual macro-F1 is 0.1750422041280767, max-anchor macro-F1 is 0.1664857822906154, and diagnostic 1:1 z-score fusion macro-F1 is 0.20206957575241874. Max-anchor ATOM/PROSE family macros are 0.19337540305282241 and 0.2177426324431769. Max-anchor breadth is 7 families with F1 above 0, 6 at or above 0.20, 4 at or above 0.50, and 3 non-exact-copy families with F1 above 0. Decision is `MAX_ANCHOR_SCORER_REJECTED`. Canonical integration is not justified. Artifact sha256 `7475d6d9a5c7ccb20a554a56b1de5ceee1d85e2a90b5976035f920bab7f53d07`.
 
 The diagnostic fusion cleared 0.1961 and raised new-family nonzero count to 4, but fusion remains diagnostic only under this pass. Scorer mechanics are exhausted for rescuing the 19-way head. The next substantive question is ontology and training-definition separation, not another residual or max-anchor classifier patch.
+
+### Active-family separability audit
+
+`HYPERLEX_ACTIVE_FAMILY_SEPARABILITY_AUDIT_V1` is a read-only ontology/data audit on training-side definition prose. It does not train, does not score the evaluation reserve, and does not move BEST. Jev stays off. Encoder weights stay frozen on the geometry-repair overlay (`449bf3b303c95bc5d6b7d87173d50315616556c1379057414b970f3e5f0b18cf`) for representation metrics only. Pairwise linear probes fit on train definitions and evaluate on val definitions; they do not update the encoder.
+
+OBSERVED and INFERRED supports are preserved separately. Reserve, spent, held-out, measurement, settlement, and Jev rows are excluded. Pairwise embedding metrics cover within/cross similarity, nearest-neighbor confusion, centroid distance, and sealed-anchor collision rate. Lexical metrics use deterministic Dirichlet-prior log-odds over definition tokens.
+
+Sealed artifact sha256 `2cb2fe2459a86323dfa8aa50136bb8e6822598ffd8895a1988af459949853d5f`. Pairwise embedding matrix sha256 `3957e4cefabf37a7d8993f0574c7a76c93096c0cd991b8a7134207e07ade7bda`. Lexical matrix sha256 `1579d47aabbb4429b352ad7c251b79b4f5722506d80d0cc25afd7a8d251ce3a5`.
+
+Family status: `UNDER_SUPPORTED` for `betting-sharp`, `internet-slang`, and `memetic`; `OVERLAPPING` for ten families including the bulk of the 15-family collapse cluster plus `ai-native`; `NOISY` for `music-entertainment`, `regional-cultural`, `relationship-dating`, and `workplace-career`; `UNRESOLVED` for `gaming-meta` and `crypto-degen`. No family sealed as `SEPARABLE`.
+
+Pair flags across 171 unordered pairs: `DATA_TOO_SPARSE` 51, `REPRESENTATION_COLLAPSE` 99, `ONTOLOGY_OVERLAP` 71, `LABEL_NOISE` 112, `SEPARABLE` 4. Pairwise probes are computable for 136 pairs; median probe F1 is 0.3333 with only 6 pairs at or above 0.80. Lexical log-odds often find enriched tokens, so `DEFINITION_TOO_GENERIC` does not dominate the flag table, but representation collapse and failed probes show the training definitions still do not carve mutually exclusive family geometry.
+
+Sparse-family treatment refuses ontology failure from support alone. Additional data is judged plausible for `betting-sharp`, `internet-slang` (58 val definitions available), and `memetic`. Suspected label-noise rows are flagged without automatic relabeling.
+
+Overall decision: `MIXED_REMEDIATION_REQUIRED`. The current 19-family ontology cannot be learned from the current training evidence. Next engineering action is mixed remediation: expand direct positive definition support for sparse families, clean the flagged noisy rows, and refine or refactor mutually non-exclusive collapse-cluster boundaries before any further scorer or encoder training.
+
