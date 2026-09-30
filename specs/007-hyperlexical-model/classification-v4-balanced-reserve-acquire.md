@@ -1,7 +1,7 @@
 # Classification v4 — balanced fresh reserve acquisition
 
 ```text
-HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1 = PREREGISTERED
+HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1 = ACQUIRE_READY
 parent = HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE (SETTLED_FAIL)
 BEST = UNCHANGED
 spent_v2_reserve_reuse = false
@@ -9,6 +9,13 @@ spent_v3_reserve_reuse = false
 train = false
 score_reserve = false
 recalibrate = false
+n = 176
+n_none = 48
+n_present = 128
+n_distinct_active_families = 16
+max_single_family_share_of_present = 0.0625
+rows_sha256 = dd224047b331cd13b5a6893519907f9998620a482b0d17f29b3444b46794eb82
+receipt_sha256 = 1998f409f5350bb296bd6a84e2be23411c0986177f7b4b1ca53b5b08b1bae9f5
 ```
 
 Opened after v3 `RESERVE_FAIL` on a skewed AVAILABLE scoop (internet-slang 97 /
