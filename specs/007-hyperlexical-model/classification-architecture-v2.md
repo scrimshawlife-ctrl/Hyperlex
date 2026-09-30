@@ -474,3 +474,25 @@ Artifact sha256 `ebab1e4d4d5a0f9169def6426de5b6137fb15f0b7c7d6b57d7aa295cbf6b717
 Primary recommendation: **`MERGE_PAIR`** — merge `approval-disapproval` and `social-status` into `social-evaluation`; keep `relationship-dating`. Rationale: AD↔SS probe F1≈0.33 and centroid≈0.91 after two cleaning passes; RD remains lexically distinct.
 
 Compatibility map (forward only; historical artifacts untouched): approval-disapproval→social-evaluation, social-status→social-evaluation, relationship-dating→relationship-dating. Next: operator-approve `APPLY_ONTOLOGY_MERGE_PAIR`, then overlap + readiness rerun before any training.
+
+
+## Ontology merge pair applied — AD+SS → social-evaluation (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_ONTOLOGY_MERGE_PAIR_V1` applied after sealed review `ebab1e4d…` (`MERGE_PAIR`). Forward-only. Historical v1/v2 vocabularies, checkpoints, reserves, and prior boundary artifacts are not rewritten. BEST unchanged `9fba0f66…`. Jev OFF. No train / reserve score.
+
+Forward vocabulary id `hyperlex.active_families.v2.forward_merge_pair_ad_ss` (18 families): remove `approval-disapproval` and `social-status`; add `social-evaluation` (rank/prestige/hierarchy/standing/praise/pejoration/approval/disapproval). Keep `relationship-dating` with explicit exclusion of status/evaluative-only semantics.
+
+Migration map (freeze): approval-disapproval→social-evaluation, social-status→social-evaluation, relationship-dating→relationship-dating; all other active families identity. Head init for `social-evaluation`: semantic prototype from all merged training definitions — no silent single-predecessor row claim.
+
+Sealed under `/home/morpheus/hlx-private/classification-v2-ontology-merge-pair-20260930/`:
+
+- Artifact sha256 `c901badb70c0c72f1af20fe4dd0b64bcbdfad917568682e9abb2cc9321ad69d5`
+- Ontology sha256 `67d6b100e48171c522dd43fcc2038bdc97ef479cfcc9ae98f0534e520224b813` (18 families)
+- Migration map sha256 `ebb56076437b4c9c4a33b22aad81c07fc2ba52824ebc48abdff67d5a69c8c39f`
+- Export `civilian.v0.6.merge.jsonl` sha256 `a8c064151973d7b2b9f439dc9fab499c69c2dd8a22a19206d7f486d970975130`
+- New boundary sha256 `d7c16112412c546288be744fb426e495cdb77ec970e737455df01d00d3fd141a` (historical `0ca6f34c…` untouched)
+- Separation sha256 `1f7f925d76a56dd471c0b6e78e6952427c651f998254742c422aa75a8fb33e1c`
+- Definition supports verified fail-closed: social-evaluation 12/4; relationship-dating 5/2
+- Overlap cosine≥0.80: pre 35 → post 34 (absolute −1, 2.86%); collapse component 12 → 12
+- relationship-dating remains `OVERLAP_REMAINS_STRUCTURAL_FUTURE_CANDIDATE` (not merged)
+- Training gate **CLOSED**. Residual: `MATERIAL_OVERLAP_REDUCTION_NOT_MET`, `COLLAPSE_COMPONENT_NOT_WEAKENED`. Next: `RESOLVE_RESIDUAL_BLOCKERS` — do not train.

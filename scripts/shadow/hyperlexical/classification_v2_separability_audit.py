@@ -272,15 +272,17 @@ def definition_sources(
     identity_state: Mapping[str, str] | None = None,
     *,
     split: str,
+    vocabulary: Sequence[str] | None = None,
 ) -> dict[str, Any]:
     """Definition prose for one split. Train uses the sealed boundary filter."""
     if split == "train":
-        return boundary_training_sources(rows, identity_state)
+        return boundary_training_sources(rows, identity_state, vocabulary=vocabulary)
     if split != "val":
         raise ClassificationContractError("SEPARABILITY_AUDIT_UNAVAILABLE", "split")
+    vocab = tuple(vocabulary) if vocabulary is not None else ACTIVE_FAMILY_VOCABULARY
     states = identity_state or {}
     grouped: dict[str, dict[str, Mapping[str, Any]]] = {
-        family: {} for family in ACTIVE_FAMILY_VOCABULARY
+        family: {} for family in vocab
     }
     excluded: list[dict[str, str]] = []
     for row in rows:
@@ -313,7 +315,7 @@ def definition_sources(
             continue
         grouped[lineage][digest] = row
     sources: dict[str, dict[str, Any]] = {}
-    for family in ACTIVE_FAMILY_VOCABULARY:
+    for family in vocab:
         items = sorted(grouped[family].items(), key=lambda item: item[0])
         if not items:
             continue

@@ -489,12 +489,17 @@ def _best_cross(
     }
 
 
-def assemble_boundaries(family_members: Mapping[str, Sequence[Mapping[str, Any]]]) -> dict[str, Any]:
+def assemble_boundaries(
+    family_members: Mapping[str, Sequence[Mapping[str, Any]]],
+    *,
+    vocabulary: Sequence[str] | None = None,
+) -> dict[str, Any]:
     """Build the sealed multi-anchor boundary artifact from prepared members."""
-    if set(family_members) != set(ACTIVE_FAMILY_VOCABULARY):
-        missing = [family for family in ACTIVE_FAMILY_VOCABULARY if family not in family_members]
+    vocab = tuple(vocabulary) if vocabulary is not None else ACTIVE_FAMILY_VOCABULARY
+    if set(family_members) != set(vocab):
+        missing = [family for family in vocab if family not in family_members]
         raise ClassificationContractError("FAMILY_BOUNDARY_UNAVAILABLE", missing or "coverage")
-    built = [build_family_anchors(family, family_members[family]) for family in ACTIVE_FAMILY_VOCABULARY]
+    built = [build_family_anchors(family, family_members[family]) for family in vocab]
     flat, matrix = _cosine_pairs(built)
     anchor_ids = [anchor["anchor_id"] for anchor in flat]
     collisions: list[dict[str, Any]] = []
@@ -574,8 +579,8 @@ def assemble_boundaries(family_members: Mapping[str, Sequence[Mapping[str, Any]]
             }
         )
     separation: list[dict[str, Any]] = []
-    for left in ACTIVE_FAMILY_VOCABULARY:
-        for right in ACTIVE_FAMILY_VOCABULARY:
+    for left in vocab:
+        for right in vocab:
             if left == right:
                 continue
             cross = _best_cross(flat, matrix, left, right)
@@ -683,8 +688,13 @@ def boundary_sha256(artifact: Mapping[str, Any]) -> str:
     return sha256_text(canonical_json(body))
 
 
-def assess_boundary_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
+def assess_boundary_artifact(
+    artifact: Mapping[str, Any],
+    *,
+    vocabulary: Sequence[str] | None = None,
+) -> dict[str, Any]:
     """Refuse a single-centroid witness as the v1 boundary representation."""
+    vocab = tuple(vocabulary) if vocabulary is not None else ACTIVE_FAMILY_VOCABULARY
     try:
         if artifact.get("schema") != BOUNDARY_SCHEMA:
             raise ClassificationContractError("FAMILY_BOUNDARY_UNAVAILABLE", "schema")
@@ -699,7 +709,7 @@ def assess_boundary_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
             raise ClassificationContractError("FAMILY_BOUNDARY_UNAVAILABLE", "centroid")
         families = list(artifact["families"])
         names = [family["family"] for family in families]
-        if names != list(ACTIVE_FAMILY_VOCABULARY):
+        if names != list(vocab):
             raise ClassificationContractError("FAMILY_BOUNDARY_UNAVAILABLE", "coverage")
         reserved = set(artifact.get("excluded_identities") or [])
         for family in families:
@@ -744,7 +754,8 @@ def assess_boundary_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
             raise ClassificationContractError("FAMILY_BOUNDARY_UNAVAILABLE", "anchor_witness")
         if artifact.get("separation_sha256") != separation_sha256(artifact["separation"]):
             raise ClassificationContractError("FAMILY_BOUNDARY_UNAVAILABLE", "separation")
-        if len(artifact["separation"]) != 19 * 18:
+        expected_pairs = len(vocab) * (len(vocab) - 1)
+        if len(artifact["separation"]) != expected_pairs:
             raise ClassificationContractError("FAMILY_BOUNDARY_UNAVAILABLE", "separation")
         if artifact.get("boundary_sha256") != boundary_sha256(artifact):
             raise ClassificationContractError("FAMILY_BOUNDARY_UNAVAILABLE", "boundary_hash")
@@ -755,7 +766,7 @@ def assess_boundary_artifact(artifact: Mapping[str, Any]) -> dict[str, Any]:
     return {
         "anchor_witness_sha256": artifact["anchor_witness_sha256"],
         "boundary_sha256": artifact["boundary_sha256"],
-        "families": 19,
+        "families": len(vocab),
         "pass": True,
         "separation_sha256": artifact["separation_sha256"],
     }
@@ -785,6 +796,8 @@ def _blocked_row(row: Mapping[str, Any], identity_state: Mapping[str, str]) -> s
 def boundary_training_sources(
     rows: Sequence[Mapping[str, Any]],
     identity_state: Mapping[str, str] | None = None,
+    *,
+    vocabulary: Sequence[str] | None = None,
 ) -> dict[str, Any]:
     """Training-split definition text for every active family.
 
@@ -796,8 +809,9 @@ def boundary_training_sources(
     from .classification_v2 import EXACT_COPY_FAMILIES
     from .classification_v2_surface import SURFACE_PROSE, surface_form
 
+    vocab = tuple(vocabulary) if vocabulary is not None else ACTIVE_FAMILY_VOCABULARY
     states = identity_state or {}
-    grouped: dict[str, dict[str, Mapping[str, Any]]] = {family: {} for family in ACTIVE_FAMILY_VOCABULARY}
+    grouped: dict[str, dict[str, Mapping[str, Any]]] = {family: {} for family in vocab}
     excluded: list[dict[str, str]] = []
     for row in rows:
         if row.get("split") != "train":
@@ -829,7 +843,7 @@ def boundary_training_sources(
             continue
         grouped[lineage][digest] = row
     sources: dict[str, dict[str, Any]] = {}
-    for family in ACTIVE_FAMILY_VOCABULARY:
+    for family in vocab:
         items = sorted(grouped[family].items(), key=lambda item: item[0])
         if not items:
             continue
