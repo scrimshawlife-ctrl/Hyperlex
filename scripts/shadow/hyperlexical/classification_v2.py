@@ -26,13 +26,14 @@ STATE = "PREREGISTERED"
 SCHEMA = "hyperlex.classification.v2"
 PACKET_SCHEMA = "hyperlex.jev.decision_packet.v1"
 ADAPTER_SCHEMA = "hyperlex.classification.v2.row_mapping.v1"
-VOCABULARY_ID = "hyperlex.active_families.v1"
+VOCABULARY_ID_HISTORICAL = "hyperlex.active_families.v1"
+VOCABULARY_ID_FORWARD = "hyperlex.active_families.v2.forward_merge_pair_ad_ss"
 
 BEST_REFERENCE_SHA256 = (
     "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6"
 )
 
-ACTIVE_FAMILY_VOCABULARY: tuple[str, ...] = (
+HISTORICAL_ACTIVE_FAMILY_VOCABULARY: tuple[str, ...] = (
     "gaming-meta",
     "betting-sharp",
     "crypto-degen",
@@ -53,7 +54,32 @@ ACTIVE_FAMILY_VOCABULARY: tuple[str, ...] = (
     "politics-civic",
     "ai-native",
 )
-if tuple(ACTIVE_FAMILIES) != ACTIVE_FAMILY_VOCABULARY:
+
+
+def _forward_active_family_vocabulary() -> tuple[str, ...]:
+    """18-family forward vocab (AD+SS → social-evaluation). Historical tuple untouched."""
+    out: list[str] = []
+    inserted = False
+    for family in HISTORICAL_ACTIVE_FAMILY_VOCABULARY:
+        if family in {"approval-disapproval", "social-status"}:
+            if not inserted:
+                out.append("social-evaluation")
+                inserted = True
+            continue
+        out.append(family)
+    if not inserted:
+        out.append("social-evaluation")
+    return tuple(out)
+
+
+FORWARD_ONTOLOGY = os.environ.get("HLX_V2_FORWARD_ONTOLOGY") == "1"
+ACTIVE_FAMILY_VOCABULARY: tuple[str, ...] = (
+    _forward_active_family_vocabulary()
+    if FORWARD_ONTOLOGY
+    else HISTORICAL_ACTIVE_FAMILY_VOCABULARY
+)
+VOCABULARY_ID = VOCABULARY_ID_FORWARD if FORWARD_ONTOLOGY else VOCABULARY_ID_HISTORICAL
+if not FORWARD_ONTOLOGY and tuple(ACTIVE_FAMILIES) != ACTIVE_FAMILY_VOCABULARY:
     raise RuntimeError("ACTIVE_FAMILIES drifted from the sealed v2 vocabulary")
 
 V1_HEAD = tuple(FAMILIES)

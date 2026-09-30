@@ -520,3 +520,7 @@ Sealed artifact sha256 `96a0587c06fac352872e462445f2eaaf773e35a48ab4c987e267b479
 - Overlap cosine≥0.80: pre 34 → post 23 (absolute −11, reduction 32.35%); collapse 12 → 11
 - SE/RD not merged
 - Training gate **OPEN**. Next: `TRAIN_CLASSIFICATION_V2` — do not score reserve or move BEST in the train pass authorization.
+
+## Classification v2 forward-hub training (2026-09-30)
+
+Rule path: `TRAIN_CLASSIFICATION_V2` after residual hub boundary `96a0587c…` opened the gate. Forward ontology (`HLX_V2_FORWARD_ONTOLOGY=1`, 18 families), hub-filtered export `civilian.v0.7.hub.jsonl`, semantic prototype for `social-evaluation`. Does not score the reserve or move BEST.

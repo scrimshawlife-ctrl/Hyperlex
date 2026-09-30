@@ -11,7 +11,7 @@ from collections import Counter, defaultdict
 from typing import Any, Mapping, Sequence
 
 from .classification_v2 import (
-    ACTIVE_FAMILY_VOCABULARY,
+    HISTORICAL_ACTIVE_FAMILY_VOCABULARY,
     ClassificationContractError,
     canonical_json,
     sha256_text,
@@ -68,10 +68,10 @@ PRE_MERGE_OVERLAP_PIN = {
 
 
 def forward_active_family_vocabulary() -> tuple[str, ...]:
-    """18-family forward vocabulary. Historical ACTIVE_FAMILY_VOCABULARY untouched."""
+    """18-family forward vocabulary. Historical vocabulary tuple untouched."""
     out: list[str] = []
     inserted = False
-    for family in ACTIVE_FAMILY_VOCABULARY:
+    for family in HISTORICAL_ACTIVE_FAMILY_VOCABULARY:
         if family in SOURCE_MERGE_FAMILIES:
             if not inserted:
                 out.append(MERGED_LABEL)
@@ -105,7 +105,7 @@ FORWARD_COLLAPSE_CLUSTER = forward_collapse_cluster()
 
 
 def freeze_migration_map() -> dict[str, Any]:
-    mapping = {family: family for family in ACTIVE_FAMILY_VOCABULARY}
+    mapping = {family: family for family in HISTORICAL_ACTIVE_FAMILY_VOCABULARY}
     mapping["approval-disapproval"] = MERGED_LABEL
     mapping["social-status"] = MERGED_LABEL
     mapping["relationship-dating"] = KEEP_FAMILY

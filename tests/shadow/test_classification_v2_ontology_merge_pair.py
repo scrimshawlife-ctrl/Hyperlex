@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
-from hyperlexical.classification_v2 import ACTIVE_FAMILY_VOCABULARY  # noqa: E402
+from hyperlexical.classification_v2 import HISTORICAL_ACTIVE_FAMILY_VOCABULARY  # noqa: E402
 from hyperlexical.classification_v2_ontology_merge_pair import (  # noqa: E402
     EXPECTED_MIGRATED_TRAIN,
     EXPECTED_MIGRATED_VAL,
@@ -57,9 +57,9 @@ def test_contract_and_forward_vocab():
     for family in SOURCE_MERGE_FAMILIES:
         assert family not in FORWARD_ACTIVE_FAMILY_VOCABULARY
     # Historical vocabulary untouched.
-    assert "approval-disapproval" in ACTIVE_FAMILY_VOCABULARY
-    assert "social-status" in ACTIVE_FAMILY_VOCABULARY
-    assert MERGED_LABEL not in ACTIVE_FAMILY_VOCABULARY
+    assert "approval-disapproval" in HISTORICAL_ACTIVE_FAMILY_VOCABULARY
+    assert "social-status" in HISTORICAL_ACTIVE_FAMILY_VOCABULARY
+    assert MERGED_LABEL not in HISTORICAL_ACTIVE_FAMILY_VOCABULARY
     assert MERGED_LABEL in FORWARD_COLLAPSE_CLUSTER
     assert "approval-disapproval" not in FORWARD_COLLAPSE_CLUSTER
     assert "social-status" not in FORWARD_COLLAPSE_CLUSTER
