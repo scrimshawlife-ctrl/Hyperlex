@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Train v3 Stage A evidence gate (Spec 007):** one authorized train on the
+  READY `HYPERLEX_V3_EVIDENCE_SURFACE_V1` against the preregistered
+  `false_evidence_entry_rate_on_none <= 0.05` gate. No v3 reserve, BEST
+  unchanged.
+
 - **Preregister v3 evidence gate + fresh surface (Spec 007):** freeze
   Stage A labels, false-entry ≤ 0.05, family emission ≥ 0.80, schema hashes,
   and decision semantics; build `HYPERLEX_V3_EVIDENCE_SURFACE_V1` (n=4124,
