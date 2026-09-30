@@ -70,6 +70,10 @@ def sha256_file(path: Path) -> str:
 
 
 def sudo_sha256(path: Path) -> str:
+    try:
+        return sha256_file(path)
+    except PermissionError:
+        pass
     completed = subprocess.run(
         ["sudo", "-n", "sha256sum", str(path)],
         check=True,
