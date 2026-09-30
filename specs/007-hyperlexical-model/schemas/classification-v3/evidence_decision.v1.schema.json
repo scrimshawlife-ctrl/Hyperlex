@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v3.evidence_decision.v1",
+  "title": "Classification v3 Stage-A evidence decision packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "input_sha256",
+    "decision",
+    "probabilities",
+    "evidence_score",
+    "decision_thresholds",
+    "model"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "hyperlex.classification.v3.evidence_decision.v1"
+    },
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["NO_EVIDENCE", "EVIDENCE_PRESENT", "UNCERTAIN"]
+    },
+    "probabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["NO_EVIDENCE", "EVIDENCE_PRESENT", "UNCERTAIN"],
+      "properties": {
+        "NO_EVIDENCE": { "type": "number", "minimum": 0, "maximum": 1 },
+        "EVIDENCE_PRESENT": { "type": "number", "minimum": 0, "maximum": 1 },
+        "UNCERTAIN": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "evidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Canonical scalar evidence strength used by the gate."
+    },
+    "nearest_positive_support": {
+      "type": ["number", "null"],
+      "minimum": -1,
+      "maximum": 1
+    },
+    "nearest_negative_support": {
+      "type": ["number", "null"],
+      "minimum": -1,
+      "maximum": 1
+    },
+    "support_margin": {
+      "type": ["number", "null"],
+      "minimum": -2,
+      "maximum": 2
+    },
+    "decision_thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["present_threshold", "none_threshold"],
+      "properties": {
+        "present_threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+        "none_threshold": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpoint_sha256", "config_sha256"],
+      "properties": {
+        "checkpoint_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "config_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

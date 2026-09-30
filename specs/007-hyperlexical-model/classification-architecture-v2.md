@@ -577,3 +577,16 @@ Seal: `/home/morpheus/hlx-private/classification-v2-family-retrieval-reserve-202
 - decisions: FAMILY 22 / NONE 31 / ABSTAIN 46 / AMBIGUOUS 16
 - top1 0.240; top2 0.360; selective contract does **not** generalize
 - Disposition: **RESERVE_FAIL**. Preserve result. Do not reopen scorer tuning against the reserve. BEST unchanged.
+
+## Final settlement (2026-09-30)
+
+```text
+HYPERLEX_CLASSIFICATION_V2 = RESERVE_FAILED
+primary_failure = APPLICABILITY_GENERALIZATION_FAILURE
+family_retrieval = VALIDATION_SUPPORTED_RESERVE_UNSUPPORTED
+production_promotion = REJECTED
+BEST = UNCHANGED
+lifecycle = SETTLED_FAIL
+```
+
+Full seal: `classification-v2-final-settlement.md`. Successor: `HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE` in `classification-architecture-v3.md` (spec only; no train; spent reserve permanently diagnostic).

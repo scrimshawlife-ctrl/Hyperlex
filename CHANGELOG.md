@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Classification v2 final settlement + v3 evidence gate (Spec 007):** seal
+  `HYPERLEX_CLASSIFICATION_V2 = RESERVE_FAILED` /
+  `APPLICABILITY_GENERALIZATION_FAILURE`; production promotion rejected; BEST
+  unchanged. Open `HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE` specs/schemas
+  (Stage A/B/C, dataset admission, evaluation with preregistered
+  `false_evidence_entry_rate_on_none <= 0.05`). No v3 train; spent v2 reserve
+  permanently diagnostic only.
+
 - **Family retrieval reserve eval (Spec 007):** `OPERATOR_AUTHORIZE_RESERVE_EVAL`
   scored the sealed classify reserve once under frozen retrieval thresholds
   0.85 / 0.03. Disposition `RESERVE_FAIL` (emission precision 0.409 < 0.80).
