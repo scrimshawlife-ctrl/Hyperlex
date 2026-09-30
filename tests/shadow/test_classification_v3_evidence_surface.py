@@ -158,6 +158,22 @@ def test_build_surface_meets_floors_and_disjointness():
     assert SURFACE_RULE == "HYPERLEX_V3_EVIDENCE_SURFACE_V1"
 
 
+def test_collect_pools_enforces_global_identity_uniqueness():
+    text = "same identity conflict phrase with enough words here"
+    pools = collect_pools(
+        [
+            _row(text, lineage="none"),
+            _row(text, lineage="ai-native"),
+            _row(text, lineage="brainrot-aura"),
+        ],
+        spent_reserve_ids=set(),
+    )
+    total = sum(len(values) for values in pools.values())
+    assert total == 1
+    assert len(pools["POSITIVE_EVIDENCE"]) == 1
+    assert pools["POSITIVE_EVIDENCE"][0]["evidence_subtype"] == "POSITIVE_EVIDENCE"
+
+
 def test_validate_row_rejects_inconsistent_positive():
     example = build_example(
         _row("positive family bearing prose about systems", lineage="ai-native"),

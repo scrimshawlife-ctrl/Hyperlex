@@ -154,12 +154,33 @@ def build_example(row: Mapping[str, Any], subtype: str) -> dict[str, Any]:
     return example
 
 
+_SUBTYPE_PRIORITY = {
+    "POSITIVE_EVIDENCE": 0,
+    "AMBIGUOUS_EVIDENCE": 1,
+    "HARD_NONE": 2,
+    "NEAR_DOMAIN_NONE": 3,
+    "GENERIC_NONE": 4,
+}
+
+
+def _example_rank(example: Mapping[str, Any]) -> tuple[int, int]:
+    """Lower is better: stronger subtype, then OBSERVED over INFERRED."""
+    subtype_rank = _SUBTYPE_PRIORITY[str(example["evidence_subtype"])]
+    provenance_rank = 0 if example.get("provenance") == "OBSERVED" else 1
+    return (subtype_rank, provenance_rank)
+
+
 def collect_pools(
     rows: Sequence[Mapping[str, Any]],
     *,
     spent_reserve_ids: set[str],
 ) -> dict[str, list[dict[str, Any]]]:
-    pools: dict[str, dict[str, dict[str, Any]]] = {name: {} for name in EVIDENCE_SUBTYPES}
+    """Collect subtype pools with global identity uniqueness.
+
+    The same normalized identity never enters more than one subtype. When source
+    rows conflict, keep the stronger evidence subtype and prefer OBSERVED.
+    """
+    chosen: dict[str, dict[str, Any]] = {}
     for row in rows:
         if not _is_admissible_source_row(row):
             continue
@@ -170,16 +191,15 @@ def collect_pools(
         identity = example["identity"]
         if identity in spent_reserve_ids:
             continue
-        # Prefer OBSERVED over INFERRED when the same identity appears twice.
-        previous = pools[subtype].get(identity)
-        if previous is None or (
-            previous["provenance"] == "INFERRED" and example["provenance"] == "OBSERVED"
-        ):
-            pools[subtype][identity] = example
-    return {
-        subtype: sorted(values.values(), key=lambda item: item["identity"])
-        for subtype, values in pools.items()
-    }
+        previous = chosen.get(identity)
+        if previous is None or _example_rank(example) < _example_rank(previous):
+            chosen[identity] = example
+    pools: dict[str, list[dict[str, Any]]] = {name: [] for name in EVIDENCE_SUBTYPES}
+    for example in chosen.values():
+        pools[str(example["evidence_subtype"])].append(example)
+    for subtype in EVIDENCE_SUBTYPES:
+        pools[subtype].sort(key=lambda item: item["identity"])
+    return pools
 
 
 def _split_bucket(identity: str) -> str:
