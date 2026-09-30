@@ -26,13 +26,14 @@ STATE = "PREREGISTERED"
 SCHEMA = "hyperlex.classification.v2"
 PACKET_SCHEMA = "hyperlex.jev.decision_packet.v1"
 ADAPTER_SCHEMA = "hyperlex.classification.v2.row_mapping.v1"
-VOCABULARY_ID = "hyperlex.active_families.v1"
+VOCABULARY_ID_HISTORICAL = "hyperlex.active_families.v1"
+VOCABULARY_ID_FORWARD = "hyperlex.active_families.v2.forward_merge_pair_ad_ss"
 
 BEST_REFERENCE_SHA256 = (
     "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6"
 )
 
-ACTIVE_FAMILY_VOCABULARY: tuple[str, ...] = (
+HISTORICAL_ACTIVE_FAMILY_VOCABULARY: tuple[str, ...] = (
     "gaming-meta",
     "betting-sharp",
     "crypto-degen",
@@ -53,7 +54,32 @@ ACTIVE_FAMILY_VOCABULARY: tuple[str, ...] = (
     "politics-civic",
     "ai-native",
 )
-if tuple(ACTIVE_FAMILIES) != ACTIVE_FAMILY_VOCABULARY:
+
+
+def _forward_active_family_vocabulary() -> tuple[str, ...]:
+    """18-family forward vocab (AD+SS → social-evaluation). Historical tuple untouched."""
+    out: list[str] = []
+    inserted = False
+    for family in HISTORICAL_ACTIVE_FAMILY_VOCABULARY:
+        if family in {"approval-disapproval", "social-status"}:
+            if not inserted:
+                out.append("social-evaluation")
+                inserted = True
+            continue
+        out.append(family)
+    if not inserted:
+        out.append("social-evaluation")
+    return tuple(out)
+
+
+FORWARD_ONTOLOGY = os.environ.get("HLX_V2_FORWARD_ONTOLOGY") == "1"
+ACTIVE_FAMILY_VOCABULARY: tuple[str, ...] = (
+    _forward_active_family_vocabulary()
+    if FORWARD_ONTOLOGY
+    else HISTORICAL_ACTIVE_FAMILY_VOCABULARY
+)
+VOCABULARY_ID = VOCABULARY_ID_FORWARD if FORWARD_ONTOLOGY else VOCABULARY_ID_HISTORICAL
+if not FORWARD_ONTOLOGY and tuple(ACTIVE_FAMILIES) != ACTIVE_FAMILY_VOCABULARY:
     raise RuntimeError("ACTIVE_FAMILIES drifted from the sealed v2 vocabulary")
 
 V1_HEAD = tuple(FAMILIES)
@@ -72,6 +98,11 @@ V2_NONE = "NONE"
 V2_ABSTAIN = "ABSTAIN"
 V2_AMBIGUOUS = "AMBIGUOUS"
 DECISIONS = (V2_FAMILY, V2_NONE, V2_ABSTAIN, V2_AMBIGUOUS)
+# Canonical Classification v2 family decision is training-side retrieval
+# (HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1). The residual 18-way family head remains
+# for diagnostic/compatibility/research only and is not product output.
+CANONICAL_FAMILY_DECISION = "retrieval_mean_top_m_cosine"
+RESIDUAL_FAMILY_HEAD_ROLE = "diagnostic_compatibility_research_only"
 APPLICABILITY_NONE = "NONE"
 APPLICABILITY_PRESENT = "FAMILY_PRESENT"
 APPLICABILITY = (APPLICABILITY_NONE, APPLICABILITY_PRESENT)
@@ -134,6 +165,8 @@ TELEMETRY_FIELDS = (
     "family_present_f1",
     "active_family_macro_f1",
     "observed_active_family_macro_f1",
+    "exact_copy_family_macro_f1",
+    "prototype_family_macro_f1",
     "per_family",
     "predicted_none_rate",
     "family_emission_rate",
@@ -210,15 +243,34 @@ def decision_seal() -> dict[str, Any]:
         "active_family_vocabulary": list(ACTIVE_FAMILY_VOCABULARY),
         "ambiguity_emission": AMBIGUITY_EMISSION,
         "applicability_balance": "inverse_square_root_mean_one",
+        "applicability_surface_balance": "four_cell_inverse_support_mean_one",
         "exact_copy_families": list(EXACT_COPY_FAMILIES),
         "family_weight_clip": [FAMILY_WEIGHT_FLOOR, FAMILY_WEIGHT_CAP],
         "family_weight_rule": "sqrt(median/effective)_then_mean_one_then_clip",
         "forbidden_near_matches": [list(pair) for pair in FORBIDDEN_NEAR_MATCHES],
         "legacy_heads": list(LEGACY_HEADS),
-        "new_row_initialization": "exact_zero",
+        "new_row_initialization": "semantic_prototype",
         "provenance_weights": PROVENANCE_WEIGHTS,
         "schedule": V2_SCHEDULE,
         "selection_score": "0.50*active_family_macro_f1+0.25*applicability_macro_f1+0.25*observed_active_family_macro_f1",
+        "applicability_surface_f1_min": 0.80,
+        "none_surface_gap_abs_max": 0.10,
+        "residualized_length_correlation_abs_max": 0.30,
+        "surface_rule": "hyperlex.classification.v2.surface.v1",
+        "surface_shortcut_abs_correlation_max": 0.30,
+        "family_canonical_logits": "learned_residual",
+        "family_fusion_alpha": 1.0,
+        "family_fusion_beta": 1.0,
+        "family_fusion_rule": "population_zscore(cosine/tau)+population_zscore(residual)",
+        "family_geometry_hard_negative_multiplier": 2.0,
+        "family_geometry_lambda": 0.5,
+        "family_geometry_repair": "HYPERLEX_FAMILY_GEOMETRY_REPAIR_V1",
+        "family_geometry_tau": 0.10,
+        "family_hard_negative_multiplier": 2.0,
+        "family_prototype_lambda": 0.5,
+        "family_prototype_tau": 0.10,
+        "family_prototypes": "frozen_loss_structure_only",
+        "surface_shortcut_diagnostic": "gold_conditional_residualized",
         "vocabulary_id": VOCABULARY_ID,
     }
     return {"sha256": sha256_text(canonical_json(body)), "body": body}
@@ -521,14 +573,58 @@ def freeze_training_contract(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any
         raise ActiveFamilyWithoutTrainingSupport(audit["missing_support"])
     family_weights = family_loss_weights(audit)
     applicability = applicability_class_weights(audit)
+    from .classification_v2_surface import surface_cell_weights
+
     return {
         "status": "FROZEN",
         "provenance_weights": dict(PROVENANCE_WEIGHTS),
         "family_weights": family_weights,
         "applicability_weights": applicability,
+        "surface_cell_weights": surface_cell_weights(rows, PROVENANCE_WEIGHTS),
         "audit": audit,
         "reserve_rows_used": 0,
     }
+
+
+
+def _surface_of(row: Mapping[str, Any]) -> str | None:
+    if "text" not in row:
+        return None
+    from .classification_v2_surface import surface_form
+
+    return surface_form(str(row.get("text") or ""))
+
+
+def _applicability_multiplier(
+    row: Mapping[str, Any],
+    contract: Mapping[str, Any],
+    target: str,
+) -> float | None:
+    """Provenance authority inside a surface cell.
+
+    Rows that predate surface metadata keep the two-class applicability weight.
+    Ambiguous text is masked out of the applicability objective.
+    """
+    provenance = contract["provenance_weights"]
+    klass = _class_of(row)
+    if target == APPLICABILITY_NONE:
+        key = "observed_none_applicability" if klass == "OBSERVED" else "inferred_none_applicability"
+    else:
+        prefix = "observed_non_none" if klass == "OBSERVED" else "inferred_non_none"
+        key = prefix + "_applicability"
+    base = provenance[key]
+    if "text" not in row:
+        return base * contract["applicability_weights"][target]
+    from .classification_v2_surface import SURFACE_AMBIGUOUS, cell_name, surface_form
+
+    form = surface_form(str(row.get("text") or ""))
+    if form == SURFACE_AMBIGUOUS:
+        return None
+    weights = contract.get("surface_cell_weights") or {}
+    name = cell_name(target, form)
+    if name not in weights:
+        raise ClassificationContractError("applicability_surface_cell_missing", name)
+    return base * weights[name]
 
 
 def example_loss(row: Mapping[str, Any], contract: Mapping[str, Any]) -> dict[str, Any]:
@@ -547,19 +643,15 @@ def example_loss(row: Mapping[str, Any], contract: Mapping[str, Any]) -> dict[st
         "trained_class_ambiguous": False,
     }
     if lineage == V1_NONE_CLASS:
-        key = "observed_none_applicability" if klass == "OBSERVED" else "inferred_none_applicability"
         plan["applicability_target"] = APPLICABILITY_NONE
-        plan["applicability_weight"] = (
-            provenance[key] * contract["applicability_weights"][APPLICABILITY_NONE]
-        )
+        plan["applicability_weight"] = _applicability_multiplier(row, contract, APPLICABILITY_NONE)
+        plan["surface"] = _surface_of(row)
         return plan
     if lineage in ACTIVE_FAMILY_VOCABULARY:
         prefix = "observed_non_none" if klass == "OBSERVED" else "inferred_non_none"
         plan["applicability_target"] = APPLICABILITY_PRESENT
-        plan["applicability_weight"] = (
-            provenance[prefix + "_applicability"]
-            * contract["applicability_weights"][APPLICABILITY_PRESENT]
-        )
+        plan["applicability_weight"] = _applicability_multiplier(row, contract, APPLICABILITY_PRESENT)
+        plan["surface"] = _surface_of(row)
         plan["family_target"] = lineage
         plan["family_weight"] = provenance[prefix + "_family"] * contract["family_weights"][lineage]
         return plan
@@ -610,6 +702,16 @@ def epoch_selection_metrics(
     app = prf_table(app_gold, app_pred, APPLICABILITY)
     fam = prf_table(fam_gold, fam_pred, ACTIVE_FAMILY_VOCABULARY)
     obs = prf_table(obs_gold, obs_pred, ACTIVE_FAMILY_VOCABULARY)
+    per_label = fam["per_label"]
+
+    def _group_macro(names: Sequence[str]) -> float | None:
+        scored = [float(per_label[name]["f1"]) for name in names if per_label[name]["support"]]
+        if not scored:
+            return None
+        return sum(scored) / len(scored)
+
+    copied = [name for name in ACTIVE_FAMILY_VOCABULARY if name in EXACT_COPY_FAMILIES]
+    prototyped = [name for name in ACTIVE_FAMILY_VOCABULARY if name not in EXACT_COPY_FAMILIES]
     score = None
     if None not in (app["macro_f1"], fam["macro_f1"], obs["macro_f1"]):
         score = selection_score(float(fam["macro_f1"]), float(app["macro_f1"]), float(obs["macro_f1"]))
@@ -621,6 +723,8 @@ def epoch_selection_metrics(
         "applicability_macro_f1": app["macro_f1"],
         "active_family_macro_f1": fam["macro_f1"],
         "observed_active_family_macro_f1": obs["macro_f1"],
+        "exact_copy_family_macro_f1": _group_macro(copied),
+        "prototype_family_macro_f1": _group_macro(prototyped),
         "none_precision": none_stats["precision"],
         "none_recall": none_stats["recall"],
         "none_f1": none_stats["f1"],
@@ -654,7 +758,7 @@ def _prf(gold: int, predicted: int, hit: int) -> dict[str, float | None]:
     precision = hit / predicted if predicted else 0.0
     recall = hit / gold if gold else 0.0
     f1 = 0.0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
-    return {"precision": precision, "recall": recall, "f1": f1, "support": gold}
+    return {"precision": precision, "recall": recall, "f1": f1, "support": gold, "predicted": predicted}
 
 
 def prf_table(golds: Sequence[str], preds: Sequence[str], labels: Sequence[str]) -> dict[str, Any]:
@@ -683,12 +787,15 @@ def _softmax(logits: Sequence[float], temperature: float) -> list[float]:
 
 
 def _mean_nll(rows: Sequence[tuple[Sequence[float], int]], temperature: float) -> float:
+    """Mean NLL. Log-sum-exp stays finite when a class probability underflows."""
     total = 0.0
     for logits, label in rows:
         if label < 0 or label >= len(logits):
             raise ClassificationContractError("calibration_label_invalid")
-        logp = math.log(_softmax(logits, temperature)[label])
-        total -= logp
+        scaled = [value / temperature for value in logits]
+        peak = max(scaled)
+        log_partition = math.log(sum(math.exp(value - peak) for value in scaled))
+        total -= scaled[label] - peak - log_partition
     return total / len(rows)
 
 
@@ -1106,8 +1213,12 @@ def readiness(
     *,
     loader_status: str,
     random_new_rows: bool = False,
+    prototype_report: Mapping[str, Any] | None = None,
+    validation_report: Mapping[str, Any] | None = None,
+    definition_report: Mapping[str, Any] | None = None,
+    surface_report: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """One audit. Zero-support families are returned together. Training stays off."""
+    """One audit. Incomplete families are returned together. Training stays off."""
     audit = support_audit(rows)
     missing = list(audit["missing_support"])
     family_weights: dict[str, float] | None = None
@@ -1117,11 +1228,22 @@ def readiness(
         applicability = applicability_class_weights(audit)
     elif audit["family_present_effective"] > 0 and audit["none"]["effective_support"] > 0:
         applicability = applicability_class_weights(audit)
+    prototype_pass = bool(prototype_report and prototype_report.get("pass"))
+    validation_pass = bool(validation_report and validation_report.get("pass"))
+    definition_pass = bool(definition_report and definition_report.get("pass"))
+    copied_pass = bool(prototype_report and prototype_report.get("copied_rows_match"))
     checks = {
         "all_active_family_rows_present": True,
         "all_active_families_have_positive_training_support": not missing,
+        "all_new_rows_have_semantic_prototypes": prototype_pass,
+        "all_copied_rows_match_source": copied_pass,
+        "all_families_have_validation_support": validation_pass,
+        "definition_string_rule_pass": definition_pass,
+        "prototype_witness_pass": prototype_pass and bool(prototype_report and prototype_report.get("determinism") == "pass"),
         "family_weight_table_frozen": family_weights is not None and not missing,
         "applicability_weight_table_frozen": applicability is not None and not missing,
+        "applicability_surface_cells_populated": surface_report is None or bool(surface_report.get("pass")),
+        "representation_lineage_isolated": surface_report is None or not surface_report.get("representation_leaks"),
         "provenance_weights_frozen": True,
         "loader_witness_pass": loader_status == "PASS",
         "no_random_new_rows": not random_new_rows,
@@ -1129,7 +1251,10 @@ def readiness(
         "calibration_procedure_frozen": True,
         "selection_metric_frozen": True,
         "evaluation_contract_frozen": True,
-        "telemetry_contract_pass": True,
+        "telemetry_contract_pass": (
+            "exact_copy_family_macro_f1" in TELEMETRY_FIELDS
+            and "prototype_family_macro_f1" in TELEMETRY_FIELDS
+        ),
         "training_evaluation_isolation_pass": True,
         "operator_authorization_present": OPERATOR_AUTHORIZATION["present"] is True,
         "ambiguous_emission_disabled": AMBIGUITY_EMISSION == "DISABLED_PENDING_GOLD",
@@ -1141,15 +1266,44 @@ def readiness(
         for key in checks
         if key not in {"jev_required_for_readiness", "ambiguous_emission_disabled"}
     )
+    blockers: list[str] = []
+    if missing:
+        blockers.append("ACTIVE_FAMILY_WITHOUT_TRAINING_SUPPORT")
+    if not definition_pass:
+        blockers.append("DEFINITION_STRING_RULE")
+    if not prototype_pass or checks["prototype_witness_pass"] is False:
+        blockers.append("FAMILY_PROTOTYPE_UNAVAILABLE")
+    if not validation_pass:
+        blockers.append("VALIDATION_FAMILY_SUPPORT_INSUFFICIENT")
+    if surface_report is not None and surface_report.get("representation_leaks"):
+        blockers.append("REPRESENTATION_LEAK")
+    if surface_report is not None and not surface_report.get("pass"):
+        blockers.append("APPLICABILITY_SURFACE_SHORTCUT")
+    if loader_status != "PASS":
+        blockers.append("LOADER_WITNESS")
+    if random_new_rows:
+        blockers.append("RANDOM_NEW_ROWS")
     return {
         "state": "READY" if ready else "PREREGISTERED",
         "ready": ready,
-        "blocker": None if ready else "ACTIVE_FAMILY_WITHOUT_TRAINING_SUPPORT",
+        "blocker": None if ready else blockers[0],
+        "blockers": [] if ready else blockers,
         "missing_support": missing,
+        "deficient_validation": list((validation_report or {}).get("deficient") or []),
+        "validation_support": dict((validation_report or {}).get("support") or {}),
+        "below_preferred_validation": list((validation_report or {}).get("below_preferred") or []),
+        "exact_copy_families": list((prototype_report or {}).get("exact_copy_families") or []),
+        "prototype_families": list((prototype_report or {}).get("prototype_families") or []),
+        "prototype_source_counts": dict((prototype_report or {}).get("source_counts") or {}),
+        "witness_sha256": None if not prototype_report else prototype_report.get("witness_sha256"),
+        "target_norm": None if not prototype_report else prototype_report.get("target_norm"),
         "checks": checks,
         "audit": audit,
         "family_weights": family_weights,
         "applicability_weights": applicability,
+        "surface_cells": None if surface_report is None else surface_report.get("cells"),
+        "surface_cell_weights": None if surface_report is None else surface_report.get("cell_weights"),
+        "surface_ambiguous": None if surface_report is None else surface_report.get("ambiguous"),
         "provenance_weights": dict(PROVENANCE_WEIGHTS),
         "authorizes_training": ready,
         "moves_best": False,

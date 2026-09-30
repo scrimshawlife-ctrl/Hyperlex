@@ -1,0 +1,22 @@
+{
+  "active_family_macro_f1": 0.18562993635457403,
+  "best_epoch": 3,
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "boundary_sha256": "d7c16112412c546288be744fb426e495cdb77ec970e737455df01d00d3fd141a",
+  "exit_code": 0,
+  "export_rows": 7629,
+  "export_sha256": "0d8f4532f84ed9fade3fd4e69af0d1e0717fb1098d40754e95c0090d8282bfe1",
+  "forward_ontology": true,
+  "hub_boundary_sha256": "96a0587c06fac352872e462445f2eaaf773e35a48ab4c987e267b479cab72a83",
+  "moves_best": false,
+  "next_action": "OPERATOR_DECIDE_RESERVE_OR_ITERATE \u2014 do not move BEST without explicit authorization",
+  "output": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v2-forward-hub",
+  "primary_weights_sha256": "adf5db93dfe258290be531f0a25035dfaae03873bd800fd929bee43b38c9f89c",
+  "prototype_family_macro_f1": 0.05451049985211476,
+  "prototype_witness_sha256": "acca1594b49aa624d0d4dc97f03c7ccc69176568dfde0bebb7fb81c5085ca294",
+  "removed_train_rows": 41,
+  "reserve_scored": false,
+  "run": "HLX-CLASSIFICATION-V2-FORWARD-HUB-20260930",
+  "schema": "hyperlex.classification.v2.forward_hub_train_receipt.v1",
+  "selection_score": 0.3605266559194555
+}

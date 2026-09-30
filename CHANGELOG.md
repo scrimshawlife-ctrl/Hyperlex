@@ -2,6 +2,49 @@
 
 ## Unreleased
 
+- **Wire v3 Stage B retrieval (Spec 007):** invoke family exemplar retrieval
+  only on Stage A `EVIDENCE_PRESENT`, calibrate global Stage B floors on the
+  evidence-surface validation split, and report reserve-authorization without
+  creating a reserve. BEST unchanged.
+
+- **Train v3 Stage A evidence gate (Spec 007):** one authorized train on the
+  READY `HYPERLEX_V3_EVIDENCE_SURFACE_V1` against the preregistered
+  `false_evidence_entry_rate_on_none <= 0.05` gate. No v3 reserve, BEST
+  unchanged.
+
+- **Preregister v3 evidence gate + fresh surface (Spec 007):** freeze
+  Stage A labels, false-entry ≤ 0.05, family emission ≥ 0.80, schema hashes,
+  and decision semantics; build `HYPERLEX_V3_EVIDENCE_SURFACE_V1` (n=4124,
+  train/validation, five subtypes) to `READY`. Spent v2 reserve overlap 0; no
+  Stage A train, no v3 reserve, BEST unchanged.
+
+- **Classification v2 final settlement + v3 evidence gate (Spec 007):** seal
+  `HYPERLEX_CLASSIFICATION_V2 = RESERVE_FAILED` /
+  `APPLICABILITY_GENERALIZATION_FAILURE`; production promotion rejected; BEST
+  unchanged. Open `HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE` specs/schemas
+  (Stage A/B/C, dataset admission, evaluation with preregistered
+  `false_evidence_entry_rate_on_none <= 0.05`). No v3 train; spent v2 reserve
+  permanently diagnostic only.
+
+- **Family retrieval reserve eval (Spec 007):** `OPERATOR_AUTHORIZE_RESERVE_EVAL`
+  scored the sealed classify reserve once under frozen retrieval thresholds
+  0.85 / 0.03. Disposition `RESERVE_FAIL` (emission precision 0.409 < 0.80).
+  No recalibration, index rebuild, or BEST move.
+
+- **Family retrieval decision (Spec 007):** `HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1`
+  makes training-side mean top-M cosine retrieval the canonical Classification v2
+  family decision. Residual 18-way head is diagnostic only. Encoder, ontology,
+  applicability, corpus, BEST, and reserve isolation stay unchanged. Two global
+  validation thresholds calibrate emission precision ≥ 0.80 before any reserve
+  score.
+
+- **Forward-hub error decomposition (Spec 007):** read-only
+  `HYPERLEX_FORWARD_HUB_ERROR_DECOMPOSITION_V1` audits the sealed forward-hub
+  checkpoint (`adf5db93…`) on `civilian.v0.7.hub.jsonl` without training,
+  reserve scoring, BEST moves, or prototype mutation. Emits per-family metrics,
+  confusion causes, prediction hubs, social-evaluation attractor audit, and a
+  single remediation decision.
+
 - **Release-candidate tooling (Spec 007):** `release_set.py` (`HYPERLEX_RELEASE_SET=1`
   drops CC BY-SA rows and same-text rows from train and every eval surface);
   `HYPERLEX_EXPORT_DIR` keeps train runs from rewriting tracked exports;

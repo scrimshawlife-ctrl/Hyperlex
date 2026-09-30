@@ -9,7 +9,14 @@ from .layout import FAMILIES, HIDDEN, LAST_TRAINABLE, LAYERS, MAX_LEN, MODEL_ID_
 
 CARD_NAME = "hyperlex-encoder-modernbert-base-seed"
 ENCODER_PREFIX = "encoder."
-_HEAD_NAMES = ("classify", "role_head", "filler_head", "applicability", "family_head")
+_HEAD_NAMES = (
+    "classify",
+    "role_head",
+    "filler_head",
+    "applicability",
+    "family_head",
+    "evidence_head",
+)
 
 
 def encoder_tensor_key(name: str) -> str:

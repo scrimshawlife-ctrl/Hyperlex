@@ -1,0 +1,57 @@
+{
+  "BEST": "UNCHANGED",
+  "artifact_file_sha256": {
+    "CALIBRATION.json": "c0916897fc398e3f7546099556666cadd348d0c5d8c6c574cec2529c3cc49f01",
+    "EXIT.json": "3c428e5243c0204d43e459c60941a1f70059b39087ec6e0a385bb6780caa0c8a",
+    "LAUNCH.json": "cfc3fd7a2bf57afae64650afff8827905c3eb67f0efd80e23af1244d0029d447",
+    "STAGE_B_INDEX.json": "a076925b3e146cbab275e1e8857e5228e62579ed47ec81794a40dbf506c78b0e",
+    "STAGE_B_VALIDATION.json": "23dd133229729bc18ebf2759c7f54c9da763408e311d09ec027d5c6e1d98c244",
+    "SUMMARY.json": "4f4e917c43e28c13ffe36800abc631e2ceee0f54df056efbcf0ca606d0ea80ee",
+    "stage_b_validation.log": "821d2634f394be46661af4de9712161826a060066ab4c4d48fb3f0880abc7514"
+  },
+  "authorization": {
+    "decision": "RESERVE_SEAL_AUTHORIZED",
+    "false_evidence_entry_rate_on_none": 0.005940594059405941,
+    "family_emission_precision": 0.8151260504201681,
+    "primary_gate_pass": true,
+    "secondary_gate_pass": true,
+    "spent_v2_reserve_used": false,
+    "v3_reserve_created": false
+  },
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "decision_counts": {
+    "ABSTAIN": 199,
+    "AMBIGUOUS": 5,
+    "FAMILY": 119,
+    "NONE": 504
+  },
+  "false_evidence_entry_rate_on_none": 0.005940594059405941,
+  "family_emission_coverage": 0.5409090909090909,
+  "family_emission_precision": 0.8151260504201681,
+  "family_emission_recall": 0.4409090909090909,
+  "index_sha256": "42ae85f3ee4e7f13656d2415a2152b11d5c2b14811b20b9c6352a3bb85c40285",
+  "lifecycle_state": "RUNNING",
+  "next_action": "AUTHORIZE_SEAL_NEW_V3_RESERVE_THEN_ONE_SHOT_SCORE",
+  "none_precision": 0.9781746031746031,
+  "none_recall": 0.9762376237623762,
+  "parent_rule": "HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE",
+  "primary_gate_pass": true,
+  "private_destination": "/home/morpheus/hlx-private/classification-v3-stage-b-20260930",
+  "receipt_sha256": "6e3228ace25e09701febb91848411cfd3abf75fdfac3bfc3c49e1df4c49d8462",
+  "rule": "HYPERLEX_CLASSIFICATION_V3_STAGE_B_RETRIEVAL_V1",
+  "secondary_gate_pass": true,
+  "selective_accuracy": 0.9470304975922953,
+  "stage_a_checkpoint_sha256": "0b7dbdac1f39e7b7ede1e51e86b9b938aa68e95692bf4b2f062329d487420ce7",
+  "stage_a_rule": "HYPERLEX_CLASSIFICATION_V3_STAGE_A_TRAIN_V1",
+  "surface_dataset_sha256": "7339c044596a4cc2eb5ae17f3fbab185fface9abffb6151bdb0db69eca0d2d3a",
+  "surface_rule": "HYPERLEX_V3_EVIDENCE_SURFACE_V1",
+  "thresholds": {
+    "minimum_family_score": 0.96,
+    "minimum_top1_top2_margin": 0.01,
+    "none_threshold": 0.05,
+    "present_threshold": 0.55
+  },
+  "train": false,
+  "uncertain_rate": 0.032648125755743655,
+  "v3_reserve": null
+}

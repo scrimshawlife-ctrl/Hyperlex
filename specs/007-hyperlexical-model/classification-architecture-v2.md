@@ -212,3 +212,381 @@ The frozen classify `EVAL_RESERVE` is 115 identities. Their stored strings were 
 On that pass, applicability macro-F1 is 0.5656, `NONE` F1 is 0.320, and active-family macro-F1 is 0.1360 where gold support exists. Coverage is 0.8348, selective accuracy is 0.1875, and the abstention rate is 0.1652. The applicability threshold sits above 0.5, so the decision `NONE` branch did not fire. Applicability Brier is 0.2062 and 10-bin ECE is 0.1976. Packet `brier` stays null. `unbind_clean_exact` is null on this classify reserve. The receipt is `/home/morpheus/hlx-private/classification-v2-train-20260929/RESERVE_EVAL.json`.
 
 
+### Sense-text continuation
+
+The first run stored the Wiktionary page title in `text` while the family decision came from one tagged sense. Short titles such as `fruit` and `iron` then trained as if the whole headword were that family. Validation gold for the fifteen new families was zero, so checkpoint selection could not see those emissions.
+
+The evidence map is unchanged. Where `definition_prose` is stored and its identity is disjoint from the historical export and from the evaluation reserve, the training string is that prose. Empty prose, and one prose string that duplicated another fresh row, keep the page title. Twenty-seven prose rows, chosen by sorting `normalized_text_sha256` and holding out two when a family has at least four prose rows or one when it has two or three, are `split=val`. Title fallbacks stay in train. `memetic` has a single prose row, so it stays in train. The run uses the same schedule, warm start, and loss. It does not move BEST and it does not score the evaluation reserve.
+
+
+The sense-text run finished under the same schedule. Output is `/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v2-sense`, primary weights sha256 `940055e846ecf525e5fa3a57293accd550cf84d739e3d9046f0f6c7d824e6701`. Early stopping restored epoch 2. Validation `selection_score` is 0.3741016490791826. Applicability macro-F1 is 0.9279. Active-family macro-F1 is 0.1967 because fourteen new families now have validation gold and thirteen of them score 0. `conflict-aggression` F1 is 0.4 on two rows. The four original families stay at ai-native 0.8655, betting-sharp 0.7407, crypto-degen 0.7907, and gaming-meta 0.7429. Calibration on validation only: applicability temperature 1.42, applicability threshold 0.5437899749549117, family temperature 1.15, family emit threshold 0.07211037498260023. BEST is unchanged. The evaluation reserve was not scored again.
+
+
+### Semantic prototype initialization
+
+New active-family rows are no longer exact zero. An exact-name row in the warm-start classifier is copied, weight and bias. Every other active family is initialized from the frozen warm-start encoder, before any v2 update: the first-token representation of each training-split definition, weighted OBSERVED 1.0 and INFERRED 0.5, L2-normalized, then multiplied by the median L2 norm of the copied rows. Bias is 0. Page titles are not prototype sources when a definition is stored. Jev is off. The witness is `7faa98239b2d4f39bf722c776543ded9a6c5959646c09c5db1e977cd7e69855d`. Two builds matched. The target norm is 1.1618999419668148, from the four copied rows `gaming-meta`, `betting-sharp`, `crypto-degen`, and `ai-native`. The warm start overlay loaded 48 encoder tensors. Pooling is `last_hidden_state[:, 0]`, max length 64.
+
+Readiness on the sense-text export is not READY. The only blocker is `VALIDATION_FAMILY_SUPPORT_INSUFFICIENT`: `internet-slang` has 1 validation positive and `memetic` has 0. Every other active family has at least 2. Thirteen new families are below the preferred support of 4. Definition strings, prototypes, copied rows, family weights, applicability weights, isolation, and the selection formula passed. BEST was not moved. The evaluation reserve was not scored. Training did not start.
+
+### Validation admission for internet-slang and memetic
+
+The sense-text export stayed in place. Its sha256 is still `a1332bce1dcf8a3e2646243990e1c9104e191019dae9324ffb9bbce91a28c1cc`. A new export, `/home/morpheus/hlx-private/classification-v2-validation-20260929/civilian.v0.2.jsonl`, sha256 `595440b53664b1c9433b5d535cd59778c62b0cf932df0c5a1b434003c211effa`, keeps that prefix and appends 59 validation definitions: 57 `internet-slang` and 2 `memetic` (`iceberg chart`, `wunkus`). Validation support is `internet-slang` 58 and `memetic` 2. The new identities are catalogued and are not training-consumed or evaluation-reserve. Training rows, family weights, applicability weights, and prototype witness `7faa98239b2d4f39bf722c776543ded9a6c5959646c09c5db1e977cd7e69855d` are unchanged. Readiness on this export is READY. BEST was not moved. Training did not start.
+
+### Ready training run
+
+Training used the validation export `595440b53664b1c9433b5d535cd59778c62b0cf932df0c5a1b434003c211effa` and prototype witness `7faa98239b2d4f39bf722c776543ded9a6c5959646c09c5db1e977cd7e69855d`. The schedule ran all 12 epochs. Epoch 8 had the best validation `selection_score`, 0.4254809855319254. Applicability macro-F1 is 0.9413. Active-family macro-F1 is 0.2540. Observed active-family macro-F1 is 0.2527. Output is `/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v2-ready`, primary weights sha256 `a8d50a4dcb4d886b3a5daae5740abaae9390595fdbee007da7b0c0372571b4b9`. The trainer restored that checkpoint and then hit `math domain error` in calibration NLL, where `log` of an underflowed class probability is undefined. Log-sum-exp now computes the same NLL and stays finite. Calibration on the saved checkpoint, validation only: applicability temperature 1.05, applicability threshold 0.6043058422230875, family temperature 5.0, family emit threshold 0.0877033765576476, 548 applicability rows and 254 family rows. Family temperature is the top of the sealed 0.05–5.00 grid. BEST is unchanged. The evaluation reserve was not scored. Training did not promote the checkpoint.
+
+### Corrected calibration and reserve evaluation
+
+The temperatures in the ready-run paragraph describe a post-hoc reload that applied the 12 trained encoder tensors and omitted the production select004 overlay of 48 encoder tensors. That file remains `classification-v2-calibration.trunk-only.json`. Its applicability temperature is 1.05, its applicability threshold is 0.6043058422230875, its family temperature is 5.0, and its family emit threshold is 0.0877033765576476. Family temperature 5.0 is the top of the sealed grid for that discarded reload.
+
+The canonical file `classification-v2-calibration.json` reloads the production encoder, 48 tensors, and then the ready checkpoint encoder, 12 tensors, followed by the ready applicability and family heads. The grid, tie breaks, and validation-only surface are unchanged. Applicability temperature is 1.98. Applicability threshold is 0.5211848104881056. Family temperature is 3.45, inside the sealed 0.05–5.00 grid. Family emit threshold is 0.09918229139032707. The fit used 548 applicability rows and 254 family rows. Checkpoint identity remains `a8d50a4dcb4d886b3a5daae5740abaae9390595fdbee007da7b0c0372571b4b9`. BEST remains the select004 checkpoint.
+
+The frozen classify evaluation reserve, 115 identities, was scored once with that stack. Applicability macro-F1 is 0.4780. Active-family macro-F1 is 0.1495. Observed active-family macro-F1 is the same 0.1495. Coverage is 0.7391. Selective accuracy is 0.2118 on 85 emitted rows. The abstention rate is 0.2609. The applicability head predicted NONE on 0.2435 of the rows. The decision NONE branch did not fire, so `none_decision_rate` is 0. Applicability Brier is 0.3746 and 10-bin ECE is 0.3929. The receipt is `/home/morpheus/hlx-private/classification-v2-train-ready-20260929/RESERVE_EVAL.json`. The ledger was left as it stood after validation admission. The score did not select a checkpoint and did not move BEST.
+
+Against the first v2 reserve score of checkpoint `405107de9b9ca580fc578f47314d3a18490e598c56c988cfc5f8ac53409cecea`, selective accuracy is 0.2118 where that score was 0.1875, and active-family macro-F1 is 0.1495 where that score was 0.1360. Applicability macro-F1 is 0.4780 where that score was 0.5656. Coverage is 0.7391 where that score was 0.8348. Promotion remains a later explicit action.
+
+### Promotion decision
+
+The ready checkpoint is not promoted. BEST stays the select004 weights, sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`. This run has no preregistered acceptance contract.
+
+On the 115 reserve identities, both this checkpoint and the first v2 checkpoint `405107de9b9ca580fc578f47314d3a18490e598c56c988cfc5f8ac53409cecea` place the gold family on 18 rows. The four gains are gaming-meta `equip` and `mise`, betting-sharp `pick 'em`, and crypto-degen `stake`. The four losses are ai-native `neuroid`, betting-sharp `flat` and `short`, and crypto-degen `side chain`. The other reserve families stay at zero hits.
+
+Applicability on this reserve does not separate the classes. The correlation of calibrated P(FAMILY_PRESENT) with gold family-present is -0.067. The correlation of word count with gold family-present is -0.884. Sixty-nine of the one- and two-word rows are family atoms, and all 40 none rows are longer sentences. Mean P(FAMILY_PRESENT) is 0.707 on those short atoms and 0.829 on the sentences of 13 words or more. In the training export, none text is a short headword, median 1 word, and fresh family text is definition prose. Reserve none text is an encyclopedic sentence, median 15 words. Validation applicability macro-F1 0.9413 measures the export surface, where both classes are short Wiktionary strings.
+
+The next training variable is that surface. Encyclopedic none sentences and short family atoms are not in the current export as a pair, so another definition harvest would not test this gap. No such run is started here.
+
+### Applicability surface balance
+
+The ready checkpoint showed an applicability shortcut: training NONE rows are short headwords and fresh family rows are definition prose, while the reserve is the inverse. Validation applicability macro-F1 0.9413 stays a property of that export surface. The preregistered guard, chosen before the surface-balanced run, is `abs(corr(word_count, P(FAMILY_PRESENT))) <= 0.30` on the validation split after calibration. The reserve is not a fitting surface for that correlation.
+
+Surface form is structural. ATOM is one to four whitespace tokens with no sentence terminator and no comma or semicolon. PROSE is six or more tokens, or any sentence terminator, or a comma or semicolon. Five-token strings with neither are AMBIGUOUS and are masked out of the applicability objective. The family label is not an input. Rule id `hyperlex.classification.v2.surface.v1`.
+
+Applicability loss gives each populated cell equal aggregate authority: cell weight is `1 / effective_cell_support`, then the populated cell weights are scaled to mean 1. Provenance authority is applied inside the cell. Family class weights keep the existing formula. Prototype initialization, calibration, schedule, ontology, and BEST are unchanged. Jev stays off.
+
+### Applicability shortcut diagnostic correction
+
+The surface-balanced run stays failed under the guard that was preregistered before it. On the validation split after calibration, `abs(corr(word_count, P(FAMILY_PRESENT)))` is 0.42150272051315185. The limit was 0.30. `SETTLEMENT.json` still records `shortcut_pass` false for checkpoint `e3c0545424e7fe9ca93a9b8c5e423698974f5cecab405ed99590c8293a5bb463`. That settlement was not rewritten. The evaluation reserve was not scored. BEST remains select004, sha256 `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`.
+
+The global correlation mixes the gold applicability class with length. Longer positive definitions carry more evidence than short positive atoms. The same validation replay, temperature 1.47, production encoder overlay of 48 tensors then the surface encoder overlay of 12 tensors, reproduces the stored cell means with delta 0:
+
+```text
+FAMILY_PRESENT/ATOM   mean P = 0.7852956405720147   F1 = 0.8453608247422681
+FAMILY_PRESENT/PROSE  mean P = 0.911294776451496    F1 = 0.9776119402985074
+NONE/ATOM             mean P = 0.1279144847425886   F1 = 0.918918918918919
+NONE/PROSE            mean P = 0.12663721872007336  F1 = 0.90625
+```
+
+The corrected diagnostic is read-only. Rule id `hyperlex.classification.v2.surface_invariance.v1`. It does not enter the loss, and it does not change the encoder, either head, the prototype witness, the family weights, the surface weights, the schedule, or calibration. Conditional correlations do not pool the two gold classes:
+
+```text
+corr(word_count, P | FAMILY_PRESENT) = 0.24186883570934187   n = 296
+corr(word_count, P | NONE)            = 0.13799315805567047   n = 302
+FAMILY_PRESENT/ATOM                   = -0.015312949853750339 n = 155
+FAMILY_PRESENT/PROSE                  = 0.27285157444473607   n = 135
+NONE/ATOM                             = 0.05213599221711015   n = 268
+NONE/PROSE                            = 0.5504937075122819    n = 31
+```
+
+The preferred scalar fits `P(FAMILY_PRESENT) ~ gold_applicability + surface_class` by ordinary least squares on these 598 validation rows, then correlates the residual with word count. The design columns are intercept, gold FAMILY_PRESENT, surface PROSE, and surface AMBIGUOUS. `corr(residual, word_count)` is 0.09290446228999852.
+
+```text
+family_surface_gap = 0.1259991358794813
+none_surface_gap   = -0.0012772660225152388
+```
+
+The corrected guards, chosen before this replay and not taken from the evaluation reserve, are `abs(none_surface_gap) <= 0.10`, `abs(residualized_length_correlation) <= 0.30`, and FAMILY_PRESENT F1 and NONE F1 at least 0.80 on both populated surfaces. All three pass. The family surface gap is reported and is not a guard. Family atoms and family prose are not required to have the same confidence.
+
+For architecture diagnosis, `APPLICABILITY_SURFACE_SHORTCUT` is `RESOLVED`. That status does not promote the checkpoint and does not turn the historical run into a pass. The receipt is `/home/morpheus/hlx-private/classification-v2-train-surface-20260929/INVARIANCE_DIAGNOSTIC.json`.
+
+The active-family head stays a separate unresolved issue. Active-family macro-F1 is 0.1960828268105939. ATOM family macro-F1 is 0.226814225201322. PROSE family macro-F1 is 0.2664313342411146. The next substantive target is `ACTIVE_FAMILY_DISCRIMINATION`.
+
+The within-NONE/PROSE length correlation, 0.5504937075122819 on 31 rows, is recorded and is not one of the frozen guards. The NONE mean does not move with surface form, and the residualized length correlation stays inside 0.30.
+
+### Prototype-aware family discriminator
+
+Applicability stays closed. The open failure is active-family discrimination. The surface checkpoint's active-family macro-F1 is 0.1960828268105939, ATOM family macro-F1 is 0.226814225201322, and PROSE family macro-F1 is 0.2664313342411146. A pure 19-way linear head has to learn each sparse boundary on its own. The family head now scores a frozen semantic prototype and a learned residual together.
+
+For a normalized encoder vector `h` and a normalized frozen prototype `p_f`:
+
+```text
+s_f = cosine(h, p_f)
+r_f = residual linear logit on h
+z_proto = population_zscore(s / tau)
+z_resid = population_zscore(r)
+z_f = z_proto + z_resid
+```
+
+`alpha` and `beta` are the shared constants 1. Population z-score is across the 19 families of one example. A constant component becomes the zero vector, so a global magnitude cannot dominate. `tau` is 0.10. Dividing by that positive constant does not change the z-score; `tau` is the contrastive temperature. The canonical family decision is `argmax(z_f)`.
+
+The contrastive term, on family-positive rows only, is temperature-scaled prototype NLL. The gold denominator weight is 1. The top 3 other prototypes for that gold family, taken from the frozen prototype-to-prototype matrix, use weight 2. Every other family stays at 1. `lambda_proto` is 0.5. Provenance and family class weights multiply this term the same way they multiply the family cross-entropy. Prototypes are buffers. They are not updated and they are not recomputed each epoch.
+
+The fifteen verified semantic prototypes are copied from witness `7faa98239b2d4f39bf722c776543ded9a6c5959646c09c5db1e977cd7e69855d`. The four exact-copy families now also have semantic prototypes, built from their training prose with the frozen production encoder. Residual rows for those four families still initialize from the exact checkpoint rows. The other residual rows start at zero. The geometry witness is `/home/morpheus/hlx-private/classification-v2-geometry-20260930/PROTOTYPE_GEOMETRY.json`, prototype witness sha256 `d9ab8780dc000cc3e2b277e0c68720cbc5d7a513dfc02683414bf64a0384214a`, geometry sha256 `8392da2b05a256adea98dac39503ad05c948ac9f2bd7b04883bee56019c7e390`.
+
+Prototype cosine at or above 0.80 marks a confusable pair. There are 89 such pairs. They form one cluster of the fifteen definition-initialized families plus `ai-native`. `betting-sharp`, `crypto-degen`, and `gaming-meta` stay outside that threshold. Families are not merged.
+
+On the current validation split, before this training run, prototype-only macro-F1 is 0.13964619279491827, residual-only macro-F1 is 0.1960828268105939, and fused macro-F1 is 0.1725259920541627. The residual-only figure matches the surface checkpoint. The reserve was not scored. BEST is unchanged.
+
+The geometry training run is `HLX-CLASSIFICATION-V2-GEOMETRY-20260930`. Schedule, optimizer, applicability head, provenance weights, family class weights, encoder depth, calibration, unbind, and the selection score were unchanged. Jev stayed off. The restored checkpoint is epoch 8 of 12, primary weights `ce0db72c610df3b1a5be5736e2ea80620dacdf5cc30ac5903709590dfc99a411`. Selection score on that epoch is 0.3538945986627647.
+
+Active-family macro-F1 is 0.18150134757636427. That is below the surface checkpoint's 0.1960828268105939, so the internal gate does not open. ATOM family macro-F1 is 0.22790560869049023. PROSE family macro-F1 is 0.2210162379713775. Macro-F1 over the fifteen non-exact-copy families is 0.041352657004830914. Seven of nineteen families have F1 above 0, six have F1 at or above 0.20, and four have F1 at or above 0.50. Three of those nonzero families are outside the exact-copy set: fashion-aesthetic 0.2, identity-affiliation 0.08695652173913042, and spiritual-mystic 0.3333333333333333. The other twelve new families, including internet-slang, have F1 0.
+
+Applicability invariance still passes. `none_surface_gap` is -0.03337497558181346. Residualized length correlation is 0.08658422091556929. FAMILY_PRESENT F1 is 0.8589341692789969 on ATOM and 0.9739776951672863 on PROSE. NONE F1 is 0.9146110056925996 on ATOM and 0.8888888888888888 on PROSE. Architecture validation is `INTERNAL_SHORT`, not `SETTLED_INVALID`. The reserve was not scored. Reserve scoring is not justified. BEST remains `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`.
+
+The frozen prototypes did not separate the sparse families. Eighty-nine prototype pairs sit at cosine 0.80 or above, in one cluster of the fifteen definition-initialized families plus `ai-native`. That collinearity is the remaining bottleneck. No further training run, loss-weight change, or reserve score follows from this result.
+
+### Multi-anchor family boundaries
+
+`HYPERLEX_FAMILY_SEMANTIC_BOUNDARIES_V1` replaces the single family centroid as the canonical semantic representation. This pass does not train, does not score the reserve, and does not move BEST. BEST remains `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`.
+
+Anchor count is support first, then the smallest separated clustering. For `n` training-positive definitions: `n <= 2` gives `k = 1` and `support_status = SPARSE`; `3 <= n <= 5` gives `k = 2`; `6 <= n <= 11` gives `k_max = 3`; `12 <= n <= 23` gives `k_max = 4`; larger `n` gives `k_max = 5`. When `k_max` is set, the search tries `k` from 2 through `k_max` and keeps the smallest `k` whose mean cosine silhouette is at least 0.20 and whose every cluster has support at least 2. If none qualify, `k = 2`. Clustering is farthest-first spherical k-means in cosine distance, `random_seed = 0`, at most 32 iterations, ties broken by the lowest source identity hash. An anchor is the normalized provenance-weighted mean of its cluster, with OBSERVED weight 1.0 and INFERRED weight 0.5. `n = 3` still uses `k = 2`, so one anchor may have support 1. That case is not SPARSE.
+
+Sources are training-split classification rows only (`classify` or `classify+unbind`). Families with stored definition prose use that prose. Exact-copy families use their training prose. Validation, the test split, EVAL_RESERVE, EVAL_SPENT, EVAL_BOUND, held-out rows, measurement surfaces, and Jev output are excluded. Jev is OFF. No synthetic anchors are added.
+
+The sealed artifact is `/home/morpheus/hlx-private/classification-v2-boundaries-20260930/FAMILY_SEMANTIC_BOUNDARIES.json`. Anchor witness sha256 `369dfb0066e5f2332d8eea927def2a622551fd0c721ece17f75bd263ed67a7e3`. Separation matrix sha256 `ab698d342d2d276f81d4baf3fed609bb6f8bf88cd6810bb1d1998c5e409f63c3`. Boundary sha256 `0ca6f34ce1abf68388e443371672ca36e16028079a175b6775e1968900e1c52f`. Encoder overlay loaded 48 tensors. Excluded reserved identities: 0.
+
+Anchor counts: gaming-meta 2 (n=81), betting-sharp 1 SPARSE (n=2), crypto-degen 2 (n=29), internet-slang 1 SPARSE (n=1), memetic 1 SPARSE (n=1), social-status 2 (n=6), relationship-dating 2 (n=6), approval-disapproval 2 (n=6), conflict-aggression 2 (n=6), technology-ai 2 (n=6), workplace-career 2 (n=5), sports-competition 2 (n=6), music-entertainment 2 (n=5), fashion-aesthetic 2 (n=6), regional-cultural 2 (n=3, supports 2 and 1), spiritual-mystic 2 (n=6), identity-affiliation 2 (n=4), politics-civic 2 (n=6), ai-native 2 (n=503). Sparse families are betting-sharp, internet-slang, and memetic. Every non-sparse family stopped at two anchors. ai-native's two-anchor silhouette is 0.8195, so the smallest-k rule does not open a third anchor. approval-disapproval and conflict-aggression missed the 0.20 silhouette floor at both k=2 and k=3 and therefore use the fallback `k = 2`.
+
+There are 284 anchor pairs at cosine 0.80 or above: 272 across families and 12 inside a family. The closest cross-family pairs are relationship-dating/music-entertainment 0.9937, social-status/approval-disapproval 0.9897, and social-status/music-entertainment 0.9894. Families are not merged.
+
+The future scorer, specified and not fit, is `population_zscore(max anchor cosine) + population_zscore(residual logit)`. Hard negatives are the nearest competing anchors, three of them, at multiplier 2.0. The mean family centroid is not the semantic score.
+
+### Encoder geometry repair
+
+`HYPERLEX_FAMILY_GEOMETRY_REPAIR_V1` trains the existing last two encoder layers against the sealed multi-anchor boundaries. The ontology, applicability head, schedule, provenance weights, calibration, unbind path, and BEST stay put. Jev stays off. This is not a SELECT experiment.
+
+Canonical family logits are the learned residual head only. Frozen prototype cosine is not fused into the decision. The sealed boundary anchors structure a supervised contrastive geometry loss on family-positive rows:
+
+```text
+L_geometry =
+- log(
+    sum_{a in anchors(f)} exp(cos(h, a) / tau)
+    /
+    sum_{a in all anchors} m(a) * exp(cos(h, a) / tau)
+  )
+L_total = existing v2 loss + lambda_geometry * L_geometry
+```
+
+`tau = 0.10`. `lambda_geometry = 0.5`. `m(a) = 2.0` when `a` belongs to one of the three nearest competing families from `FAMILY_SEMANTIC_BOUNDARIES_V1`, otherwise `1.0`. Hard negatives are not recomputed from validation or reserve predictions. Sparse families `betting-sharp`, `internet-slang`, and `memetic` keep their single sealed anchor as the positive reference and remain in the 19-way objective.
+
+Residual rows still initialize from exact-copy select004 rows where available; every other residual row starts at zero. `last_trainable` remains 2. Boundary artifact sha256 `0ca6f34ce1abf68388e443371672ca36e16028079a175b6775e1968900e1c52f`. Separation sha256 `ab698d342d2d276f81d4baf3fed609bb6f8bf88cd6810bb1d1998c5e409f63c3`.
+
+Internal gates before any reserve score: active-family macro-F1 above 0.1960828268105939, non-exact-copy family macro-F1 above 0.041352657004830914, more than three non-exact-copy families with F1 above 0, median gold-versus-nearest-negative margin above the pre-training median on the same validation rows, fewer high-collision validation rows than the pre-training count, and applicability invariance still passing.
+
+The geometry-repair training run is `HLX-CLASSIFICATION-V2-GEOMETRY-REPAIR-20260930`. Restored checkpoint is epoch 9 of 12, primary weights `449bf3b303c95bc5d6b7d87173d50315616556c1379057414b970f3e5f0b18cf`. Selection score is 0.35176303097380063. Canonical logits stayed on the learned residual head.
+
+Active-family macro-F1 is 0.1750422041280767. Non-exact-copy family macro-F1 is 0.03732057416267942. Three non-exact-copy families have F1 above 0: fashion-aesthetic, spiritual-mystic, and sports-competition. Those family-discrimination gates do not open.
+
+Geometry on the same 296 validation family rows did improve. Pre-training median gold-versus-nearest-negative margin is -0.0238511860370636 with 172 high-collision rows. Post-training median margin is 0.09594389796257019 with 5 high-collision rows. Mean margin moves from -0.023349027127354732 to 0.09320517261575505.
+
+Applicability invariance still passes. `none_surface_gap` is -0.023081016877715937. Residualized length correlation is 0.08844123652989021. Surface-cell F1 values remain at or above 0.80. Architecture validation is `INTERNAL_SHORT`. The reserve was not scored. BEST remains `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`.
+
+The representation is more separable, but the residual head alone did not convert that into family F1. The next authorized step is a max-anchor family scorer on this repaired geometry, not another residual-only CE run and not reserve scoring.
+
+### Max-anchor family scorer
+
+`MAX_ANCHOR_FAMILY_SCORER_V1` is a validation-only scorer comparison on the repaired encoder. It does not train, does not score the reserve, and does not move BEST. Pinned inputs: geometry-repair primary `449bf3b303c95bc5d6b7d87173d50315616556c1379057414b970f3e5f0b18cf`, boundary `0ca6f34ce1abf68388e443371672ca36e16028079a175b6775e1968900e1c52f`, separation `ab698d342d2d276f81d4baf3fed609bb6f8bf88cd6810bb1d1998c5e409f63c3`. Canonical max-anchor score is `max cosine` to that family's sealed anchors. Family prediction is `argmax` over the 19 active families with vocabulary-order ties. NONE, ABSTAIN, and AMBIGUOUS are not family rows.
+
+On 296 validation family-positive rows, residual macro-F1 is 0.1750422041280767, max-anchor macro-F1 is 0.1664857822906154, and diagnostic 1:1 z-score fusion macro-F1 is 0.20206957575241874. Max-anchor ATOM/PROSE family macros are 0.19337540305282241 and 0.2177426324431769. Max-anchor breadth is 7 families with F1 above 0, 6 at or above 0.20, 4 at or above 0.50, and 3 non-exact-copy families with F1 above 0. Decision is `MAX_ANCHOR_SCORER_REJECTED`. Canonical integration is not justified. Artifact sha256 `7475d6d9a5c7ccb20a554a56b1de5ceee1d85e2a90b5976035f920bab7f53d07`.
+
+The diagnostic fusion cleared 0.1961 and raised new-family nonzero count to 4, but fusion remains diagnostic only under this pass. Scorer mechanics are exhausted for rescuing the 19-way head. The next substantive question is ontology and training-definition separation, not another residual or max-anchor classifier patch.
+
+### Active-family separability audit
+
+`HYPERLEX_ACTIVE_FAMILY_SEPARABILITY_AUDIT_V1` is a read-only ontology/data audit on training-side definition prose. It does not train, does not score the evaluation reserve, and does not move BEST. Jev stays off. Encoder weights stay frozen on the geometry-repair overlay (`449bf3b303c95bc5d6b7d87173d50315616556c1379057414b970f3e5f0b18cf`) for representation metrics only. Pairwise linear probes fit on train definitions and evaluate on val definitions; they do not update the encoder.
+
+OBSERVED and INFERRED supports are preserved separately. Reserve, spent, held-out, measurement, settlement, and Jev rows are excluded. Pairwise embedding metrics cover within/cross similarity, nearest-neighbor confusion, centroid distance, and sealed-anchor collision rate. Lexical metrics use deterministic Dirichlet-prior log-odds over definition tokens.
+
+Sealed artifact sha256 `2cb2fe2459a86323dfa8aa50136bb8e6822598ffd8895a1988af459949853d5f`. Pairwise embedding matrix sha256 `3957e4cefabf37a7d8993f0574c7a76c93096c0cd991b8a7134207e07ade7bda`. Lexical matrix sha256 `1579d47aabbb4429b352ad7c251b79b4f5722506d80d0cc25afd7a8d251ce3a5`.
+
+Family status: `UNDER_SUPPORTED` for `betting-sharp`, `internet-slang`, and `memetic`; `OVERLAPPING` for ten families including the bulk of the 15-family collapse cluster plus `ai-native`; `NOISY` for `music-entertainment`, `regional-cultural`, `relationship-dating`, and `workplace-career`; `UNRESOLVED` for `gaming-meta` and `crypto-degen`. No family sealed as `SEPARABLE`.
+
+Pair flags across 171 unordered pairs: `DATA_TOO_SPARSE` 51, `REPRESENTATION_COLLAPSE` 99, `ONTOLOGY_OVERLAP` 71, `LABEL_NOISE` 112, `SEPARABLE` 4. Pairwise probes are computable for 136 pairs; median probe F1 is 0.3333 with only 6 pairs at or above 0.80. Lexical log-odds often find enriched tokens, so `DEFINITION_TOO_GENERIC` does not dominate the flag table, but representation collapse and failed probes show the training definitions still do not carve mutually exclusive family geometry.
+
+Sparse-family treatment refuses ontology failure from support alone. Additional data is judged plausible for `betting-sharp`, `internet-slang` (58 val definitions available), and `memetic`. Suspected label-noise rows are flagged without automatic relabeling.
+
+Overall decision: `MIXED_REMEDIATION_REQUIRED`. The current 19-family ontology cannot be learned from the current training evidence. Next engineering action is mixed remediation: expand direct positive definition support for sparse families, clean the flagged noisy rows, and refine or refactor mutually non-exclusive collapse-cluster boundaries before any further scorer or encoder training.
+
+### Active-family mixed remediation
+
+`HYPERLEX_ACTIVE_FAMILY_MIXED_REMEDIATION_V1` turns the sealed separability audit (`2cb2fe2459a86323dfa8aa50136bb8e6822598ffd8895a1988af459949853d5f`, decision `MIXED_REMEDIATION_REQUIRED`) into an ordered non-mutating plan. It does not train, does not score the reserve, does not move BEST, and does not change the active ontology.
+
+Phases: `PHASE_A_DATA_AND_NOISE` (expand sparse-family train definitions to >=12 and human-review suspected label-noise rows), `PHASE_B_BOUNDARY_REFINEMENT` (record positive/exclusion cues for overlapping/noisy families without mutating the sealed boundary artifact yet), `PHASE_C_ONTOLOGY_REFACTOR_REVIEW` (operator KEEP/MERGE/SPLIT review of the 13-family collapse overlap component), then `PHASE_D_REAUDIT_BEFORE_TRAINING`.
+
+Training gate remains closed for encoder training, family-scorer training, reserve scoring, and BEST moves until phases A–C complete and a fresh separability audit no longer requires mixed/ontology remediation without waiver.
+
+Artifact sha256 `d1292e106ae674d16967d85486133c912390de8afeb2ae5fcf977dd69cac1e00`. Next engineering action: execute PHASE_A for `betting-sharp`, `internet-slang`, and `memetic`, and review the 7 suspected label-noise rows.
+
+### Active-family phase execution
+
+`HYPERLEX_ACTIVE_FAMILY_PHASE_EXECUTION_V1` executes the sealed mixed-remediation plan. It does not train, does not score the reserve, does not move BEST, and does not mutate the active ontology.
+
+PHASE_A acquired prose train definitions for sparse families to >=12 each (`betting-sharp` 14, `internet-slang` 13, `memetic` 13) with MediaWiki provenance and sealed 7 label-noise decisions (3 KEEP, 1 RELABEL, 3 DROP). Acquire export sha256 `2bfe35bbf39ee13dab3ffcb889961132e8529b1d1f6d47dd52633ff9d5ab610f`.
+
+PHASE_B recorded positive/exclusion cue packs for overlapping/noisy/unresolved families for a future boundary re-seal without mutating `FAMILY_SEMANTIC_BOUNDARIES_V1`.
+
+PHASE_C operator review kept the active vocabulary. The 13-family collapse component is `KEEP_WITH_BOUNDARY_REDEFINITION`; first-review pairs are SPLIT_CANDIDATE (approval-disapproval/social-status, approval-disapproval/relationship-dating, relationship-dating/social-status). No automatic merge.
+
+PHASE_D re-ran the separability audit on remediation overlay `civilian.v0.4.phase.jsonl` (sha256 `8a934806885fb939f8b4ca26f10ab5bc6600c495d3be77d5a2366dc6c62146e0`). Decision remains `MIXED_REMEDIATION_REQUIRED` (artifact sha256 `d56d03420e7f7072b1798a55e7ecd8877263b1dfd4ad938d36115cba18a21d0a`): sparse under-support is largely cleared, but ontology overlap and representation collapse persist. Training gate stays closed.
+
+Phase-execution artifact sha256 `6d11eab035d64a5ef8d1008ade9b565064920e6de2cc86673202cbc60753be3b`. `phases_complete=true`.
+
+
+## Active-family boundary redefinition (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_BOUNDARY_REDEFINITION_V1` operationalizes Phase-C `KEEP_WITH_BOUNDARY_REDEFINITION` without merging/splitting the 19-family vocabulary and without mutating historical boundary artifact `0ca6f34c…` / separation `ab698d34…`.
+
+Inputs pinned: phase execution `6d11eab0…`, Phase-D audit `d56d0342…`, overlay `civilian.v0.4.phase.jsonl` sha256 `8a934806…`, frozen geometry-repair encoder `449bf3b3…`, BEST unchanged `9fba0f66…`.
+
+Outputs under `/home/morpheus/hlx-private/classification-v2-boundary-redefinition-20260930/BOUNDARY_REDEFINITION.json` (artifact sha256 `4757d46aa7f0c95732378d5f710cbd1a28d048f60bee2fc35dfb6d5c0fe8cad1`):
+
+- 19 family contracts (`positive_cues`, `required_semantic_core`, `nearest_competitors`, `exclusion_cues`, `counterexample_patterns`, `ambiguous_with`)
+- 103 pairwise distinction rules over high-overlap / ontology-collapse / SPLIT_CANDIDATE pairs
+- Row flags: KEEP 271, REVIEW 425, DROP 17, RELABEL_CANDIDATE 2, AMBIGUOUS 9 (Phase-A noise audit preserved: KEEP 3 / RELABEL_CANDIDATE 1 / DROP 3; dropped noise not reintroduced)
+- Sparse floors held: betting-sharp 13, internet-slang 13, memetic 12
+- Frozen-encoder max-member cosine≥0.80 pairs: pre 39 → post 31 (reduction 20.51%); 13-family collapse component 13 → 12
+- All three SPLIT_CANDIDATE pairs remain `OVERLAP_REMAINS_STRUCTURAL`; no split performed
+- Training gate **CLOSED** (material reduction requires ≥30%; no train / reserve / BEST move)
+
+Next action: tighten mutually exclusive definitions for AMBIGUOUS/REVIEW/DROP identities and unresolved split pairs before any clean v2 training run.
+
+
+## Active-family boundary tightening v2 (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_BOUNDARY_TIGHTENING_V2` reclassified only unresolved rows from sealed boundary redefinition `4757d46a…` (REVIEW 425 / AMBIGUOUS 9 / DROP 17 / RELABEL_CANDIDATE 2), plus structural KEEP comparison on the three SPLIT_CANDIDATE families. Already-clean KEEP rows outside that trio were not revisited. Ontology unchanged. BEST unchanged `9fba0f66…`. No train / reserve / Jev.
+
+Sealed artifact sha256 `8c9f88b0431b3598d5336bdb7fa25b80e8201c2ad8487d5aea878997cb6aa5a9` at `/home/morpheus/hlx-private/classification-v2-boundary-tightening-v2-20260930/BOUNDARY_TIGHTENING_V2.json`.
+
+- Unresolved reclass: KEEP 5, DROP 384, RELABEL_CANDIDATE 61, AMBIGUOUS 3
+- Sparse floors held: betting-sharp 13, internet-slang 13, memetic 12
+- Frozen-encoder cosine≥0.80 pairs: pre 39 → post 35 (absolute −4, reduction 10.26%)
+- Collapse component: 13 → 12
+- SPLIT_CANDIDATE trio: all three `OVERLAP_REMAINS_STRUCTURAL` (no split/merge)
+- Training gate **CLOSED** (required ≥30%). Next: `ONTOLOGY_REFACTOR_REVIEW` — do not train.
+
+
+## Ontology refactor review — structural trio (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_ONTOLOGY_REFACTOR_REVIEW_V1` sealed after boundary redefinition + tightening left the approval-disapproval / social-status / relationship-dating cluster structural. No ontology mutation applied in this pass. BEST unchanged `9fba0f66…`. Training gate remains closed.
+
+Artifact sha256 `ebab1e4d4d5a0f9169def6426de5b6137fb15f0b7c7d6b57d7aa295cbf6b7178` at `/home/morpheus/hlx-private/classification-v2-ontology-refactor-review-20260930/ONTOLOGY_REFACTOR_REVIEW.json`.
+
+Primary recommendation: **`MERGE_PAIR`** — merge `approval-disapproval` and `social-status` into `social-evaluation`; keep `relationship-dating`. Rationale: AD↔SS probe F1≈0.33 and centroid≈0.91 after two cleaning passes; RD remains lexically distinct.
+
+Compatibility map (forward only; historical artifacts untouched): approval-disapproval→social-evaluation, social-status→social-evaluation, relationship-dating→relationship-dating. Next: operator-approve `APPLY_ONTOLOGY_MERGE_PAIR`, then overlap + readiness rerun before any training.
+
+
+## Ontology merge pair applied — AD+SS → social-evaluation (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_ONTOLOGY_MERGE_PAIR_V1` applied after sealed review `ebab1e4d…` (`MERGE_PAIR`). Forward-only. Historical v1/v2 vocabularies, checkpoints, reserves, and prior boundary artifacts are not rewritten. BEST unchanged `9fba0f66…`. Jev OFF. No train / reserve score.
+
+Forward vocabulary id `hyperlex.active_families.v2.forward_merge_pair_ad_ss` (18 families): remove `approval-disapproval` and `social-status`; add `social-evaluation` (rank/prestige/hierarchy/standing/praise/pejoration/approval/disapproval). Keep `relationship-dating` with explicit exclusion of status/evaluative-only semantics.
+
+Migration map (freeze): approval-disapproval→social-evaluation, social-status→social-evaluation, relationship-dating→relationship-dating; all other active families identity. Head init for `social-evaluation`: semantic prototype from all merged training definitions — no silent single-predecessor row claim.
+
+Sealed under `/home/morpheus/hlx-private/classification-v2-ontology-merge-pair-20260930/`:
+
+- Artifact sha256 `c901badb70c0c72f1af20fe4dd0b64bcbdfad917568682e9abb2cc9321ad69d5`
+- Ontology sha256 `67d6b100e48171c522dd43fcc2038bdc97ef479cfcc9ae98f0534e520224b813` (18 families)
+- Migration map sha256 `ebb56076437b4c9c4a33b22aad81c07fc2ba52824ebc48abdff67d5a69c8c39f`
+- Export `civilian.v0.6.merge.jsonl` sha256 `a8c064151973d7b2b9f439dc9fab499c69c2dd8a22a19206d7f486d970975130`
+- New boundary sha256 `d7c16112412c546288be744fb426e495cdb77ec970e737455df01d00d3fd141a` (historical `0ca6f34c…` untouched)
+- Separation sha256 `1f7f925d76a56dd471c0b6e78e6952427c651f998254742c422aa75a8fb33e1c`
+- Definition supports verified fail-closed: social-evaluation 12/4; relationship-dating 5/2
+- Overlap cosine≥0.80: pre 35 → post 34 (absolute −1, 2.86%); collapse component 12 → 12
+- relationship-dating remains `OVERLAP_REMAINS_STRUCTURAL_FUTURE_CANDIDATE` (not merged)
+- Training gate **CLOSED**. Residual: `MATERIAL_OVERLAP_REDUCTION_NOT_MET`, `COLLAPSE_COMPONENT_NOT_WEAKENED`. Next: `RESOLVE_RESIDUAL_BLOCKERS` — do not train.
+
+## Post-merge residual overlap review (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_POST_MERGE_RESIDUAL_REVIEW_V1` diagnoses residual blockers after sealed merge `c901badb…`. Read-only. BEST unchanged `9fba0f66…`. No train / reserve / ontology mutation. relationship-dating is not auto-merged.
+
+Sealed artifact sha256 `617ba9eebfe9955ed3931ab659738a25de99b79a7301bc8a6ed5d952439955bc` at `/home/morpheus/hlx-private/classification-v2-post-merge-residual-review-20260930/POST_MERGE_RESIDUAL_REVIEW.json`.
+
+- SE↔RD cosine ≈0.932 but lexically distinct (shared_token_ratio=0.0) → do **not** merge
+- Collapse component still 12; overlap 35→34 (−2.86%)
+- Hubs by residual degree: internet-slang, spiritual-mystic, social-evaluation, music-entertainment
+- Primary recommendation: **KEEP_SE_RD_SEPARATE_REFINE_HUBS**
+- Training gate **CLOSED**. Next: `APPLY_RESIDUAL_HUB_BOUNDARY_PASS` — do not train.
+
+## Residual hub boundary pass (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_RESIDUAL_HUB_BOUNDARY_PASS_V1` follows sealed residual review `617ba9ee…`. KEEP/DROP filtering on forward hubs (internet-slang, spiritual-mystic, social-evaluation, music-entertainment) under frozen encoder cores. SE/RD kept separate. No train / reserve / BEST / historical rewrite.
+
+Sealed artifact sha256 `96a0587c06fac352872e462445f2eaaf773e35a48ab4c987e267b479cab72a83` at `/home/morpheus/hlx-private/classification-v2-residual-hub-boundary-20260930/RESIDUAL_HUB_BOUNDARY.json`.
+
+- Row filter: KEEP 690 / DROP 31 (hub exclusivity + support-floor rescue)
+- Hub post support: internet-slang 12, spiritual-mystic 1, social-evaluation 6, music-entertainment 1
+- Overlap cosine≥0.80: pre 34 → post 23 (absolute −11, reduction 32.35%); collapse 12 → 11
+- SE/RD not merged
+- Training gate **OPEN**. Next: `TRAIN_CLASSIFICATION_V2` — do not score reserve or move BEST in the train pass authorization.
+
+## Classification v2 forward-hub training (2026-09-30)
+
+Rule path: `TRAIN_CLASSIFICATION_V2` after residual hub boundary `96a0587c…` opened the gate. Forward ontology (`HLX_V2_FORWARD_ONTOLOGY=1`, 18 families), hub-filtered export `civilian.v0.7.hub.jsonl` sha256 `0d8f4532f84ed9fade3fd4e69af0d1e0717fb1098d40754e95c0090d8282bfe1` (removed 41 DROP train rows), witness `acca1594b49aa624d0d4dc97f03c7ccc69176568dfde0bebb7fb81c5085ca294` with `social-evaluation` = `SEMANTIC_PROTOTYPE`.
+
+Sealed under `/home/morpheus/hlx-private/classification-v2-train-forward-20260930/` and weights `/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v2-forward-hub` (`adf5db93dfe258290be531f0a25035dfaae03873bd800fd929bee43b38c9f89c`).
+
+- best_epoch 3; selection_score 0.360527
+- active_family_macro_f1 0.185630; prototype_family_macro_f1 0.054510
+- BEST unchanged `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`; reserve not scored; promotion not_eligible
+- Next: `HYPERLEX_FORWARD_HUB_ERROR_DECOMPOSITION_V1` (read-only) — do not score reserve or move BEST until that pass decides.
+
+## Forward-hub error decomposition (2026-09-30)
+
+Rule `HYPERLEX_FORWARD_HUB_ERROR_DECOMPOSITION_V1` is a read-only validation audit on forward-hub checkpoint `adf5db93…` and export `civilian.v0.7.hub.jsonl` (`0d8f4532…`). It does not train, does not score the evaluation reserve, does not move BEST, and does not mutate prototypes.
+
+Reports per-family precision/recall/F1/support/predicted_count/top confusions/gold logit rank/top-1/top-2, ATOM vs PROSE macro-F1, prediction hubs, social-evaluation attractor audit, deterministic confusion causes, and prototype-vs-residual ranking. Decision enum: `SCORER_REPAIR_JUSTIFIED` | `DATA_REMEDIATION_JUSTIFIED` | `ONTOLOGY_REMEDIATION_JUSTIFIED` | `ENCODER_REMEDIATION_JUSTIFIED` | `RESERVE_EVAL_JUSTIFIED` | `STOP_NO_CLEAR_REMEDIATION`. `RESERVE_EVAL_JUSTIFIED` requires internal AF competitive with prior baseline ≈0.1961 and no major unresolved failure mode.
+
+Seal path: `/home/morpheus/hlx-private/classification-v2-forward-hub-error-decomposition-20260930/FORWARD_HUB_ERROR_DECOMPOSITION.json` (artifact sha256 `2ac0e911b64768d3b30417144e3075391ca2d8ba67a065c1edc56a49077bd429`; confusion matrix sha256 `25786aeb6786615138574405304a5af18dc1cf9560b4c63d5ed95eb1aff667e4`).
+
+- Recomputed AF 0.185630 matches settlement; PF / macro excl. exact-copy 0.054510; ATOM 0.211630; PROSE 0.265883; exact-copy macro 0.644548
+- Dominant causes: DOMINANT_CLASS_ATTRACTOR 117/180, PAIRWISE_BOUNDARY_COLLISION 23, UNDER_SUPPORTED_FAMILY 19
+- Prediction hubs (not SE): fashion-aesthetic, technology-ai, music-entertainment, workplace-career, regional-cultural, identity-affiliation, memetic, sports-competition, conflict-aggression
+- social-evaluation: support 4, F1 0.0, **WEAK_NON_HUB** (incoming FP 4; RD↔SE total 1) — merge did **not** create a larger SE attractor; operational separability still missing
+- Prototype-path macro 0.174332 vs residual 0.185630; weak PF is residual failure on non-exact-copy families, not witness mutation
+- Decision: **SCORER_REPAIR_JUSTIFIED**. Reserve remains UNSCORED. BEST unchanged.
+
+## Family retrieval decision (canonical, 2026-09-30)
+
+Rule `HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1` replaces the residual 18-way softmax as the **canonical** Classification v2 family decision. Encoder, forward ontology, social-evaluation merge, applicability head, training corpus, provenance, unbind heads, BEST, reserve isolation, and Jev=OFF are unchanged. No global family-head retrain.
+
+- Index: admissible train positives only (exclude val/reserve/held-out/measurement/Jev/dropped/ambiguous)
+- Score: `family_score(f)=mean(top M cosine(h, exemplars_f))` with `M=min(3, support)` — no centroid
+- Decision: NONE (applicability) / ABSTAIN (score floor) / AMBIGUOUS(top1,top2) (margin) / FAMILY(top1)
+- Calibrate two global thresholds on validation only: maximize correct family emission rate subject to emission precision ≥ 0.80, then coverage; tie-break higher precision, coverage, margin threshold, score threshold
+- Residual family head: diagnostic/compatibility/research only
+- Reserve gate: emission precision ≥ 0.80 and applicability invariance pass
+
+Seal path: `/home/morpheus/hlx-private/classification-v2-family-retrieval-20260930/FAMILY_RETRIEVAL.json` (artifact sha256 `4030e6a36ca1fea34dc728ae913bc96697e7484be532260f7b580ba5eadf2c8f`; index sha256 `b1cd64d9e50e35f2c195f2e115ffdbd77f0a28089f8bd90792f36f1abc4b0177`, n=1611).
+
+- Thresholds: `minimum_family_score=0.85`, `minimum_top1_top2_margin=0.03`
+- Validation: emission precision 0.808219; coverage 0.493243; recall 0.398649; abstain 0.180602; ambiguous 0.033445; top1 0.500; top2 0.608
+- Applicability invariance: **pass**
+- Residual reference (diagnostic): AF macro-F1 0.185630; residual top1 0.391892
+- Reserve gate: **RESERVE_EVAL_JUSTIFIED**. BEST unchanged.
+
+## Family retrieval reserve eval (2026-09-30)
+
+`OPERATOR_AUTHORIZE_RESERVE_EVAL` scored the sealed classify EVAL_RESERVE once under frozen `HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1` thresholds (`minimum_family_score=0.85`, `minimum_top1_top2_margin=0.03`) and sealed index `b1cd64d9…`. No train / recalibrate / index rebuild / ontology change / Jev / BEST move.
+
+Seal: `/home/morpheus/hlx-private/classification-v2-family-retrieval-reserve-20260930/RESERVE_EVAL.json` (artifact sha256 `7d8dd3d1338a6c2e241eef6de3432df60de057cb874788de537814393b17ad27`).
+
+- n=115; rows sha256 `8c527644…`; identity-list sha256 `0af4e64f…`
+- family-emission precision **0.409091** (validation was 0.808219); coverage 0.293333; recall 0.120000
+- decisions: FAMILY 22 / NONE 31 / ABSTAIN 46 / AMBIGUOUS 16
+- top1 0.240; top2 0.360; selective contract does **not** generalize
+- Disposition: **RESERVE_FAIL**. Preserve result. Do not reopen scorer tuning against the reserve. BEST unchanged.
+
+## Final settlement (2026-09-30)
+
+```text
+HYPERLEX_CLASSIFICATION_V2 = RESERVE_FAILED
+primary_failure = APPLICABILITY_GENERALIZATION_FAILURE
+family_retrieval = VALIDATION_SUPPORTED_RESERVE_UNSUPPORTED
+production_promotion = REJECTED
+BEST = UNCHANGED
+lifecycle = SETTLED_FAIL
+```
+
+Full seal: `classification-v2-final-settlement.md`. Successor: `HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE` in `classification-architecture-v3.md` (spec only; no train; spent reserve permanently diagnostic).

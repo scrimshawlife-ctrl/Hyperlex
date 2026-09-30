@@ -1,0 +1,19 @@
+{
+  "BEST": "UNCHANGED",
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "embedding_index_sha256": "b1cd64d9e50e35f2c195f2e115ffdbd77f0a28089f8bd90792f36f1abc4b0177",
+  "family_retrieval": "VALIDATION_SUPPORTED_RESERVE_UNSUPPORTED",
+  "lifecycle": "SETTLED_FAIL",
+  "primary_failure": "APPLICABILITY_GENERALIZATION_FAILURE",
+  "production_promotion": "REJECTED",
+  "reserve_eval_artifact_sha256": "7d8dd3d1338a6c2e241eef6de3432df60de057cb874788de537814393b17ad27",
+  "reserve_family_emission_precision": 0.4090909090909091,
+  "retrieval_artifact_sha256": "4030e6a36ca1fea34dc728ae913bc96697e7484be532260f7b580ba5eadf2c8f",
+  "rule": "HYPERLEX_CLASSIFICATION_V2",
+  "schema": "hyperlex.classification.v2.final_settlement.v1",
+  "spent_reserve_reuse": false,
+  "state": "RESERVE_FAILED",
+  "successor": "HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE",
+  "train": false,
+  "validation_family_emission_precision": 0.8082191780821918
+}

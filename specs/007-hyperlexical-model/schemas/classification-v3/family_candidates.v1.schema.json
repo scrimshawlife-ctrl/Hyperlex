@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v3.family_candidates.v1",
+  "title": "Classification v3 Stage-B family candidates",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input_sha256",
+    "evidence_decision",
+    "candidates",
+    "retrieval_config_sha256"
+  ],
+  "properties": {
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_decision": { "const": "EVIDENCE_PRESENT" },
+    "candidates": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rank", "family", "score", "support_count"],
+        "properties": {
+          "rank": { "type": "integer", "minimum": 1, "maximum": 3 },
+          "family": { "type": "string", "minLength": 1 },
+          "score": { "type": "number", "minimum": -1, "maximum": 1 },
+          "support_count": { "type": "integer", "minimum": 1 },
+          "evidence_ids": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "retrieval_config_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

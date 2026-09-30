@@ -1,0 +1,87 @@
+{
+  "BEST": "UNCHANGED",
+  "artifact_file_sha256": {
+    "DATASET_MANIFEST.json": "560a77b1d63f64f4f84e0ebb929acdedfb18feb1a9b9f2cb0b099c89cadd319d",
+    "DISJOINTNESS.json": "d089c5224044bd11bb7afb80eb5fbd46d9a49ac1057254561b4af7d8f26018c4",
+    "EVIDENCE_SURFACE.jsonl": "7339c044596a4cc2eb5ae17f3fbab185fface9abffb6151bdb0db69eca0d2d3a",
+    "PREREGISTRATION.json": "844858969cb75af717c306518b36fa6c6aa0fe3d5795deebe5623a0fa6b8e4fc",
+    "READINESS.json": "556da553681ca5ae8e71a30f214b9d86565905599f78fdf29c30aff94164524b",
+    "SPLIT_MANIFEST.json": "3a93678cca9cea8ecf2285cb03794e66277c5239d2f01fa88ef7233fa2bd5825",
+    "SUMMARY.json": "247282d195693318d23d1cbc50fd07288d2fe7e9ea3ed8836d4886edac0c2d54",
+    "SURFACE_DIAGNOSTICS.json": "f81148bb671ab0cd922835b865375b9b090ba0f3f28042f7bc751d5070d5194a"
+  },
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "counts_by_provenance": {
+    "INFERRED": 3329,
+    "OBSERVED": 795
+  },
+  "counts_by_split": {
+    "train": 3297,
+    "validation": 827
+  },
+  "counts_by_subtype": {
+    "AMBIGUOUS_EVIDENCE": 478,
+    "GENERIC_NONE": 1819,
+    "HARD_NONE": 316,
+    "NEAR_DOMAIN_NONE": 352,
+    "POSITIVE_EVIDENCE": 1159
+  },
+  "critical_surface_shortcuts": [],
+  "dataset_manifest_sha256": "0638ff50082a3b5e6733176a809a32ad3308952e18b1566789be667307d9ee68",
+  "dataset_sha256": "7339c044596a4cc2eb5ae17f3fbab185fface9abffb6151bdb0db69eca0d2d3a",
+  "diagnostics_sha256": "54e6a36b405f5f0b8cfba401e1e1bf12793a8d1b823956d84809f4b7671a7a80",
+  "disjointness_pass": true,
+  "disjointness_witness_sha256": "88e1cd498ec617d683749925462174aa07bfb2034b52241ec3a8097f14291434",
+  "duplicate_rate": 0.0,
+  "export_sha256": "0d8f4532f84ed9fade3fd4e69af0d1e0717fb1098d40754e95c0090d8282bfe1",
+  "frozen_gates": {
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "family_emission_precision_min": 0.8
+  },
+  "frozen_schema_sha256": {
+    "decision.v1": "ec40356757c5a9e0b639603c6fc14b9650e8d2ecfe956123a0121e6559a12782",
+    "evidence_decision.v1": "bce1caaae235a5c7482012a8bd06619b8e70dc44e5a95fd6d84ad5730ce810ba",
+    "evidence_example.v1": "6981f65816a94630f9929e92feda96ddd72f74ab9aacfe3bd86764efbccf5141",
+    "family_candidates.v1": "49e364fea1e86111a194021cc302ab09a3bbdffe8dd94fe383101cd688f2c521"
+  },
+  "n": 4124,
+  "near_duplicate_group_count": 32,
+  "next_action": "TRAIN_STAGE_A_ONCE_AGAINST_PREREGISTERED_FALSE_ENTRY_GATE",
+  "positive_family_support": {
+    "ai-native": 730,
+    "betting-sharp": 67,
+    "conflict-aggression": 12,
+    "crypto-degen": 92,
+    "fashion-aesthetic": 11,
+    "gaming-meta": 107,
+    "identity-affiliation": 10,
+    "internet-slang": 19,
+    "memetic": 14,
+    "music-entertainment": 7,
+    "politics-civic": 12,
+    "regional-cultural": 8,
+    "relationship-dating": 10,
+    "social-evaluation": 18,
+    "spiritual-mystic": 7,
+    "sports-competition": 12,
+    "technology-ai": 13,
+    "workplace-career": 10
+  },
+  "preregistration_state": "PREREGISTERED",
+  "private_destination": "/home/morpheus/hlx-private/classification-v3-evidence-surface-20260930",
+  "readiness_state": "READY",
+  "receipt_sha256": "89a82318689b6deaeb7fe4681b4e0981f5f46fb224ebd03dce79726e6db7c53d",
+  "rule": "HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE",
+  "spent_v2_reserve_overlap": 0,
+  "split_manifest_sha256": "d4e34c325291c688c166f90de55fe2641295a1619942140551eff63b3fedb2b7",
+  "surface_rule": "HYPERLEX_V3_EVIDENCE_SURFACE_V1",
+  "train": false,
+  "v3_reserve": null,
+  "validation_subtype_counts": {
+    "AMBIGUOUS_EVIDENCE": 102,
+    "GENERIC_NONE": 362,
+    "HARD_NONE": 64,
+    "NEAR_DOMAIN_NONE": 79,
+    "POSITIVE_EVIDENCE": 220
+  }
+}

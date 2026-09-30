@@ -11,6 +11,12 @@ from .classification_v2 import (
     family_index,
     map_family_rows,
 )
+from .classification_v2_prototype import (
+    FUSION_ALPHA,
+    FUSION_BETA,
+    LAMBDA_PROTO,
+    PROTO_TAU,
+)
 
 
 def _torch():
@@ -31,25 +37,118 @@ def zero_linear(hidden: int, outputs: int):
     return layer
 
 
-def build_v2_heads(hidden: int, v1_classify, source_labels: Sequence[str]):
-    """Build zero heads, then copy exact v1 rows into the 19-family head."""
+def build_v2_heads(hidden: int, v1_classify, source_labels: Sequence[str], witness: dict | None = None):
+    """Copy exact rows and install frozen semantic prototypes. Zeros do not survive."""
     torch, _nn = _torch()
+    from .classification_v2_prototype import verify_witness_against_copy
+
     applicability = zero_linear(hidden, len(APPLICABILITY))
     family = zero_linear(hidden, len(ACTIVE_FAMILY_VOCABULARY))
     weight = v1_classify.weight.detach().cpu().tolist()
     bias = v1_classify.bias.detach().cpu().tolist()
     mapped = map_family_rows(source_labels, weight, bias)
+    if witness is None:
+        raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
+    verified = verify_witness_against_copy(mapped, witness)
     with torch.no_grad():
-        family.weight.copy_(torch.tensor(mapped["weight"], dtype=family.weight.dtype))
-        family.bias.copy_(torch.tensor(mapped["bias"], dtype=family.bias.dtype))
+        family.weight.copy_(torch.tensor(verified["weight"], dtype=family.weight.dtype))
+        family.bias.copy_(torch.tensor(verified["bias"], dtype=family.bias.dtype))
         if not torch.equal(applicability.weight, torch.zeros_like(applicability.weight)):
             raise RuntimeError("applicability head retained a random initialization")
-    return applicability, family, mapped
+    return applicability, family, verified
+
+
+def _prototype_family_type():
+    torch, nn = _torch()
+
+    class PrototypeFamilyHead(nn.Module):
+        """Frozen prototype cosine plus a learned residual. Prototypes are buffers."""
+
+        def __init__(self, hidden: int, prototypes, residual_weight, residual_bias, multipliers):
+            super().__init__()
+            self.residual = nn.Linear(hidden, len(ACTIVE_FAMILY_VOCABULARY))
+            proto = torch.tensor(prototypes, dtype=self.residual.weight.dtype)
+            resid_w = torch.tensor(residual_weight, dtype=self.residual.weight.dtype)
+            resid_b = torch.tensor(residual_bias, dtype=self.residual.bias.dtype)
+            scale = torch.tensor(multipliers, dtype=self.residual.weight.dtype)
+            self.register_buffer("prototypes", proto)
+            self.register_buffer("denominator_weights", scale)
+            with torch.no_grad():
+                self.residual.weight.copy_(resid_w)
+                self.residual.bias.copy_(resid_b)
+            if self.prototypes.requires_grad or any(parameter.requires_grad for name, parameter in self.named_parameters() if name.startswith("prototypes")):
+                raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
+
+        def cosine(self, pooled):
+            hidden = torch.nn.functional.normalize(pooled, dim=-1)
+            anchors = torch.nn.functional.normalize(self.prototypes, dim=-1)
+            return hidden @ anchors.T
+
+        def forward(self, pooled):
+            hidden = torch.nn.functional.normalize(pooled, dim=-1)
+            cosine = self.cosine(pooled)
+            residual = self.residual(hidden)
+            return _fuse(cosine, residual)
+
+        def contrastive_nll(self, pooled, targets):
+            cosine = self.cosine(pooled)
+            logits = cosine / PROTO_TAU
+            peak = logits.max(dim=-1, keepdim=True).values
+            weights = self.denominator_weights[targets]
+            shifted = (logits - peak).exp() * weights
+            log_denom = shifted.sum(dim=-1).log() + peak.squeeze(-1)
+            gold = logits.gather(1, targets.unsqueeze(1)).squeeze(1)
+            return log_denom - gold
+
+    return PrototypeFamilyHead
+
+
+def _fuse(cosine, residual):
+    torch, _nn = _torch()
+
+    def _standardize(values):
+        mean = values.mean(dim=-1, keepdim=True)
+        variance = (values - mean).pow(2).mean(dim=-1, keepdim=True)
+        deviation = variance.sqrt()
+        scaled = (values - mean) / deviation.clamp_min(1e-12)
+        return torch.where(deviation > 0, scaled, torch.zeros_like(scaled))
+
+    proto = _standardize(cosine / PROTO_TAU)
+    learned = _standardize(residual)
+    return FUSION_ALPHA * proto + FUSION_BETA * learned
+
+
+def build_geometry_heads(hidden: int, v1_classify, source_labels: Sequence[str], witness: dict | None = None):
+    """Install frozen semantic anchors and the residual initialization."""
+    from .classification_v2_prototype import assess_geometry_witness, denominator_multipliers
+
+    applicability = zero_linear(hidden, len(APPLICABILITY))
+    if witness is None:
+        raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
+    weight = v1_classify.weight.detach().cpu().tolist()
+    bias = v1_classify.bias.detach().cpu().tolist()
+    mapped = map_family_rows(source_labels, weight, bias)
+    verified = assess_geometry_witness(witness, mapped)
+    if not verified.get("pass"):
+        raise RuntimeError(verified.get("detail") or "FAMILY_PROTOTYPE_UNAVAILABLE")
+    multipliers = denominator_multipliers(list(ACTIVE_FAMILY_VOCABULARY), witness["hard_negatives"])
+    family = _prototype_family_type()(
+        hidden,
+        witness["weight"],
+        witness["residual_weight"],
+        witness["residual_bias"],
+        multipliers,
+    )
+    if any(name.startswith("prototypes") for name, _parameter in family.named_parameters()):
+        raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
+    return applicability, family, verified
 
 
 def batch_classify_loss(applicability, family, pooled, rows: Sequence[dict], contract: dict[str, Any]):
     """Mean of masked per-row losses. Unbind is not included."""
     torch, nn = _torch()
+    from .classification_v2_geometry_repair import LAMBDA_GEOMETRY
+
     index = family_index()
     app_index: list[int] = []
     app_target: list[int] = []
@@ -78,7 +177,27 @@ def batch_classify_loss(applicability, family, pooled, rows: Sequence[dict], con
         return (nll * scale).mean()
 
     applicability_loss = _weighted(applicability, app_index, app_target, app_weight)
-    family_loss = _weighted(family, fam_index, fam_target, fam_weight)
+    family_ce = _weighted(family, fam_index, fam_target, fam_weight)
+    family_proto = None
+    family_geometry = None
+    if family_ce is not None and hasattr(family, "geometry_nll"):
+        gold = torch.tensor(fam_target, device=pooled.device)
+        nll = family.geometry_nll(pooled[fam_index], gold)
+        scale = torch.tensor(fam_weight, device=nll.device, dtype=nll.dtype)
+        family_geometry = (nll * scale).mean()
+    elif family_ce is not None and hasattr(family, "contrastive_nll"):
+        gold = torch.tensor(fam_target, device=pooled.device)
+        nll = family.contrastive_nll(pooled[fam_index], gold)
+        scale = torch.tensor(fam_weight, device=nll.device, dtype=nll.dtype)
+        family_proto = (nll * scale).mean()
+    if family_ce is None:
+        family_loss = None
+    elif family_geometry is not None:
+        family_loss = family_ce + (LAMBDA_GEOMETRY * family_geometry)
+    elif family_proto is None:
+        family_loss = family_ce
+    else:
+        family_loss = family_ce + (LAMBDA_PROTO * family_proto)
     terms = [term for term in (applicability_loss, family_loss) if term is not None]
     if not terms:
         return None
@@ -87,4 +206,115 @@ def batch_classify_loss(applicability, family, pooled, rows: Sequence[dict], con
         "total": total,
         "applicability": applicability_loss,
         "family": family_loss,
+        "family_ce": family_ce,
+        "family_proto": family_proto,
+        "family_geometry": family_geometry,
     }
+
+
+def _repair_family_type():
+    torch, nn = _torch()
+
+    class RepairFamilyHead(nn.Module):
+        """Learned residual family logits. Boundary anchors structure geometry loss only."""
+
+        def __init__(self, hidden, residual_weight, residual_bias, anchors, anchor_families, hard_negatives):
+            super().__init__()
+            from .classification_v2_geometry_repair import (
+                GEOMETRY_TAU,
+                HARD_NEGATIVE_MULTIPLIER,
+                denominator_anchor_weights,
+            )
+
+            self.residual = nn.Linear(hidden, len(ACTIVE_FAMILY_VOCABULARY))
+            resid_w = torch.tensor(residual_weight, dtype=self.residual.weight.dtype)
+            resid_b = torch.tensor(residual_bias, dtype=self.residual.bias.dtype)
+            with torch.no_grad():
+                self.residual.weight.copy_(resid_w)
+                self.residual.bias.copy_(resid_b)
+            anchor_tensor = torch.tensor(anchors, dtype=self.residual.weight.dtype)
+            family_index_tensor = torch.tensor(anchor_families, dtype=torch.long)
+            self.register_buffer("anchors", anchor_tensor)
+            self.register_buffer("anchor_families", family_index_tensor)
+            names = list(ACTIVE_FAMILY_VOCABULARY)
+            flat = [{"family": names[index]} for index in anchor_families]
+            matrix = [
+                denominator_anchor_weights(family, flat, hard_negatives)
+                for family in names
+            ]
+            self.register_buffer(
+                "denominator_weights",
+                torch.tensor(matrix, dtype=self.residual.weight.dtype),
+            )
+            self.tau = GEOMETRY_TAU
+            self.hard_negative_multiplier = HARD_NEGATIVE_MULTIPLIER
+            if self.anchors.requires_grad:
+                raise RuntimeError("FAMILY_GEOMETRY_REPAIR_UNAVAILABLE")
+
+        def forward(self, pooled):
+            return self.residual(pooled)
+
+        def anchor_cosine(self, pooled):
+            hidden = torch.nn.functional.normalize(pooled, dim=-1)
+            anchors = torch.nn.functional.normalize(self.anchors, dim=-1)
+            return hidden @ anchors.T
+
+        def geometry_nll(self, pooled, targets):
+            cosine = self.anchor_cosine(pooled)
+            logits = cosine / self.tau
+            peak = logits.max(dim=-1, keepdim=True).values
+            shifted = (logits - peak).exp()
+            weights = self.denominator_weights[targets]
+            denom = (shifted * weights).sum(dim=-1).clamp_min(1e-12).log() + peak.squeeze(-1)
+            positive = self.anchor_families.unsqueeze(0) == targets.unsqueeze(1)
+            numer = (shifted * positive.to(dtype=shifted.dtype)).sum(dim=-1).clamp_min(1e-12).log() + peak.squeeze(-1)
+            return denom - numer
+
+    return RepairFamilyHead
+
+
+def build_repair_heads(hidden: int, v1_classify, source_labels: Sequence[str], boundaries: dict | None = None):
+    """Residual family head. Boundary anchors are frozen loss structure only."""
+    from .classification_v2_geometry_repair import (
+        CANONICAL_LOGITS,
+        assess_boundary_for_repair,
+        flatten_anchors,
+        hard_negatives_from_boundaries,
+        repair_contract,
+        sparse_families_from_boundaries,
+    )
+
+    if boundaries is None:
+        raise RuntimeError("FAMILY_GEOMETRY_REPAIR_UNAVAILABLE")
+    checked = assess_boundary_for_repair(boundaries)
+    if not checked.get("pass"):
+        raise RuntimeError(checked.get("detail") or "FAMILY_GEOMETRY_REPAIR_UNAVAILABLE")
+    applicability = zero_linear(hidden, len(APPLICABILITY))
+    weight = v1_classify.weight.detach().cpu().tolist()
+    bias = v1_classify.bias.detach().cpu().tolist()
+    mapped = map_family_rows(source_labels, weight, bias)
+    anchors = flatten_anchors(boundaries)
+    hard = hard_negatives_from_boundaries(boundaries)
+    family = _repair_family_type()(
+        hidden,
+        mapped["weight"],
+        mapped["bias"],
+        [anchor["vector"] for anchor in anchors],
+        [list(ACTIVE_FAMILY_VOCABULARY).index(anchor["family"]) for anchor in anchors],
+        hard,
+    )
+    if any(name.startswith("anchors") for name, _parameter in family.named_parameters()):
+        raise RuntimeError("FAMILY_GEOMETRY_REPAIR_UNAVAILABLE")
+    receipt = {
+        "boundary_sha256": checked["boundary_sha256"],
+        "canonical_logits": CANONICAL_LOGITS,
+        "contract": repair_contract(),
+        "exact_copy_families": list(mapped["mapped_families"]),
+        "hard_negatives": hard,
+        "n_anchors": len(anchors),
+        "residual_initialization": "exact_copy_or_zero",
+        "separation_sha256": checked["separation_sha256"],
+        "sparse_families": sparse_families_from_boundaries(boundaries),
+        "zero_initialized_families": list(mapped["zero_initialized_families"]),
+    }
+    return applicability, family, receipt

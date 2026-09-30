@@ -1,0 +1,662 @@
+{
+  "artifact_sha256": "2cb2fe2459a86323dfa8aa50136bb8e6822598ffd8895a1988af459949853d5f",
+  "audit_state": "SEALED",
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "boundary_sha256": "0ca6f34ce1abf68388e443371672ca36e16028079a175b6775e1968900e1c52f",
+  "decision": "MIXED_REMEDIATION_REQUIRED",
+  "embedding_matrix_sha256": "3957e4cefabf37a7d8993f0574c7a76c93096c0cd991b8a7134207e07ade7bda",
+  "encoder_updated": false,
+  "family_status": {
+    "ai-native": "OVERLAPPING",
+    "approval-disapproval": "OVERLAPPING",
+    "betting-sharp": "UNDER_SUPPORTED",
+    "conflict-aggression": "OVERLAPPING",
+    "crypto-degen": "UNRESOLVED",
+    "fashion-aesthetic": "OVERLAPPING",
+    "gaming-meta": "UNRESOLVED",
+    "identity-affiliation": "OVERLAPPING",
+    "internet-slang": "UNDER_SUPPORTED",
+    "memetic": "UNDER_SUPPORTED",
+    "music-entertainment": "NOISY",
+    "politics-civic": "OVERLAPPING",
+    "regional-cultural": "NOISY",
+    "relationship-dating": "NOISY",
+    "social-status": "OVERLAPPING",
+    "spiritual-mystic": "OVERLAPPING",
+    "sports-competition": "OVERLAPPING",
+    "technology-ai": "OVERLAPPING",
+    "workplace-career": "NOISY"
+  },
+  "jev": "OFF",
+  "lexical_matrix_sha256": "1579d47aabbb4429b352ad7c251b79b4f5722506d80d0cc25afd7a8d251ce3a5",
+  "moves_best": false,
+  "pair_flag_counts": {
+    "DATA_TOO_SPARSE": 51,
+    "LABEL_NOISE": 112,
+    "ONTOLOGY_OVERLAP": 71,
+    "REPRESENTATION_COLLAPSE": 99,
+    "SEPARABLE": 4
+  },
+  "remediation": [
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup"
+      ],
+      "family": "gaming-meta",
+      "status": "UNRESOLVED"
+    },
+    {
+      "actions": [
+        "more direct positive examples"
+      ],
+      "family": "betting-sharp",
+      "status": "UNDER_SUPPORTED"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup"
+      ],
+      "family": "crypto-degen",
+      "status": "UNRESOLVED"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "better definition text"
+      ],
+      "family": "internet-slang",
+      "status": "UNDER_SUPPORTED"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "better definition text"
+      ],
+      "family": "memetic",
+      "status": "UNDER_SUPPORTED"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "social-status",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "relationship-dating",
+      "status": "NOISY"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "approval-disapproval",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "conflict-aggression",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "technology-ai",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "workplace-career",
+      "status": "NOISY"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "sports-competition",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "music-entertainment",
+      "status": "NOISY"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "fashion-aesthetic",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "regional-cultural",
+      "status": "NOISY"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "spiritual-mystic",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "identity-affiliation",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "family merge candidate",
+        "family split",
+        "better definition text"
+      ],
+      "family": "politics-civic",
+      "status": "OVERLAPPING"
+    },
+    {
+      "actions": [
+        "more direct positive examples",
+        "label cleanup",
+        "boundary refinement",
+        "better definition text"
+      ],
+      "family": "ai-native",
+      "status": "OVERLAPPING"
+    }
+  ],
+  "repair_primary_sha256": "449bf3b303c95bc5d6b7d87173d50315616556c1379057414b970f3e5f0b18cf",
+  "reserve_scored": false,
+  "schema": "hyperlex.classification.v2.active_family_separability_audit.v1",
+  "separation_sha256": "ab698d342d2d276f81d4baf3fed609bb6f8bf88cd6810bb1d1998c5e409f63c3",
+  "sparse_treatment": [
+    {
+      "additional_data_plausibly_resolves": true,
+      "family": "betting-sharp",
+      "n_train_definitions": 2,
+      "n_val_definitions": 1,
+      "ontology_failure_from_support_alone": false,
+      "rationale": [
+        "training_definition_support_sparse",
+        "pairwise_probe_succeeds_when_support_allows",
+        "two_train_definitions_insufficient_for_ontology_failure_claim"
+      ]
+    },
+    {
+      "additional_data_plausibly_resolves": true,
+      "family": "internet-slang",
+      "n_train_definitions": 1,
+      "n_val_definitions": 58,
+      "ontology_failure_from_support_alone": false,
+      "rationale": [
+        "training_definition_support_sparse",
+        "validation_definitions_exist",
+        "large_val_definition_pool_suggests_train_expansion_can_help"
+      ]
+    },
+    {
+      "additional_data_plausibly_resolves": true,
+      "family": "memetic",
+      "n_train_definitions": 1,
+      "n_val_definitions": 2,
+      "ontology_failure_from_support_alone": false,
+      "rationale": [
+        "training_definition_support_sparse",
+        "validation_definitions_exist",
+        "single_train_definition_blocks_ontology_judgment"
+      ]
+    }
+  ],
+  "support": {
+    "ai-native": {
+      "inferred": 500,
+      "n": 503,
+      "n_val_definitions": 60,
+      "observed": 3
+    },
+    "approval-disapproval": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "betting-sharp": {
+      "inferred": 1,
+      "n": 2,
+      "n_val_definitions": 1,
+      "observed": 1
+    },
+    "conflict-aggression": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "crypto-degen": {
+      "inferred": 29,
+      "n": 29,
+      "n_val_definitions": 4,
+      "observed": 0
+    },
+    "fashion-aesthetic": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "gaming-meta": {
+      "inferred": 78,
+      "n": 81,
+      "n_val_definitions": 6,
+      "observed": 3
+    },
+    "identity-affiliation": {
+      "inferred": 0,
+      "n": 4,
+      "n_val_definitions": 2,
+      "observed": 4
+    },
+    "internet-slang": {
+      "inferred": 0,
+      "n": 1,
+      "n_val_definitions": 58,
+      "observed": 1
+    },
+    "memetic": {
+      "inferred": 0,
+      "n": 1,
+      "n_val_definitions": 2,
+      "observed": 1
+    },
+    "music-entertainment": {
+      "inferred": 0,
+      "n": 5,
+      "n_val_definitions": 2,
+      "observed": 5
+    },
+    "politics-civic": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "regional-cultural": {
+      "inferred": 0,
+      "n": 3,
+      "n_val_definitions": 2,
+      "observed": 3
+    },
+    "relationship-dating": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "social-status": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "spiritual-mystic": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "sports-competition": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "technology-ai": {
+      "inferred": 0,
+      "n": 6,
+      "n_val_definitions": 2,
+      "observed": 6
+    },
+    "workplace-career": {
+      "inferred": 0,
+      "n": 5,
+      "n_val_definitions": 2,
+      "observed": 5
+    }
+  },
+  "suspected_label_noise": [
+    {
+      "family": "relationship-dating",
+      "identity": "17d1d192814cdda7d25cb171a30a07882fcc58bbd18723db3a762cd4b4b5c6cc",
+      "nearest_family": "approval-disapproval",
+      "score": 0.9179478883743286
+    },
+    {
+      "family": "relationship-dating",
+      "identity": "4df2dd1d7f069ccc4a7731d177aac65d46b56a569e5bbc287ad926f9cd7f5a95",
+      "nearest_family": "social-status",
+      "score": 0.8656211495399475
+    },
+    {
+      "family": "relationship-dating",
+      "identity": "bc29c71410e855943a3e981c225167543963ecce46a77459c189ee6f9c2debb9",
+      "nearest_family": "approval-disapproval",
+      "score": 0.8904374241828918
+    },
+    {
+      "family": "workplace-career",
+      "identity": "2e19997bbcf52f0252c922fa0962b0e1b248a539de2f280a8e9483efd5a4642f",
+      "nearest_family": "technology-ai",
+      "score": 0.856013298034668
+    },
+    {
+      "family": "music-entertainment",
+      "identity": "90544f171008d3cfad347f496fe13da7ee8782f9af457aaa359b8617e4bd7329",
+      "nearest_family": "spiritual-mystic",
+      "score": 0.8073445558547974
+    },
+    {
+      "family": "regional-cultural",
+      "identity": "8bd78f57167eeb195cc91f92dc979e13227cac028fb958952ac51d71773ffce8",
+      "nearest_family": "identity-affiliation",
+      "score": 0.8382678031921387
+    },
+    {
+      "family": "spiritual-mystic",
+      "identity": "5dcd520e0f42301ba736f1be484c9133f4a938bf74123af412627601f443ad2f",
+      "nearest_family": "social-status",
+      "score": 0.8601054549217224
+    }
+  ],
+  "train": false,
+  "worst_collision_pairs": [
+    {
+      "centroid_distance": 0.08638447523117065,
+      "cross_family_similarity": 0.7894913554191589,
+      "family_a": "social-status",
+      "family_b": "approval-disapproval",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.016129031777381897
+    },
+    {
+      "centroid_distance": 0.1149139404296875,
+      "cross_family_similarity": 0.7454497218132019,
+      "family_a": "relationship-dating",
+      "family_b": "approval-disapproval",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.13330620527267456,
+      "cross_family_similarity": 0.7144792675971985,
+      "family_a": "social-status",
+      "family_b": "relationship-dating",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.12536263465881348,
+      "cross_family_similarity": 0.6996215581893921,
+      "family_a": "conflict-aggression",
+      "family_b": "politics-civic",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.012345679104328156
+    },
+    {
+      "centroid_distance": 0.11648231744766235,
+      "cross_family_similarity": 0.6916924118995667,
+      "family_a": "social-status",
+      "family_b": "music-entertainment",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.027397260069847107
+    },
+    {
+      "centroid_distance": 0.16548174619674683,
+      "cross_family_similarity": 0.6710332036018372,
+      "family_a": "approval-disapproval",
+      "family_b": "music-entertainment",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.1617884635925293,
+      "cross_family_similarity": 0.6461608409881592,
+      "family_a": "relationship-dating",
+      "family_b": "identity-affiliation",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.1712210774421692,
+      "cross_family_similarity": 0.639196515083313,
+      "family_a": "identity-affiliation",
+      "family_b": "politics-civic",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.27458488941192627,
+      "cross_family_similarity": 0.6217334270477295,
+      "family_a": "approval-disapproval",
+      "family_b": "conflict-aggression",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.23675036430358887,
+      "cross_family_similarity": 0.6063461303710938,
+      "family_a": "conflict-aggression",
+      "family_b": "sports-competition",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.012500000186264515
+    },
+    {
+      "centroid_distance": 0.2868577241897583,
+      "cross_family_similarity": 0.5989828705787659,
+      "family_a": "social-status",
+      "family_b": "conflict-aggression",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.010869565419852734
+    },
+    {
+      "centroid_distance": 0.2657994031906128,
+      "cross_family_similarity": 0.5970438718795776,
+      "family_a": "relationship-dating",
+      "family_b": "conflict-aggression",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.23983240127563477,
+      "cross_family_similarity": 0.5931311845779419,
+      "family_a": "relationship-dating",
+      "family_b": "politics-civic",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.26614320278167725,
+      "cross_family_similarity": 0.5838539004325867,
+      "family_a": "conflict-aggression",
+      "family_b": "identity-affiliation",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    },
+    {
+      "centroid_distance": 0.2036900520324707,
+      "cross_family_similarity": 0.5832798480987549,
+      "family_a": "regional-cultural",
+      "family_b": "identity-affiliation",
+      "flags": [
+        "REPRESENTATION_COLLAPSE",
+        "ONTOLOGY_OVERLAP",
+        "LABEL_NOISE"
+      ],
+      "probe_f1": 0.3333333432674408,
+      "probe_status": "OK",
+      "shared_token_ratio": 0.0
+    }
+  ]
+}

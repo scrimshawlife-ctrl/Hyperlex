@@ -60,12 +60,49 @@ def loader_witness_from_config(path: Path) -> dict:
     }
 
 
-def audit(export_path: Path | None = None, config_path: Path | None = None) -> dict:
+def audit(export_path: Path | None = None, config_path: Path | None = None, prototype_witness: Path | None = None) -> dict:
+    from .classification_v2_prototype import (
+        assess_witness,
+        definition_string_report,
+        validation_family_support,
+    )
+    from .holdout_guard import normalized_text_sha256
+    from .identity_ledger import IdentityLedger, derived_state
+    from .training_routing import route_rows
+
     export = export_path or DEFAULT_EXPORT
     config = config_path or BEST_CONFIG
-    rows = classify_train_rows(load_export(export))
+    loaded = load_export(export)
+    rows = classify_train_rows(loaded)
     witness = loader_witness_from_config(config)
-    report = readiness(rows, loader_status=witness["status"])
+    identity_state = {}
+    ledger_dir = LEDGER.parent
+    if (ledger_dir / "events.jsonl").is_file():
+        ledger = IdentityLedger.load(ledger_dir)
+        for row in loaded:
+            if row.get("task") != "classify" or row.get("split") not in {"train", "val"}:
+                continue
+            digest = normalized_text_sha256(str(row.get("text") or ""))
+            record = ledger.identity(digest)
+            if record is not None:
+                identity_state[digest] = derived_state(record)
+    prototype_report = None
+    if prototype_witness is not None and prototype_witness.is_file():
+        prototype_report = assess_witness(json.loads(prototype_witness.read_text(encoding="utf-8")))
+    from .classification_v2 import PROVENANCE_WEIGHTS
+    from .classification_v2_surface import representation_leak, surface_cell_weights, surface_census
+
+    surface_report = surface_census(loaded)
+    surface_report["representation_leaks"] = representation_leak(loaded)
+    surface_report["cell_weights"] = surface_cell_weights(rows, PROVENANCE_WEIGHTS)
+    report = readiness(
+        rows,
+        loader_status=witness["status"],
+        prototype_report=prototype_report,
+        validation_report=validation_family_support(route_rows(loaded)[0]["classify"]["val"], identity_state=identity_state),
+        definition_report=definition_string_report(loaded),
+        surface_report=surface_report,
+    )
     report["loader_witness"] = witness
     report["n_classify_train"] = len(rows)
     report["export"] = str(export)
@@ -79,12 +116,23 @@ def audit(export_path: Path | None = None, config_path: Path | None = None) -> d
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     export = Path(args[0]) if args else DEFAULT_EXPORT
-    report = audit(export)
+    prototype_witness = Path(args[1]) if len(args) > 1 else None
+    report = audit(export, prototype_witness=prototype_witness)
     printable = {
         "state": report["state"],
         "ready": report["ready"],
         "blocker": report["blocker"],
         "missing_support": report["missing_support"],
+        "blockers": report.get("blockers"),
+        "deficient_validation": report.get("deficient_validation"),
+        "validation_support": report.get("validation_support"),
+        "below_preferred_validation": report.get("below_preferred_validation"),
+        "exact_copy_families": report.get("exact_copy_families"),
+        "prototype_families": report.get("prototype_families"),
+        "prototype_source_counts": report.get("prototype_source_counts"),
+        "witness_sha256": report.get("witness_sha256"),
+        "target_norm": report.get("target_norm"),
+        "checks": report.get("checks"),
         "n_classify_train": report["n_classify_train"],
         "mapped_families": report["loader_witness"]["mapped_families"],
         "zero_initialized_families": report["loader_witness"]["zero_initialized_families"],

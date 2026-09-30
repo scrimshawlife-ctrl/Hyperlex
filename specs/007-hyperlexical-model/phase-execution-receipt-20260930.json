@@ -1,0 +1,189 @@
+{
+  "artifact_sha256": "6d11eab035d64a5ef8d1008ade9b565064920e6de2cc86673202cbc60753be3b",
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "moves_best": false,
+  "mutates_ontology": false,
+  "overlay_export_sha256": "8a934806885fb939f8b4ca26f10ab5bc6600c495d3be77d5a2366dc6c62146e0",
+  "phase_a_acquire_sha256": "2bfe35bbf39ee13dab3ffcb889961132e8529b1d1f6d47dd52633ff9d5ab610f",
+  "phase_a_noise_reviews": [
+    {
+      "decision": "KEEP",
+      "family": "relationship-dating",
+      "identity": "17d1d192814cdda7d25cb171a30a07882fcc58bbd18723db3a762cd4b4b5c6cc",
+      "rationale": "courtship/playful affection matches relationship-dating",
+      "relabel_to": null
+    },
+    {
+      "decision": "RELABEL",
+      "family": "workplace-career",
+      "identity": "2e19997bbcf52f0252c922fa0962b0e1b248a539de2f280a8e9483efd5a4642f",
+      "rationale": "information-technology concern set is technology-ai",
+      "relabel_to": "technology-ai"
+    },
+    {
+      "decision": "KEEP",
+      "family": "relationship-dating",
+      "identity": "4df2dd1d7f069ccc4a7731d177aac65d46b56a569e5bbc287ad926f9cd7f5a95",
+      "rationale": "dating-safety call pattern matches relationship-dating",
+      "relabel_to": null
+    },
+    {
+      "decision": "KEEP",
+      "family": "spiritual-mystic",
+      "identity": "5dcd520e0f42301ba736f1be484c9133f4a938bf74123af412627601f443ad2f",
+      "rationale": "lost spiritual continent matches spiritual-mystic",
+      "relabel_to": null
+    },
+    {
+      "decision": "DROP",
+      "family": "regional-cultural",
+      "identity": "8bd78f57167eeb195cc91f92dc979e13227cac028fb958952ac51d71773ffce8",
+      "rationale": "fauna gloss without regional cultural practice cue",
+      "relabel_to": null
+    },
+    {
+      "decision": "DROP",
+      "family": "music-entertainment",
+      "identity": "90544f171008d3cfad347f496fe13da7ee8782f9af457aaa359b8617e4bd7329",
+      "rationale": "tetrachord tuning is not a stable music-entertainment family definition",
+      "relabel_to": null
+    },
+    {
+      "decision": "DROP",
+      "family": "relationship-dating",
+      "identity": "bc29c71410e855943a3e981c225167543963ecce46a77459c189ee6f9c2debb9",
+      "rationale": "incel-exit gloss overlaps approval-disapproval and identity frames",
+      "relabel_to": null
+    }
+  ],
+  "phase_a_support": {
+    "all_meet_target": true,
+    "families": {
+      "betting-sharp": {
+        "inferred": 1,
+        "meets_target": true,
+        "n_train_definitions": 14,
+        "observed": 13,
+        "operator_waiver": null,
+        "target": 12
+      },
+      "internet-slang": {
+        "inferred": 0,
+        "meets_target": true,
+        "n_train_definitions": 13,
+        "observed": 13,
+        "operator_waiver": null,
+        "target": 12
+      },
+      "memetic": {
+        "inferred": 0,
+        "meets_target": true,
+        "n_train_definitions": 13,
+        "observed": 13,
+        "operator_waiver": null,
+        "target": 12
+      }
+    }
+  },
+  "phase_b_pack_count": 18,
+  "phase_c_ontology_decisions": [
+    {
+      "action": "KEEP_WITH_BOUNDARY_REDEFINITION",
+      "apply_to_active_ontology": false,
+      "component_size": 13,
+      "families": [
+        "approval-disapproval",
+        "conflict-aggression",
+        "fashion-aesthetic",
+        "identity-affiliation",
+        "music-entertainment",
+        "politics-civic",
+        "regional-cultural",
+        "relationship-dating",
+        "social-status",
+        "spiritual-mystic",
+        "sports-competition",
+        "technology-ai",
+        "workplace-career"
+      ],
+      "pair_reviews": [
+        {
+          "decision": "SPLIT_CANDIDATE",
+          "family_a": "approval-disapproval",
+          "family_b": "social-status",
+          "rationale": "names encode distinct practices; current sense labels admit overlapping glosses \u2014 redefine admission boundaries before any merge"
+        },
+        {
+          "decision": "SPLIT_CANDIDATE",
+          "family_a": "approval-disapproval",
+          "family_b": "relationship-dating",
+          "rationale": "names encode distinct practices; current sense labels admit overlapping glosses \u2014 redefine admission boundaries before any merge"
+        },
+        {
+          "decision": "SPLIT_CANDIDATE",
+          "family_a": "relationship-dating",
+          "family_b": "social-status",
+          "rationale": "names encode distinct practices; current sense labels admit overlapping glosses \u2014 redefine admission boundaries before any merge"
+        }
+      ],
+      "rationale": "13-family overlap component is real, but a blind merge would destroy operator-useful distinctions. Keep vocabulary; execute PHASE_B cue packs and re-acquire mutually exclusive definitions before reconsidering merges."
+    },
+    {
+      "action": "KEEP",
+      "apply_to_active_ontology": false,
+      "families": [
+        "internet-slang"
+      ],
+      "rationale": "no dense overlap component; keep and expand data"
+    },
+    {
+      "action": "KEEP",
+      "apply_to_active_ontology": false,
+      "families": [
+        "memetic"
+      ],
+      "rationale": "no dense overlap component; keep and expand data"
+    }
+  ],
+  "phase_d_audit_sha256": "d56d03420e7f7072b1798a55e7ecd8877263b1dfd4ad938d36115cba18a21d0a",
+  "phase_d_decision": "MIXED_REMEDIATION_REQUIRED",
+  "phase_d_family_status": {
+    "ai-native": "OVERLAPPING",
+    "approval-disapproval": "OVERLAPPING",
+    "betting-sharp": "UNRESOLVED",
+    "conflict-aggression": "OVERLAPPING",
+    "crypto-degen": "UNRESOLVED",
+    "fashion-aesthetic": "OVERLAPPING",
+    "gaming-meta": "UNRESOLVED",
+    "identity-affiliation": "OVERLAPPING",
+    "internet-slang": "NOISY",
+    "memetic": "NOISY",
+    "music-entertainment": "OVERLAPPING",
+    "politics-civic": "OVERLAPPING",
+    "regional-cultural": "UNDER_SUPPORTED",
+    "relationship-dating": "NOISY",
+    "social-status": "OVERLAPPING",
+    "spiritual-mystic": "OVERLAPPING",
+    "sports-competition": "OVERLAPPING",
+    "technology-ai": "OVERLAPPING",
+    "workplace-career": "UNRESOLVED"
+  },
+  "phase_d_pair_flag_counts": {
+    "DATA_TOO_SPARSE": 18,
+    "DEFINITION_TOO_GENERIC": 1,
+    "LABEL_NOISE": 141,
+    "ONTOLOGY_OVERLAP": 85,
+    "REPRESENTATION_COLLAPSE": 98,
+    "SEPARABLE": 7
+  },
+  "phase_status": {
+    "PHASE_A_DATA_AND_NOISE": "COMPLETE",
+    "PHASE_B_BOUNDARY_REFINEMENT": "COMPLETE",
+    "PHASE_C_ONTOLOGY_REFACTOR_REVIEW": "COMPLETE",
+    "PHASE_D_REAUDIT_BEFORE_TRAINING": "COMPLETE"
+  },
+  "phases_complete": true,
+  "reserve_scored": false,
+  "schema": "hyperlex.classification.v2.active_family_phase_execution.v1",
+  "train": false
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v3.decision.v1",
+  "title": "Classification v3 end-to-end decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["input_sha256", "decision_type", "evidence"],
+  "properties": {
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decision_type": {
+      "type": "string",
+      "enum": ["NONE", "FAMILY", "ABSTAIN", "AMBIGUOUS"]
+    },
+    "family": { "type": ["string", "null"], "minLength": 1 },
+    "candidate_families": {
+      "type": "array",
+      "maxItems": 3,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "evidence": {
+      "$ref": "hyperlex.classification.v3.evidence_decision.v1"
+    },
+    "family_score": { "type": ["number", "null"] },
+    "family_margin": { "type": ["number", "null"] },
+    "reason_code": {
+      "type": "string",
+      "enum": [
+        "NO_RELEVANT_EVIDENCE",
+        "INSUFFICIENT_EVIDENCE_CONFIDENCE",
+        "INSUFFICIENT_FAMILY_SUPPORT",
+        "MULTIPLE_FAMILIES_SUPPORTED",
+        "SINGLE_FAMILY_SUPPORTED"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decision_type": { "const": "NONE" } },
+        "required": ["decision_type"]
+      },
+      "then": {
+        "properties": {
+          "family": { "type": "null" },
+          "reason_code": { "const": "NO_RELEVANT_EVIDENCE" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "decision_type": { "const": "FAMILY" } },
+        "required": ["decision_type"]
+      },
+      "then": {
+        "required": ["family", "family_score", "family_margin"],
+        "properties": {
+          "family": { "type": "string", "minLength": 1 },
+          "reason_code": { "const": "SINGLE_FAMILY_SUPPORTED" }
+        }
+      }
+    }
+  ]
+}

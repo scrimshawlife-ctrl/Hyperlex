@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v3.evidence_example.v1",
+  "title": "Classification v3 evidence-gate training example",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "identity",
+    "text",
+    "evidence_label",
+    "evidence_subtype",
+    "provenance",
+    "split",
+    "source_sha256"
+  ],
+  "properties": {
+    "identity": { "type": "string", "minLength": 1 },
+    "text": { "type": "string", "minLength": 1 },
+    "evidence_label": {
+      "type": "string",
+      "enum": ["NO_EVIDENCE", "EVIDENCE_PRESENT", "UNCERTAIN"]
+    },
+    "evidence_subtype": {
+      "type": "string",
+      "enum": [
+        "POSITIVE_EVIDENCE",
+        "HARD_NONE",
+        "NEAR_DOMAIN_NONE",
+        "GENERIC_NONE",
+        "AMBIGUOUS_EVIDENCE"
+      ]
+    },
+    "provenance": { "type": "string", "enum": ["OBSERVED", "INFERRED"] },
+    "split": { "type": "string", "enum": ["train", "validation", "reserve"] },
+    "candidate_families": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "positive_evidence_spans": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/span" }
+    },
+    "negative_evidence_spans": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/span" }
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "parent_identity": { "type": ["string", "null"] },
+    "notes": { "type": ["string", "null"] }
+  },
+  "$defs": {
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 1 },
+        "cue": { "type": ["string", "null"] }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "evidence_subtype": { "const": "POSITIVE_EVIDENCE" } },
+        "required": ["evidence_subtype"]
+      },
+      "then": {
+        "properties": { "evidence_label": { "const": "EVIDENCE_PRESENT" } }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence_subtype": {
+            "enum": ["HARD_NONE", "NEAR_DOMAIN_NONE", "GENERIC_NONE"]
+          }
+        },
+        "required": ["evidence_subtype"]
+      },
+      "then": {
+        "properties": { "evidence_label": { "const": "NO_EVIDENCE" } }
+      }
+    },
+    {
+      "if": {
+        "properties": { "evidence_subtype": { "const": "AMBIGUOUS_EVIDENCE" } },
+        "required": ["evidence_subtype"]
+      },
+      "then": {
+        "properties": { "evidence_label": { "const": "UNCERTAIN" } }
+      }
+    }
+  ]
+}

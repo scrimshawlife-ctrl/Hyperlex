@@ -1,0 +1,290 @@
+{
+  "artifact_sha256": "d1292e106ae674d16967d85486133c912390de8afeb2ae5fcf977dd69cac1e00",
+  "audit_artifact_sha256": "2cb2fe2459a86323dfa8aa50136bb8e6822598ffd8895a1988af459949853d5f",
+  "audit_decision": "MIXED_REMEDIATION_REQUIRED",
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "data_expansion": [
+    {
+      "discovery_queries": [],
+      "family": "betting-sharp",
+      "n_train_current": 2,
+      "n_val_definitions": 1,
+      "priority": 0,
+      "sense_labels": [],
+      "status": "UNDER_SUPPORTED",
+      "target_train_definitions": 12,
+      "train_needed": 10
+    },
+    {
+      "discovery_queries": [
+        "Internet slang",
+        "Reddit slang",
+        "2channel slang"
+      ],
+      "family": "internet-slang",
+      "n_train_current": 1,
+      "n_val_definitions": 58,
+      "priority": 0,
+      "sense_labels": [
+        "internet slang",
+        "reddit slang",
+        "2channel slang"
+      ],
+      "status": "UNDER_SUPPORTED",
+      "target_train_definitions": 12,
+      "train_needed": 11
+    },
+    {
+      "discovery_queries": [
+        "meme"
+      ],
+      "family": "memetic",
+      "n_train_current": 1,
+      "n_val_definitions": 2,
+      "priority": 0,
+      "sense_labels": [
+        "meme"
+      ],
+      "status": "UNDER_SUPPORTED",
+      "target_train_definitions": 12,
+      "train_needed": 11
+    }
+  ],
+  "label_cleanup": [
+    {
+      "auto_relabel": false,
+      "family": "music-entertainment",
+      "identity": "90544f171008d3cfad347f496fe13da7ee8782f9af457aaa359b8617e4bd7329",
+      "nearest_family": "spiritual-mystic",
+      "recommendation": "DROP_OR_RELABEL"
+    },
+    {
+      "auto_relabel": false,
+      "family": "regional-cultural",
+      "identity": "8bd78f57167eeb195cc91f92dc979e13227cac028fb958952ac51d71773ffce8",
+      "nearest_family": "identity-affiliation",
+      "recommendation": "DROP_OR_RELABEL"
+    },
+    {
+      "auto_relabel": false,
+      "family": "relationship-dating",
+      "identity": "17d1d192814cdda7d25cb171a30a07882fcc58bbd18723db3a762cd4b4b5c6cc",
+      "nearest_family": "approval-disapproval",
+      "recommendation": "DROP_OR_RELABEL"
+    },
+    {
+      "auto_relabel": false,
+      "family": "relationship-dating",
+      "identity": "4df2dd1d7f069ccc4a7731d177aac65d46b56a569e5bbc287ad926f9cd7f5a95",
+      "nearest_family": "social-status",
+      "recommendation": "DROP_OR_RELABEL"
+    },
+    {
+      "auto_relabel": false,
+      "family": "relationship-dating",
+      "identity": "bc29c71410e855943a3e981c225167543963ecce46a77459c189ee6f9c2debb9",
+      "nearest_family": "approval-disapproval",
+      "recommendation": "DROP_OR_RELABEL"
+    },
+    {
+      "auto_relabel": false,
+      "family": "spiritual-mystic",
+      "identity": "5dcd520e0f42301ba736f1be484c9133f4a938bf74123af412627601f443ad2f",
+      "nearest_family": "social-status",
+      "recommendation": "DROP_OR_RELABEL"
+    },
+    {
+      "auto_relabel": false,
+      "family": "workplace-career",
+      "identity": "2e19997bbcf52f0252c922fa0962b0e1b248a539de2f280a8e9483efd5a4642f",
+      "nearest_family": "technology-ai",
+      "recommendation": "DROP_OR_RELABEL"
+    }
+  ],
+  "label_cleanup_count": 7,
+  "moves_best": false,
+  "mutates_ontology": false,
+  "next_engineering_action": "Execute PHASE_A_DATA_AND_NOISE: acquire direct train definitions for betting-sharp, internet-slang, memetic to >= 12 each, and human-review 7 suspected label-noise rows. Do not train. Do not score the reserve. Do not move BEST. Do not mutate the active ontology until PHASE_C operator review.",
+  "ontology_refactor_candidates": [
+    {
+      "action": "REVIEW_MERGE_OR_SPLIT",
+      "apply_to_active_ontology": false,
+      "component_size": 13,
+      "families": [
+        "approval-disapproval",
+        "conflict-aggression",
+        "fashion-aesthetic",
+        "identity-affiliation",
+        "music-entertainment",
+        "politics-civic",
+        "regional-cultural",
+        "relationship-dating",
+        "social-status",
+        "spiritual-mystic",
+        "sports-competition",
+        "technology-ai",
+        "workplace-career"
+      ],
+      "recommended_first_reviews": [
+        {
+          "cross_family_similarity": 0.7894913554191589,
+          "family_a": "approval-disapproval",
+          "family_b": "social-status",
+          "flags": [
+            "REPRESENTATION_COLLAPSE",
+            "ONTOLOGY_OVERLAP",
+            "LABEL_NOISE"
+          ],
+          "probe_f1": 0.3333333432674408,
+          "severity": 1.4561580121517181,
+          "shared_overlap_neighbors": 10
+        },
+        {
+          "cross_family_similarity": 0.7454497218132019,
+          "family_a": "approval-disapproval",
+          "family_b": "relationship-dating",
+          "flags": [
+            "REPRESENTATION_COLLAPSE",
+            "ONTOLOGY_OVERLAP",
+            "LABEL_NOISE"
+          ],
+          "probe_f1": 0.3333333432674408,
+          "severity": 1.412116378545761,
+          "shared_overlap_neighbors": 10
+        },
+        {
+          "cross_family_similarity": 0.7144792675971985,
+          "family_a": "relationship-dating",
+          "family_b": "social-status",
+          "flags": [
+            "REPRESENTATION_COLLAPSE",
+            "ONTOLOGY_OVERLAP",
+            "LABEL_NOISE"
+          ],
+          "probe_f1": 0.3333333432674408,
+          "severity": 1.3811459243297577,
+          "shared_overlap_neighbors": 10
+        }
+      ]
+    },
+    {
+      "action": "KEEP_AND_EXPAND_DATA",
+      "families": [
+        "internet-slang"
+      ]
+    },
+    {
+      "action": "KEEP_AND_EXPAND_DATA",
+      "families": [
+        "memetic"
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "actions": [
+        "expand_train_definitions_for_sparse_families",
+        "human_review_suspected_label_noise"
+      ],
+      "blocks_training": true,
+      "exit_criterion": "Each sparse-focus family reaches >=12 train definitions or an explicit operator waiver, and every suspected label-noise row has KEEP|RELABEL|DROP|VOID.",
+      "families": [
+        "betting-sharp",
+        "internet-slang",
+        "memetic"
+      ],
+      "label_noise_rows": 7,
+      "phase": "PHASE_A_DATA_AND_NOISE"
+    },
+    {
+      "actions": [
+        "rewrite_definition_admission_positive_and_exclusion_cues",
+        "do_not_mutate_sealed_boundary_artifact_until_reassembly_pass"
+      ],
+      "blocks_training": true,
+      "exit_criterion": "Overlapping/noisy families have explicit positive and exclusion cues recorded for a future boundary re-seal.",
+      "families": [
+        "ai-native",
+        "approval-disapproval",
+        "conflict-aggression",
+        "fashion-aesthetic",
+        "identity-affiliation",
+        "music-entertainment",
+        "politics-civic",
+        "regional-cultural",
+        "relationship-dating",
+        "social-status",
+        "spiritual-mystic",
+        "sports-competition",
+        "technology-ai",
+        "workplace-career"
+      ],
+      "phase": "PHASE_B_BOUNDARY_REFINEMENT"
+    },
+    {
+      "actions": [
+        "operator_review_merge_or_split_for_collapse_component",
+        "no_automatic_vocabulary_change"
+      ],
+      "blocks_training": true,
+      "components": [
+        {
+          "families": [
+            "approval-disapproval",
+            "conflict-aggression",
+            "fashion-aesthetic",
+            "identity-affiliation",
+            "music-entertainment",
+            "politics-civic",
+            "regional-cultural",
+            "relationship-dating",
+            "social-status",
+            "spiritual-mystic",
+            "sports-competition",
+            "technology-ai",
+            "workplace-career"
+          ],
+          "size": 13
+        }
+      ],
+      "exit_criterion": "Operator accepts KEEP, MERGE, or SPLIT for the large collapse component before another 19-way training spend.",
+      "phase": "PHASE_C_ONTOLOGY_REFACTOR_REVIEW"
+    },
+    {
+      "actions": [
+        "rerun_HYPERLEX_ACTIVE_FAMILY_SEPARABILITY_AUDIT_V1",
+        "allow_training_only_if_decision_is_CURRENT_ONTOLOGY_DATA_SEPARABLE_or_explicitly_waived"
+      ],
+      "blocks_training": false,
+      "exit_criterion": "Fresh separability audit no longer returns MIXED_REMEDIATION_REQUIRED / ONTOLOGY_REFACTOR_REQUIRED without an operator waiver.",
+      "phase": "PHASE_D_REAUDIT_BEFORE_TRAINING"
+    }
+  ],
+  "remediation_state": "SEALED",
+  "reserve_scored": false,
+  "schema": "hyperlex.classification.v2.active_family_mixed_remediation.v1",
+  "sparse_focus": [
+    "betting-sharp",
+    "internet-slang",
+    "memetic"
+  ],
+  "train": false,
+  "training_gate": {
+    "allow_best_move": false,
+    "allow_encoder_training": false,
+    "allow_family_scorer_training": false,
+    "allow_reserve_scoring": false,
+    "blocked_by_phases": [
+      "PHASE_A_DATA_AND_NOISE",
+      "PHASE_B_BOUNDARY_REFINEMENT",
+      "PHASE_C_ONTOLOGY_REFACTOR_REVIEW"
+    ],
+    "family_status_counts": {
+      "NOISY": 4,
+      "OVERLAPPING": 10,
+      "UNDER_SUPPORTED": 3,
+      "UNRESOLVED": 2
+    },
+    "reason": "Separability audit sealed MIXED_REMEDIATION_REQUIRED. Data, boundary, and ontology remediation must complete and re-audit before another training spend."
+  }
+}
