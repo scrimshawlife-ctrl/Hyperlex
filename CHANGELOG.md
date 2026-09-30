@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Architecture/objective investigation Stage-A-004 / V1R9 (Spec 007):**
+  read-only `ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION` on SELECTED
+  `82840630…` / dataset `8d4be830…`. Baseline
+  DATA_INTEGRITY/LABEL_MAPPING/SURFACE_READY **PASS**. PRESENT FN n=263
+  dominated by PRESENT→NONE / representation-failure modes; profile
+  `CONFIDENT_NONE`; separability `PARTIALLY_SEPARABLE`; bottleneck `MIXED`.
+  Focal already falsified; UNCERTAIN policy-invisible. Decision
+  **`STAGE_A_ARCHITECTURE_REDESIGN_REQUIRED`**
+  (`dataset_change_required=false`, `architecture_change_required=true`,
+  `new_experiment_required=false`). Smallest reversible redesign (spec-only):
+  `B_TWO_STAGE_DECISION_GRAPH`. No train/reserve/BEST/surface change. Receipt
+  `classification-v5-stage-a-architecture-investigate-v1r9-receipt-20260930.json`
+  (`7b16550c…`). Next: `DESIGN_V5_STAGE_A_ARCHITECTURE_REDESIGN_SPEC`.
+
 - **Diagnose Stage-A-004 SETTLED_FAIL on V1R9 (Spec 007):** read-only
   `DIAGNOSE_V5_STAGE_A_SETTLED_FAIL` + matched-cohort
   `HYPERLEX_V5_STAGE_A_CONTROLLED_COMPARISON_V1` on SELECTED `82840630…` /
