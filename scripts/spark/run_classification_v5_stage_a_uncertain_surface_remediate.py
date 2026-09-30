@@ -827,10 +827,14 @@ def run_semantic_placement(rows: list[dict]) -> dict[str, Any]:
     if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
         fail("BEST weights changed")
 
+    from safetensors.torch import load_file
+    from hyperlexical.save_pretrained import split_weight_tensors
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    tokenizer = AutoTokenizer.from_pretrained(str(TRUNK))
-    encoder = AutoModel.from_pretrained(str(TRUNK))
-    apply_encoder_trainable(encoder, BEST_DIR)
+    tokenizer = AutoTokenizer.from_pretrained(str(TRUNK), local_files_only=True)
+    encoder = AutoModel.from_pretrained(str(TRUNK), local_files_only=True)
+    warm = split_weight_tensors(load_file(str(BEST_WEIGHTS), device="cpu"))
+    apply_encoder_trainable(encoder, warm.get("encoder") or {})
     encoder.to(device)
     encoder.eval()
 

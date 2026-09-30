@@ -658,7 +658,7 @@ def select_uncertain_pool(
     inferred: Sequence[Mapping[str, Any]],
     *,
     target_per_reason: int = 100,
-    max_family_share: float = SOURCE_FAMILY_SHARE_MAX,
+    max_family_share: float = 0.32,
 ) -> list[dict[str, Any]]:
     """Prefer OBSERVED, fill with INFERRED, enforce source-family share caps."""
     selected: list[dict[str, Any]] = []
@@ -668,8 +668,12 @@ def select_uncertain_pool(
     def _can_add(row: Mapping[str, Any]) -> bool:
         fam = source_family(row.get("source_bucket"))
         n_after = len(selected) + 1
-        # Soft early cap; final trim enforces hard share.
-        if fam_counts[fam] + 1 > max(1, int(max_family_share * max(n_after, target_per_reason * 5) + 3)):
+        # Hard-ish early cap using the final target size estimate.
+        if (fam_counts[fam] + 1) / n_after > max_family_share and fam_counts[fam] > 0:
+            # Allow first few of a family; block once share would exceed.
+            if fam_counts[fam] >= int(max_family_share * target_per_reason * 5):
+                return False
+        if fam_counts[fam] + 1 > int(max_family_share * target_per_reason * 5):
             return False
         return True
 
