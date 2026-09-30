@@ -407,3 +407,13 @@ Sparse-family treatment refuses ontology failure from support alone. Additional 
 
 Overall decision: `MIXED_REMEDIATION_REQUIRED`. The current 19-family ontology cannot be learned from the current training evidence. Next engineering action is mixed remediation: expand direct positive definition support for sparse families, clean the flagged noisy rows, and refine or refactor mutually non-exclusive collapse-cluster boundaries before any further scorer or encoder training.
 
+### Active-family mixed remediation
+
+`HYPERLEX_ACTIVE_FAMILY_MIXED_REMEDIATION_V1` turns the sealed separability audit (`2cb2fe2459a86323dfa8aa50136bb8e6822598ffd8895a1988af459949853d5f`, decision `MIXED_REMEDIATION_REQUIRED`) into an ordered non-mutating plan. It does not train, does not score the reserve, does not move BEST, and does not change the active ontology.
+
+Phases: `PHASE_A_DATA_AND_NOISE` (expand sparse-family train definitions to >=12 and human-review suspected label-noise rows), `PHASE_B_BOUNDARY_REFINEMENT` (record positive/exclusion cues for overlapping/noisy families without mutating the sealed boundary artifact yet), `PHASE_C_ONTOLOGY_REFACTOR_REVIEW` (operator KEEP/MERGE/SPLIT review of the 13-family collapse overlap component), then `PHASE_D_REAUDIT_BEFORE_TRAINING`.
+
+Training gate remains closed for encoder training, family-scorer training, reserve scoring, and BEST moves until phases A–C complete and a fresh separability audit no longer requires mixed/ontology remediation without waiver.
+
+Artifact sha256 `d1292e106ae674d16967d85486133c912390de8afeb2ae5fcf977dd69cac1e00`. Next engineering action: execute PHASE_A for `betting-sharp`, `internet-slang`, and `memetic`, and review the 7 suspected label-noise rows.
+
