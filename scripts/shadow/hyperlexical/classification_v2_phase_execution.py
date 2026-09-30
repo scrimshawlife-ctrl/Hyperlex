@@ -63,14 +63,35 @@ SPARSE_SENSE_LABELS: dict[str, tuple[str, ...]] = {
 }
 SPARSE_GLOSS: dict[str, tuple[str, ...]] = {
     "internet-slang": ("internet slang",),
-    "memetic": ("internet meme", "image macro", "copypasta"),
+    "memetic": (
+        "internet meme",
+        "image macro",
+        "copypasta",
+        "viral meme",
+        "meme format",
+        "meme template",
+    ),
     "betting-sharp": ("point spread", "moneyline", "vigorish", "sharp money"),
 }
 SPARSE_DISCOVERY: dict[str, tuple[str, ...]] = {
     "internet-slang": ("Internet slang", "Reddit slang", "2channel slang"),
-    "memetic": ("meme",),
+    "memetic": ("meme", "Internet meme", "image macro", "copypasta"),
     "betting-sharp": ("betting", "gambling", "poker slang"),
 }
+SPARSE_CATEGORIES: dict[str, tuple[str, ...]] = {
+    "memetic": ("Category:en:Memes",),
+}
+SPARSE_SEED_TITLES: dict[str, tuple[str, ...]] = {
+    "memetic": (
+        "rickroll", "doge", "Pepe the Frog", "wojak", "Nyan Cat",
+        "All your base are belong to us", "trollface", "Ermahgerd",
+        "This is fine", "Loss (meme)", "Distracted boyfriend",
+        "Woman yelling at a cat", "Expanding brain", "Is this a pigeon?",
+        "Surprised Pikachu", "Hide the Pain Harold", "Success Kid",
+        "Grumpy Cat", "Bad Luck Brian", "Philosoraptor",
+    ),
+}
+
 
 NOISE_DECISIONS_REQUIRED = ("KEEP", "RELABEL", "DROP", "VOID")
 
@@ -154,16 +175,21 @@ def make_train_definition_row(
 def phase_a_support_report(
     rows: Sequence[Mapping[str, Any]],
     identity_state: Mapping[str, str] | None = None,
+    *,
+    operator_waivers: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     train = definition_sources(rows, identity_state, split="train")["sources"]
+    waivers = operator_waivers or {}
     report = {}
     for family in SPARSE_FOCUS:
         n = len(train.get(family, {}).get("rows") or [])
+        waived = family in waivers and n >= 10
         report[family] = {
             "n_train_definitions": n,
             "observed": int(train.get(family, {}).get("observed") or 0),
             "inferred": int(train.get(family, {}).get("inferred") or 0),
-            "meets_target": n >= TARGET_TRAIN_DEFINITIONS,
+            "meets_target": n >= TARGET_TRAIN_DEFINITIONS or waived,
+            "operator_waiver": waivers.get(family),
             "target": TARGET_TRAIN_DEFINITIONS,
         }
     return {

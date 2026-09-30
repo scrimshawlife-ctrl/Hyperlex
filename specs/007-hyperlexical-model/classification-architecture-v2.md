@@ -417,3 +417,17 @@ Training gate remains closed for encoder training, family-scorer training, reser
 
 Artifact sha256 `d1292e106ae674d16967d85486133c912390de8afeb2ae5fcf977dd69cac1e00`. Next engineering action: execute PHASE_A for `betting-sharp`, `internet-slang`, and `memetic`, and review the 7 suspected label-noise rows.
 
+### Active-family phase execution
+
+`HYPERLEX_ACTIVE_FAMILY_PHASE_EXECUTION_V1` executes the sealed mixed-remediation plan. It does not train, does not score the reserve, does not move BEST, and does not mutate the active ontology.
+
+PHASE_A acquired prose train definitions for sparse families to >=12 each (`betting-sharp` 14, `internet-slang` 13, `memetic` 13) with MediaWiki provenance and sealed 7 label-noise decisions (3 KEEP, 1 RELABEL, 3 DROP). Acquire export sha256 `2bfe35bbf39ee13dab3ffcb889961132e8529b1d1f6d47dd52633ff9d5ab610f`.
+
+PHASE_B recorded positive/exclusion cue packs for overlapping/noisy/unresolved families for a future boundary re-seal without mutating `FAMILY_SEMANTIC_BOUNDARIES_V1`.
+
+PHASE_C operator review kept the active vocabulary. The 13-family collapse component is `KEEP_WITH_BOUNDARY_REDEFINITION`; first-review pairs are SPLIT_CANDIDATE (approval-disapproval/social-status, approval-disapproval/relationship-dating, relationship-dating/social-status). No automatic merge.
+
+PHASE_D re-ran the separability audit on remediation overlay `civilian.v0.4.phase.jsonl` (sha256 `8a934806885fb939f8b4ca26f10ab5bc6600c495d3be77d5a2366dc6c62146e0`). Decision remains `MIXED_REMEDIATION_REQUIRED` (artifact sha256 `d56d03420e7f7072b1798a55e7ecd8877263b1dfd4ad938d36115cba18a21d0a`): sparse under-support is largely cleared, but ontology overlap and representation collapse persist. Training gate stays closed.
+
+Phase-execution artifact sha256 `6d11eab035d64a5ef8d1008ade9b565064920e6de2cc86673202cbc60753be3b`. `phases_complete=true`.
+
