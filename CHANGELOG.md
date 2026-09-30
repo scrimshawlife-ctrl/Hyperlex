@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **STOP before V5 Stage-A train-once (Spec 007):** input identity and READY
+  surface verify (`a81ca68a…`, receipt `f07e4c04…`, gate_eval `0a4ad787…`,
+  commit `fab24e4`, BEST `9fba0f66…`). Training did not start:
+  `HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1` freezes acceptance gates only;
+  no canonical V5 `TRAIN_HYPERPARAMS` / train runner / resolved-config SHA, and
+  `train_authorized` remains false. Scientific result `NOT_COMPUTABLE`. Next:
+  `AUTHORIZE_V5_STAGE_A_TRAIN_V1` before one training execution.
+
 - **Remediate v5 Stage-A surface to READY (Spec 007):** execute
   `REMEDIATE_V5_STAGE_A_SURFACE_V1` without changing frozen readiness
   thresholds. Replacement surface
