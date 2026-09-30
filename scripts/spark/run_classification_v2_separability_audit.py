@@ -67,12 +67,9 @@ def inner() -> int:
         boundary_evidence_for_family,
         classify_pair_flags,
         definition_sources,
-        embedding_pair_report,
         family_status_for,
-        find_ambiguous_and_violating_rows,
         lexical_pair_report,
         overall_decision,
-        pairwise_probe,
         propose_boundary_refinements,
         rank_worst_pairs,
         remediation_for,
@@ -127,21 +124,167 @@ def inner() -> int:
     for parameter in encoder.parameters():
         parameter.requires_grad = False
 
-    def encode_texts(texts: list[str]) -> list[list[float]]:
+    def _scalar(value):
+        import struct
+        if value is None:
+            return None
+        return struct.unpack("<f", struct.pack("<f", float(value)))[0]
+
+    def encode_texts(texts: list[str], batch_size: int = 32) -> list[list[float]]:
+        if not texts:
+            return []
         out: list[list[float]] = []
         with torch.no_grad():
-            for text in texts:
+            for start in range(0, len(texts), batch_size):
+                chunk = texts[start : start + batch_size]
                 encoded = tokenizer(
-                    text,
+                    chunk,
                     truncation=True,
                     max_length=MAX_LEN,
-                    padding=False,
+                    padding=True,
                     return_tensors="pt",
                 )
                 encoded = {key: value.to(device) for key, value in encoded.items()}
-                pooled = encoder(**encoded).last_hidden_state[:, 0][0].detach().cpu().tolist()
-                out.append(pooled)
+                pooled = encoder(**encoded).last_hidden_state[:, 0].detach().cpu()
+                out.extend(row.tolist() for row in pooled)
         return out
+
+    def _torch_unit(matrix: torch.Tensor) -> torch.Tensor:
+        norms = torch.linalg.vector_norm(matrix, dim=1, keepdim=True).clamp_min(1e-12)
+        return matrix / norms
+
+    def torch_embedding_pair_report(
+        left_vectors,
+        right_vectors,
+        left_anchors,
+        right_anchors,
+        *,
+        left_weights=None,
+        right_weights=None,
+    ):
+        from hyperlexical.classification_v2_boundaries import COLLISION_COSINE
+
+        left = torch.tensor(left_vectors, dtype=torch.float32, device=device)
+        right = torch.tensor(right_vectors, dtype=torch.float32, device=device)
+        left_u = _torch_unit(left)
+        right_u = _torch_unit(right)
+        within_a = None
+        within_b = None
+        if left_u.shape[0] >= 2:
+            sim = left_u @ left_u.T
+            mask = torch.triu(torch.ones_like(sim, dtype=torch.bool), diagonal=1)
+            within_a = _scalar(sim[mask].mean().item())
+        if right_u.shape[0] >= 2:
+            sim = right_u @ right_u.T
+            mask = torch.triu(torch.ones_like(sim, dtype=torch.bool), diagonal=1)
+            within_b = _scalar(sim[mask].mean().item())
+        cross = _scalar((left_u @ right_u.T).mean().item()) if left_u.numel() and right_u.numel() else None
+        if left_weights is None:
+            lw = torch.ones(left_u.shape[0], device=device)
+        else:
+            lw = torch.tensor(left_weights, dtype=torch.float32, device=device)
+        if right_weights is None:
+            rw = torch.ones(right_u.shape[0], device=device)
+        else:
+            rw = torch.tensor(right_weights, dtype=torch.float32, device=device)
+        centroid_a = _torch_unit((lw[:, None] * left).sum(dim=0, keepdim=True) / lw.sum().clamp_min(1e-12))
+        centroid_b = _torch_unit((rw[:, None] * right).sum(dim=0, keepdim=True) / rw.sum().clamp_min(1e-12))
+        centroid_cosine = _scalar((centroid_a * centroid_b).sum().item())
+        centroid_distance = _scalar(1.0 - float(centroid_cosine))
+        # NN confusion A->B
+        def nn_rate(query_u, same_u, other_u):
+            if query_u.shape[0] == 0 or other_u.shape[0] == 0:
+                return None
+            cross_best = (query_u @ other_u.T).max(dim=1).values
+            if same_u.shape[0] == 1:
+                confused = (cross_best >= COLLISION_COSINE).sum().item()
+                return _scalar(confused / query_u.shape[0])
+            same_sim = query_u @ same_u.T
+            # mask self
+            same_sim.fill_diagonal_(-2.0)
+            same_best = same_sim.max(dim=1).values
+            confused = (cross_best > same_best).sum().item()
+            return _scalar(confused / query_u.shape[0])
+
+        nn_a = nn_rate(left_u, left_u, right_u)
+        nn_b = nn_rate(right_u, right_u, left_u)
+        la = torch.tensor(left_anchors, dtype=torch.float32, device=device)
+        ra = torch.tensor(right_anchors, dtype=torch.float32, device=device)
+        la_u = _torch_unit(la)
+        ra_u = _torch_unit(ra)
+        anchor_sim = la_u @ ra_u.T
+        colliding = (anchor_sim >= COLLISION_COSINE).sum().item()
+        support_pairs = int(anchor_sim.numel())
+        return {
+            "anchor_collision_max_cosine": _scalar(anchor_sim.max().item()),
+            "anchor_collision_rate": _scalar(colliding / support_pairs) if support_pairs else None,
+            "centroid_cosine": centroid_cosine,
+            "centroid_distance": centroid_distance,
+            "cross_family_similarity": cross,
+            "nearest_neighbor_confusion_a": nn_a,
+            "nearest_neighbor_confusion_b": nn_b,
+            "within_family_similarity_a": within_a,
+            "within_family_similarity_b": within_b,
+        }
+
+    def torch_pairwise_probe(train_left, train_right, val_left, val_right, train_left_weights=None, train_right_weights=None):
+        from hyperlexical.classification_v2_separability_audit import PROBE_MIN_TRAIN, PROBE_MIN_VAL
+        if (
+            len(train_left) < PROBE_MIN_TRAIN
+            or len(train_right) < PROBE_MIN_TRAIN
+            or len(val_left) < PROBE_MIN_VAL
+            or len(val_right) < PROBE_MIN_VAL
+        ):
+            return {
+                "accuracy": None,
+                "f1": None,
+                "n_train": len(train_left) + len(train_right),
+                "n_val": len(val_left) + len(val_right),
+                "status": "NOT_COMPUTABLE",
+            }
+        tl = torch.tensor(train_left, dtype=torch.float32, device=device)
+        tr = torch.tensor(train_right, dtype=torch.float32, device=device)
+        if train_left_weights is None:
+            lw = torch.ones(tl.shape[0], device=device)
+        else:
+            lw = torch.tensor(train_left_weights, dtype=torch.float32, device=device)
+        if train_right_weights is None:
+            rw = torch.ones(tr.shape[0], device=device)
+        else:
+            rw = torch.tensor(train_right_weights, dtype=torch.float32, device=device)
+        mean_l = (lw[:, None] * tl).sum(0) / lw.sum().clamp_min(1e-12)
+        mean_r = (rw[:, None] * tr).sum(0) / rw.sum().clamp_min(1e-12)
+        direction = mean_l - mean_r
+        direction = direction / direction.norm().clamp_min(1e-12)
+        threshold = 0.5 * ((mean_l * direction).sum() + (mean_r * direction).sum())
+        vl = _torch_unit(torch.tensor(val_left, dtype=torch.float32, device=device))
+        vr = _torch_unit(torch.tensor(val_right, dtype=torch.float32, device=device))
+        pred_l = (vl @ direction) >= threshold
+        pred_r = (vr @ direction) >= threshold
+        # A = True, B = False
+        gold = torch.cat([torch.ones(vl.shape[0], dtype=torch.bool, device=device), torch.zeros(vr.shape[0], dtype=torch.bool, device=device)])
+        pred = torch.cat([pred_l, pred_r])
+        accuracy = (gold == pred).float().mean().item()
+        f1s = []
+        for label_true in (True, False):
+            g = gold == label_true
+            p = pred == label_true
+            hit = (g & p).sum().item()
+            gold_n = g.sum().item()
+            pred_n = p.sum().item()
+            if gold_n == 0 and pred_n == 0:
+                continue
+            precision = hit / pred_n if pred_n else 0.0
+            recall = hit / gold_n if gold_n else 0.0
+            f1s.append(0.0 if precision + recall == 0 else 2 * precision * recall / (precision + recall))
+        return {
+            "accuracy": _scalar(accuracy),
+            "f1": _scalar(sum(f1s) / len(f1s)) if f1s else None,
+            "n_train": len(train_left) + len(train_right),
+            "n_val": len(val_left) + len(val_right),
+            "status": "OK",
+            "threshold": _scalar(threshold.item()),
+        }
 
     train_texts: dict[str, list[str]] = {}
     train_ids: dict[str, list[str]] = {}
@@ -150,6 +293,7 @@ def inner() -> int:
     val_texts: dict[str, list[str]] = {}
     val_vectors: dict[str, list[list[float]]] = {}
     support: dict[str, dict[str, int]] = {}
+    print("encoding train/val definitions", flush=True)
     for family in ACTIVE_FAMILY_VOCABULARY:
         bundle = train_sources[family]
         texts = [str(row.get("text") or "") for row in bundle["rows"]]
@@ -176,18 +320,49 @@ def inner() -> int:
         ]
         for family in ACTIVE_FAMILY_VOCABULARY
     }
-    ambiguous, violating = find_ambiguous_and_violating_rows(
-        train_vectors,
-        train_ids,
-        train_texts,
-        centroids,
+    # Torch nearest-centroid ambiguity / violation scan (same decision rule as the pure helper).
+    from hyperlexical.classification_v2_separability_audit import AMBIGUOUS_MARGIN
+    ambiguous = {family: [] for family in ACTIVE_FAMILY_VOCABULARY}
+    violating = {family: [] for family in ACTIVE_FAMILY_VOCABULARY}
+    centroid_mat = torch.stack(
+        [
+            torch.tensor(centroids[family], dtype=torch.float32, device=device)
+            for family in ACTIVE_FAMILY_VOCABULARY
+        ]
     )
+    centroid_mat = _torch_unit(centroid_mat)
+    for family_index, family in enumerate(ACTIVE_FAMILY_VOCABULARY):
+        if not train_vectors[family]:
+            continue
+        mat = _torch_unit(torch.tensor(train_vectors[family], dtype=torch.float32, device=device))
+        scores = mat @ centroid_mat.T
+        best_scores, best_idx = scores.max(dim=1)
+        # second best
+        neg = scores.clone()
+        neg[torch.arange(scores.shape[0], device=device), best_idx] = -2.0
+        second_scores, second_idx = neg.max(dim=1)
+        for row_index in range(mat.shape[0]):
+            best_family = ACTIVE_FAMILY_VOCABULARY[int(best_idx[row_index].item())]
+            second_family = ACTIVE_FAMILY_VOCABULARY[int(second_idx[row_index].item())]
+            row = {
+                "best_family": best_family,
+                "best_score": _scalar(best_scores[row_index].item()),
+                "identity": train_ids[family][row_index],
+                "second_family": second_family,
+                "second_score": _scalar(second_scores[row_index].item()),
+                "text": train_texts[family][row_index],
+            }
+            if best_family != family:
+                violating[family].append(row)
+            if abs(best_scores[row_index].item() - second_scores[row_index].item()) <= AMBIGUOUS_MARGIN:
+                ambiguous[family].append(row)
 
+    print("pairwise separability", flush=True)
     pair_rows = []
     for index_a, family_a in enumerate(ACTIVE_FAMILY_VOCABULARY):
         for family_b in ACTIVE_FAMILY_VOCABULARY[index_a + 1 :]:
             lexical = lexical_pair_report(train_texts[family_a], train_texts[family_b])
-            embedding = embedding_pair_report(
+            embedding = torch_embedding_pair_report(
                 train_vectors[family_a],
                 train_vectors[family_b],
                 sealed["anchors"][family_a],
@@ -195,7 +370,7 @@ def inner() -> int:
                 left_weights=train_weights[family_a],
                 right_weights=train_weights[family_b],
             )
-            probe = pairwise_probe(
+            probe = torch_pairwise_probe(
                 train_vectors[family_a],
                 train_vectors[family_b],
                 val_vectors[family_a],
