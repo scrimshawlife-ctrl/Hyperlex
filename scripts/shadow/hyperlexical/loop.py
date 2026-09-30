@@ -852,6 +852,13 @@ def run_loop(
     unb_loss_sum = torch.zeros((), device=device)
     app_loss_steps = fam_loss_steps = unb_loss_steps = 0
     encoder.train()
+    losses = []
+    epoch_metrics = []
+
+    def encode_texts(texts):
+        enc = tok(texts, padding=True, truncation=True, max_length=MAX_LEN, return_tensors="pt")
+        return {k: v.to(device) for k, v in enc.items()}
+
     if v2_on and hasattr(family_head, "anchor_cosine"):
         from .classification_v2 import ACTIVE_FAMILY_VOCABULARY as _PRIOR_NAMES
         from .classification_v2_geometry_repair import (
@@ -905,12 +912,6 @@ def run_loop(
             "mean_margin": prior_geometry["mean_margin"],
             "n_family": prior_geometry["n_family"],
         }
-    losses = []
-    epoch_metrics = []
-
-    def encode_texts(texts):
-        enc = tok(texts, padding=True, truncation=True, max_length=MAX_LEN, return_tensors="pt")
-        return {k: v.to(device) for k, v in enc.items()}
 
     def unbind_loss(row):
         fillers = list(row.get("fillers") or [])
