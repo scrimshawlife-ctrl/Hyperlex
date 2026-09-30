@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v5.evidence_example.v1",
+  "title": "Classification v5 Stage-A negative-evidence training example",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "identity",
+    "text",
+    "evidence_label",
+    "evidence_subtype",
+    "provenance",
+    "split",
+    "source_sha256",
+    "required_evidence_present",
+    "active_family_support"
+  ],
+  "properties": {
+    "identity": { "type": "string", "minLength": 1 },
+    "text": { "type": "string", "minLength": 1 },
+    "evidence_label": {
+      "type": "string",
+      "enum": ["NO_EVIDENCE", "EVIDENCE_PRESENT", "UNCERTAIN"]
+    },
+    "evidence_subtype": {
+      "type": "string",
+      "enum": [
+        "POSITIVE_EVIDENCE",
+        "ORDINARY_DOMAIN_NONE",
+        "HARD_NONE",
+        "NEAR_DOMAIN_NONE",
+        "GENERIC_NONE",
+        "LEXICAL_LOOKALIKE_NONE",
+        "SHORT_ATOM_NONE",
+        "AMBIGUOUS_EVIDENCE"
+      ]
+    },
+    "provenance": { "type": "string", "enum": ["OBSERVED", "INFERRED"] },
+    "split": { "type": "string", "enum": ["train", "validation"] },
+    "candidate_families": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "active_family_support": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "required_evidence_present": {
+      "type": "string",
+      "enum": ["true", "false", "uncertain"]
+    },
+    "evidence_spans": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/span" }
+    },
+    "missing_required_semantics": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "positive_evidence_spans": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/span" }
+    },
+    "negative_evidence_spans": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/span" }
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "parent_identity": { "type": ["string", "null"] },
+    "pair_group_id": { "type": ["string", "null"] },
+    "paired_positive_identity": { "type": ["string", "null"] },
+    "shared_cues": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "notes": { "type": ["string", "null"] },
+    "topic_domain": { "type": ["string", "null"] },
+    "rights": { "type": ["string", "null"] },
+    "source_url": { "type": ["string", "null"] },
+    "revision_id": { "type": ["integer", "null"] }
+  },
+  "$defs": {
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 1 },
+        "cue": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
