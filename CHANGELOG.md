@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Family retrieval reserve eval (Spec 007):** `OPERATOR_AUTHORIZE_RESERVE_EVAL`
+  scored the sealed classify reserve once under frozen retrieval thresholds
+  0.85 / 0.03. Disposition `RESERVE_FAIL` (emission precision 0.409 < 0.80).
+  No recalibration, index rebuild, or BEST move.
+
 - **Family retrieval decision (Spec 007):** `HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1`
   makes training-side mean top-M cosine retrieval the canonical Classification v2
   family decision. Residual 18-way head is diagnostic only. Encoder, ontology,

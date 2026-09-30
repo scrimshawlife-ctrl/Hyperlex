@@ -564,4 +564,16 @@ Seal path: `/home/morpheus/hlx-private/classification-v2-family-retrieval-202609
 - Validation: emission precision 0.808219; coverage 0.493243; recall 0.398649; abstain 0.180602; ambiguous 0.033445; top1 0.500; top2 0.608
 - Applicability invariance: **pass**
 - Residual reference (diagnostic): AF macro-F1 0.185630; residual top1 0.391892
-- Reserve gate: **RESERVE_EVAL_JUSTIFIED**. BEST unchanged. Reserve not yet scored.
+- Reserve gate: **RESERVE_EVAL_JUSTIFIED**. BEST unchanged.
+
+## Family retrieval reserve eval (2026-09-30)
+
+`OPERATOR_AUTHORIZE_RESERVE_EVAL` scored the sealed classify EVAL_RESERVE once under frozen `HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1` thresholds (`minimum_family_score=0.85`, `minimum_top1_top2_margin=0.03`) and sealed index `b1cd64d9…`. No train / recalibrate / index rebuild / ontology change / Jev / BEST move.
+
+Seal: `/home/morpheus/hlx-private/classification-v2-family-retrieval-reserve-20260930/RESERVE_EVAL.json` (artifact sha256 `7d8dd3d1338a6c2e241eef6de3432df60de057cb874788de537814393b17ad27`).
+
+- n=115; rows sha256 `8c527644…`; identity-list sha256 `0af4e64f…`
+- family-emission precision **0.409091** (validation was 0.808219); coverage 0.293333; recall 0.120000
+- decisions: FAMILY 22 / NONE 31 / ABSTAIN 46 / AMBIGUOUS 16
+- top1 0.240; top2 0.360; selective contract does **not** generalize
+- Disposition: **RESERVE_FAIL**. Preserve result. Do not reopen scorer tuning against the reserve. BEST unchanged.
