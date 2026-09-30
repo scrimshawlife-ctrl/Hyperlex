@@ -78,31 +78,33 @@ admissible for Stage-A surface rebuild.
 Deterministic identity-based `train` / `validation` only. Paired
 positive/negative examples share a `pair_group_id` and stay in the same split.
 
-## Readiness
+## Exact surface readiness gates
 
-`READY` only when acquisition + validation floors pass, spent-reserve overlap
-is zero, lineage/disjointness passes, schema checks pass, all subtypes are
-represented, ordinary-domain coverage passes, and no critical surface shortcut
-remains (length / surface / extreme bag-of-words diagnostics).
+Authority: `HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1`
+(`scripts/shadow/hyperlexical/classification_v5_surface_readiness_gates.py`).
 
-Otherwise remain `PREREGISTERED` with exact gaps.
+No weighted score. Any mandatory gate failure ⇒ `PREREGISTERED`, not `READY`.
 
-## Frozen Stage-A train contract (only if READY)
+Includes dataset floors (TOTAL≥2500, TRAIN≥1900, VAL≥600 + subtype floors),
+disjointness zeros (spent v2/v3/v4, held-out, measurement, split overlaps),
+duplicate quality (exact≤0.005, near≤0.03, cross-split near-dup clusters=0)
+under frozen method `hlx.v5.near_duplicate.normalized_jaccard_v1`, pairing
+floors, surface balance, lexical-overlap minima, embedding hardness on the
+frozen BEST encoder, shallow shortcut caps, topic balance, provenance
+(OBSERVED≥50% of validation and of validation ORDINARY_DOMAIN_NONE), and
+schema integrity.
 
-Primary gate:
+## Model acceptance gates (separate)
+
+These are **not** dataset-readiness gates. They apply only after an authorized
+Stage-A train:
 
 ```text
 false_evidence_entry_rate_on_none <= 0.05
-```
-
-Secondary:
-
-```text
 EVIDENCE_PRESENT recall >= 0.70
 NO_EVIDENCE recall >= 0.90
 ```
 
-Do not optimize family metrics until Stage A passes these gates.
 `train_authorized` stays `false` until an explicit train authorization pass.
 
 ## Artifacts

@@ -96,13 +96,15 @@ VALIDATION_FLOORS = {
     "AMBIGUOUS_EVIDENCE": 40,
 }
 
-# Future Stage-A train contract (frozen only when surface is READY).
+# Model acceptance gates — separate from dataset readiness gates.
+# Frozen for the subsequent Stage-A train; not used to mark surface READY.
 STAGE_A_TRAIN_CONTRACT = {
     "EVIDENCE_PRESENT_recall_min": 0.70,
     "NO_EVIDENCE_recall_min": 0.90,
     "false_evidence_entry_rate_on_none_max": 0.05,
     "optimize_family_metrics_before_stage_a_pass": False,
     "rule": "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1",
+    "scope": "model_acceptance_after_authorized_train",
     "train_authorized": False,
 }
 
@@ -144,6 +146,8 @@ def source_sha256(text: str) -> str:
 
 
 def preregistration_contract() -> dict[str, Any]:
+    from .classification_v5_surface_readiness_gates import frozen_readiness_gates
+
     return {
         "acquisition_floors": dict(ACQUISITION_FLOORS),
         "best": "UNCHANGED",
@@ -155,6 +159,7 @@ def preregistration_contract() -> dict[str, Any]:
         "stage_a_train_contract": dict(STAGE_A_TRAIN_CONTRACT),
         "state": "PREREGISTERED",
         "subtypes": list(EVIDENCE_SUBTYPES),
+        "surface_readiness_gates": frozen_readiness_gates(),
         "surface_rule": SURFACE_RULE,
         "train": False,
         "validation_floors": dict(VALIDATION_FLOORS),
@@ -813,71 +818,64 @@ def readiness_report(
     leakage: Mapping[str, Any],
     missing_validation_floors: Mapping[str, int],
     ordinary: Mapping[str, Any],
+    pair_records: Sequence[Mapping[str, Any]] = (),
+    ontology: Sequence[str] = (),
+    blocked_reasons: Mapping[str, str] | None = None,
+    embedding_report: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    subtype_counts = Counter(row["evidence_subtype"] for row in rows)
-    val_counts = Counter(
-        row["evidence_subtype"] for row in rows if row["split"] == "validation"
+    """Exact v5 readiness via frozen SURFACE_READINESS_GATES (no weighted score)."""
+    from .classification_v2 import ACTIVE_FAMILY_VOCABULARY
+    from .classification_v5_surface_readiness_gates import evaluate_surface_readiness
+
+    # Map spent overlap identities into blocked reasons if not provided.
+    blocked = dict(blocked_reasons or {})
+    for digest in spent_overlap:
+        blocked.setdefault(str(digest), "spent_v4")
+    evaluated = evaluate_surface_readiness(
+        rows,
+        pair_records=pair_records,
+        ontology=list(ontology) or list(ACTIVE_FAMILY_VOCABULARY),
+        blocked=blocked,
+        embedding_report=embedding_report,
     )
-    missing_acquisition = {
-        subtype: floor - subtype_counts.get(subtype, 0)
-        for subtype, floor in ACQUISITION_FLOORS.items()
-        if subtype_counts.get(subtype, 0) < floor
-    }
-    missing_validation = {
-        subtype: floor - val_counts.get(subtype, 0)
-        for subtype, floor in VALIDATION_FLOORS.items()
-        if val_counts.get(subtype, 0) < floor
-    }
-    zero_subtype = [s for s in EVIDENCE_SUBTYPES if subtype_counts.get(s, 0) == 0]
-    blockers: list[dict[str, Any]] = []
-    if missing_acquisition:
-        blockers.append({"missing_acquisition_floors": missing_acquisition})
-    if missing_validation or missing_validation_floors:
-        blockers.append(
-            {
-                "missing_validation_floors": {
-                    **missing_validation,
-                    **dict(missing_validation_floors),
-                }
-            }
-        )
-    if spent_overlap:
-        blockers.append({"spent_reserve_overlap": len(spent_overlap)})
+    # Preserve legacy diagnostic fields for receipts while authority is gate_pass.
+    legacy_notes = []
     if validation_errors:
-        blockers.append({"schema_or_row_errors": len(validation_errors)})
-    if zero_subtype:
-        blockers.append({"zero_count_subtype": zero_subtype})
+        legacy_notes.append({"schema_or_row_errors": len(validation_errors)})
+    if missing_validation_floors:
+        legacy_notes.append({"assign_splits_missing_validation": dict(missing_validation_floors)})
     if not ordinary.get("pass", False):
-        blockers.append({"ordinary_domain_none_coverage_failed": ordinary})
+        legacy_notes.append({"ordinary_domain_coverage_legacy": ordinary})
     if not shortcut.get("pass", False):
-        blockers.append({"critical_surface_shortcut": shortcut.get("critical_shortcuts")})
-    if not shallow.get("pass", False):
-        blockers.append({"shallow_diagnostic_critical": shallow.get("critical")})
-    if leakage.get("split_identity_overlap"):
-        blockers.append({"split_identity_overlap": leakage["split_identity_overlap"]})
-    if leakage.get("source_hash_collisions_across_splits"):
-        blockers.append(
-            {
-                "source_hash_collisions_across_splits": leakage[
-                    "source_hash_collisions_across_splits"
-                ]
-            }
-        )
-    if leakage.get("parent_identity_collisions"):
-        blockers.append(
-            {"parent_identity_collisions": leakage["parent_identity_collisions"]}
-        )
+        legacy_notes.append({"legacy_shortcut": shortcut.get("critical_shortcuts")})
     if leakage.get("pair_group_collisions"):
-        blockers.append({"pair_group_collisions": leakage["pair_group_collisions"]})
-    identities = [row["identity"] for row in rows]
-    if len(identities) != len(set(identities)):
-        blockers.append({"duplicate_identities": True})
-    state = "READY" if not blockers else "PREREGISTERED"
+        legacy_notes.append({"pair_group_collisions": leakage["pair_group_collisions"]})
+    blockers = [
+        {name: evaluated["details"]}
+        for name, ok in evaluated["gate_pass"].items()
+        if not ok
+    ]
+    blockers.extend(legacy_notes)
+    # Schema row errors also force NOT_READY under schema_integrity; if validate_row
+    # found extras, ensure failure.
+    if validation_errors and evaluated["gate_pass"].get("schema_integrity_pass", True):
+        evaluated["gate_pass"]["schema_integrity_pass"] = False
+        evaluated["state"] = "PREREGISTERED"
+        evaluated["missing_evidence"]["schema_integrity_pass"] = False
+        blockers.append({"validation_errors": len(validation_errors)})
     return {
         "blockers": blockers,
-        "missing_evidence": blockers,
-        "state": state,
+        "gate_pass": evaluated["gate_pass"],
+        "gate_rule": evaluated["gate_rule"],
+        "gates": evaluated["gates"],
+        "missing_evidence": evaluated["missing_evidence"]
+        if evaluated["state"] != "READY"
+        else {},
+        "model_acceptance_gates_separate": evaluated["model_acceptance_gates_separate"],
+        "readiness_details": evaluated["details"],
+        "state": evaluated["state"],
         "surface_rule": SURFACE_RULE,
+        "legacy_shallow": shallow,
     }
 
 
@@ -930,19 +928,18 @@ def assemble_surface_artifacts(payload: Mapping[str, Any]) -> dict[str, Any]:
         blockers.append({"disjointness_failed": True})
         readiness["blockers"] = blockers
         readiness["missing_evidence"] = blockers
-    train_contract = None
-    if readiness["state"] == "READY":
-        train_contract = {
-            **STAGE_A_TRAIN_CONTRACT,
-            "preregistered": True,
-            "surface_dataset_sha256": dataset_sha,
-            "surface_rule": SURFACE_RULE,
-        }
-        train_contract["contract_sha256"] = sha256_text(
-            canonical_json(
-                {k: v for k, v in train_contract.items() if k != "contract_sha256"}
-            )
-        )
+    # Model acceptance gates are frozen separately from dataset readiness.
+    train_contract = {
+        **STAGE_A_TRAIN_CONTRACT,
+        "preregistered": True,
+        "surface_dataset_sha256": dataset_sha,
+        "surface_ready": readiness["state"] == "READY",
+        "surface_rule": SURFACE_RULE,
+        "train_authorized": False,
+    }
+    train_contract["contract_sha256"] = sha256_text(
+        canonical_json({k: v for k, v in train_contract.items() if k != "contract_sha256"})
+    )
     diagnostics_payload = {
         "diagnostics": diagnostics,
         "pair_records_n": len(pair_records),
@@ -1009,6 +1006,7 @@ def build_surface(
     blocked_ids: set[str],
     ontology: Sequence[str],
     augment: bool = True,
+    embedding_report: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     working = list(source_rows)
     if augment:
@@ -1040,6 +1038,9 @@ def build_surface(
         leakage=leakage,
         missing_validation_floors=split_result["missing_validation_floors"],
         ordinary=ordinary,
+        pair_records=pair_records,
+        ontology=ontology,
+        embedding_report=embedding_report,
     )
     assembled = assemble_surface_artifacts(
         {

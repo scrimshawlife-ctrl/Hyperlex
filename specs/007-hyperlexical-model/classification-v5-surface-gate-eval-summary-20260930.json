@@ -1,0 +1,165 @@
+{
+  "BEST": "UNCHANGED",
+  "dataset_sha256": "3add3aa624bab8e578d461574ea8344f3e2c4b7eec30ddbb9faffbe2c0bea3eb",
+  "exact_gaps": {
+    "disjointness_metrics": {
+      "cross_split_near_duplicate_clusters": 493,
+      "heldout_overlap": 0,
+      "measurement_only_overlap": 0,
+      "spent_v2_reserve_overlap": 0,
+      "spent_v3_reserve_overlap": 0,
+      "spent_v4_reserve_overlap": 0,
+      "train_validation_identity_overlap": 0,
+      "train_validation_near_duplicate_group_overlap": 493,
+      "train_validation_parent_lineage_overlap": 0,
+      "train_validation_source_hash_overlap": 0
+    },
+    "duplicate_quality": {
+      "cross_split_near_duplicate_clusters": 493,
+      "near_duplicate_method": "hlx.v5.near_duplicate.normalized_jaccard_v1",
+      "pass": false,
+      "per_split": {
+        "train": {
+          "exact_duplicate_rate": 0.0,
+          "n": 2478,
+          "near_duplicate_rate": 0.09120258272800645
+        },
+        "validation": {
+          "exact_duplicate_rate": 0.0,
+          "n": 638,
+          "near_duplicate_rate": 0.05329153605015674
+        }
+      }
+    },
+    "lexical_overlap": {
+      "failures": [
+        "top_100_token_jaccard=0.1364",
+        "shared_high_frequency_tokens=44"
+      ],
+      "pass": false,
+      "shared_high_frequency_tokens": 44,
+      "top_100_token_jaccard": 0.13636363636363635
+    },
+    "pairing": {
+      "gaps": {
+        "paired_HARD_NONE": 23,
+        "paired_NEAR_DOMAIN_NONE": 37,
+        "paired_ORDINARY_DOMAIN_NONE": 109,
+        "paired_positive_negative_pairs": 7
+      },
+      "paired_positive_negative_pairs": 293,
+      "paired_subtype_counts": {
+        "GENERIC_NONE": 38,
+        "HARD_NONE": 57,
+        "LEXICAL_LOOKALIKE_NONE": 137,
+        "NEAR_DOMAIN_NONE": 43,
+        "ORDINARY_DOMAIN_NONE": 11,
+        "SHORT_ATOM_NONE": 7
+      },
+      "pass": false
+    },
+    "provenance": {
+      "failures": [
+        "observed_validation_fraction=0.1834",
+        "observed_validation_ordinary_domain_fraction=0.0194"
+      ],
+      "observed_validation_fraction": 0.1833855799373041,
+      "observed_validation_ordinary_domain_fraction": 0.019417475728155338,
+      "pass": false,
+      "provenance_counts": {
+        "INFERRED": 2571,
+        "OBSERVED": 545
+      }
+    },
+    "shallow_shortcut": {
+      "bow_balanced_accuracy": 0.8416168460209911,
+      "failures": [
+        "length_only_balanced_accuracy=0.6609"
+      ],
+      "length_only_balanced_accuracy": 0.6609140427793277,
+      "length_only_threshold_words": 23,
+      "ordinary_domain_none_false_positive_rate": 0.009708737864077669,
+      "pass": false,
+      "surface_feature_balanced_accuracy": 0.5793676099375581,
+      "surface_feature_macro_f1": 0.576325929466786
+    },
+    "surface_balance_failures": [
+      "median_token_count_ratio=1.4000",
+      "definition_style_rate_diff",
+      "present_source_share",
+      "none_source_share"
+    ],
+    "surface_balance_ratio": 1.4,
+    "topic_balance_failures": [
+      {
+        "matching_none_shortfall": {
+          "ai-native": 10,
+          "betting-sharp": 10,
+          "crypto-degen": 10,
+          "gaming-meta": 10
+        }
+      },
+      {
+        "domains_with_positive_support_but_zero_negative_support": [
+          "ai-native",
+          "betting-sharp",
+          "conflict-aggression",
+          "crypto-degen",
+          "fashion-aesthetic",
+          "gaming-meta",
+          "identity-affiliation",
+          "internet-slang",
+          "memetic",
+          "music-entertainment",
+          "politics-civic",
+          "regional-cultural",
+          "relationship-dating",
+          "social-evaluation",
+          "spiritual-mystic",
+          "sports-competition",
+          "technology-ai",
+          "workplace-career"
+        ]
+      },
+      {
+        "documented_allowlist": false,
+        "domain": "ai-native",
+        "max_single_positive_domain_share": 0.6256572029442692
+      }
+    ]
+  },
+  "gate_eval_sha256": "2b1d393bd119b9722ced8418d23c875ec358eed6f953d7a46edbc94118c9dcdc",
+  "gate_pass": {
+    "acquisition_floors_pass": true,
+    "all_disjointness_pass": false,
+    "duplicate_quality_pass": false,
+    "embedding_hardness_pass": true,
+    "lexical_overlap_pass": false,
+    "pairing_pass": false,
+    "provenance_pass": false,
+    "schema_integrity_pass": true,
+    "shallow_shortcut_pass": false,
+    "surface_balance_pass": false,
+    "topic_balance_pass": false,
+    "validation_floors_pass": true
+  },
+  "gate_rule": "HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1",
+  "missing_evidence_gates": [
+    "all_disjointness_pass",
+    "duplicate_quality_pass",
+    "lexical_overlap_pass",
+    "pairing_pass",
+    "provenance_pass",
+    "shallow_shortcut_pass",
+    "surface_balance_pass",
+    "topic_balance_pass"
+  ],
+  "model_acceptance_gates_separate": {
+    "EVIDENCE_PRESENT_recall_min": 0.7,
+    "NO_EVIDENCE_recall_min": 0.9,
+    "false_evidence_entry_rate_on_none_max": 0.05
+  },
+  "n": 3116,
+  "state": "PREREGISTERED",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1"
+}

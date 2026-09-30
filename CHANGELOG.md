@@ -2,16 +2,23 @@
 
 ## Unreleased
 
-- **Design v5 Stage-A negative-evidence surface READY (Spec 007):** after v4
+- **Freeze exact v5 surface readiness gates (Spec 007):** pin
+  `HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1` (dataset floors, disjointness,
+  duplicate quality with frozen near-dup method
+  `hlx.v5.near_duplicate.normalized_jaccard_v1`, pairing, surface balance,
+  lexical overlap minima, embedding hardness, shallow shortcuts, topic balance,
+  provenance, schema integrity). Re-evaluate sealed surface
+  `3add3aa6…` → **PREREGISTERED** (legacy READY superseded). Model acceptance
+  gates remain separate (`false_entry≤0.05`, PRESENT≥0.70, NONE≥0.90). No train,
+  no reserve score, BEST unchanged.
+
+- **Design v5 Stage-A negative-evidence surface (Spec 007):** after v4
   `SETTLED_FAIL` / `STAGE_A_NONE_GENERALIZATION_FAILURE`, preregister
   `DESIGN_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE` and seal
   `HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1` (n=3116;
-  train=2478 / validation=638) with ordinary-domain NONE priority,
-  six NONE subtypes, paired hard negatives, and shallow surface diagnostics
-  pass. Spent v2/v3/v4 overlap 0. Freeze one future Stage-A train contract
-  (`false_evidence_entry_rate_on_none <= 0.05`; PRESENT recall ≥ 0.70;
-  NONE recall ≥ 0.90) with `train_authorized=false`. No train, no reserve
-  score, BEST unchanged.
+  train=2478 / validation=638) with ordinary-domain NONE priority and six NONE
+  subtypes. Initial legacy readiness superseded by exact gate freeze above.
+  No train, no reserve score, BEST unchanged.
 
 - **Settle v4 balanced reserve FAIL (Spec 007):** seal ACQUIRE_READY pool
   (n=176) and one-shot score under frozen Stage A/B. Disposition

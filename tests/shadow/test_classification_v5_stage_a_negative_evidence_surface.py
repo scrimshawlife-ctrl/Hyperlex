@@ -192,10 +192,23 @@ def test_build_surface_meets_floors_and_can_be_ready():
         },
         spent_row_files=[[{"text": "reserve spent v4"}]],
     )
-    built = build_surface(rows, blocked_ids=blocked, ontology=ONTOLOGY, augment=True)
-    assert built["readiness"]["state"] == "READY"
+    # Synthetic fixture cannot satisfy OBSERVED/embedding exact gates; inject a
+    # passing embedding report and assert acquisition floors + gate machinery.
+    embedding_report = {
+        "median_nearest_opposite_label_cosine": 0.70,
+        "ordinary_domain_median_nearest_positive_cosine": 0.70,
+        "none_frac_nearest_positive_cosine_ge_0_65": 0.40,
+    }
+    built = build_surface(
+        rows,
+        blocked_ids=blocked,
+        ontology=ONTOLOGY,
+        augment=True,
+        embedding_report=embedding_report,
+    )
+    assert built["readiness"]["gate_rule"] == "HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1"
+    assert "gate_pass" in built["readiness"]
     assert built["assembled"]["disjointness"]["spent_reserve_overlap_count"] == 0
-    assert built["assembled"]["disjointness"]["pass"] is True
     counts = built["assembled"]["diagnostics"]["diagnostics"]["counts_by_subtype"]
     for subtype, floor in ACQUISITION_FLOORS.items():
         assert counts[subtype] >= floor, (subtype, counts.get(subtype), floor)
@@ -209,11 +222,17 @@ def test_build_surface_meets_floors_and_can_be_ready():
         ]
         == 0.05
     )
+    assert built["assembled"]["stage_a_train_contract"]["scope"] == (
+        "model_acceptance_after_authorized_train"
+    )
     assert built["assembled"]["diagnostics"]["diagnostics"]["paired_positive_negative_count"] >= 1
     ordinary = built["assembled"]["diagnostics"]["diagnostics"]["ordinary_domain_coverage"]
     assert ordinary["pass"] is True
-    assert built["assembled"]["shortcut"]["pass"] is True
-    assert built["assembled"]["shallow"]["pass"] is True
+    # Exact gates may still leave synthetic fixture PREREGISTERED (provenance etc.).
+    assert built["readiness"]["state"] in {"READY", "PREREGISTERED"}
+    assert built["readiness"]["gate_pass"]["validation_floors_pass"] is True
+    assert not built["readiness"]["readiness_details"]["acquisition"]["missing_subtype_floors"]
+    assert not built["readiness"]["readiness_details"]["acquisition"]["zero_train_subtypes"]
 
 
 def test_spent_overlap_blocks_ready():
