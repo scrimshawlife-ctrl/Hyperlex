@@ -65,6 +65,19 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sudo_sha256(path: Path) -> str:
+    try:
+        return sha256_file(path)
+    except PermissionError:
+        completed = subprocess.run(
+            ["sudo", "-n", "sha256sum", str(path)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return completed.stdout.split()[0]
+
+
 def write_private(path: Path, payload: dict | str) -> None:
     path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
     if isinstance(payload, str):
@@ -282,7 +295,8 @@ def score_inner() -> int:
         fail("dataset digest mismatch")
     if sha256_file(SELECTED) != SELECTED_SHA:
         fail("SELECTED digest mismatch")
-    if sha256_file(BEST_WEIGHTS) != BEST_SHA:
+    # Inside docker this is typically root-readable; on host use sudo_sha256.
+    if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
         fail("BEST digest mismatch")
     settlement = json.loads((RUN / "SETTLEMENT.json").read_text(encoding="utf-8"))
     if settlement.get("disposition") != "SETTLED_FAIL":
@@ -890,7 +904,7 @@ def main() -> int:
         fail("dataset digest mismatch")
     if sha256_file(SELECTED) != SELECTED_SHA:
         fail("SELECTED digest mismatch")
-    if sha256_file(BEST_WEIGHTS) != BEST_SHA:
+    if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
         fail("BEST digest mismatch")
     settlement = json.loads((RUN / "SETTLEMENT.json").read_text(encoding="utf-8"))
     print(
