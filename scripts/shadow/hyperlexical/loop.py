@@ -786,22 +786,29 @@ def run_loop(
     v2_contract = None
     if v2_on:
         from .classification_v2 import freeze_training_contract
-        from .classification_v2_runtime import build_geometry_heads, build_v2_heads
+        from .classification_v2_runtime import build_geometry_heads, build_repair_heads, build_v2_heads
 
         v2_contract = freeze_training_contract(classify_tr)
+        repair_path = os.environ.get("HLX_V2_GEOMETRY_REPAIR")
         geometry_path = os.environ.get("HLX_V2_GEOMETRY_WITNESS")
         witness_path = geometry_path or os.environ.get("HLX_V2_PROTOTYPE_WITNESS")
-        if not witness_path:
-            raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
-        witness = json.loads(Path(witness_path).read_text(encoding="utf-8"))
-        if geometry_path:
-            applicability_head, family_head, init_receipt["classification_v2_rows"] = build_geometry_heads(
-                hidden, classify, list(FAMILIES), witness
+        if repair_path:
+            boundaries = json.loads(Path(repair_path).read_text(encoding="utf-8"))
+            applicability_head, family_head, init_receipt["classification_v2_rows"] = build_repair_heads(
+                hidden, classify, list(FAMILIES), boundaries
             )
         else:
-            applicability_head, family_head, init_receipt["classification_v2_rows"] = build_v2_heads(
-                hidden, classify, list(FAMILIES), witness
-            )
+            if not witness_path:
+                raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
+            witness = json.loads(Path(witness_path).read_text(encoding="utf-8"))
+            if geometry_path:
+                applicability_head, family_head, init_receipt["classification_v2_rows"] = build_geometry_heads(
+                    hidden, classify, list(FAMILIES), witness
+                )
+            else:
+                applicability_head, family_head, init_receipt["classification_v2_rows"] = build_v2_heads(
+                    hidden, classify, list(FAMILIES), witness
+                )
     classify_parameters = list(classify.parameters())
     if v2_on:
         classify_parameters = list(applicability_head.parameters()) + list(family_head.parameters())
@@ -845,6 +852,59 @@ def run_loop(
     unb_loss_sum = torch.zeros((), device=device)
     app_loss_steps = fam_loss_steps = unb_loss_steps = 0
     encoder.train()
+    if v2_on and hasattr(family_head, "anchor_cosine"):
+        from .classification_v2 import ACTIVE_FAMILY_VOCABULARY as _PRIOR_NAMES
+        from .classification_v2_geometry_repair import (
+            flatten_anchors as _flatten_anchors,
+            hard_negatives_from_boundaries as _hard_negatives,
+            row_geometry_scores as _row_geometry_scores,
+            summarize_geometry_margins as _summarize_geometry_margins,
+        )
+
+        _repair = os.environ.get("HLX_V2_GEOMETRY_REPAIR")
+        if not _repair:
+            raise RuntimeError("FAMILY_GEOMETRY_REPAIR_UNAVAILABLE")
+        _boundaries = json.loads(Path(_repair).read_text(encoding="utf-8"))
+        _anchors = _flatten_anchors(_boundaries)
+        _hard = _hard_negatives(_boundaries)
+        _prior_rows = []
+        encoder.eval()
+        family_head.eval()
+        with torch.no_grad():
+            for row in classify_va:
+                lineage = row.get("lineage")
+                if lineage not in _PRIOR_NAMES:
+                    continue
+                if row.get("evaluation_reserve") or row.get("held_out") or row.get("split") == "test":
+                    raise RuntimeError("evaluation_isolation")
+                encoded = encoder(**encode_texts([row["text"]]))
+                pooled = encoded.last_hidden_state[:, 0]
+                similarities = [
+                    float(value) for value in family_head.anchor_cosine(pooled)[0].detach().cpu()
+                ]
+                scores = _row_geometry_scores(similarities, str(lineage), _anchors, _hard)
+                _prior_rows.append({"family": lineage, **scores})
+        family_head.train()
+        encoder.train()
+        prior_geometry = {
+            **_summarize_geometry_margins(_prior_rows),
+            "boundary_sha256": _boundaries["boundary_sha256"],
+            "phase": "pre_training",
+            "reserve_used": False,
+            "schema": "hyperlex.classification.v2.geometry_repair_eval.v1",
+            "separation_sha256": _boundaries["separation_sha256"],
+            "surface": "validation",
+        }
+        (out_dir / "classification-v2-geometry-repair-prior.json").write_text(
+            json.dumps(prior_geometry, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        init_receipt["classification_v2_geometry_repair_prior"] = {
+            "high_collision_rows": prior_geometry["high_collision_rows"],
+            "median_margin": prior_geometry["median_margin"],
+            "mean_margin": prior_geometry["mean_margin"],
+            "n_family": prior_geometry["n_family"],
+        }
     losses = []
     epoch_metrics = []
 
@@ -1505,6 +1565,59 @@ def run_loop(
                 json.dumps(geometry_artifact, indent=2, sort_keys=True) + "\n",
                 encoding="utf-8",
             )
+        if hasattr(family_head, "anchor_cosine"):
+            from .classification_v2 import ACTIVE_FAMILY_VOCABULARY as _FAMILY_NAMES
+            from .classification_v2_geometry_repair import (
+                flatten_anchors,
+                hard_negatives_from_boundaries,
+                row_geometry_scores,
+                summarize_geometry_margins,
+            )
+
+            repair_path = os.environ.get("HLX_V2_GEOMETRY_REPAIR")
+            if not repair_path:
+                raise RuntimeError("FAMILY_GEOMETRY_REPAIR_UNAVAILABLE")
+            boundaries = json.loads(Path(repair_path).read_text(encoding="utf-8"))
+            anchors = flatten_anchors(boundaries)
+            hard = hard_negatives_from_boundaries(boundaries)
+            margin_rows = []
+            encoder.eval()
+            family_head.eval()
+            with torch.no_grad():
+                for row in classify_va:
+                    lineage = row.get("lineage")
+                    if lineage not in _FAMILY_NAMES:
+                        continue
+                    if (
+                        row.get("evaluation_reserve")
+                        or row.get("held_out")
+                        or row.get("split") == "test"
+                    ):
+                        raise RuntimeError("evaluation_isolation")
+                    encoded = encoder(**encode_texts([row["text"]]))
+                    pooled = encoded.last_hidden_state[:, 0]
+                    similarities = [
+                        float(value)
+                        for value in family_head.anchor_cosine(pooled)[0].detach().cpu()
+                    ]
+                    scores = row_geometry_scores(similarities, str(lineage), anchors, hard)
+                    margin_rows.append({"family": lineage, **scores})
+            summary = summarize_geometry_margins(margin_rows)
+            geometry_artifact = {
+                **summary,
+                "boundary_sha256": boundaries["boundary_sha256"],
+                "canonical_logits": "learned_residual",
+                "hard_negatives": hard,
+                "reserve_used": False,
+                "schema": "hyperlex.classification.v2.geometry_repair_eval.v1",
+                "separation_sha256": boundaries["separation_sha256"],
+                "sparse_families": list(init_receipt["classification_v2_rows"].get("sparse_families") or []),
+                "surface": "validation",
+            }
+            (out_dir / "classification-v2-geometry-repair.json").write_text(
+                json.dumps(geometry_artifact, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
         (out_dir / "classification-v2-surface.json").write_text(
             json.dumps(surface_artifact, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
@@ -1635,7 +1748,18 @@ def run_loop(
     if calibration_artifact is not None:
         receipt["classification_v2_calibration"] = calibration_artifact
         receipt["classification_v2_surface"] = surface_artifact
-        receipt["classification_v2_family_geometry"] = geometry_artifact
+        receipt["classification_v2_family_geometry"] = (
+            geometry_artifact
+            if geometry_artifact and geometry_artifact.get("schema") == "hyperlex.classification.v2.family_geometry_eval.v1"
+            else None
+        )
+        receipt["classification_v2_geometry_repair"] = (
+            geometry_artifact
+            if geometry_artifact and geometry_artifact.get("schema") == "hyperlex.classification.v2.geometry_repair_eval.v1"
+            else None
+        )
+        if init_receipt.get("classification_v2_geometry_repair_prior") is not None:
+            receipt["classification_v2_geometry_repair_prior"] = init_receipt["classification_v2_geometry_repair_prior"]
     if select_on_classify:
         receipt["select_metric"] = SELECT_METRIC_CLASSIFY
     if force_overlap.get("disjoint"):

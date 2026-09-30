@@ -714,7 +714,7 @@ def test_family_fusion_standardizes_both_components():
     assert body["family_prototype_tau"] == PROTO_TAU == 0.10
     assert body["family_prototype_lambda"] == LAMBDA_PROTO == 0.5
     assert body["family_hard_negative_multiplier"] == 2.0
-    assert body["family_prototypes"] == "frozen"
+    assert body["family_prototypes"] == "frozen_loss_structure_only"
     assert body["selection_score"].startswith("0.50*active_family_macro_f1")
     base = fuse_family_logits([0.1, 0.2, 0.4], [3.0, -1.0, 0.5])
     scaled = fuse_family_logits([1.0, 2.0, 4.0], [30.0, -10.0, 5.0])

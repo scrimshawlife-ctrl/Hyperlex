@@ -350,3 +350,25 @@ Anchor counts: gaming-meta 2 (n=81), betting-sharp 1 SPARSE (n=2), crypto-degen 
 There are 284 anchor pairs at cosine 0.80 or above: 272 across families and 12 inside a family. The closest cross-family pairs are relationship-dating/music-entertainment 0.9937, social-status/approval-disapproval 0.9897, and social-status/music-entertainment 0.9894. Families are not merged.
 
 The future scorer, specified and not fit, is `population_zscore(max anchor cosine) + population_zscore(residual logit)`. Hard negatives are the nearest competing anchors, three of them, at multiplier 2.0. The mean family centroid is not the semantic score.
+
+### Encoder geometry repair
+
+`HYPERLEX_FAMILY_GEOMETRY_REPAIR_V1` trains the existing last two encoder layers against the sealed multi-anchor boundaries. The ontology, applicability head, schedule, provenance weights, calibration, unbind path, and BEST stay put. Jev stays off. This is not a SELECT experiment.
+
+Canonical family logits are the learned residual head only. Frozen prototype cosine is not fused into the decision. The sealed boundary anchors structure a supervised contrastive geometry loss on family-positive rows:
+
+```text
+L_geometry =
+- log(
+    sum_{a in anchors(f)} exp(cos(h, a) / tau)
+    /
+    sum_{a in all anchors} m(a) * exp(cos(h, a) / tau)
+  )
+L_total = existing v2 loss + lambda_geometry * L_geometry
+```
+
+`tau = 0.10`. `lambda_geometry = 0.5`. `m(a) = 2.0` when `a` belongs to one of the three nearest competing families from `FAMILY_SEMANTIC_BOUNDARIES_V1`, otherwise `1.0`. Hard negatives are not recomputed from validation or reserve predictions. Sparse families `betting-sharp`, `internet-slang`, and `memetic` keep their single sealed anchor as the positive reference and remain in the 19-way objective.
+
+Residual rows still initialize from exact-copy select004 rows where available; every other residual row starts at zero. `last_trainable` remains 2. Boundary artifact sha256 `0ca6f34ce1abf68388e443371672ca36e16028079a175b6775e1968900e1c52f`. Separation sha256 `ab698d342d2d276f81d4baf3fed609bb6f8bf88cd6810bb1d1998c5e409f63c3`.
+
+Internal gates before any reserve score: active-family macro-F1 above 0.1960828268105939, non-exact-copy family macro-F1 above 0.041352657004830914, more than three non-exact-copy families with F1 above 0, median gold-versus-nearest-negative margin above the pre-training median on the same validation rows, fewer high-collision validation rows than the pre-training count, and applicability invariance still passing.
