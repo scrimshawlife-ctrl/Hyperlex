@@ -13,6 +13,7 @@ import statistics
 from collections import Counter, defaultdict
 from typing import Any, Mapping, Sequence
 
+from .classification_v5_stage_a_mixed_remediate import SURFACE_RULE_V1R8
 from .classification_v5_stage_a_negative_evidence_surface import (
     BEST_SHA,
     SURFACE_RULE as SURFACE_RULE_V1,
@@ -21,11 +22,17 @@ from .classification_v5_stage_a_surface_remediate import SURFACE_RULE_V1R7
 
 STAGE_A_RULE = "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1"
 LABEL_PROVENANCE_RULE = "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1"
-EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-001"
+EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-002"
 AUTHORIZED_DATASET_SHA = (
+    "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b"
+)
+AUTHORIZED_SURFACE_RULE = SURFACE_RULE_V1R8
+# Parent V1R7 pins retained for historical comparison only.
+PARENT_V1R7_DATASET_SHA = (
     "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9"
 )
-AUTHORIZED_SURFACE_RULE = SURFACE_RULE_V1R7
+PARENT_V1R7_SURFACE_RULE = SURFACE_RULE_V1R7
+PARENT_V1R7_EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-001"
 
 # Frozen class order (index == logit position).
 EVIDENCE_LABELS = ("NO_EVIDENCE", "EVIDENCE_PRESENT", "UNCERTAIN")
@@ -217,6 +224,11 @@ def stage_a_macro_f1(golds: Sequence[str], preds: Sequence[str]) -> float:
     return sum(scores) / len(scores)
 
 
+def balanced_accuracy(golds: Sequence[str], preds: Sequence[str]) -> float:
+    recalls = [prf(golds, preds, label)["recall"] for label in EVIDENCE_LABELS]
+    return sum(recalls) / len(recalls)
+
+
 def false_evidence_entry_rate_on_none(
     golds: Sequence[str], decisions: Sequence[str]
 ) -> float:
@@ -235,6 +247,7 @@ def evaluate_decisions(
 ) -> dict[str, Any]:
     by_label = {label: prf(golds, decisions, label) for label in EVIDENCE_LABELS}
     macro = stage_a_macro_f1(golds, decisions)
+    bal_acc = balanced_accuracy(golds, decisions)
     false_entry = false_evidence_entry_rate_on_none(golds, decisions)
     uncertain_rate = sum(1 for d in decisions if d == "UNCERTAIN") / max(1, len(decisions))
     subtype_metrics: dict[str, Any] = {}
@@ -266,6 +279,7 @@ def evaluate_decisions(
     return {
         "acceptance": acceptance,
         "acceptance_pass": all(acceptance.values()),
+        "balanced_accuracy": bal_acc,
         "by_label": by_label,
         "confusion": dict(Counter(f"{g}->{p}" for g, p in zip(golds, decisions))),
         "false_evidence_entry_rate_on_none": false_entry,

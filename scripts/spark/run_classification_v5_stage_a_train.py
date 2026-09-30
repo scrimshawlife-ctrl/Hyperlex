@@ -27,11 +27,13 @@ from pathlib import Path
 REPO = Path("/home/morpheus/Hyperlex")
 SURFACE = Path(
     "/home/morpheus/hlx-private/"
-    "classification-v5-stage-a-negative-evidence-surface-v1r7-20260930"
+    "classification-v5-stage-a-negative-evidence-surface-v1r8-20260930"
 )
 DATASET = SURFACE / "EVIDENCE_SURFACE.jsonl"
-AUTH_DEST = Path("/home/morpheus/hlx-private/classification-v5-stage-a-train-20260930")
-RUN_ROOT = AUTH_DEST / "classification-v5-stage-a-001"
+AUTH_DEST = Path(
+    "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-20260930"
+)
+RUN_ROOT = AUTH_DEST / "classification-v5-stage-a-002"
 AUTH_FILE = AUTH_DEST / "AUTHORIZATION.json"
 RESOLVED = AUTH_DEST / "RESOLVED_TRAINING_CONFIG.json"
 LABEL_PROVENANCE = AUTH_DEST / "LABEL_PROVENANCE.jsonl"
@@ -44,12 +46,22 @@ INIT_FROM = Path(
     "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004"
 )
 TRUNK = Path("/home/morpheus/.hyperlex/models/trunks/ModernBERT-base")
-# Legacy mirror path for selected weights (loadable inference artifact).
+# Isolated mirror path for V1R8 selected weights (does not overwrite V1R7 artifact).
 OUT = Path(
     "/home/morpheus/.hyperlex/models/"
-    "hyperlex-encoder-modernbert-base-seed-classification-v5-stage-a"
+    "hyperlex-encoder-modernbert-base-seed-classification-v5-stage-a-v1r8"
 )
 IMAGE = "lmsysorg/sglang:dev-qwen38-27b-dflash2"
+# Parent diagnostic thresholds (fail-display pair); used only for cohort comparison.
+PARENT_DIAGNOSTIC_NONE = 0.50
+PARENT_DIAGNOSTIC_PRESENT = 0.55
+PARENT_COHORTS = {
+    "ORDINARY_DOMAIN_FALSE_PRESENT": 60,
+    "OTHER_NONE_FALSE_PRESENT": 3,
+    "PRESENT_FALSE_NONE": 146,
+    "PRESENT_FALSE_UNCERTAIN": 3,
+    "UNCERTAIN_MISCLASSIFIED": 53,
+}
 
 NONE_SUBTYPES = (
     "ORDINARY_DOMAIN_NONE",
@@ -122,11 +134,67 @@ def length_bucket(text: str) -> str:
 
 def source_bucket(row: dict) -> str:
     url = str(row.get("source_url") or "")
+    if "wikipedia" in url.lower():
+        return "wikipedia"
     if "wiktionary" in url.lower():
         return "wiktionary"
     if url:
         return "other_url"
     return "none"
+
+
+def diagnostic_error_cohort(gold: str, pred: str, subtype: str) -> str | None:
+    """Same cohort definitions as DIAGNOSE_V5_STAGE_A_SETTLED_FAIL."""
+    if gold == "NO_EVIDENCE" and pred == "EVIDENCE_PRESENT":
+        if subtype == "ORDINARY_DOMAIN_NONE":
+            return "ORDINARY_DOMAIN_FALSE_PRESENT"
+        return "OTHER_NONE_FALSE_PRESENT"
+    if gold == "EVIDENCE_PRESENT" and pred == "NO_EVIDENCE":
+        return "PRESENT_FALSE_NONE"
+    if gold == "EVIDENCE_PRESENT" and pred == "UNCERTAIN":
+        return "PRESENT_FALSE_UNCERTAIN"
+    if gold == "UNCERTAIN" and pred != "UNCERTAIN":
+        return "UNCERTAIN_MISCLASSIFIED"
+    return None
+
+
+def compute_diagnostic_cohorts(
+    rows: list[dict],
+    golds: list[str],
+    scores: list[float],
+    *,
+    none_threshold: float,
+    present_threshold: float,
+) -> dict:
+    from hyperlexical.classification_v5_stage_a import decide_evidence
+
+    decisions = [
+        decide_evidence(
+            float(score),
+            none_threshold=none_threshold,
+            present_threshold=present_threshold,
+        )
+        for score in scores
+    ]
+    counts = {name: 0 for name in PARENT_COHORTS}
+    by_domain: dict[str, Counter] = defaultdict(Counter)
+    for row, gold, pred in zip(rows, golds, decisions):
+        name = diagnostic_error_cohort(gold, pred, str(row.get("evidence_subtype")))
+        if name is None:
+            continue
+        counts[name] += 1
+        domain = str(row.get("topic_domain") or "unspecified")
+        by_domain[name][domain] += 1
+    return {
+        "by_domain": {k: dict(v) for k, v in by_domain.items()},
+        "counts": counts,
+        "deltas_vs_parent": {
+            name: counts[name] - PARENT_COHORTS[name] for name in PARENT_COHORTS
+        },
+        "none_threshold": none_threshold,
+        "parent_counts": dict(PARENT_COHORTS),
+        "present_threshold": present_threshold,
+    }
 
 
 def require_authorization() -> dict:
@@ -671,6 +739,38 @@ def inner() -> int:
         val_decisions,
         key_fn=lambda row: length_bucket(str(row["text"])),
     )
+    domain_diag = slice_diagnostics(
+        val_rows,
+        val_golds,
+        val_decisions,
+        key_fn=lambda row: str(row.get("topic_domain") or "unspecified"),
+    )
+    # Parent-comparable diagnostic cohorts at sealed fail-display thresholds.
+    diagnostic_cohorts = compute_diagnostic_cohorts(
+        val_rows,
+        val_golds,
+        val_scores,
+        none_threshold=PARENT_DIAGNOSTIC_NONE,
+        present_threshold=PARENT_DIAGNOSTIC_PRESENT,
+    )
+    # Also report cohorts under the calibrated / display decision used for gates.
+    gate_cohort_none = (
+        float(chosen["none_threshold"])
+        if chosen.get("none_threshold") is not None
+        else PARENT_DIAGNOSTIC_NONE
+    )
+    gate_cohort_present = (
+        float(chosen["present_threshold"])
+        if chosen.get("present_threshold") is not None
+        else PARENT_DIAGNOSTIC_PRESENT
+    )
+    gate_decision_cohorts = compute_diagnostic_cohorts(
+        val_rows,
+        val_golds,
+        val_scores,
+        none_threshold=gate_cohort_none,
+        present_threshold=gate_cohort_present,
+    )
     # Shortcut reappearance probe: ATOM→NONE / PROSE→PRESENT dominance among errors.
     error_forms = Counter()
     for row, gold, pred in zip(val_rows, val_golds, val_decisions):
@@ -702,6 +802,15 @@ def inner() -> int:
             "length_bucket": length_diag,
             "shortcut_probe": shortcut_probe,
             "source": source_diag,
+            "topic_domain": domain_diag,
+        },
+    )
+    write_private(
+        RUN_ROOT / "diagnostics" / "error_cohorts.json",
+        {
+            "gate_decision_cohorts": gate_decision_cohorts,
+            "parent_comparable_diagnostic_cohorts": diagnostic_cohorts,
+            "rule": "HYPERLEX_V5_STAGE_A_DIAGNOSE_SETTLED_FAIL_V1.error_cohort",
         },
     )
 
@@ -808,6 +917,7 @@ def inner() -> int:
             "NO_EVIDENCE_recall": val_metrics["by_label"]["NO_EVIDENCE"]["recall"],
             "UNCERTAIN_rate": val_metrics["uncertain_rate"],
             "acceptance_pass": val_metrics["acceptance_pass"],
+            "balanced_accuracy": val_metrics["balanced_accuracy"],
             "by_label": val_metrics["by_label"],
             "confusion": val_metrics["confusion"],
             "false_evidence_entry_rate_on_none": val_metrics[
@@ -816,6 +926,9 @@ def inner() -> int:
             "n": val_metrics["n"],
             "stage_a_macro_f1": val_metrics["stage_a_macro_f1"],
         },
+        "diagnostic_cohorts_parent_comparable": diagnostic_cohorts,
+        "gate_decision_cohorts": gate_decision_cohorts,
+        "subtype_diagnostics": subtype_diag,
         "weights_dir": str(selected_dir),
     }
     receipt["receipt_sha256"] = sha256_text(

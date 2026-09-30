@@ -15,20 +15,22 @@ from pathlib import Path
 REPO = Path("/home/morpheus/Hyperlex")
 SURFACE = Path(
     "/home/morpheus/hlx-private/"
-    "classification-v5-stage-a-negative-evidence-surface-v1r7-20260930"
+    "classification-v5-stage-a-negative-evidence-surface-v1r8-20260930"
 )
 DATASET = SURFACE / "EVIDENCE_SURFACE.jsonl"
-DATASET_SHA = "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9"
-READINESS_SHA = "f07e4c04708bdb0e0e58f91e11d393f852356822f0d9531336667af25b713a40"
-GATE_EVAL_SHA = "0a4ad7871351f592371aa93e44207b19039949c4acc598daf69e8b225217af11"
-AUTH_DEST = Path("/home/morpheus/hlx-private/classification-v5-stage-a-train-20260930")
+DATASET_SHA = "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b"
+READINESS_SHA = "e61621af2193bf49778a437b5ac0cf4ed44952557fdb13830e5fe749d80a718a"
+GATE_EVAL_SHA = "73680e69e6d5bc7d9cbc4dd6b39c5ebfa663cc38b7bd005227f2217b8290b939"
+AUTH_DEST = Path(
+    "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-20260930"
+)
 BEST_WEIGHTS = Path(
     "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004/"
     "model.safetensors"
 )
 BEST_SHA = "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6"
 TRUNK = Path("/home/morpheus/.hyperlex/models/trunks/ModernBERT-base")
-EXPECTED_CODE_HINT = "60bfb07"  # stop commit or later on authorize branch
+EXPECTED_CODE_HINT = "1bbe78e"  # V1R8 seal or later on authorize branch
 
 os.environ["HLX_V2_FORWARD_ONTOLOGY"] = "1"
 sys.path.insert(0, str(REPO / "scripts" / "shadow"))
