@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Investigate Stage-A uncertain policy (Spec 007):** read-only score of
+  Stage-A-003 SELECTED `dba6d491…` on V1R8. Freeze
+  `HYPERLEX_V5_STAGE_A_GOLD_LABEL_MAPPING_V1` (dataset-semantic; admission
+  PASS). UNCERTAIN head signal **PRESENT** (gold-UNC mean P(UNC)=0.55;
+  top1-UNC 36/61) but scalar `P(PRESENT)`-only policy yields UNC recall 0.
+  Native argmax restores UNC recall to 0.59 / macro-F1 0.687 but no frozen
+  diagnostic policy (A–D) clears Stage-A gates (PRESENT stays ≤0.53;
+  OBSERVED PRESENT ≤0.46). PRESENT FNs primarily `NONE_DOMINATED` (194/317).
+  Diagnosis **`MIXED_UNCERTAIN_FAILURE`**. No train/threshold auth/reserve/BEST.
+  Receipt `classification-v5-stage-a-uncertain-policy-investigate-receipt-20260930.json`.
+  Next: `AUDIT_V5_UNCERTAIN_LABEL_SURFACE`.
+
 - **Train Stage-A-003 focal loss once (Spec 007):** execute authorized
   `TRAIN_V5_STAGE_A_003_FOCAL_LOSS_ONCE` on V1R8 READY `c0fdd82d…` with
   frozen focal CE γ=2.0 / alpha=NONE / config `b8aad3ba…`. Restored epoch
