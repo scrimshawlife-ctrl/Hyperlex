@@ -431,3 +431,21 @@ PHASE_D re-ran the separability audit on remediation overlay `civilian.v0.4.phas
 
 Phase-execution artifact sha256 `6d11eab035d64a5ef8d1008ade9b565064920e6de2cc86673202cbc60753be3b`. `phases_complete=true`.
 
+
+## Active-family boundary redefinition (2026-09-30)
+
+Rule `HYPERLEX_ACTIVE_FAMILY_BOUNDARY_REDEFINITION_V1` operationalizes Phase-C `KEEP_WITH_BOUNDARY_REDEFINITION` without merging/splitting the 19-family vocabulary and without mutating historical boundary artifact `0ca6f34c…` / separation `ab698d34…`.
+
+Inputs pinned: phase execution `6d11eab0…`, Phase-D audit `d56d0342…`, overlay `civilian.v0.4.phase.jsonl` sha256 `8a934806…`, frozen geometry-repair encoder `449bf3b3…`, BEST unchanged `9fba0f66…`.
+
+Outputs under `/home/morpheus/hlx-private/classification-v2-boundary-redefinition-20260930/BOUNDARY_REDEFINITION.json` (artifact sha256 `4757d46aa7f0c95732378d5f710cbd1a28d048f60bee2fc35dfb6d5c0fe8cad1`):
+
+- 19 family contracts (`positive_cues`, `required_semantic_core`, `nearest_competitors`, `exclusion_cues`, `counterexample_patterns`, `ambiguous_with`)
+- 103 pairwise distinction rules over high-overlap / ontology-collapse / SPLIT_CANDIDATE pairs
+- Row flags: KEEP 271, REVIEW 425, DROP 17, RELABEL_CANDIDATE 2, AMBIGUOUS 9 (Phase-A noise audit preserved: KEEP 3 / RELABEL_CANDIDATE 1 / DROP 3; dropped noise not reintroduced)
+- Sparse floors held: betting-sharp 13, internet-slang 13, memetic 12
+- Frozen-encoder max-member cosine≥0.80 pairs: pre 39 → post 31 (reduction 20.51%); 13-family collapse component 13 → 12
+- All three SPLIT_CANDIDATE pairs remain `OVERLAP_REMAINS_STRUCTURAL`; no split performed
+- Training gate **CLOSED** (material reduction requires ≥30%; no train / reserve / BEST move)
+
+Next action: tighten mutually exclusive definitions for AMBIGUOUS/REVIEW/DROP identities and unresolved split pairs before any clean v2 training run.
