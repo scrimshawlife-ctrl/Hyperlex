@@ -263,10 +263,10 @@ def inner() -> int:
     retrieval = pinned["retrieval"]
     index_identities = {str(row["source_identity"]) for row in index["records"]}
     rows, invalid, identity_hash = load_reserve_rows(index_identities)
-    write_private(
-        ROWS_PATH,
-        "".join(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n" for row in rows),
-    )
+    # Preserve the sealed reserve-row bytes exactly; do not re-serialize.
+    ROWS_PATH.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    ROWS_PATH.write_bytes(PRIOR_ROWS.read_bytes())
+    os.chmod(ROWS_PATH, 0o600)
     if sha256_file(ROWS_PATH) != PRIOR_ROWS_SHA:
         invalid.append("copied_reserve_rows_digest_mismatch")
 
