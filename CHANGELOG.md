@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Settle v4 balanced reserve FAIL (Spec 007):** seal ACQUIRE_READY pool
+  (n=176) and one-shot score under frozen Stage A/B. Disposition
+  `RESERVE_FAIL` (false-entry 0.4167 on n_none=48; emission 0.4545). No
+  retune; BEST unchanged. Spent v4 identities marked `evaluation_spent`.
+
 - **Seal v4 balanced reserve acquire READY (Spec 007):** after v3
   `RESERVE_FAIL` and zero AVAILABLE classify identities, preregister
   `HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1` floors

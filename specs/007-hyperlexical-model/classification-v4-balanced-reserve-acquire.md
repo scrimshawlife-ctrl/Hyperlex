@@ -101,6 +101,12 @@ do not move BEST
 do not open a new evidence-gate train until ACQUIRE_READY and a separate climb auth
 ```
 
+## Climb result (2026-09-30)
+
+Authorized one-shot score under frozen Stage A/B → `RESERVE_FAIL`
+(false_entry=0.4167, emission=0.4545). See `classification-v4-final-settlement.md`.
+Do not retune against this reserve.
+
 ## Authorization ladder
 
 ```text

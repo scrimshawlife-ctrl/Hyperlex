@@ -1,0 +1,80 @@
+{
+  "BEST": "UNCHANGED",
+  "artifact_file_sha256": {
+    "EXIT.json": "3c428e5243c0204d43e459c60941a1f70059b39087ec6e0a385bb6780caa0c8a",
+    "LAUNCH.json": "36ccbc26358ced9c66056f0912f9a28679a01adc8f54f2983217300994793d7f",
+    "RESERVE_EVAL.json": "6a14660df9f862d4a73b809705da064c761d0c9831375fa525adc73cc1f347f7",
+    "RESERVE_MANIFEST.json": "a81eaf164abea5644da8ffef18cf178b7a71768128b5f1d2d76437574db0ec8b",
+    "SPENT_LEDGER_MARK.json": "8bd459cd6b1a30fc38cde8ebc98850f7351647b27a7d60bdb927201dc0991483",
+    "SUMMARY.json": "ac1120cb996eb1f053d713fd82f370e6b18afb919186752f5ec659aa750bafff",
+    "reserve-rows.jsonl": "dd224047b331cd13b5a6893519907f9998620a482b0d17f29b3444b46794eb82",
+    "reserve_eval.log": "7c582414ac54d25657847cc1aa0920143bedae3b88162e6ca55ede9c055c86e8"
+  },
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "decision_counts": {
+    "ABSTAIN": 121,
+    "AMBIGUOUS": 24,
+    "FAMILY": 11,
+    "NONE": 20
+  },
+  "disposition": "RESERVE_FAIL",
+  "false_evidence_entry_rate_on_none": 0.4166666666666667,
+  "family_emission_coverage": 0.0859375,
+  "family_emission_precision": 0.45454545454545453,
+  "frozen_thresholds": {
+    "minimum_family_score": 0.96,
+    "minimum_top1_top2_margin": 0.01,
+    "none_threshold": 0.05,
+    "present_threshold": 0.55
+  },
+  "identity_list_sha256": "c38842adb19471cc1d9555a55d11cc3a226b2d654435de0e2c01ccfcd4ea77e2",
+  "lifecycle_state": "SETTLED_FAIL",
+  "lineage_counts": {
+    "ai-native": 8,
+    "betting-sharp": 8,
+    "conflict-aggression": 8,
+    "crypto-degen": 8,
+    "fashion-aesthetic": 8,
+    "gaming-meta": 8,
+    "identity-affiliation": 8,
+    "internet-slang": 8,
+    "music-entertainment": 8,
+    "none": 48,
+    "politics-civic": 8,
+    "regional-cultural": 8,
+    "social-evaluation": 8,
+    "spiritual-mystic": 8,
+    "sports-competition": 8,
+    "technology-ai": 8,
+    "workplace-career": 8
+  },
+  "n": 176,
+  "n_none": 48,
+  "n_present": 128,
+  "next_action": "STOP \u2014 preserve v4 balanced reserve result; do not retune thresholds against the reserve; do not move BEST.",
+  "parent_rule": "HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1",
+  "primary_gate_pass": false,
+  "private_destination": "/home/morpheus/hlx-private/classification-v4-reserve-20260930",
+  "reasons": [
+    "false_evidence_entry_rate_on_none=0.4166666666666667 > max=0.05",
+    "family_emission_precision=0.45454545454545453 < min=0.8"
+  ],
+  "recalibrated": false,
+  "receipt_sha256": "ffa5c6036e76de7bb42e5542820104781a441b4e84887948361c0abf9691ccea",
+  "reserve_manifest_sha256": "ab3866282eb444c8e7edbbebbe8a65732580814a4b060529f60e8414130d9777",
+  "reserve_rows_sha256": "dd224047b331cd13b5a6893519907f9998620a482b0d17f29b3444b46794eb82",
+  "rule": "HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_EVAL_V1",
+  "secondary_gate_pass": false,
+  "selective_accuracy": 0.41935483870967744,
+  "spent_ledger_mark": {
+    "already_spent": 0,
+    "appended_events": 352,
+    "marked": 176,
+    "missing_before_observe": 0,
+    "n": 176,
+    "observed_new": 176
+  },
+  "spent_v2_reserve_reuse": false,
+  "spent_v3_reserve_reuse": false,
+  "train": false
+}

@@ -25,17 +25,17 @@ spent v3 reserve identities = 109 (evaluation_spent)
 prior aborted v4 acquire identities = 173 (evaluation_spent; private seal removed)
 HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1 = ACQUIRE_READY
   n=176 (none=48, present=128, distinct_families=16, max_family_share=0.0625)
-  rows_sha256 = dd224047…794eb82
-  receipt_sha256 = 1998f409…1bae9f5
+HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_EVAL_V1 = SETTLED_FAIL
+  RESERVE_FAIL (false_entry=0.4167 on n_none=48; emission=0.4545)
+  receipt_sha256 = ffa5c603…691ccea
 BEST = UNCHANGED (9fba0f66…)
 ```
 
 Preregistration freeze: `classification-v3-evidence-gate-preregistration.md`.  
 Surface / Stage A / Stage B / Reserve receipts: `classification-v3-*-receipt-20260930.json`.  
-Final settlement: `classification-v3-final-settlement.md`.  
-Balanced acquire: `classification-v4-balanced-reserve-acquire.md` +
-`classification-v4-balanced-reserve-acquire-receipt-20260930.json`.  
-Next: separate auth for evidence-gate climb + one-shot score of this acquire pool.
+v3 final settlement: `classification-v3-final-settlement.md`.  
+v4 acquire + reserve: `classification-v4-*-receipt-20260930.json`,
+`classification-v4-final-settlement.md`.
 
 ## Transition rules
 
