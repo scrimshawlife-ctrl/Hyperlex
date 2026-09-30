@@ -1,0 +1,19 @@
+{
+  "BEST_MUTATED": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-004",
+  "NEXT_ACTION": "ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION",
+  "PRIMARY_DIAGNOSIS": "RESIDUAL_PRESENT_RECALL_FAILURE",
+  "RESERVE_CONSUMED": false,
+  "TRAIN": false,
+  "architecture_change_justified": true,
+  "controlled_interpretation": "INSUFFICIENT_MATCHED_SUPPORT",
+  "dataset_change_justified": false,
+  "dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "diagnosis_rule": "HYPERLEX_V5_STAGE_A_DIAGNOSE_SETTLED_FAIL_V1",
+  "parent_diagnosis": "MIXED_UNCERTAIN_SURFACE_FAILURE",
+  "private_diag_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r9-20260930/diagnosis-settled-fail-v1r9-20260930",
+  "receipt_sha256": "9687125133a39c97867cbfaac291418f6a76505f8f531f7a3008deb6c5038739",
+  "selected_checkpoint_sha256": "82840630a89ea9e9b34fdfc010d455e6bbfce05ecfcb29abe2929505e9e21fdd",
+  "smallest_remediation": "False-entry already clears under sealed diagnostic thresholds; recover at least 72 PRESENT false negatives to meet recall \u2265 0.70. Prefer architecture/objective investigation over another ordinary-NONE dataset remediation loop.",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9"
+}

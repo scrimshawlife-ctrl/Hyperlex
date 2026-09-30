@@ -1,0 +1,60 @@
+{
+  "BEST": "UNCHANGED",
+  "BEST_MUTATED": false,
+  "CODE_REVISION": "c91ea2e40b4ddaaee36fc95fa84da0a09070b458",
+  "CONTROLLED_COVERAGE": 0.12585244885306882,
+  "CONTROLLED_FALSE_ENTRY_DELTA": 0.015625,
+  "CONTROLLED_INTERPRETATION": "INSUFFICIENT_MATCHED_SUPPORT",
+  "CURRENT_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "DATASET_SHA256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "DIAGNOSIS_RECEIPT_SHA256": "9687125133a39c97867cbfaac291418f6a76505f8f531f7a3008deb6c5038739",
+  "ERROR_COHORTS": {
+    "ORDINARY_DOMAIN_FALSE_PRESENT": 15,
+    "OTHER_NONE_FALSE_PRESENT": 5,
+    "PRESENT_FALSE_NONE": 254,
+    "PRESENT_FALSE_UNCERTAIN": 9,
+    "UNCERTAIN_MISCLASSIFIED": 162
+  },
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-004",
+  "MINIMUM_CORRECTIONS": {
+    "NONE_to_NONE": 0,
+    "PRESENT_false_negatives_to_PRESENT": 72,
+    "false_PRESENT_to_non_PRESENT": 0,
+    "notes": "Accounting only under frozen diagnostic thresholds; not threshold optimization."
+  },
+  "NEXT_ACTION": "ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION",
+  "N_MISCLASSIFIED_OBSERVED": 396,
+  "OVERALL_METRICS": {
+    "EVIDENCE_PRESENT_recall": 0.5871271585557299,
+    "NO_EVIDENCE_recall": 0.9832268370607029,
+    "false_evidence_entry_rate_on_none": 0.01597444089456869,
+    "stage_a_macro_f1": 0.5227979053179045
+  },
+  "PARENT_DIAGNOSIS": "MIXED_UNCERTAIN_SURFACE_FAILURE",
+  "PRIMARY_DIAGNOSIS": "RESIDUAL_PRESENT_RECALL_FAILURE",
+  "PROVENANCE_CLASSIFICATIONS": {
+    "LABEL_PROVENANCE_CLEAN": 396
+  },
+  "RAW_FALSE_ENTRY_DELTA": 0.021052631578947368,
+  "RESERVE_CONSUMED": false,
+  "SELECTED_CHECKPOINT_SHA256": "82840630a89ea9e9b34fdfc010d455e6bbfce05ecfcb29abe2929505e9e21fdd",
+  "TRAIN": false,
+  "architecture_change_justified": true,
+  "dataset_change_justified": false,
+  "diagnosis_rule": "HYPERLEX_V5_STAGE_A_DIAGNOSE_SETTLED_FAIL_V1",
+  "private_diag_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r9-20260930/diagnosis-settled-fail-v1r9-20260930",
+  "rationale": {
+    "controlled_interpretation": "INSUFFICIENT_MATCHED_SUPPORT",
+    "flagged_domain_count": 32,
+    "flagged_source_count": 6,
+    "need_PRESENT_fn_fixes": 72,
+    "need_false_PRESENT_fixes": 0,
+    "provenance_clean_rate": 1.0,
+    "provenance_questionable_rate": 0.0,
+    "share_observed_among_false_PRESENT": 1.0,
+    "share_ordinary_among_false_PRESENT": 0.75
+  },
+  "schema": "hyperlex.classification.v5.stage_a_diagnose_settled_fail.v1r9",
+  "smallest_remediation": "False-entry already clears under sealed diagnostic thresholds; recover at least 72 PRESENT false negatives to meet recall \u2265 0.70. Prefer architecture/objective investigation over another ordinary-NONE dataset remediation loop.",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9"
+}

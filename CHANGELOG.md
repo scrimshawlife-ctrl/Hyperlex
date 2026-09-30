@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **Diagnose Stage-A-004 SETTLED_FAIL on V1R9 (Spec 007):** read-only
+  `DIAGNOSE_V5_STAGE_A_SETTLED_FAIL` + matched-cohort
+  `HYPERLEX_V5_STAGE_A_CONTROLLED_COMPARISON_V1` on SELECTED `82840630…` /
+  dataset `8d4be830…`. False-entry already clears (need 0 fixes); binding
+  gap is PRESENT recall (recover ≥72 FNs). Controlled coverage `0.126` →
+  `INSUFFICIENT_MATCHED_SUPPORT`. Primary diagnosis
+  `RESIDUAL_PRESENT_RECALL_FAILURE` (dataset change no; architecture
+  investigation yes). No train/reserve/threshold/BEST. Receipt
+  `classification-v5-stage-a-diagnose-v1r9-settled-fail-receipt-20260930.json`
+  (`96871251…`). Next: `ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION`.
+
 - **Train Stage-A-004 once on V1R9 (Spec 007):** execute authorized
   `TRAIN_V5_STAGE_A_ONCE` for `HLX-CLASSIFICATION-V5-STAGE-A-004` on READY
   dataset `8d4be830…` / config `0c9df174…`. Restored epoch 12; SELECTED
