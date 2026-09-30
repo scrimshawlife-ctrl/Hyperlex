@@ -902,6 +902,7 @@ def run_loop(
             "separation_sha256": _boundaries["separation_sha256"],
             "surface": "validation",
         }
+        out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / "classification-v2-geometry-repair-prior.json").write_text(
             json.dumps(prior_geometry, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
