@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Settle v3 evidence gate FAIL (Spec 007):** seal fresh AVAILABLE reserve
+  (n=109) and one-shot score under frozen Stage A/B thresholds. Disposition
+  `RESERVE_FAIL` (false-entry 0.25, emission precision 0.0). No retune; BEST
+  unchanged. Landed via PR #141 then follow-up merge.
+
 - **Wire v3 Stage B retrieval (Spec 007):** invoke family exemplar retrieval
   only on Stage A `EVIDENCE_PRESENT`, calibrate global Stage B floors on the
   evidence-surface validation split, and report reserve-authorization without
