@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Audit Stage-A UNCERTAIN label surface (Spec 007):** read-only
+  `AUDIT_V5_UNCERTAIN_LABEL_SURFACE` on V1R8 / SELECTED `dba6d491…` with
+  fail-closed MISSING_FIELD/NO_DATA/NOT_COMPUTABLE rules. Gold UNCERTAIN
+  n=244 (train 183 / val 61) all `MULTIPLE_PLAUSIBLE_INTERPRETATIONS`; four
+  other frozen reasons `NO_DATA`. Provenance/source isolated (INFERRED 234;
+  ambiguous-source family). Boundary split PRESENT_LIKE 90 / NONE_LIKE 77 /
+  CENTERED 77. GENUINELY_UNCERTAIN PRESENT FNs resemble PRESENT (no boundary
+  conflict); NONE_DOMINATED FNs NONE-like. Diagnosis
+  **`MIXED_UNCERTAIN_SURFACE_FAILURE`**. No train/relabel/reserve/BEST.
+  Receipt `classification-v5-stage-a-uncertain-label-surface-audit-receipt-20260930.json`.
+  Next: `REMEDIATE_V5_UNCERTAIN_SURFACE`.
+
 - **Investigate Stage-A uncertain policy (Spec 007):** read-only score of
   Stage-A-003 SELECTED `dba6d491…` on V1R8. Freeze
   `HYPERLEX_V5_STAGE_A_GOLD_LABEL_MAPPING_V1` (dataset-semantic; admission

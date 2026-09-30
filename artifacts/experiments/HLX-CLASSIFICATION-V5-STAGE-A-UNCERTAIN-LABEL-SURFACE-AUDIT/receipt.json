@@ -1,0 +1,252 @@
+{
+  "AMBIGUITY_REASON_COVERAGE": {
+    "aggregate_state": "OK",
+    "coverage": 1.0,
+    "n_cohort_total": 244,
+    "n_metric_eligible": 244
+  },
+  "ARCHITECTURE_CHANGE_JUSTIFIED": false,
+  "AUDIT": "AUDIT_V5_UNCERTAIN_LABEL_SURFACE",
+  "AUDIT_STATE": "COMPLETE",
+  "BEST": "UNCHANGED",
+  "BEST_SHA256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "CRITICAL_INVARIANT": "Absence of evidence in the dataset is not evidence for NO_EVIDENCE, and missing metadata is never a semantic label.",
+  "DATASET_CHANGE_JUSTIFIED": true,
+  "DATASET_SHA256": "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b",
+  "DATA_COMPLETENESS_BLOCKER": false,
+  "GOLD_CONSISTENCY_FLAGS": {
+    "SEMANTICALLY_CLEAN": 77,
+    "TOO_NONE_LIKE": 77,
+    "TOO_PRESENT_LIKE": 90
+  },
+  "GOLD_LABEL_MAPPING_RULE": "HYPERLEX_V5_STAGE_A_GOLD_LABEL_MAPPING_V1",
+  "HEAD_SIGNAL_BY_REASON": {
+    "CONFLICTING_EVIDENCE": {
+      "UNCERTAIN_recall": "NO_DATA",
+      "argmax_distribution": "NO_DATA",
+      "mean_P_UNCERTAIN": "NO_DATA",
+      "reason_state": "NO_DATA",
+      "support": 0
+    },
+    "INSUFFICIENT_CONTEXT": {
+      "UNCERTAIN_recall": "NO_DATA",
+      "argmax_distribution": "NO_DATA",
+      "mean_P_UNCERTAIN": "NO_DATA",
+      "reason_state": "NO_DATA",
+      "support": 0
+    },
+    "MULTIPLE_PLAUSIBLE_INTERPRETATIONS": {
+      "UNCERTAIN_recall": {
+        "n_eligible": 244,
+        "n_excluded_invalid": 0,
+        "n_excluded_missing": 0,
+        "state": "OBSERVED_VALUE",
+        "value": 0.004098360655737705
+      },
+      "argmax_distribution": {
+        "EVIDENCE_PRESENT": 6,
+        "NO_EVIDENCE": 28,
+        "UNCERTAIN": 210
+      },
+      "mean_P_UNCERTAIN": {
+        "n_eligible": 244,
+        "n_excluded_invalid": 0,
+        "n_excluded_missing": 0,
+        "state": "OBSERVED_VALUE",
+        "value": 0.8043110293552923
+      },
+      "reason_state": "OBSERVED_VALUE",
+      "support": 244
+    },
+    "PARTIAL_REQUIRED_CORE": {
+      "UNCERTAIN_recall": "NO_DATA",
+      "argmax_distribution": "NO_DATA",
+      "mean_P_UNCERTAIN": "NO_DATA",
+      "reason_state": "NO_DATA",
+      "support": 0
+    },
+    "UNRESOLVED_SOURCE_MEANING": {
+      "UNCERTAIN_recall": "NO_DATA",
+      "argmax_distribution": "NO_DATA",
+      "mean_P_UNCERTAIN": "NO_DATA",
+      "reason_state": "NO_DATA",
+      "support": 0
+    }
+  },
+  "LOW_COVERAGE_AGGREGATES": [],
+  "NEXT_ACTION": "REMEDIATE_V5_UNCERTAIN_SURFACE",
+  "NOT_COMPUTABLE_METRICS": [
+    {
+      "blocker": "definition_style_field_not_stored",
+      "metric": "definition_style_balance",
+      "state": "NOT_COMPUTABLE"
+    }
+  ],
+  "NO_DATA_COHORTS": [
+    "INSUFFICIENT_CONTEXT",
+    "CONFLICTING_EVIDENCE",
+    "PARTIAL_REQUIRED_CORE",
+    "UNRESOLVED_SOURCE_MEANING"
+  ],
+  "PRESENT_FN_COMPARISON": {
+    "GENUINELY_UNCERTAIN": {
+      "PRESENT_UNCERTAIN_BOUNDARY_CONFLICT": false,
+      "mean_cosine_by_gold": {
+        "gold NONE": 0.811719033962641,
+        "gold PRESENT": 0.8581045652047182,
+        "gold UNCERTAIN": 0.8496099481215844
+      },
+      "n_genuinely_uncertain_present_fn": 39,
+      "nearest_to_gold_NONE": {
+        "exclude_query_identity": false,
+        "mean_nearest_cosine": 0.811719033962641,
+        "median_nearest_cosine": 0.8113459944725037,
+        "n_eligible": 39,
+        "n_excluded_invalid": 0,
+        "state": "OBSERVED_VALUE"
+      },
+      "nearest_to_gold_PRESENT": {
+        "exclude_query_identity": true,
+        "mean_nearest_cosine": 0.8581045652047182,
+        "median_nearest_cosine": 0.8601675033569336,
+        "n_eligible": 39,
+        "n_excluded_invalid": 0,
+        "state": "OBSERVED_VALUE"
+      },
+      "nearest_to_gold_UNCERTAIN": {
+        "exclude_query_identity": false,
+        "mean_nearest_cosine": 0.8496099481215844,
+        "median_nearest_cosine": 0.8703417181968689,
+        "n_eligible": 39,
+        "n_excluded_invalid": 0,
+        "state": "OBSERVED_VALUE"
+      },
+      "resembles_most": "gold PRESENT"
+    },
+    "NONE_DOMINATED": {
+      "classification": "NONE-like",
+      "mean_cosine_by_class": {
+        "NONE-like": 0.9547261807721915,
+        "PRESENT-like": 0.9546275572063997,
+        "UNCERTAIN-like": 0.8915827569273329
+      },
+      "n_none_dominated_present_fn": 194,
+      "nearest_to_gold_NONE": {
+        "exclude_query_identity": false,
+        "mean_nearest_cosine": 0.9547261807721915,
+        "median_nearest_cosine": 0.9667351543903351,
+        "n_eligible": 194,
+        "n_excluded_invalid": 0,
+        "state": "OBSERVED_VALUE"
+      },
+      "nearest_to_gold_PRESENT": {
+        "exclude_query_identity": true,
+        "mean_nearest_cosine": 0.9546275572063997,
+        "median_nearest_cosine": 0.9678440392017365,
+        "n_eligible": 194,
+        "n_excluded_invalid": 0,
+        "state": "OBSERVED_VALUE"
+      },
+      "nearest_to_gold_UNCERTAIN": {
+        "exclude_query_identity": false,
+        "mean_nearest_cosine": 0.8915827569273329,
+        "median_nearest_cosine": 0.9080440998077393,
+        "n_eligible": 194,
+        "n_excluded_invalid": 0,
+        "state": "OBSERVED_VALUE"
+      }
+    }
+  },
+  "PRIMARY_DIAGNOSIS": "MIXED_UNCERTAIN_SURFACE_FAILURE",
+  "PROBABILITY_DIAGNOSTIC_COVERAGE": {
+    "aggregate_state": "OK",
+    "coverage": 1.0,
+    "n_cohort_total": 244,
+    "n_metric_eligible": 244
+  },
+  "RELABEL": false,
+  "REPRESENTATION_BOUNDARY_COUNTS": {
+    "CENTERED_BETWEEN": 77,
+    "NONE_LIKE": 77,
+    "PRESENT_LIKE": 90
+  },
+  "REPRESENTATION_DIAGNOSTIC_COVERAGE": {
+    "aggregate_state": "OK",
+    "coverage": 1.0,
+    "n_cohort_total": 244,
+    "n_metric_eligible": 244
+  },
+  "REQUIRED_FIELD_COMPLETENESS": {
+    "missing_field_counts": {},
+    "missing_required_frac": 0.0,
+    "n_missing_required_rows": 0,
+    "n_uncertain": 244
+  },
+  "RESERVE": "unused",
+  "RESERVE_CONSUMED": false,
+  "SELECTED_CHECKPOINT_SHA256": "dba6d49103d7c895d7febc46c81491a07ea19acd551f86b3a9fd9f0a1c0782a3",
+  "SMALLEST_JUSTIFIED_REMEDIATION": "REMEDIATE_V5_UNCERTAIN_SURFACE",
+  "SUPPORT_SUMMARY": {
+    "UNCERTAIN_train_count": 183,
+    "UNCERTAIN_validation_count": 61,
+    "by_ATOM_PROSE": {
+      "AMBIGUOUS": 45,
+      "ATOM": 197,
+      "PROSE": 2
+    },
+    "by_ambiguity_reason": {
+      "CONFLICTING_EVIDENCE": {
+        "flags": [
+          "UNDER_SUPPORTED_REASON"
+        ],
+        "reason_state": "NO_DATA",
+        "train_support": 0,
+        "validation_support": 0
+      },
+      "INSUFFICIENT_CONTEXT": {
+        "flags": [
+          "UNDER_SUPPORTED_REASON"
+        ],
+        "reason_state": "NO_DATA",
+        "train_support": 0,
+        "validation_support": 0
+      },
+      "MULTIPLE_PLAUSIBLE_INTERPRETATIONS": {
+        "flags": [],
+        "reason_state": "OBSERVED_VALUE",
+        "train_support": 183,
+        "validation_support": 61
+      },
+      "PARTIAL_REQUIRED_CORE": {
+        "flags": [
+          "UNDER_SUPPORTED_REASON"
+        ],
+        "reason_state": "NO_DATA",
+        "train_support": 0,
+        "validation_support": 0
+      },
+      "UNRESOLVED_SOURCE_MEANING": {
+        "flags": [
+          "UNDER_SUPPORTED_REASON"
+        ],
+        "reason_state": "NO_DATA",
+        "train_support": 0,
+        "validation_support": 0
+      }
+    },
+    "by_provenance": {
+      "INFERRED": 234,
+      "OBSERVED": 10
+    }
+  },
+  "SURFACE_ISOLATION_FLAGS": [
+    "UNCERTAIN_PROVENANCE_ISOLATED",
+    "UNCERTAIN_SOURCE_FAMILY_ISOLATED"
+  ],
+  "TRAIN": false,
+  "extras_paths": {
+    "private_diagnostics_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-003-focal-20260930/classification-v5-stage-a-003/diagnostics/uncertain_label_surface_audit"
+  },
+  "private_diagnostics_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-003-focal-20260930/classification-v5-stage-a-003/diagnostics/uncertain_label_surface_audit",
+  "schema": "hyperlex.classification.v5.stage_a_uncertain_label_surface_audit.v1"
+}
