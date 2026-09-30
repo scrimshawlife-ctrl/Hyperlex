@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Authorize V5 Stage-A train once (Spec 007):** freeze
+  `HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1` recipe +
+  `HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1` for dataset `a81ca68a…` /
+  BEST `9fba0f66…`. Sets `train_authorized=true`,
+  `TRAINING_STATUS=AUTHORIZED_NOT_STARTED`. Does not train, does not modify
+  the READY surface body, does not consume reserve, does not move BEST.
+  Scientific result remains `NOT_COMPUTABLE`. Next: `TRAIN_V5_STAGE_A_ONCE`.
+
 - **STOP before V5 Stage-A train-once (Spec 007):** input identity and READY
   surface verify (`a81ca68a…`, receipt `f07e4c04…`, gate_eval `0a4ad787…`,
   commit `fab24e4`, BEST `9fba0f66…`). Training did not start:
