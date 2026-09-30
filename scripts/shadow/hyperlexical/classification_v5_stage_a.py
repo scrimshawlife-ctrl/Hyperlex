@@ -345,6 +345,20 @@ def calibrate_thresholds(
             )
     if not candidates:
         raise RuntimeError("threshold_grid_empty")
+    # Compact full-grid witness (preregistered selection evidence; keep permanently).
+    grid_results = [
+        {
+            "acceptance_pass": row["acceptance_pass"],
+            "false_evidence_entry_rate_on_none": row["false_entry"],
+            "none_recall": row["none_recall"],
+            "none_threshold": row["none_threshold"],
+            "present_recall": row["present_recall"],
+            "present_threshold": row["present_threshold"],
+            "stage_a_macro_f1": row["stage_a_macro_f1"],
+            "uncertain_band_width": row["uncertain_band_width"],
+        }
+        for row in candidates
+    ]
     passing = [row for row in candidates if row["acceptance_pass"]]
     if not passing:
         return {
@@ -352,6 +366,7 @@ def calibrate_thresholds(
             "disposition": "SETTLED_FAIL",
             "feasible": False,
             "grid": THRESHOLD_GRID,
+            "grid_results": grid_results,
             "n_candidates": len(candidates),
             "n_passing": 0,
             "selection_rule": THRESHOLD_SELECTION,
@@ -375,9 +390,10 @@ def calibrate_thresholds(
             "stage_a_macro_f1": chosen["stage_a_macro_f1"],
             "uncertain_band_width": chosen["uncertain_band_width"],
         },
-        "disposition": "SETTLED_PASS_CANDIDATE",
+        "disposition": "SETTLED_PASS",
         "feasible": True,
         "grid": THRESHOLD_GRID,
+        "grid_results": grid_results,
         "metrics": chosen["metrics"],
         "n_candidates": len(candidates),
         "n_passing": len(passing),
