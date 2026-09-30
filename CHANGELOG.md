@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Train Stage-A-004 once on V1R9 (Spec 007):** execute authorized
+  `TRAIN_V5_STAGE_A_ONCE` for `HLX-CLASSIFICATION-V5-STAGE-A-004` on READY
+  dataset `8d4be830…` / config `0c9df174…`. Restored epoch 12; SELECTED
+  `82840630…`; run receipt `a03bc46a…`. Threshold grid `n_passing=0` →
+  **`SETTLED_FAIL`**. PRESENT recall improved vs V1R8 parent
+  (`0.527→0.587`; PRESENT→NONE 297→254) but still fails frozen 0.70 gate;
+  false-entry `0.016` and NONE recall `0.983` pass. Gold-UNCERTAIN recall
+  remains 0 under fail-display `P(PRESENT)`-only policy (162/162). Primary
+  diagnosis `RESIDUAL_PRESENT_RECALL_FAILURE`. BEST unchanged; reserve
+  unused; promotion_candidate=false. Receipt
+  `classification-v5-stage-a-train-v1r9-once-receipt-20260930.json`.
+  Next: `DIAGNOSE_V5_STAGE_A_SETTLED_FAIL`.
+
 - **Authorize Stage-A-004 on V1R9 remediated surface (Spec 007):**
   `AUTHORIZE_V5_STAGE_A_NEXT_RUN_ON_REMEDIATED_SURFACE` pins experiment
   `HLX-CLASSIFICATION-V5-STAGE-A-004` to READY V1R9 dataset `8d4be830…`.
