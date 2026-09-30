@@ -546,3 +546,16 @@ Seal path: `/home/morpheus/hlx-private/classification-v2-forward-hub-error-decom
 - social-evaluation: support 4, F1 0.0, **WEAK_NON_HUB** (incoming FP 4; RD↔SE total 1) — merge did **not** create a larger SE attractor; operational separability still missing
 - Prototype-path macro 0.174332 vs residual 0.185630; weak PF is residual failure on non-exact-copy families, not witness mutation
 - Decision: **SCORER_REPAIR_JUSTIFIED**. Reserve remains UNSCORED. BEST unchanged.
+
+## Family retrieval decision (canonical, 2026-09-30)
+
+Rule `HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1` replaces the residual 18-way softmax as the **canonical** Classification v2 family decision. Encoder, forward ontology, social-evaluation merge, applicability head, training corpus, provenance, unbind heads, BEST, reserve isolation, and Jev=OFF are unchanged. No global family-head retrain.
+
+- Index: admissible train positives only (exclude val/reserve/held-out/measurement/Jev/dropped/ambiguous)
+- Score: `family_score(f)=mean(top M cosine(h, exemplars_f))` with `M=min(3, support)` — no centroid
+- Decision: NONE (applicability) / ABSTAIN (score floor) / AMBIGUOUS(top1,top2) (margin) / FAMILY(top1)
+- Calibrate two global thresholds on validation only: maximize correct family emission rate subject to emission precision ≥ 0.80, then coverage; tie-break higher precision, coverage, margin threshold, score threshold
+- Residual family head: diagnostic/compatibility/research only
+- Reserve gate: emission precision ≥ 0.80 and applicability invariance pass
+
+Seal path: `/home/morpheus/hlx-private/classification-v2-family-retrieval-20260930/FAMILY_RETRIEVAL.json` (index companion `FAMILY_RETRIEVAL_INDEX.json`).

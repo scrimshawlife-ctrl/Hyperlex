@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Family retrieval decision (Spec 007):** `HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1`
+  makes training-side mean top-M cosine retrieval the canonical Classification v2
+  family decision. Residual 18-way head is diagnostic only. Encoder, ontology,
+  applicability, corpus, BEST, and reserve isolation stay unchanged. Two global
+  validation thresholds calibrate emission precision ≥ 0.80 before any reserve
+  score.
+
 - **Forward-hub error decomposition (Spec 007):** read-only
   `HYPERLEX_FORWARD_HUB_ERROR_DECOMPOSITION_V1` audits the sealed forward-hub
   checkpoint (`adf5db93…`) on `civilian.v0.7.hub.jsonl` without training,

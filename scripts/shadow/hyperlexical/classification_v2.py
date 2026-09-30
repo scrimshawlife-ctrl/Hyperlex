@@ -98,6 +98,11 @@ V2_NONE = "NONE"
 V2_ABSTAIN = "ABSTAIN"
 V2_AMBIGUOUS = "AMBIGUOUS"
 DECISIONS = (V2_FAMILY, V2_NONE, V2_ABSTAIN, V2_AMBIGUOUS)
+# Canonical Classification v2 family decision is training-side retrieval
+# (HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1). The residual 18-way family head remains
+# for diagnostic/compatibility/research only and is not product output.
+CANONICAL_FAMILY_DECISION = "retrieval_mean_top_m_cosine"
+RESIDUAL_FAMILY_HEAD_ROLE = "diagnostic_compatibility_research_only"
 APPLICABILITY_NONE = "NONE"
 APPLICABILITY_PRESENT = "FAMILY_PRESENT"
 APPLICABILITY = (APPLICABILITY_NONE, APPLICABILITY_PRESENT)
