@@ -174,11 +174,23 @@ def cold_load_replay() -> dict:
     if device.type != "cuda":
         fail("promotion review cold-load requires CUDA")
 
+    # Reconstruct train-time inference stack without mutating BEST on disk:
+    #   trunk → BEST encoder overlay (frozen earlier layers) → SELECTED
+    #   last-2-layer overlay + Gate1/Gate2 heads.
+    if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
+        fail("BEST_mutated_before_cold_load")
+
     tokenizer = AutoTokenizer.from_pretrained(str(TRUNK), local_files_only=True)
     tokenizer.padding_side = "right"
     encoder = AutoModel.from_pretrained(str(TRUNK), local_files_only=True)
     gate1_head = nn.Linear(HIDDEN, 2)
     gate2_head = nn.Linear(HIDDEN, 2)
+
+    best_tensors = load_file(str(BEST_WEIGHTS), device="cpu")
+    best_split = split_weight_tensors(best_tensors)
+    best_loaded = apply_encoder_trainable(encoder, best_split.get("encoder") or {})
+    if best_loaded["loaded"] != 48:
+        fail(f"BEST_encoder_overlay_incomplete:{best_loaded['loaded']}")
 
     tensors = load_file(str(SELECTED), device="cpu")
     arch = verify_architecture_identity(list(tensors.keys()))
@@ -189,8 +201,7 @@ def cold_load_replay() -> dict:
     loaded = apply_encoder_trainable(encoder, split.get("encoder") or {})
     if loaded["loaded"] != 12:
         fail(f"encoder_overlay_incomplete:{loaded['loaded']}")
-    # Ensure earlier layers remain frozen structurally for inference; freeze call
-    # matches train contract (last 2 trainable) without mutating BEST.
+    # Structural freeze matches train contract (last 2 trainable); weights unchanged.
     freeze_encoder(encoder, last_trainable=2)
     with torch.no_grad():
         gate1_head.weight.copy_(split["gate1_head"]["weight"])
