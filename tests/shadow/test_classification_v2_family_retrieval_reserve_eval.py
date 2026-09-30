@@ -95,7 +95,7 @@ def test_wrong_emissions_and_generalization():
     )
     assert len(wrong) == 1
     assert wrong[0]["predicted_family"] == "ai-native"
-    assert wrong[0]["margin"] == 0.1
+    assert abs(wrong[0]["margin"] - 0.1) < 1e-12
     assert selective_contract_generalizes(
         reserve_precision=0.81, validation_precision=0.808
     )["generalizes"]
