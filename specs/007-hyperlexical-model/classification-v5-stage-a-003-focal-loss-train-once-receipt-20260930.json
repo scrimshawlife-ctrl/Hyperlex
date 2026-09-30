@@ -1,0 +1,287 @@
+{
+  "ACCEPTANCE_GATES": {
+    "EVIDENCE_PRESENT_recall": {
+      "pass": false,
+      "threshold": 0.7,
+      "value": 0.5023547880690737
+    },
+    "NO_EVIDENCE_recall": {
+      "pass": true,
+      "threshold": 0.9,
+      "value": 0.9888178913738019
+    },
+    "false_evidence_entry_rate_on_none": {
+      "pass": true,
+      "threshold": 0.05,
+      "value": 0.00878594249201278
+    },
+    "ordinary_none_false_present_remains_low": {
+      "pass": true,
+      "threshold": 22,
+      "value": 8
+    },
+    "present_to_none_median_p_none_lt_0_80": {
+      "pass": false,
+      "threshold": 0.8,
+      "value": 0.9043632910098416
+    },
+    "threshold_grid_n_passing_ge_1": {
+      "pass": false,
+      "threshold": 1,
+      "value": 0
+    }
+  },
+  "ACTUAL_EPOCHS": 12,
+  "ATOM_PROSE": {
+    "AMBIGUOUS": {
+      "EVIDENCE_PRESENT_recall": 0.3333333333333333,
+      "NO_EVIDENCE_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 26,
+      "stage_a_macro_f1": 0.16444444444444442,
+      "uncertain_rate": 0.0
+    },
+    "ATOM": {
+      "EVIDENCE_PRESENT_recall": 0.3130434782608696,
+      "NO_EVIDENCE_recall": 0.9772727272727273,
+      "false_evidence_entry_rate_on_none": 0.017045454545454544,
+      "n": 331,
+      "stage_a_macro_f1": 0.4019651464590286,
+      "uncertain_rate": 0.00906344410876133
+    },
+    "PROSE": {
+      "EVIDENCE_PRESENT_recall": 0.5452793834296724,
+      "NO_EVIDENCE_recall": 0.9906890130353817,
+      "false_evidence_entry_rate_on_none": 0.0074487895716946,
+      "n": 1593,
+      "stage_a_macro_f1": 0.53323228205155,
+      "uncertain_rate": 0.008788449466415568
+    }
+  },
+  "BEST": "UNCHANGED",
+  "BEST_MUTATED": false,
+  "BY_LABEL": {
+    "EVIDENCE_PRESENT": {
+      "f1": 0.659114315139032,
+      "fn": 317,
+      "fp": 14,
+      "precision": 0.9580838323353293,
+      "recall": 0.5023547880690737,
+      "support": 637,
+      "tp": 320
+    },
+    "NO_EVIDENCE": {
+      "f1": 0.8684672044896529,
+      "fn": 14,
+      "fp": 361,
+      "precision": 0.7742338961851157,
+      "recall": 0.9888178913738019,
+      "support": 1252,
+      "tp": 1238
+    },
+    "UNCERTAIN": {
+      "f1": 0.0,
+      "fn": 61,
+      "fp": 17,
+      "precision": 0.0,
+      "recall": 0.0,
+      "support": 61,
+      "tp": 0
+    }
+  },
+  "CODE_REVISION_PIN": "d58e078fd776475d886cd1f516ea9f2e99816bd9",
+  "CONFUSION": {
+    "EVIDENCE_PRESENT->EVIDENCE_PRESENT": 320,
+    "EVIDENCE_PRESENT->NO_EVIDENCE": 303,
+    "EVIDENCE_PRESENT->UNCERTAIN": 14,
+    "NO_EVIDENCE->EVIDENCE_PRESENT": 11,
+    "NO_EVIDENCE->NO_EVIDENCE": 1238,
+    "NO_EVIDENCE->UNCERTAIN": 3,
+    "UNCERTAIN->EVIDENCE_PRESENT": 3,
+    "UNCERTAIN->NO_EVIDENCE": 58
+  },
+  "DATASET_SHA256": "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS",
+  "FALSE_EVIDENCE_ENTRY_RATE_ON_NONE": 0.00878594249201278,
+  "FOCAL_ALPHA_POLICY": "NONE",
+  "FOCAL_GAMMA": 2.0,
+  "FOCAL_LOSS_SPEC_SHA256": "dce6dbf5c1d1239d000396090cb01f24f16009605becb9ba41fcce18af768b5f",
+  "H1_OBJECTIVE_LOSS_PRESSURE": "FALSIFIED_FOR_FOCAL_INTERVENTION",
+  "LOSS_NAME": "weighted_focal_cross_entropy",
+  "MACRO_F1": 0.5091938398762282,
+  "NEXT_ACTION": "INVESTIGATE_V5_STAGE_A_UNCERTAIN_POLICY",
+  "NONE_F1": 0.8684672044896529,
+  "NONE_PRECISION": 0.7742338961851157,
+  "NONE_RECALL": 0.9888178913738019,
+  "OBSERVED_INFERRED": {
+    "INFERRED": {
+      "EVIDENCE_PRESENT_recall": 0.9456521739130435,
+      "NO_EVIDENCE_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 447,
+      "stage_a_macro_f1": 0.6241947228290172,
+      "uncertain_rate": 0.0
+    },
+    "OBSERVED": {
+      "EVIDENCE_PRESENT_recall": 0.42752293577981654,
+      "NO_EVIDENCE_recall": 0.9852631578947368,
+      "false_evidence_entry_rate_on_none": 0.011578947368421053,
+      "n": 1503,
+      "stage_a_macro_f1": 0.4815452126101289,
+      "uncertain_rate": 0.011310711909514305
+    }
+  },
+  "OPTIMIZER_STEPS": 21324,
+  "ORDINARY_NONE_FALSE_PRESENT": 8,
+  "OTHER_NONE_FALSE_PRESENT": 3,
+  "PREFLIGHT": {
+    "AUTHORIZATION_IDENTITY": "PASS",
+    "CODE_REVISION_IDENTITY": "PASS",
+    "DATASET_IDENTITY": "PASS",
+    "OBJECTIVE_SPEC_IDENTITY": "PASS",
+    "SINGLE_FACTOR_DIFF_STATUS": "PASS",
+    "TRAINING_CONFIG_IDENTITY": "PASS"
+  },
+  "PRESENT_F1": 0.659114315139032,
+  "PRESENT_PRECISION": 0.9580838323353293,
+  "PRESENT_RECALL": 0.5023547880690737,
+  "PRESENT_TO_NONE": 303,
+  "PRESENT_TO_NONE_CONFIDENT_NONE_FRAC": 0.6237623762376238,
+  "PRESENT_TO_NONE_MEDIAN_P_NONE": 0.9043632910098416,
+  "PRESENT_TO_UNCERTAIN": 14,
+  "PRIMARY_DIAGNOSIS": "FOCAL_LOSS_DID_NOT_REPAIR_CONFIDENT_NONE_PRESENT_FN",
+  "PROCESS_EXIT": "CLEAN",
+  "PROMOTION_CANDIDATE": false,
+  "RESERVE": "unused",
+  "RESERVE_CONSUMED": false,
+  "RESTORED_EPOCH": 12,
+  "RUNTIME_SECONDS": 514.8081362247467,
+  "RUN_RECEIPT_SHA256": "1ca2e5d4a758a507e78914131161cae15853beb4c4dfa2b6c7a5c72888594138",
+  "SCIENTIFIC_RESULT": "SETTLED_FAIL",
+  "SEED": 42,
+  "SELECTED_CHECKPOINT_SHA256": "dba6d49103d7c895d7febc46c81491a07ea19acd551f86b3a9fd9f0a1c0782a3",
+  "SOURCE": {
+    "none": {
+      "EVIDENCE_PRESENT_recall": 0.5736434108527132,
+      "NO_EVIDENCE_recall": 0.991869918699187,
+      "false_evidence_entry_rate_on_none": 0.006097560975609756,
+      "n": 811,
+      "stage_a_macro_f1": 0.5236161162222127,
+      "uncertain_rate": 0.004932182490752158
+    },
+    "wikipedia": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 274,
+      "stage_a_macro_f1": 0.3333333333333333,
+      "uncertain_rate": 0.0
+    },
+    "wiktionary": {
+      "EVIDENCE_PRESENT_recall": 0.45382585751978893,
+      "NO_EVIDENCE_recall": 0.9794238683127572,
+      "false_evidence_entry_rate_on_none": 0.01646090534979424,
+      "n": 865,
+      "stage_a_macro_f1": 0.479163898853018,
+      "uncertain_rate": 0.015028901734104046
+    }
+  },
+  "SUBTYPE": {
+    "AMBIGUOUS_EVIDENCE": {
+      "NO_EVIDENCE_recall": null,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": null,
+      "support": 61
+    },
+    "GENERIC_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 53
+    },
+    "HARD_NONE": {
+      "NO_EVIDENCE_recall": 0.972027972027972,
+      "UNCERTAIN_count": 1,
+      "UNCERTAIN_rate": 0.006993006993006993,
+      "false_EVIDENCE_PRESENT_count": 3,
+      "false_EVIDENCE_PRESENT_rate": 0.02097902097902098,
+      "support": 143
+    },
+    "LEXICAL_LOOKALIKE_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 91
+    },
+    "NEAR_DOMAIN_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 148
+    },
+    "ORDINARY_DOMAIN_NONE": {
+      "NO_EVIDENCE_recall": 0.9867197875166003,
+      "UNCERTAIN_count": 2,
+      "UNCERTAIN_rate": 0.0026560424966799467,
+      "false_EVIDENCE_PRESENT_count": 8,
+      "false_EVIDENCE_PRESENT_rate": 0.010624169986719787,
+      "support": 753
+    },
+    "POSITIVE_EVIDENCE": {
+      "NO_EVIDENCE_recall": null,
+      "UNCERTAIN_count": 14,
+      "UNCERTAIN_rate": 0.02197802197802198,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": null,
+      "support": 637
+    },
+    "SHORT_ATOM_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 64
+    }
+  },
+  "SURFACE": "V1R8",
+  "SURFACE_READINESS": "READY",
+  "SURFACE_RULE": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R8",
+  "THRESHOLD_GRID": {
+    "chosen": null,
+    "disposition": "SETTLED_FAIL",
+    "feasible": false,
+    "n_candidates": 45,
+    "n_passing": 0
+  },
+  "TRAINING_CONFIG_SHA256": "b8aad3ba30fa1c96803551fc03c132c0390caa6c3eb86f5846eda3b329665231",
+  "TRAINING_STATUS": "COMPLETE",
+  "TRAIN_RUNNER_COMMIT": "52572af",
+  "UNCERTAIN_F1": 0.0,
+  "UNCERTAIN_MISCLASSIFIED": 61,
+  "UNCERTAIN_POLICY_INVESTIGATION_PENDING": true,
+  "UNCERTAIN_PRECISION": 0.0,
+  "UNCERTAIN_RECALL": 0.0,
+  "diagnostic_cohort_deltas_vs_002": {
+    "ORDINARY_DOMAIN_FALSE_PRESENT": -3,
+    "OTHER_NONE_FALSE_PRESENT": -1,
+    "PRESENT_FALSE_NONE": 6,
+    "PRESENT_FALSE_UNCERTAIN": 10,
+    "UNCERTAIN_MISCLASSIFIED": 0
+  },
+  "note": "No threshold pair on the preregistered grid satisfied all three Stage-A acceptance gates (n_passing=0). Reported validation metrics use fallback none=0.50/present=0.55 for diagnostic display only. Ordinary NONE\u2192PRESENT improved 11\u21928 (still \u226422). PRESENT recall 0.502 (parent 002: 0.527) still fails \u22650.70. PRESENT\u2192NONE median P(NONE)=0.904 (parent 0.994) remains confident-NONE. H1 focal intervention FALSIFIED. wik aggregate residual from CLEAR audit is diagnostic-only and not a frozen V1R8 readiness gate.",
+  "private_auth_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-003-focal-20260930",
+  "private_run_root": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-003-focal-20260930/classification-v5-stage-a-003",
+  "public_weights_dir": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v5-stage-a-003-focal",
+  "schema": "hyperlex.classification.v5.stage_a_003_focal_train_once.v1",
+  "selected_checkpoint_path": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-003-focal-20260930/classification-v5-stage-a-003/selected/model.safetensors",
+  "train": true
+}

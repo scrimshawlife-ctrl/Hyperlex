@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Train Stage-A-003 focal loss once (Spec 007):** execute authorized
+  `TRAIN_V5_STAGE_A_003_FOCAL_LOSS_ONCE` on V1R8 READY `c0fdd82d…` with
+  frozen focal CE γ=2.0 / alpha=NONE / config `b8aad3ba…`. Restored epoch
+  12; SELECTED `dba6d491…`; run receipt `1ca2e5d4…`. Threshold grid
+  `n_passing=0` → **`SETTLED_FAIL`**. False-entry `0.0088` and ordinary
+  NONE→PRESENT `8` (≤22) still pass; PRESENT recall `0.502` fails ≥0.70;
+  PRESENT→NONE median P(NONE)=`0.904` remains confident-NONE.
+  `H1_OBJECTIVE_LOSS_PRESSURE=FALSIFIED_FOR_FOCAL_INTERVENTION`.
+  BEST/reserve unchanged; promotion_candidate=false. Receipt
+  `classification-v5-stage-a-003-focal-loss-train-once-receipt-20260930.json`.
+  Next: `INVESTIGATE_V5_STAGE_A_UNCERTAIN_POLICY`.
+
 - **CLEAR audit: mixed-failure remediation already complete (Spec 007):**
   re-issued `REMEDIATE_V5_STAGE_A_MIXED_FAILURE` verified against sealed
   V1R8 READY `c0fdd82d…` / receipt `e61621af…` (12/12 gates). Parent
