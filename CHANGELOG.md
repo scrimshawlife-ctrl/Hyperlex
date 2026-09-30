@@ -2,12 +2,13 @@
 
 ## Unreleased
 
-- **Open v4 balanced reserve acquire (Spec 007):** after v3 `RESERVE_FAIL` and
-  zero remaining AVAILABLE classify identities, preregister
-  `HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1` balance floors
+- **Seal v4 balanced reserve acquire READY (Spec 007):** after v3
+  `RESERVE_FAIL` and zero AVAILABLE classify identities, preregister
+  `HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1` floors
   (min_none≥40, min_present≥80, max family share≤0.20, ≥12 families), pin
-  spent v2/v3 + surface exclusions, and fetch a Wiktionary balanced acquire
-  pool. No train, no reserve score, no threshold retune, BEST unchanged.
+  spent exclusions, and fetch Wiktionary OBSERVED rows. Disposition
+  `ACQUIRE_READY` (n=176; none=48; present=128; 16 families; max share
+  0.0625). No train, no reserve score, no threshold retune, BEST unchanged.
 
 - **Settle v3 evidence gate FAIL (Spec 007):** seal fresh AVAILABLE reserve
   (n=109) and one-shot score under frozen Stage A/B thresholds. Disposition
