@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Architecture/objective investigation after V1R8 SETTLED_FAIL (Spec 007):**
+  read-only verify→geometry→H1/H2/H3 on SELECTED `b22e9c20…` / V1R8
+  `c0fdd82d…`. Specificity PASS; PRESENT recall FAIL; threshold grid
+  `n_passing=0`. PRESENT→NONE profile **`CONFIDENT_NONE`** (74.7% deep NONE;
+  near-boundary 1.0%) → threshold-only repair unsupported. H1 objective
+  mismatch **SUPPORTED**; H2 hierarchical **PLAUSIBLE** (UNCERTAIN epistemic;
+  decision ignores `P(UNCERTAIN)`); H3 head **NOT_SUPPORTED**; backbone change
+  false. Selected single next change:
+  `HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS` (class-weighted focal CE only;
+  V1R8/seed/backbone held). No train/dataset/reserve/BEST. Receipt
+  `classification-v5-stage-a-architecture-investigate-receipt-20260930.json`.
+  Next: `TRAIN_V5_STAGE_A_003_FOCAL_LOSS_ONCE`.
+
 - **Train V5 Stage-A once on V1R8 (Spec 007):** execute authorized
   `TRAIN_V5_STAGE_A_ONCE` for `HLX-CLASSIFICATION-V5-STAGE-A-002` on READY
   dataset `c0fdd82d…` / config `2ce1b29b…`. Restored epoch 10; SELECTED
