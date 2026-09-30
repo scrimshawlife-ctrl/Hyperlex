@@ -649,3 +649,202 @@ def next_action_for_gate(gate: Mapping[str, Any]) -> str:
         f"STOP_OR_REMEDIATE — reserve not justified ({failure}); do not score reserve; "
         "do not move BEST; do not open another global softmax experiment."
     )
+
+
+RESERVE_EVAL_SCHEMA = "hyperlex.classification.v2.family_retrieval_reserve_eval.v1"
+RESERVE_EVAL_RUN = "HLX-CLASSIFICATION-V2-FAMILY-RETRIEVAL-RESERVE-20260930"
+FROZEN_MINIMUM_FAMILY_SCORE = 0.85
+FROZEN_MINIMUM_TOP1_TOP2_MARGIN = 0.03
+RETRIEVAL_ARTIFACT_SHA256 = (
+    "4030e6a36ca1fea34dc728ae913bc96697e7484be532260f7b580ba5eadf2c8f"
+)
+RETRIEVAL_INDEX_SHA256 = (
+    "b1cd64d9e50e35f2c195f2e115ffdbd77f0a28089f8bd90792f36f1abc4b0177"
+)
+DISPOSITIONS = ("RESERVE_PASS", "RESERVE_FAIL", "RESERVE_INVALID")
+
+
+def reserve_eval_contract() -> dict[str, Any]:
+    return {
+        "authorization": "OPERATOR_AUTHORIZE_RESERVE_EVAL",
+        "best_sha256": BEST_SHA256,
+        "canonical_family_decision": CANONICAL_FAMILY_DECISION,
+        "index_sha256": RETRIEVAL_INDEX_SHA256,
+        "jev": "OFF",
+        "minimum_family_score": FROZEN_MINIMUM_FAMILY_SCORE,
+        "minimum_top1_top2_margin": FROZEN_MINIMUM_TOP1_TOP2_MARGIN,
+        "moves_best": False,
+        "recalibrate": False,
+        "rebuild_index": False,
+        "retrieval_artifact_sha256": RETRIEVAL_ARTIFACT_SHA256,
+        "rule": RULE,
+        "run": RESERVE_EVAL_RUN,
+        "schema": RESERVE_EVAL_SCHEMA,
+        "train": False,
+    }
+
+
+def wrong_family_emissions(decisions: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    wrong = []
+    for row in decisions:
+        if row.get("decision") != V2_FAMILY:
+            continue
+        if row.get("family") == row.get("gold_lineage"):
+            continue
+        top1 = float(row["top1_score"])
+        top2 = float(row["top2_score"])
+        wrong.append(
+            {
+                "gold_family": row.get("gold_lineage"),
+                "margin": top1 - top2,
+                "predicted_family": row.get("family"),
+                "source_identity": row.get("source_identity"),
+                "top1_score": top1,
+                "top2_score": top2,
+            }
+        )
+    wrong.sort(
+        key=lambda item: (
+            str(item["gold_family"] or ""),
+            str(item["predicted_family"] or ""),
+            str(item["source_identity"] or ""),
+        )
+    )
+    return wrong
+
+
+def validation_vs_reserve(
+    validation: Mapping[str, Any], reserve: Mapping[str, Any]
+) -> dict[str, Any]:
+    keys = (
+        "family_emission_precision",
+        "coverage",
+        "family_emission_recall",
+        "abstain_rate",
+        "ambiguous_rate",
+        "top1_accuracy",
+        "top2_accuracy",
+    )
+    comparison = {}
+    for key in keys:
+        left = validation.get(key)
+        right = reserve.get(key)
+        comparison[key] = {
+            "delta_reserve_minus_validation": None
+            if left is None or right is None
+            else float(right) - float(left),
+            "reserve": right,
+            "validation": left,
+        }
+    return comparison
+
+
+def selective_contract_generalizes(
+    *,
+    reserve_precision: float | None,
+    validation_precision: float | None,
+) -> dict[str, Any]:
+    reserve_ok = (
+        reserve_precision is not None
+        and float(reserve_precision) + 1e-12 >= EMISSION_PRECISION_MIN
+    )
+    validation_ok = (
+        validation_precision is not None
+        and float(validation_precision) + 1e-12 >= EMISSION_PRECISION_MIN
+    )
+    return {
+        "emission_precision_min": EMISSION_PRECISION_MIN,
+        "generalizes": bool(reserve_ok and validation_ok),
+        "reserve_precision_ok": reserve_ok,
+        "validation_precision_ok": validation_ok,
+    }
+
+
+def decide_reserve_disposition(
+    *,
+    invalid_reasons: Sequence[str],
+    family_emission_precision: float | None,
+) -> dict[str, Any]:
+    if invalid_reasons:
+        return {
+            "disposition": "RESERVE_INVALID",
+            "emission_precision_min": EMISSION_PRECISION_MIN,
+            "family_emission_precision": family_emission_precision,
+            "reasons": list(invalid_reasons),
+        }
+    precision_ok = (
+        family_emission_precision is not None
+        and float(family_emission_precision) + 1e-12 >= EMISSION_PRECISION_MIN
+    )
+    if precision_ok:
+        return {
+            "disposition": "RESERVE_PASS",
+            "emission_precision_min": EMISSION_PRECISION_MIN,
+            "family_emission_precision": family_emission_precision,
+            "production_family_decision_recommended": True,
+            "reasons": [
+                "family_emission_precision_met_frozen_acceptance_metric",
+                "no_contamination_or_contract_failure",
+            ],
+        }
+    return {
+        "disposition": "RESERVE_FAIL",
+        "emission_precision_min": EMISSION_PRECISION_MIN,
+        "family_emission_precision": family_emission_precision,
+        "production_family_decision_recommended": False,
+        "reasons": [
+            f"family_emission_precision={family_emission_precision} "
+            f"< frozen_min={EMISSION_PRECISION_MIN}"
+        ],
+    }
+
+
+def assemble_reserve_eval_artifact(payload: Mapping[str, Any]) -> dict[str, Any]:
+    artifact = {
+        "applicability": payload["applicability"],
+        "audit_state": {
+            "authorization": "OPERATOR_AUTHORIZE_RESERVE_EVAL",
+            "best_moved": False,
+            "index_rebuilt": False,
+            "recalibrated": False,
+            "thresholds_changed": False,
+            "train": False,
+        },
+        "contract": reserve_eval_contract(),
+        "disposition": payload["disposition"],
+        "evaluation": {
+            key: value
+            for key, value in payload["evaluation"].items()
+            if key != "decisions"
+        },
+        "generalization": payload["generalization"],
+        "next_action": payload["next_action"],
+        "pinned": payload["pinned"],
+        "reserve_identity": payload["reserve_identity"],
+        "rule": RULE,
+        "schema": RESERVE_EVAL_SCHEMA,
+        "selective_contract_generalizes": payload["generalization"].get("generalizes"),
+        "validation_vs_reserve": payload["validation_vs_reserve"],
+        "wrong_family_emissions": payload["wrong_family_emissions"],
+    }
+    bare = {key: value for key, value in artifact.items() if key != "artifact_sha256"}
+    artifact["artifact_sha256"] = sha256_text(canonical_json(bare))
+    return artifact
+
+
+def next_action_for_disposition(disposition: Mapping[str, Any]) -> str:
+    name = disposition.get("disposition")
+    if name == "RESERVE_PASS":
+        return (
+            "RETRIEVAL_V1_PRODUCTION_CANDIDATE — selective contract generalized; "
+            "BEST unchanged until a separate explicit promotion authorization."
+        )
+    if name == "RESERVE_FAIL":
+        return (
+            "STOP — preserve reserve result; do not reopen scorer tuning against the "
+            "reserve; do not move BEST."
+        )
+    return (
+        "RESERVE_INVALID — fix contamination/execution/provenance/contract failure; "
+        "do not treat metrics as the failure mode; do not move BEST."
+    )
