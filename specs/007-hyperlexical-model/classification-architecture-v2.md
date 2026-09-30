@@ -538,4 +538,11 @@ Rule `HYPERLEX_FORWARD_HUB_ERROR_DECOMPOSITION_V1` is a read-only validation aud
 
 Reports per-family precision/recall/F1/support/predicted_count/top confusions/gold logit rank/top-1/top-2, ATOM vs PROSE macro-F1, prediction hubs, social-evaluation attractor audit, deterministic confusion causes, and prototype-vs-residual ranking. Decision enum: `SCORER_REPAIR_JUSTIFIED` | `DATA_REMEDIATION_JUSTIFIED` | `ONTOLOGY_REMEDIATION_JUSTIFIED` | `ENCODER_REMEDIATION_JUSTIFIED` | `RESERVE_EVAL_JUSTIFIED` | `STOP_NO_CLEAR_REMEDIATION`. `RESERVE_EVAL_JUSTIFIED` requires internal AF competitive with prior baseline ≈0.1961 and no major unresolved failure mode.
 
-Seal path: `/home/morpheus/hlx-private/classification-v2-forward-hub-error-decomposition-20260930/FORWARD_HUB_ERROR_DECOMPOSITION.json`.
+Seal path: `/home/morpheus/hlx-private/classification-v2-forward-hub-error-decomposition-20260930/FORWARD_HUB_ERROR_DECOMPOSITION.json` (artifact sha256 `2ac0e911b64768d3b30417144e3075391ca2d8ba67a065c1edc56a49077bd429`; confusion matrix sha256 `25786aeb6786615138574405304a5af18dc1cf9560b4c63d5ed95eb1aff667e4`).
+
+- Recomputed AF 0.185630 matches settlement; PF / macro excl. exact-copy 0.054510; ATOM 0.211630; PROSE 0.265883; exact-copy macro 0.644548
+- Dominant causes: DOMINANT_CLASS_ATTRACTOR 117/180, PAIRWISE_BOUNDARY_COLLISION 23, UNDER_SUPPORTED_FAMILY 19
+- Prediction hubs (not SE): fashion-aesthetic, technology-ai, music-entertainment, workplace-career, regional-cultural, identity-affiliation, memetic, sports-competition, conflict-aggression
+- social-evaluation: support 4, F1 0.0, **WEAK_NON_HUB** (incoming FP 4; RD↔SE total 1) — merge did **not** create a larger SE attractor; operational separability still missing
+- Prototype-path macro 0.174332 vs residual 0.185630; weak PF is residual failure on non-exact-copy families, not witness mutation
+- Decision: **SCORER_REPAIR_JUSTIFIED**. Reserve remains UNSCORED. BEST unchanged.

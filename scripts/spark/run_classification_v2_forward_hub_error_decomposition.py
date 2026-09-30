@@ -83,6 +83,19 @@ def sudo_sha256(path: Path) -> str:
     return completed.stdout.split()[0]
 
 
+def sudo_read_text(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8")
+    except PermissionError:
+        completed = subprocess.run(
+            ["sudo", "-n", "cat", str(path)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return completed.stdout
+
+
 def fail(message: str) -> None:
     print(message, file=sys.stderr)
     raise SystemExit(2)
@@ -346,7 +359,7 @@ def main() -> int:
         fail("BEST weights changed during audit")
     if completed.returncode != 0:
         fail(f"error decomposition exit {completed.returncode}; see {log_path}")
-    artifact = json.loads(DEST.read_text(encoding="utf-8"))
+    artifact = json.loads(sudo_read_text(DEST))
     print(
         json.dumps(
             {
