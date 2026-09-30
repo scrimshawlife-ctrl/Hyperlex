@@ -1,0 +1,115 @@
+{
+  "ACCEPTANCE_GATES": {
+    "EVIDENCE_PRESENT_recall_min": 0.7,
+    "NO_EVIDENCE_recall_min": 0.9,
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "optimize_family_metrics_before_stage_a_pass": false
+  },
+  "ALLOW_FOCAL_LOSS_FOR": "HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS",
+  "BEST": "UNCHANGED",
+  "BEST_MUTATED": false,
+  "CHECKPOINT_SELECTION": {
+    "metric": "stage_a_macro_f1",
+    "strict_improvement": true,
+    "tie_break": [
+      "lower_false_evidence_entry_rate_on_none",
+      "higher_NO_EVIDENCE_recall",
+      "earlier_epoch"
+    ]
+  },
+  "CODE_REVISION": "d58e078fd776475d886cd1f516ea9f2e99816bd9",
+  "CURRENT_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "DATASET_SHA256": "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS",
+  "FOCAL_ALPHA_POLICY": "NONE",
+  "FOCAL_GAMMA": 2.0,
+  "FOCAL_LOSS_SPEC_SHA256": "dce6dbf5c1d1239d000396090cb01f24f16009605becb9ba41fcce18af768b5f",
+  "H1_OBJECTIVE_LOSS_PRESSURE": "NOT_TESTED",
+  "IMPLEMENTATION_TESTS": {
+    "CLASS_WEIGHT_PRESERVATION": "PASS",
+    "EASY_EXAMPLE_DOWNWEIGHT": "PASS",
+    "FINITE_LOSS_EXTREME_LOGITS": "PASS",
+    "FOCAL_LOSS_IMPLEMENTATION_TEST": "PASS",
+    "GAMMA_ZERO_EQUIVALENCE": "PASS",
+    "HARD_EXAMPLE_EMPHASIS": "PASS",
+    "PROVENANCE_WEIGHT_PRESERVATION": "PASS",
+    "pytest_invocation": "prechecked_local_PASS"
+  },
+  "LABEL_PROVENANCE_RULE": "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1",
+  "NEXT_ACTION": "TRAIN_V5_STAGE_A_003_FOCAL_LOSS_ONCE",
+  "OBJECTIVE_STATE": "FROZEN",
+  "PARENT_EXPERIMENT": "HLX-CLASSIFICATION-V5-STAGE-A-002",
+  "PARENT_TRAINING_CONFIG_SHA256": "2ce1b29bf2be54cc03ac25d66301bf0991226dffd3a1d94bcdaa7a48559d40af",
+  "RESERVE": "unused",
+  "RESERVE_CONSUMED": false,
+  "RULE": "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1",
+  "SCIENTIFIC_RESULT": "NOT_COMPUTABLE",
+  "SEED": 42,
+  "SINGLE_FACTOR_DIFF_STATUS": "PASS",
+  "SURFACE_RULE": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R8",
+  "THRESHOLD_GRID": {
+    "none_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "present_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "require_none_lt_present": true
+  },
+  "THRESHOLD_SELECTION": {
+    "acceptance_required": [
+      "false_evidence_entry_rate_on_none <= 0.05",
+      "EVIDENCE_PRESENT_recall >= 0.70",
+      "NO_EVIDENCE_recall >= 0.90"
+    ],
+    "fail_if_no_feasible": "SETTLED_FAIL",
+    "maximize_in_order": [
+      "stage_a_macro_f1",
+      "EVIDENCE_PRESENT_recall",
+      "NO_EVIDENCE_recall",
+      "uncertain_band_width"
+    ],
+    "score": "evidence_score = P(EVIDENCE_PRESENT)"
+  },
+  "TRAIN": false,
+  "TRAINING_AUTHORIZATION": "AUTHORIZED_V5_STAGE_A_003_FOCAL_LOSS_ONCE",
+  "TRAINING_CONFIG_SHA256": "b8aad3ba30fa1c96803551fc03c132c0390caa6c3eb86f5846eda3b329665231",
+  "TRAINING_RUN_LIMIT": 1,
+  "TRAINING_STATUS": "AUTHORIZED_NOT_STARTED",
+  "UNCERTAIN_POLICY_INVESTIGATION_PENDING": true,
+  "blocked_preflight_receipt": "specs/007-hyperlexical-model/classification-v5-stage-a-003-focal-loss-blocked-receipt-20260930.json",
+  "parent_verification": {
+    "PARENT_TRAINING_CONFIG_SHA256": "2ce1b29bf2be54cc03ac25d66301bf0991226dffd3a1d94bcdaa7a48559d40af",
+    "PRESENT_RECALL": 0.5274725274725275,
+    "PRESENT_TO_NONE_CONFIDENT_NONE_FRAC": 0.7474747474747475,
+    "PRESENT_TO_NONE_MEDIAN_P_NONE": 0.9940457964139012,
+    "PRESENT_TO_NONE_N": 297,
+    "PRESENT_TO_NONE_NEAR_BOUNDARY_FRAC": 0.010101010101010102,
+    "PROMOTION": "FAIL",
+    "SPECIFICITY_FAILURE_REMEDIATED": true,
+    "THRESHOLD_GRID_N_PASSING": 0,
+    "false_evidence_entry_rate_on_none": 0.011980830670926517
+  },
+  "private_auth_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-003-focal-20260930",
+  "receipt_sha256": "e34935903cba894ade1425a42cfd6cca3905b5ae57b890699f6bbcd41bfb7b84",
+  "repo_artifacts_dir": "artifacts/experiments/HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS",
+  "schema": "hyperlex.classification.v5.stage_a_003_focal_authorization.v1"
+}

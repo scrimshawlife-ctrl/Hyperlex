@@ -1,0 +1,30 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS",
+  "PARENT_EXPERIMENT": "HLX-CLASSIFICATION-V5-STAGE-A-002",
+  "SINGLE_FACTOR_DIFF_STATUS": "PASS",
+  "checks": {
+    "BACKBONE_CHANGED": false,
+    "BATCHING_CHANGED": false,
+    "CLASS_WEIGHTS_CHANGED": false,
+    "DATASET_CHANGED": false,
+    "DECISION_LOGIC_CHANGED": false,
+    "HEAD_CHANGED": false,
+    "LR_CHANGED": false,
+    "OBJECTIVE_CHANGED": true,
+    "OPTIMIZER_CHANGED": false,
+    "POOLING_CHANGED": false,
+    "PROVENANCE_WEIGHTS_CHANGED": false,
+    "SCHEDULER_CHANGED": false,
+    "SEED_CHANGED": false,
+    "SPLIT_CHANGED": false,
+    "THRESHOLDS_CHANGED": false,
+    "TOKENIZER_CHANGED": false,
+    "TRAINING_BUDGET_CHANGED": false
+  },
+  "expected_true": [
+    "OBJECTIVE_CHANGED"
+  ],
+  "focal_exception_ok": true,
+  "schema": "hyperlex.classification.v5.stage_a_003_single_factor_diff.v1",
+  "unexpected": {}
+}

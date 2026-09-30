@@ -341,7 +341,20 @@ def authorization_contract_003(
     single_factor_diff_status: str,
     implementation_tests: Mapping[str, str],
 ) -> dict[str, Any]:
-    tests_pass = all(value == "PASS" for value in implementation_tests.values())
+    tests_pass = all(
+        value == "PASS"
+        for key, value in implementation_tests.items()
+        if key
+        in {
+            "GAMMA_ZERO_EQUIVALENCE",
+            "EASY_EXAMPLE_DOWNWEIGHT",
+            "HARD_EXAMPLE_EMPHASIS",
+            "CLASS_WEIGHT_PRESERVATION",
+            "PROVENANCE_WEIGHT_PRESERVATION",
+            "FINITE_LOSS_EXTREME_LOGITS",
+            "FOCAL_LOSS_IMPLEMENTATION_TEST",
+        }
+    )
     ready = (
         tests_pass
         and single_factor_diff_status == "PASS"

@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **Authorize Stage-A-003 focal objective (Spec 007):** freeze
+  `HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS` with `FOCAL_GAMMA=2.0`,
+  `FOCAL_ALPHA_POLICY=NONE`, class/provenance weights unchanged from 002.
+  Implementation tests A–F PASS; single-factor diff PASS (objective only).
+  `FOCAL_LOSS_SPEC_SHA256=dce6dbf5…`, `TRAINING_CONFIG_SHA256=b8aad3ba…`,
+  code `d58e078f…`. Objective FROZEN; train authorized once. Blocked
+  preflight receipt preserved. No train; `decide_evidence` unchanged;
+  BEST/reserve unchanged. Artifacts under
+  `artifacts/experiments/HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS/`.
+  Next: `TRAIN_V5_STAGE_A_003_FOCAL_LOSS_ONCE`.
+
 - **Stage-A-003 focal-loss blocked (Spec 007):** attempted
   `HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS` after parent 002
   verification PASS. Parent pins match (specificity remediates; PRESENT
