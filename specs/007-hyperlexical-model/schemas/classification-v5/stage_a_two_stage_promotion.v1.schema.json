@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v5.stage_a_two_stage_promotion.v1",
+  "title": "Stage-A two-stage component promotion receipt",
+  "type": "object",
+  "required": [
+    "STAGE_A_PROMOTION",
+    "STAGE_A_BEST",
+    "MODEL_WIDE_BEST",
+    "BEST_MUTATED",
+    "RESERVE_CONSUMED",
+    "STAGE_A_PROMOTION_RECEIPT_SHA256",
+    "schema"
+  ],
+  "properties": {
+    "STAGE_A_PROMOTION": {
+      "enum": ["APPLIED", "BLOCKED", "PROMOTION_INVALID"]
+    },
+    "STAGE_A_BEST": {
+      "type": ["string", "null"]
+    },
+    "MODEL_WIDE_BEST": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "BEST_MUTATED": {
+      "const": false
+    },
+    "RESERVE_CONSUMED": {
+      "const": false
+    },
+    "STAGE_A_PROMOTION_RECEIPT_SHA256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "schema": {
+      "const": "hyperlex.classification.v5.stage_a_two_stage_promotion.v1"
+    }
+  },
+  "additionalProperties": true
+}

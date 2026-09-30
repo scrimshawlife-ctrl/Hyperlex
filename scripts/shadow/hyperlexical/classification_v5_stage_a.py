@@ -4,11 +4,14 @@ Authorizes one Stage-A train against a READY V5 surface. Does not train by
 itself, does not score reserves, and does not move BEST.
 
 Flat 3-way head + decide_evidence(P_PRESENT) is retained as historical evidence
-for Stage-A-001..004, but is
-DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION. Canonical Stage-A factorization
-is HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1
-(classification_v5_stage_a_two_stage.py). Do not rewrite flat-head failure
-receipts.
+for Stage-A-001..004 only. Design status:
+DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION. After
+PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED the runtime status is
+DEPRECATED_FOR_CANONICAL_STAGE_A (historical replay / scientific comparison /
+compatibility diagnostics only). Canonical Stage-A factorization is
+HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1
+(classification_v5_stage_a_two_stage.py) via STAGE_A_BEST. Do not rewrite
+flat-head failure receipts. Do not fall back to scalar P(PRESENT) at runtime.
 """
 
 from __future__ import annotations
@@ -29,6 +32,8 @@ from .classification_v5_stage_a_surface_remediate import SURFACE_RULE_V1R7
 
 STAGE_A_RULE = "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1"
 FLAT_HEAD_STATUS = "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION"
+# Promoted-runtime deprecation (post PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED).
+FLAT_RUNTIME_STATUS = "DEPRECATED_FOR_CANONICAL_STAGE_A"
 LABEL_PROVENANCE_RULE = "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1"
 AUTHORIZE_RULE = "AUTHORIZE_V5_STAGE_A_NEXT_RUN_ON_REMEDIATED_SURFACE"
 EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-004"
@@ -197,10 +202,12 @@ def decide_evidence(
     none_threshold: float,
     present_threshold: float,
 ) -> str:
-    """Historical flat-head decision (DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION).
+    """Historical flat-head decision — DEPRECATED_FOR_CANONICAL_STAGE_A.
 
-    Retained for Stage-A-001..004 receipts/replay. New canonical Stage-A
-    inference uses decide_two_stage in classification_v5_stage_a_two_stage.
+    Design mark: DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION.
+    Retained only for historical replay, scientific comparison, and
+    compatibility diagnostics. Canonical Stage-A runtime uses
+    decide_canonical_stage_a / decide_two_stage (no scalar P(PRESENT) fallback).
     """
     if not (0.0 <= float(evidence_score) <= 1.0):
         raise ValueError("evidence_score_out_of_range")

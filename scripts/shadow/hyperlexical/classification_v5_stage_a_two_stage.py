@@ -44,6 +44,7 @@ DESIGN_EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE"
 PARENT_EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-004"
 PARENT_PRIMARY_DECISION = "STAGE_A_ARCHITECTURE_REDESIGN_REQUIRED"
 FLAT_HEAD_STATUS = "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION"
+FLAT_RUNTIME_STATUS = "DEPRECATED_FOR_CANONICAL_STAGE_A"
 ARCHITECTURE_RECEIPT_SHA256 = (
     "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697"
 )
@@ -60,6 +61,8 @@ SCHEMA_AUTHORIZATION = "hyperlex.classification.v5.stage_a_two_stage_authorizati
 SCHEMA_TRAIN_RECEIPT = "hyperlex.classification.v5.stage_a_two_stage_train_receipt.v1"
 SCHEMA_FORWARD = "hyperlex.classification.v5.stage_a_two_stage_forward.v1"
 SCHEMA_CLASS_WEIGHTS = "hyperlex.classification.v5.stage_a_two_stage_class_weights.v1"
+# Promoted canonical Stage-A forward schema (post STAGE_A_BEST promotion).
+CANONICAL_FORWARD_SCHEMA = SCHEMA_FORWARD
 
 # Canonical semantic outputs (unchanged).
 CANONICAL_LABELS = EVIDENCE_LABELS
