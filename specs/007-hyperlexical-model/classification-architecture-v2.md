@@ -382,3 +382,11 @@ Geometry on the same 296 validation family rows did improve. Pre-training median
 Applicability invariance still passes. `none_surface_gap` is -0.023081016877715937. Residualized length correlation is 0.08844123652989021. Surface-cell F1 values remain at or above 0.80. Architecture validation is `INTERNAL_SHORT`. The reserve was not scored. BEST remains `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6`.
 
 The representation is more separable, but the residual head alone did not convert that into family F1. The next authorized step is a max-anchor family scorer on this repaired geometry, not another residual-only CE run and not reserve scoring.
+
+### Max-anchor family scorer
+
+`MAX_ANCHOR_FAMILY_SCORER_V1` is a validation-only scorer comparison on the repaired encoder. It does not train, does not score the reserve, and does not move BEST. Pinned inputs: geometry-repair primary `449bf3b303c95bc5d6b7d87173d50315616556c1379057414b970f3e5f0b18cf`, boundary `0ca6f34ce1abf68388e443371672ca36e16028079a175b6775e1968900e1c52f`, separation `ab698d342d2d276f81d4baf3fed609bb6f8bf88cd6810bb1d1998c5e409f63c3`. Canonical max-anchor score is `max cosine` to that family's sealed anchors. Family prediction is `argmax` over the 19 active families with vocabulary-order ties. NONE, ABSTAIN, and AMBIGUOUS are not family rows.
+
+On 296 validation family-positive rows, residual macro-F1 is 0.1750422041280767, max-anchor macro-F1 is 0.1664857822906154, and diagnostic 1:1 z-score fusion macro-F1 is 0.20206957575241874. Max-anchor ATOM/PROSE family macros are 0.19337540305282241 and 0.2177426324431769. Max-anchor breadth is 7 families with F1 above 0, 6 at or above 0.20, 4 at or above 0.50, and 3 non-exact-copy families with F1 above 0. Decision is `MAX_ANCHOR_SCORER_REJECTED`. Canonical integration is not justified. Artifact sha256 `7475d6d9a5c7ccb20a554a56b1de5ceee1d85e2a90b5976035f920bab7f53d07`.
+
+The diagnostic fusion cleared 0.1961 and raised new-family nonzero count to 4, but fusion remains diagnostic only under this pass. Scorer mechanics are exhausted for rescuing the 19-way head. The next substantive question is ontology and training-definition separation, not another residual or max-anchor classifier patch.
