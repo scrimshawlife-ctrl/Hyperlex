@@ -31,7 +31,14 @@
       "const": "AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1"
     },
     "EXPERIMENT_ID": {
-      "const": "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE"
+      "const": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001"
+    },
+    "ARCHITECTURE_RECEIPT_SHA256": {
+      "const": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697"
+    },
+    "CLASS_WEIGHT_ARTIFACT_SHA256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
     },
     "DATASET_SHA256": {
       "type": "string",

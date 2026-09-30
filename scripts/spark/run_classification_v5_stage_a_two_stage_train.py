@@ -1,17 +1,16 @@
-"""HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1 — train runner (fail-closed).
+"""TRAIN_V5_STAGE_A_TWO_STAGE_ONCE — fail-closed two-stage train runner.
 
-Spec/design modes:
-  --design-freeze   seal public design receipt + summary (no train, no auth)
-  (default)         refuse train unless sealed AUTHORIZATION + EXECUTE flag
+Requires sealed AUTHORIZATION from AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1.
+Does not move BEST. Does not consume reserve.
+Set HLX_V5_STAGE_A_EXECUTE_TRAIN=1 to execute the one authorized run.
 
-Does not train in this design pass. Does not mutate V1R9, BEST, or reserve.
-Authorization is a separate CLEAR: AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1.
+Also supports:
+  --design-freeze   historical design seal helper (does not authorize/train)
 """
 
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import subprocess
@@ -19,7 +18,6 @@ import sys
 from pathlib import Path
 
 REPO = Path(os.environ.get("HLX_REPO") or "/home/morpheus/Hyperlex")
-# Local/worktree override for design-freeze seals outside Spark.
 if not (REPO / "scripts" / "shadow" / "hyperlexical").is_dir():
     REPO = Path(__file__).resolve().parents[2]
 
@@ -29,22 +27,23 @@ SURFACE = Path(
 )
 DATASET = SURFACE / "EVIDENCE_SURFACE.jsonl"
 DATASET_SHA = "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a"
+ARCHITECTURE_RECEIPT_SHA = (
+    "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697"
+)
 AUTH_DEST = Path(
     "/home/morpheus/hlx-private/"
     "classification-v5-stage-a-two-stage-train-v1-20260930"
 )
 AUTH_FILE = AUTH_DEST / "AUTHORIZATION.json"
 RESOLVED = AUTH_DEST / "RESOLVED_TRAINING_CONFIG.json"
-RUN_ROOT = AUTH_DEST / "classification-v5-stage-a-005-two-stage"
+WEIGHTS = AUTH_DEST / "TWO_STAGE_CLASS_WEIGHTS.json"
+RUN_ROOT = AUTH_DEST / "classification-v5-stage-a-two-stage-001"
 BEST_SHA = "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6"
-PARENT_FLAT_SELECTED_SHA = (
-    "82840630a89ea9e9b34fdfc010d455e6bbfce05ecfcb29abe2929505e9e21fdd"
-)
 REPO_ARTIFACTS = (
     REPO
     / "artifacts"
     / "experiments"
-    / "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE"
+    / "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001"
 )
 SPEC_DIR = REPO / "specs" / "007-hyperlexical-model"
 
@@ -80,92 +79,133 @@ def code_revision() -> str:
     return completed.stdout.strip()
 
 
-def sha256_text(text: str) -> str:
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()
-
-
 def design_freeze() -> dict:
     from hyperlexical.classification_v5_stage_a_two_stage import (
+        ARCHITECTURE_RECEIPT_SHA256,
         AUTHORIZE_RULE,
         EXPERIMENT_ID,
         TWO_STAGE_RULE,
         design_freeze_receipt,
     )
 
+    # Design freeze is historical; do not overwrite the sealed architecture receipt.
     receipt = design_freeze_receipt(code_revision=code_revision())
     summary = {
         "AUTHORIZE_RULE_NEXT": AUTHORIZE_RULE,
+        "ARCHITECTURE_RECEIPT_SHA256_PIN": ARCHITECTURE_RECEIPT_SHA256,
         "BEST": "UNCHANGED",
-        "BEST_SHA256": receipt["BEST_SHA256"],
-        "DATASET_SHA256": receipt["DATASET_SHA256"],
         "DESIGN_STATE": "FROZEN",
         "EXPERIMENT_ID": EXPERIMENT_ID,
-        "PARENT_FLAT_SELECTED_CHECKPOINT_SHA256": PARENT_FLAT_SELECTED_SHA,
-        "PARENT_PRIMARY_DECISION": receipt["PARENT_PRIMARY_DECISION"],
-        "RESERVE": "unused",
+        "NOTE": (
+            "Historical helper only. Canonical architecture pin remains "
+            f"{ARCHITECTURE_RECEIPT_SHA256}; do not reseal over it."
+        ),
         "RULE": TWO_STAGE_RULE,
         "TRAIN": False,
         "TRAIN_AUTHORIZED": False,
-        "design_receipt_sha256": receipt["design_receipt_sha256"],
-        "flat_head_status": receipt["compatibility"]["flat_head_status"],
-        "lambda_gate2": receipt["loss"]["lambda_gate2"],
-        "last_trainable_encoder_layers": receipt["architecture"][
-            "last_trainable_encoder_layers"
-        ],
-        "n_threshold_combinations": 100,
+        "design_receipt_sha256_ephemeral": receipt["design_receipt_sha256"],
         "next_action": AUTHORIZE_RULE,
     }
-    write_repo(REPO_ARTIFACTS / "design_freeze_receipt.json", receipt)
-    write_repo(REPO_ARTIFACTS / "design_freeze_summary.json", summary)
-    write_repo(
-        SPEC_DIR
-        / "classification-v5-stage-a-two-stage-decision-graph-v1-receipt-20260930.json",
-        receipt,
-    )
+    write_repo(REPO_ARTIFACTS / "design_freeze_helper_summary.json", summary)
     return summary
 
 
-def refuse_unauthorized_train() -> None:
-    from hyperlexical.classification_v5_stage_a_two_stage import AUTHORIZE_RULE
+def refuse_or_gate_train() -> None:
+    from hyperlexical.classification_v5_stage_a_two_stage import (
+        ARCHITECTURE_RECEIPT_SHA256,
+        AUTHORIZE_RULE,
+        AUTHORIZED_BEST_SHA,
+        AUTHORIZED_DATASET_SHA,
+        EXPERIMENT_ID,
+        TRAIN_ONCE_ACTION,
+        runner_authorization_checks,
+    )
 
     if not AUTH_FILE.is_file():
         fail(
             "REFUSE: no sealed AUTHORIZATION.json for two-stage Stage-A. "
-            f"Next action: {AUTHORIZE_RULE}. Design-only path: --design-freeze."
+            f"Next action: {AUTHORIZE_RULE}."
         )
+    if not RESOLVED.is_file() or not WEIGHTS.is_file():
+        fail("REFUSE: missing RESOLVED_TRAINING_CONFIG or TWO_STAGE_CLASS_WEIGHTS.")
+
     auth = json.loads(AUTH_FILE.read_text(encoding="utf-8"))
-    if not bool(auth.get("TRAIN_AUTHORIZED") or auth.get("train_authorized")):
-        fail("REFUSE: AUTHORIZATION present but TRAIN_AUTHORIZED is false.")
-    if auth.get("AUTHORIZE_RULE") != AUTHORIZE_RULE and auth.get(
-        "authorize_rule"
-    ) != AUTHORIZE_RULE:
-        fail(f"REFUSE: AUTHORIZE_RULE must be {AUTHORIZE_RULE}.")
+    resolved = json.loads(RESOLVED.read_text(encoding="utf-8"))
+    weights = json.loads(WEIGHTS.read_text(encoding="utf-8"))
+
+    checks = runner_authorization_checks(
+        train_authorized=bool(auth.get("TRAIN_AUTHORIZED") or auth.get("train_authorized")),
+        experiment_id=str(auth.get("EXPERIMENT_ID") or ""),
+        dataset_sha256=str(auth.get("DATASET_SHA256") or ""),
+        architecture_receipt_sha256=str(
+            auth.get("ARCHITECTURE_RECEIPT_SHA256") or ""
+        ),
+        resolved_config_sha256=str(resolved.get("training_config_sha256") or ""),
+        authorized_config_sha256=str(auth.get("TRAINING_CONFIG_SHA256") or ""),
+        best_sha256=str(auth.get("CURRENT_BEST") or auth.get("authorized_best_sha256") or ""),
+        surface_readiness=str(auth.get("SURFACE_READINESS") or ""),
+        label_mapping=str(auth.get("LABEL_MAPPING") or ""),
+        label_provenance_invalid_rows=int(auth.get("label_provenance_invalid") or 0),
+        prior_run_count=int(auth.get("prior_run_count") or 0),
+        reserve_consumed=bool(auth.get("RESERVE_CONSUMED")),
+        class_weight_artifact_sha256=str(
+            weights.get("CLASS_WEIGHT_ARTIFACT_SHA256") or ""
+        ),
+        authorized_class_weight_artifact_sha256=str(
+            auth.get("CLASS_WEIGHT_ARTIFACT_SHA256") or ""
+        ),
+    )
+    if not checks["pass"]:
+        fail(f"REFUSE: authorization gates failed:{json.dumps(checks, sort_keys=True)}")
+
+    # Literal weight bind — runner must not recompute.
+    if resolved.get("gate1_class_weights_literal") != weights.get("literal_weights", {}).get(
+        "gate1"
+    ):
+        fail("REFUSE: gate1 literal weights mismatch vs weight artifact")
+    if resolved.get("gate2_class_weights_literal") != weights.get("literal_weights", {}).get(
+        "gate2"
+    ):
+        fail("REFUSE: gate2 literal weights mismatch vs weight artifact")
+    if resolved.get("dataset_sha256") != AUTHORIZED_DATASET_SHA:
+        fail("REFUSE: resolved dataset mismatch")
+    if resolved.get("architecture_receipt_sha256") != ARCHITECTURE_RECEIPT_SHA256:
+        fail("REFUSE: resolved architecture receipt mismatch")
+    if resolved.get("best_encoder_sha256") != AUTHORIZED_BEST_SHA:
+        fail("REFUSE: resolved BEST mismatch")
+    if resolved.get("experiment_id") != EXPERIMENT_ID:
+        fail("REFUSE: resolved experiment_id mismatch")
+
+    if RUN_ROOT.exists() and any(RUN_ROOT.iterdir()):
+        fail("REFUSE: prior run artifacts present (TRAINING_RUN_LIMIT=1)")
+
     if os.environ.get("HLX_V5_STAGE_A_EXECUTE_TRAIN") != "1":
         fail(
             "REFUSE: authorization sealed but execute flag unset. "
-            "Set HLX_V5_STAGE_A_EXECUTE_TRAIN=1 for the single authorized run."
+            f"Set HLX_V5_STAGE_A_EXECUTE_TRAIN=1 for {TRAIN_ONCE_ACTION}."
         )
+
+    # Train body lands in a later CLEAR; this pass only authorizes.
     fail(
-        "REFUSE: two-stage train body not implemented in design pass. "
-        "Authorization CLEAR must precede mechanical train implementation."
+        "REFUSE: two-stage train execution body not enabled in authorize pass. "
+        f"Authorization is ready for {TRAIN_ONCE_ACTION}."
     )
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Stage-A two-stage decision-graph train runner (fail-closed)."
+        description="Stage-A two-stage train runner (fail-closed)."
     )
     parser.add_argument(
         "--design-freeze",
         action="store_true",
-        help="Seal design freeze receipt only (no train, no authorization).",
+        help="Emit ephemeral design helper summary (does not reseal architecture).",
     )
     args = parser.parse_args(argv)
     if args.design_freeze:
-        summary = design_freeze()
-        print(json.dumps(summary, indent=2, sort_keys=True))
+        print(json.dumps(design_freeze(), indent=2, sort_keys=True))
         return 0
-    refuse_unauthorized_train()
+    refuse_or_gate_train()
     return 2
 
 

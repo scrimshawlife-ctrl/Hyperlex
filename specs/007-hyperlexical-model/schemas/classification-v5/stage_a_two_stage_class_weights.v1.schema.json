@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v5.stage_a_two_stage_class_weights.v1",
+  "title": "RESOLVE_V5_TWO_STAGE_CLASS_WEIGHTS artifact",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "CLASS_WEIGHT_RESOLUTION_RULE",
+    "CLASS_WEIGHT_ARTIFACT_SHA256",
+    "dataset_sha256",
+    "train_split_sha256",
+    "provenance_weights",
+    "Gate1",
+    "Gate2",
+    "literal_weights",
+    "resolution_formula_version",
+    "train_only"
+  ],
+  "properties": {
+    "schema": {
+      "const": "hyperlex.classification.v5.stage_a_two_stage_class_weights.v1"
+    },
+    "CLASS_WEIGHT_RESOLUTION_RULE": {
+      "const": "RESOLVE_V5_TWO_STAGE_CLASS_WEIGHTS"
+    },
+    "dataset_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "train_split_sha256": { "type": "string", "minLength": 1 },
+    "train_only": { "const": true },
+    "literal_weights": {
+      "type": "object",
+      "required": ["gate1", "gate2"],
+      "properties": {
+        "gate1": {
+          "type": "object",
+          "required": ["NO_EVIDENCE", "POSSIBLE_EVIDENCE"]
+        },
+        "gate2": {
+          "type": "object",
+          "required": ["UNCERTAIN", "CONFIRMED_PRESENT"]
+        }
+      }
+    },
+    "clip_policy": {
+      "type": "object",
+      "properties": {
+        "renormalize_after_clip": { "const": false }
+      }
+    }
+  }
+}

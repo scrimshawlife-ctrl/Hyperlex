@@ -28,7 +28,7 @@
       "const": "hyperlex.classification.v5.stage_a_two_stage_train_receipt.v1"
     },
     "EXPERIMENT_ID": {
-      "const": "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE"
+      "const": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001"
     },
     "SCIENTIFIC_RESULT": {
       "enum": ["SETTLED_PASS", "SETTLED_FAIL"]

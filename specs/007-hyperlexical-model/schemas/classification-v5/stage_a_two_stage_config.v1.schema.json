@@ -29,7 +29,18 @@
       "const": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1"
     },
     "experiment_id": {
-      "const": "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE"
+      "const": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001"
+    },
+    "architecture_receipt_sha256": {
+      "const": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697"
+    },
+    "gate1_class_weights_literal": {
+      "type": "object",
+      "required": ["NO_EVIDENCE", "POSSIBLE_EVIDENCE"]
+    },
+    "gate2_class_weights_literal": {
+      "type": "object",
+      "required": ["UNCERTAIN", "CONFIRMED_PRESENT"]
     },
     "dataset_sha256": {
       "type": "string",

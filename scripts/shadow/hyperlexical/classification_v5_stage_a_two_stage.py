@@ -36,19 +36,30 @@ from .classification_v5_stage_a_gold_label_mapping import RULE_ID as GOLD_LABEL_
 
 TWO_STAGE_RULE = "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1"
 AUTHORIZE_RULE = "AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1"
-EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE"
+TRAIN_RULE = "HYPERLEX_V5_STAGE_A_TWO_STAGE_TRAIN_V1"
+TRAIN_ONCE_ACTION = "TRAIN_V5_STAGE_A_TWO_STAGE_ONCE"
+EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001"
+# Historical design-freeze experiment id retained for receipt cross-ref only.
+DESIGN_EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-005-TWO-STAGE"
 PARENT_EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-004"
 PARENT_PRIMARY_DECISION = "STAGE_A_ARCHITECTURE_REDESIGN_REQUIRED"
 FLAT_HEAD_STATUS = "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION"
+ARCHITECTURE_RECEIPT_SHA256 = (
+    "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697"
+)
+CLASS_WEIGHT_RESOLUTION_RULE = "RESOLVE_V5_TWO_STAGE_CLASS_WEIGHTS"
+CLASS_WEIGHT_FORMULA_VERSION = "HYPERLEX_V5_TWO_STAGE_CLASS_WEIGHTS_V1"
 
 AUTHORIZED_DATASET_SHA = V1R9_DATASET_SHA
 AUTHORIZED_SURFACE_RULE = V1R9_SURFACE_RULE
+AUTHORIZED_BEST_SHA = BEST_SHA
 PARENT_FLAT_SELECTED_CHECKPOINT_SHA = PARENT_FLAT_SELECTED_SHA
 
 SCHEMA_CONFIG = "hyperlex.classification.v5.stage_a_two_stage_config.v1"
 SCHEMA_AUTHORIZATION = "hyperlex.classification.v5.stage_a_two_stage_authorization.v1"
 SCHEMA_TRAIN_RECEIPT = "hyperlex.classification.v5.stage_a_two_stage_train_receipt.v1"
 SCHEMA_FORWARD = "hyperlex.classification.v5.stage_a_two_stage_forward.v1"
+SCHEMA_CLASS_WEIGHTS = "hyperlex.classification.v5.stage_a_two_stage_class_weights.v1"
 
 # Canonical semantic outputs (unchanged).
 CANONICAL_LABELS = EVIDENCE_LABELS
@@ -170,24 +181,85 @@ def _binary_class_weights(
     }
 
 
+def _empty_class_account() -> dict[str, Any]:
+    return {
+        "OBSERVED_count": 0,
+        "INFERRED_count": 0,
+        "effective_count": 0.0,
+        "final_clipped_weight": None,
+        "final_weight": None,
+        "normalized_weight": None,
+        "raw_row_count": 0,
+        "raw_weight": None,
+        "rows": 0,
+    }
+
+
+def _account_row(account: dict[str, Any], provenance: str | None) -> None:
+    prov = str(provenance or "INFERRED")
+    account["raw_row_count"] += 1
+    account["rows"] += 1
+    if prov == "OBSERVED":
+        account["OBSERVED_count"] += 1
+    elif prov == "INFERRED":
+        account["INFERRED_count"] += 1
+    else:
+        # Unknown provenance falls back to INFERRED multiplier (0.5) but is counted
+        # under INFERRED_count for fail-closed accounting visibility.
+        account["INFERRED_count"] += 1
+    account["effective_count"] += provenance_multiplier(prov)
+
+
+def _finalize_binary_accounts(
+    accounts: dict[str, dict[str, Any]],
+    *,
+    labels: Sequence[str],
+) -> dict[str, Any]:
+    effective = {label: float(accounts[label]["effective_count"]) for label in labels}
+    if any(v <= 0 for v in effective.values()):
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:non_positive_effective_count")
+    report = _binary_class_weights(effective=effective, labels=labels)
+    for label in labels:
+        raw = float(report["raw_weights"][label])
+        norm = float(report["normalized_weights"][label])
+        final = float(report["class_weights"][label])
+        if not math.isfinite(raw) or not math.isfinite(norm) or not math.isfinite(final):
+            raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:non_finite_weight")
+        if not (0.50 <= final <= 2.00):
+            raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:clip_bounds")
+        accounts[label]["raw_weight"] = raw
+        accounts[label]["normalized_weight"] = norm
+        accounts[label]["final_clipped_weight"] = final
+        accounts[label]["final_weight"] = final
+    return {
+        "accounts": accounts,
+        "class_weights": report["class_weights"],
+        "effective_counts": report["effective_counts"],
+        "normalized_weights": report["normalized_weights"],
+        "policy": report["policy"],
+        "provenance_multipliers": report["provenance_multipliers"],
+        "raw_weights": report["raw_weights"],
+    }
+
+
 def compute_gate1_class_weights(
     train_rows: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
-    effective = {label: 0.0 for label in GATE1_LABELS}
+    accounts = {label: _empty_class_account() for label in GATE1_LABELS}
     for row in train_rows:
         target = gate1_target(str(row["evidence_label"]))
         label = GATE1_INDEX_LABEL[target]
-        effective[label] += provenance_multiplier(row.get("provenance"))
-    report = _binary_class_weights(effective=effective, labels=GATE1_LABELS)
-    report["gate"] = "gate1"
-    report["labels"] = list(GATE1_LABELS)
-    return report
+        _account_row(accounts[label], row.get("provenance"))
+    finalized = _finalize_binary_accounts(accounts, labels=GATE1_LABELS)
+    finalized["gate"] = "gate1"
+    finalized["labels"] = list(GATE1_LABELS)
+    return finalized
 
 
 def compute_gate2_class_weights(
     train_rows: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
-    effective = {label: 0.0 for label in GATE2_LABELS}
+    accounts = {label: _empty_class_account() for label in GATE2_LABELS}
     n_eligible = 0
     for row in train_rows:
         gold = str(row["evidence_label"])
@@ -196,14 +268,108 @@ def compute_gate2_class_weights(
         n_eligible += 1
         target = gate2_target(gold)
         label = GATE2_INDEX_LABEL[target]
-        effective[label] += provenance_multiplier(row.get("provenance"))
+        _account_row(accounts[label], row.get("provenance"))
     if n_eligible == 0:
         raise ValueError("NO_DATA:gate2_zero_eligible_train_rows")
-    report = _binary_class_weights(effective=effective, labels=GATE2_LABELS)
-    report["gate"] = "gate2"
-    report["labels"] = list(GATE2_LABELS)
-    report["n_eligible_train"] = n_eligible
-    return report
+    finalized = _finalize_binary_accounts(accounts, labels=GATE2_LABELS)
+    finalized["gate"] = "gate2"
+    finalized["labels"] = list(GATE2_LABELS)
+    finalized["n_eligible_train"] = n_eligible
+    return finalized
+
+
+def resolve_two_stage_class_weights(
+    train_rows: Sequence[Mapping[str, Any]],
+    *,
+    dataset_sha256: str,
+    train_split_sha256: str,
+    code_revision: str,
+) -> dict[str, Any]:
+    """Hard pre-authorization class-weight resolution (train split only)."""
+    if not train_rows:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:empty_train")
+    if dataset_sha256 != AUTHORIZED_DATASET_SHA:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:dataset_mismatch")
+
+    n_train = len(train_rows)
+    n_none = sum(1 for r in train_rows if str(r["evidence_label"]) == "NO_EVIDENCE")
+    n_present = sum(
+        1 for r in train_rows if str(r["evidence_label"]) == "EVIDENCE_PRESENT"
+    )
+    n_uncertain = sum(1 for r in train_rows if str(r["evidence_label"]) == "UNCERTAIN")
+    if n_none + n_present + n_uncertain != n_train:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:unexpected_gold_labels")
+
+    gate1 = compute_gate1_class_weights(train_rows)
+    gate2 = compute_gate2_class_weights(train_rows)
+
+    g1_rows = sum(gate1["accounts"][label]["rows"] for label in GATE1_LABELS)
+    if g1_rows != n_train:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:gate1_row_cover")
+    if gate1["accounts"]["NO_EVIDENCE"]["rows"] != n_none:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:gate1_none_count")
+    if gate1["accounts"]["POSSIBLE_EVIDENCE"]["rows"] != n_present + n_uncertain:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:gate1_possible_count")
+    if gate2["n_eligible_train"] != n_present + n_uncertain:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:gate2_eligible_count")
+    if gate2["accounts"]["UNCERTAIN"]["rows"] != n_uncertain:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:gate2_uncertain_count")
+    if gate2["accounts"]["CONFIRMED_PRESENT"]["rows"] != n_present:
+        raise ValueError("CLASS_WEIGHT_RESOLUTION_INVALID:gate2_present_count")
+
+    literal_weights = {
+        "gate1": {
+            "NO_EVIDENCE": float(gate1["class_weights"]["NO_EVIDENCE"]),
+            "POSSIBLE_EVIDENCE": float(gate1["class_weights"]["POSSIBLE_EVIDENCE"]),
+        },
+        "gate2": {
+            "UNCERTAIN": float(gate2["class_weights"]["UNCERTAIN"]),
+            "CONFIRMED_PRESENT": float(gate2["class_weights"]["CONFIRMED_PRESENT"]),
+        },
+    }
+    payload = {
+        "CLASS_WEIGHT_RESOLUTION_RULE": CLASS_WEIGHT_RESOLUTION_RULE,
+        "Gate1": {
+            "NO_EVIDENCE": dict(gate1["accounts"]["NO_EVIDENCE"]),
+            "POSSIBLE_EVIDENCE": dict(gate1["accounts"]["POSSIBLE_EVIDENCE"]),
+            "class_weights": dict(literal_weights["gate1"]),
+            "coverage": {
+                "n_train": n_train,
+                "n_none": n_none,
+                "n_possible": n_present + n_uncertain,
+            },
+        },
+        "Gate2": {
+            "UNCERTAIN": dict(gate2["accounts"]["UNCERTAIN"]),
+            "CONFIRMED_PRESENT": dict(gate2["accounts"]["CONFIRMED_PRESENT"]),
+            "class_weights": dict(literal_weights["gate2"]),
+            "coverage": {
+                "n_eligible": n_present + n_uncertain,
+                "n_present": n_present,
+                "n_uncertain": n_uncertain,
+                "n_none_excluded": n_none,
+            },
+        },
+        "clip_policy": {
+            "max": CLASS_WEIGHT_POLICY["clip_max"],
+            "min": CLASS_WEIGHT_POLICY["clip_min"],
+            "renormalize_after_clip": False,
+        },
+        "code_revision": code_revision,
+        "dataset_sha256": dataset_sha256,
+        "literal_weights": literal_weights,
+        "provenance_weights": dict(PROVENANCE_LOSS_MULTIPLIERS),
+        "resolution_formula_version": CLASS_WEIGHT_FORMULA_VERSION,
+        "schema": SCHEMA_CLASS_WEIGHTS,
+        "train_split_sha256": train_split_sha256,
+        "train_only": True,
+    }
+    payload["CLASS_WEIGHT_ARTIFACT_SHA256"] = sha256_text(
+        canonical_json(
+            {k: v for k, v in payload.items() if k != "CLASS_WEIGHT_ARTIFACT_SHA256"}
+        )
+    )
+    return payload
 
 
 def softmax2(logits: Sequence[float]) -> dict[str, float]:
@@ -695,27 +861,65 @@ def route_diagnostics(
     return out
 
 
+def gold_mapping_contract_sha256() -> str:
+    from .classification_v5_stage_a_gold_label_mapping import mapping_contract
+
+    return sha256_text(canonical_json(mapping_contract()))
+
+
+def label_provenance_contract_sha256() -> str:
+    return sha256_text(
+        canonical_json(
+            {
+                "provenance_multipliers": dict(PROVENANCE_LOSS_MULTIPLIERS),
+                "rule": LABEL_PROVENANCE_RULE,
+            }
+        )
+    )
+
+
 def two_stage_resolved_config(
     *,
     dataset_sha256: str,
-    gate1_class_weights: Mapping[str, Any],
-    gate2_class_weights: Mapping[str, Any],
+    class_weight_artifact: Mapping[str, Any],
     code_revision: str,
     tokenizer_identity: str,
+    architecture_receipt_sha256: str = ARCHITECTURE_RECEIPT_SHA256,
 ) -> dict[str, Any]:
+    if dataset_sha256 != AUTHORIZED_DATASET_SHA:
+        raise ValueError("dataset_sha_mismatch")
+    if architecture_receipt_sha256 != ARCHITECTURE_RECEIPT_SHA256:
+        raise ValueError("architecture_receipt_mismatch")
+    literal = class_weight_artifact["literal_weights"]
     config = {
         "acceptance_gates": dict(ACCEPTANCE_GATES),
         "architecture": architecture_contract(),
-        "best_encoder_sha256": BEST_SHA,
+        "architecture_receipt_sha256": architecture_receipt_sha256,
+        "best_encoder_sha256": AUTHORIZED_BEST_SHA,
         "checkpoint_selection": dict(CHECKPOINT_SELECTION),
+        "class_weight_artifact_sha256": class_weight_artifact[
+            "CLASS_WEIGHT_ARTIFACT_SHA256"
+        ],
         "code_revision": code_revision,
         "dataset_sha256": dataset_sha256,
         "experiment_id": EXPERIMENT_ID,
         "flat_head_status": FLAT_HEAD_STATUS,
         "forward": forward_contract_schema(),
-        "gate1_class_weights": dict(gate1_class_weights),
-        "gate2_class_weights": dict(gate2_class_weights),
+        "gate1_class_weights_literal": dict(literal["gate1"]),
+        "gate1_gold_mapping": {
+            "EVIDENCE_PRESENT": 1,
+            "NO_EVIDENCE": 0,
+            "UNCERTAIN": 1,
+        },
+        "gate2_class_weights_literal": dict(literal["gate2"]),
+        "gate2_gold_mapping": {
+            "EVIDENCE_PRESENT": 1,
+            "UNCERTAIN": 0,
+        },
+        "gate2_mask_rule": "gold_NO_EVIDENCE_excluded_from_gate2_loss",
         "gold_label_rule": GOLD_LABEL_RULE,
+        "gold_mapping_sha256": gold_mapping_contract_sha256(),
+        "label_provenance_contract_sha256": label_provenance_contract_sha256(),
         "label_provenance_rule": LABEL_PROVENANCE_RULE,
         "loss": loss_contract(),
         "optimization": {
@@ -734,6 +938,7 @@ def two_stage_resolved_config(
         "parent_experiment_id": PARENT_EXPERIMENT_ID,
         "parent_flat_selected_checkpoint_sha256": PARENT_FLAT_SELECTED_CHECKPOINT_SHA,
         "parent_primary_decision": PARENT_PRIMARY_DECISION,
+        "provenance_weights": dict(PROVENANCE_LOSS_MULTIPLIERS),
         "rule": TWO_STAGE_RULE,
         "schema": SCHEMA_CONFIG,
         "seed": TRAIN_HYPERPARAMS["seed"],
@@ -750,7 +955,14 @@ def two_stage_resolved_config(
             "tokenizer_identity": tokenizer_identity,
             "truncation": TRAIN_HYPERPARAMS["truncation"],
         },
+        "train_rule": TRAIN_RULE,
         "train_run_limit": 1,
+        "trainable": {
+            "gate1_head": True,
+            "gate2_head": True,
+            "last_trainable_encoder_layers": LAST_TRAINABLE_ENCODER_LAYERS,
+            "mutate_best": False,
+        },
     }
     config["training_config_sha256"] = sha256_text(
         canonical_json({k: v for k, v in config.items() if k != "training_config_sha256"})
@@ -762,13 +974,21 @@ def authorization_contract(
     *,
     dataset_sha256: str,
     training_config_sha256: str,
+    class_weight_artifact_sha256: str,
     code_revision: str,
+    architecture_receipt_sha256: str = ARCHITECTURE_RECEIPT_SHA256,
 ) -> dict[str, Any]:
+    if architecture_receipt_sha256 != ARCHITECTURE_RECEIPT_SHA256:
+        raise ValueError("architecture_receipt_mismatch")
+    if dataset_sha256 != AUTHORIZED_DATASET_SHA:
+        raise ValueError("dataset_sha_mismatch")
     return {
         "AUTHORIZE_RULE": AUTHORIZE_RULE,
+        "ARCHITECTURE_RECEIPT_SHA256": architecture_receipt_sha256,
         "BEST": "UNCHANGED",
         "BEST_MUTATED": False,
-        "CURRENT_BEST": BEST_SHA,
+        "CLASS_WEIGHT_ARTIFACT_SHA256": class_weight_artifact_sha256,
+        "CURRENT_BEST": AUTHORIZED_BEST_SHA,
         "DATASET_SHA256": dataset_sha256,
         "EXPERIMENT_ID": EXPERIMENT_ID,
         "RESERVE_CONSUMED": False,
@@ -777,18 +997,58 @@ def authorization_contract(
         "TRAINING_RUN_LIMIT": 1,
         "TRAINING_STATUS": "AUTHORIZED_NOT_STARTED",
         "TRAIN_AUTHORIZED": True,
+        "authorized_best_sha256": AUTHORIZED_BEST_SHA,
         "authorized_dataset_sha256": AUTHORIZED_DATASET_SHA,
         "code_revision": code_revision,
         "flat_head_status": FLAT_HEAD_STATUS,
         "parent_experiment_id": PARENT_EXPERIMENT_ID,
         "parent_flat_selected_checkpoint_sha256": PARENT_FLAT_SELECTED_CHECKPOINT_SHA,
         "parent_primary_decision": PARENT_PRIMARY_DECISION,
-        "rule": TWO_STAGE_RULE,
+        "prior_run_count": 0,
+        "rule": TRAIN_RULE,
         "schema": SCHEMA_AUTHORIZATION,
         "surface_rule": AUTHORIZED_SURFACE_RULE,
         "train": False,
         "train_authorized": True,
+        "two_stage_architecture_rule": TWO_STAGE_RULE,
     }
+
+
+def runner_authorization_checks(
+    *,
+    train_authorized: bool,
+    experiment_id: str,
+    dataset_sha256: str,
+    architecture_receipt_sha256: str,
+    resolved_config_sha256: str,
+    authorized_config_sha256: str,
+    best_sha256: str,
+    surface_readiness: str,
+    label_mapping: str,
+    label_provenance_invalid_rows: int,
+    prior_run_count: int,
+    reserve_consumed: bool,
+    class_weight_artifact_sha256: str,
+    authorized_class_weight_artifact_sha256: str,
+) -> dict[str, Any]:
+    checks = {
+        "architecture_receipt": architecture_receipt_sha256
+        == ARCHITECTURE_RECEIPT_SHA256,
+        "best": best_sha256 == AUTHORIZED_BEST_SHA,
+        "class_weight_artifact": class_weight_artifact_sha256
+        == authorized_class_weight_artifact_sha256,
+        "dataset_sha256": dataset_sha256 == AUTHORIZED_DATASET_SHA,
+        "experiment_id": experiment_id == EXPERIMENT_ID,
+        "label_mapping": label_mapping == "PASS",
+        "label_provenance_invalid_rows": label_provenance_invalid_rows == 0,
+        "prior_run_count": prior_run_count == 0,
+        "reserve_consumed": reserve_consumed is False,
+        "resolved_config_sha256": resolved_config_sha256 == authorized_config_sha256,
+        "surface_readiness": surface_readiness == "PASS",
+        "train_authorized": train_authorized is True,
+    }
+    checks["pass"] = all(checks.values())
+    return checks
 
 
 def train_receipt_schema() -> dict[str, Any]:
@@ -817,40 +1077,34 @@ def train_receipt_schema() -> dict[str, Any]:
 
 
 def design_freeze_receipt(*, code_revision: str) -> dict[str, Any]:
-    """Public design-state receipt for this spec-only pass."""
-    # Deterministic empty-weight placeholders for formula freeze witness.
+    """Public design-state receipt helper (historical; sealed hash is pinned).
+
+    Authorization binds ARCHITECTURE_RECEIPT_SHA256 (631427cc…), not a re-freeze.
+    """
     demo_rows = [
-        {
-            "evidence_label": "NO_EVIDENCE",
-            "provenance": "OBSERVED",
-        },
-        {
-            "evidence_label": "EVIDENCE_PRESENT",
-            "provenance": "OBSERVED",
-        },
-        {
-            "evidence_label": "UNCERTAIN",
-            "provenance": "INFERRED",
-        },
-        {
-            "evidence_label": "EVIDENCE_PRESENT",
-            "provenance": "INFERRED",
-        },
+        {"evidence_label": "NO_EVIDENCE", "provenance": "OBSERVED"},
+        {"evidence_label": "EVIDENCE_PRESENT", "provenance": "OBSERVED"},
+        {"evidence_label": "UNCERTAIN", "provenance": "INFERRED"},
+        {"evidence_label": "EVIDENCE_PRESENT", "provenance": "INFERRED"},
     ]
-    g1w = compute_gate1_class_weights(demo_rows)
-    g2w = compute_gate2_class_weights(demo_rows)
+    demo_weights = resolve_two_stage_class_weights(
+        demo_rows,
+        dataset_sha256=AUTHORIZED_DATASET_SHA,
+        train_split_sha256="demo_only_not_for_authorization",
+        code_revision=code_revision,
+    )
     resolved = two_stage_resolved_config(
         dataset_sha256=AUTHORIZED_DATASET_SHA,
-        gate1_class_weights=g1w,
-        gate2_class_weights=g2w,
+        class_weight_artifact=demo_weights,
         code_revision=code_revision,
         tokenizer_identity="local_files_only:ModernBERT-base",
     )
     payload = {
         "AUTHORIZE_RULE_NEXT": AUTHORIZE_RULE,
         "BEST": "UNCHANGED",
-        "BEST_SHA256": BEST_SHA,
+        "BEST_SHA256": AUTHORIZED_BEST_SHA,
         "DATASET_SHA256": AUTHORIZED_DATASET_SHA,
+        "DESIGN_EXPERIMENT_ID": DESIGN_EXPERIMENT_ID,
         "DESIGN_STATE": "FROZEN",
         "EXPERIMENT_ID": EXPERIMENT_ID,
         "PARENT_EXPERIMENT_ID": PARENT_EXPERIMENT_ID,
@@ -861,6 +1115,7 @@ def design_freeze_receipt(*, code_revision: str) -> dict[str, Any]:
         "TRAIN_AUTHORIZED": False,
         "acceptance_gates": dict(ACCEPTANCE_GATES),
         "architecture": architecture_contract(),
+        "architecture_receipt_sha256_pin": ARCHITECTURE_RECEIPT_SHA256,
         "checkpoint_selection": dict(CHECKPOINT_SELECTION),
         "code_revision": code_revision,
         "compatibility": {
@@ -871,11 +1126,11 @@ def design_freeze_receipt(*, code_revision: str) -> dict[str, Any]:
             "v1r9_dataset_unchanged": True,
         },
         "demo_weight_witness_only": {
-            "gate1": g1w["class_weights"],
-            "gate2": g2w["class_weights"],
+            "literal_weights": demo_weights["literal_weights"],
             "note": (
                 "Witness of formula application on a tiny synthetic set; "
-                "authorize/train must recompute on full V1R9 train split."
+                "authorize must resolve on full V1R9 train split before "
+                "TRAIN_AUTHORIZED=true."
             ),
         },
         "forward": forward_contract_schema(),
@@ -919,6 +1174,7 @@ def design_freeze_receipt(*, code_revision: str) -> dict[str, Any]:
         "rule": TWO_STAGE_RULE,
         "schemas": {
             "authorization": SCHEMA_AUTHORIZATION,
+            "class_weights": SCHEMA_CLASS_WEIGHTS,
             "config": SCHEMA_CONFIG,
             "forward": SCHEMA_FORWARD,
             "train_receipt": SCHEMA_TRAIN_RECEIPT,
