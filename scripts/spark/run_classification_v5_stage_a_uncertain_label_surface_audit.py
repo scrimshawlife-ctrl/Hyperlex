@@ -541,16 +541,25 @@ def audit_inner() -> int:
         present_fn.setdefault(tax, []).append(item)
 
     # Embed PRESENT FN cohorts vs UNCERTAIN centroid / gold labels
-    def mean_sim_to_pool(query_rows: list[dict], pool_emb: torch.Tensor) -> dict:
+    def mean_sim_to_pool(
+        query_rows: list[dict],
+        pool_emb: torch.Tensor,
+        pool_ids: list[str],
+        *,
+        exclude_query_identity: bool = False,
+    ) -> dict:
         if not query_rows or pool_emb.numel() == 0:
             return {
                 "mean_nearest_cosine": NO_DATA if not query_rows else NOT_COMPUTABLE,
                 "n_eligible": 0,
                 "state": NO_DATA if not query_rows else NOT_COMPUTABLE,
             }
-        # map identities to surface rows for text
         by_id = {str(r["identity"]): r for r in rows}
-        qrows = [by_id[str(i["identity"])] for i in query_rows if str(i["identity"]) in by_id]
+        qrows = [
+            by_id[str(i["identity"])]
+            for i in query_rows
+            if str(i["identity"]) in by_id
+        ]
         if not qrows:
             return {
                 "mean_nearest_cosine": NOT_COMPUTABLE,
@@ -560,12 +569,36 @@ def audit_inner() -> int:
             }
         qemb = embed_rows(qrows)
         sims = qemb @ pool_emb.T
-        nearest = sims.max(dim=1).values.tolist()
+        nearest: list[float] = []
+        n_excl = 0
+        for qi, qrow in enumerate(qrows):
+            row_sims = sims[qi].clone()
+            if exclude_query_identity:
+                qid = str(qrow["identity"])
+                # Mask self / exact identity match so PRESENT FNs are not
+                # tautologically nearest to themselves in the PRESENT pool.
+                for pi, pid in enumerate(pool_ids):
+                    if pid == qid:
+                        row_sims[pi] = -1.0
+            if float(row_sims.max().item()) < -0.5:
+                n_excl += 1
+                continue
+            nearest.append(float(row_sims.max().item()))
+        if not nearest:
+            return {
+                "mean_nearest_cosine": NOT_COMPUTABLE,
+                "n_eligible": 0,
+                "n_excluded_invalid": n_excl,
+                "state": NOT_COMPUTABLE,
+                "blocker": "no_nonself_neighbors",
+            }
         return {
             "mean_nearest_cosine": statistics.fmean(nearest),
             "median_nearest_cosine": statistics.median(nearest),
             "n_eligible": len(nearest),
+            "n_excluded_invalid": n_excl,
             "state": OBSERVED_VALUE,
+            "exclude_query_identity": exclude_query_identity,
         }
 
     genuinely = present_fn.get("GENUINELY_UNCERTAIN") or []
@@ -577,9 +610,15 @@ def audit_inner() -> int:
 
     cmp_gen = {
         "n_genuinely_uncertain_present_fn": len(genuinely),
-        "nearest_to_gold_UNCERTAIN": mean_sim_to_pool(genuinely, emb_unc),
-        "nearest_to_gold_PRESENT": mean_sim_to_pool(genuinely, emb_present),
-        "nearest_to_gold_NONE": mean_sim_to_pool(genuinely, emb_none),
+        "nearest_to_gold_UNCERTAIN": mean_sim_to_pool(
+            genuinely, emb_unc, unc_ids, exclude_query_identity=False
+        ),
+        "nearest_to_gold_PRESENT": mean_sim_to_pool(
+            genuinely, emb_present, present_ids, exclude_query_identity=True
+        ),
+        "nearest_to_gold_NONE": mean_sim_to_pool(
+            genuinely, emb_none, none_ids, exclude_query_identity=False
+        ),
     }
     # resemblance label
     if all(
@@ -612,9 +651,15 @@ def audit_inner() -> int:
 
     cmp_none = {
         "n_none_dominated_present_fn": len(none_dom),
-        "nearest_to_gold_UNCERTAIN": mean_sim_to_pool(none_dom, emb_unc),
-        "nearest_to_gold_PRESENT": mean_sim_to_pool(none_dom, emb_present),
-        "nearest_to_gold_NONE": mean_sim_to_pool(none_dom, emb_none),
+        "nearest_to_gold_UNCERTAIN": mean_sim_to_pool(
+            none_dom, emb_unc, unc_ids, exclude_query_identity=False
+        ),
+        "nearest_to_gold_PRESENT": mean_sim_to_pool(
+            none_dom, emb_present, present_ids, exclude_query_identity=True
+        ),
+        "nearest_to_gold_NONE": mean_sim_to_pool(
+            none_dom, emb_none, none_ids, exclude_query_identity=False
+        ),
     }
     if all(
         isinstance(cmp_none[k].get("mean_nearest_cosine"), float)
