@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Authorize Stage-A-004 on V1R9 remediated surface (Spec 007):**
+  `AUTHORIZE_V5_STAGE_A_NEXT_RUN_ON_REMEDIATED_SURFACE` pins experiment
+  `HLX-CLASSIFICATION-V5-STAGE-A-004` to READY V1R9 dataset `8d4be830…`.
+  Sealed GATE_EVAL `ff9cc665…` / READINESS `0b551c76…` digests (metadata
+  only). Frozen training config `0c9df174…`; authorization receipt
+  `7657092a…`. `TRAIN_AUTHORIZED=true`,
+  `TRAINING_STATUS=AUTHORIZED_NOT_STARTED`. No train / reserve / BEST
+  move (`9fba0f66…` UNCHANGED). Parent diagnosis
+  `MIXED_UNCERTAIN_SURFACE_FAILURE`; V1R8 `c0fdd82d…` preserved. Receipt
+  `classification-v5-stage-a-train-v1r9-authorize-receipt-20260930.json`.
+  Next: `TRAIN_V5_STAGE_A_ONCE`.
+
 - **Remediate Stage-A UNCERTAIN surface → V1R9 READY (Spec 007):**
   `REMEDIATE_V5_UNCERTAIN_SURFACE` replaces the narrow V1R8 UNCERTAIN bank
   without mutating V1R8 (`c0fdd82d…` preserved). New surface
