@@ -450,3 +450,407 @@ def assess_witness(witness: Mapping[str, Any]) -> dict[str, Any]:
         "target_norm_source": witness.get("target_norm_source"),
         "witness_sha256": witness["witness_sha256"],
     }
+
+
+FUSION_ALPHA = 1.0
+FUSION_BETA = 1.0
+PROTO_TAU = 0.10
+LAMBDA_PROTO = 0.5
+HARD_NEGATIVE_COUNT = 3
+HARD_NEGATIVE_MULTIPLIER = 2.0
+CONFUSABLE_COSINE = 0.80
+GEOMETRY_SCHEMA = "hyperlex.classification.v2.prototype_geometry.v1"
+FUSION_RULE = "population_zscore(cosine/tau)+population_zscore(residual)"
+
+
+def _unit(values: Sequence[float]) -> list[float]:
+    vector = _finite_vector(values, "FAMILY_PROTOTYPE_UNAVAILABLE")
+    norm = l2_norm(vector)
+    if norm == 0.0:
+        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "zero_norm")
+    return [value / norm for value in vector]
+
+
+def population_standardize(values: Sequence[float]) -> list[float]:
+    """Per-example z-score across families. A constant vector becomes zeros."""
+    vector = _finite_vector(values, "FAMILY_PROTOTYPE_UNAVAILABLE")
+    count = len(vector)
+    mean = sum(vector) / count
+    variance = sum((value - mean) ** 2 for value in vector) / count
+    deviation = math.sqrt(variance)
+    if deviation == 0.0:
+        return [0.0 for _value in vector]
+    return [(value - mean) / deviation for value in vector]
+
+
+def fuse_family_logits(cosine: Sequence[float], residual: Sequence[float]) -> list[float]:
+    """Shared alpha and beta. Standardization removes a global magnitude advantage."""
+    if len(cosine) != len(residual):
+        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "fusion_width")
+    proto = population_standardize(value / PROTO_TAU for value in cosine)
+    learned = population_standardize(residual)
+    return [FUSION_ALPHA * left + FUSION_BETA * right for left, right in zip(proto, learned)]
+
+
+def cosine_matrix(vectors: Sequence[Sequence[float]]) -> list[list[float]]:
+    units = [_unit(vector) for vector in vectors]
+    matrix = []
+    for left in units:
+        matrix.append([sum(a * b for a, b in zip(left, right)) for right in units])
+    return matrix
+
+
+def hard_negatives(
+    matrix: Sequence[Sequence[float]],
+    names: Sequence[str],
+    count: int = HARD_NEGATIVE_COUNT,
+) -> dict[str, list[dict[str, float | str]]]:
+    """Top other prototypes. Ties break by family name. No evaluation mining."""
+    if len(matrix) != len(names):
+        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "similarity")
+    chosen: dict[str, list[dict[str, float | str]]] = {}
+    for index, name in enumerate(names):
+        order = sorted(
+            (
+                (-float(matrix[index][other]), names[other])
+                for other in range(len(names))
+                if other != index
+            )
+        )
+        chosen[name] = [
+            {"cosine": -score, "family": other}
+            for score, other in order[:count]
+        ]
+    return chosen
+
+
+def confusable_pairs(
+    matrix: Sequence[Sequence[float]],
+    names: Sequence[str],
+    threshold: float = CONFUSABLE_COSINE,
+) -> list[dict[str, float | str]]:
+    pairs = []
+    for left in range(len(names)):
+        for right in range(left + 1, len(names)):
+            score = float(matrix[left][right])
+            if score >= threshold:
+                first, second = sorted((names[left], names[right]))
+                pairs.append({"cosine": score, "left": first, "right": second})
+    pairs.sort(key=lambda item: (-float(item["cosine"]), str(item["left"]), str(item["right"])))
+    return pairs
+
+
+def confusion_clusters(
+    pairs: Sequence[Mapping[str, Any]],
+    names: Sequence[str],
+) -> list[list[str]]:
+    parent = {name: name for name in names}
+
+    def find(name: str) -> str:
+        while parent[name] != name:
+            parent[name] = parent[parent[name]]
+            name = parent[name]
+        return name
+
+    for pair in pairs:
+        left = find(str(pair["left"]))
+        right = find(str(pair["right"]))
+        parent[left] = right
+    groups: dict[str, list[str]] = {}
+    for name in names:
+        groups.setdefault(find(name), []).append(name)
+    return sorted(
+        [sorted(group) for group in groups.values() if len(group) > 1],
+        key=lambda group: (group[0], len(group)),
+    )
+
+
+def denominator_multipliers(
+    names: Sequence[str],
+    negatives: Mapping[str, Sequence[Mapping[str, Any]]],
+) -> list[list[float]]:
+    """Gold stays 1. Recorded hard negatives are multiplied. Everyone else stays 1."""
+    multipliers = []
+    for name in names:
+        row = []
+        hard = {str(item["family"]) for item in negatives.get(name, ())}
+        for other in names:
+            if other != name and other in hard:
+                row.append(HARD_NEGATIVE_MULTIPLIER)
+            else:
+                row.append(1.0)
+        multipliers.append(row)
+    return multipliers
+
+
+def prototype_contrastive_nll(
+    cosine: Sequence[float],
+    gold_index: int,
+    multipliers: Sequence[float],
+) -> float:
+    """Temperature-scaled prototype NLL. The positive denominator weight is 1."""
+    if len(cosine) != len(multipliers) or not 0 <= gold_index < len(cosine):
+        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "contrastive")
+    logits = [float(value) / PROTO_TAU for value in cosine]
+    peak = max(logits)
+    total = 0.0
+    for multiplier, logit in zip(multipliers, logits):
+        scale = float(multiplier)
+        if scale <= 0.0:
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "contrastive")
+        total += scale * math.exp(logit - peak)
+    if multipliers[gold_index] != 1.0:
+        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "gold_weight")
+    return math.log(total) + peak - logits[gold_index]
+
+
+def family_margin_report(
+    records: Sequence[Mapping[str, Any]],
+    names: Sequence[str],
+) -> dict[str, float | None]:
+    """Mean similarity margin, sim(gold) minus the nearest other prototype."""
+    buckets: dict[str, list[float]] = {name: [] for name in names}
+    index = {name: position for position, name in enumerate(names)}
+    for record in records:
+        gold = str(record.get("lineage") or "")
+        if gold not in index:
+            continue
+        similarities = [float(value) for value in record["similarities"]]
+        if len(similarities) != len(names):
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "margin")
+        gold_index = index[gold]
+        others = [value for position, value in enumerate(similarities) if position != gold_index]
+        buckets[gold].append(similarities[gold_index] - max(others))
+    return {
+        name: None if not values else sum(values) / len(values)
+        for name, values in buckets.items()
+    }
+
+
+def _markup_text(text: str) -> bool:
+    raw = str(text or "").lstrip()
+    return raw.startswith(("![](", "http://", "https://", "Audio")) or "Play audio" in raw
+
+
+def geometry_training_sources(rows: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Prose training strings for families that have no stored definition prototype.
+
+    Families with definition prose keep the verified prototype vectors. This
+    collector is only for the exact-copy families, whose training string is
+    the row text.
+    """
+    from .classification_v2 import EXACT_COPY_FAMILIES
+    from .classification_v2_surface import SURFACE_PROSE, surface_form
+
+    grouped: dict[str, list[tuple[str, Mapping[str, Any]]]] = {
+        family: [] for family in EXACT_COPY_FAMILIES
+    }
+    for row in rows:
+        if row.get("split") != "train":
+            continue
+        lineage = str(row.get("lineage") or "")
+        if lineage not in grouped or row.get("class") not in PROTOTYPE_WEIGHT:
+            continue
+        if row.get("evaluation_reserve") or row.get("held_out"):
+            raise ClassificationContractError("evaluation_isolation")
+        text = str(row.get("text") or "").strip()
+        if not text or _markup_text(text) or surface_form(text) != SURFACE_PROSE:
+            continue
+        grouped[lineage].append((normalized_text_sha256(text), row))
+    sources: dict[str, dict[str, Any]] = {}
+    for family, items in grouped.items():
+        if not items:
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+        ordered = sorted(items, key=lambda item: (item[0], 0 if item[1].get("class") == "OBSERVED" else 1))
+        unique = []
+        seen = set()
+        for digest, row in ordered:
+            if digest in seen:
+                continue
+            seen.add(digest)
+            unique.append((digest, row))
+        sources[family] = {
+            "identities": [digest for digest, _row in unique],
+            "inferred": sum(1 for _digest, row in unique if row.get("class") == "INFERRED"),
+            "observed": sum(1 for _digest, row in unique if row.get("class") == "OBSERVED"),
+            "rows": [row for _digest, row in unique],
+        }
+    return sources
+
+
+def geometry_sha256(witness: Mapping[str, Any]) -> str:
+    from .classification_v2 import canonical_json, sha256_text
+
+    body = {
+        "fusion": witness["fusion"],
+        "hard_negatives": witness["hard_negatives"],
+        "prototype_witness_sha256": witness["witness_sha256"],
+        "residual_bias_hash": witness["residual_bias_hash"],
+        "residual_modes": list(witness["residual_mode"]),
+        "residual_weight_hash": list(witness["residual_weight_hash"]),
+        "target_norm": witness["target_norm"],
+    }
+    return sha256_text(canonical_json(body))
+
+
+def _fusion_contract() -> dict[str, Any]:
+    return {
+        "alpha": FUSION_ALPHA,
+        "beta": FUSION_BETA,
+        "hard_negative_multiplier": HARD_NEGATIVE_MULTIPLIER,
+        "lambda_proto": LAMBDA_PROTO,
+        "rule": FUSION_RULE,
+        "tau": PROTO_TAU,
+    }
+
+
+def assess_geometry_witness(
+    witness: Mapping[str, Any],
+    mapped: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Frozen anchors for every active family, plus the residual initialization."""
+    from .classification_v2 import ACTIVE_FAMILY_VOCABULARY, EXACT_COPY_FAMILIES
+
+    try:
+        base = assess_witness(witness)
+        if not base["pass"]:
+            return base
+        if witness.get("schema") != GEOMETRY_SCHEMA:
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "schema")
+        if witness.get("fusion") != _fusion_contract():
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "fusion")
+        if witness.get("geometry_sha256") != geometry_sha256(witness):
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "geometry_hash")
+        modes = list(witness["residual_mode"])
+        residual_weight = witness["residual_weight"]
+        residual_bias = list(witness["residual_bias"])
+        if [row["family"] for row in witness["rows"]] != list(ACTIVE_FAMILY_VOCABULARY):
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "order")
+        if any(row["initialization_mode"] != INITIALIZATION_PROTOTYPE for row in witness["rows"]):
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "prototype_missing")
+        if len(modes) != len(ACTIVE_FAMILY_VOCABULARY):
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "residual")
+        weight_hashes = []
+        for index, family in enumerate(ACTIVE_FAMILY_VOCABULARY):
+            installed = _f32_round(residual_weight[index])
+            weight_hashes.append(_f32_hash(installed))
+            if modes[index] == "ZERO":
+                if any(value != 0.0 for value in installed) or float(residual_bias[index]) != 0.0:
+                    raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+                if family in EXACT_COPY_FAMILIES:
+                    raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+            elif modes[index] == INITIALIZATION_EXACT:
+                if family not in EXACT_COPY_FAMILIES:
+                    raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+                if mapped is not None:
+                    live = mapped["rows"][index]
+                    if live["mapping_status"] != "EXACT_COPY" or live["active_family"] != family:
+                        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+                    if _f32_hash(_f32_round(mapped["weight"][index])) != weight_hashes[-1]:
+                        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "copy_mismatch")
+                    if _f32_hash(_f32_round((mapped["bias"][index],))) != _f32_hash(
+                        _f32_round((residual_bias[index],))
+                    ):
+                        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "copy_mismatch")
+            else:
+                raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+        if weight_hashes != list(witness["residual_weight_hash"]):
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "residual_hash")
+        if _f32_hash(_f32_round(residual_bias)) != witness["residual_bias_hash"]:
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "residual_hash")
+        names = list(ACTIVE_FAMILY_VOCABULARY)
+        negatives = witness["hard_negatives"]
+        if set(negatives) != set(names):
+            raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "hard_negatives")
+        for family in names:
+            others = [str(item["family"]) for item in negatives[family]]
+            if len(others) != HARD_NEGATIVE_COUNT or len(set(others)) != HARD_NEGATIVE_COUNT:
+                raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+            if family in others:
+                raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+    except (ClassificationContractError, KeyError, TypeError, ValueError) as exc:
+        return {"pass": False, "reason": "FAMILY_PROTOTYPE_UNAVAILABLE", "detail": str(exc)}
+    base["geometry_sha256"] = witness["geometry_sha256"]
+    base["pass"] = True
+    base["prototypes_frozen"] = True
+    base["copied_rows_match"] = mapped is not None or base.get("copied_rows_match") is True
+    return base
+
+
+def assemble_geometry_witness(
+    base_witness: Mapping[str, Any],
+    encoded_exact: Mapping[str, Mapping[str, Any]],
+    mapped: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Semantic prototype for every active family. Residual rows stay separate."""
+    from .classification_v2 import ACTIVE_FAMILY_VOCABULARY, EXACT_COPY_FAMILIES
+
+    target = float(base_witness["target_norm"])
+    if base_witness.get("scaling_rule") != SCALING_RULE:
+        raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", "scaling")
+    by_family = {row["family"]: (index, row) for index, row in enumerate(base_witness["rows"])}
+    rows: list[dict[str, Any]] = []
+    weight: list[list[float]] = []
+    for family in ACTIVE_FAMILY_VOCABULARY:
+        if family in EXACT_COPY_FAMILIES:
+            payload = encoded_exact.get(family)
+            if not payload:
+                raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+            witness = _prototype_witness(
+                family,
+                payload["vectors"],
+                payload["weights"],
+                payload["identities"],
+                observed=int(payload["observed"]),
+                inferred=int(payload["inferred"]),
+                target_norm=target,
+            )
+        else:
+            index, public = by_family[family]
+            if public["initialization_mode"] != INITIALIZATION_PROTOTYPE:
+                raise ClassificationContractError("FAMILY_PROTOTYPE_UNAVAILABLE", family)
+            witness = dict(public)
+            witness["weight"] = _f32_round(base_witness["weight"][index])
+        rows.append(witness)
+        weight.append(list(witness["weight"]))
+    public = [_public_row(row) for row in rows]
+    matrix = cosine_matrix(weight)
+    names = list(ACTIVE_FAMILY_VOCABULARY)
+    negatives = hard_negatives(matrix, names)
+    residual_weight = []
+    residual_bias = []
+    residual_mode = []
+    width = len(weight[0])
+    for index, family in enumerate(names):
+        if family in EXACT_COPY_FAMILIES:
+            residual_weight.append(_f32_round(mapped["weight"][index]))
+            residual_bias.append(_f32_round((mapped["bias"][index],))[0])
+            residual_mode.append(INITIALIZATION_EXACT)
+        else:
+            residual_weight.append([0.0] * width)
+            residual_bias.append(0.0)
+            residual_mode.append("ZERO")
+    witness = {
+        "bias": [0.0 for _name in names],
+        "exact_copy_families": list(EXACT_COPY_FAMILIES),
+        "fusion": _fusion_contract(),
+        "hard_negatives": negatives,
+        "prototype_families": list(names),
+        "residual_bias": residual_bias,
+        "residual_bias_hash": _f32_hash(_f32_round(residual_bias)),
+        "residual_mode": residual_mode,
+        "residual_weight": residual_weight,
+        "residual_weight_hash": [_f32_hash(vector) for vector in residual_weight],
+        "rows": public,
+        "scaling_rule": SCALING_RULE,
+        "similarity": matrix,
+        "confusable_pairs": confusable_pairs(matrix, names),
+        "confusion_clusters": confusion_clusters(confusable_pairs(matrix, names), names),
+        "target_norm": target,
+        "target_norm_source": base_witness.get("target_norm_source"),
+        "weight": weight,
+        "witness_sha256": witness_sha256(public, target),
+    }
+    witness["geometry_sha256"] = geometry_sha256(witness)
+    witness["schema"] = GEOMETRY_SCHEMA
+    return witness

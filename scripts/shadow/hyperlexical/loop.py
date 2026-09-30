@@ -786,16 +786,22 @@ def run_loop(
     v2_contract = None
     if v2_on:
         from .classification_v2 import freeze_training_contract
-        from .classification_v2_runtime import build_v2_heads
+        from .classification_v2_runtime import build_geometry_heads, build_v2_heads
 
         v2_contract = freeze_training_contract(classify_tr)
-        witness_path = os.environ.get("HLX_V2_PROTOTYPE_WITNESS")
+        geometry_path = os.environ.get("HLX_V2_GEOMETRY_WITNESS")
+        witness_path = geometry_path or os.environ.get("HLX_V2_PROTOTYPE_WITNESS")
         if not witness_path:
             raise RuntimeError("FAMILY_PROTOTYPE_UNAVAILABLE")
         witness = json.loads(Path(witness_path).read_text(encoding="utf-8"))
-        applicability_head, family_head, init_receipt["classification_v2_rows"] = build_v2_heads(
-            hidden, classify, list(FAMILIES), witness
-        )
+        if geometry_path:
+            applicability_head, family_head, init_receipt["classification_v2_rows"] = build_geometry_heads(
+                hidden, classify, list(FAMILIES), witness
+            )
+        else:
+            applicability_head, family_head, init_receipt["classification_v2_rows"] = build_v2_heads(
+                hidden, classify, list(FAMILIES), witness
+            )
     classify_parameters = list(classify.parameters())
     if v2_on:
         classify_parameters = list(applicability_head.parameters()) + list(family_head.parameters())
@@ -1376,6 +1382,7 @@ def run_loop(
 
     calibration_artifact = None
     surface_artifact = None
+    geometry_artifact = None
     if v2_checkpoint:
         if best_state is None:
             raise RuntimeError("classification v2 restore-best is required before calibration")
@@ -1463,6 +1470,41 @@ def run_loop(
         surface_artifact = applicability_surface_report(surface_records)
         surface_artifact["checkpoint_identity"] = best_checkpoint_sha
         surface_artifact["reserve_used"] = False
+        geometry_artifact = None
+        if hasattr(family_head, "cosine"):
+            from .classification_v2 import ACTIVE_FAMILY_VOCABULARY as _FAMILY_NAMES
+            from .classification_v2_prototype import family_margin_report
+
+            margin_records = []
+            encoder.eval()
+            family_head.eval()
+            with torch.no_grad():
+                for row in classify_va:
+                    lineage = row.get("lineage")
+                    if lineage not in _FAMILY_NAMES:
+                        continue
+                    encoded = encoder(**encode_texts([row["text"]]))
+                    pooled = encoded.last_hidden_state[:, 0]
+                    margin_records.append(
+                        {
+                            "lineage": lineage,
+                            "similarities": [
+                                float(value)
+                                for value in family_head.cosine(pooled)[0].detach().cpu()
+                            ],
+                        }
+                    )
+            geometry_artifact = {
+                "family_similarity_margin": family_margin_report(margin_records, list(_FAMILY_NAMES)),
+                "n_family": len(margin_records),
+                "reserve_used": False,
+                "schema": "hyperlex.classification.v2.family_geometry_eval.v1",
+                "surface": "validation",
+            }
+            (out_dir / "classification-v2-family-geometry.json").write_text(
+                json.dumps(geometry_artifact, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
         (out_dir / "classification-v2-surface.json").write_text(
             json.dumps(surface_artifact, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
@@ -1593,6 +1635,7 @@ def run_loop(
     if calibration_artifact is not None:
         receipt["classification_v2_calibration"] = calibration_artifact
         receipt["classification_v2_surface"] = surface_artifact
+        receipt["classification_v2_family_geometry"] = geometry_artifact
     if select_on_classify:
         receipt["select_metric"] = SELECT_METRIC_CLASSIFY
     if force_overlap.get("disjoint"):

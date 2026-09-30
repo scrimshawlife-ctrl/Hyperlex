@@ -227,6 +227,13 @@ def decision_seal() -> dict[str, Any]:
         "residualized_length_correlation_abs_max": 0.30,
         "surface_rule": "hyperlex.classification.v2.surface.v1",
         "surface_shortcut_abs_correlation_max": 0.30,
+        "family_fusion_alpha": 1.0,
+        "family_fusion_beta": 1.0,
+        "family_fusion_rule": "population_zscore(cosine/tau)+population_zscore(residual)",
+        "family_hard_negative_multiplier": 2.0,
+        "family_prototype_lambda": 0.5,
+        "family_prototype_tau": 0.10,
+        "family_prototypes": "frozen",
         "surface_shortcut_diagnostic": "gold_conditional_residualized",
         "vocabulary_id": VOCABULARY_ID,
     }

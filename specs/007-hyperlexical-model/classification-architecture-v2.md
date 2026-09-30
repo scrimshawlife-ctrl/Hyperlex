@@ -302,3 +302,27 @@ For architecture diagnosis, `APPLICABILITY_SURFACE_SHORTCUT` is `RESOLVED`. That
 The active-family head stays a separate unresolved issue. Active-family macro-F1 is 0.1960828268105939. ATOM family macro-F1 is 0.226814225201322. PROSE family macro-F1 is 0.2664313342411146. The next substantive target is `ACTIVE_FAMILY_DISCRIMINATION`.
 
 The within-NONE/PROSE length correlation, 0.5504937075122819 on 31 rows, is recorded and is not one of the frozen guards. The NONE mean does not move with surface form, and the residualized length correlation stays inside 0.30.
+
+### Prototype-aware family discriminator
+
+Applicability stays closed. The open failure is active-family discrimination. The surface checkpoint's active-family macro-F1 is 0.1960828268105939, ATOM family macro-F1 is 0.226814225201322, and PROSE family macro-F1 is 0.2664313342411146. A pure 19-way linear head has to learn each sparse boundary on its own. The family head now scores a frozen semantic prototype and a learned residual together.
+
+For a normalized encoder vector `h` and a normalized frozen prototype `p_f`:
+
+```text
+s_f = cosine(h, p_f)
+r_f = residual linear logit on h
+z_proto = population_zscore(s / tau)
+z_resid = population_zscore(r)
+z_f = z_proto + z_resid
+```
+
+`alpha` and `beta` are the shared constants 1. Population z-score is across the 19 families of one example. A constant component becomes the zero vector, so a global magnitude cannot dominate. `tau` is 0.10. Dividing by that positive constant does not change the z-score; `tau` is the contrastive temperature. The canonical family decision is `argmax(z_f)`.
+
+The contrastive term, on family-positive rows only, is temperature-scaled prototype NLL. The gold denominator weight is 1. The top 3 other prototypes for that gold family, taken from the frozen prototype-to-prototype matrix, use weight 2. Every other family stays at 1. `lambda_proto` is 0.5. Provenance and family class weights multiply this term the same way they multiply the family cross-entropy. Prototypes are buffers. They are not updated and they are not recomputed each epoch.
+
+The fifteen verified semantic prototypes are copied from witness `7faa98239b2d4f39bf722c776543ded9a6c5959646c09c5db1e977cd7e69855d`. The four exact-copy families now also have semantic prototypes, built from their training prose with the frozen production encoder. Residual rows for those four families still initialize from the exact checkpoint rows. The other residual rows start at zero. The geometry witness is `/home/morpheus/hlx-private/classification-v2-geometry-20260930/PROTOTYPE_GEOMETRY.json`, prototype witness sha256 `d9ab8780dc000cc3e2b277e0c68720cbc5d7a513dfc02683414bf64a0384214a`, geometry sha256 `8392da2b05a256adea98dac39503ad05c948ac9f2bd7b04883bee56019c7e390`.
+
+Prototype cosine at or above 0.80 marks a confusable pair. There are 89 such pairs. They form one cluster of the fifteen definition-initialized families plus `ai-native`. `betting-sharp`, `crypto-degen`, and `gaming-meta` stay outside that threshold. Families are not merged.
+
+On the current validation split, before this training run, prototype-only macro-F1 is 0.13964619279491827, residual-only macro-F1 is 0.1960828268105939, and fused macro-F1 is 0.1725259920541627. The residual-only figure matches the surface checkpoint. The reserve was not scored. BEST is unchanged.

@@ -696,3 +696,73 @@ def test_residual_length_within_gold_fails_when_surface_means_match():
     assert abs(invariance["residualized_length_correlation"]["correlation"]) > 0.30
     assert invariance["guard_results"]["residualized_length_correlation"] is False
     assert invariance["pass"] is False
+
+
+def test_family_fusion_standardizes_both_components():
+    from hyperlexical.classification_v2_prototype import (
+        FUSION_ALPHA,
+        FUSION_BETA,
+        LAMBDA_PROTO,
+        PROTO_TAU,
+        fuse_family_logits,
+        population_standardize,
+    )
+
+    body = decision_seal()["body"]
+    assert body["family_fusion_alpha"] == FUSION_ALPHA == 1.0
+    assert body["family_fusion_beta"] == FUSION_BETA == 1.0
+    assert body["family_prototype_tau"] == PROTO_TAU == 0.10
+    assert body["family_prototype_lambda"] == LAMBDA_PROTO == 0.5
+    assert body["family_hard_negative_multiplier"] == 2.0
+    assert body["family_prototypes"] == "frozen"
+    assert body["selection_score"].startswith("0.50*active_family_macro_f1")
+    base = fuse_family_logits([0.1, 0.2, 0.4], [3.0, -1.0, 0.5])
+    scaled = fuse_family_logits([1.0, 2.0, 4.0], [30.0, -10.0, 5.0])
+    assert all(abs(left - right) < 1e-9 for left, right in zip(base, scaled))
+    assert population_standardize([2.0, 2.0, 2.0]) == [0.0, 0.0, 0.0]
+    assert abs(sum(base)) < 1e-9
+
+
+def test_prototype_contrastive_loss_weights_recorded_hard_negatives():
+    from hyperlexical.classification_v2_prototype import (
+        CONFUSABLE_COSINE,
+        HARD_NEGATIVE_MULTIPLIER,
+        PROTO_TAU,
+        confusion_clusters,
+        cosine_matrix,
+        denominator_multipliers,
+        hard_negatives,
+        prototype_contrastive_nll,
+    )
+
+    names = ("alpha", "beta", "gamma", "delta")
+    vectors = [
+        [1.0, 0.0, 0.0],
+        [0.9, 0.1, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+    ]
+    matrix = cosine_matrix(vectors)
+    negatives = hard_negatives(matrix, names, 3)
+    assert list(negatives) == list(names)
+    assert negatives["alpha"][0]["family"] == "beta"
+    assert all(item["family"] != "alpha" for item in negatives["alpha"])
+    assert len(negatives["alpha"]) == 3
+    pairs = [
+        {"cosine": 0.91, "left": "alpha", "right": "beta"},
+        {"cosine": 0.2, "left": "gamma", "right": "delta"},
+    ]
+    assert confusion_clusters([pairs[0]], names) == [["alpha", "beta"]]
+    assert CONFUSABLE_COSINE == 0.80
+    multipliers = denominator_multipliers(names, negatives)
+    assert multipliers[0][0] == 1.0
+    assert HARD_NEGATIVE_MULTIPLIER in multipliers[0]
+    cosine = [0.2, 0.2, -0.4, -0.5]
+    plain = [1.0, 1.0, 1.0, 1.0]
+    weighted = prototype_contrastive_nll(cosine, 0, multipliers[0])
+    unweighted = prototype_contrastive_nll(cosine, 0, plain)
+    assert weighted > unweighted
+    assert prototype_contrastive_nll([1.0, -1.0], 0, [1.0, 1.0]) < prototype_contrastive_nll(
+        [-1.0, 1.0], 0, [1.0, 1.0]
+    )
+    assert PROTO_TAU == 0.10
