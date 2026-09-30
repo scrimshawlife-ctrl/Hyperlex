@@ -701,6 +701,7 @@ def audit_inner() -> int:
 
     # 8. Head-signal by ambiguity reason
     head_by_reason = {}
+    n_prob_ok = 0
     for reason in FROZEN_AMBIGUITY_REASONS:
         ids = [
             a["identity"]
