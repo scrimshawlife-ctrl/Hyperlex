@@ -22,12 +22,20 @@ from .classification_v5_stage_a_surface_remediate import SURFACE_RULE_V1R7
 
 STAGE_A_RULE = "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1"
 LABEL_PROVENANCE_RULE = "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1"
-EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-002"
+AUTHORIZE_RULE = "AUTHORIZE_V5_STAGE_A_NEXT_RUN_ON_REMEDIATED_SURFACE"
+EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-004"
 AUTHORIZED_DATASET_SHA = (
+    "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a"
+)
+# Literal pin — avoid circular import with uncertain_surface_remediate.
+AUTHORIZED_SURFACE_RULE = "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9"
+SURFACE_RULE_V1R9 = AUTHORIZED_SURFACE_RULE
+# Parent V1R8 / V1R7 pins retained for historical comparison only.
+PARENT_V1R8_DATASET_SHA = (
     "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b"
 )
-AUTHORIZED_SURFACE_RULE = SURFACE_RULE_V1R8
-# Parent V1R7 pins retained for historical comparison only.
+PARENT_V1R8_SURFACE_RULE = SURFACE_RULE_V1R8
+PARENT_V1R8_EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-002"
 PARENT_V1R7_DATASET_SHA = (
     "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9"
 )
@@ -951,9 +959,12 @@ def stage_a_authorization_contract(
         "TRAINING_STATUS": "AUTHORIZED_NOT_STARTED",
         "TRAIN_AUTHORIZED": True,
         "acceptance_gates": dict(ACCEPTANCE_GATES),
+        "authorize_rule": AUTHORIZE_RULE,
         "authorized_dataset_sha256": AUTHORIZED_DATASET_SHA,
         "code_revision": code_revision,
         "label_provenance_rule": LABEL_PROVENANCE_RULE,
+        "parent_surface_dataset_sha256": PARENT_V1R8_DATASET_SHA,
+        "parent_surface_rule": PARENT_V1R8_SURFACE_RULE,
         "parent_surface_rule_v1": SURFACE_RULE_V1,
         "rule": STAGE_A_RULE,
         "schema": "hyperlex.classification.v5.stage_a_train_authorization.v1",

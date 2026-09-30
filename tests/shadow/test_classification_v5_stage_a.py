@@ -13,7 +13,9 @@ sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
 from hyperlexical.classification_v5_stage_a import (  # noqa: E402
     ACCEPTANCE_GATES,
+    AUTHORIZE_RULE,
     AUTHORIZED_DATASET_SHA,
+    AUTHORIZED_SURFACE_RULE,
     BEST_SHA,
     EVIDENCE_LABELS,
     EXPERIMENT_ID,
@@ -69,8 +71,10 @@ def _row(
 def test_frozen_recipe_constants():
     assert STAGE_A_RULE == "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1"
     assert LABEL_PROVENANCE_RULE == "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1"
-    assert EXPERIMENT_ID == "HLX-CLASSIFICATION-V5-STAGE-A-002"
-    assert AUTHORIZED_DATASET_SHA.startswith("c0fdd82d")
+    assert AUTHORIZE_RULE == "AUTHORIZE_V5_STAGE_A_NEXT_RUN_ON_REMEDIATED_SURFACE"
+    assert EXPERIMENT_ID == "HLX-CLASSIFICATION-V5-STAGE-A-004"
+    assert AUTHORIZED_DATASET_SHA.startswith("8d4be830")
+    assert AUTHORIZED_SURFACE_RULE.endswith("V1R9")
     assert BEST_SHA.startswith("9fba0f66")
     assert EVIDENCE_LABELS == ("NO_EVIDENCE", "EVIDENCE_PRESENT", "UNCERTAIN")
     assert TRAIN_HYPERPARAMS["optimizer"] == "AdamW"
