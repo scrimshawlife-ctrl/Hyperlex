@@ -81,6 +81,9 @@ def load_jsonl(path: Path) -> list[dict]:
 
 
 def code_revision() -> str:
+    override = (os.environ.get("HLX_V5_STAGE_A_CODE_REVISION") or "").strip()
+    if override:
+        return override
     completed = subprocess.run(
         ["git", "-C", str(REPO), "rev-parse", "HEAD"],
         check=True,
