@@ -1,12 +1,14 @@
 {
   "EVIDENCE_PRESENT_recall_min": 0.7,
   "NO_EVIDENCE_recall_min": 0.9,
-  "contract_sha256": "24aadee687b2dc679e6f0aede30912fcfd9d51dfee943f8462ce8538d0ec9a61",
+  "contract_sha256": "403f053d8987d4d9ea5d2297e3e9cbd4d643e9396763ecb03009346a0ef404ab",
   "false_evidence_entry_rate_on_none_max": 0.05,
   "optimize_family_metrics_before_stage_a_pass": false,
   "preregistered": true,
   "rule": "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1",
-  "surface_dataset_sha256": "3add3aa624bab8e578d461574ea8344f3e2c4b7eec30ddbb9faffbe2c0bea3eb",
-  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1",
+  "scope": "model_acceptance_after_authorized_train",
+  "surface_dataset_sha256": "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9",
+  "surface_ready": true,
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R7",
   "train_authorized": false
 }

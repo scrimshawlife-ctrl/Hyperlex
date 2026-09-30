@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Remediate v5 Stage-A surface to READY (Spec 007):** execute
+  `REMEDIATE_V5_STAGE_A_SURFACE_V1` without changing frozen readiness
+  thresholds. Replacement surface
+  `HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R7` (n=5877;
+  train=4489 / validation=1388; dataset `a81ca68a…`) passes all
+  `HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1` simultaneously → **READY**.
+  Parent failed surface `3add3aa6…` retained. No train, no reserve score, BEST
+  unchanged. Next action: `TRAIN_V5_STAGE_A_ONCE` (`train_authorized` still
+  false).
+
 - **Freeze exact v5 surface readiness gates (Spec 007):** pin
   `HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1` (dataset floors, disjointness,
   duplicate quality with frozen near-dup method

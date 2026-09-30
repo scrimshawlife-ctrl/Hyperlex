@@ -15,10 +15,17 @@ from pathlib import Path
 
 REPO = Path("/home/morpheus/Hyperlex")
 PRIVATE = Path(
-    "/home/morpheus/hlx-private/classification-v5-stage-a-negative-evidence-surface-20260930"
+    os.environ.get(
+        "HLX_V5_SURFACE_DIR",
+        "/home/morpheus/hlx-private/"
+        "classification-v5-stage-a-negative-evidence-surface-20260930",
+    )
 )
 DATASET = PRIVATE / "EVIDENCE_SURFACE.jsonl"
-DATASET_SHA = "3add3aa624bab8e578d461574ea8344f3e2c4b7eec30ddbb9faffbe2c0bea3eb"
+DATASET_SHA = os.environ.get(
+    "HLX_V5_SURFACE_SHA",
+    "3add3aa624bab8e578d461574ea8344f3e2c4b7eec30ddbb9faffbe2c0bea3eb",
+).strip()
 PAIR_RECORDS = PRIVATE / "PAIR_RECORDS.json"
 LEDGER = Path("/home/morpheus/hlx-private/eval-reserve-20260926/ledger.json")
 SPENT_V2 = Path(
@@ -117,7 +124,7 @@ def main() -> int:
     from hyperlexical.classification_v5_stage_a_negative_evidence_surface import (
         BEST_SHA as MODULE_BEST,
         STAGE_A_TRAIN_CONTRACT,
-        SURFACE_RULE,
+        SURFACE_RULE as LEGACY_SURFACE_RULE,
         canonical_json,
         sha256_text,
     )
@@ -127,10 +134,23 @@ def main() -> int:
         frozen_readiness_gates,
     )
 
+    try:
+        from hyperlexical.classification_v5_stage_a_surface_remediate import (
+            SURFACE_RULE_V1R7 as REMEDIATED_SURFACE_RULE,
+        )
+    except Exception:
+        REMEDIATED_SURFACE_RULE = LEGACY_SURFACE_RULE
+    surface_rule = os.environ.get("HLX_V5_SURFACE_RULE", "").strip() or (
+        REMEDIATED_SURFACE_RULE
+        if "v1r" in str(PRIVATE)
+        else LEGACY_SURFACE_RULE
+    )
+
     if MODULE_BEST != BEST_SHA:
         fail("module BEST pin drift")
-    if sha256_file(DATASET) != DATASET_SHA:
-        fail("sealed dataset digest mismatch")
+    observed_sha = sha256_file(DATASET)
+    if DATASET_SHA and observed_sha != DATASET_SHA:
+        fail(f"sealed dataset digest mismatch:{observed_sha}!={DATASET_SHA}")
     if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
         fail("BEST weights changed")
 
@@ -169,7 +189,7 @@ def main() -> int:
     gate_eval = {
         "BEST": "UNCHANGED",
         "best_sha256": BEST_SHA,
-        "dataset_sha256": DATASET_SHA,
+        "dataset_sha256": observed_sha,
         "gate_pass": evaluated["gate_pass"],
         "gate_rule": GATE_RULE,
         "gates": frozen_readiness_gates(),
@@ -182,7 +202,7 @@ def main() -> int:
         "prior_readiness_superseded": True,
         "schema": "hyperlex.classification.v5.surface_gate_eval.v1",
         "state": evaluated["state"],
-        "surface_rule": SURFACE_RULE,
+        "surface_rule": surface_rule,
         "train": False,
     }
     gate_eval["gate_eval_sha256"] = sha256_text(
@@ -194,7 +214,7 @@ def main() -> int:
     readiness = {
         "BEST": "UNCHANGED",
         "best_sha256": BEST_SHA,
-        "dataset_sha256": DATASET_SHA,
+        "dataset_sha256": observed_sha,
         "design_rule": "DESIGN_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE",
         "gate_eval_sha256": gate_eval["gate_eval_sha256"],
         "gate_rule": GATE_RULE,
@@ -206,11 +226,13 @@ def main() -> int:
             "blockers": [{"failed_gate": name} for name in missing],
             "missing_evidence": missing,
             "state": evaluated["state"],
-            "surface_rule": SURFACE_RULE,
+            "surface_rule": surface_rule,
         },
-        "schema": "hyperlex.classification.v5.evidence_surface_readiness.v1",
+        "readiness_details": evaluated.get("details"),
+        "remediate_rule": "REMEDIATE_V5_STAGE_A_SURFACE_V1",
+        "schema": "hyperlex.classification.v5.evidence_surface_readiness.v1r7",
         "state": evaluated["state"],
-        "surface_rule": SURFACE_RULE,
+        "surface_rule": surface_rule,
         "train": False,
     }
     readiness["receipt_sha256"] = sha256_text(
@@ -229,11 +251,12 @@ def main() -> int:
     print(
         json.dumps(
             {
-                "dataset_sha256": DATASET_SHA,
+                "dataset_sha256": observed_sha,
                 "gate_eval_sha256": gate_eval["gate_eval_sha256"],
                 "missing_evidence_gates": sorted(missing),
                 "receipt_sha256": readiness["receipt_sha256"],
                 "state": evaluated["state"],
+                "surface_rule": surface_rule,
             },
             indent=2,
             sort_keys=True,

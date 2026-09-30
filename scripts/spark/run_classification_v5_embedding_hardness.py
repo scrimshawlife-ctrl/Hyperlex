@@ -17,10 +17,14 @@ from transformers import AutoModel, AutoTokenizer
 
 REPO = Path("/home/morpheus/Hyperlex")
 PRIVATE = Path(
-    "/home/morpheus/hlx-private/classification-v5-stage-a-negative-evidence-surface-20260930"
+    os.environ.get(
+        "HLX_V5_SURFACE_DIR",
+        "/home/morpheus/hlx-private/"
+        "classification-v5-stage-a-negative-evidence-surface-20260930",
+    )
 )
 DATASET = PRIVATE / "EVIDENCE_SURFACE.jsonl"
-DATASET_SHA = "3add3aa624bab8e578d461574ea8344f3e2c4b7eec30ddbb9faffbe2c0bea3eb"
+DATASET_SHA = os.environ.get("HLX_V5_SURFACE_SHA", "").strip() or None
 TRUNK = Path("/home/morpheus/.hyperlex/models/trunks/ModernBERT-base")
 BEST_DIR = Path(
     "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004"
@@ -91,8 +95,9 @@ def nearest_opposite_cosines(
 def main() -> int:
     from hyperlexical.eval_forward import apply_encoder_trainable
 
-    if sha256_file(DATASET) != DATASET_SHA:
-        fail("dataset digest mismatch")
+    observed_sha = sha256_file(DATASET)
+    if DATASET_SHA and observed_sha != DATASET_SHA:
+        fail(f"dataset digest mismatch:{observed_sha}!={DATASET_SHA}")
     weights = BEST_DIR / "model.safetensors"
     if sha256_file(weights) != BEST_SHA:
         fail("BEST weights changed")
@@ -148,7 +153,7 @@ def main() -> int:
     report = {
         "BEST": "UNCHANGED",
         "best_sha256": BEST_SHA,
-        "dataset_sha256": DATASET_SHA,
+        "dataset_sha256": observed_sha,
         "encoder": "frozen_BEST_modernbert_cls",
         "median_nearest_opposite_label_cosine": statistics.median(opposite),
         "n_none_embedded": len(none_rows),

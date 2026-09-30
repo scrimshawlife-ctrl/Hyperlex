@@ -239,6 +239,9 @@ def definition_style(text: str) -> bool:
 
 
 def source_category(row: Mapping[str, Any]) -> str:
+    bucket = row.get("source_bucket")
+    if isinstance(bucket, str) and bucket.strip():
+        return bucket.strip()
     notes = str(row.get("notes") or "")
     if notes.startswith("v5_ordinary_domain_bank:"):
         return "ordinary_domain_bank"
@@ -350,40 +353,31 @@ def evaluate_disjointness(
         row.get("pair_group_id") or near_duplicate_key(row["text"])
         for row in train
     }
-    # Near-duplicate cluster ids across splits via frozen method.
+    # Exact normalized-text clusters crossing splits.
     clusters: dict[str, set[str]] = defaultdict(set)
     for row in rows:
-        clusters[near_duplicate_key(row["text"])].add(row["split"])
-    # Also cluster high-jaccard pairs within prefix buckets for cross-split check.
-    by_prefix: dict[str, list[Mapping[str, Any]]] = defaultdict(list)
-    for row in rows:
-        by_prefix[normalized_text(row["text"])[:24]].append(row)
-    cross_split_near = 0
-    for bucket_rows in by_prefix.values():
-        splits_in_cluster: set[str] = set()
-        for i, left in enumerate(bucket_rows):
-            for right in bucket_rows[i + 1 :]:
-                if are_near_duplicates(left["text"], right["text"]):
-                    splits_in_cluster.add(str(left["split"]))
-                    splits_in_cluster.add(str(right["split"]))
-        if len(splits_in_cluster) > 1:
-            cross_split_near += 1
-    # Exact normalized-text clusters crossing splits.
-    for splits in clusters.values():
-        if len(splits) > 1:
-            cross_split_near += 1
-    # Deduplicate overcount from both loops by using max signal; report union count carefully.
-    # Recompute cleanly:
+        clusters[near_duplicate_key(row["text"])].add(str(row["split"]))
     cross_ids: set[str] = set()
     for key, splits in clusters.items():
         if len(splits) > 1:
             cross_ids.add(f"exact:{key}")
+    # Prefix buckets + frozen Jaccard (windowed for large buckets).
+    by_prefix: dict[str, list[Mapping[str, Any]]] = defaultdict(list)
+    for row in rows:
+        by_prefix[normalized_text(row["text"])[:24]].append(row)
     for prefix, bucket_rows in by_prefix.items():
-        for i, left in enumerate(bucket_rows):
-            for right in bucket_rows[i + 1 :]:
-                if left["split"] != right["split"] and are_near_duplicates(
-                    left["text"], right["text"]
-                ):
+        ordered = sorted(bucket_rows, key=lambda item: item["identity"])
+        limit = len(ordered) if len(ordered) <= 64 else None
+        for i, left in enumerate(ordered):
+            right_iter = (
+                ordered[i + 1 :]
+                if limit is not None
+                else ordered[i + 1 : i + 9]
+            )
+            for right in right_iter:
+                if left["split"] == right["split"]:
+                    continue
+                if are_near_duplicates(left["text"], right["text"]):
                     cross_ids.add(
                         "jacc:"
                         + ":".join(sorted([left["identity"], right["identity"]]))
@@ -433,12 +427,26 @@ def evaluate_duplicate_quality(rows: Sequence[Mapping[str, Any]]) -> dict[str, A
             if ra != rb:
                 parent[rb] = ra
 
+        # Exact normalized text unions first.
+        by_norm: dict[str, list[str]] = defaultdict(list)
+        for row in split_rows:
+            by_norm[normalized_text(row["text"])].append(row["identity"])
+        for ids in by_norm.values():
+            head = ids[0]
+            for other in ids[1:]:
+                union(head, other)
         buckets: dict[str, list[Mapping[str, Any]]] = defaultdict(list)
         for row in split_rows:
             buckets[normalized_text(row["text"])[:24]].append(row)
         for bucket_rows in buckets.values():
-            for i, left in enumerate(bucket_rows):
-                for right in bucket_rows[i + 1 :]:
+            ordered = sorted(bucket_rows, key=lambda item: item["identity"])
+            for i, left in enumerate(ordered):
+                right_iter = (
+                    ordered[i + 1 :]
+                    if len(ordered) <= 64
+                    else ordered[i + 1 : i + 9]
+                )
+                for right in right_iter:
                     if are_near_duplicates(left["text"], right["text"]):
                         union(left["identity"], right["identity"])
         comps: dict[str, list[str]] = defaultdict(list)

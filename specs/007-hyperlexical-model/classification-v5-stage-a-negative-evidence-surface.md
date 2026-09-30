@@ -5,7 +5,10 @@ Parent failure: `HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_EVAL_V1` (`SETTLED_
 
 Design rule: `DESIGN_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE`
 
-Surface rule: `HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1`
+Surface rule (initial): `HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1`
+(exact-gate PREREGISTERED). Replacement after remediation:
+`HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R7` → **READY** (see
+`classification-v5-stage-a-surface-remediate-20260930.md`).
 
 ## Intent
 
