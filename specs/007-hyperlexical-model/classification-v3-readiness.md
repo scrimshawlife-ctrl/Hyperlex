@@ -19,13 +19,16 @@ HYPERLEX_CLASSIFICATION_V3_EVIDENCE_GATE = RUNNING
 HYPERLEX_CLASSIFICATION_V2 = SETTLED_FAIL
 surface = HYPERLEX_V3_EVIDENCE_SURFACE_V1 READY
 Stage A = TRAINED primary_gate PASS (false_entry ≈ 0.0059)
+Stage B = WIRED secondary_gate PASS (emission precision ≈ 0.815)
+authorization = RESERVE_SEAL_AUTHORIZED (reserve not created)
 BEST = UNCHANGED (9fba0f66…)
 v3_reserve = none
 ```
 
 Preregistration freeze: `classification-v3-evidence-gate-preregistration.md`.  
 Surface receipt: `classification-v3-evidence-surface-receipt-20260930.json`.  
-Stage A receipt: `classification-v3-stage-a-receipt-20260930.json`.
+Stage A receipt: `classification-v3-stage-a-receipt-20260930.json`.  
+Stage B receipt: `classification-v3-stage-b-receipt-20260930.json`.
 
 ## Transition rules
 
