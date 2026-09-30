@@ -41,3 +41,6 @@ STOP — preserve v3 reserve result; do not retune thresholds against the reserv
 ```
 
 A later generation needs a balanced fresh reserve acquisition before another evidence-gate climb.
+That climb is opened under `HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1`
+(`classification-v4-balanced-reserve-acquire.md`). Remaining fresh AVAILABLE classify
+identities after spent-v3 exclusion: 0 — Wiktionary acquire is required.

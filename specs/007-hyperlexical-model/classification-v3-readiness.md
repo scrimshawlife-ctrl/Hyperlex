@@ -20,12 +20,17 @@ HYPERLEX_CLASSIFICATION_V2 = SETTLED_FAIL
 surface = HYPERLEX_V3_EVIDENCE_SURFACE_V1 READY
 Stage A/B validation = PASS
 fresh v3 reserve = RESERVE_FAIL (n=109; false_entry=0.25; emission=0.0)
+AVAILABLE classify identities = 0
+spent v3 reserve identities = 109 (evaluation_spent)
+prior aborted v4 acquire identities = 173 (evaluation_spent; private seal removed)
+HYPERLEX_CLASSIFICATION_V4_BALANCED_RESERVE_ACQUIRE_V1 = PREREGISTERED / RUNNING
 BEST = UNCHANGED (9fba0f66…)
 ```
 
 Preregistration freeze: `classification-v3-evidence-gate-preregistration.md`.  
 Surface / Stage A / Stage B / Reserve receipts: `classification-v3-*-receipt-20260930.json`.  
-Final settlement: `classification-v3-final-settlement.md`.
+Final settlement: `classification-v3-final-settlement.md`.  
+Next generation acquire: `classification-v4-balanced-reserve-acquire.md`.
 
 ## Transition rules
 
