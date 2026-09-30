@@ -1,0 +1,54 @@
+{
+  "BEST_MUTATED": false,
+  "EVIDENCE_PRESENT_recall": 0.7048665620094191,
+  "NO_EVIDENCE_recall": 0.9089456869009584,
+  "RESERVE": "unused",
+  "SCIENTIFIC_RESULT": "SETTLED_PASS",
+  "SELECTED_CHECKPOINT_SHA256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "TRAINING_STATUS": "COMPLETE",
+  "UNCERTAIN_recall": 0.6790123456790124,
+  "component_metrics": {
+    "gate1": {
+      "NO_EVIDENCE_recall": 0.9089456869009584,
+      "POSSIBLE_EVIDENCE_recall": 0.8085106382978723,
+      "false_possible_entry_rate": 0.09105431309904154,
+      "macro_f1": 0.8618711340063165
+    },
+    "gate2": {
+      "CONFIRMED_PRESENT_recall": 0.7048665620094191,
+      "UNCERTAIN_recall": 0.845679012345679,
+      "macro_f1": 0.6854545824192275,
+      "n_eligible": 799
+    },
+    "note": "Component metrics are diagnostic; end-to-end gates remain authoritative."
+  },
+  "disposition": "SETTLED_PASS",
+  "epochs_ran": 12,
+  "false_evidence_entry_rate_on_none": 0.04233226837060703,
+  "gate1_threshold": 0.75,
+  "gate2_present_threshold": 0.5,
+  "n_threshold_passing": 4,
+  "optimizer_steps": 6660,
+  "promotion_candidate": true,
+  "receipt_sha256": "9c358d2cae25bfe75b4825c30b7334573897eef7ed9615a56f57041db6e444db",
+  "restored_epoch": 11,
+  "route_diagnostics": {
+    "NONE_FP": {
+      "leaked_through_both_gates": 53,
+      "leaked_through_gate1": 114
+    },
+    "PRESENT_FN": {
+      "blocked_at_gate1": 126,
+      "passed_gate1_rejected_at_gate2": 62
+    },
+    "UNCERTAIN": {
+      "blocked_at_gate1": 27,
+      "correctly_routed": 110,
+      "promoted_incorrectly_to_PRESENT": 25
+    }
+  },
+  "run_root": "/home/morpheus/hlx-private/classification-v5-stage-a-two-stage-train-v1-20260930/classification-v5-stage-a-two-stage-001",
+  "selection_score": 0.8167525809111703,
+  "split_witness_sha256": "ecb88025b1b3355d837a2d81cbd87909d2f961e8800adbef21589c5f3b564fb1",
+  "stage_a_macro_f1": 0.7411485290305739
+}

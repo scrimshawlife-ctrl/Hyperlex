@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Train two-stage Stage-A once (Spec 007):** execute authorized
+  `TRAIN_V5_STAGE_A_TWO_STAGE_ONCE` for
+  `HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001` on V1R9 `8d4be830…` /
+  config `0117faca…` / weights `5496015a…`. Split witness `ecb88025…`
+  (train 4437; Gate2 eligible 883). Restored epoch 11; SELECTED
+  `cd2829c1…`; run receipt `9c358d2c…`. Threshold grid `n_passing=4`
+  → **`SETTLED_PASS`** (false-entry `0.042`, PRESENT recall `0.705`,
+  NONE recall `0.909`; macro-F1 `0.741`; UNCERTAIN recall `0.679`).
+  Thresholds Gate1=`0.75` / Gate2=`0.50`. BEST unchanged; reserve unused;
+  `promotion_candidate=true`. Receipt
+  `classification-v5-stage-a-two-stage-train-once-receipt-20260930.json`.
+  Next: human promote review (do not auto-move BEST).
+
 - **Authorize two-stage Stage-A train (Spec 007):**
   `AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1` pins experiment
   `HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001` to architecture receipt
