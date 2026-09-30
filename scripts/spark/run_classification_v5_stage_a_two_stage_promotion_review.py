@@ -119,13 +119,26 @@ def code_revision() -> str:
     override = (os.environ.get("HLX_V5_STAGE_A_CODE_REVISION") or "").strip()
     if override:
         return override
-    completed = subprocess.run(
-        ["git", "-C", str(REPO), "rev-parse", "HEAD"],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    return completed.stdout.strip()
+    try:
+        completed = subprocess.run(
+            ["git", "-C", str(REPO), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return completed.stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        head = REPO / ".git" / "HEAD"
+        if head.is_file():
+            text = head.read_text(encoding="utf-8").strip()
+            if text.startswith("ref:"):
+                ref = text.split(":", 1)[1].strip()
+                ref_path = REPO / ".git" / ref
+                if ref_path.is_file():
+                    return ref_path.read_text(encoding="utf-8").strip()
+            elif len(text) >= 40:
+                return text[:40]
+        return "UNKNOWN"
 
 
 def cold_load_replay() -> dict:
@@ -351,6 +364,7 @@ def main() -> int:
     if os.environ.get("HLX_V5_STAGE_A_PROMO_REVIEW_INNER") == "1":
         return inner()
 
+    revision = code_revision()
     cmd = [
         "docker",
         "run",
@@ -371,6 +385,8 @@ def main() -> int:
         "HLX_V2_FORWARD_ONTOLOGY=1",
         "-e",
         "HLX_V5_STAGE_A_PROMO_REVIEW_INNER=1",
+        "-e",
+        f"HLX_V5_STAGE_A_CODE_REVISION={revision}",
         "--entrypoint",
         "python3",
         IMAGE,
