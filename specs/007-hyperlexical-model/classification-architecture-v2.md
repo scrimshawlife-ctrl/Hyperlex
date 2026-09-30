@@ -558,4 +558,10 @@ Rule `HYPERLEX_FAMILY_RETRIEVAL_DECISION_V1` replaces the residual 18-way softma
 - Residual family head: diagnostic/compatibility/research only
 - Reserve gate: emission precision ≥ 0.80 and applicability invariance pass
 
-Seal path: `/home/morpheus/hlx-private/classification-v2-family-retrieval-20260930/FAMILY_RETRIEVAL.json` (index companion `FAMILY_RETRIEVAL_INDEX.json`).
+Seal path: `/home/morpheus/hlx-private/classification-v2-family-retrieval-20260930/FAMILY_RETRIEVAL.json` (artifact sha256 `4030e6a36ca1fea34dc728ae913bc96697e7484be532260f7b580ba5eadf2c8f`; index sha256 `b1cd64d9e50e35f2c195f2e115ffdbd77f0a28089f8bd90792f36f1abc4b0177`, n=1611).
+
+- Thresholds: `minimum_family_score=0.85`, `minimum_top1_top2_margin=0.03`
+- Validation: emission precision 0.808219; coverage 0.493243; recall 0.398649; abstain 0.180602; ambiguous 0.033445; top1 0.500; top2 0.608
+- Applicability invariance: **pass**
+- Residual reference (diagnostic): AF macro-F1 0.185630; residual top1 0.391892
+- Reserve gate: **RESERVE_EVAL_JUSTIFIED**. BEST unchanged. Reserve not yet scored.
