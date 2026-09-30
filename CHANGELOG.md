@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Authorize two-stage Stage-A train (Spec 007):**
+  `AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1` pins experiment
+  `HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001` to architecture receipt
+  `631427cc…`, V1R9 `8d4be830…`, BEST `9fba0f66…`. Hard pre-auth
+  `RESOLVE_V5_TWO_STAGE_CLASS_WEIGHTS` sealed
+  `TWO_STAGE_CLASS_WEIGHTS.json` (`5496015a…`) with literal Gate1
+  NONE=0.7182 / POSSIBLE=1.2818 and Gate2 UNCERTAIN=1.1124 /
+  CONFIRMED=0.8876. Training config `0117faca…`; authorization
+  `c9b262de…`; `TRAIN_AUTHORIZED=true`,
+  `TRAINING_STATUS=AUTHORIZED_NOT_STARTED`. No train / reserve / BEST /
+  V1R9 mutation. Receipt
+  `classification-v5-stage-a-two-stage-train-authorize-receipt-20260930.json`.
+  Next: `TRAIN_V5_STAGE_A_TWO_STAGE_ONCE`.
+
 - **Design freeze Stage-A two-stage decision graph (Spec 007):**
   `HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1` freezes the B_TWO_STAGE
   redesign as spec only for experiment
