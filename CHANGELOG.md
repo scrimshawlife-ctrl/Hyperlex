@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **Stage-A-003 focal-loss blocked (Spec 007):** attempted
+  `HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS` after parent 002
+  verification PASS. Parent pins match (specificity remediates; PRESENT
+  recall 0.527; PRESENT→NONE median P(NONE)=0.994; n_passing=0). Training
+  blocked: **`BLOCKED_UNFROZEN_OBJECTIVE`** — `FOCAL_GAMMA` / focal-loss
+  semantics are not preregistered (parent forbids focal; investigation did
+  not freeze a numeric gamma). No train, no invented gamma, no
+  `decide_evidence` change, BEST/reserve unchanged. Receipt
+  `classification-v5-stage-a-003-focal-loss-blocked-receipt-20260930.json`.
+  Next: `AUTHORIZE_V5_STAGE_A_003_FOCAL_LOSS_OBJECTIVE`.
+
 - **Architecture/objective investigation after V1R8 SETTLED_FAIL (Spec 007):**
   read-only verify→geometry→H1/H2/H3 on SELECTED `b22e9c20…` / V1R8
   `c0fdd82d…`. Specificity PASS; PRESENT recall FAIL; threshold grid
