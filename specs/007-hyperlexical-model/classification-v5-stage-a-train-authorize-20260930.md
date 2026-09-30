@@ -22,11 +22,21 @@ RESERVE_CONSUMED = FALSE
 | gate_eval | `0a4ad7871351f592371aa93e44207b19039949c4acc598daf69e8b225217af11` |
 | CURRENT_BEST | `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6` |
 | surface rule | `HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R7` |
+| code revision | `1b0264a6ee484068dbd1b284e8d2ff22789a245b` |
+| TRAINING_CONFIG_SHA256 | `4d2eaabd52976da6beecfac1175770a9f3402c82d0b124942638488aa8ab4d7e` |
+| AUTHORIZATION_RECEIPT_SHA256 | `f736bf3df3888258173c8d0c596d581e890782d8ebb68a8b171b7ec296e7f00b` |
+| AUTHORIZATION.json SHA256 | `4923a9e2939799cbee3b10f0b3c96b0759f5c7b89c2c04865efd28dfdc50805a` |
+| label provenance valid | `5877 / 5877` (`invalid=0`) |
 
-`TRAINING_CONFIG_SHA256` and authorization `receipt_sha256` are sealed in the
-private auth dir and mirrored in
-`classification-v5-stage-a-train-authorize-receipt-20260930.json` after the
-authorize runner completes.
+Frozen class weights (TRAIN effective counts → sqrt/median → mean-normalize → clip):
+
+| Class | Weight | Effective count |
+|---|---|---|
+| NO_EVIDENCE | `0.50` (clipped) | `1859.0` |
+| EVIDENCE_PRESENT | `0.8786801255199984` | `371.5` |
+| UNCERTAIN | `1.7285207441639725` | `96.0` |
+
+Diagnostic: `UNCERTAIN` is 100% from `HYPERLEX_V5_STAGE_A_AMBIGUOUS_V1` (single-rule dominance warning; not a readiness failure).
 
 ## Architecture (frozen)
 
