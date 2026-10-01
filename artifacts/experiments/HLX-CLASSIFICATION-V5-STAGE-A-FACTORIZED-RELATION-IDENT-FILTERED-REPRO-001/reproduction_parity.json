@@ -1,0 +1,33 @@
+{
+  "deltas": {
+    "EVIDENCE_PRESENT_recall": 0.0,
+    "NO_EVIDENCE_recall": 0.0,
+    "SHORT_ATOM_NONE_relation_FPR": 0.00015789473684210513,
+    "false_evidence_entry_rate_on_none": 0.0,
+    "selected_epoch": 0
+  },
+  "identifiability_effect": {
+    "original_ident_filtered_SHORT_ATOM_NONE_relation_FPR": 0.013,
+    "prior_unfiltered_SHORT_ATOM_NONE_relation_FPR": 0.539,
+    "reproduction_SHORT_ATOM_NONE_relation_FPR": 0.013157894736842105
+  },
+  "observed": {
+    "EVIDENCE_PRESENT_recall": 0.951310861423221,
+    "NO_EVIDENCE_recall": 0.9646643109540636,
+    "SHORT_ATOM_NONE_relation_FPR": 0.013157894736842105,
+    "false_evidence_entry_rate_on_none": 0.03356890459363958,
+    "relation_threshold": 0.6,
+    "resolvability_threshold": 0.75,
+    "selected_epoch": 11
+  },
+  "original": {
+    "EVIDENCE_PRESENT_recall": 0.951310861423221,
+    "NO_EVIDENCE_recall": 0.9646643109540636,
+    "SHORT_ATOM_NONE_relation_FPR": 0.013,
+    "false_evidence_entry_rate_on_none": 0.03356890459363958,
+    "prior_unfiltered_SHORT_ATOM_NONE_relation_FPR": 0.539,
+    "relation_threshold": 0.6,
+    "resolvability_threshold": 0.75,
+    "selected_epoch": 11
+  }
+}
