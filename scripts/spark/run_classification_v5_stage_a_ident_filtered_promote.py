@@ -220,8 +220,13 @@ def restore_previous_pointer(previous: str | None) -> None:
     write_repo(MODELS / "STAGE_A_BEST.public.json", restore_pointer)
 
 
-def cold_load_via_canonical_path() -> dict:
-    """Load: trunk → MODEL_WIDE_BEST → STAGE_A_BEST factorized heads."""
+def cold_load_via_canonical_path(*, prefer_published_selected: bool = False) -> dict:
+    """Load: trunk → MODEL_WIDE_BEST → STAGE_A_BEST factorized heads.
+
+    Before pointer mutation, pass prefer_published_selected=True so the
+    candidate weights are loaded (current STAGE_A_BEST still points at the
+    superseded two-stage checkpoint).
+    """
     import torch
     from torch import nn
     from transformers import AutoModel, AutoTokenizer
@@ -240,11 +245,21 @@ def cold_load_via_canonical_path() -> dict:
     from hyperlexical.loop import freeze_encoder
     from hyperlexical.save_pretrained import split_weight_tensors
 
-    stage_a_weights = STAGE_A_BEST_LINK / "model.safetensors"
-    if not stage_a_weights.exists():
-        stage_a_weights = SELECTED_PUBLISHED / "model.safetensors"
-    if not stage_a_weights.exists():
-        stage_a_weights = SELECTED
+    if prefer_published_selected:
+        candidates = (
+            SELECTED_PUBLISHED / "model.safetensors",
+            SELECTED,
+            STAGE_A_BEST_LINK / "model.safetensors",
+        )
+    else:
+        candidates = (
+            STAGE_A_BEST_LINK / "model.safetensors",
+            SELECTED_PUBLISHED / "model.safetensors",
+            SELECTED,
+        )
+    stage_a_weights = next((p for p in candidates if p.exists()), None)
+    if stage_a_weights is None:
+        fail("stage_a_weights_missing")
 
     try:
         ckpt_sha = sha256_file(stage_a_weights)
@@ -429,11 +444,14 @@ def inner() -> int:
 
     # Pre-mutation cold-load — fail closed to PROMOTION_INVALID (do not mutate pointer).
     try:
-        pre_replay = cold_load_via_canonical_path()
+        pre_replay = cold_load_via_canonical_path(prefer_published_selected=True)
     except SystemExit as exc:
         overlay_fail = {
             "pass": False,
-            "checks": {"cold_load_exception": True},
+            "checks": {
+                "cold_load_exception": True,
+                "required_factorized_heads_present": False,
+            },
             "architecture": {
                 "pass": False,
                 "note": (
