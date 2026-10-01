@@ -98,24 +98,25 @@ Operator gate. This file is not a Hub upload.
 
 ## V5 classification pipeline (local; Hub unpublished)
 
-**Packaging ID:** `HYPERLEX_V5_PRODUCTION_PACKAGING_V1`
+**Packaging ID:** `HYPERLEX_V5_STAGE_A_B_V1R2_PACKAGE_V1`
 **Pipeline:** `HYPERLEX_V5_STAGE_A_B_PIPELINE_V1` · Stage-A `HYPERLEX_V5_STAGE_A_CANONICAL_V1`
+**States:** Stage-A `CANONICAL_FROZEN` · Stage-B `CANONICAL_FOR_V1R2_PIPELINE` · Pipeline `CANONICAL_FROZEN`
 
 | Artifact | SHA256 / value |
 | --- | --- |
 | `STAGE_A_BEST` | `f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa` |
 | `MODEL_WIDE_BEST` | `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6` |
-| Stage-B index | `3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21` |
-| Stage-B floors | score `0.64`, margin `0.07` |
-| Stage-A thresholds | relation `0.6`, resolvability `0.75` |
+| Stage-B index (V1R2) | `4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4` |
+| Stage-B floors | score `0.83`, margin `0.01` |
+| Stage-A thresholds | relation `0.60`, resolvability `0.75` |
 
-**Load sequence:** ModernBERT trunk → MODEL_WIDE_BEST → STAGE_A_BEST (layers 20/21 + `relation_head` + `resolvability_head`).
+**Load sequence:** ModernBERT trunk → MODEL_WIDE_BEST → STAGE_A_BEST (layers 20/21 + `relation_head` + `resolvability_head`) → V1R2 Stage-B index.
 
 **Decision:** `if P(RESOLVABLE) < 0.75 -> UNCERTAIN; else if P(EVIDENCE_RELATION_PRESENT) >= 0.60 -> EVIDENCE_PRESENT; else NO_EVIDENCE`
 
-**Stage B:** only on `EVIDENCE_PRESENT`. Index not rebuilt under this packaging.
+**Stage B:** only on `EVIDENCE_PRESENT` under V1R2-aligned index/floors. Historical V1R9 index `3fd6c87a…` / floors 0.64/0.07 retained as HISTORICAL.
 
-**Limitations:** DOMAIN_IRRELEVANT=`NOT_ESTABLISHED`; SHORT_ATOM_POSITIVE=`LOW_SUPPORT`; CONTEXT_DEPENDENT_GOLD=`OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT`.
+**Limitations:** DOMAIN_IRRELEVANT=`NOT_ESTABLISHED`; SHORT_ATOM_POSITIVE=`LOW_SUPPORT`; CONTEXT_DEPENDENT_GOLD=`OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT`; Stage-B validation conditional on Stage-A admission.
 
 **Hub:** `NOT_AUTHORIZED`. Weights stay on operator Spark paths; not in git.
 

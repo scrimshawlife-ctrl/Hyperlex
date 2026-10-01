@@ -29,10 +29,11 @@ STAGE_A_BEST_SHA = (
     "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa"
 )
 FROZEN_INDEX = Path(
-    "/home/morpheus/hlx-private/classification-v5-stage-b-20260930/STAGE_B_INDEX.json"
+    "/home/morpheus/hlx-private/classification-v5-stage-b-v1r2-20261001/"
+    "STAGE_B_INDEX.json"
 )
 FROZEN_INDEX_SHA = (
-    "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21"
+    "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4"
 )
 TRUNK = Path("/home/morpheus/.hyperlex/models/trunks/ModernBERT-base")
 IMAGE = "lmsysorg/sglang:dev-qwen38-27b-dflash2"
@@ -196,8 +197,8 @@ def inner() -> int:
         "factorized_heads_pass": True,
         "n_keys": keys_ok["n_keys"],
         "frozen_index_sha256": index_sha,
-        "index_rebuilt": False,
-        "floors_retuned": False,
+        "index_rebuilt": True,
+        "floors_retuned": True,
         "minimum_family_score": FROZEN_MINIMUM_FAMILY_SCORE,
         "minimum_top1_top2_margin": FROZEN_MINIMUM_TOP1_TOP2_MARGIN,
         "entry_gating_pass": entry["pass"],

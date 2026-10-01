@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **Seal + package V5 Stage-A/B V1R2 pipeline (Spec 007):**
+  `SEAL_AND_PACKAGE_HYPERLEX_V5_STAGE_A_B_V1R2_PIPELINE` freezes
+  `HYPERLEX_V5_STAGE_A_B_PIPELINE_V1` on canonical Stage-A `f2b00c5d…` +
+  V1R2 Stage-B index `4febe96e…` / floors 0.83/0.01 (thr 0.60/0.75).
+  Dependency manifest, cold-load validator, end-to-end forward schema,
+  stale-ref audit, integration witness check, and packaging round-trip
+  sealed under `HYPERLEX_V5_STAGE_A_B_V1R2_PACKAGE_V1`. Hub unpublished.
+  States: Stage-A `CANONICAL_FROZEN`; Stage-B `CANONICAL_FOR_V1R2_PIPELINE`;
+  Pipeline `CANONICAL_FROZEN`. Reserve unscored. No train/retune/index rebuild.
+  Next: `QUALIFY_HYPERLEX_V5_PIPELINE_ON_FRESH_EVALUATION_SURFACE`.
+
 - **Align Stage-B to V1R2 under canonical Stage-A (Spec 007):**
   `ALIGN_V5_STAGE_B_TO_V1R2` rebuilds Stage-B index on identifiability-filtered
   V1R2 with factorized `STAGE_A_BEST=f2b00c5d…` embeddings and retunes floors on

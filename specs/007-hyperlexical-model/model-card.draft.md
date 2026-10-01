@@ -33,6 +33,8 @@ Do not upload (Hub not authorized). Hub card name: `hyperlex-structure-149m` (lo
 - `SHORT_ATOM_POSITIVE_GENERALIZATION = LOW_SUPPORT`
 - `CONTEXT_DEPENDENT_GOLD = OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT`
 
-**Stage B:** enters only on `EVIDENCE_PRESENT`. Index/floors frozen (`index_sha256=3fd6c87a…`, score `0.64`, margin `0.07`). Parent pin updated to canonical Stage A; index not rebuilt.
+**Stage B (V1R2-aligned):** enters only on `EVIDENCE_PRESENT`. Active index/floors frozen (`index_sha256=4febe96e…`, n=948, score `0.83`, margin `0.01`). Historical V1R9 index `3fd6c87a…` / floors 0.64/0.07 retained as HISTORICAL.
 
-**Pipeline:** `HYPERLEX_V5_STAGE_A_B_PIPELINE_V1` · `V5_STAGE_A_STATE=CANONICAL_FROZEN` · research loop closed for the current failure class.
+**Pipeline:** `HYPERLEX_V5_STAGE_A_B_PIPELINE_V1` · Stage-A `CANONICAL_FROZEN` · Stage-B `CANONICAL_FOR_V1R2_PIPELINE` · Pipeline `CANONICAL_FROZEN` · research loop closed for the current failure class.
+
+**Package:** `HYPERLEX_V5_STAGE_A_B_V1R2_PACKAGE_V1` · Hub `NOT_AUTHORIZED`.
