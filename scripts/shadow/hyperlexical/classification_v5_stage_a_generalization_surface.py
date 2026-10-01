@@ -1339,10 +1339,10 @@ def select_cell_balanced(
     targets = dict(targets or {})
     default_cap = {
         # Keep SHORT_ATOM NONE near PRESENT mass so length/surface balance holds.
-        "SHORT_ATOM/NO_EVIDENCE": 260,
-        "SHORT_ATOM/EVIDENCE_PRESENT": 260,
-        "PROSE/NO_EVIDENCE": 360,
-        "PROSE/EVIDENCE_PRESENT": 360,
+        "SHORT_ATOM/NO_EVIDENCE": 240,
+        "SHORT_ATOM/EVIDENCE_PRESENT": 240,
+        "PROSE/NO_EVIDENCE": 380,
+        "PROSE/EVIDENCE_PRESENT": 340,
         "DEFINITION_STYLE/NO_EVIDENCE": 360,
         "DEFINITION_STYLE/EVIDENCE_PRESENT": 360,
         "ORDINARY_PROSE/NO_EVIDENCE": 360,
@@ -1402,7 +1402,11 @@ def select_cell_balanced(
         ]
         matched_ids = {r["identity"] for r in matched_pool}
         other_pool = [r for r in pool if r["identity"] not in matched_ids]
-        reserve_matched = min(len(matched_pool), max(120, keep_n // 3)) if cell.endswith("/NO_EVIDENCE") else 0
+        reserve_matched = (
+            min(len(matched_pool), max(160, keep_n // 2))
+            if cell.endswith("/NO_EVIDENCE")
+            else 0
+        )
         kept: list[dict[str, Any]] = []
         kept.extend(sorted(matched_pool, key=pref)[:reserve_matched])
         for row in sorted(other_pool, key=pref):
@@ -1444,8 +1448,68 @@ def select_cell_balanced(
     # Cap uncertain retention (not primary remediation target).
     uncertain_sorted = sorted(uncertain, key=pref)[:200]
     selected.extend(uncertain_sorted)
+
+    # Enforce max source-family share per gate label (wiktionary aggregate included).
+    selected = enforce_source_family_cap(selected, max_share=SOURCE_DIVERSITY["max_source_family_share"])
     selected.sort(key=lambda item: item["identity"])
     return selected
+
+
+def enforce_source_family_cap(
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    max_share: float,
+) -> list[dict[str, Any]]:
+    out = [dict(r) for r in rows]
+    for _guard in range(64):
+        changed = False
+        for label in ("EVIDENCE_PRESENT", "NO_EVIDENCE"):
+            labeled = [r for r in out if r["evidence_label"] == label]
+            other = [r for r in out if r["evidence_label"] != label]
+            n = len(labeled)
+            if n == 0:
+                continue
+            counts = Counter(source_family(r) for r in labeled)
+            top_fam, top_n = counts.most_common(1)[0]
+            if top_n / n <= max_share:
+                continue
+            # Drop lowest-preference rows from the offending family.
+            offenders = sorted(
+                [r for r in labeled if source_family(r) == top_fam],
+                key=lambda item: (
+                    0 if item.get("pair_group_id") else 1,
+                    0 if item.get("provenance") == "OBSERVED" else 1,
+                    0 if "nearcopy" in str(item.get("notes") or "") else 1,
+                    item["identity"],
+                ),
+                reverse=True,
+            )
+            drop_n = top_n - int(max_share * n)
+            drop_ids = {r["identity"] for r in offenders[: max(1, drop_n)]}
+            # Never drop below cell floors if avoidable: protect critical OBSERVED.
+            protected = {
+                r["identity"]
+                for r in labeled
+                if r.get("primary_cell") in CRITICAL_CELLS
+                and r.get("provenance") == "OBSERVED"
+            }
+            drop_ids -= protected
+            if not drop_ids:
+                # Drop unpaired inferred offenders only.
+                drop_ids = {
+                    r["identity"]
+                    for r in offenders
+                    if r.get("provenance") != "OBSERVED" and not r.get("pair_group_id")
+                }
+                drop_ids = set(list(drop_ids)[: max(1, drop_n)])
+            if not drop_ids:
+                continue
+            labeled = [r for r in labeled if r["identity"] not in drop_ids]
+            out = other + labeled
+            changed = True
+        if not changed:
+            break
+    return out
 
 
 def load_blocked_ids(
@@ -1664,6 +1728,9 @@ def _force_definition_matched_pairs(
     )
     rows, pairs = _force_surface_matched_pairs(
         rows, pairs, surface="ORDINARY_PROSE", min_overlap=0.05
+    )
+    rows, pairs = _force_surface_matched_pairs(
+        rows, pairs, surface="SHORT_ATOM", min_overlap=0.0
     )
     return rows, pairs
 
