@@ -1,0 +1,100 @@
+{
+  "ARCHITECTURE_RECEIPT_SHA256": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697",
+  "AUTHORIZATION_RECEIPT_SHA256": "f7d4f3ad03dd4d13ea34dfb380451840e29f5e82e924eccfbe96532f865e8f2f",
+  "BEST_MUTATED": false,
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "80b7f8991ec14b39223e232fad3a4590d54548f9fcd68cc9c70e9884f7aba5a4",
+  "CODE_REVISION": "356fd08dd02212e4b0abd49dd31ecc7e0f099173",
+  "CURRENT_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "DATASET_SHA256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-GENERALIZATION-001",
+  "INITIALIZATION_POLICY": "FRESH_RETRAIN_FROM_MODEL_WIDE_BEST:encoder_overlay_from_9fba0f66; gate1/gate2 heads freshly initialized; do_not_load_STAGE_A_BEST_cd2829c1",
+  "INPUT_IDENTITY": "PASS",
+  "LABEL_MAPPING": "PASS",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "TRAIN_V5_STAGE_A_TWO_STAGE_GENERALIZATION_ONCE",
+  "PARENT_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "PARENT_STAGE_A_BEST_MUTATED": false,
+  "PARENT_TWO_STAGE_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001",
+  "PRIVATE_AUTH_DIR": "/home/morpheus/hlx-private/classification-v5-stage-a-two-stage-generalization-train-v1-20261001",
+  "READINESS_SHA256": "c4b5fc0725b919c1dd11acfd575d594d8ddd76839836e5a3928f4d6c07030c96",
+  "RESERVE_CONSUMED": false,
+  "SCIENTIFIC_RESULT": "NOT_COMPUTABLE",
+  "SPENT_RESERVE": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "SPENT_RESERVE_OVERLAP": 0,
+  "STAGE_B_MUTATED": false,
+  "SURFACE_READINESS": "PASS",
+  "SURFACE_RECEIPT_SHA256": "3dbdd9b2cc30600698340f979d20a2c9b8559b9eafbbc24baf4fb1007e737fb9",
+  "TRAINING_CONFIG_SHA256": "1527ae1887b362f4e659409fcf3e4c15f0d2b410c8157759c5a12c1372166e31",
+  "TRAINING_RUN_LIMIT": 1,
+  "TRAINING_STATUS": "AUTHORIZED_NOT_STARTED",
+  "TRAIN_AUTHORIZED": true,
+  "TRAIN_IDENTITY_LIST_SHA256": "5a6f98c63d41b3cb145d454ed790f4c3e41049cf4cd6ffcea1c5e3d91e5de345",
+  "TRAIN_ROWS": 2531,
+  "TRAIN_SPLIT_SHA256": "d8565270bcc391e6e2c7967b679f88b598ce397d4e1031e8155a89c6beea2973",
+  "VALIDATION_IDENTITY_LIST_SHA256": "8264c9460c74a150d590dd4634e15db6c44319c879d2917891e9914a252c1c8d",
+  "VALIDATION_ROWS": 1054,
+  "VALIDATION_SPLIT_SHA256": "3b8d588d7413099fb0e64ea89c162adacc8ec2b7d5beae910af48a828cb65869",
+  "authorize_rule": "AUTHORIZE_V5_STAGE_A_TWO_STAGE_RETRAIN_ON_GENERALIZATION_SURFACE",
+  "gate1_class_weights": {
+    "NO_EVIDENCE": 1.0006485087033488,
+    "POSSIBLE_EVIDENCE": 0.9993514912966515
+  },
+  "gate1_counts": {
+    "NO_EVIDENCE": {
+      "INFERRED_count": 1030,
+      "OBSERVED_count": 255,
+      "effective_count": 770.0,
+      "final_clipped_weight": 1.0006485087033488,
+      "final_weight": 1.0006485087033488,
+      "normalized_weight": 1.0006485087033488,
+      "raw_row_count": 1285,
+      "raw_weight": 1.0006491399580082,
+      "rows": 1285
+    },
+    "POSSIBLE_EVIDENCE": {
+      "INFERRED_count": 948,
+      "OBSERVED_count": 298,
+      "effective_count": 772.0,
+      "final_clipped_weight": 0.9993514912966515,
+      "final_weight": 0.9993514912966515,
+      "normalized_weight": 0.9993514912966515,
+      "raw_row_count": 1246,
+      "raw_weight": 0.9993521217330933,
+      "rows": 1246
+    }
+  },
+  "gate2_class_weights": {
+    "CONFIRMED_PRESENT": 0.6246237558793669,
+    "UNCERTAIN": 1.375376244120633
+  },
+  "gate2_counts": {
+    "CONFIRMED_PRESENT": {
+      "INFERRED_count": 948,
+      "OBSERVED_count": 166,
+      "effective_count": 640.0,
+      "final_clipped_weight": 0.6246237558793669,
+      "final_weight": 0.6246237558793669,
+      "normalized_weight": 0.6246237558793669,
+      "raw_row_count": 1114,
+      "raw_weight": 0.7766112283504534,
+      "rows": 1114
+    },
+    "UNCERTAIN": {
+      "INFERRED_count": 0,
+      "OBSERVED_count": 132,
+      "effective_count": 132.0,
+      "final_clipped_weight": 1.375376244120633,
+      "final_weight": 1.375376244120633,
+      "normalized_weight": 1.375376244120633,
+      "raw_row_count": 132,
+      "raw_weight": 1.7100416440082458,
+      "rows": 132
+    }
+  },
+  "label_provenance_invalid": 0,
+  "rule": "HYPERLEX_V5_STAGE_A_TWO_STAGE_GENERALIZATION_TRAIN_V1",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1R1",
+  "surface_version": "classification-v5-stage-a-generalization-surface-v1r1-20261001",
+  "train": false
+}

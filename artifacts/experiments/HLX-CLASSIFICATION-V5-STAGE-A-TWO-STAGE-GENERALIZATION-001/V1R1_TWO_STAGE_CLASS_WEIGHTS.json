@@ -1,0 +1,101 @@
+{
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "80b7f8991ec14b39223e232fad3a4590d54548f9fcd68cc9c70e9884f7aba5a4",
+  "CLASS_WEIGHT_RESOLUTION_RULE": "RESOLVE_V5_STAGE_A_V1R1_TWO_STAGE_CLASS_WEIGHTS",
+  "Gate1": {
+    "NO_EVIDENCE": {
+      "INFERRED_count": 1030,
+      "OBSERVED_count": 255,
+      "effective_count": 770.0,
+      "final_clipped_weight": 1.0006485087033488,
+      "final_weight": 1.0006485087033488,
+      "normalized_weight": 1.0006485087033488,
+      "raw_row_count": 1285,
+      "raw_weight": 1.0006491399580082,
+      "rows": 1285
+    },
+    "POSSIBLE_EVIDENCE": {
+      "INFERRED_count": 948,
+      "OBSERVED_count": 298,
+      "effective_count": 772.0,
+      "final_clipped_weight": 0.9993514912966515,
+      "final_weight": 0.9993514912966515,
+      "normalized_weight": 0.9993514912966515,
+      "raw_row_count": 1246,
+      "raw_weight": 0.9993521217330933,
+      "rows": 1246
+    },
+    "class_weights": {
+      "NO_EVIDENCE": 1.0006485087033488,
+      "POSSIBLE_EVIDENCE": 0.9993514912966515
+    },
+    "coverage": {
+      "n_none": 1285,
+      "n_possible": 1246,
+      "n_train": 2531
+    },
+    "possible_evidence_identity_list_sha256": "a0bb5d0039c60b24285562912a49cfa62e34fca034ff57f21b1e020f16f453ef"
+  },
+  "Gate2": {
+    "CONFIRMED_PRESENT": {
+      "INFERRED_count": 948,
+      "OBSERVED_count": 166,
+      "effective_count": 640.0,
+      "final_clipped_weight": 0.6246237558793669,
+      "final_weight": 0.6246237558793669,
+      "normalized_weight": 0.6246237558793669,
+      "raw_row_count": 1114,
+      "raw_weight": 0.7766112283504534,
+      "rows": 1114
+    },
+    "UNCERTAIN": {
+      "INFERRED_count": 0,
+      "OBSERVED_count": 132,
+      "effective_count": 132.0,
+      "final_clipped_weight": 1.375376244120633,
+      "final_weight": 1.375376244120633,
+      "normalized_weight": 1.375376244120633,
+      "raw_row_count": 132,
+      "raw_weight": 1.7100416440082458,
+      "rows": 132
+    },
+    "class_weights": {
+      "CONFIRMED_PRESENT": 0.6246237558793669,
+      "UNCERTAIN": 1.375376244120633
+    },
+    "coverage": {
+      "n_eligible": 1246,
+      "n_none_excluded": 1285,
+      "n_present": 1114,
+      "n_uncertain": 132
+    },
+    "eligible_identity_list_sha256": "a0bb5d0039c60b24285562912a49cfa62e34fca034ff57f21b1e020f16f453ef"
+  },
+  "clip_policy": {
+    "max": 2.0,
+    "min": 0.5,
+    "renormalize_after_clip": false
+  },
+  "code_revision": "356fd08dd02212e4b0abd49dd31ecc7e0f099173",
+  "dataset_sha256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "literal_weights": {
+    "gate1": {
+      "NO_EVIDENCE": 1.0006485087033488,
+      "POSSIBLE_EVIDENCE": 0.9993514912966515
+    },
+    "gate2": {
+      "CONFIRMED_PRESENT": 0.6246237558793669,
+      "UNCERTAIN": 1.375376244120633
+    }
+  },
+  "provenance_weights": {
+    "INFERRED": 0.5,
+    "OBSERVED": 1.0
+  },
+  "resolution_formula_version": "HYPERLEX_V5_TWO_STAGE_CLASS_WEIGHTS_V1",
+  "schema": "hyperlex.classification.v5.stage_a_two_stage_class_weights.v1",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1R1",
+  "surface_version": "classification-v5-stage-a-generalization-surface-v1r1-20261001",
+  "train_identity_list_sha256": "5a6f98c63d41b3cb145d454ed790f4c3e41049cf4cd6ffcea1c5e3d91e5de345",
+  "train_only": true,
+  "train_split_sha256": "d8565270bcc391e6e2c7967b679f88b598ce397d4e1031e8155a89c6beea2973"
+}

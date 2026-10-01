@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Authorize V1R1 two-stage Stage-A generalization retrain (Spec 007):**
+  `AUTHORIZE_V5_STAGE_A_TWO_STAGE_RETRAIN_ON_GENERALIZATION_SURFACE` seals
+  new experiment `HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-GENERALIZATION-001`
+  bound to architecture `631427cc…` + V1R1 dataset `4095036e…` / readiness
+  `c4b5fc07…` / receipt `3dbdd9b2…`. Resolves Gate-1/Gate-2 class weights
+  from train-only n=2531 (not V1R9 carry-forward) → artifact `80b7f899…`.
+  Init policy: fresh retrain from MODEL_WIDE_BEST `9fba0f66…` + fresh heads
+  (not STAGE_A_BEST `cd2829c1…` continuation). `TRAIN_AUTHORIZED=true` /
+  `AUTHORIZED_NOT_STARTED` / `NOT_COMPUTABLE`; run limit 1. No train; V1R1
+  unmutated; graph/Stage-B/BEST unchanged; spent reserve unused. Config
+  `1527ae18…`; receipt
+  `classification-v5-stage-a-two-stage-generalization-authorize-receipt-20261001.json`
+  (`f7d4f3ad…`). Next: `TRAIN_V5_STAGE_A_TWO_STAGE_GENERALIZATION_ONCE`.
+
 - **Remediate V5 Stage-A generalization surface → V1R1 (Spec 007):**
   `REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES` seals successor
   `HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1R1`
