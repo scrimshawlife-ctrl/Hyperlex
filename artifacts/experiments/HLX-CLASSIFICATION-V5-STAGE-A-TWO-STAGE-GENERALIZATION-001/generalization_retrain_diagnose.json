@@ -1,0 +1,817 @@
+{
+  "DIAGNOSE_RULE": "DIAGNOSE_V5_STAGE_A_GENERALIZATION_RETRAIN_SETTLED_FAIL",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-GENERALIZATION-001",
+  "FAILED_CHECKPOINT_SHA256": "26841d5f3a8b9cd4237f79203b80697f2da186e7d4b30ab6c08d528adba56e76",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "STAGE_A_SEMANTIC_DECOMPOSITION",
+  "PRIMARY_DIAGNOSIS": "GATE1_SEMANTIC_TARGET_MISMATCH",
+  "PRIMARY_REASONS": [
+    "SHORT_ATOM NONE vs PRESENT is largely lexeme/domain membership vs asserted evidence; binary NO_EVIDENCE/POSSIBLE hides that intermediate",
+    "semantic-core mass LEXEME_ONLY+RELATION=297 with EXPLICIT_EVIDENCE_CORE=9",
+    "representation state=SHORT_ATOM_REPRESENTATION_PARTIAL (not fully collapsed; target mismatch)"
+  ],
+  "PROBE_INTERPRETATION": "REPRESENTATION_OR_SEMANTIC_FAILURE",
+  "REPRESENTATION_STATE": "SHORT_ATOM_REPRESENTATION_PARTIAL",
+  "SPENT_RESERVE_STATUS": "SPENT",
+  "STAGE_A_BEST_MUTATED": false,
+  "TRAIN": false,
+  "architecture_semantic_comparison": {
+    "A_current_NO_vs_POSSIBLE": {
+      "additional_supervision": "none (current gold)",
+      "addresses": "binary Stage-A entry",
+      "implementation_complexity": "already implemented",
+      "risk_of_shortcut": "high on SHORT_ATOM lexical membership",
+      "v1r1_labels_support": true,
+      "what_error_addresses": "status quo; observed SHORT_ATOM NONE/PRESENT collapse under this target"
+    },
+    "B_assertion_gate": {
+      "additional_supervision": "SEMANTIC_ASSERTION_PRESENT vs NO_SEMANTIC_ASSERTION (not currently labeled on SHORT_ATOM NONE/PRESENT)",
+      "addresses": "lexeme membership vs asserted evidence",
+      "implementation_complexity": "medium (new Gate1 target + remap)",
+      "risk_of_shortcut": "medium if assertion label collapses to length",
+      "v1r1_labels_support": "partial: required_evidence_present / missing_required_semantics exist but are not a trained assertion target",
+      "what_error_addresses": "SHORT_ATOM FALSE_POSSIBLE where domain lexemes enter without assertion"
+    },
+    "C_domain_then_relation": {
+      "additional_supervision": "DOMAIN_RELEVANT vs IRRELEVANT + EVIDENCE_RELATION vs NONE",
+      "addresses": "separates domain membership from evidence relation",
+      "implementation_complexity": "high (two supervised stages)",
+      "risk_of_shortcut": "medium; domain head may absorb family leakage",
+      "v1r1_labels_support": "partial: topic_domain + missing_required_semantics / pair contrasts",
+      "what_error_addresses": "wiktionary/domain SHORT_ATOM NONE treated as POSSIBLE"
+    },
+    "D_factorized_evidence_core": {
+      "additional_supervision": "independent heads: domain relevance, assertion/relation, uncertainty",
+      "addresses": "factorizes the hidden intermediate concepts Gate1 currently blends",
+      "implementation_complexity": "high (multi-head + deterministic glue)",
+      "risk_of_shortcut": "lower if factors are supervised; higher if factors are unsupervised proxies",
+      "v1r1_labels_support": "partial: can derive weak factors from subtype/missing_semantics/required_evidence_present but not full factor gold",
+      "what_error_addresses": "semantic-target mismatch: one binary head asked to do three jobs"
+    }
+  },
+  "frozen_observed_outcome": {
+    "E2E_NONE_recall": 0.7845,
+    "E2E_PRESENT_recall": 0.8907,
+    "E2E_false_entry": 0.2014,
+    "Gate1_NONE_recall": 0.7845,
+    "Gate1_POSSIBLE_recall": 0.9037,
+    "Gate1_false_entry": 0.2155,
+    "Gate1_macro_F1": 0.8397,
+    "SHORT_ATOM_NONE_false_entry": 0.546,
+    "SHORT_ATOM_PRESENT_recall": 0.75,
+    "n_threshold_passing": 0,
+    "scientific_disposition": "SETTLED_FAIL"
+  },
+  "gate1_error_decomposition": {
+    "FALSE_NONE_top": {
+      "ATOM_PROSE": [
+        {
+          "cohort": "ATOM",
+          "fraction": 0.8297872340425532,
+          "n": 39
+        },
+        {
+          "cohort": "PROSE",
+          "fraction": 0.1702127659574468,
+          "n": 8
+        }
+      ],
+      "length_band": [
+        {
+          "cohort": "1-4",
+          "fraction": 0.851063829787234,
+          "n": 40
+        },
+        {
+          "cohort": "9-16",
+          "fraction": 0.0851063829787234,
+          "n": 4
+        },
+        {
+          "cohort": "5-8",
+          "fraction": 0.0425531914893617,
+          "n": 2
+        },
+        {
+          "cohort": "17-32",
+          "fraction": 0.02127659574468085,
+          "n": 1
+        }
+      ],
+      "provenance": [
+        {
+          "cohort": "OBSERVED",
+          "fraction": 0.8936170212765957,
+          "n": 42
+        },
+        {
+          "cohort": "INFERRED",
+          "fraction": 0.10638297872340426,
+          "n": 5
+        }
+      ],
+      "source_family": [
+        {
+          "cohort": "wiktionary_aggregate",
+          "fraction": 0.8723404255319149,
+          "n": 41
+        },
+        {
+          "cohort": "inferred_POSITIVE_EVIDENCE_3",
+          "fraction": 0.06382978723404255,
+          "n": 3
+        },
+        {
+          "cohort": "wikipedia_memetic_1",
+          "fraction": 0.02127659574468085,
+          "n": 1
+        },
+        {
+          "cohort": "inferred_POSITIVE_EVIDENCE_0",
+          "fraction": 0.02127659574468085,
+          "n": 1
+        },
+        {
+          "cohort": "inferred_POSITIVE_EVIDENCE_1",
+          "fraction": 0.02127659574468085,
+          "n": 1
+        }
+      ],
+      "subtype": [
+        {
+          "cohort": "POSITIVE_EVIDENCE",
+          "fraction": 0.9574468085106383,
+          "n": 45
+        },
+        {
+          "cohort": "AMBIGUOUS_EVIDENCE",
+          "fraction": 0.0425531914893617,
+          "n": 2
+        }
+      ]
+    },
+    "FALSE_POSSIBLE_top": {
+      "ATOM_PROSE": [
+        {
+          "cohort": "ATOM",
+          "fraction": 0.680327868852459,
+          "n": 83
+        },
+        {
+          "cohort": "PROSE",
+          "fraction": 0.319672131147541,
+          "n": 39
+        }
+      ],
+      "domain": [
+        {
+          "cohort": "botany",
+          "fraction": 0.2540983606557377,
+          "n": 31
+        },
+        {
+          "cohort": "meteorology",
+          "fraction": 0.1557377049180328,
+          "n": 19
+        },
+        {
+          "cohort": "chemistry",
+          "fraction": 0.1557377049180328,
+          "n": 19
+        },
+        {
+          "cohort": "ornithology",
+          "fraction": 0.13934426229508196,
+          "n": 17
+        },
+        {
+          "cohort": "ai-native",
+          "fraction": 0.13114754098360656,
+          "n": 16
+        },
+        {
+          "cohort": "unspecified",
+          "fraction": 0.10655737704918032,
+          "n": 13
+        },
+        {
+          "cohort": "anatomy",
+          "fraction": 0.01639344262295082,
+          "n": 2
+        },
+        {
+          "cohort": "geology",
+          "fraction": 0.01639344262295082,
+          "n": 2
+        }
+      ],
+      "length_band": [
+        {
+          "cohort": "1-4",
+          "fraction": 0.680327868852459,
+          "n": 83
+        },
+        {
+          "cohort": "9-16",
+          "fraction": 0.1557377049180328,
+          "n": 19
+        },
+        {
+          "cohort": "17-32",
+          "fraction": 0.10655737704918032,
+          "n": 13
+        },
+        {
+          "cohort": "5-8",
+          "fraction": 0.04918032786885246,
+          "n": 6
+        },
+        {
+          "cohort": "33-64",
+          "fraction": 0.00819672131147541,
+          "n": 1
+        }
+      ],
+      "provenance": [
+        {
+          "cohort": "OBSERVED",
+          "fraction": 0.819672131147541,
+          "n": 100
+        },
+        {
+          "cohort": "INFERRED",
+          "fraction": 0.18032786885245902,
+          "n": 22
+        }
+      ],
+      "source_family": [
+        {
+          "cohort": "wiktionary_aggregate",
+          "fraction": 0.6885245901639344,
+          "n": 84
+        },
+        {
+          "cohort": "hub_observed_none",
+          "fraction": 0.07377049180327869,
+          "n": 9
+        },
+        {
+          "cohort": "inferred_LEXICAL_LOOKALIKE_NONE_0",
+          "fraction": 0.04918032786885246,
+          "n": 6
+        },
+        {
+          "cohort": "inferred_LEXICAL_LOOKALIKE_NONE_1",
+          "fraction": 0.03278688524590164,
+          "n": 4
+        },
+        {
+          "cohort": "inferred_LEXICAL_LOOKALIKE_NONE_3",
+          "fraction": 0.03278688524590164,
+          "n": 4
+        },
+        {
+          "cohort": "inferred_LEXICAL_LOOKALIKE_NONE_2",
+          "fraction": 0.03278688524590164,
+          "n": 4
+        },
+        {
+          "cohort": "wikipedia_botany_0",
+          "fraction": 0.01639344262295082,
+          "n": 2
+        },
+        {
+          "cohort": "inferred_SHORT_ATOM_NONE_2",
+          "fraction": 0.01639344262295082,
+          "n": 2
+        }
+      ],
+      "subtype": [
+        {
+          "cohort": "SHORT_ATOM_NONE",
+          "fraction": 0.6065573770491803,
+          "n": 74
+        },
+        {
+          "cohort": "ORDINARY_DOMAIN_NONE",
+          "fraction": 0.16393442622950818,
+          "n": 20
+        },
+        {
+          "cohort": "LEXICAL_LOOKALIKE_NONE",
+          "fraction": 0.14754098360655737,
+          "n": 18
+        },
+        {
+          "cohort": "HARD_NONE",
+          "fraction": 0.08196721311475409,
+          "n": 10
+        }
+      ]
+    },
+    "counts": {
+      "FALSE_NONE": 47,
+      "FALSE_POSSIBLE": 122,
+      "TRUE_NONE": 444,
+      "TRUE_POSSIBLE": 441
+    }
+  },
+  "justified": {
+    "architecture_change_justified": false,
+    "dataset_change_justified": false,
+    "objective_change_justified": true,
+    "semantic_decomposition_justified": true
+  },
+  "lexical_association": {
+    "false_possible_high_assoc_fraction": 0.04819277108433735,
+    "n_FALSE_POSSIBLE_atoms": 83,
+    "n_TRUE_NONE_atoms": 69,
+    "n_high_assoc_tokens": 1965,
+    "top_token_hashes": [
+      {
+        "log_odds": 4.473447215607845,
+        "token_sha12": "e3456bc1f4d2"
+      },
+      {
+        "log_odds": 4.4002438115845495,
+        "token_sha12": "303d03f701f0"
+      },
+      {
+        "log_odds": 4.4002438115845495,
+        "token_sha12": "e2f172a80068"
+      },
+      {
+        "log_odds": 4.4002438115845495,
+        "token_sha12": "94e8220b7036"
+      },
+      {
+        "log_odds": 3.922616257228155,
+        "token_sha12": "eb3cad5b7bea"
+      },
+      {
+        "log_odds": 3.791996074811091,
+        "token_sha12": "2b63bd1a162b"
+      },
+      {
+        "log_odds": 3.744368025821836,
+        "token_sha12": "4ec108ab9113"
+      },
+      {
+        "log_odds": 3.744368025821836,
+        "token_sha12": "13056d2a12a8"
+      },
+      {
+        "log_odds": 3.6943576052471747,
+        "token_sha12": "5146f25dc507"
+      },
+      {
+        "log_odds": 3.6943576052471747,
+        "token_sha12": "8abd71104080"
+      },
+      {
+        "log_odds": 3.6417138717617528,
+        "token_sha12": "27a888c9d5e6"
+      },
+      {
+        "log_odds": 3.6417138717617528,
+        "token_sha12": "8563d0d12f13"
+      },
+      {
+        "log_odds": 3.6417138717617528,
+        "token_sha12": "a75c433ab2ae"
+      },
+      {
+        "log_odds": 3.586144020606942,
+        "token_sha12": "95573da6c835"
+      },
+      {
+        "log_odds": 3.5273035205840086,
+        "token_sha12": "98b2be5d5090"
+      },
+      {
+        "log_odds": 3.5273035205840086,
+        "token_sha12": "497a950127d2"
+      },
+      {
+        "log_odds": 3.5273035205840086,
+        "token_sha12": "3426125bf109"
+      },
+      {
+        "log_odds": 3.249671783985729,
+        "token_sha12": "3c469e9d6c58"
+      },
+      {
+        "log_odds": 3.249671783985729,
+        "token_sha12": "fbbb377ea6dd"
+      },
+      {
+        "log_odds": 3.166290175046678,
+        "token_sha12": "1da51b8d8ff9"
+      }
+    ],
+    "train_only": true,
+    "true_none_high_assoc_fraction": 0.07246376811594203
+  },
+  "old_vs_new_stage_a": {
+    "FAILED_V1R1_candidate": {
+      "centroid_NONE_PRESENT_cosine": 0.9746255297784038,
+      "checkpoint": "26841d5f3a8b9cd4237f79203b80697f2da186e7d4b30ab6c08d528adba56e76",
+      "nearest_margins": {
+        "NONE": {
+          "mean_margin": 0.012725838161477218,
+          "mean_nearest_opposite": 0.8368155200387588,
+          "mean_nearest_same": 0.8495413582002361,
+          "n": 152
+        },
+        "PRESENT": {
+          "mean_margin": 0.025887330862799113,
+          "mean_nearest_opposite": 0.8194668951072052,
+          "mean_nearest_same": 0.8453542259700043,
+          "n": 156
+        }
+      },
+      "short_atom_metrics": {
+        "NONE_recall": 0.45394736842105265,
+        "PRESENT_recall": 0.75,
+        "mean_NONE_p_possible": 0.5406685869013178,
+        "mean_PRESENT_p_possible": 0.7421783462529578,
+        "n_NONE": 152,
+        "n_PRESENT": 156,
+        "score_separation": 0.20150975935163995
+      }
+    },
+    "STAGE_A_BEST": {
+      "centroid_NONE_PRESENT_cosine": 0.9728567718432051,
+      "checkpoint": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+      "nearest_margins": {
+        "NONE": {
+          "mean_margin": 0.0067153207447314504,
+          "mean_nearest_opposite": 0.8588287965161485,
+          "mean_nearest_same": 0.8655441172608801,
+          "n": 152
+        },
+        "PRESENT": {
+          "mean_margin": 0.019508960021219195,
+          "mean_nearest_opposite": 0.8429225226839672,
+          "mean_nearest_same": 0.8624314827051864,
+          "n": 156
+        }
+      },
+      "short_atom_metrics": {
+        "NONE_recall": 0.5394736842105263,
+        "PRESENT_recall": 0.6089743589743589,
+        "mean_NONE_p_possible": 0.4547104611902067,
+        "mean_PRESENT_p_possible": 0.6209013642044766,
+        "n_NONE": 152,
+        "n_PRESENT": 156,
+        "score_separation": 0.16619090301426992
+      }
+    },
+    "v1r1_training_effect": "failed_to_improve_representation_separation"
+  },
+  "probe_results": {
+    "A_existing_head": {
+      "diagnostic_only": true,
+      "name": "A_existing_head",
+      "overall_ba": 0.8428684180038232,
+      "persisted_as_model": false,
+      "short_atom_NONE_recall": 0.4276315789473684,
+      "short_atom_PRESENT_recall": 0.7692307692307693,
+      "short_atom_ba": 0.6091646266829865
+    },
+    "B_logistic": {
+      "diagnostic_only": true,
+      "name": "B_logistic",
+      "overall_ba": 0.8352726930429242,
+      "persisted_as_model": false,
+      "short_atom_NONE_recall": 0.4342105263157895,
+      "short_atom_PRESENT_recall": 0.7628205128205128,
+      "short_atom_ba": 0.606640146878825
+    },
+    "C_nonlinear": {
+      "diagnostic_only": true,
+      "name": "C_nonlinear",
+      "overall_ba": 0.8312105369866187,
+      "persisted_as_model": false,
+      "short_atom_NONE_recall": 0.4342105263157895,
+      "short_atom_PRESENT_recall": 0.6858974358974359,
+      "short_atom_ba": 0.5688494492044064
+    },
+    "interpretation": "REPRESENTATION_OR_SEMANTIC_FAILURE"
+  },
+  "provenance_controlled": {
+    "matched_INFERRED_NONE_false_entry": null,
+    "matched_OBSERVED_NONE_false_entry": null,
+    "matched_coverage_pairs": 0,
+    "matched_keys": 0,
+    "mean_p_possible_delta_obs_minus_inf": null,
+    "n_matched_NONE": 0,
+    "n_matched_POSSIBLE": 0,
+    "status": "INSUFFICIENT_MATCHED_SUPPORT"
+  },
+  "receipt_sha256": "c6ae58c78e7df2fdcd5675774c44c71510082d5749dfe90ff824f25809ffd90e",
+  "representation_separability": {
+    "NONE_PRESENT_centroid_cosine": 0.9746255297784038,
+    "NONE_UNCERTAIN_centroid_cosine": 0.721208801538337,
+    "PRESENT_UNCERTAIN_centroid_cosine": 0.7470212795479292,
+    "SHORT_ATOM_NONE_nearest": {
+      "mean_margin": 0.012725838161477218,
+      "mean_nearest_opposite": 0.8368155200387588,
+      "mean_nearest_same": 0.8495413582002361,
+      "n": 152
+    },
+    "SHORT_ATOM_PRESENT_nearest": {
+      "mean_margin": 0.025887330862799113,
+      "mean_nearest_opposite": 0.8194668951072052,
+      "mean_nearest_same": 0.8453542259700043,
+      "n": 156
+    },
+    "n_NONE": 152,
+    "n_PRESENT": 156,
+    "n_UNCERTAIN": 16,
+    "state": "SHORT_ATOM_REPRESENTATION_PARTIAL"
+  },
+  "semantic_core": {
+    "gate1_asked_to_distinguish": "token/domain membership vs actual asserted evidence without an explicit intermediate supervision signal",
+    "short_atom_by_label": {
+      "EVIDENCE_PRESENT": {
+        "EXPLICIT_EVIDENCE_CORE": 9,
+        "LEXEME_PLUS_RELATION": 147
+      },
+      "NO_EVIDENCE": {
+        "LEXEME_ONLY": 118,
+        "LEXEME_PLUS_RELATION": 32,
+        "NEGATED_OR_NONASSERTED": 2
+      },
+      "UNCERTAIN": {
+        "LEXEME_PLUS_CONTEXT": 16
+      }
+    },
+    "short_atom_counts": {
+      "EXPLICIT_EVIDENCE_CORE": 9,
+      "LEXEME_ONLY": 118,
+      "LEXEME_PLUS_CONTEXT": 16,
+      "LEXEME_PLUS_RELATION": 179,
+      "NEGATED_OR_NONASSERTED": 2
+    },
+    "support": 324
+  },
+  "short_atom_distributions": {
+    "EVIDENCE_PRESENT": {
+      "gate1_margin": {
+        "mean": 3.004303785924537,
+        "median": 3.1350265741348267,
+        "n": 156,
+        "p10": -2.4970695972442627,
+        "p25": 0.14191128313541412,
+        "p50": 3.1350265741348267,
+        "p75": 5.817308306694031,
+        "p90": 7.907314300537109
+      },
+      "n": 156,
+      "p_confirmed": {
+        "mean": 0.9753265938404575,
+        "median": 0.9999908044694051,
+        "n": 156,
+        "p10": 0.9941339256350297,
+        "p25": 0.9995881054902855,
+        "p50": 0.9999908044694051,
+        "p75": 0.999999517051857,
+        "p90": 0.9999998882700081
+      },
+      "p_possible": {
+        "mean": 0.7421783462529578,
+        "median": 0.9582689283942365,
+        "n": 156,
+        "p10": 0.07607139233101078,
+        "p25": 0.5353688379857248,
+        "p50": 0.9582689283942365,
+        "p75": 0.9970324876772368,
+        "p90": 0.999631706997191
+      }
+    },
+    "NO_EVIDENCE": {
+      "gate1_margin": {
+        "mean": 0.09824457823445923,
+        "median": 0.36029016971588135,
+        "n": 152,
+        "p10": -6.34890866279602,
+        "p25": -2.232851028442383,
+        "p50": 0.36029016971588135,
+        "p75": 2.8675968050956726,
+        "p90": 6.0414978981018095
+      },
+      "n": 152,
+      "p_confirmed": {
+        "mean": 0.9975178278052589,
+        "median": 0.9999893512500236,
+        "n": 152,
+        "p10": 0.9971144657173198,
+        "p25": 0.9998425615337748,
+        "p50": 0.9999893512500236,
+        "p75": 0.9999994635237826,
+        "p90": 0.9999999304461129
+      },
+      "p_possible": {
+        "mean": 0.5406685869013178,
+        "median": 0.5889580446559772,
+        "n": 152,
+        "p10": 0.0017476361113371566,
+        "p25": 0.0968511337593056,
+        "p50": 0.5889580446559772,
+        "p75": 0.9462018995450499,
+        "p90": 0.9976080803328964
+      }
+    },
+    "UNCERTAIN": {
+      "gate1_margin": {
+        "mean": 6.762690380215645,
+        "median": 6.682348966598511,
+        "n": 16,
+        "p10": 3.0065838098526,
+        "p25": 4.497161030769348,
+        "p50": 6.682348966598511,
+        "p75": 7.9128535985946655,
+        "p90": 11.257651329040527
+      },
+      "n": 16,
+      "p_confirmed": {
+        "mean": 0.14637534420448445,
+        "median": 0.0006427873958610943,
+        "n": 16,
+        "p10": 1.694923446400162e-05,
+        "p25": 4.845942037525056e-05,
+        "p50": 0.0006427873958610943,
+        "p75": 0.06260335395370858,
+        "p90": 0.5800697051750728
+      },
+      "p_possible": {
+        "mean": 0.978490957861081,
+        "median": 0.998748604141994,
+        "n": 16,
+        "p10": 0.9506288665174651,
+        "p25": 0.9889600805001051,
+        "p50": 0.998748604141994,
+        "p75": 0.9995974309529871,
+        "p90": 0.9999340072897255
+      }
+    },
+    "overlaps": {
+      "NONE_vs_PRESENT_p_possible": {
+        "histogram_intersection": 0.6293859649122807,
+        "median_gap": 0.36931088373825927,
+        "n_a": 152,
+        "n_b": 156
+      },
+      "NONE_vs_UNCERTAIN_p_possible": {
+        "histogram_intersection": 0.34539473684210525,
+        "median_gap": 0.4097905594860167,
+        "n_a": 152,
+        "n_b": 16
+      },
+      "PRESENT_vs_UNCERTAIN_p_possible": {
+        "histogram_intersection": 0.5961538461538461,
+        "median_gap": 0.04047967574775746,
+        "n_a": 156,
+        "n_b": 16
+      }
+    }
+  },
+  "threshold_impossibility": {
+    "class": "STRUCTURAL_CLASS_OVERLAP",
+    "curve": [
+      {
+        "e2e_NONE_recall": 0.784452296819788,
+        "e2e_PRESENT_recall": 0.8907363420427553,
+        "e2e_false_entry": 0.20141342756183744,
+        "gate1_NONE_recall": 0.784452296819788,
+        "gate1_POSSIBLE_recall": 0.9036885245901639,
+        "gate1_PRESENT_recall_proxy": 0.8931116389548693,
+        "gate1_false_entry": 0.21554770318021202,
+        "passes_all_three": false,
+        "threshold": 0.5
+      },
+      {
+        "e2e_NONE_recall": 0.7968197879858657,
+        "e2e_PRESENT_recall": 0.8883610451306413,
+        "e2e_false_entry": 0.18904593639575973,
+        "gate1_NONE_recall": 0.7968197879858657,
+        "gate1_POSSIBLE_recall": 0.9016393442622951,
+        "gate1_PRESENT_recall_proxy": 0.8907363420427553,
+        "gate1_false_entry": 0.20318021201413428,
+        "passes_all_three": false,
+        "threshold": 0.55
+      },
+      {
+        "e2e_NONE_recall": 0.8056537102473498,
+        "e2e_PRESENT_recall": 0.8812351543942993,
+        "e2e_false_entry": 0.18021201413427562,
+        "gate1_NONE_recall": 0.8056537102473498,
+        "gate1_POSSIBLE_recall": 0.8934426229508197,
+        "gate1_PRESENT_recall_proxy": 0.8812351543942993,
+        "gate1_false_entry": 0.19434628975265017,
+        "passes_all_three": false,
+        "threshold": 0.6
+      },
+      {
+        "e2e_NONE_recall": 0.8162544169611308,
+        "e2e_PRESENT_recall": 0.8741092636579573,
+        "e2e_false_entry": 0.1696113074204947,
+        "gate1_NONE_recall": 0.8162544169611308,
+        "gate1_POSSIBLE_recall": 0.8872950819672131,
+        "gate1_PRESENT_recall_proxy": 0.8741092636579573,
+        "gate1_false_entry": 0.18374558303886926,
+        "passes_all_three": false,
+        "threshold": 0.65
+      },
+      {
+        "e2e_NONE_recall": 0.8215547703180212,
+        "e2e_PRESENT_recall": 0.8693586698337292,
+        "e2e_false_entry": 0.16431095406360424,
+        "gate1_NONE_recall": 0.8215547703180212,
+        "gate1_POSSIBLE_recall": 0.8831967213114754,
+        "gate1_PRESENT_recall_proxy": 0.8693586698337292,
+        "gate1_false_entry": 0.1784452296819788,
+        "passes_all_three": false,
+        "threshold": 0.7
+      },
+      {
+        "e2e_NONE_recall": 0.8250883392226148,
+        "e2e_PRESENT_recall": 0.8551068883610451,
+        "e2e_false_entry": 0.1607773851590106,
+        "gate1_NONE_recall": 0.8250883392226148,
+        "gate1_POSSIBLE_recall": 0.8688524590163934,
+        "gate1_PRESENT_recall_proxy": 0.8551068883610451,
+        "gate1_false_entry": 0.17491166077738515,
+        "passes_all_three": false,
+        "threshold": 0.75
+      },
+      {
+        "e2e_NONE_recall": 0.842756183745583,
+        "e2e_PRESENT_recall": 0.8456057007125891,
+        "e2e_false_entry": 0.1431095406360424,
+        "gate1_NONE_recall": 0.842756183745583,
+        "gate1_POSSIBLE_recall": 0.8565573770491803,
+        "gate1_PRESENT_recall_proxy": 0.8456057007125891,
+        "gate1_false_entry": 0.15724381625441697,
+        "passes_all_three": false,
+        "threshold": 0.8
+      },
+      {
+        "e2e_NONE_recall": 0.8604240282685512,
+        "e2e_PRESENT_recall": 0.8242280285035629,
+        "e2e_false_entry": 0.127208480565371,
+        "gate1_NONE_recall": 0.8604240282685512,
+        "gate1_POSSIBLE_recall": 0.8381147540983607,
+        "gate1_PRESENT_recall_proxy": 0.8242280285035629,
+        "gate1_false_entry": 0.13957597173144876,
+        "passes_all_three": false,
+        "threshold": 0.85
+      },
+      {
+        "e2e_NONE_recall": 0.8780918727915195,
+        "e2e_PRESENT_recall": 0.7933491686460807,
+        "e2e_false_entry": 0.11130742049469965,
+        "gate1_NONE_recall": 0.8780918727915195,
+        "gate1_POSSIBLE_recall": 0.8073770491803278,
+        "gate1_PRESENT_recall_proxy": 0.7933491686460807,
+        "gate1_false_entry": 0.12190812720848057,
+        "passes_all_three": false,
+        "threshold": 0.9
+      },
+      {
+        "e2e_NONE_recall": 0.9081272084805654,
+        "e2e_PRESENT_recall": 0.7505938242280285,
+        "e2e_false_entry": 0.08480565371024736,
+        "gate1_NONE_recall": 0.9081272084805654,
+        "gate1_POSSIBLE_recall": 0.764344262295082,
+        "gate1_PRESENT_recall_proxy": 0.7505938242280285,
+        "gate1_false_entry": 0.09187279151943463,
+        "passes_all_three": false,
+        "threshold": 0.95
+      }
+    ],
+    "explanation": "No frozen Gate1 threshold jointly satisfies false_entry<=0.05, PRESENT>=0.70, and NONE>=0.90 on V1R1 validation under the selected checkpoint; SHORT_ATOM p_possible overlap forces the tradeoff.",
+    "n_passing_gate1_grid_with_gate2_0.50": 0
+  },
+  "wiktionary_source_effect": {
+    "class": "MIXED_SOURCE_EFFECT",
+    "controls": {
+      "non_wik_ATOM_1-4_false_entry": 0.36363636363636365,
+      "non_wik_ATOM_1-4_n": 58,
+      "non_wik_PROSE_false_entry": 0.0790273556231003,
+      "non_wik_overall_false_entry": 0.1046831955922865,
+      "wik_ATOM_1-4_false_entry": 0.5966386554621849,
+      "wik_ATOM_1-4_n": 266,
+      "wik_PROSE_false_entry": 0.15476190476190477
+    },
+    "false_entry": 0.41379310344827586,
+    "label_composition": {
+      "EVIDENCE_PRESENT": 178,
+      "NO_EVIDENCE": 203,
+      "UNCERTAIN": 17
+    },
+    "n": 398,
+    "note": "Do not delete source solely for poor performance."
+  }
+}

@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- **Diagnose V1R1 generalization-retrain SETTLED_FAIL (Spec 007):**
+  `DIAGNOSE_V5_STAGE_A_GENERALIZATION_RETRAIN_SETTLED_FAIL` read-only audit of
+  failed candidate `26841d5f…` on V1R1. Gate1 FALSE_POSSIBLE dominated by
+  SHORT_ATOM / length 1–4 / wiktionary / OBSERVED; SHORT_ATOM `p_possible`
+  overlap 0.629; representation PARTIAL (centroid cosine 0.975); probes
+  A/B/C do not separate SHORT_ATOM (BA≈0.61/0.61/0.57) →
+  `REPRESENTATION_OR_SEMANTIC_FAILURE`. Semantic-core mass is
+  LEXEME_ONLY+RELATION vs scarce EXPLICIT_EVIDENCE_CORE. Threshold class
+  `STRUCTURAL_CLASS_OVERLAP`. Primary diagnosis
+  **`GATE1_SEMANTIC_TARGET_MISMATCH`**; dataset change not justified;
+  objective/semantic decomposition justified. BEST/V1R1/reserve untouched.
+  Receipt
+  `classification-v5-stage-a-generalization-retrain-diagnose-receipt-20261001.json`
+  (`c6ae58c7…`). Next: `STAGE_A_SEMANTIC_DECOMPOSITION` (not authorized).
+
 - **Train V1R1 two-stage Stage-A generalization once (Spec 007):**
   `TRAIN_V5_STAGE_A_TWO_STAGE_GENERALIZATION_ONCE` executes the single
   authorized fresh retrain
