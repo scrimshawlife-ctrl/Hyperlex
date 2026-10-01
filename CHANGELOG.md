@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Authorize/seal/score V5 promotion reserve (Spec 007):**
+  `AUTHORIZE_SEAL_NEW_V5_RESERVE_THEN_ONE_SHOT_SCORE` creates
+  **`HYPERLEX_V5_PROMOTION_RESERVE_001`** (n=250; NONE 61 / PRESENT 159 /
+  UNCERTAIN 30; 15 families; OBSERVED 82.4%; disjoint PASS), then one-shot
+  scores under frozen STAGE_A_BEST `cd2829c1…` + Stage-B index `3fd6c87a…`
+  floors `0.64`/`0.07`. Primary false-entry `0.098` FAIL; family emission
+  precision `0.667` FAIL → **`RESERVE_FAIL`**. Reserve identities
+  `evaluation_spent=true`. BEST / STAGE_A_BEST unchanged; no retune; no
+  production promotion. Receipt
+  `classification-v5-promotion-reserve-receipt-20260930.json` (`2e083b9e…`).
+  Next: `PRESERVE_RESERVE_FAIL` (offline diagnose; do not retune on spent
+  reserve).
+
 - **Wire V5 Stage-B behind STAGE_A_BEST (Spec 007):**
   `WIRE_V5_STAGE_B_RETRIEVAL_ON_STAGE_A_BEST` for
   `HLX-CLASSIFICATION-V5-STAGE-B-001` on V1R9 `8d4be830…`. Retrieval only on

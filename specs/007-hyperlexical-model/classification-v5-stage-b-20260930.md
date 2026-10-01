@@ -60,9 +60,9 @@ Private seal: `/home/morpheus/hlx-private/classification-v5-stage-b-20260930/`.
 ## Next action
 
 ```text
-NEXT_ACTION = AUTHORIZE_SEAL_NEW_V5_RESERVE_THEN_ONE_SHOT_SCORE
+NEXT_ACTION = PRESERVE_RESERVE_FAIL
 ```
 
-Do not score until a fresh v5 reserve is explicitly authorized and sealed.
-Prior spent reserves remain permanently excluded. Do not mutate BEST or
-STAGE_A_BEST.
+Fresh reserve `HYPERLEX_V5_PROMOTION_RESERVE_001` was sealed and one-shot
+scored → `RESERVE_FAIL` (receipt `2e083b9e…`). Do not retune on the spent
+reserve. Do not mutate BEST or STAGE_A_BEST.

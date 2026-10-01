@@ -208,7 +208,18 @@ def audit_reserve_composition(rows: Sequence[Mapping[str, Any]]) -> dict[str, An
     present = [row for row in rows if row["evidence_label"] == "EVIDENCE_PRESENT"]
     none_rows = [row for row in rows if row["evidence_label"] == "NO_EVIDENCE"]
     uncertain = [row for row in rows if row["evidence_label"] == "UNCERTAIN"]
-    family_counts = Counter(str(row["gold_family"]) for row in present if row.get("gold_family"))
+
+    def _present_family(row: Mapping[str, Any]) -> str | None:
+        if row.get("gold_family"):
+            return str(row["gold_family"])
+        families = list(row.get("candidate_families") or [])
+        return str(families[0]) if families else None
+
+    family_counts = Counter(
+        family
+        for family in (_present_family(row) for row in present)
+        if family
+    )
     max_share = 0.0
     dominant = None
     if present and family_counts:

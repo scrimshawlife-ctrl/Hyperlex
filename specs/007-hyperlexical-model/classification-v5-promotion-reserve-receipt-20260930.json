@@ -1,0 +1,122 @@
+{
+  "BEST_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_BEST_MUTATED": false,
+  "code_revision": "0477d6dee686169b4ee203de6e0e4e9869e08551",
+  "composition": {
+    "composition_pass": true,
+    "dominant_family": "crypto-degen",
+    "evidence_label_counts": {
+      "EVIDENCE_PRESENT": 159,
+      "NO_EVIDENCE": 61,
+      "UNCERTAIN": 30
+    },
+    "evidence_subtype_counts": {
+      "AMBIGUOUS_EVIDENCE": 30,
+      "GENERIC_NONE": 8,
+      "HARD_NONE": 12,
+      "LEXICAL_LOOKALIKE_NONE": 1,
+      "NEAR_DOMAIN_NONE": 12,
+      "ORDINARY_DOMAIN_NONE": 20,
+      "POSITIVE_EVIDENCE": 159,
+      "SHORT_ATOM_NONE": 8
+    },
+    "family_counts": {
+      "betting-sharp": 27,
+      "conflict-aggression": 8,
+      "crypto-degen": 27,
+      "fashion-aesthetic": 8,
+      "gaming-meta": 26,
+      "identity-affiliation": 8,
+      "internet-slang": 1,
+      "music-entertainment": 8,
+      "politics-civic": 8,
+      "regional-cultural": 8,
+      "relationship-dating": 2,
+      "social-evaluation": 8,
+      "spiritual-mystic": 8,
+      "sports-competition": 4,
+      "technology-ai": 8
+    },
+    "max_single_family_share_of_present": 0.16981132075471697,
+    "n": 250,
+    "n_distinct_present_families": 15,
+    "n_no_evidence": 61,
+    "n_present": 159,
+    "n_uncertain": 30,
+    "observed_none_share": 0.6721311475409836,
+    "observed_overall_share": 0.824,
+    "observed_present_share": 1.0,
+    "provenance_counts": {
+      "INFERRED": 44,
+      "OBSERVED": 206
+    },
+    "reasons": []
+  },
+  "disjointness": {
+    "disjoint_pass": true,
+    "n_blocked_hits": 0,
+    "overlap_by_reason": {}
+  },
+  "evaluation_spent": true,
+  "frozen_thresholds": {
+    "gate1_threshold": 0.75,
+    "gate2_threshold": 0.5,
+    "minimum_family_margin": 0.07,
+    "minimum_family_score": 0.64
+  },
+  "metrics": {
+    "decision_counts": {
+      "ABSTAIN": 123,
+      "AMBIGUOUS": 40,
+      "FAMILY": 15,
+      "NONE": 72
+    },
+    "false_evidence_entry_rate_on_none": 0.09836065573770492,
+    "family_emission_coverage": 0.09433962264150944,
+    "family_emission_precision": 0.6666666666666666,
+    "family_emission_recall": 0.06289308176100629,
+    "family_top1_accuracy": 0.1509433962264151,
+    "family_top2_accuracy": 0.20754716981132076,
+    "n": 250,
+    "n_family_emitted": 15,
+    "none_recall": 0.5737704918032787,
+    "present_recall": 0.3710691823899371,
+    "primary_gate_max": 0.05,
+    "primary_gate_pass": false,
+    "secondary_gate_min": 0.8,
+    "secondary_gate_pass": false,
+    "settlement": "RESERVE_FAIL",
+    "stage_a_decision_counts": {
+      "EVIDENCE_PRESENT": 74,
+      "NO_EVIDENCE": 72,
+      "UNCERTAIN": 104
+    },
+    "uncertain_recall": 0.6,
+    "wrong_emission_breakdown": {
+      "STAGE_A_AND_B_COMPOUND": 3,
+      "STAGE_A_FALSE_ENTRY": 1,
+      "STAGE_B_WRONG_FAMILY": 1
+    }
+  },
+  "next_action": "PRESERVE_RESERVE_FAIL \u2014 do not retune against the spent reserve; do not rebuild index; do not move BEST / STAGE_A_BEST; diagnose offline.",
+  "receipt_sha256": "2e083b9e08d013fe86a65b657fd2a17b359bdd2b5e40285d5778a9e60dc33d93",
+  "reserve_hashes": {
+    "identity_list_sha256": "bc87c62d502aa51cffcac55a3b1cd0791cc527d8356fd146f8769b8685498a82",
+    "manifest_sha256": "6d475119184b0ad54b1d50be952fedd88c01f3955991879268f70136dc87e1a1",
+    "rows_sha256": "0b71fcbf59ad0dad38dd11a3f40f11ecea61214e61fd7aa7b2cd0f5f8032d711",
+    "seal_sha256": "21903beabdf9a71a9893a1bd37a37182895f3b14a12344eb3eec78e8ceb1e360"
+  },
+  "reserve_id": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "schema": "hyperlex.classification.v5.promotion_reserve_score.v1",
+  "settlement": "RESERVE_FAIL",
+  "stage_b_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+  "wrong_emission_breakdown": {
+    "STAGE_A_AND_B_COMPOUND": 3,
+    "STAGE_A_FALSE_ENTRY": 1,
+    "STAGE_B_WRONG_FAMILY": 1
+  },
+  "wrong_emissions_n": 5
+}

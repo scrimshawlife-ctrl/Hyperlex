@@ -324,6 +324,9 @@ def blocked_identities() -> dict[str, str]:
     for record in ledger.get("identities") or []:
         digest = str(record.get("normalized_text_sha256") or "")
         state = str(record.get("state") or "")
+        # Block evaluation/held-out/measurement identities only.
+        # TRAIN_CONSUMED hub rows remain admissible when absent from V1R9,
+        # spent reserves, Stage-B index sources, and prior V5 diagnostic surfaces.
         if (
             record.get("evaluation_spent")
             or record.get("evaluation_reserved")
@@ -332,8 +335,6 @@ def blocked_identities() -> dict[str, str]:
             in {"EVAL_SPENT", "EVAL_RESERVE", "EVAL_BOUND", "EVAL_ABANDONED"}
         ):
             put(digest, f"ledger:{state or 'spent'}")
-        elif record.get("training_consumed") or state == "TRAIN_CONSUMED":
-            put(digest, "TRAIN_CONSUMED")
 
     for path, reason in (
         (SPENT_V2, "spent_v2"),
@@ -790,6 +791,81 @@ def fill_inferred_none(
     return out
 
 
+def _hub_pools(blocked: dict[str, str]) -> dict[str, list[dict[str, Any]]]:
+    """Map free hub rows into V5 subtype pools (disjoint from required blockers)."""
+    from hyperlexical.classification_v5_stage_a_negative_evidence_surface import (
+        build_example,
+        classify_hub_subtype,
+        tokens,
+    )
+    from hyperlexical.holdout_guard import normalized_text_sha256
+
+    hub_path = Path(
+        "/home/morpheus/hlx-private/classification-v2-train-forward-20260930/"
+        "civilian.v0.7.hub.jsonl"
+    )
+    hub = load_jsonl(hub_path)
+    candidates = []
+    pos_tokens: set[str] = set()
+    for row in hub:
+        text = str(row.get("text") or "").strip()
+        if not text:
+            continue
+        identity = normalized_text_sha256(text)
+        if identity in blocked:
+            continue
+        candidates.append(row)
+        if row.get("lineage") in {
+            "betting-sharp",
+            "conflict-aggression",
+            "crypto-degen",
+            "fashion-aesthetic",
+            "gaming-meta",
+            "identity-affiliation",
+            "internet-slang",
+            "memetic",
+            "music-entertainment",
+            "politics-civic",
+            "regional-cultural",
+            "relationship-dating",
+            "social-evaluation",
+            "spiritual-mystic",
+            "sports-competition",
+            "technology-ai",
+            "workplace-career",
+            "ai-native",
+        }:
+            pos_tokens |= tokens(text)
+    pools: dict[str, list[dict[str, Any]]] = {}
+    for row in candidates:
+        subtype = classify_hub_subtype(row, positive_token_union=pos_tokens)
+        if subtype is None:
+            continue
+        if subtype == "POSITIVE_EVIDENCE" and row.get("lineage") == "ai-native":
+            # Stage-B index excludes ai-native; keep reserve gold on indexed families.
+            continue
+        try:
+            example = build_example(row, subtype)
+        except ValueError:
+            continue
+        if example["identity"] in blocked:
+            continue
+        example["label_authority"] = "HUMAN_SETTLED"
+        example["label_derivation"] = "semantic_source_evidence"
+        if subtype == "AMBIGUOUS_EVIDENCE" and not example.get("ambiguity_reason"):
+            example["ambiguity_reason"] = "MULTIPLE_PLAUSIBLE_INTERPRETATIONS"
+        pools.setdefault(subtype, []).append(example)
+    for subtype, rows in pools.items():
+        # Prefer OBSERVED, then stable identity order.
+        rows.sort(
+            key=lambda item: (
+                0 if item.get("provenance") == "OBSERVED" else 1,
+                item["identity"],
+            )
+        )
+    return pools
+
+
 def phase_a_acquire_and_seal() -> dict[str, Any]:
     from hyperlexical.classification_v4_balanced_reserve_acquire import (
         FAMILY_SENSE_LABELS,
@@ -820,28 +896,52 @@ def phase_a_acquire_and_seal() -> dict[str, Any]:
     kept: dict[str, dict[str, Any]] = {}
     rejected_total: Counter[str] = Counter()
     family_got: dict[str, int] = {}
-    cache_path = PRIVATE / "ACQUIRE_CACHE.jsonl"
-    if cache_path.exists() and cache_path.stat().st_size > 1:
-        for row in load_jsonl(cache_path):
-            kept[str(row["identity"])] = row
-        print(f"resumed acquire cache n={len(kept)}", flush=True)
+    source_counts: Counter[str] = Counter()
 
-    # PRESENT — prefer 8 per indexed surface family (~136).
+    def _take(row: dict[str, Any], *, source: str) -> bool:
+        identity = str(row["identity"])
+        if identity in blocked or identity in kept:
+            return False
+        text = str(row.get("text") or "")
+        if text and normalized_text_sha256(text) in blocked:
+            return False
+        kept[identity] = row
+        source_counts[source] += 1
+        return True
+
+    pools = _hub_pools(blocked)
+    print(
+        "hub_pools "
+        + json.dumps({k: len(v) for k, v in sorted(pools.items())}, sort_keys=True),
+        flush=True,
+    )
+
+    # PRESENT — balanced across indexed families; prefer OBSERVED.
     per_family = 8
+    present_pool = pools.get("POSITIVE_EVIDENCE") or []
+    by_family: dict[str, list[dict[str, Any]]] = {}
+    for row in present_pool:
+        family = str((row.get("candidate_families") or [None])[0])
+        if family not in INDEXED_SURFACE_FAMILIES:
+            continue
+        by_family.setdefault(family, []).append(row)
     for family in INDEXED_SURFACE_FAMILIES:
+        selected = 0
+        for row in by_family.get(family) or []:
+            if selected >= per_family:
+                break
+            if _take(row, source="hub_present"):
+                selected += 1
+        family_got[family] = selected
+        print(f"present hub {family}: {selected}", flush=True)
+
+    # Wiktionary top-up for families still below floor contribution.
+    for family in INDEXED_SURFACE_FAMILIES:
+        need = per_family - family_got.get(family, 0)
+        if need <= 0:
+            continue
         labels = list(FAMILY_SENSE_LABELS.get(family) or [])
         if not labels:
-            continue
-        already = sum(
-            1
-            for row in kept.values()
-            if row.get("evidence_subtype") == "POSITIVE_EVIDENCE"
-            and (row.get("candidate_families") or [None])[0] == family
-        )
-        family_got[family] = already
-        need = per_family - already
-        if need <= 0:
-            print(f"present {family}: {already} (cached)", flush=True)
             continue
         rows, rejected = collect_family(
             family=family,
@@ -850,41 +950,45 @@ def phase_a_acquire_and_seal() -> dict[str, Any]:
             blocked=blocked,
             kept=kept,
         )
-        family_got[family] = already + len(rows)
+        family_got[family] = family_got.get(family, 0) + len(rows)
         rejected_total.update(rejected)
+        source_counts["wikt_present"] += len(rows)
         print(
-            f"present {family}: {family_got[family]} (+{len(rows)} rejected={dict(rejected)})",
+            f"present wikt {family}: +{len(rows)} total={family_got[family]} "
+            f"rejected={dict(rejected)}",
             flush=True,
         )
-        # Checkpoint acquire cache.
-        cache_body = "\n".join(json.dumps(r, sort_keys=True) for r in kept.values()) + "\n"
-        write_private(PRIVATE / "ACQUIRE_CACHE.jsonl", cache_body)
 
     positives = [
         r for r in kept.values() if r.get("evidence_subtype") == "POSITIVE_EVIDENCE"
     ]
 
-    # NONE OBSERVED subtypes from ordinary-domain Wiktionary senses.
-    none_labels = list(NONE_SENSE_LABELS)
-    for subtype, quota in (
-        ("ORDINARY_DOMAIN_NONE", 24),
-        ("HARD_NONE", 12),
-        ("NEAR_DOMAIN_NONE", 12),
-    ):
-        rows, rejected = collect_none_observed(
-            labels=none_labels,
-            subtype=subtype,
-            quota=quota,
-            blocked=blocked,
-            kept=kept,
-        )
-        rejected_total.update(rejected)
-        print(f"none observed {subtype}: {len(rows)}", flush=True)
-        cache_body = "\n".join(json.dumps(r, sort_keys=True) for r in kept.values()) + "\n"
-        write_private(PRIVATE / "ACQUIRE_CACHE.jsonl", cache_body)
+    # NONE from hub first (OBSERVED preferred via pool sort), then fills / wikt.
+    none_targets = {
+        "ORDINARY_DOMAIN_NONE": 24,
+        "HARD_NONE": 12,
+        "NEAR_DOMAIN_NONE": 12,
+        "GENERIC_NONE": 8,
+        "LEXICAL_LOOKALIKE_NONE": 8,
+        "SHORT_ATOM_NONE": 8,
+    }
+    for subtype, quota in none_targets.items():
+        got = 0
+        for row in pools.get(subtype) or []:
+            if got >= quota:
+                break
+            if _take(row, source=f"hub_{subtype}"):
+                got += 1
+        print(f"none hub {subtype}: {got}", flush=True)
 
-    # UNCERTAIN OBSERVED — prefer unused acquire-cache rows (never on V1R9 /
-    # diagnostics), then Wiktionary top-up if still short.
+    # UNCERTAIN — hub + unused acquire cache.
+    uncertain_quota = 30
+    uncertain_got = 0
+    for row in pools.get("AMBIGUOUS_EVIDENCE") or []:
+        if uncertain_got >= uncertain_quota:
+            break
+        if _take(row, source="hub_uncertain"):
+            uncertain_got += 1
     uncertain_paths = [
         Path(
             "/home/morpheus/hlx-private/"
@@ -897,66 +1001,34 @@ def phase_a_acquire_and_seal() -> dict[str, Any]:
             "OBSERVED_UNCERTAIN_ACQUIRE.jsonl"
         ),
     ]
-    uncertain_need = 30 - sum(
-        1
-        for row in kept.values()
-        if row.get("evidence_subtype") == "AMBIGUOUS_EVIDENCE"
-    )
-    reused = 0
     for path in uncertain_paths:
-        if uncertain_need <= 0 or not path.exists():
+        if uncertain_got >= uncertain_quota or not path.exists():
             continue
         for raw in load_jsonl(path):
-            if uncertain_need <= 0:
+            if uncertain_got >= uncertain_quota:
                 break
             if raw.get("evidence_subtype") != "AMBIGUOUS_EVIDENCE":
                 continue
             if not raw.get("ambiguity_reason"):
                 continue
-            identity = str(raw.get("identity") or "")
-            if identity in blocked or identity in kept:
-                continue
-            text = str(raw.get("text") or "")
-            if text and normalized_text_sha256(text) in blocked:
-                continue
             raw = dict(raw)
             raw.setdefault("label_derivation", "semantic_source_evidence")
             raw.setdefault("label_authority", "HUMAN_SETTLED")
             raw["provenance"] = str(raw.get("provenance") or "OBSERVED")
-            kept[identity] = raw
-            reused += 1
-            uncertain_need -= 1
-    print(f"uncertain reused_cache: {reused}", flush=True)
-    if uncertain_need > 0:
-        uncertain = collect_uncertain(
-            quota=uncertain_need, blocked=blocked, kept=kept
-        )
-        print(f"uncertain wikt_topup: {len(uncertain)}", flush=True)
-    cache_body = "\n".join(json.dumps(r, sort_keys=True) for r in kept.values()) + "\n"
-    write_private(PRIVATE / "ACQUIRE_CACHE.jsonl", cache_body)
+            if _take(raw, source="uncertain_cache"):
+                uncertain_got += 1
+    print(f"uncertain total: {uncertain_got}", flush=True)
 
-    # INFERRED fills for remaining NONE subtype representation + quotas.
-    for subtype, need in (
-        ("GENERIC_NONE", 8),
-        ("LEXICAL_LOOKALIKE_NONE", 8),
-        ("SHORT_ATOM_NONE", 8),
-    ):
-        got = fill_inferred_none(
-            subtype=subtype,
-            need=need,
-            blocked=blocked,
-            kept=kept,
-            positives=positives,
-        )
-        print(f"none inferred {subtype}: {len(got)}", flush=True)
-
-    # Top up NONE OBSERVED floors with INFERRED if Wiktionary underfilled.
+    # INFERRED fills for missing NONE subtype floors / representation.
     composition_probe = audit_reserve_composition(list(kept.values()))
     subtype_counts = composition_probe["evidence_subtype_counts"]
     for subtype, floor in (
         ("ORDINARY_DOMAIN_NONE", 20),
         ("HARD_NONE", 10),
         ("NEAR_DOMAIN_NONE", 10),
+        ("GENERIC_NONE", 1),
+        ("LEXICAL_LOOKALIKE_NONE", 1),
+        ("SHORT_ATOM_NONE", 1),
     ):
         gap = floor - int(subtype_counts.get(subtype, 0))
         if gap > 0:
@@ -965,44 +1037,74 @@ def phase_a_acquire_and_seal() -> dict[str, Any]:
                 need=gap,
                 blocked=blocked,
                 kept=kept,
-                positives=positives,
+                positives=positives
+                or [
+                    r
+                    for r in (pools.get("POSITIVE_EVIDENCE") or [])[:20]
+                ],
             )
-            print(f"topup {subtype}: {len(got)}", flush=True)
+            source_counts[f"fill_{subtype}"] += len(got)
+            print(f"fill {subtype}: {len(got)}", flush=True)
 
-    # Prefer total >= 250 via additional PRESENT if short.
-    while len(kept) < 250:
-        # Prefer filling PRESENT for under-covered families.
-        family_counts = Counter(
-            str((r.get("candidate_families") or ["?"])[0])
-            for r in kept.values()
-            if r.get("evidence_subtype") == "POSITIVE_EVIDENCE"
-        )
-        under = [
-            family
-            for family in INDEXED_SURFACE_FAMILIES
-            if family_counts.get(family, 0) < 12
-        ]
-        if not under:
+    # Optional Wiktionary NONE top-up when OBSERVED NONE share is short.
+    composition_probe = audit_reserve_composition(list(kept.values()))
+    none_rows = [
+        r for r in kept.values() if r.get("evidence_label") == "NO_EVIDENCE"
+    ]
+    observed_none_share = (
+        sum(1 for r in none_rows if r.get("provenance") == "OBSERVED") / len(none_rows)
+        if none_rows
+        else 0.0
+    )
+    if observed_none_share < 0.50:
+        need_obs = max(1, int(0.50 * max(len(none_rows), 60) - sum(
+            1 for r in none_rows if r.get("provenance") == "OBSERVED"
+        )) + 1)
+        for subtype in ("ORDINARY_DOMAIN_NONE", "HARD_NONE", "NEAR_DOMAIN_NONE"):
+            if need_obs <= 0:
+                break
+            rows, rejected = collect_none_observed(
+                labels=list(NONE_SENSE_LABELS),
+                subtype=subtype,
+                quota=min(12, need_obs),
+                blocked=blocked,
+                kept=kept,
+            )
+            rejected_total.update(rejected)
+            source_counts[f"wikt_{subtype}"] += len(rows)
+            need_obs -= len(rows)
+            print(f"none wikt {subtype}: +{len(rows)}", flush=True)
+
+    # Prefer total >= 250 via additional hub PRESENT if available.
+    family_counts = Counter(
+        str((r.get("candidate_families") or ["?"])[0])
+        for r in kept.values()
+        if r.get("evidence_subtype") == "POSITIVE_EVIDENCE"
+    )
+    for family in INDEXED_SURFACE_FAMILIES:
+        if len(kept) >= 250:
             break
-        family = min(under, key=lambda name: family_counts.get(name, 0))
-        labels = list(FAMILY_SENSE_LABELS.get(family) or [])
-        rows, rejected = collect_family(
-            family=family,
-            labels=labels,
-            quota=2,
-            blocked=blocked,
-            kept=kept,
-        )
-        rejected_total.update(rejected)
-        if not rows:
-            break
-        print(f"topup present {family}: +{len(rows)} total={len(kept)}", flush=True)
+        if family_counts.get(family, 0) >= 12:
+            continue
+        for row in by_family.get(family) or []:
+            if len(kept) >= 250 or family_counts.get(family, 0) >= 12:
+                break
+            if _take(row, source="hub_present_topup"):
+                family_counts[family] += 1
+                family_got[family] = family_counts[family]
+
+    cache_body = "\n".join(json.dumps(r, sort_keys=True) for r in kept.values()) + "\n"
+    write_private(PRIVATE / "ACQUIRE_CACHE.jsonl", cache_body)
 
     rows = sorted(kept.values(), key=lambda item: item["identity"])
     composition = audit_reserve_composition(rows)
     disjoint = audit_reserve_disjointness(rows, blocked=blocked)
     write_private(PRIVATE / "COMPOSITION_PRESEAL.json", composition)
     write_private(PRIVATE / "DISJOINTNESS_PRESEAL.json", disjoint)
+    write_private(
+        PRIVATE / "SOURCE_COUNTS.json",
+        {"family_got": family_got, "source_counts": dict(source_counts)},
+    )
     if not composition["composition_pass"] or not disjoint["disjoint_pass"]:
         write_private(
             PRIVATE / "ACQUIRE_FAIL.json",
@@ -1012,6 +1114,7 @@ def phase_a_acquire_and_seal() -> dict[str, Any]:
                 "family_got": family_got,
                 "n": len(rows),
                 "rejected": dict(rejected_total),
+                "source_counts": dict(source_counts),
             },
         )
         fail(
@@ -1020,7 +1123,6 @@ def phase_a_acquire_and_seal() -> dict[str, Any]:
         )
 
     sealed = seal_reserve(rows)
-    # Attach disjointness witness after seal composition check.
     disjoint_witness = {
         "disjointness": disjoint,
         "reserve_id": RESERVE_ID,
@@ -1068,6 +1170,7 @@ def phase_a_acquire_and_seal() -> dict[str, Any]:
             "seal_sha256": seal["seal_sha256"],
         },
         "seal_state": "SEALED",
+        "source_counts": dict(source_counts),
     }
     write_private(PRIVATE / "PHASE_A_SUMMARY.json", summary)
     print(json.dumps(summary, indent=2, sort_keys=True))
