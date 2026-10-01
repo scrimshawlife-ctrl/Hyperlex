@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 from hyperlexical.classification_v5_stage_a_canonical import STAGE_A_BEST_SHA256
-from hyperlexical.classification_v5_stage_b import FROZEN_INDEX_SHA256
+from hyperlexical.classification_v5_stage_b import (
+    FROZEN_INDEX_SHA256,
+    HISTORICAL_V1R9_INDEX_SHA256,
+)
 from hyperlexical.classification_v5_stage_b_v1r2_align import (
     ALIGN_RULE,
     EXPERIMENT_ID,
@@ -20,7 +23,10 @@ def test_alignment_pins_and_state():
     contract = alignment_contract()
     assert contract["STAGE_A_BEST"] == STAGE_A_BEST_SHA256
     assert contract["surface_dataset_sha256"].startswith("492ed367")
-    assert contract["historical_v1r9_index_sha256"] == FROZEN_INDEX_SHA256
+    assert contract["historical_v1r9_index_sha256"] == HISTORICAL_V1R9_INDEX_SHA256
+    assert HISTORICAL_V1R9_INDEX_SHA256.startswith("3fd6c87a")
+    assert FROZEN_INDEX_SHA256.startswith("4febe96e")
+    assert FROZEN_INDEX_SHA256 != HISTORICAL_V1R9_INDEX_SHA256
     assert contract["reserve_scored"] is False
     assert contract["train_stage_a"] is False
     ok = choose_alignment_state(
@@ -33,7 +39,7 @@ def test_alignment_pins_and_state():
     bad = choose_alignment_state(
         primary_gate_pass=True,
         secondary_gate_pass=True,
-        index_sha256=FROZEN_INDEX_SHA256,
+        index_sha256=HISTORICAL_V1R9_INDEX_SHA256,
         stage_a_best=STAGE_A_BEST_SHA256,
     )
     assert bad["applied"] is False
@@ -60,6 +66,9 @@ def test_receipt_and_active_contract():
     )
     assert receipt["state"]["applied"] is True
     assert "STAGE_B_V1R2_ALIGNMENT_RECEIPT_SHA256" in receipt
+    assert receipt["parent_stage_b_contract"]["frozen_index_sha256"] == (
+        HISTORICAL_V1R9_INDEX_SHA256
+    )
     active = active_stage_b_v1r2_contract(
         index_sha256="b" * 64,
         minimum_family_score=0.55,

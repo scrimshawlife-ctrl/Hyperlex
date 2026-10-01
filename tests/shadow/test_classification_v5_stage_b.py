@@ -34,8 +34,14 @@ def test_stage_b_contract_pins_stage_a_best():
     assert contract["retrieval_only_on"] == "EVIDENCE_PRESENT"
     assert contract["train"] is False
     assert contract["v5_reserve"] is None
-    assert contract["index_rebuilt"] is False
-    assert contract["floors_retuned"] is False
+    assert contract["index_rebuilt"] is True
+    assert contract["floors_retuned"] is True
+    assert contract["frozen_index_sha256"].startswith("4febe96e")
+    assert contract["minimum_family_score"] == 0.83
+    assert contract["minimum_top1_top2_margin"] == 0.01
+    assert contract["surface_id"].endswith("SURFACE_V1R2")
+    assert contract["historical_v1r9"]["index_sha256"].startswith("3fd6c87a")
+    assert contract["historical_v1r9"]["status"] == "SUPERSEDED_BY_V1R2_ALIGNMENT"
     assert contract["frozen_stage_a"]["relation_threshold"] == 0.60
     assert contract["frozen_stage_a"]["resolvability_threshold"] == 0.75
     assert contract["frozen_stage_a"]["deprecated_gate1_gate2"]["status"] == "HISTORICAL"

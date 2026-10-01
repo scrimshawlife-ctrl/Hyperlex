@@ -7,10 +7,7 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-from .classification_v5_pipeline_evaluate import (
-    FROZEN_INDEX_SHA256,
-    INDEX_EMBEDDING_PARENT_STAGE_A,
-)
+from .classification_v5_stage_b import HISTORICAL_V1R9_INDEX_SHA256
 from .classification_v5_stage_a import canonical_json, sha256_text
 from .classification_v5_stage_a_canonical import (
     CANONICAL_ID,
@@ -20,6 +17,9 @@ from .classification_v5_stage_a_gold_identifiability_filter import (
     SURFACE_ID as V1R2_SURFACE_ID,
     V1R2_DATASET_SHA256_PIN,
 )
+from .classification_v5_stage_a_ident_filtered_repro_promote import (
+    PREVIOUS_STAGE_A_BEST_SHA256,
+)
 from .classification_v5_stage_a_two_stage import AUTHORIZED_DATASET_SHA as V1R9_DATASET_SHA
 
 DIAGNOSE_RULE = "DIAGNOSE_V5_PIPELINE_BEFORE_PACKAGING"
@@ -28,6 +28,8 @@ PRIMARY_DIAGNOSIS = "STAGE_A_V1R2_CANONICAL_ON_STAGE_B_V1R9_SURFACE"
 NEXT_ACTION = "ALIGN_V5_STAGE_B_TO_V1R2_OR_SCOPED_CROSS_SURFACE_EVAL"
 
 V1R9_SURFACE_ID = "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9"
+# Historical V1R9 index embeddings were sealed under superseded two-stage Stage-A.
+HISTORICAL_V1R9_INDEX_EMBEDDING_PARENT = PREVIOUS_STAGE_A_BEST_SHA256
 
 
 def diagnose_pipeline_eval(eval_receipt: Mapping[str, Any]) -> dict[str, Any]:
@@ -40,8 +42,8 @@ def diagnose_pipeline_eval(eval_receipt: Mapping[str, Any]) -> dict[str, Any]:
         "stage_a_canonical_dataset_sha256": V1R2_DATASET_SHA256_PIN,
         "stage_b_eval_surface": V1R9_SURFACE_ID,
         "stage_b_eval_dataset_sha256": V1R9_DATASET_SHA,
-        "stage_b_index_sha256": FROZEN_INDEX_SHA256,
-        "index_embedding_parent_stage_a": INDEX_EMBEDDING_PARENT_STAGE_A,
+        "stage_b_index_sha256": HISTORICAL_V1R9_INDEX_SHA256,
+        "index_embedding_parent_stage_a": HISTORICAL_V1R9_INDEX_EMBEDDING_PARENT,
         "query_encoder_stage_a": STAGE_A_BEST_SHA256,
         "false_entry_on_v1r9": false_entry,
         "false_entry_gate": 0.05,
@@ -49,7 +51,7 @@ def diagnose_pipeline_eval(eval_receipt: Mapping[str, Any]) -> dict[str, Any]:
         "family_emission_precision": metrics.get("family_emission_precision"),
         "surface_mismatch": V1R2_DATASET_SHA256_PIN != V1R9_DATASET_SHA,
         "index_encoder_parent_mismatch": (
-            INDEX_EMBEDDING_PARENT_STAGE_A != STAGE_A_BEST_SHA256
+            HISTORICAL_V1R9_INDEX_EMBEDDING_PARENT != STAGE_A_BEST_SHA256
         ),
     }
     root_causes = [

@@ -25,9 +25,10 @@ from .classification_v5_stage_a_gold_identifiability_filter import (
     V1R2_DATASET_SHA256_PIN,
 )
 from .classification_v5_stage_b import (
-    FROZEN_INDEX_SHA256 as HISTORICAL_V1R9_INDEX_SHA256,
+    HISTORICAL_V1R9_INDEX_SHA256,
+    HISTORICAL_V1R9_MINIMUM_FAMILY_SCORE,
+    HISTORICAL_V1R9_MINIMUM_TOP1_TOP2_MARGIN,
     STAGE_B_RULE,
-    stage_b_contract,
 )
 
 ALIGN_RULE = "ALIGN_V5_STAGE_B_TO_V1R2"
@@ -143,8 +144,10 @@ def build_alignment_receipt(
         "n_index_records": n_index_records,
         "n_validation": n_validation,
         "parent_stage_b_contract": {
-            "STAGE_A_BEST": stage_b_contract().get("STAGE_A_BEST"),
-            "frozen_index_sha256": stage_b_contract().get("frozen_index_sha256"),
+            "STAGE_A_BEST": STAGE_A_BEST_SHA256,
+            "frozen_index_sha256": HISTORICAL_V1R9_INDEX_SHA256,
+            "minimum_family_score": HISTORICAL_V1R9_MINIMUM_FAMILY_SCORE,
+            "minimum_top1_top2_margin": HISTORICAL_V1R9_MINIMUM_TOP1_TOP2_MARGIN,
             "status": "SUPERSEDED_IF_ALIGNMENT_APPLIED"
             if state["applied"]
             else "REMAINS_ACTIVE_PENDING_ALIGNMENT",

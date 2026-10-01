@@ -1,7 +1,7 @@
 """HYPERLEX_V5_STAGE_A_B_PIPELINE_V1 — frozen Stage-A → Stage-B pipeline.
 
-Read-only contract freeze. Does not train, rebuild Stage-B index, retune
-floors, or score spent reserve.
+Read-only contract freeze under canonical Stage-A + V1R2-aligned Stage-B.
+Does not train Stage-A, score spent reserve, or mutate MODEL_WIDE_BEST.
 """
 
 from __future__ import annotations
@@ -74,13 +74,13 @@ def verify_stage_b_parent_and_floors() -> dict[str, Any]:
         "parent_canonical_id": frozen.get("STAGE_A_CANONICAL") == CANONICAL_ID,
         "model_wide_best": contract.get("MODEL_WIDE_BEST") == MODEL_WIDE_BEST_SHA256
         or frozen.get("model_wide_BEST") == MODEL_WIDE_BEST_SHA256,
-        "index_unchanged": contract.get("frozen_index_sha256") == FROZEN_INDEX_SHA256,
-        "score_floor_unchanged": contract.get("minimum_family_score")
+        "index_pin_match": contract.get("frozen_index_sha256") == FROZEN_INDEX_SHA256,
+        "score_floor_pin_match": contract.get("minimum_family_score")
         == FROZEN_MINIMUM_FAMILY_SCORE,
-        "margin_floor_unchanged": contract.get("minimum_top1_top2_margin")
+        "margin_floor_pin_match": contract.get("minimum_top1_top2_margin")
         == FROZEN_MINIMUM_TOP1_TOP2_MARGIN,
-        "index_rebuilt": contract.get("index_rebuilt") is False,
-        "floors_retuned": contract.get("floors_retuned") is False,
+        "index_rebuilt": contract.get("index_rebuilt") is True,
+        "floors_retuned": contract.get("floors_retuned") is True,
         "entry_invariant_present": (contract.get("entry_invariant") or {}).get(
             "EVIDENCE_PRESENT"
         )

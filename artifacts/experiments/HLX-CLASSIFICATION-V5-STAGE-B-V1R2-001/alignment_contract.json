@@ -1,0 +1,30 @@
+{
+  "ALIGN_RULE": "ALIGN_V5_STAGE_B_TO_V1R2",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-B-V1R2-001",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+  "V5_STAGE_A_STATE": "CANONICAL_FROZEN",
+  "gates": {
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "family_emission_precision_min": 0.8
+  },
+  "historical_v1r9_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+  "historical_v1r9_index_status": "RETAINED_HISTORICAL",
+  "known_limitations": {
+    "CONTEXT_DEPENDENT_GOLD": "OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT",
+    "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+    "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT"
+  },
+  "parent_promotion_receipt_sha256": "9541664c87b27e56d25171579f2ef0b5810a1ebcbbc023298ce2919749f9b370",
+  "rebuild_index": true,
+  "rebuild_scope": "V1R2_UNDER_CANONICAL_STAGE_A_ONLY",
+  "reserve_scored": false,
+  "retune_floors": true,
+  "retune_scope": "V1R2_VALIDATION_ONLY",
+  "schema": "hyperlex.classification.v5.stage_b_v1r2_alignment.v1",
+  "stage_b_rule": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+  "surface_dataset_sha256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+  "surface_id": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+  "train_stage_a": false
+}

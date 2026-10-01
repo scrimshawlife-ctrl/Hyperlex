@@ -1,7 +1,7 @@
 """EVALUATE_FULL_V5_PIPELINE — read-only Stage-A→B evaluation under frozen pins.
 
-Does not train, rebuild Stage-B index, retune floors, score spent reserve,
-or mutate BEST / STAGE_A_BEST.
+Evaluates under canonical Stage-A + active V1R2-aligned Stage-B pins.
+Does not train Stage-A, score spent reserve, or mutate BEST / STAGE_A_BEST.
 """
 
 from __future__ import annotations
@@ -22,14 +22,13 @@ from .classification_v5_stage_a_canonical import (
     STAGE_A_BEST_SHA256,
     V5_STAGE_A_STATE,
 )
-from .classification_v5_stage_a_ident_filtered_repro_promote import (
-    PREVIOUS_STAGE_A_BEST_SHA256,
-)
 from .classification_v5_stage_b import (
     EXPERIMENT_ID as STAGE_B_EXPERIMENT_ID,
     FROZEN_INDEX_SHA256,
     FROZEN_MINIMUM_FAMILY_SCORE,
     FROZEN_MINIMUM_TOP1_TOP2_MARGIN,
+    INDEX_REBUILT,
+    FLOORS_RETUNED,
     STAGE_B_RULE,
     evaluate_end_to_end,
     stage_b_contract,
@@ -40,8 +39,8 @@ EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-PIPELINE-EVAL-001"
 SCHEMA_EVAL = "hyperlex.classification.v5.pipeline_evaluation.v1"
 NEXT_ACTION_ON_PASS = "AUTHORIZE_V5_PRODUCTION_PACKAGING_OR_OPERATOR_HUB_GATE"
 
-# Index embeddings were built under superseded two-stage STAGE_A_BEST.
-INDEX_EMBEDDING_PARENT_STAGE_A = PREVIOUS_STAGE_A_BEST_SHA256
+# V1R2 Stage-B index embeddings were built under canonical factorized STAGE_A_BEST.
+INDEX_EMBEDDING_PARENT_STAGE_A = STAGE_A_BEST_SHA256
 
 
 def utc_now_iso() -> str:
@@ -110,7 +109,7 @@ def evaluate_pipeline_rows(
         "floors": {
             "minimum_family_score": FROZEN_MINIMUM_FAMILY_SCORE,
             "minimum_top1_top2_margin": FROZEN_MINIMUM_TOP1_TOP2_MARGIN,
-            "floors_retuned": False,
+            "floors_retuned": FLOORS_RETUNED,
         },
         "pass": bool(gating["pass"] and metrics.get("primary_gate_pass")),
     }
@@ -119,11 +118,10 @@ def evaluate_pipeline_rows(
 def packaging_limitations() -> dict[str, Any]:
     return {
         **KNOWN_LIMITATIONS,
-        "INDEX_ENCODER_PARENT_MISMATCH": (
-            "Stage-B index embeddings sealed under superseded STAGE_A_BEST "
-            f"{INDEX_EMBEDDING_PARENT_STAGE_A[:16]}…; queries encode under "
-            f"canonical STAGE_A_BEST {STAGE_A_BEST_SHA256[:16]}…. "
-            "Index not rebuilt by contract."
+        "INDEX_ENCODER_PARENT": (
+            "Stage-B V1R2 index embeddings sealed under canonical STAGE_A_BEST "
+            f"{INDEX_EMBEDDING_PARENT_STAGE_A[:16]}…; queries encode under the "
+            "same checkpoint."
         ),
         "RESERVE": "SPENT_NOT_RESCORED",
         "HUB_PUBLISH": "NOT_AUTHORIZED",
@@ -163,7 +161,7 @@ def build_evaluation_receipt(
         "evaluation": dict(evaluation),
         "frozen_index_sha256": FROZEN_INDEX_SHA256,
         "index_embedding_parent_stage_a": INDEX_EMBEDDING_PARENT_STAGE_A,
-        "index_rebuilt": False,
+        "index_rebuilt": INDEX_REBUILT,
         "index_sha256_observed": index_sha256,
         "known_limitations": packaging_limitations(),
         "pipeline_contract": pipeline_contract(),

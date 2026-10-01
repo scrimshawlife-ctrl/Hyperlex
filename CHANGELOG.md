@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Align Stage-B to V1R2 under canonical Stage-A (Spec 007):**
+  `ALIGN_V5_STAGE_B_TO_V1R2` rebuilds Stage-B index on identifiability-filtered
+  V1R2 with factorized `STAGE_A_BEST=f2b00c5d…` embeddings and retunes floors on
+  V1R2 validation only. `STAGE_B_V1R2_ALIGNMENT=APPLIED`. Index
+  `4febe96e…` (n=948); floors 0.83/0.01; false_entry 0.03357; family_precision
+  ~0.809; selective accuracy ~0.936; entry gating pass. Active Stage-B pins
+  switched to V1R2 (`HLX-CLASSIFICATION-V5-STAGE-B-V1R2-001`); historical V1R9
+  index `3fd6c87a…` / floors 0.64/0.07 retained. Stage-A not retrained;
+  `MODEL_WIDE_BEST=9fba0f66…` unchanged; spent reserve unscored. Receipt
+  `classification-v5-stage-b-v1r2-alignment-receipt-20261001.json`
+  (`9f9c4355…`). Next:
+  `SEAL_V5_STAGE_A_B_V1R2_PIPELINE_OR_SCOPED_PACKAGING`.
+
 - **Evaluate full V5 pipeline + packaging (Spec 007):**
   `EVALUATE_FULL_V5_PIPELINE` ran factorized `STAGE_A_BEST=f2b00c5d…` against
   frozen Stage-B index `3fd6c87a…` / floors 0.64/0.07 on V1R9 validation

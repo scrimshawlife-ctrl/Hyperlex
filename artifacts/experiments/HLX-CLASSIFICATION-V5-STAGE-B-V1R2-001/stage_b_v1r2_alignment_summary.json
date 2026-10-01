@@ -1,0 +1,28 @@
+{
+  "BEST_MUTATED": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-B-V1R2-001",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "NEXT_ACTION": "SEAL_V5_STAGE_A_B_V1R2_PIPELINE_OR_SCOPED_PACKAGING",
+  "RESERVE_CONSUMED": false,
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_B_V1R2_ALIGNMENT": "APPLIED",
+  "STAGE_B_V1R2_ALIGNMENT_RECEIPT_SHA256": "9f9c435563921bdc12bb762c363afded6291f63390f0014c7d8407af985ad5b9",
+  "TRAIN": false,
+  "false_evidence_entry_rate_on_none": 0.03356890459363958,
+  "family_emission_coverage": 0.6666666666666666,
+  "family_emission_precision": 0.8089887640449438,
+  "feasible": true,
+  "gating_pass": true,
+  "index_sha256": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+  "n_index_records": 948,
+  "n_validation": 848,
+  "primary_gate_pass": true,
+  "secondary_gate_pass": true,
+  "selective_accuracy": 0.9362279511533242,
+  "thresholds": {
+    "minimum_family_score": 0.83,
+    "minimum_top1_top2_margin": 0.01,
+    "relation_threshold": 0.6,
+    "resolvability_threshold": 0.75
+  }
+}

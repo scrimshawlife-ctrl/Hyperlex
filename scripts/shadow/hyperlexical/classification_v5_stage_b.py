@@ -1,9 +1,10 @@
 """HYPERLEX_V5_STAGE_B_INTEGRATION_V1 — Stage-B against canonical STAGE_A_BEST.
 
 Wires family retrieval behind the factorized Stage-A canonical contract
-(HYPERLEX_V5_STAGE_A_CANONICAL_V1). Does not train Stage-A/B, does not
-score reserve, does not mutate BEST, does not rebuild the Stage-B index,
-and does not retune score/margin floors.
+(HYPERLEX_V5_STAGE_A_CANONICAL_V1) on the V1R2 identifiability surface.
+Active pins are the V1R2-aligned index/floors. Does not train Stage-A,
+does not score spent reserve, and does not mutate MODEL_WIDE_BEST.
+Historical V1R9 index/floors remain retained under historical_v1r9.
 """
 
 from __future__ import annotations
@@ -48,15 +49,20 @@ from .classification_v5_stage_a_ident_filtered_promote import (
 from .classification_v5_stage_a_ident_filtered_repro_promote import (
     PREVIOUS_STAGE_A_BEST_SHA256,
 )
+from .classification_v5_stage_a_gold_identifiability_filter import (
+    SURFACE_ID as V1R2_SURFACE_ID,
+    V1R2_DATASET_SHA256_PIN,
+)
 from .classification_v5_stage_a_two_stage import (
-    AUTHORIZED_DATASET_SHA,
-    AUTHORIZED_SURFACE_RULE,
+    AUTHORIZED_DATASET_SHA as HISTORICAL_V1R9_DATASET_SHA,
+    AUTHORIZED_SURFACE_RULE as HISTORICAL_V1R9_SURFACE_RULE,
 )
 
 STAGE_B_RULE = "HYPERLEX_V5_STAGE_B_INTEGRATION_V1"
 WIRE_ACTION = "WIRE_V5_STAGE_B_RETRIEVAL_ON_STAGE_A_BEST"
-EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-B-001"
-SCHEMA_CONTRACT = "hyperlex.classification.v5.stage_b_integration.v1"
+EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-B-V1R2-001"
+HISTORICAL_V1R9_EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-B-001"
+SCHEMA_CONTRACT = "hyperlex.classification.v5.stage_b_integration.v1r2"
 SCHEMA_VALIDATION = "hyperlex.classification.v5.stage_b_validation.v1"
 # Parent promotion is the REPRO factorized Stage-A promote (not two-stage).
 PARENT_PROMOTION_RECEIPT_SHA256 = PROMOTION_RECEIPT_SHA256
@@ -65,14 +71,26 @@ PARENT_STAGE_A_EXPERIMENT_ID = (
 )
 PARENT_STAGE_A_CANONICAL = CANONICAL_ID
 
-# Sealed Stage-B retrieval artifacts — content frozen; only parent pin updates.
+# Active Stage-B retrieval artifacts after V1R2 alignment (2026-10-01).
 FROZEN_INDEX_SHA256 = (
+    "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4"
+)
+FROZEN_MINIMUM_FAMILY_SCORE = 0.83
+FROZEN_MINIMUM_TOP1_TOP2_MARGIN = 0.01
+INDEX_REBUILT = True
+FLOORS_RETUNED = True
+ACTIVE_SURFACE_ID = V1R2_SURFACE_ID
+ACTIVE_DATASET_SHA256 = V1R2_DATASET_SHA256_PIN
+
+# Historical V1R9 Stage-B index (superseded for active runtime; retained).
+HISTORICAL_V1R9_INDEX_SHA256 = (
     "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21"
 )
-FROZEN_MINIMUM_FAMILY_SCORE = 0.64
-FROZEN_MINIMUM_TOP1_TOP2_MARGIN = 0.07
-INDEX_REBUILT = False
-FLOORS_RETUNED = False
+HISTORICAL_V1R9_MINIMUM_FAMILY_SCORE = 0.64
+HISTORICAL_V1R9_MINIMUM_TOP1_TOP2_MARGIN = 0.07
+# Back-compat aliases used by pre-alignment diagnosis/eval modules.
+AUTHORIZED_DATASET_SHA = ACTIVE_DATASET_SHA256
+AUTHORIZED_SURFACE_RULE = ACTIVE_SURFACE_ID
 
 # Parent v3 floors are reference-only until V5 validation recalibrates.
 PARENT_V3_REFERENCE_FLOORS = {
@@ -108,7 +126,7 @@ def stage_b_contract() -> dict[str, Any]:
         "MODEL_WIDE_BEST": MODEL_WIDE_BEST_SHA256,
         "STAGE_A_BEST": STAGE_A_BEST_SHA256,
         "STAGE_A_CANONICAL": PARENT_STAGE_A_CANONICAL,
-        "dataset_sha256": AUTHORIZED_DATASET_SHA,
+        "dataset_sha256": ACTIVE_DATASET_SHA256,
         "emission_precision_min": FAMILY_EMISSION_PRECISION_MIN_AFTER_GATE,
         "entry_invariant": {
             "EVIDENCE_PRESENT": "PERMIT_STAGE_B",
@@ -121,6 +139,15 @@ def stage_b_contract() -> dict[str, Any]:
         "floors_retuned": FLOORS_RETUNED,
         "frozen_index_sha256": FROZEN_INDEX_SHA256,
         "frozen_stage_a": dict(FROZEN_STAGE_A),
+        "historical_v1r9": {
+            "experiment_id": HISTORICAL_V1R9_EXPERIMENT_ID,
+            "index_sha256": HISTORICAL_V1R9_INDEX_SHA256,
+            "minimum_family_score": HISTORICAL_V1R9_MINIMUM_FAMILY_SCORE,
+            "minimum_top1_top2_margin": HISTORICAL_V1R9_MINIMUM_TOP1_TOP2_MARGIN,
+            "surface_rule": HISTORICAL_V1R9_SURFACE_RULE,
+            "dataset_sha256": HISTORICAL_V1R9_DATASET_SHA,
+            "status": "SUPERSEDED_BY_V1R2_ALIGNMENT",
+        },
         "index_rebuilt": INDEX_REBUILT,
         "minimum_family_score": FROZEN_MINIMUM_FAMILY_SCORE,
         "minimum_top1_top2_margin": FROZEN_MINIMUM_TOP1_TOP2_MARGIN,
@@ -131,7 +158,8 @@ def stage_b_contract() -> dict[str, Any]:
         "rule": STAGE_B_RULE,
         "schema": SCHEMA_CONTRACT,
         "semantic_stage_a_labels": list(EVIDENCE_LABELS),
-        "surface_rule": AUTHORIZED_SURFACE_RULE,
+        "surface_id": ACTIVE_SURFACE_ID,
+        "surface_rule": ACTIVE_SURFACE_ID,
         "train": False,
         "v5_reserve": None,
     }

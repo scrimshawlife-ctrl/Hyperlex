@@ -1,0 +1,18 @@
+# ALIGN_V5_STAGE_B_TO_V1R2
+
+```text
+STAGE_B_V1R2_ALIGNMENT = APPLIED
+STAGE_A_BEST = f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa
+surface = HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2
+index_sha256 = 4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4
+n_index_records = 948
+n_validation = 848
+false_entry = 0.03356890459363958
+family_precision = 0.8089887640449438
+floors = 0.83 / 0.01
+gating_pass = True
+RECEIPT = 9f9c435563921bdc12bb762c363afded6291f63390f0014c7d8407af985ad5b9
+NEXT_ACTION = SEAL_V5_STAGE_A_B_V1R2_PIPELINE_OR_SCOPED_PACKAGING
+```
+
+Historical V1R9 index retained. Reserve not scored. Stage-A not retrained.

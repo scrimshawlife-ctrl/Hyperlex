@@ -1,0 +1,9 @@
+{
+  "INDEX_FILE_SHA256": "4d0e13ed1358f80ca725e936ec04fe193a960450f969cd8e8dc7294441ad8a9b",
+  "index_sha256": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+  "n_index_records": 948,
+  "private_path": "/home/morpheus/hlx-private/classification-v5-stage-b-v1r2-20261001/STAGE_B_INDEX.json",
+  "stage_a_best_sha256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "surface_dataset_sha256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2"
+}

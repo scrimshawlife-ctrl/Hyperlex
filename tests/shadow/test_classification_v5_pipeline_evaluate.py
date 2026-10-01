@@ -85,7 +85,7 @@ def test_receipts_and_packaging():
         evaluated_at="2026-10-01T00:00:00Z",
     )
     assert "PIPELINE_EVAL_RECEIPT_SHA256" in receipt
-    assert receipt["index_rebuilt"] is False
+    assert receipt["index_rebuilt"] is True
     assert receipt["RESERVE_CONSUMED"] is False
     pack = build_packaging_receipt(
         code_revision="deadbeef",
