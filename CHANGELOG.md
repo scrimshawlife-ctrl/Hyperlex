@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Reproduce ident-filtered factorized train once (Spec 007):**
+  `REPRODUCE_IDENT_FILTERED_FACTORIZED_TRAIN_ONCE` executes the single
+  authorized REPRO-001 run from MODEL_WIDE_BEST on unchanged V1R2 under the
+  sealed scientific contract + serializer fix. `SCIENTIFIC_RESULT=SETTLED_PASS`.
+  `REPRODUCTION_CLASSIFICATION=SCIENTIFICALLY_EQUIVALENT_REPRODUCTION`.
+  Selected complete checkpoint `f2b00c5d…` (epoch 11, score 0.9673); thresholds
+  0.60 / 0.75; gates match original (false_entry 0.034; PRESENT 0.951; NONE
+  0.965). SHORT_ATOM NONE relation FPR 0.0132 (prior unfiltered 0.539).
+  Factorized heads cold-loadable (`n_keys=16`). Final complete checkpoint
+  `b6b9ddfc…` retained. BEST / STAGE_A_BEST / V1R2 / reserve unchanged. Receipt
+  `classification-v5-stage-a-ident-filtered-factorized-repro-train-once-receipt-20261001.json`
+  (`8b8585a8…`). Next:
+  `RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE`.
+
 - **Authorize ident-filtered factorized reproduction train (Spec 007):**
   `AUTHORIZE_REPRODUCE_IDENT_FILTERED_FACTORIZED_TRAIN` binds
   `HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001`
