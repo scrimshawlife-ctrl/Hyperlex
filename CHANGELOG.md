@@ -2,19 +2,23 @@
 
 ## Unreleased
 
-- **Build representative V6 data foundation (Spec 007, in progress):**
+- **Build representative V6 data foundation (Spec 007):**
   Freeze `HYPERLEX_V5_RESEARCH_BASELINE` (not release-qualified). Define
-  `HYPERLEX_V6_OPERATING_DISTRIBUTION_V1`, dataset roles
-  TRAIN/DEV/REP_VAL/QUAL, gold-identifiability carry-forward, and
-  preregistered Stage-A/B/system evaluation + dual validation reporting.
-  First acquisition/audit pass settled
-  **`V6_DATA_FOUNDATION_PARTIAL`** (TRAIN 590 / DEV 123 / REP 266 / QUAL 90;
-  disjointness PASS; `BASE_REPRESENTATION_INADEQUATE`; retrieval PARTIAL;
-  ontology structurally broken with 52 review-required pairs). Human
-  agreement sample sealed awaiting operator annotation. Expanded NATURAL
-  Wiktionary-category acquisition re-running. No V6 train / no V5 retune.
-  Next: `CONTINUE_V6_REPRESENTATIVE_DATA_ACQUISITION` until READY gates or
-  ontology revision.
+  `HYPERLEX_V6_OPERATING_DISTRIBUTION_V1`, independent
+  TRAIN/DEV/REP_VAL/QUAL roles, gold-identifiability carry-forward, and
+  preregistered Stage-A/B/system evaluation with dual validation reporting.
+  NATURAL OBSERVED corpus settled after NONE top-up:
+  TRAIN 2796 / DEV 506 / REP 1250 / QUAL 486 (100% OBSERVED+NATURAL;
+  18 families; train max family share ≤6%). All section-22 volume gates
+  true; disjointness vs spent history PASS; QUAL metadata sealed
+  (`HYPERLEX_V6_QUALIFICATION_001`). Ontology audit
+  **structurally broken** (152 review-required pairs); base representation
+  `INADEQUATE`; retrieval `NOT_VIABLE`. Human agreement protocol + 120-row
+  sample awaiting operator annotation. Disposition
+  **`V6_DATA_FOUNDATION_PARTIAL`**. Receipt
+  `classification-v6-data-foundation-receipt-20261001.json`
+  (`8ea02186…`). No V6 train / no V5 retune / no architecture choice. Next:
+  `REVISE_HYPERLEX_V6_ONTOLOGY_BEFORE_MODELING`.
 
 - **Review V5 qualification failure at system level (Spec 007):**
   Read-only audit of `QUALIFICATION_FAIL` on spent surface
