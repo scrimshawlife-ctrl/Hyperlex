@@ -1,0 +1,54 @@
+{
+  "checks": {
+    "families_min": true,
+    "family_share": true,
+    "none_min": true,
+    "observed_share": true,
+    "present_min": true,
+    "source_share_none": true,
+    "source_share_present": true,
+    "total_min": true,
+    "uncertain_min": true
+  },
+  "domain_irrelevant_none_support": 0,
+  "families": {
+    "ai-native": 5,
+    "betting-sharp": 20,
+    "conflict-aggression": 8,
+    "fashion-aesthetic": 20,
+    "gaming-meta": 19,
+    "internet-slang": 13,
+    "music-entertainment": 19,
+    "politics-civic": 20,
+    "regional-cultural": 1,
+    "relationship-dating": 18,
+    "social-evaluation": 20,
+    "spiritual-mystic": 20,
+    "sports-competition": 19,
+    "technology-ai": 22,
+    "workplace-career": 19
+  },
+  "labels": {
+    "EVIDENCE_PRESENT": 243,
+    "NO_EVIDENCE": 203,
+    "UNCERTAIN": 54
+  },
+  "max_family_share": 0.09053497942386832,
+  "n": 500,
+  "n_families": 15,
+  "n_finalized_preselect": 659,
+  "n_raw": 739,
+  "observed_share": 1.0,
+  "pass": true,
+  "rejected": {
+    "ValueError": 80
+  },
+  "short_atom_none": 43,
+  "short_atom_none_met": true,
+  "short_atom_none_target": 40,
+  "short_atom_present": 0,
+  "short_atom_present_met": false,
+  "short_atom_present_target": 30,
+  "source_max_share_none": 0.19704433497536947,
+  "source_max_share_present": 0.09053497942386832
+}

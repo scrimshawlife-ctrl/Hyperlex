@@ -1,0 +1,12 @@
+{
+  "QUALIFICATION_ID": "HYPERLEX_V5_PIPELINE_QUALIFICATION_001",
+  "composition_pass": true,
+  "disjointness_pass": true,
+  "identifiability_pass": true,
+  "immutable": true,
+  "qualification_identity_sha256": "bacd12bad92f7bea302ccc22a7c778bf78f038d0db0d8bfb3731195e7ca96a2d",
+  "qualification_manifest_sha256": "99da3d7fea1e36c9b31c0ce70f0afd50d74c23199427e9bc29891e4842d038ad",
+  "qualification_rows_sha256": "7f7cd2a0d3d85b6e6184a289ee5a482e510fb8e66e0902e5a466766c1620d44e",
+  "qualification_seal_sha256": "fec23f96b09ba0d6745f8eaaf834b0bc461f0f9bac99fc12754a17706f867464",
+  "sealed_at": "2026-10-01T08:34:36Z"
+}

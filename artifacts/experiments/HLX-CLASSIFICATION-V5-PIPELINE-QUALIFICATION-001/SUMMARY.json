@@ -1,0 +1,32 @@
+{
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "NEXT_ACTION": "REVIEW_V5_QUALIFICATION_FAILURE_AT_SYSTEM_LEVEL",
+  "QUALIFICATION_DISPOSITION": "QUALIFICATION_FAIL",
+  "QUALIFICATION_ID": "HYPERLEX_V5_PIPELINE_QUALIFICATION_001",
+  "QUALIFICATION_RECEIPT_SHA256": "88ed9fb5566a3ae359328e7eed1b0eb2aefa34acc580f15fd1505b6831d944e2",
+  "RELEASE_ELIGIBLE": false,
+  "RESERVE_CONSUMED": false,
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_B_INDEX": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+  "TRAIN": false,
+  "false_entry": 0.31527093596059114,
+  "family_precision": 0.12280701754385964,
+  "labels": {
+    "EVIDENCE_PRESENT": 243,
+    "NO_EVIDENCE": 203,
+    "UNCERTAIN": 54
+  },
+  "n_families": 15,
+  "n_rows": 500,
+  "none_recall": 0.6847290640394089,
+  "present_recall": 0.5843621399176955,
+  "primary_gate_pass": false,
+  "qualification_rows_sha256": "7f7cd2a0d3d85b6e6184a289ee5a482e510fb8e66e0902e5a466766c1620d44e",
+  "qualification_seal_sha256": "fec23f96b09ba0d6745f8eaaf834b0bc461f0f9bac99fc12754a17706f867464",
+  "score_mode": "sealed_surface_once",
+  "selective_accuracy": 0.425,
+  "short_atom_none": 43,
+  "short_atom_present": 0,
+  "uncertain_recall": 0.0
+}

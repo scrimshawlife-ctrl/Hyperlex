@@ -1,0 +1,12 @@
+{
+  "DISJOINTNESS_WITNESS.json": "031006e467bced48576c503ed039c7c6d049b6abf99ff60dbff092251a363d70",
+  "IDENTIFIABILITY_WITNESS.json": "3de1bdda6a2e7555e2a4dc8097df48c2fe6f6afc2e526689f972bd01d7b696f4",
+  "LABEL_PROVENANCE_WITNESS.json": "49ead5c184cf8b8f392c9f52dc014beca25c15fb34c20f71cda841c8cac08e5b",
+  "QUALIFICATION_MANIFEST.json": "3b13e07cca0e6601ffd58ce1e38fef399594368570c61c824595efc090a6aa71",
+  "QUALIFICATION_SURFACE.jsonl": "7f7cd2a0d3d85b6e6184a289ee5a482e510fb8e66e0902e5a466766c1620d44e",
+  "SOURCE_DOMAIN_WITNESS.json": "d5c48c5061a426a2bac0abbce775a12364aedaaeed57b0ea8edde000af66686d",
+  "qualification_identity_sha256": "bacd12bad92f7bea302ccc22a7c778bf78f038d0db0d8bfb3731195e7ca96a2d",
+  "qualification_manifest_sha256": "99da3d7fea1e36c9b31c0ce70f0afd50d74c23199427e9bc29891e4842d038ad",
+  "qualification_rows_sha256": "7f7cd2a0d3d85b6e6184a289ee5a482e510fb8e66e0902e5a466766c1620d44e",
+  "qualification_seal_sha256": "fec23f96b09ba0d6745f8eaaf834b0bc461f0f9bac99fc12754a17706f867464"
+}
