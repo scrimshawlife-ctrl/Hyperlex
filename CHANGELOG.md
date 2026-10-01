@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- **Train factorized relation Stage-A once (Spec 007):**
+  `TRAIN_STAGE_A_FACTORIZED_RELATION_ONCE` executes the single authorized
+  fresh retrain
+  (`HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-001`) from
+  MODEL_WIDE_BEST on V1R1 + sealed factorized annotations. Selected epoch 12 /
+  checkpoint `8a6981c1…` / selection score 0.8757. Threshold grid 100 pairs →
+  **0 passing** → **`SETTLED_FAIL`** (false_entry 0.180 / NONE recall 0.807
+  @ fail-display 0.50/0.50; PRESENT recall 0.888 passes). SHORT_ATOM relation
+  FPR on NONE remains ~0.539 with PRESENT relation recall 0.75 — direct
+  relation supervision did not jointly clear the diagnosed failure mode.
+  STAGE_A_BEST / MODEL_WIDE_BEST unchanged; spent reserve unused. Receipt
+  `classification-v5-stage-a-factorized-relation-train-once-receipt-20261001.json`
+  (`76b1d5f5…`). Next:
+  `DIAGNOSE_STAGE_A_FACTORIZED_RELATION_SETTLED_FAIL`.
+
 - **Authorize factorized relation Stage-A train (Spec 007):**
   `AUTHORIZE_STAGE_A_FACTORIZED_RELATION_TRAIN` binds experiment
   `HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-001` to objective
