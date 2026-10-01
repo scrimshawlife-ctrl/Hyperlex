@@ -3,11 +3,21 @@
 ## Unreleased
 
 - **Qualify V5 pipeline on fresh evaluation surface (Spec 007):**
-  `QUALIFY_HYPERLEX_V5_PIPELINE_ON_FRESH_EVALUATION_SURFACE` builds a fresh
-  text-identifiable qualification surface disjoint from V1R2/index/reserves,
-  seals it, and one-shot scores the frozen V5 Stage-A/B V1R2 package. No
-  train/retune/index rebuild/reserve reuse. Hub remains unauthorized.
-  Experiment `HYPERLEX_V5_PIPELINE_QUALIFICATION_001`.
+  `QUALIFY_HYPERLEX_V5_PIPELINE_ON_FRESH_EVALUATION_SURFACE` built a fresh
+  text-identifiable surface (n=500; PRESENT 243 / NONE 203 / UNCERTAIN 54;
+  15 families; OBSERVED 100%; SHORT_ATOM NONE 43; SHORT_ATOM PRESENT 0
+  shortfall; domain-irrelevant unsupported), sealed it
+  (`rows=7f7cd2a0…` / `seal=fec23f96…`), and one-shot scored the frozen
+  V1R2 package (`STAGE_A_BEST=f2b00c5d…`, index `4febe96e…`, floors
+  0.83/0.01, thr 0.60/0.75). Disjointness + identifiability PASS. Primary
+  gates all miss: false_entry 0.315 / PRESENT recall 0.584 / NONE recall
+  0.685 / fam_prec 0.123. Disposition **`QUALIFICATION_FAIL`**;
+  `RELEASE_ELIGIBLE=false`; Hub unauthorized; all 500 identities
+  `evaluation_spent=true`. Receipt
+  `classification-v5-pipeline-qualification-receipt-20261001.json`
+  (`88ed9fb5…`). No train/retune/index rebuild/reserve reuse. Next:
+  `REVIEW_V5_QUALIFICATION_FAILURE_AT_SYSTEM_LEVEL` (do not reopen Stage A/B
+  automatically).
 
 - **Seal + package V5 Stage-A/B V1R2 pipeline (Spec 007):**
   `SEAL_AND_PACKAGE_HYPERLEX_V5_STAGE_A_B_V1R2_PIPELINE` freezes
