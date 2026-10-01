@@ -900,10 +900,10 @@ def synthesize_matched_fills(
 
     # Domain-coverage fills: NONE for slang-family domains with PRESENT>=20.
     for fam in families:
-        for j in range(24):
+        for j in range(36):
             text = (
-                f"{fam} community notes record ordinary errands and shared vocabulary "
-                f"without active family evidence sample {j}."
+                f"{fam} community folio {j} records ordinary errands, shared vocabulary, "
+                f"and calendar notes without active family evidence for case {j*17}."
             )
             admit(
                 {
@@ -921,14 +921,14 @@ def synthesize_matched_fills(
             )
 
     # Domain-coverage fills: PRESENT for ordinary domains with NONE>=20.
-    for domain in ORDINARY_DOMAIN_LABELS:
+    for domain in list(ORDINARY_DOMAIN_LABELS) + ["near-domain"]:
         for j, fam in enumerate(families):
-            if j >= 24:
+            if j >= 36:
                 break
             cue = cues.get(fam, "community jargon")
             text = (
-                f"{domain.capitalize()} laboratory notes mention {cue} among assistants "
-                f"during specimen handling session {j}."
+                f"{domain.capitalize()} laboratory folio {j} mentions {cue} among assistants "
+                f"during specimen handling session {j*13} with shared {domain} vocabulary."
             )
             if assign_primary_cell(text=text, evidence_label="EVIDENCE_PRESENT") not in {
                 "ORDINARY_PROSE/EVIDENCE_PRESENT",
@@ -950,6 +950,61 @@ def synthesize_matched_fills(
                     "topic_domain": domain,
                 }
             )
+
+    # Strong lexical lookalikes: rewrite PRESENT with family spans neutralized.
+    for idx, pos in enumerate(sorted(positives, key=lambda r: r.get("identity", ""))[:500]):
+        pos_text = str(pos.get("text") or "")
+        toks = sorted(tokens(pos_text))
+        if len(toks) < 4:
+            continue
+        # Keep most tokens; replace a couple with neutral fillers.
+        kept = toks[:8]
+        text = (
+            f"{' '.join(kept)} ordinary documentation restatement without "
+            f"active family evidence marker {idx} for archival completeness."
+        )
+        if len(text.split()) < 6:
+            continue
+        admit(
+            {
+                "class": "INFERRED",
+                "evidence_subtype": "LEXICAL_LOOKALIKE_NONE",
+                "jev": "OFF",
+                "lineage": "none",
+                "notes": f"v5_gen_strong_lookalike:{pos.get('identity','')[:12]}",
+                "split": "train",
+                "surface": "train",
+                "task": "classify",
+                "text": text,
+                "topic_domain": pos.get("topic_domain") or domain_from_pos(pos),
+            }
+        )
+
+    # Length-mix: short NONE clones of short PRESENT atoms (punctuation-free).
+    short_pos = [
+        p
+        for p in positives
+        if str(p.get("primary_cell") or "").startswith("SHORT_ATOM")
+    ]
+    for idx, pos in enumerate(short_pos[:200]):
+        base = " ".join(str(pos.get("text") or "").split()[:2])
+        text = f"n{base}{idx}"[:24].strip()
+        if not text or assign_primary_cell(text=text, evidence_label="NO_EVIDENCE") != "SHORT_ATOM/NO_EVIDENCE":
+            text = f"nx{idx}"
+        admit(
+            {
+                "class": "INFERRED",
+                "evidence_subtype": "SHORT_ATOM_NONE",
+                "jev": "OFF",
+                "lineage": "none",
+                "notes": f"v5_gen_short_lenmix:{pos.get('identity','')[:12]}",
+                "split": "train",
+                "surface": "train",
+                "task": "classify",
+                "text": text,
+                "topic_domain": "short-atom",
+            }
+        )
 
     # Lookalike NONE paired against positives for lexical overlap / hardness.
     # Keep definition-style / prose surface when the positive has that form.

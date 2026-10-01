@@ -758,6 +758,38 @@ def assign_splits_by_component(
             break
         group_split[key] = "validation"
 
+    # Critical-cell OBSERVED fraction boost (especially SHORT_ATOM NONE).
+    def cell_obs_frac(cell: str) -> tuple[float, int, int]:
+        cell_val = [
+            m
+            for key, members in components.items()
+            if group_split[key] == "validation"
+            for m in members
+            if m.get("primary_cell") == cell
+        ]
+        if not cell_val:
+            return 0.0, 0, 0
+        obs = sum(1 for m in cell_val if m.get("provenance") == "OBSERVED")
+        return obs / len(cell_val), obs, len(cell_val)
+
+    for cell in CRITICAL_CELLS:
+        candidates = []
+        for key, members in components.items():
+            if group_split[key] != "train":
+                continue
+            if not any(m.get("primary_cell") == cell and m.get("provenance") == "OBSERVED" for m in members):
+                continue
+            # Prefer small OBSERVED-pure groups so we do not drag huge train mass.
+            obs = sum(1 for m in members if m.get("provenance") == "OBSERVED")
+            anchor = sorted(m["identity"] for m in members)[0]
+            candidates.append((len(members), -obs, anchor, key))
+        candidates.sort()
+        for _n, _obs, _anchor, key in candidates:
+            frac, _o, _nval = cell_obs_frac(cell)
+            if frac >= PROVENANCE["critical_cell_observed_fraction_min"]:
+                break
+            group_split[key] = "validation"
+
     assigned = []
     witness = []
     for key, members in components.items():
@@ -1523,11 +1555,14 @@ def assemble_surface_artifacts(payload: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
-def _force_definition_matched_pairs(
+def _force_surface_matched_pairs(
     rows: Sequence[Mapping[str, Any]],
     pair_records: Sequence[Mapping[str, Any]],
+    *,
+    surface: str,
+    min_overlap: float = 0.03,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Force pairs for def_matched_none rows that share enough cues."""
+    """Force additional pairs for a surface using lookalike/matched NONE."""
     by_id = {row["identity"]: dict(row) for row in rows}
     existing = {
         (p.get("positive_identity"), p.get("negative_identity")) for p in pair_records
@@ -1535,28 +1570,38 @@ def _force_definition_matched_pairs(
     used_pos = {p.get("positive_identity") for p in pair_records}
     used_neg = {p.get("negative_identity") for p in pair_records}
     out_pairs = list(pair_records)
-    def_pos = [
+    pos_rows = [
         by_id[i]
         for i in by_id
-        if by_id[i].get("primary_cell") == "DEFINITION_STYLE/EVIDENCE_PRESENT"
+        if str(by_id[i].get("primary_cell") or "").startswith(surface + "/")
+        and by_id[i].get("evidence_label") == "EVIDENCE_PRESENT"
         and i not in used_pos
     ]
-    def_neg = [
+    neg_rows = [
         by_id[i]
         for i in by_id
-        if by_id[i].get("primary_cell") == "DEFINITION_STYLE/NO_EVIDENCE"
+        if str(by_id[i].get("primary_cell") or "").startswith(surface + "/")
+        and by_id[i].get("evidence_label") == "NO_EVIDENCE"
         and i not in used_neg
-        and ("def_matched" in str(by_id[i].get("notes") or "") or "lookalike" in str(by_id[i].get("notes") or ""))
     ]
-    for pos in sorted(def_pos, key=lambda item: item["identity"]):
+    # Prefer lookalike/matched negatives first.
+    neg_rows.sort(
+        key=lambda item: (
+            0
+            if ("lookalike" in str(item.get("notes") or "") or "def_matched" in str(item.get("notes") or ""))
+            else 1,
+            item["identity"],
+        )
+    )
+    for pos in sorted(pos_rows, key=lambda item: item["identity"]):
         pos_tok = tokens(pos["text"])
         best = None
         best_score = -1.0
-        for neg in def_neg:
+        for neg in neg_rows:
             if neg["identity"] in used_neg:
                 continue
             overlap = jaccard(pos_tok, tokens(neg["text"]))
-            if overlap < 0.03:
+            if overlap < min_overlap and surface != "SHORT_ATOM":
                 continue
             score = overlap - 0.01 * abs(word_count(pos["text"]) - word_count(neg["text"]))
             if score > best_score:
@@ -1564,7 +1609,10 @@ def _force_definition_matched_pairs(
                 best = neg
         if best is None:
             continue
-        shared = sorted(pos_tok & tokens(best["text"]))[:16] or ["definition_style", "shared_domain"]
+        shared = sorted(pos_tok & tokens(best["text"]))[:16] or [
+            f"surface:{surface}",
+            f"len:{word_count(pos['text'])}",
+        ]
         group = sha256_text(f"gpair:{pos['identity']}:{best['identity']}")[:16]
         pos["pair_group_id"] = group
         pos["shared_cues"] = shared
@@ -1586,10 +1634,64 @@ def _force_definition_matched_pairs(
                     "positive_required_core": list(pos.get("active_family_support") or [])[:8],
                     "shared_cues": shared,
                     "shared_domain": f"{domain_key(pos)}|{domain_key(best)}",
-                    "shared_surface": "DEFINITION_STYLE",
+                    "shared_surface": surface,
                 }
             )
     return sorted(by_id.values(), key=lambda item: item["identity"]), out_pairs
+
+
+def _force_definition_matched_pairs(
+    rows: Sequence[Mapping[str, Any]],
+    pair_records: Sequence[Mapping[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    rows, pairs = _force_surface_matched_pairs(
+        rows, pair_records, surface="DEFINITION_STYLE", min_overlap=0.03
+    )
+    rows, pairs = _force_surface_matched_pairs(
+        rows, pairs, surface="ORDINARY_PROSE", min_overlap=0.05
+    )
+    return rows, pairs
+
+
+def dedupe_near_duplicates_within_split(
+    rows: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Drop near-duplicate extras within each split; keep OBSERVED/paired first."""
+    by_split: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        by_split[str(row["split"])].append(dict(row))
+    kept: list[dict[str, Any]] = []
+    for split, split_rows in by_split.items():
+        ordered = sorted(
+            split_rows,
+            key=lambda item: (
+                0 if item.get("provenance") == "OBSERVED" else 1,
+                0 if item.get("pair_group_id") else 1,
+                item["identity"],
+            ),
+        )
+        accepted: list[dict[str, Any]] = []
+        for row in ordered:
+            duplicate = False
+            row_prefix = normalized_text(row["text"])[:24]
+            for prev in accepted:
+                if normalized_text(prev["text"])[:24] != row_prefix and abs(
+                    word_count(prev["text"]) - word_count(row["text"])
+                ) > 2:
+                    continue
+                if are_near_duplicates(prev["text"], row["text"]):
+                    # Keep pair members even if near-dup with unpaired rows.
+                    if row.get("pair_group_id") and prev.get("pair_group_id") == row.get(
+                        "pair_group_id"
+                    ):
+                        continue
+                    duplicate = True
+                    break
+            if not duplicate:
+                accepted.append(row)
+        kept.extend(accepted)
+    kept.sort(key=lambda item: item["identity"])
+    return kept
 
 
 def build_generalization_surface(
@@ -1616,7 +1718,14 @@ def build_generalization_surface(
     paired_rows, pair_records = _force_definition_matched_pairs(paired_rows, pair_records)
     paired_rows = stamp_source_buckets(paired_rows)
     split_result = assign_splits_by_component(paired_rows)
-    rows = split_result["rows"]
+    rows = dedupe_near_duplicates_within_split(split_result["rows"])
+    # Recompute pair records against surviving ids.
+    alive = {r["identity"] for r in rows}
+    pair_records = [
+        p
+        for p in pair_records
+        if p.get("positive_identity") in alive and p.get("negative_identity") in alive
+    ]
     readiness = evaluate_generalization_readiness(
         rows,
         pair_records=pair_records,
