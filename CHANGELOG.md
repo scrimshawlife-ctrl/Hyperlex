@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- **Diagnose factorized relation SETTLED_FAIL (Spec 007):**
+  `DIAGNOSE_STAGE_A_FACTORIZED_RELATION_SETTLED_FAIL` (read-only) freezes
+  cross-checkpoint SHORT_ATOM geometry on V1R1 for MODEL_WIDE_BEST /
+  STAGE_A_BEST / two-stage fail `26841d5f…` / factorized fail `8a6981c1…`.
+  Factorized vs two-stage embedding displacement ≈0.003 (objective change
+  did not reshape label-separating geometry). No encoder layer reaches BA
+  ≥0.70 (best layer 13 BA 0.657; last 0.570);
+  `DEEPER_ADAPTATION_NOT_SUPPORTED`. Pooling/token paths do not recover
+  (`POOLING_NOT_PRIMARY` / `TOKEN_SIGNAL_ABSENT`). ~49% of SHORT_ATOM val
+  rows `REQUIRES_EXTERNAL_CONTEXT`; diagnostic subtype metadata lifts BA
+  0.570→1.000 (not a production input). Primary:
+  **`MODEL_INPUT_INFORMATION_DEFICIT`**; dataset consequence
+  `GOLD_CONTRACT_REPAIR_REQUIRED`; next (unauthorized)
+  `REVISE_GOLD_IDENTIFIABILITY_CONTRACT`. BEST pointers unchanged. Receipt
+  `classification-v5-stage-a-factorized-relation-diagnose-receipt-20261001.json`
+  (`827c0e2b…`).
+
 - **Train factorized relation Stage-A once (Spec 007):**
   `TRAIN_STAGE_A_FACTORIZED_RELATION_ONCE` executes the single authorized
   fresh retrain
