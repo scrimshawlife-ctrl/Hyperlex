@@ -1,0 +1,439 @@
+{
+  "DECOMPOSITION_RULE": "STAGE_A_SEMANTIC_DECOMPOSITION",
+  "DECOMPOSITION_STATE": "SEALED",
+  "DIAGNOSIS_RECEIPT_SHA256": "c6ae58c78e7df2fdcd5675774c44c71510082d5749dfe90ff824f25809ffd90e",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-GENERALIZATION-001",
+  "FAILED_CHECKPOINT_SHA256": "26841d5f3a8b9cd4237f79203b80697f2da186e7d4b30ab6c08d528adba56e76",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "SPEC_STAGE_A_FACTORIZED_OBJECTIVE",
+  "NEXT_ACTION_AUTHORIZED": false,
+  "PARENT_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "PRIMARY_DECOMPOSITION": "RELATION_ONLY_DECOMPOSITION",
+  "PRIMARY_DIAGNOSIS": "GATE1_SEMANTIC_TARGET_MISMATCH",
+  "SPENT_RESERVE": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "SPENT_RESERVE_OVERLAP": 0,
+  "SPENT_RESERVE_STATUS": "SPENT",
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_BEST_MUTATED": false,
+  "TRAIN": false,
+  "V1R1_DATASET_SHA256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "V1R1_MUTATED": false,
+  "V1R1_READINESS_SHA256": "c4b5fc0725b919c1dd11acfd575d594d8ddd76839836e5a3928f4d6c07030c96",
+  "V1R1_SURFACE_RECEIPT_SHA256": "3dbdd9b2cc30600698340f979d20a2c9b8559b9eafbbc24baf4fb1007e737fb9",
+  "V1R2_CREATED": false,
+  "architecture_change_justified": false,
+  "architecture_neutrality": true,
+  "audit": {
+    "human_settlement_rows": {
+      "domain_relevant": 199,
+      "evidence_relation_present": 199,
+      "semantic_resolvable": 0
+    },
+    "label_counts": {
+      "EVIDENCE_PRESENT": 1535,
+      "NO_EVIDENCE": 1851,
+      "UNCERTAIN": 199
+    },
+    "n_rows": 3585,
+    "prefer_relation_only_decomposition": true,
+    "source": "frozen_v1r1_gold_field_audit",
+    "status_counts": {
+      "domain_relevant": {
+        "DIRECTLY_SUPPORTED": 1535,
+        "REQUIRES_NEW_HUMAN_SETTLEMENT": 199,
+        "RULE_DERIVABLE": 1851
+      },
+      "evidence_relation_present": {
+        "DIRECTLY_SUPPORTED": 1535,
+        "REQUIRES_NEW_HUMAN_SETTLEMENT": 199,
+        "RULE_DERIVABLE": 1851
+      },
+      "semantic_resolvable": {
+        "DIRECTLY_SUPPORTED": 1734,
+        "RULE_DERIVABLE": 1851
+      }
+    },
+    "subtype_recoverability": {
+      "AMBIGUOUS_EVIDENCE": {
+        "basis": "final=UNCERTAIN + required_evidence_present=uncertain + missing evidence_sufficiency_unresolved \u21d2 semantic_resolvable=0; which of domain/relation/context is unresolved is not unique from subtype alone (notes codes are optional secondary signal)",
+        "domain_relevant": null,
+        "evidence_relation_present": null,
+        "n_v1r1": 199,
+        "semantic_resolvable": 0,
+        "status": "PARTIALLY_DETERMINISTIC"
+      },
+      "GENERIC_NONE": {
+        "basis": "ontology admits GENERIC_NONE as possible DOMAIN_IRRELEVANT bucket, but V1R1 contains zero rows; cannot assign domain_relevant without settlement if/when present",
+        "domain_relevant": null,
+        "evidence_relation_present": 0,
+        "n_v1r1": 0,
+        "semantic_resolvable": 1,
+        "status": "NOT_DETERMINABLE"
+      },
+      "HARD_NONE": {
+        "basis": "paired/hard negatives retain domain adjacency while active_family_evidence_absent; final=NO_EVIDENCE",
+        "domain_relevant": 1,
+        "evidence_relation_present": 0,
+        "n_v1r1": 41,
+        "semantic_resolvable": 1,
+        "status": "DETERMINISTIC"
+      },
+      "LEXICAL_LOOKALIKE_NONE": {
+        "basis": "lookalike of domain-positive lexeme/surface without asserted evidence relation; final=NO_EVIDENCE",
+        "domain_relevant": 1,
+        "evidence_relation_present": 0,
+        "n_v1r1": 744,
+        "semantic_resolvable": 1,
+        "status": "DETERMINISTIC"
+      },
+      "NEAR_DOMAIN_NONE": {
+        "basis": "subtype encodes near-domain negative with family evidence absent; final=NO_EVIDENCE",
+        "domain_relevant": 1,
+        "evidence_relation_present": 0,
+        "n_v1r1": 145,
+        "semantic_resolvable": 1,
+        "status": "DETERMINISTIC"
+      },
+      "ORDINARY_DOMAIN_NONE": {
+        "basis": "subtype encodes in-domain ordinary negative; missing_required_semantics includes active_family_evidence_absent; final=NO_EVIDENCE",
+        "domain_relevant": 1,
+        "evidence_relation_present": 0,
+        "n_v1r1": 637,
+        "semantic_resolvable": 1,
+        "status": "DETERMINISTIC"
+      },
+      "POSITIVE_EVIDENCE": {
+        "basis": "final=EVIDENCE_PRESENT + required_evidence_present=true + nonempty active_family_support",
+        "domain_relevant": 1,
+        "evidence_relation_present": 1,
+        "n_v1r1": 1535,
+        "semantic_resolvable": 1,
+        "status": "DETERMINISTIC"
+      },
+      "SHORT_ATOM_NONE": {
+        "basis": "matched short-atom domain cue without family evidence relation; all V1R1 rows paired + active_family_evidence_absent; final=NO_EVIDENCE \u2014 the diagnosed failure mode",
+        "domain_relevant": 1,
+        "evidence_relation_present": 0,
+        "n_v1r1": 284,
+        "semantic_resolvable": 1,
+        "status": "DETERMINISTIC"
+      }
+    },
+    "uncertain_note_causes": {
+      "CONTEXT_INSUFFICIENT": 84,
+      "DOMAIN_UNCERTAIN": 44,
+      "MULTIPLE_SEMANTIC_READINGS": 54,
+      "RELATION_UNCERTAIN": 17
+    },
+    "value_counts": {
+      "domain_relevant": {
+        "1": 3386,
+        "None": 199
+      },
+      "evidence_relation_present": {
+        "0": 1851,
+        "1": 1535,
+        "None": 199
+      },
+      "semantic_resolvable": {
+        "0": 199,
+        "1": 3386
+      }
+    }
+  },
+  "axes": {
+    "DOMAIN_RELEVANCE": {
+      "must_not_determine": "evidence_sufficiency",
+      "name": "DOMAIN_RELEVANCE",
+      "question": "Does the text semantically concern a tracked Hyperlex domain/family?",
+      "values": [
+        "DOMAIN_IRRELEVANT",
+        "DOMAIN_RELEVANT",
+        "DOMAIN_RELEVANCE_UNCERTAIN"
+      ]
+    },
+    "EVIDENCE_RELATION": {
+      "must_not_imply_from": "domain_relevant_lexeme_alone",
+      "name": "EVIDENCE_RELATION",
+      "question": "Does the text assert, instantiate, or clearly express the semantic relation/core required to count as evidence?",
+      "values": [
+        "NO_EVIDENCE_RELATION",
+        "EVIDENCE_RELATION_PRESENT",
+        "EVIDENCE_RELATION_UNCERTAIN"
+      ]
+    },
+    "SEMANTIC_RESOLVABILITY": {
+      "distinct_from": "model_confidence",
+      "name": "SEMANTIC_RESOLVABILITY",
+      "question": "Is the evidence judgment semantically resolvable from the text?",
+      "values": [
+        "RESOLVABLE",
+        "UNRESOLVABLE"
+      ]
+    }
+  },
+  "backward_mapping": {
+    "EVIDENCE_PRESENT": {
+      "implies": {
+        "domain_relevant": 1,
+        "evidence_relation_present": 1,
+        "semantic_resolvable": 1
+      },
+      "unique": true
+    },
+    "NO_EVIDENCE": {
+      "does_not_uniquely_imply": [
+        "domain_relevant=0",
+        "domain_relevant=1 with evidence_relation_present=0"
+      ],
+      "implies": {
+        "evidence_relation_present": 0,
+        "semantic_resolvable": 1
+      },
+      "note": "final NO_EVIDENCE alone cannot choose among DOMAIN_IRRELEVANT vs DOMAIN_RELEVANT_NO_RELATION; subtype is required",
+      "unique": false
+    },
+    "UNCERTAIN": {
+      "does_not_uniquely_imply": [
+        "which primitive axis is unresolved",
+        "domain_relevant value",
+        "evidence_relation_present value"
+      ],
+      "implies": {
+        "semantic_resolvable": 0
+      },
+      "unique": false
+    }
+  },
+  "candidate_objectives": {
+    "A_predict_final_class_directly": {
+      "implementation_complexity": "already implemented",
+      "required_new_annotation": "none",
+      "semantic_correctness": "FAIL \u2014 conflates domain/relation/uncertainty",
+      "shortcut_risk": "high on SHORT_ATOM lexeme membership",
+      "v1r1_compatibility": "full (current)",
+      "viable": false
+    },
+    "B_relation_plus_uncertainty": {
+      "implementation_complexity": "low\u2013medium (objective/spec change)",
+      "required_new_annotation": "none new human gold \u2014 derive evidence_relation_present + semantic_resolvable from subtype/final gold",
+      "semantic_correctness": "PASS for V1R1 failure mode if domain_relevant is fixed/derived as 1 for current NONE/PRESENT mass",
+      "shortcut_risk": "medium \u2014 still need careful short-atom relation definition",
+      "v1r1_compatibility": "full via rule derivation",
+      "viable": true
+    },
+    "C_domain_relation_resolvability": {
+      "implementation_complexity": "high",
+      "required_new_annotation": "domain_relevant needs DOMAIN_IRRELEVANT examples; V1R1 has none (GENERIC_NONE=0). Human settlement for UNCERTAIN axis split optional",
+      "semantic_correctness": "PASS in general ontology",
+      "shortcut_risk": "lower if domain negatives exist; currently untrainable axis",
+      "v1r1_compatibility": "partial \u2014 cannot supervise DOMAIN_IRRELEVANT on V1R1",
+      "viable": false
+    },
+    "D_relation_only_with_deterministic_metadata": {
+      "implementation_complexity": "lowest among viable options",
+      "preferred_when": "prefer_relation_only_decomposition=true",
+      "required_new_annotation": "none \u2014 subtype+final gold suffice",
+      "semantic_correctness": "PASS as minimum viable fix for diagnosed mismatch on V1R1",
+      "shortcut_risk": "medium; mitigated by freezing EVIDENCE_RELATION_PRESENT contract and short-atom semantic rule",
+      "v1r1_compatibility": "full",
+      "viable": true
+    }
+  },
+  "canonical_decision_logic": {
+    "factorized": {
+      "deterministic_decision": [
+        "if semantic_resolvable == 0: UNCERTAIN",
+        "elif domain_relevant == 0: NO_EVIDENCE",
+        "elif evidence_relation_present == 0: NO_EVIDENCE",
+        "elif domain_relevant == 1 and evidence_relation_present == 1: EVIDENCE_PRESENT",
+        "else: UNCERTAIN"
+      ],
+      "domain_relevant": "{0,1,MASKED/UNCERTAIN}",
+      "evidence_relation_present": "{0,1,MASKED/UNCERTAIN}",
+      "semantic_resolvable": "{0,1}"
+    },
+    "graph": {
+      "DOMAIN_RELEVANCE": {
+        "DOMAIN_IRRELEVANT": "NO_EVIDENCE",
+        "DOMAIN_RELEVANCE_UNCERTAIN": "UNCERTAIN",
+        "DOMAIN_RELEVANT": "inspect_EVIDENCE_RELATION"
+      },
+      "EVIDENCE_RELATION": {
+        "EVIDENCE_RELATION_PRESENT": "EVIDENCE_PRESENT",
+        "EVIDENCE_RELATION_UNCERTAIN": "UNCERTAIN",
+        "NO_EVIDENCE_RELATION": "NO_EVIDENCE"
+      },
+      "SEMANTIC_RESOLVABILITY": {
+        "RESOLVABLE": "continue",
+        "UNRESOLVABLE": "UNCERTAIN"
+      }
+    },
+    "neural_architecture": "UNSPECIFIED_IN_THIS_PASS"
+  },
+  "critical_distinctions": {
+    "DOMAIN_RELEVANT_NE_EVIDENCE_PRESENT": true,
+    "LEXICAL_CUE_NE_EVIDENCE_RELATION": true,
+    "MODEL_UNCERTAINTY_NE_SEMANTIC_UNCERTAINTY": true
+  },
+  "dataset_consequence": "ANNOTATION_ONLY_CHANGE",
+  "evidence_relation_contract": {
+    "insufficient_forms": [
+      "isolated_category_label",
+      "dictionary_headword_alone",
+      "topic_mention",
+      "family_associated_token_alone",
+      "entity_name_alone",
+      "unasserted_list_item_where_relation_absent"
+    ],
+    "label": "EVIDENCE_RELATION_PRESENT",
+    "requires_more_than": [
+      "domain_membership",
+      "lexeme_occurrence",
+      "family_associated_token_alone",
+      "entity_or_name_alone",
+      "category_label_alone",
+      "dictionary_headword_alone",
+      "topic_mention_alone",
+      "unasserted_list_item_without_relation"
+    ],
+    "source_independent": true,
+    "sufficient_forms": [
+      "explicit_predicate_or_relation",
+      "asserted_action_or_state",
+      "clear_semantic_proposition",
+      "context_establishing_required_evidence_core"
+    ]
+  },
+  "minimum_new_gold_requirement": "NO_NEW_GOLD_REQUIRED",
+  "next_action": "SPEC_STAGE_A_FACTORIZED_OBJECTIVE",
+  "none_semantic_reason_recommendation": {
+    "mutate_current_subtype_ontology": false,
+    "recommendation": "Keep surface/hardness subtypes; add optional parallel semantic_reason field in a future annotation protocol: DOMAIN_IRRELEVANT | DOMAIN_RELEVANT_NO_RELATION | NEGATED_RELATION | NONASSERTED_REFERENCE | INSUFFICIENT_CONTEXT",
+    "v1r1_current_none_mass_interprets_as": "DOMAIN_RELEVANT_NO_RELATION"
+  },
+  "objective_change_justified": true,
+  "preferred_objective": "D_relation_only_with_deterministic_metadata",
+  "primary_reasons": [
+    "V1R1 NONE subtypes are domain-adjacent; domain_relevant is rule-derivable as 1",
+    "semantic_resolvable is directly/rule supported for all rows",
+    "evidence_relation_present is rule-derivable from subtype+final gold",
+    "diagnosed SHORT_ATOM failure is domain-relevant lexeme without relation",
+    "three-axis redesign not justified until DOMAIN_IRRELEVANT mass exists"
+  ],
+  "receipt_sha256": "93202898969e7102016db97abfa2bdf2fd7921dbba1ade90310e4b7693f5d032",
+  "relation_taxonomy_recommendation": {
+    "deferred_taxonomy": [
+      "ASSERTED_STATE",
+      "ASSERTED_ACTION",
+      "ASSERTED_RELATION",
+      "EXPLICIT_ATTRIBUTE",
+      "EXPLICIT_AFFILIATION",
+      "EXPLICIT_EVALUATION",
+      "EXPLICIT_INTENT",
+      "CATEGORY_MENTION_ONLY",
+      "LEXEME_ONLY",
+      "NONASSERTED_CONTEXT",
+      "NEGATED_RELATION",
+      "UNRESOLVED"
+    ],
+    "full_taxonomy_necessary_now": false,
+    "reason": "Smallest contract that resolves GATE1_SEMANTIC_TARGET_MISMATCH; finer asserted-state/action/relation tags can wait",
+    "recommendation": "BINARY_EVIDENCE_RELATION_PRESENCE",
+    "values": [
+      "NO_EVIDENCE_RELATION",
+      "EVIDENCE_RELATION_PRESENT",
+      "EVIDENCE_RELATION_UNCERTAIN"
+    ]
+  },
+  "schema": "hyperlex.classification.v5.stage_a_semantic_decomposition.v1",
+  "semantic_defect_frozen": {
+    "conflated_axis": "NO_EVIDENCE_vs_POSSIBLE_EVIDENCE",
+    "conflates": [
+      "domain_relevance",
+      "lexical_family_cues",
+      "assertion_presence",
+      "relation_presence",
+      "evidence_sufficiency",
+      "semantic_uncertainty"
+    ],
+    "not_dataset_size": true,
+    "primary_diagnosis": "GATE1_SEMANTIC_TARGET_MISMATCH"
+  },
+  "semantic_sufficiency_matrix": {
+    "ambiguous_relation": {
+      "notes": "",
+      "representable": true
+    },
+    "domain_irrelevant_prose": {
+      "notes": "requires DOMAIN_IRRELEVANT supervision absent from V1R1",
+      "representable": false
+    },
+    "domain_relevant_lexeme_only": {
+      "notes": "",
+      "representable": true
+    },
+    "domain_relevant_prose_with_no_asserted_relation": {
+      "notes": "",
+      "representable": true
+    },
+    "domain_relevant_short_atom_with_explicit_relation": {
+      "notes": "",
+      "representable": true
+    },
+    "explicit_positive_evidence": {
+      "notes": "",
+      "representable": true
+    },
+    "insufficient_context": {
+      "notes": "",
+      "representable": true
+    },
+    "negated_relation": {
+      "notes": "",
+      "representable": true
+    }
+  },
+  "short_atom_semantic_rule": {
+    "DOMAIN_RELEVANT_NO_RELATION_when": "1\u20134 token span names a tracked domain/family/lexeme without asserting the required relation (headword, category mention, bare cue token)",
+    "EVIDENCE_PRESENT_when": "1\u20134 token span still asserts/instantiates the required evidence relation/core (e.g. compact proposition, asserted state/action, or explicit affiliation/attribute that satisfies the evidence contract)",
+    "auto_none_for_dictionary_atoms": false,
+    "ban_short_inputs": false,
+    "decision_basis": "semantic_not_length"
+  },
+  "supervision_requirement": {
+    "authorities": "existing subtype/final-gold/required_evidence_present contract",
+    "axes": {
+      "domain_relevant": "derive as 1 for current V1R1 NONE/PRESENT mass",
+      "evidence_relation_present": "derive from subtype+final gold",
+      "semantic_resolvable": "derive from UNCERTAIN vs else"
+    },
+    "human_settlement": {
+      "optional_future": "UNCERTAIN axis-cause split from notes is optional metadata, not required to unblock the diagnosed mismatch",
+      "rows": "none required for V1R1 training primitives"
+    },
+    "materialize_derived_fields": [
+      "evidence_relation_present",
+      "semantic_resolvable",
+      "domain_relevant_derived"
+    ],
+    "requirement": "NO_NEW_GOLD_REQUIRED"
+  },
+  "uncertain_decomposition": {
+    "cause_classes": [
+      "DOMAIN_UNCERTAIN",
+      "RELATION_UNCERTAIN",
+      "CONTEXT_INSUFFICIENT",
+      "MULTIPLE_SEMANTIC_READINGS"
+    ],
+    "causes_observed_in_notes": {
+      "CONTEXT_INSUFFICIENT": 84,
+      "DOMAIN_UNCERTAIN": 44,
+      "MULTIPLE_SEMANTIC_READINGS": 54,
+      "RELATION_UNCERTAIN": 17
+    },
+    "distinguish_for_future_supervision": true,
+    "required_to_unblock_now": false
+  }
+}

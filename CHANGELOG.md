@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+- **Stage-A semantic decomposition (Spec 007):**
+  `STAGE_A_SEMANTIC_DECOMPOSITION` freezes the Gate1 target mismatch as
+  conflation of domain relevance / evidence relation / semantic resolvability.
+  V1R1 gold+subtype audit (3585 rows): all present NONE subtypes are
+  domain-adjacent (`GENERIC_NONE=0`); `evidence_relation_present` and
+  `semantic_resolvable` are directly/rule-derivable for the resolvable mass;
+  UNCERTAIN notes already split four uncertainty causes but need not be
+  re-settled to unblock. Primary decomposition
+  **`RELATION_ONLY_DECOMPOSITION`** — single new primitive
+  `evidence_relation_present` plus deterministic subtype/final-gold metadata;
+  `NO_NEW_GOLD_REQUIRED`; dataset consequence `ANNOTATION_ONLY_CHANGE`;
+  objective change justified; architecture change not justified. BEST/V1R1/
+  reserve untouched; no train/V1R2. Receipt
+  `classification-v5-stage-a-semantic-decomposition-receipt-20261001.json`
+  (`93202898…`). Next: `SPEC_STAGE_A_FACTORIZED_OBJECTIVE` (not authorized).
+
 - **Diagnose V1R1 generalization-retrain SETTLED_FAIL (Spec 007):**
   `DIAGNOSE_V5_STAGE_A_GENERALIZATION_RETRAIN_SETTLED_FAIL` read-only audit of
   failed candidate `26841d5f…` on V1R1. Gate1 FALSE_POSSIBLE dominated by
