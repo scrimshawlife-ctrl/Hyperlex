@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Build representative V6 data foundation (Spec 007, in progress):**
+  Freeze `HYPERLEX_V5_RESEARCH_BASELINE` (not release-qualified). Define
+  `HYPERLEX_V6_OPERATING_DISTRIBUTION_V1`, dataset roles
+  TRAIN/DEV/REP_VAL/QUAL, gold-identifiability carry-forward, and
+  preregistered Stage-A/B/system evaluation + dual validation reporting.
+  First acquisition/audit pass settled
+  **`V6_DATA_FOUNDATION_PARTIAL`** (TRAIN 590 / DEV 123 / REP 266 / QUAL 90;
+  disjointness PASS; `BASE_REPRESENTATION_INADEQUATE`; retrieval PARTIAL;
+  ontology structurally broken with 52 review-required pairs). Human
+  agreement sample sealed awaiting operator annotation. Expanded NATURAL
+  Wiktionary-category acquisition re-running. No V6 train / no V5 retune.
+  Next: `CONTINUE_V6_REPRESENTATIVE_DATA_ACQUISITION` until READY gates or
+  ontology revision.
+
 - **Review V5 qualification failure at system level (Spec 007):**
   Read-only audit of `QUALIFICATION_FAIL` on spent surface
   `HYPERLEX_V5_PIPELINE_QUALIFICATION_001`. Finds
