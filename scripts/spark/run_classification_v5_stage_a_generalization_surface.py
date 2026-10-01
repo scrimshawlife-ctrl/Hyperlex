@@ -869,7 +869,7 @@ def synthesize_matched_fills(
             need_sa_none -= 1
 
     # Lookalike NONE paired against positives for lexical overlap / hardness
-    for idx, pos in enumerate(sorted(posititives, key=lambda r: r.get("identity", ""))[:400]):
+    for idx, pos in enumerate(sorted(positives, key=lambda r: r.get("identity", ""))[:400]):
         pos_text = str(pos.get("text") or "")
         shared = sorted(tokens(pos_text))[:5]
         if len(shared) < 2:
@@ -1109,32 +1109,61 @@ def main() -> int:
     write_private(DEST / "CELL_GAPS_PREACQUIRE.json", gaps)
     print("preacquire_gaps", gaps, flush=True)
 
-    # Acquire OBSERVED definition / ordinary / short-atom present
+    # Acquire OBSERVED definition / ordinary / short-atom present.
+    # Resume from cache when present to avoid Mediawiki re-crawl.
     acq_block_ids = set(blocked_ids)
     acq_block_src = set(blocked_src)
-    wikt = acquire_wiktionary_definitions(
-        blocked_ids=acq_block_ids,
-        blocked_src=acq_block_src,
-        need_present=max(
-            gaps.get("DEFINITION_STYLE/EVIDENCE_PRESENT", 0),
-            gaps.get("SHORT_ATOM/EVIDENCE_PRESENT", 0) // 2,
-            120,
-        ),
-        need_none=max(gaps.get("DEFINITION_STYLE/NO_EVIDENCE", 0), 120),
-    )
-    write_private(
-        DEST / "OBSERVED_ACQUIRE_WIKT.jsonl",
-        "\n".join(canonical_json(r) for r in wikt) + ("\n" if wikt else ""),
-    )
-    wp = acquire_wikipedia_ordinary(
-        blocked_ids=acq_block_ids,
-        blocked_src=acq_block_src,
-        need=max(gaps.get("ORDINARY_PROSE/NO_EVIDENCE", 0), 200),
-    )
-    write_private(
-        DEST / "OBSERVED_ACQUIRE_WP.jsonl",
-        "\n".join(canonical_json(r) for r in wp) + ("\n" if wp else ""),
-    )
+    wikt_path = DEST / "OBSERVED_ACQUIRE_WIKT.jsonl"
+    wp_path = DEST / "OBSERVED_ACQUIRE_WP.jsonl"
+    if wikt_path.exists() and wikt_path.stat().st_size > 0:
+        wikt = load_jsonl(wikt_path)
+        print(f"resume_wikt n={len(wikt)}", flush=True)
+        for row in wikt:
+            text = str(row.get("text") or "")
+            if text:
+                acq_block_ids.add(normalized_text_sha256(text))
+                from hyperlexical.classification_v5_stage_a_generalization_surface import (
+                    source_sha256 as _ssh,
+                )
+
+                acq_block_src.add(_ssh(text))
+    else:
+        wikt = acquire_wiktionary_definitions(
+            blocked_ids=acq_block_ids,
+            blocked_src=acq_block_src,
+            need_present=max(
+                gaps.get("DEFINITION_STYLE/EVIDENCE_PRESENT", 0),
+                gaps.get("SHORT_ATOM/EVIDENCE_PRESENT", 0) // 2,
+                120,
+            ),
+            need_none=max(gaps.get("DEFINITION_STYLE/NO_EVIDENCE", 0), 120),
+        )
+        write_private(
+            wikt_path,
+            "\n".join(canonical_json(r) for r in wikt) + ("\n" if wikt else ""),
+        )
+    if wp_path.exists() and wp_path.stat().st_size > 0:
+        wp = load_jsonl(wp_path)
+        print(f"resume_wp n={len(wp)}", flush=True)
+        for row in wp:
+            text = str(row.get("text") or "")
+            if text:
+                acq_block_ids.add(normalized_text_sha256(text))
+                from hyperlexical.classification_v5_stage_a_generalization_surface import (
+                    source_sha256 as _ssh,
+                )
+
+                acq_block_src.add(_ssh(text))
+    else:
+        wp = acquire_wikipedia_ordinary(
+            blocked_ids=acq_block_ids,
+            blocked_src=acq_block_src,
+            need=max(gaps.get("ORDINARY_PROSE/NO_EVIDENCE", 0), 200),
+        )
+        write_private(
+            wp_path,
+            "\n".join(canonical_json(r) for r in wp) + ("\n" if wp else ""),
+        )
 
     source_rows = source_rows + wikt + wp
     provisional2 = collect_examples(

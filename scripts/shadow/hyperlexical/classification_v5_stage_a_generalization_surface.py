@@ -1091,8 +1091,8 @@ def evaluate_shallow_shortcut_generalization(rows: Sequence[Mapping[str, Any]]) 
     for row, y in zip(train, train_y):
         vec = tfidf_vec(tokens(row["text"]))
         target = pos_acc if y == "EVIDENCE_PRESENT" else neg_acc
-        for tok, val in vec.items():
-            target[tok] += val
+        for tok, weight in vec.items():
+            target[tok] += weight
     for tok in list(pos_acc):
         pos_acc[tok] /= pos_n
     for tok in list(neg_acc):
