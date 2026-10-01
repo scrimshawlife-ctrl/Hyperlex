@@ -1,0 +1,148 @@
+{
+  "HUB_STATUS": "NOT_AUTHORIZED",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "PACKAGING_ID": "HYPERLEX_V5_STAGE_A_B_V1R2_PACKAGE_V1",
+  "PIPELINE_DEPENDENCY_MANIFEST_SHA256": "c2d19befb17be2337bc5f4ef97ebaf8ef20ea71ab5dd467830325654088f242a",
+  "PIPELINE_ID": "HYPERLEX_V5_STAGE_A_B_PIPELINE_V1",
+  "SEAL_RULE": "SEAL_AND_PACKAGE_HYPERLEX_V5_STAGE_A_B_V1R2_PIPELINE",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+  "STAGE_A_RESEARCH_LOOP": "CLOSED_FOR_CURRENT_FAILURE_CLASS",
+  "STAGE_B_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-B-V1R2-001",
+  "STAGE_B_INDEX_SHA256": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+  "STAGE_B_RULE": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+  "STAGE_B_V1R2_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-B-V1R2-001",
+  "V5_STAGE_A_B_PIPELINE_STATE": "CANONICAL_FROZEN",
+  "V5_STAGE_A_STATE": "CANONICAL_FROZEN",
+  "V5_STAGE_B_STATE": "CANONICAL_FOR_V1R2_PIPELINE",
+  "artifacts": {
+    "dependency_manifest": true,
+    "historical_experiment_artifacts_bundled": false,
+    "inference_adapter": true,
+    "limitations_manifest": true,
+    "load_validator": true,
+    "ontology_schema_versions": true,
+    "provenance_manifest": true,
+    "runtime_configuration": true,
+    "stage_a_artifact_reference": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "stage_b_index_reference": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+    "threshold_floor_configuration": true
+  },
+  "dependency_manifest": {
+    "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "PIPELINE_DEPENDENCY_MANIFEST_SHA256": "c2d19befb17be2337bc5f4ef97ebaf8ef20ea71ab5dd467830325654088f242a",
+    "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "canonical_schema_versions": {
+      "dependency_manifest": "hyperlex.classification.v5.pipeline_dependency_manifest.v1",
+      "seal_package": "hyperlex.classification.v5.stage_a_b_v1r2_seal_package.v1",
+      "stage_a_b_pipeline": "hyperlex.classification.v5.stage_a_b_pipeline.v1",
+      "stage_a_b_pipeline_forward": "hyperlex.classification.v5.stage_a_b_pipeline_forward.v1",
+      "stage_a_canonical": "hyperlex.classification.v5.stage_a_canonical.v1",
+      "stage_a_forward": "hyperlex.classification.v5.stage_a_canonical_forward.v1",
+      "stage_b_integration": "hyperlex.classification.v5.stage_b_integration.v1r2"
+    },
+    "code_revision": "3657d93691bdd4be756a9c34f6366bcd86339a6a",
+    "factorized_heads": [
+      "relation_head",
+      "resolvability_head"
+    ],
+    "gold_identifiability_contract_version": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+    "load_sequence": [
+      "modernbert_trunk",
+      "model_wide_BEST_encoder_overlay",
+      "STAGE_A_BEST_adapted_layers_20_21",
+      "relation_head",
+      "resolvability_head"
+    ],
+    "model_input": [
+      "text"
+    ],
+    "pipeline_version": "HYPERLEX_V5_STAGE_A_B_PIPELINE_V1",
+    "schema": "hyperlex.classification.v5.pipeline_dependency_manifest.v1",
+    "stage_a_architecture_objective_version": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+    "stage_a_input_contract_version": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+    "stage_a_surface_dataset_sha256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+    "stage_a_surface_id": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+    "stage_a_thresholds": {
+      "relation": 0.6,
+      "resolvability": 0.75
+    },
+    "stage_b_index_row_count": 948,
+    "stage_b_index_sha256": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+    "stage_b_margin_floor": 0.01,
+    "stage_b_ontology_size": 18,
+    "stage_b_ontology_version": "4f52202427b69a07027e2d3748eb51bff009344d4541c859fc0d29ed3c45c14e",
+    "stage_b_score_floor": 0.83
+  },
+  "factorized_heads": [
+    "relation_head",
+    "resolvability_head"
+  ],
+  "flow": [
+    "text",
+    "canonical_stage_a",
+    "NO_EVIDENCE->stop",
+    "UNCERTAIN->abstain",
+    "EVIDENCE_PRESENT->stage_b_retrieval",
+    "family_decision_or_abstain_or_ambiguity"
+  ],
+  "historical_state": {
+    "historical_v1r9_stage_b_floors": {
+      "minimum_family_score": 0.64,
+      "minimum_top1_top2_margin": 0.07,
+      "status": "HISTORICAL"
+    },
+    "historical_v1r9_stage_b_index": {
+      "index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+      "status": "HISTORICAL"
+    },
+    "incomplete_historical_candidate": {
+      "checkpoint_sha256": "8b2de4472dc0ebd65a6b4b7577dc3272d63db2490a1b6f6dbbcc54db50077e41",
+      "status": "NON_PROMOTABLE_PACKAGING_ARTIFACT"
+    },
+    "previous_STAGE_A_BEST": {
+      "checkpoint_sha256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+      "status": "SUPERSEDED"
+    }
+  },
+  "inference_policy": "if P(RESOLVABLE) < 0.75 -> UNCERTAIN; else if P(EVIDENCE_RELATION_PRESENT) >= 0.60 -> EVIDENCE_PRESENT; else NO_EVIDENCE",
+  "known_limitations": {
+    "CONTEXT_DEPENDENT_GOLD": "OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT",
+    "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+    "HUB_PUBLISH": "NOT_AUTHORIZED",
+    "RESERVE": "SPENT_NOT_RESCORED",
+    "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT",
+    "STAGE_B_VALIDATION_SCOPE": "Stage-B validation is conditional on canonical Stage-A admission behavior on V1R2."
+  },
+  "load_sequence": [
+    "modernbert_trunk",
+    "model_wide_BEST_encoder_overlay",
+    "STAGE_A_BEST_adapted_layers_20_21",
+    "relation_head",
+    "resolvability_head"
+  ],
+  "local_weight_layout": {
+    "model_wide_best": "~/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004/model.safetensors",
+    "stage_a_best": "~/.hyperlex/models/STAGE_A_BEST/model.safetensors",
+    "stage_b_index": "~/.hyperlex/hlx-private-or-operator-path/classification-v5-stage-b-v1r2-*/STAGE_B_INDEX.json",
+    "trunk": "~/.hyperlex/models/trunks/ModernBERT-base"
+  },
+  "model_input": [
+    "text"
+  ],
+  "publish_authorized": false,
+  "reserve": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "reserve_status": "SPENT",
+  "runtime_registry": {
+    "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "STAGE_A_SURFACE": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+    "STAGE_A_SURFACE_DATASET_SHA256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+    "STAGE_B_INDEX": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+    "V5_PIPELINE": "HYPERLEX_V5_STAGE_A_B_PIPELINE_V1",
+    "merged_into_model_wide_best": false
+  },
+  "schema": "hyperlex.classification.v5.stage_a_b_v1r2_seal_package.v1",
+  "stage_b_alignment_receipt_sha256": "9f9c435563921bdc12bb762c363afded6291f63390f0014c7d8407af985ad5b9",
+  "weights_in_git": false
+}

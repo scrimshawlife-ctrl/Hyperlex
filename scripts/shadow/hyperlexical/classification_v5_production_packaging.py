@@ -19,16 +19,9 @@ from .classification_v5_seal_and_package import (
     package_contract as _package_contract,
 )
 from .classification_v5_stage_a import canonical_json, sha256_text
-from .classification_v5_stage_a_b_pipeline import PIPELINE_ID
 from .classification_v5_stage_a_canonical import (
-    CANONICAL_ID,
     MODEL_WIDE_BEST_SHA256,
     STAGE_A_BEST_SHA256,
-    canonical_inference_policy,
-)
-from .classification_v5_stage_a_ident_filtered_promote import (
-    CANONICAL_RELATION_THRESHOLD,
-    CANONICAL_RESOLVABILITY_THRESHOLD,
 )
 from .classification_v5_stage_b import (
     FROZEN_INDEX_SHA256,

@@ -1,0 +1,65 @@
+{
+  "metrics": {
+    "decision_counts": {
+      "ABSTAIN": 32,
+      "AMBIGUOUS": 80,
+      "FAMILY": 177,
+      "NONE": 559
+    },
+    "false_evidence_entry_rate_on_none": 0.03356890459363958,
+    "family_emission_coverage": 0.6629213483146067,
+    "family_emission_precision": 0.807909604519774,
+    "family_emission_recall": 0.5355805243445693,
+    "gating": {
+      "none_entered_stage_b": 0,
+      "pass": true,
+      "present_permitted_stage_b": 273,
+      "uncertain_entered_stage_b": 0
+    },
+    "n": 848,
+    "n_family_emitted": 177,
+    "n_present_gold": 267,
+    "none_precision": 0.9767441860465116,
+    "none_recall": 0.9646643109540636,
+    "primary_gate_max": 0.05,
+    "primary_gate_pass": true,
+    "secondary_gate_min": 0.8,
+    "secondary_gate_pass": true,
+    "selective_accuracy": 0.936141304347826,
+    "uncertain_rate": 0.018867924528301886
+  },
+  "validation": {
+    "checks": {
+      "false_entry_within_tol": true,
+      "family_precision_within_tol": true,
+      "gating_pass": true,
+      "none_stage_b_zero": true,
+      "primary_gate_pass": true,
+      "secondary_gate_pass": true,
+      "selective_accuracy_within_tol": true,
+      "uncertain_stage_b_zero": true
+    },
+    "observed": {
+      "false_evidence_entry_rate_on_none": 0.03356890459363958,
+      "family_emission_precision": 0.807909604519774,
+      "gating": {
+        "none_entered_stage_b": 0,
+        "pass": true,
+        "present_permitted_stage_b": 273,
+        "uncertain_entered_stage_b": 0
+      },
+      "selective_accuracy": 0.936141304347826
+    },
+    "pass": true,
+    "tolerances": {
+      "false_entry": 0.002,
+      "family_precision": 0.02,
+      "selective_accuracy": 0.02
+    },
+    "witnesses": {
+      "false_evidence_entry_rate_on_none": 0.03356890459363958,
+      "family_emission_precision": 0.8089887640449438,
+      "selective_accuracy": 0.9362279511533242
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "checks": {
+    "family_final_decision_mismatch_count": true,
+    "stage_a_decision_mismatch_count": true,
+    "stage_b_execution_mismatch_count": true
+  },
+  "manifest_sha_match": true,
+  "mismatches": {
+    "family_final_decision_mismatch_count": 0,
+    "stage_a_decision_mismatch_count": 0,
+    "stage_b_execution_mismatch_count": 0
+  },
+  "n_replay": 848,
+  "pass": true,
+  "subprocess_pass": true
+}

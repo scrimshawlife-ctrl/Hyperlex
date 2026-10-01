@@ -1,0 +1,46 @@
+{
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "PIPELINE_DEPENDENCY_MANIFEST_SHA256": "c2d19befb17be2337bc5f4ef97ebaf8ef20ea71ab5dd467830325654088f242a",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "canonical_schema_versions": {
+    "dependency_manifest": "hyperlex.classification.v5.pipeline_dependency_manifest.v1",
+    "seal_package": "hyperlex.classification.v5.stage_a_b_v1r2_seal_package.v1",
+    "stage_a_b_pipeline": "hyperlex.classification.v5.stage_a_b_pipeline.v1",
+    "stage_a_b_pipeline_forward": "hyperlex.classification.v5.stage_a_b_pipeline_forward.v1",
+    "stage_a_canonical": "hyperlex.classification.v5.stage_a_canonical.v1",
+    "stage_a_forward": "hyperlex.classification.v5.stage_a_canonical_forward.v1",
+    "stage_b_integration": "hyperlex.classification.v5.stage_b_integration.v1r2"
+  },
+  "code_revision": "3657d93691bdd4be756a9c34f6366bcd86339a6a",
+  "factorized_heads": [
+    "relation_head",
+    "resolvability_head"
+  ],
+  "gold_identifiability_contract_version": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+  "load_sequence": [
+    "modernbert_trunk",
+    "model_wide_BEST_encoder_overlay",
+    "STAGE_A_BEST_adapted_layers_20_21",
+    "relation_head",
+    "resolvability_head"
+  ],
+  "model_input": [
+    "text"
+  ],
+  "pipeline_version": "HYPERLEX_V5_STAGE_A_B_PIPELINE_V1",
+  "schema": "hyperlex.classification.v5.pipeline_dependency_manifest.v1",
+  "stage_a_architecture_objective_version": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "stage_a_input_contract_version": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+  "stage_a_surface_dataset_sha256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+  "stage_a_surface_id": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+  "stage_a_thresholds": {
+    "relation": 0.6,
+    "resolvability": 0.75
+  },
+  "stage_b_index_row_count": 948,
+  "stage_b_index_sha256": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+  "stage_b_margin_floor": 0.01,
+  "stage_b_ontology_size": 18,
+  "stage_b_ontology_version": "4f52202427b69a07027e2d3748eb51bff009344d4541c859fc0d29ed3c45c14e",
+  "stage_b_score_floor": 0.83
+}
