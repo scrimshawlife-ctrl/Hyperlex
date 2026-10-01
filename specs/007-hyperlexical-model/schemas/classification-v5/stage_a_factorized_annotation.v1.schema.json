@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.stage_a.factorized_annotation.v1",
+  "title": "Stage-A factorized relation annotation sidecar",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "identity",
+    "source_gold_label",
+    "source_subtype",
+    "evidence_relation_present",
+    "semantic_resolvable",
+    "domain_relevant_derived",
+    "derivation_rule_id",
+    "derivation_rule_version",
+    "derivation_input_hash",
+    "annotation_sha256",
+    "schema"
+  ],
+  "properties": {
+    "identity": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "description": "Exact V1R1 row identity"
+    },
+    "source_gold_label": {
+      "type": "string",
+      "enum": ["NO_EVIDENCE", "EVIDENCE_PRESENT", "UNCERTAIN"]
+    },
+    "source_subtype": {
+      "type": "string",
+      "enum": [
+        "POSITIVE_EVIDENCE",
+        "ORDINARY_DOMAIN_NONE",
+        "LEXICAL_LOOKALIKE_NONE",
+        "SHORT_ATOM_NONE",
+        "NEAR_DOMAIN_NONE",
+        "HARD_NONE",
+        "AMBIGUOUS_EVIDENCE"
+      ]
+    },
+    "evidence_relation_present": {
+      "description": "1 / 0 / MASKED — MASKED when semantic_resolvable=0",
+      "oneOf": [
+        { "type": "integer", "enum": [0, 1] },
+        { "type": "string", "const": "MASKED" }
+      ]
+    },
+    "semantic_resolvable": {
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "domain_relevant_derived": {
+      "description": "Metadata only — not a V1 training target",
+      "oneOf": [
+        { "type": "integer", "enum": [0, 1] },
+        { "type": "string", "const": "UNKNOWN" }
+      ]
+    },
+    "derivation_rule_id": {
+      "type": "string",
+      "const": "HYPERLEX_V5_STAGE_A_FACTORIZED_ANNOTATION_DERIVE_V1"
+    },
+    "derivation_rule_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "derivation_input_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "annotation_sha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "schema": {
+      "type": "string",
+      "const": "hyperlex.stage_a.factorized_annotation.v1"
+    }
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "ANNOTATION_DERIVATION": "SEALED",
+  "ARCHITECTURE_CHANGE_REQUIRED": false,
+  "DIAGNOSIS_RECEIPT_SHA256": "c6ae58c78e7df2fdcd5675774c44c71510082d5749dfe90ff824f25809ffd90e",
+  "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-001",
+  "FACTORIZED_ANNOTATION_SHA256": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+  "FACTORIZED_ANNOTATION_SHA256_PIN": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+  "FACTORIZED_OBJECTIVE_SPEC": "FROZEN",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "AUTHORIZE_STAGE_A_FACTORIZED_RELATION_TRAIN",
+  "NEXT_ACTION_AUTHORIZED": false,
+  "OBJECTIVE_ID": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "OBJECTIVE_RULE": "SPEC_STAGE_A_FACTORIZED_OBJECTIVE",
+  "PARENT_DECOMPOSITION": "RELATION_ONLY_DECOMPOSITION",
+  "PARENT_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-GENERALIZATION-001",
+  "PARENT_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "POSSIBLE_EVIDENCE_STATUS": "DEPRECATED_AS_STAGE_A_TRAINING_TARGET",
+  "PRIMARY_DIAGNOSIS": "GATE1_SEMANTIC_TARGET_MISMATCH",
+  "SEMANTIC_DECOMPOSITION_RECEIPT_SHA256": "93202898969e7102016db97abfa2bdf2fd7921dbba1ade90310e4b7693f5d032",
+  "SEMANTIC_DECOMPOSITION_RULE": "STAGE_A_SEMANTIC_DECOMPOSITION",
+  "SPENT_RESERVE": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "SPENT_RESERVE_OVERLAP": 0,
+  "SPENT_RESERVE_STATUS": "SPENT",
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_BEST_MUTATED": false,
+  "STAGE_B_MUTATED": false,
+  "TRAIN": false,
+  "TRAIN_AUTHORIZED": false,
+  "V1R1_DATASET_SHA256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "V1R1_MUTATED": false,
+  "V1R1_READINESS_SHA256": "c4b5fc0725b919c1dd11acfd575d594d8ddd76839836e5a3928f4d6c07030c96",
+  "V1R1_SURFACE_RECEIPT_SHA256": "3dbdd9b2cc30600698340f979d20a2c9b8559b9eafbbc24baf4fb1007e737fb9",
+  "V1R2_CREATED": false,
+  "acceptance": {
+    "diagnostic_only": [
+      "UNCERTAIN_recall",
+      "relation_head_macro_F1",
+      "resolvability_head_macro_F1",
+      "relation_false_positive_rate_on_SHORT_ATOM_NONE",
+      "relation_recall_on_SHORT_ATOM_PRESENT"
+    ],
+    "hard_gates": {
+      "EVIDENCE_PRESENT_recall_min": 0.7,
+      "NO_EVIDENCE_recall_min": 0.9,
+      "false_evidence_entry_rate_on_none_max": 0.05
+    },
+    "new_hard_promotion_gates_in_this_spec": false
+  },
+  "architecture": {
+    "ARCHITECTURE_CHANGE_REQUIRED": false,
+    "encoder": "ModernBERT-base",
+    "forbidden_additions": [
+      "mlp_head",
+      "attention_block",
+      "retrieval",
+      "prototype_scoring",
+      "domain_head",
+      "family_head"
+    ],
+    "head_init": "xavier_uniform_bias_zeros",
+    "last_trainable_encoder_layers": 2,
+    "note": "Encoder topology and two-head form unchanged; only head semantics/objective change from Gate1/Gate2.",
+    "pooling": "last_hidden_state[:,0]",
+    "relation_head": "linear_hidden_to_2_logits",
+    "resolvability_head": "linear_hidden_to_2_logits",
+    "shared_encoder": true,
+    "trainable": {
+      "last_trainable_encoder_layers": 2,
+      "mutate_best": false,
+      "relation_head": true,
+      "resolvability_head": true
+    }
+  },
+  "canonical_decision": {
+    "domain_classifier_required": false,
+    "logic": [
+      "if P(RESOLVABLE) < resolvability_threshold: UNCERTAIN",
+      "elif P(EVIDENCE_RELATION_PRESENT) >= relation_threshold: EVIDENCE_PRESENT",
+      "else: NO_EVIDENCE"
+    ],
+    "outputs": [
+      "NO_EVIDENCE",
+      "EVIDENCE_PRESENT",
+      "UNCERTAIN"
+    ]
+  },
+  "counts": {
+    "by_subtype": {
+      "AMBIGUOUS_EVIDENCE": 199,
+      "HARD_NONE": 41,
+      "LEXICAL_LOOKALIKE_NONE": 744,
+      "NEAR_DOMAIN_NONE": 145,
+      "ORDINARY_DOMAIN_NONE": 637,
+      "POSITIVE_EVIDENCE": 1535,
+      "SHORT_ATOM_NONE": 284
+    },
+    "domain_relevant_derived": {
+      "0": 0,
+      "1": 3386,
+      "UNKNOWN": 199
+    },
+    "duplicate_identities": 0,
+    "n_rows": 3585,
+    "relation_loss_eligible": 3386,
+    "relation_masked": 199,
+    "relation_negative": 1851,
+    "relation_positive": 1535,
+    "resolvability_loss_eligible": 3585,
+    "resolvable_negative": 199,
+    "resolvable_positive": 3386,
+    "unsupported_subtype_derivations": 0
+  },
+  "derivation_witness_sha256": "b07ee52deb98c3d7038242c00736936e0bfbcb9146af35f6e094f9bc4e2e945b",
+  "heads": {
+    "domain_relevance_head": false,
+    "relation": {
+      "index": {
+        "EVIDENCE_RELATION_PRESENT": 1,
+        "NO_EVIDENCE_RELATION": 0
+      },
+      "labels": [
+        "NO_EVIDENCE_RELATION",
+        "EVIDENCE_RELATION_PRESENT"
+      ],
+      "must_not_predict": "domain_relevance",
+      "predicts": "asserted/instantiated evidence relation"
+    },
+    "resolvability": {
+      "index": {
+        "RESOLVABLE": 1,
+        "UNRESOLVABLE": 0
+      },
+      "labels": [
+        "UNRESOLVABLE",
+        "RESOLVABLE"
+      ],
+      "must_not_represent": "model_confidence",
+      "predicts": "semantic resolvability of evidence judgment"
+    }
+  },
+  "loss": {
+    "L_total": "L_relation + lambda_resolvability * L_resolvability",
+    "class_weights": {
+      "resolve_separately_per_head": true,
+      "reuse_previous_gate1_gate2_weights": false,
+      "source_split": "train_only"
+    },
+    "focal_forbidden": true,
+    "lambda_optimized_in_this_pass": false,
+    "lambda_resolvability": 1.0,
+    "name": "factorized_relation_weighted_ce",
+    "provenance_multipliers": {
+      "INFERRED": 0.5,
+      "OBSERVED": 1.0
+    },
+    "relation": {
+      "loss": "weighted_cross_entropy",
+      "masked": "AMBIGUOUS_EVIDENCE / semantic_resolvable == 0",
+      "scope": "semantic_resolvable == 1",
+      "targets": {
+        "EVIDENCE_RELATION_PRESENT": 1,
+        "NO_EVIDENCE_RELATION": 0
+      }
+    },
+    "resolvability": {
+      "loss": "weighted_cross_entropy",
+      "scope": "all_valid_stage_a_rows",
+      "targets": {
+        "RESOLVABLE": 1,
+        "UNRESOLVABLE": 0
+      }
+    }
+  },
+  "manifest_sha256": "6115adb752ddbc02cfab20612e5550aa072f0175a4896c790465a69314859a43",
+  "old_vs_new": {
+    "NEW": {
+      "Head_A": "EVIDENCE_RELATION_PRESENT vs NO_EVIDENCE_RELATION",
+      "Head_B": "RESOLVABLE vs UNRESOLVABLE"
+    },
+    "OLD": {
+      "Gate1": "NO_EVIDENCE vs POSSIBLE_EVIDENCE",
+      "Gate2": "CONFIRMED_PRESENT vs UNCERTAIN"
+    },
+    "POSSIBLE_EVIDENCE": "DEPRECATED_AS_STAGE_A_TRAINING_TARGET",
+    "historical_artifacts_retained": true
+  },
+  "receipt_sha256": "45746d706d819da41eb56e788f13f4a873f8dc136c0057c9fa238a53b5bacfdc",
+  "relation_critical_rule": {
+    "NOT": [
+      "domain_relevance",
+      "family_cue",
+      "lexeme_presence",
+      "source_membership",
+      "dictionary_headword_presence"
+    ],
+    "RELATION_HEAD_POSITIVE_means": "asserted/instantiated evidence relation",
+    "short_atom": "relation-positive only when existing gold supports an actual asserted relation (POSITIVE_EVIDENCE)"
+  },
+  "schema": "hyperlex.classification.v5.stage_a_factorized_objective.v1",
+  "short_atom_diagnostic": {
+    "cells": [
+      "SHORT_ATOM/NO_EVIDENCE",
+      "SHORT_ATOM/EVIDENCE_PRESENT"
+    ],
+    "replaces": "old Gate1 NO_EVIDENCE vs POSSIBLE_EVIDENCE proxy on SHORT_ATOM",
+    "scientific_test": "Does direct relation supervision improve SHORT_ATOM NONE rejection without destroying SHORT_ATOM PRESENT recall?"
+  },
+  "stage_b_compatibility": {
+    "EVIDENCE_PRESENT": "Stage B permitted",
+    "NO_EVIDENCE": "stop",
+    "UNCERTAIN": "abstain",
+    "entry_contract_unchanged": true,
+    "stage_b_code_index_floors_change_justified": false
+  },
+  "thresholds": {
+    "grids": {
+      "relation_threshold": [
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95
+      ],
+      "resolvability_threshold": [
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95
+      ]
+    },
+    "n_pairs": 100,
+    "thresholds_chosen_in_this_pass": false
+  }
+}

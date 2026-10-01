@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Stage-A factorized relation objective V1 (Spec 007):**
+  `SPEC_STAGE_A_FACTORIZED_OBJECTIVE` freezes
+  `HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1`. Gate1 target
+  `POSSIBLE_EVIDENCE` deprecated as a training target; heads supervise
+  `evidence_relation_present` and `semantic_resolvable` with deterministic
+  final Stage-A decision. V1R1 sidecar derived without human relabel
+  (3585 rows; relation+/-/masked 1535/1851/199; relation-loss eligible 3386).
+  Architecture change not required. `TRAIN_AUTHORIZED=false`. Annotation
+  SHA `4ac88450…`; receipt
+  `classification-v5-stage-a-factorized-objective-receipt-20261001.json`
+  (`45746d70…`). Next: `AUTHORIZE_STAGE_A_FACTORIZED_RELATION_TRAIN`
+  (not authorized).
+
 - **Stage-A semantic decomposition (Spec 007):**
   `STAGE_A_SEMANTIC_DECOMPOSITION` freezes the Gate1 target mismatch as
   conflation of domain relevance / evidence relation / semantic resolvability.

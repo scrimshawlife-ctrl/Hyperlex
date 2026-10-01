@@ -1,0 +1,12 @@
+{
+  "FACTORIZED_ANNOTATION_SHA256": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+  "artifact_hashes_sha256": "9ca3f4d372f0b273b7c4d283c2f1753d58961cdf58ae1a369acef0a2c7a45a43",
+  "hashes": {
+    "DERIVATION_WITNESS.json": "9c16d7ef2304550a1474d9ad044ea49e5c6c7a8730dd3efad020d0072419281c",
+    "FACTORIZED_ANNOTATIONS.jsonl": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+    "FACTORIZED_ANNOTATION_MANIFEST.json": "f2ddc5b5c0ce3a7e38aa146011fb79088f9a9dfb722dfd752d8e978603e9e460",
+    "OBJECTIVE_RECEIPT.json": "2d94a92f9ed4bc874e0c56620651df35f5a33dc7b651e1390635dbe95050678a"
+  },
+  "schema": "hyperlex.classification.v5.stage_a_factorized_artifact_hashes.v1",
+  "source_dataset_sha256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274"
+}

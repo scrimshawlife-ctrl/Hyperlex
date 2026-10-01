@@ -1,0 +1,40 @@
+{
+  "ANNOTATION_DERIVATION": "SEALED",
+  "ANNOTATION_SCHEMA": "hyperlex.stage_a.factorized_annotation.v1",
+  "FACTORIZED_ANNOTATION_SHA256": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+  "OBJECTIVE_ID": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "TRAIN_AUTHORIZED": false,
+  "counts": {
+    "by_subtype": {
+      "AMBIGUOUS_EVIDENCE": 199,
+      "HARD_NONE": 41,
+      "LEXICAL_LOOKALIKE_NONE": 744,
+      "NEAR_DOMAIN_NONE": 145,
+      "ORDINARY_DOMAIN_NONE": 637,
+      "POSITIVE_EVIDENCE": 1535,
+      "SHORT_ATOM_NONE": 284
+    },
+    "domain_relevant_derived": {
+      "0": 0,
+      "1": 3386,
+      "UNKNOWN": 199
+    },
+    "duplicate_identities": 0,
+    "n_rows": 3585,
+    "relation_loss_eligible": 3386,
+    "relation_masked": 199,
+    "relation_negative": 1851,
+    "relation_positive": 1535,
+    "resolvability_loss_eligible": 3585,
+    "resolvable_negative": 199,
+    "resolvable_positive": 3386,
+    "unsupported_subtype_derivations": 0
+  },
+  "derivation_witness_sha256": "b07ee52deb98c3d7038242c00736936e0bfbcb9146af35f6e094f9bc4e2e945b",
+  "manifest_sha256": "6115adb752ddbc02cfab20612e5550aa072f0175a4896c790465a69314859a43",
+  "n_rows": 3585,
+  "schema": "hyperlex.classification.v5.stage_a_factorized_annotation_manifest.v1",
+  "source_dataset_sha256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "source_readiness_sha256": "c4b5fc0725b919c1dd11acfd575d594d8ddd76839836e5a3928f4d6c07030c96",
+  "source_surface_receipt_sha256": "3dbdd9b2cc30600698340f979d20a2c9b8559b9eafbbc24baf4fb1007e737fb9"
+}

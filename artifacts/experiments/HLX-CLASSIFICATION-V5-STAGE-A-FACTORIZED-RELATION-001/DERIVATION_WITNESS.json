@@ -1,0 +1,43 @@
+{
+  "FACTORIZED_ANNOTATION_SHA256": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+  "counts": {
+    "by_subtype": {
+      "AMBIGUOUS_EVIDENCE": 199,
+      "HARD_NONE": 41,
+      "LEXICAL_LOOKALIKE_NONE": 744,
+      "NEAR_DOMAIN_NONE": 145,
+      "ORDINARY_DOMAIN_NONE": 637,
+      "POSITIVE_EVIDENCE": 1535,
+      "SHORT_ATOM_NONE": 284
+    },
+    "domain_relevant_derived": {
+      "0": 0,
+      "1": 3386,
+      "UNKNOWN": 199
+    },
+    "duplicate_identities": 0,
+    "n_rows": 3585,
+    "relation_loss_eligible": 3386,
+    "relation_masked": 199,
+    "relation_negative": 1851,
+    "relation_positive": 1535,
+    "resolvability_loss_eligible": 3585,
+    "resolvable_negative": 199,
+    "resolvable_positive": 3386,
+    "unsupported_subtype_derivations": 0
+  },
+  "derivation_rule_id": "HYPERLEX_V5_STAGE_A_FACTORIZED_ANNOTATION_DERIVE_V1",
+  "derivation_rule_version": "v1",
+  "duplicate_identities": 0,
+  "human_relabel": false,
+  "identity_list_sha256": "98117e6cf90ccbe68dca96fa53f6e4e62f2cb3f4b03d76fb9aff8d7d1d17fa03",
+  "model_derived_fields_used": false,
+  "parent_decomposition": "RELATION_ONLY_DECOMPOSITION",
+  "row_count": 3585,
+  "schema": "hyperlex.classification.v5.stage_a_factorized_derivation_witness.v1",
+  "semantic_decomposition_receipt_sha256": "93202898969e7102016db97abfa2bdf2fd7921dbba1ade90310e4b7693f5d032",
+  "source_dataset_sha256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "source_rows_mutated": false,
+  "unsupported_subtype_derivations": 0,
+  "witness_sha256": "b07ee52deb98c3d7038242c00736936e0bfbcb9146af35f6e094f9bc4e2e945b"
+}
