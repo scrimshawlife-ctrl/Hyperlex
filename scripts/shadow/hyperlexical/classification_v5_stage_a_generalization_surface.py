@@ -1338,9 +1338,34 @@ def select_cell_balanced(
             CRITICAL_VAL_FLOOR if cell in CRITICAL_CELLS else CELL_VAL_FLOOR
         )
         keep_n = min(len(pool), max(floor, min(len(pool), cap)))
-        selected.extend(pool[:keep_n])
+        kept = pool[:keep_n]
+        # Critical cells: ensure OBSERVED mass can support 40% validation.
+        if cell in CRITICAL_CELLS:
+            obs = [r for r in pool if r.get("provenance") == "OBSERVED"]
+            need_obs = max(
+                int(0.45 * (CRITICAL_VAL_FLOOR + 10)),
+                int(0.40 * keep_n * 0.5),
+            )
+            have_obs_ids = {r["identity"] for r in kept if r.get("provenance") == "OBSERVED"}
+            for row in obs:
+                if len(have_obs_ids) >= need_obs:
+                    break
+                if row["identity"] in have_obs_ids:
+                    continue
+                # Replace lowest-preference INFERRED if at cap.
+                if len(kept) >= keep_n:
+                    for j in range(len(kept) - 1, -1, -1):
+                        if kept[j].get("provenance") != "OBSERVED":
+                            have_obs_ids.discard(kept[j]["identity"])
+                            kept[j] = row
+                            have_obs_ids.add(row["identity"])
+                            break
+                else:
+                    kept.append(row)
+                    have_obs_ids.add(row["identity"])
+        selected.extend(kept)
     # Cap uncertain retention (not primary remediation target).
-    uncertain_sorted = sorted(uncertain, key=pref)[:240]
+    uncertain_sorted = sorted(uncertain, key=pref)[:200]
     selected.extend(uncertain_sorted)
     selected.sort(key=lambda item: item["identity"])
     return selected
