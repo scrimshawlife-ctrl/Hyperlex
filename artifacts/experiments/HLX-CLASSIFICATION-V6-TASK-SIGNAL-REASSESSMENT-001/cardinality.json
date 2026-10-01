@@ -1,0 +1,38 @@
+{
+  "DEV": {
+    "multi_2_3": {
+      "mean_domain": 1.7058823529411764,
+      "mean_function": 0.11764705882352941,
+      "n": 17
+    },
+    "single": {
+      "mean_domain": 0.5674157303370787,
+      "mean_function": 0.3595505617977528,
+      "n": 178
+    }
+  },
+  "REP": {
+    "multi_2_3": {
+      "mean_domain": 1.826086956521739,
+      "mean_function": 0.08695652173913043,
+      "n": 46
+    },
+    "single": {
+      "mean_domain": 0.6316872427983539,
+      "mean_function": 0.29012345679012347,
+      "n": 486
+    }
+  },
+  "TRAIN": {
+    "multi_2_3": {
+      "mean_domain": 1.75,
+      "mean_function": 0.1388888888888889,
+      "n": 108
+    },
+    "single": {
+      "mean_domain": 0.6330608537693007,
+      "mean_function": 0.28792007266121705,
+      "n": 1101
+    }
+  }
+}

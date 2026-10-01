@@ -1,0 +1,1182 @@
+{
+  "A_ENCODER_FROZEN": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.07195767195767196,
+        "macro_f1": 0.12941952694169886,
+        "micro_f1": 0.1359683794466403,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.05263157894736842,
+            "precision": 0.02857142857142857,
+            "recall": 0.3333333333333333,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.14814814814814817,
+            "precision": 0.11764705882352941,
+            "recall": 0.2,
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.08695652173913045,
+            "precision": 0.06666666666666667,
+            "recall": 0.125,
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.11999999999999998,
+            "precision": 0.07894736842105263,
+            "recall": 0.25,
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.16666666666666669,
+            "precision": 0.10810810810810811,
+            "recall": 0.36363636363636365,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.13580246913580246,
+            "precision": 0.0738255033557047,
+            "recall": 0.8461538461538461,
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.13,
+            "precision": 0.06951871657754011,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.26900584795321636,
+            "precision": 0.1619718309859155,
+            "recall": 0.7931034482758621,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.15172413793103448,
+            "precision": 0.08396946564885496,
+            "recall": 0.7857142857142857,
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.16267942583732056,
+            "precision": 0.08854166666666667,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.11934546934546934
+      },
+      "function": {
+        "exact_match": 0.0,
+        "jaccard": 0.09444444444444443,
+        "macro_f1": 0.16129679162139587,
+        "micro_f1": 0.16470588235294117,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.16037735849056603,
+            "precision": 0.08717948717948718,
+            "recall": 1.0,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.17821782178217824,
+            "precision": 0.09782608695652174,
+            "recall": 1.0,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.14545454545454548,
+            "precision": 0.0975609756097561,
+            "recall": 0.2857142857142857,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.16113744075829384,
+            "precision": 0.08762886597938144,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.14153846153846156
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.15172413793103448,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.7025641025641025,
+        "jaccard": 0.7025641025641025,
+        "macro_f1": 0.17142857142857143,
+        "micro_f1": 0.17142857142857143,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.17142857142857143,
+            "precision": 0.1111111111111111,
+            "recall": 0.375,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.7025641025641025
+      },
+      "n": 195,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.08080354118815657,
+        "macro_f1": 0.14001440839205265,
+        "micro_f1": 0.14689826302729528,
+        "sample_f1": 0.1439694460056451
+      },
+      "text_label_margin": 0.015371055659087002
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.06933045546767351,
+        "macro_f1": 0.1138049522903409,
+        "micro_f1": 0.13047161818695283,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.125,
+            "precision": 0.09836065573770492,
+            "recall": 0.17142857142857143,
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.022727272727272724,
+            "precision": 0.020833333333333332,
+            "recall": 0.025,
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.01890359168241966,
+            "precision": 0.009541984732824428,
+            "recall": 1.0,
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.19277108433734938,
+            "precision": 0.13445378151260504,
+            "recall": 0.3404255319148936,
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.056338028169014086,
+            "precision": 0.03508771929824561,
+            "recall": 0.14285714285714285,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.14318706697459585,
+            "precision": 0.07908163265306123,
+            "recall": 0.7560975609756098,
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.13627992633517494,
+            "precision": 0.07312252964426877,
+            "recall": 1.0,
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.27467811158798283,
+            "precision": 0.165374677002584,
+            "recall": 0.810126582278481,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.15763546798029557,
+            "precision": 0.08767123287671233,
+            "recall": 0.7804878048780488,
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.12433392539964475,
+            "precision": 0.06628787878787878,
+            "recall": 1.0,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.11524481157939805
+      },
+      "function": {
+        "exact_match": 0.0018796992481203006,
+        "jaccard": 0.0700187969924812,
+        "macro_f1": 0.10847328186518446,
+        "micro_f1": 0.12131147540983607,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.1103202846975089,
+            "precision": 0.0583804143126177,
+            "recall": 1.0,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.12686567164179105,
+            "precision": 0.06772908366533864,
+            "recall": 1.0,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.049079754601226995,
+            "precision": 0.032,
+            "recall": 0.10526315789473684,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.1476274165202109,
+            "precision": 0.07969639468690702,
+            "recall": 1.0,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.10419799498746868
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.15763546798029557,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.6823308270676691,
+        "jaccard": 0.6823308270676691,
+        "macro_f1": 0.17560975609756097,
+        "micro_f1": 0.17560975609756097,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.17560975609756097,
+            "precision": 0.1111111111111111,
+            "recall": 0.4186046511627907,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.6823308270676691
+      },
+      "n": 532,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.07057077999277246,
+        "macro_f1": 0.11633483492200304,
+        "micro_f1": 0.1291248206599713,
+        "sample_f1": 0.12551882549118284
+      },
+      "text_label_margin": 0.01730373145737457
+    },
+    "drift": {
+      "cosine_similarity_to_init": 1.0,
+      "l2_drift_mean": 0.0
+    },
+    "encoder_id": "CONTROL",
+    "full": false,
+    "n_train": 1209,
+    "tag": "A_ENCODER_FROZEN",
+    "trainable_last": 0
+  },
+  "B_LAST_1_LAYER": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.010256410256410256,
+        "jaccard": 0.08097476597476597,
+        "macro_f1": 0.14054867050646977,
+        "micro_f1": 0.12637766348273327,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.07999999999999999,
+            "precision": 0.041666666666666664,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.11842105263157894,
+            "precision": 0.06338028169014084,
+            "recall": 0.9,
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.08290155440414508,
+            "precision": 0.043243243243243246,
+            "recall": 1.0,
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.12413793103448274,
+            "precision": 0.06766917293233082,
+            "recall": 0.75,
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.1083743842364532,
+            "precision": 0.057291666666666664,
+            "recall": 1.0,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.18749999999999997,
+            "precision": 0.15789473684210525,
+            "recall": 0.23076923076923078,
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.13065326633165827,
+            "precision": 0.06989247311827956,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.2947368421052632,
+            "precision": 0.21212121212121213,
+            "recall": 0.4827586206896552,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.23999999999999996,
+            "precision": 0.2727272727272727,
+            "recall": 0.21428571428571427,
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.17931034482758623,
+            "precision": 0.1015625,
+            "recall": 0.7647058823529411,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.1292929292929293
+      },
+      "function": {
+        "exact_match": 0.05128205128205128,
+        "jaccard": 0.1388888888888889,
+        "macro_f1": 0.17512711780221124,
+        "micro_f1": 0.17177914110429449,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.18045112781954886,
+            "precision": 0.10344827586206896,
+            "recall": 0.7058823529411765,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.2058823529411765,
+            "precision": 0.11864406779661017,
+            "recall": 0.7777777777777778,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.14213197969543145,
+            "precision": 0.07650273224043716,
+            "recall": 1.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.17204301075268816,
+            "precision": 0.09467455621301775,
+            "recall": 0.9411764705882353,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.18393162393162393
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.24,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.5025641025641026,
+        "jaccard": 0.5025641025641026,
+        "macro_f1": 0.21138211382113822,
+        "micro_f1": 0.21138211382113822,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.21138211382113822,
+            "precision": 0.12149532710280374,
+            "recall": 0.8125,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.5025641025641026
+      },
+      "n": 195,
+      "system": {
+        "exact_match": 0.010256410256410256,
+        "jaccard": 0.09278200432046586,
+        "macro_f1": 0.15362037253757194,
+        "micro_f1": 0.1451310861423221,
+        "sample_f1": 0.15630638592177054
+      },
+      "text_label_margin": 0.030729545879040393
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0018796992481203006,
+        "jaccard": 0.07398705096073517,
+        "macro_f1": 0.11766621647504226,
+        "micro_f1": 0.1262264651286131,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.009345794392523366,
+            "precision": 0.004739336492890996,
+            "recall": 0.3333333333333333,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.12745098039215688,
+            "precision": 0.06970509383378017,
+            "recall": 0.7428571428571429,
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.1451905626134301,
+            "precision": 0.07827788649706457,
+            "recall": 1.0,
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.015094339622641511,
+            "precision": 0.007692307692307693,
+            "recall": 0.4,
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.1658536585365854,
+            "precision": 0.09366391184573003,
+            "recall": 0.723404255319149,
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.10144927536231885,
+            "precision": 0.05343511450381679,
+            "recall": 1.0,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.11111111111111112,
+            "precision": 0.10204081632653061,
+            "recall": 0.12195121951219512,
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.13186813186813187,
+            "precision": 0.07072691552062868,
+            "recall": 0.972972972972973,
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.28148148148148144,
+            "precision": 0.19895287958115182,
+            "recall": 0.4810126582278481,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.0759493670886076,
+            "precision": 0.07894736842105263,
+            "recall": 0.07317073170731707,
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.12953367875647667,
+            "precision": 0.07122507122507123,
+            "recall": 0.7142857142857143,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.12430508088402824
+      },
+      "function": {
+        "exact_match": 0.045112781954887216,
+        "jaccard": 0.1055764411027569,
+        "macro_f1": 0.12693493861139066,
+        "micro_f1": 0.12918108419838523,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.11176470588235292,
+            "precision": 0.061488673139158574,
+            "recall": 0.6129032258064516,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.11830985915492957,
+            "precision": 0.06542056074766354,
+            "recall": 0.6176470588235294,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.13308687615526804,
+            "precision": 0.07157057654075547,
+            "recall": 0.9473684210526315,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.14457831325301204,
+            "precision": 0.07894736842105263,
+            "recall": 0.8571428571428571,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.13778195488721803
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0759493670886076,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.4943609022556391,
+        "jaccard": 0.4943609022556391,
+        "macro_f1": 0.21574344023323616,
+        "micro_f1": 0.21574344023323616,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.21574344023323616,
+            "precision": 0.12333333333333334,
+            "recall": 0.8604651162790697,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.4943609022556391
+      },
+      "n": 532,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.07446455747677552,
+        "macro_f1": 0.12611322349401646,
+        "micro_f1": 0.1323529411764706,
+        "sample_f1": 0.13310697699519017
+      },
+      "text_label_margin": 0.028813688144326305
+    },
+    "drift": {
+      "cosine_similarity_to_init": 0.9922819137573242,
+      "l2_drift_mean": 2.7256686687469482
+    },
+    "encoder_id": "CONTROL",
+    "full": false,
+    "n_train": 1209,
+    "tag": "B_LAST_1_LAYER",
+    "trainable_last": 1
+  },
+  "C_LAST_2_LAYERS": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.08772079772079772,
+        "macro_f1": 0.14378575432585572,
+        "micro_f1": 0.14477766287487073,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.09375,
+            "precision": 0.04918032786885246,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.11320754716981132,
+            "precision": 0.06040268456375839,
+            "recall": 0.9,
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.11764705882352941,
+            "precision": 0.1111111111111111,
+            "recall": 0.125,
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.125,
+            "precision": 0.25,
+            "recall": 0.08333333333333333,
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.1111111111111111,
+            "precision": 0.058823529411764705,
+            "recall": 1.0,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.16216216216216217,
+            "precision": 0.125,
+            "recall": 0.23076923076923078,
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.15853658536585366,
+            "precision": 0.08609271523178808,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.3157894736842105,
+            "precision": 0.22727272727272727,
+            "recall": 0.5172413793103449,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.2105263157894737,
+            "precision": 0.16666666666666666,
+            "recall": 0.2857142857142857,
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.1739130434782609,
+            "precision": 0.10204081632653061,
+            "recall": 0.5882352941176471,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.13408258408258408
+      },
+      "function": {
+        "exact_match": 0.09230769230769231,
+        "jaccard": 0.1670940170940171,
+        "macro_f1": 0.176895417957368,
+        "micro_f1": 0.17373737373737375,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.1842105263157895,
+            "precision": 0.11864406779661017,
+            "recall": 0.4117647058823529,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.20512820512820512,
+            "precision": 0.11594202898550725,
+            "recall": 0.8888888888888888,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.1443298969072165,
+            "precision": 0.07777777777777778,
+            "recall": 1.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.1739130434782609,
+            "precision": 0.11538461538461539,
+            "recall": 0.35294117647058826,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.19931623931623932
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.21052631578947367,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.6,
+        "jaccard": 0.6,
+        "macro_f1": 0.20408163265306123,
+        "micro_f1": 0.20408163265306123,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.20408163265306123,
+            "precision": 0.12195121951219512,
+            "recall": 0.625,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.6
+      },
+      "n": 195,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.09724816494047264,
+        "macro_f1": 0.15583166262918413,
+        "micro_f1": 0.1576923076923077,
+        "sample_f1": 0.16167227359535052
+      },
+      "text_label_margin": 0.040098760713544235
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.015037593984962405,
+        "jaccard": 0.08755892707960378,
+        "macro_f1": 0.11804609058184842,
+        "micro_f1": 0.12718023255813954,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.011235955056179775,
+            "precision": 0.005714285714285714,
+            "recall": 0.3333333333333333,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.12328767123287672,
+            "precision": 0.06699751861042183,
+            "recall": 0.7714285714285715,
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.09411764705882353,
+            "precision": 0.08888888888888889,
+            "recall": 0.1,
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.010638297872340425,
+            "precision": 0.00546448087431694,
+            "recall": 0.2,
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.034482758620689655,
+            "precision": 0.09090909090909091,
+            "recall": 0.02127659574468085,
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.1042830540037244,
+            "precision": 0.0550098231827112,
+            "recall": 1.0,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.12371134020618557,
+            "precision": 0.10714285714285714,
+            "recall": 0.14634146341463414,
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.13157894736842105,
+            "precision": 0.07159904534606205,
+            "recall": 0.8108108108108109,
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.3150684931506849,
+            "precision": 0.215962441314554,
+            "recall": 0.5822784810126582,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.248062015503876,
+            "precision": 0.18181818181818182,
+            "recall": 0.3902439024390244,
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.10204081632653061,
+            "precision": 0.05791505791505792,
+            "recall": 0.42857142857142855,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.12762411982336797
+      },
+      "function": {
+        "exact_match": 0.07706766917293233,
+        "jaccard": 0.13659147869674187,
+        "macro_f1": 0.1441901877796603,
+        "micro_f1": 0.13886792452830188,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.125,
+            "precision": 0.07453416149068323,
+            "recall": 0.3870967741935484,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.13211845102505695,
+            "precision": 0.07160493827160494,
+            "recall": 0.8529411764705882,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.13559322033898305,
+            "precision": 0.07302231237322515,
+            "recall": 0.9473684210526315,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.18404907975460125,
+            "precision": 0.12396694214876033,
+            "recall": 0.35714285714285715,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.16265664160401003
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.24806201550387597,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.5281954887218046,
+        "jaccard": 0.5281954887218046,
+        "macro_f1": 0.17704918032786884,
+        "micro_f1": 0.17704918032786884,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.17704918032786887,
+            "precision": 0.10305343511450382,
+            "recall": 0.627906976744186,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.5281954887218046
+      },
+      "n": 532,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.08319959071838771,
+        "macro_f1": 0.12826980799042767,
+        "micro_f1": 0.134185303514377,
+        "sample_f1": 0.1377028777404717
+      },
+      "text_label_margin": 0.040984473507849256
+    },
+    "drift": {
+      "cosine_similarity_to_init": 0.9852471947669983,
+      "l2_drift_mean": 3.7268412113189697
+    },
+    "encoder_id": "CONTROL",
+    "full": false,
+    "n_train": 1209,
+    "tag": "C_LAST_2_LAYERS",
+    "trainable_last": 2
+  },
+  "D_FULL_FINETUNE": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.010256410256410256,
+        "jaccard": 0.11176638176638176,
+        "macro_f1": 0.20834897445880288,
+        "micro_f1": 0.16991150442477876,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.7499999999999999,
+            "precision": 0.6,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.12121212121212122,
+            "precision": 0.08695652173913043,
+            "recall": 0.2,
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.18181818181818182,
+            "precision": 0.12,
+            "recall": 0.375,
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.15384615384615385,
+            "precision": 0.0847457627118644,
+            "recall": 0.8333333333333334,
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.12,
+            "precision": 0.06741573033707865,
+            "recall": 0.5454545454545454,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.13559322033898305,
+            "precision": 0.07317073170731707,
+            "recall": 0.9230769230769231,
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.15028901734104047,
+            "precision": 0.08125,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.2679425837320574,
+            "precision": 0.15555555555555556,
+            "recall": 0.9655172413793104,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.25,
+            "precision": 1.0,
+            "recall": 0.14285714285714285,
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.16113744075829384,
+            "precision": 0.08762886597938144,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.17415288415288413
+      },
+      "function": {
+        "exact_match": 0.02564102564102564,
+        "jaccard": 0.11324786324786325,
+        "macro_f1": 0.15562752776617156,
+        "micro_f1": 0.15770609318996415,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.16425120772946858,
+            "precision": 0.08947368421052632,
+            "recall": 1.0,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.13793103448275862,
+            "precision": 0.18181818181818182,
+            "recall": 0.1111111111111111,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.14,
+            "precision": 0.07526881720430108,
+            "recall": 1.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.18032786885245905,
+            "precision": 0.10476190476190476,
+            "recall": 0.6470588235294118,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.15042735042735042
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.25,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.6512820512820513,
+        "jaccard": 0.6512820512820513,
+        "macro_f1": 0.2608695652173913,
+        "micro_f1": 0.2608695652173913,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.2608695652173913,
+            "precision": 0.15789473684210525,
+            "recall": 0.75,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.6512820512820513
+      },
+      "n": 195,
+      "system": {
+        "exact_match": 0.005128205128205128,
+        "jaccard": 0.110445096214327,
+        "macro_f1": 0.19845114970805683,
+        "micro_f1": 0.1707865168539326,
+        "sample_f1": 0.1871046047969125
+      },
+      "text_label_margin": 0.03588448170507161
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.009398496240601503,
+        "jaccard": 0.10141296151634496,
+        "macro_f1": 0.12318211003999215,
+        "micro_f1": 0.15593659010029118,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.13333333333333333,
+            "precision": 0.08333333333333333,
+            "recall": 0.3333333333333333,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.04395604395604395,
+            "precision": 0.03571428571428571,
+            "recall": 0.05714285714285714,
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.12962962962962962,
+            "precision": 0.10294117647058823,
+            "recall": 0.175,
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.03809523809523809,
+            "precision": 0.02,
+            "recall": 0.4,
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.17344173441734417,
+            "precision": 0.09937888198757763,
+            "recall": 0.6808510638297872,
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.09187279151943462,
+            "precision": 0.050980392156862744,
+            "recall": 0.4642857142857143,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.1646090534979424,
+            "precision": 0.0898876404494382,
+            "recall": 0.975609756097561,
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.1468682505399568,
+            "precision": 0.07981220657276995,
+            "recall": 0.918918918918919,
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.2610229276895944,
+            "precision": 0.15163934426229508,
+            "recall": 0.9367088607594937,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.047619047619047616,
+            "precision": 1.0,
+            "recall": 0.024390243902439025,
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.12455516014234874,
+            "precision": 0.06641366223908918,
+            "recall": 1.0,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.15886586262526114
+      },
+      "function": {
+        "exact_match": 0.018796992481203006,
+        "jaccard": 0.09680451127819549,
+        "macro_f1": 0.17464062303110076,
+        "micro_f1": 0.145748987854251,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.11293260473588342,
+            "precision": 0.059845559845559844,
+            "recall": 1.0,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.25352112676056343,
+            "precision": 0.24324324324324326,
+            "recall": 0.2647058823529412,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.13528336380255943,
+            "precision": 0.07269155206286837,
+            "recall": 0.9736842105263158,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.19682539682539682,
+            "precision": 0.11355311355311355,
+            "recall": 0.7380952380952381,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.13026315789473683
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.047619047619047616,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.6409774436090225,
+        "jaccard": 0.6409774436090225,
+        "macro_f1": 0.25098039215686274,
+        "micro_f1": 0.25098039215686274,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.25098039215686274,
+            "precision": 0.1509433962264151,
+            "recall": 0.7441860465116279,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.6409774436090225
+      },
+      "n": 532,
+      "system": {
+        "exact_match": 0.0018796992481203006,
+        "jaccard": 0.09495457028351764,
+        "macro_f1": 0.14403413092007372,
+        "micro_f1": 0.15782932891466445,
+        "sample_f1": 0.16339982379898346
+      },
+      "text_label_margin": 0.04092012758024016
+    },
+    "drift": {
+      "cosine_similarity_to_init": 0.6957799196243286,
+      "l2_drift_mean": 19.539600372314453
+    },
+    "encoder_id": "CONTROL",
+    "full": true,
+    "n_train": 1209,
+    "tag": "D_FULL_FINETUNE",
+    "trainable_last": 2
+  }
+}

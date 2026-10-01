@@ -1,0 +1,130 @@
+{
+  "domain.crypto": {
+    "class": "LOW_POSITIVE_SUPPORT",
+    "lexical_types": 210,
+    "negative_train": 1197,
+    "positive_rate": 0.009925558312655087,
+    "positive_train": 12,
+    "source_diversity": 1
+  },
+  "domain.entertainment": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 851,
+    "negative_train": 1121,
+    "positive_rate": 0.07278742762613731,
+    "positive_train": 88,
+    "source_diversity": 1
+  },
+  "domain.fashion": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 1044,
+    "negative_train": 1120,
+    "positive_rate": 0.07361455748552523,
+    "positive_train": 89,
+    "source_diversity": 1
+  },
+  "domain.gambling": {
+    "class": "LOW_POSITIVE_SUPPORT",
+    "lexical_types": 76,
+    "negative_train": 1202,
+    "positive_rate": 0.005789909015715467,
+    "positive_train": 7,
+    "source_diversity": 1
+  },
+  "domain.gaming": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 1127,
+    "negative_train": 1123,
+    "positive_rate": 0.07113316790736146,
+    "positive_train": 86,
+    "source_diversity": 1
+  },
+  "domain.politics": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 785,
+    "negative_train": 1117,
+    "positive_rate": 0.076095947063689,
+    "positive_train": 92,
+    "source_diversity": 1
+  },
+  "domain.spiritual": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 669,
+    "negative_train": 1131,
+    "positive_rate": 0.06451612903225806,
+    "positive_train": 78,
+    "source_diversity": 1
+  },
+  "domain.sports": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 645,
+    "negative_train": 1122,
+    "positive_rate": 0.07196029776674938,
+    "positive_train": 87,
+    "source_diversity": 1
+  },
+  "domain.technology": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 1789,
+    "negative_train": 1035,
+    "positive_rate": 0.14392059553349876,
+    "positive_train": 174,
+    "source_diversity": 1
+  },
+  "domain.technology.ai_discourse": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 943,
+    "negative_train": 1118,
+    "positive_rate": 0.07526881720430108,
+    "positive_train": 91,
+    "source_diversity": 1
+  },
+  "domain.workplace": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 1051,
+    "negative_train": 1127,
+    "positive_rate": 0.06782464846980976,
+    "positive_train": 82,
+    "source_diversity": 1
+  },
+  "function.conflictive_force": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 1269,
+    "negative_train": 1118,
+    "positive_rate": 0.07526881720430108,
+    "positive_train": 91,
+    "source_diversity": 1
+  },
+  "function.evaluative_stance": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 553,
+    "negative_train": 1128,
+    "positive_rate": 0.06699751861042183,
+    "positive_train": 81,
+    "source_diversity": 1
+  },
+  "function.memetic_form": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 921,
+    "negative_train": 1121,
+    "positive_rate": 0.07278742762613731,
+    "positive_train": 88,
+    "source_diversity": 1
+  },
+  "function.relational_intimacy": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 745,
+    "negative_train": 1137,
+    "positive_rate": 0.05955334987593052,
+    "positive_train": 72,
+    "source_diversity": 1
+  },
+  "mediation.internet_register": {
+    "class": "ADEQUATELY_SUPERVISED",
+    "lexical_types": 1401,
+    "negative_train": 1106,
+    "positive_rate": 0.08519437551695616,
+    "positive_train": 103,
+    "source_diversity": 1
+  }
+}

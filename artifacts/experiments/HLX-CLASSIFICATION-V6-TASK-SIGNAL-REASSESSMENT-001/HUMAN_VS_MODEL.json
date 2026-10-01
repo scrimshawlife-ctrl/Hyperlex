@@ -1,0 +1,52 @@
+[
+  {
+    "class": "LOW_SUPPORT",
+    "human_kappa": 1.0,
+    "human_pos_agree": 1.0,
+    "label": "domain.crypto",
+    "stratum": "domain:crypto_markets",
+    "support": 4,
+    "trained_f1": 0.011235955056179775,
+    "zero_shot_f1": 0.36363636363636365
+  },
+  {
+    "class": "HUMAN_STABLE_MODEL_WEAK",
+    "human_kappa": 0.7646914187361673,
+    "human_pos_agree": 0.625,
+    "label": "domain.gambling",
+    "stratum": "domain:gambling_betting",
+    "support": 8,
+    "trained_f1": 0.010638297872340425,
+    "zero_shot_f1": 0.018656716417910446
+  },
+  {
+    "class": "LOW_SUPPORT",
+    "human_kappa": 1.0,
+    "human_pos_agree": 1.0,
+    "label": "function.evaluative_stance",
+    "stratum": "function:evaluative_stance",
+    "support": 2,
+    "trained_f1": 0.13211845102505695,
+    "zero_shot_f1": 0.12341197822141561
+  },
+  {
+    "class": "HUMAN_STABLE_MODEL_WEAK",
+    "human_kappa": 0.9395718886152679,
+    "human_pos_agree": 0.8888888888888888,
+    "label": "function.relational_intimacy",
+    "stratum": "function:relational_intimacy",
+    "support": 9,
+    "trained_f1": 0.18404907975460125,
+    "zero_shot_f1": 0.1372549019607843
+  },
+  {
+    "class": "LOW_SUPPORT",
+    "human_kappa": 1.0,
+    "human_pos_agree": 1.0,
+    "label": "mediation.internet_register",
+    "stratum": "mediation:internet_register",
+    "support": 3,
+    "trained_f1": 0.17704918032786887,
+    "zero_shot_f1": 0.13333333333333333
+  }
+]

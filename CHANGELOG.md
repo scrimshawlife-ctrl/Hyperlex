@@ -8,6 +8,13 @@
   adequacy/sensitivity/oracle, human-vs-model learnability, learning curves,
   frozen vs partial vs full fine-tune, probes, sentence/NLI pretrained
   comparison. No architecture-family bakeoff; floors locked; QUAL sealed.
+  Key result: `all-mpnet-base-v2` read-only semantic matching REP **0.206**
+  clears the 0.20 floor; NLI-DeBERTa 0.045; CONTROL ModernBERT 0.162.
+  Learning curves `EARLY_SATURATION` under ModernBERT training. Disposition
+  **`V6_TASK_SIGNAL_REASSESSMENT_COMPLETE`**. Primary diagnosis
+  **`PRETRAINED_REPRESENTATION_MISMATCH`**. Receipt
+  `classification-v6-task-signal-reassessment-receipt-20261001.json`
+  (`8703b73d…`). Next: `REBASE_V6_ON_STRONGER_PRETRAINED_SEMANTIC_ENCODER`.
 
 - **Continue V6 architecture bake-off — architecture reset (Spec 007):**
   After `V6_BAKEOFF_NO_ADVANCE` (REP macro-F1 ≈0.024), replace A/B/C retuning

@@ -1,0 +1,13 @@
+{
+  "acquisition_gold_withheld": true,
+  "labels": {
+    "domain.crypto": "TEXT_SIGNAL_SUBTLE",
+    "domain.gambling": "TEXT_SIGNAL_SUBTLE",
+    "function.evaluative_stance": "TEXT_SIGNAL_SUBTLE",
+    "function.relational_intimacy": "TEXT_SIGNAL_SUBTLE",
+    "mediation.internet_register": "POTENTIALLY_CONTEXT_DEPENDENT"
+  },
+  "mean_set_jaccard": 0.9686520376175548,
+  "model_scores_withheld": true,
+  "protocol": "dual_operator_text_only_annotation"
+}

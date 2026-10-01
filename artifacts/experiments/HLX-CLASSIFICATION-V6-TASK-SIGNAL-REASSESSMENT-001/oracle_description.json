@@ -1,0 +1,11 @@
+{
+  "REP_system": {
+    "exact_match": 0.0,
+    "jaccard": 0.07144325494889404,
+    "macro_f1": 0.11411060519184243,
+    "micro_f1": 0.124571222242282,
+    "sample_f1": 0.1230831223422997
+  },
+  "SEMANTIC_SPECIFICATION_BOTTLENECK": false,
+  "gain_vs_reference": -0.048126572852603855
+}

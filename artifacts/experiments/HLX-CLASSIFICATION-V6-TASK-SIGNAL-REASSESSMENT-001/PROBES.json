@@ -1,0 +1,110 @@
+{
+  "CONTROL": {
+    "domain": {
+      "class": "NONLINEARLY_AVAILABLE",
+      "linear": {
+        "exact_match": 0.07330827067669173,
+        "jaccard": 0.15226350508305397,
+        "macro_f1": 0.17560707088968946,
+        "micro_f1": 0.1731958762886598,
+        "sample_f1": 0.19654915886118893
+      },
+      "nonlinear": {
+        "exact_match": 0.05451127819548872,
+        "jaccard": 0.14160028046306242,
+        "macro_f1": 0.22085575924895134,
+        "micro_f1": 0.21172453044963005,
+        "sample_f1": 0.18240107845371004
+      }
+    },
+    "encoder_id": "CONTROL",
+    "function": {
+      "class": "NONLINEARLY_AVAILABLE",
+      "linear": {
+        "exact_match": 0.40789473684210525,
+        "jaccard": 0.450031328320802,
+        "macro_f1": 0.14012283668796538,
+        "micro_f1": 0.1608832807570978,
+        "sample_f1": 0.46497493734335843
+      },
+      "nonlinear": {
+        "exact_match": 0.40977443609022557,
+        "jaccard": 0.449874686716792,
+        "macro_f1": 0.1831837948706457,
+        "micro_f1": 0.20180722891566266,
+        "sample_f1": 0.4655388471177945
+      }
+    },
+    "mediation": {
+      "class": "LINEARLY_AVAILABLE",
+      "linear": {
+        "exact_match": 0.4548872180451128,
+        "jaccard": 0.4548872180451128,
+        "macro_f1": 0.1853932584269663,
+        "micro_f1": 0.1853932584269663,
+        "sample_f1": 0.4548872180451128
+      },
+      "nonlinear": {
+        "exact_match": 0.8571428571428571,
+        "jaccard": 0.8571428571428571,
+        "macro_f1": 0.17391304347826086,
+        "micro_f1": 0.17391304347826086,
+        "sample_f1": 0.8571428571428571
+      }
+    }
+  },
+  "EXTERNAL": {
+    "domain": {
+      "class": "LINEARLY_AVAILABLE",
+      "linear": {
+        "exact_match": 0.0,
+        "jaccard": 0.06575780631231759,
+        "macro_f1": 0.13980792932908453,
+        "micro_f1": 0.12090163934426229,
+        "sample_f1": 0.10444124588861431
+      },
+      "nonlinear": {
+        "exact_match": 0.007518796992481203,
+        "jaccard": 0.0960921649361499,
+        "macro_f1": 0.15519177595602843,
+        "micro_f1": 0.16393442622950818,
+        "sample_f1": 0.15410495936811727
+      }
+    },
+    "encoder_id": "EXTERNAL",
+    "function": {
+      "class": "NONLINEARLY_AVAILABLE",
+      "linear": {
+        "exact_match": 0.0018796992481203006,
+        "jaccard": 0.0712719298245614,
+        "macro_f1": 0.1298302134370452,
+        "micro_f1": 0.12977450529222273,
+        "sample_f1": 0.11165413533834588
+      },
+      "nonlinear": {
+        "exact_match": 0.21804511278195488,
+        "jaccard": 0.27944862155388467,
+        "macro_f1": 0.21532402180734425,
+        "micro_f1": 0.18403755868544602,
+        "sample_f1": 0.3051378446115288
+      }
+    },
+    "mediation": {
+      "class": "LINEARLY_AVAILABLE",
+      "linear": {
+        "exact_match": 0.8082706766917294,
+        "jaccard": 0.8082706766917294,
+        "macro_f1": 0.2153846153846154,
+        "micro_f1": 0.2153846153846154,
+        "sample_f1": 0.8082706766917294
+      },
+      "nonlinear": {
+        "exact_match": 0.7330827067669173,
+        "jaccard": 0.7330827067669173,
+        "macro_f1": 0.24468085106382978,
+        "micro_f1": 0.24468085106382978,
+        "sample_f1": 0.7330827067669173
+      }
+    }
+  }
+}

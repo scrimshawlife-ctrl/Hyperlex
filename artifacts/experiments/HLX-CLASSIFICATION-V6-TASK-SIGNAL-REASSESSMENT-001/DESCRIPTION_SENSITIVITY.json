@@ -1,0 +1,35 @@
+{
+  "LABEL_DESCRIPTION_INSTABILITY": false,
+  "diagnostic_only": true,
+  "spread": 0.02031278369371614,
+  "variants": {
+    "canonical_full_definition": {
+      "exact_match": 0.0,
+      "jaccard": 0.07935167380656102,
+      "macro_f1": 0.1622371780444463,
+      "micro_f1": 0.12510024057738572,
+      "sample_f1": 0.1260516634576785
+    },
+    "canonical_name": {
+      "exact_match": 0.009398496240601503,
+      "jaccard": 0.095797065298945,
+      "macro_f1": 0.14740786197843883,
+      "micro_f1": 0.14636343165953614,
+      "sample_f1": 0.15316329451667798
+    },
+    "definition_plus_exclusion": {
+      "exact_match": 0.0,
+      "jaccard": 0.07935167380656102,
+      "macro_f1": 0.1622371780444463,
+      "micro_f1": 0.12510024057738572,
+      "sample_f1": 0.1260516634576785
+    },
+    "positive_core": {
+      "exact_match": 0.0,
+      "jaccard": 0.08356525992804188,
+      "macro_f1": 0.14192439435073015,
+      "micro_f1": 0.13463514902363824,
+      "sample_f1": 0.13779059286578083
+    }
+  }
+}

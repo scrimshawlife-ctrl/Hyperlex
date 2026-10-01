@@ -1,0 +1,172 @@
+{
+  "counts": {
+    "DESCRIPTION_OVERBROAD": 0,
+    "DESCRIPTION_OVERLAPS_NEIGHBOR": 7,
+    "DESCRIPTION_REQUIRES_CONTEXT": 1,
+    "DESCRIPTION_SUFFICIENT": 7,
+    "DESCRIPTION_UNDERSPECIFIED": 1
+  },
+  "n": 16,
+  "per_label": {
+    "domain.crypto": {
+      "class": "DESCRIPTION_SUFFICIENT",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.crypto",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": false
+    },
+    "domain.entertainment": {
+      "class": "DESCRIPTION_OVERLAPS_NEIGHBOR",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.entertainment",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": true,
+      "requires_context_heuristic": false
+    },
+    "domain.fashion": {
+      "class": "DESCRIPTION_OVERLAPS_NEIGHBOR",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.fashion",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": true,
+      "requires_context_heuristic": false
+    },
+    "domain.gambling": {
+      "class": "DESCRIPTION_SUFFICIENT",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.gambling",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": false
+    },
+    "domain.gaming": {
+      "class": "DESCRIPTION_OVERLAPS_NEIGHBOR",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.gaming",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": true,
+      "requires_context_heuristic": false
+    },
+    "domain.politics": {
+      "class": "DESCRIPTION_OVERLAPS_NEIGHBOR",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.politics",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": true,
+      "requires_context_heuristic": false
+    },
+    "domain.spiritual": {
+      "class": "DESCRIPTION_SUFFICIENT",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.spiritual",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": false
+    },
+    "domain.sports": {
+      "class": "DESCRIPTION_OVERLAPS_NEIGHBOR",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.sports",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": true,
+      "requires_context_heuristic": false
+    },
+    "domain.technology": {
+      "class": "DESCRIPTION_OVERLAPS_NEIGHBOR",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.technology",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": true,
+      "requires_context_heuristic": false
+    },
+    "domain.technology.ai_discourse": {
+      "class": "DESCRIPTION_SUFFICIENT",
+      "has_negative_criteria": true,
+      "has_parent_context": true,
+      "has_positive_criteria": true,
+      "label": "domain.technology.ai_discourse",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": false
+    },
+    "domain.workplace": {
+      "class": "DESCRIPTION_OVERLAPS_NEIGHBOR",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "domain.workplace",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": true,
+      "requires_context_heuristic": false
+    },
+    "function.conflictive_force": {
+      "class": "DESCRIPTION_SUFFICIENT",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "function.conflictive_force",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": false
+    },
+    "function.evaluative_stance": {
+      "class": "DESCRIPTION_SUFFICIENT",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "function.evaluative_stance",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": false
+    },
+    "function.memetic_form": {
+      "class": "DESCRIPTION_UNDERSPECIFIED",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": false,
+      "label": "function.memetic_form",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": false
+    },
+    "function.relational_intimacy": {
+      "class": "DESCRIPTION_SUFFICIENT",
+      "has_negative_criteria": true,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "function.relational_intimacy",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": false
+    },
+    "mediation.internet_register": {
+      "class": "DESCRIPTION_REQUIRES_CONTEXT",
+      "has_negative_criteria": false,
+      "has_parent_context": false,
+      "has_positive_criteria": true,
+      "label": "mediation.internet_register",
+      "overbroad_heuristic": false,
+      "overlaps_neighbor_heuristic": false,
+      "requires_context_heuristic": true
+    }
+  }
+}

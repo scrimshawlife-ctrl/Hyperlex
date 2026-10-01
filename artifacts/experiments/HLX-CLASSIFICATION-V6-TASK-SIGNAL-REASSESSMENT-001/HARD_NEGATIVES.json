@@ -1,0 +1,100 @@
+{
+  "_regime_A_ENCODER_FROZEN_system_margin": 0.01730373145737457,
+  "_regime_D_FULL_FINETUNE_system_margin": 0.04092012758024016,
+  "domain.crypto": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.011235955056179775,
+    "zero_shot_f1": 0.36363636363636365,
+    "zero_shot_margin": 0.24692467878506336
+  },
+  "domain.entertainment": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.12328767123287672,
+    "zero_shot_f1": 0.07017543859649122,
+    "zero_shot_margin": 0.012840636413341988
+  },
+  "domain.fashion": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.09411764705882353,
+    "zero_shot_f1": 0.1694915254237288,
+    "zero_shot_margin": 0.026832191829713525
+  },
+  "domain.gambling": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.010638297872340425,
+    "zero_shot_f1": 0.018656716417910446,
+    "zero_shot_margin": 0.09359390138024626
+  },
+  "domain.gaming": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.034482758620689655,
+    "zero_shot_f1": 0.0784313725490196,
+    "zero_shot_margin": 0.023033039380019382
+  },
+  "domain.politics": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.1042830540037244,
+    "zero_shot_f1": 0.12820512820512822,
+    "zero_shot_margin": 0.046346391070752335
+  },
+  "domain.spiritual": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.12371134020618557,
+    "zero_shot_f1": 0.15837104072398192,
+    "zero_shot_margin": 0.03159918067343492
+  },
+  "domain.sports": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.13157894736842105,
+    "zero_shot_f1": 0.1340782122905028,
+    "zero_shot_margin": 0.025976563581686873
+  },
+  "domain.technology": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.3150684931506849,
+    "zero_shot_f1": 0.37681159420289856,
+    "zero_shot_margin": 0.10256159730774206
+  },
+  "domain.technology.ai_discourse": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.248062015503876,
+    "zero_shot_f1": 0.47761194029850756,
+    "zero_shot_margin": 0.1881109388440323
+  },
+  "domain.workplace": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.10204081632653061,
+    "zero_shot_f1": 0.0830188679245283,
+    "zero_shot_margin": 0.01399494670256518
+  },
+  "function.conflictive_force": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.125,
+    "zero_shot_f1": 0.014814814814814815,
+    "zero_shot_margin": -0.009723677915101758
+  },
+  "function.evaluative_stance": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.13211845102505695,
+    "zero_shot_f1": 0.12341197822141561,
+    "zero_shot_margin": 0.015682485563596527
+  },
+  "function.memetic_form": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.13559322033898305,
+    "zero_shot_f1": 0.12849162011173182,
+    "zero_shot_margin": 0.008238575868789288
+  },
+  "function.relational_intimacy": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.18404907975460125,
+    "zero_shot_f1": 0.1372549019607843,
+    "zero_shot_margin": 0.016520410051353962
+  },
+  "mediation.internet_register": {
+    "margin_effect": "unknown_without_trained_scores",
+    "trained_f1": 0.17704918032786887,
+    "zero_shot_f1": 0.13333333333333333,
+    "zero_shot_margin": 0.028997764950537963
+  }
+}

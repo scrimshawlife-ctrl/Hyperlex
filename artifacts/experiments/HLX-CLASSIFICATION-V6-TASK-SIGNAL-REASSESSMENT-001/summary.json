@@ -1,0 +1,48 @@
+{
+  "NEXT_ACTION": "REBASE_V6_ON_STRONGER_PRETRAINED_SEMANTIC_ENCODER",
+  "QUAL_ROWS_INSPECTED": false,
+  "REASSESSMENT_STATE": "V6_TASK_SIGNAL_REASSESSMENT_COMPLETE",
+  "RECEIPT": "8703b73df6aca08ed5cfa6b847fe753997af537b4d15bcf0650a14113d5e2549",
+  "adaptation_rep": {
+    "A_ENCODER_FROZEN": 0.11633483492200304,
+    "B_LAST_1_LAYER": 0.12611322349401646,
+    "C_LAST_2_LAYERS": 0.12826980799042767,
+    "D_FULL_FINETUNE": 0.14403413092007372
+  },
+  "architecture_restart": {
+    "allowed": true,
+    "beats_zero_shot_reference": true,
+    "best_diagnostic_rep": 0.20555757451039375,
+    "reasons": [
+      "REP_DIAGNOSTIC_ABOVE_FLOOR"
+    ],
+    "zero_shot_reference": 0.1622371780444463
+  },
+  "floors_locked": true,
+  "frozen_encoder_rep": 0.11633483492200304,
+  "full_finetune_rep": 0.14403413092007372,
+  "goal_hypothesis": "D. PRETRAINED_REPRESENTATION_MISMATCH",
+  "learning_curve_class": "EARLY_SATURATION",
+  "measured_zero_shot_control_rep": 0.1622371780444463,
+  "n_dev": 195,
+  "n_rep": 532,
+  "n_train": 1209,
+  "pretrained_comparison": {
+    "CONTROL_modernbert": 0.1622371780444463,
+    "NLI_DEBERTA": 0.045242646109754314,
+    "SENTENCE_MPNET": 0.20555757451039375
+  },
+  "primary_diagnosis": "PRETRAINED_REPRESENTATION_MISMATCH",
+  "secondary_contributors": [
+    "AXIS_SPECIFIC_REPRESENTATIONS_JUSTIFIED"
+  ],
+  "strong_semantic_best_rep": 0.20555757451039375,
+  "zero_shot_reference": {
+    "id": "ZERO_SHOT_CONTROL_REP_SYSTEM_MACRO_F1",
+    "note": "Baseline to beat; description experiments are diagnostic only.",
+    "prior_reset_receipt": "b936b49bbf0e3925a03f2c1bb6eb46bf7458c7a2f1e215f83cc6536266d2d453",
+    "rep_system_macro_f1": 0.1622371780444463,
+    "source_receipt": "e7264a0f140dee6536b4ca9d4de69a0ae2139c29a5c3a4572214fa1ae52b58eb",
+    "track": "ZERO_SHOT_SEMANTIC_MATCH__CONTROL"
+  }
+}

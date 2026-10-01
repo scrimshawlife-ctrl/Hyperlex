@@ -1,0 +1,10 @@
+{
+  "best_per_axis_macro": {
+    "domain": 0.2233436888659714,
+    "function": 0.17773212335712335,
+    "mediation": 0.16666666666666666
+  },
+  "finding": "AXIS_SPECIFIC_REPRESENTATIONS_JUSTIFIED",
+  "mean_best_per_axis": 0.1892474929632538,
+  "shared_zero_shot_system": 0.1622371780444463
+}

@@ -1,0 +1,205 @@
+{
+  "n_pairs": 17,
+  "rare_train_but_rep": [
+    {
+      "DEV": 0,
+      "REP": 1,
+      "TRAIN": 0,
+      "pair": [
+        "domain.gaming",
+        "domain.technology"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 1,
+      "TRAIN": 0,
+      "pair": [
+        "domain.gaming",
+        "domain.technology.ai_discourse"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 1,
+      "TRAIN": 2,
+      "pair": [
+        "domain.politics",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 1,
+      "TRAIN": 0,
+      "pair": [
+        "function.conflictive_force",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 1,
+      "REP": 1,
+      "TRAIN": 0,
+      "pair": [
+        "function.relational_intimacy",
+        "mediation.internet_register"
+      ]
+    }
+  ],
+  "top_train": [
+    {
+      "DEV": 14,
+      "REP": 41,
+      "TRAIN": 91,
+      "pair": [
+        "domain.technology",
+        "domain.technology.ai_discourse"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 4,
+      "pair": [
+        "domain.technology",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 4,
+      "pair": [
+        "domain.technology.ai_discourse",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 1,
+      "REP": 2,
+      "TRAIN": 4,
+      "pair": [
+        "function.memetic_form",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 2,
+      "pair": [
+        "domain.crypto",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 1,
+      "TRAIN": 2,
+      "pair": [
+        "domain.politics",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 2,
+      "pair": [
+        "function.conflictive_force",
+        "function.evaluative_stance"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 2,
+      "pair": [
+        "function.evaluative_stance",
+        "function.relational_intimacy"
+      ]
+    },
+    {
+      "DEV": 1,
+      "REP": 0,
+      "TRAIN": 1,
+      "pair": [
+        "domain.fashion",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 1,
+      "pair": [
+        "domain.gaming",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 1,
+      "pair": [
+        "domain.workplace",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 1,
+      "pair": [
+        "function.conflictive_force",
+        "function.memetic_form"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 0,
+      "TRAIN": 1,
+      "pair": [
+        "function.evaluative_stance",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 1,
+      "TRAIN": 0,
+      "pair": [
+        "domain.gaming",
+        "domain.technology"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 1,
+      "TRAIN": 0,
+      "pair": [
+        "domain.gaming",
+        "domain.technology.ai_discourse"
+      ]
+    },
+    {
+      "DEV": 0,
+      "REP": 1,
+      "TRAIN": 0,
+      "pair": [
+        "function.conflictive_force",
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "DEV": 1,
+      "REP": 1,
+      "TRAIN": 0,
+      "pair": [
+        "function.relational_intimacy",
+        "mediation.internet_register"
+      ]
+    }
+  ]
+}
