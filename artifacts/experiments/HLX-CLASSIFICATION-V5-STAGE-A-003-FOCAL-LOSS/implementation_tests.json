@@ -1,0 +1,13 @@
+{
+  "schema": "hyperlex.classification.v5.stage_a_003_impl_tests.v1",
+  "tests": {
+    "CLASS_WEIGHT_PRESERVATION": "PASS",
+    "EASY_EXAMPLE_DOWNWEIGHT": "PASS",
+    "FINITE_LOSS_EXTREME_LOGITS": "PASS",
+    "FOCAL_LOSS_IMPLEMENTATION_TEST": "PASS",
+    "GAMMA_ZERO_EQUIVALENCE": "PASS",
+    "HARD_EXAMPLE_EMPHASIS": "PASS",
+    "PROVENANCE_WEIGHT_PRESERVATION": "PASS",
+    "pytest_invocation": "prechecked_local_PASS"
+  }
+}

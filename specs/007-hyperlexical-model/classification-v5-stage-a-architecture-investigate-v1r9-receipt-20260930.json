@@ -1,0 +1,144 @@
+{
+  "BEST": "UNCHANGED",
+  "BEST_SHA256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "BOTTLENECK": "MIXED",
+  "DATASET": "V1R9_UNCHANGED",
+  "DATASET_SHA256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "DATA_INTEGRITY": "PASS",
+  "DIAGNOSIS_RECEIPT_SHA256": "7b16550c7049fd46a28f3201fb84ccf61a960cd1f3e27933671ebf4c1a8479cd",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-004",
+  "FOCAL_ALREADY_FALSIFIED": true,
+  "INVESTIGATE_RULE": "ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION",
+  "INVESTIGATION_STATUS": "COMPLETE",
+  "LABEL_MAPPING": "PASS",
+  "NEXT_ACTION": "DESIGN_V5_STAGE_A_ARCHITECTURE_REDESIGN_SPEC",
+  "PARENT_DATASET_SHA256": "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b",
+  "PARENT_EXPERIMENT": "HLX-CLASSIFICATION-V5-STAGE-A-002",
+  "PRESENT_TO_NONE_CONFIDENCE_PROFILE": "CONFIDENT_NONE",
+  "PRIMARY_DECISION": "STAGE_A_ARCHITECTURE_REDESIGN_REQUIRED",
+  "RESERVE": "unused",
+  "SELECTED_CHECKPOINT_SHA256": "82840630a89ea9e9b34fdfc010d455e6bbfce05ecfcb29abe2929505e9e21fdd",
+  "SEPARABILITY": "PARTIALLY_SEPARABLE",
+  "SURFACE_READY": "PASS",
+  "SURFACE_RULE": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+  "THRESHOLD_ONLY_REPAIR_SUPPORTED": false,
+  "TRAIN": false,
+  "UNCERTAIN_POLICY_INVISIBLE": true,
+  "architecture_alternatives": [
+    {
+      "id": "A_MULTITASK_PRESENT_DETECTOR",
+      "implementation_complexity": "MEDIUM",
+      "reversible": true,
+      "summary": "Shared encoder; multi-task evidence head with an explicit PRESENT detector; family decision downstream."
+    },
+    {
+      "id": "B_TWO_STAGE",
+      "implementation_complexity": "MEDIUM",
+      "reversible": true,
+      "summary": "Stage 1: NO_EVIDENCE vs EVIDENCE_PRESENT; Stage 2: UNCERTAIN vs CONFIRMED_PRESENT given evidence."
+    },
+    {
+      "id": "C_CURRENT_3CLASS",
+      "implementation_complexity": "NONE",
+      "reversible": true,
+      "summary": "Current flat 3-class linear head + P(PRESENT)-only thresholds."
+    }
+  ],
+  "architecture_change_required": true,
+  "dataset_change_required": false,
+  "head_analysis": {
+    "bottleneck": "MIXED",
+    "decision_rule": "decide_evidence(P_PRESENT only); P_UNCERTAIN unused",
+    "pooling": "last_hidden_state[:,0]",
+    "type": "linear_hidden_to_3_logits"
+  },
+  "loss_pressure": {
+    "class_weights": {
+      "EVIDENCE_PRESENT": 1.1146938590101167,
+      "NO_EVIDENCE": 0.5,
+      "UNCERTAIN": 1.3970741116141188
+    },
+    "focal_already_falsified": true,
+    "hypothesis": "Weighted CE with NONE clipped at 0.5 and high NONE effective mass encourages NONE dominance / safe abstention away from PRESENT. P(PRESENT)-only decide_evidence ignores UNCERTAIN mass, collapsing epistemic UNCERTAIN into NONE at decision time. Focal (Stage-A-003) already falsified easy-NONE downweighting alone as sufficient.",
+    "none_dominance_signals": {
+      "present_fn_confident_none_frac": 0.8174904942965779,
+      "present_fn_profile": "CONFIDENT_NONE",
+      "uncertain_policy_invisible": true,
+      "uncertain_top1_ignored_frac": 0.4567901234567901
+    }
+  },
+  "new_experiment_required": false,
+  "note": "Read-only. No train authorized. Focal already falsified on V1R8; V1R9 uncertain remediation left PRESENT recall failing with mixed representation/objective bottleneck. Redesign spec required before any new experiment loop.",
+  "parent_gates": {
+    "EVIDENCE_PRESENT_recall": 0.5871271585557299,
+    "NONE_RECALL_GATE": "PASS",
+    "NO_EVIDENCE_recall": 0.9832268370607029,
+    "PRESENT_RECALL_GATE": "FAIL",
+    "SPECIFICITY_GATE": "PASS",
+    "THRESHOLD_GRID_PASSING": 0,
+    "false_evidence_entry_rate_on_none": 0.01597444089456869
+  },
+  "present_fn_decomposition": {
+    "by_ATOM_PROSE": {
+      "AMBIGUOUS": 2,
+      "ATOM": 41,
+      "PROSE": 220
+    },
+    "by_provenance": {
+      "INFERRED": 5,
+      "OBSERVED": 258
+    },
+    "confident_none_frac": 0.8174904942965779,
+    "counts": {
+      "FEATURE_ABSENCE": 0,
+      "LOW_CONFIDENCE": 25,
+      "PRESENT_TO_NONE": 141,
+      "PRESENT_TO_UNCERTAIN": 0,
+      "REPRESENTATION_FAILURE": 88,
+      "THRESHOLD_FAILURE": 9
+    },
+    "mean_P_NONE": 0.8850272846529621,
+    "mean_P_PRESENT": 0.07453160640197719,
+    "median_P_NONE": 0.9967707870188395,
+    "n": 263,
+    "near_boundary_frac": 0.049429657794676805,
+    "nearest_centroid": {
+      "EVIDENCE_PRESENT": 99,
+      "NO_EVIDENCE": 88,
+      "UNCERTAIN": 76
+    },
+    "percentages": {
+      "FEATURE_ABSENCE": 0.0,
+      "LOW_CONFIDENCE": 0.09505703422053231,
+      "PRESENT_TO_NONE": 0.5361216730038023,
+      "PRESENT_TO_UNCERTAIN": 0.0,
+      "REPRESENTATION_FAILURE": 0.33460076045627374,
+      "THRESHOLD_FAILURE": 0.034220532319391636
+    }
+  },
+  "private_diag_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r9-20260930/classification-v5-stage-a-004/diagnostics/architecture_investigation",
+  "representation": {
+    "PRESENT_vs_NONE_centroid_cosine": 0.8801195724840136,
+    "PRESENT_vs_UNCERTAIN_centroid_cosine": 0.8816354513971445,
+    "n_none_embedded": 1252,
+    "n_present_embedded": 637,
+    "n_uncertain_embedded": 162,
+    "note": "Frozen SELECTED encoder CLS embeddings; not mutated.",
+    "present_fn_nearest_NONE_frac": 0.33460076045627374,
+    "present_fn_nearest_PRESENT_frac": 0.376425855513308,
+    "separability": "PARTIALLY_SEPARABLE"
+  },
+  "schema": "hyperlex.classification.v5.stage_a_architecture_investigation_receipt.v1r9",
+  "smallest_reversible_redesign": {
+    "alternatives_considered": [
+      "A_MULTITASK_PRESENT_DETECTOR",
+      "C_CURRENT_3CLASS"
+    ],
+    "change_id": "B_TWO_STAGE_DECISION_GRAPH",
+    "dataset_change": false,
+    "description": "Replace flat 3-way decide_evidence(P_PRESENT) with a reversible two-stage decision graph on the same encoder: (1) NO_EVIDENCE vs EVIDENCE_CANDIDATE; (2) UNCERTAIN vs CONFIRMED_PRESENT given candidate. Keep V1R9 / BEST / seed frozen. Spec-only until CLEAR.",
+    "note": "Comparison only \u2014 no winner authorized for training in this step.",
+    "train_authorized": false,
+    "why_smallest": "Does not require backbone change or new surface acquisition; directly addresses P(UNCERTAIN)-ignored policy and PRESENT vs NONE gate coupling under one softmax."
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "BEST": "UNCHANGED",
+  "BEST_MUTATED": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-B-001",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "RESERVE_CONSUMED": false,
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_PROMOTION_RECEIPT_SHA256": "d4c0cfd648b16a5d3b0bb21791e25434fb7cca9a2d8e5c3d794653d269c1cd4a",
+  "TRAIN": false,
+  "authorization": {
+    "decision": "RESERVE_SEAL_AUTHORIZED",
+    "false_evidence_entry_rate_on_none": 0.04233226837060703,
+    "family_emission_precision": 0.8172043010752689,
+    "primary_gate_pass": true,
+    "secondary_gate_pass": true,
+    "spent_prior_reserve_used": false,
+    "v5_reserve_created": false
+  },
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "calibration": {
+    "false_evidence_entry_rate_on_none": 0.04233226837060703,
+    "family_emission_coverage": 0.14599686028257458,
+    "family_emission_precision": 0.8172043010752689,
+    "family_emission_recall": 0.11930926216640503,
+    "feasible": true,
+    "metrics": {
+      "decision_counts": {
+        "ABSTAIN": 239,
+        "AMBIGUOUS": 428,
+        "FAMILY": 93,
+        "NONE": 1291
+      },
+      "false_evidence_entry_rate_on_none": 0.04233226837060703,
+      "family_emission_coverage": 0.14599686028257458,
+      "family_emission_precision": 0.8172043010752689,
+      "family_emission_recall": 0.11930926216640503,
+      "n": 2051,
+      "n_family_emitted": 93,
+      "n_present_gold": 637,
+      "none_precision": 0.8814872192099148,
+      "none_recall": 0.9089456869009584,
+      "primary_gate_max": 0.05,
+      "primary_gate_pass": true,
+      "secondary_gate_min": 0.8,
+      "secondary_gate_pass": true,
+      "selective_accuracy": 0.8771676300578035,
+      "uncertain_rate": 0.113603120429059
+    },
+    "minimum_family_score": 0.64,
+    "minimum_top1_top2_margin": 0.07,
+    "primary_gate_pass": true,
+    "reserve_used": false,
+    "secondary_gate_pass": true,
+    "selective_accuracy": 0.8771676300578035,
+    "surface": "validation"
+  },
+  "code_revision": "58ccfc2e02e5389c0aa60b276842ddf208b0dda7",
+  "contract": {
+    "BEST": "UNCHANGED",
+    "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+    "emission_precision_min": 0.8,
+    "entry_invariant": {
+      "EVIDENCE_PRESENT": "PERMIT_STAGE_B",
+      "NO_EVIDENCE": "STOP",
+      "UNCERTAIN": "ABSTAIN",
+      "rule": "Stage B may execute only when Stage A == EVIDENCE_PRESENT"
+    },
+    "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-B-001",
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "frozen_stage_a": {
+      "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+      "STAGE_A_BEST_EPOCH": 11,
+      "architecture": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1",
+      "architecture_receipt_sha256": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697",
+      "gate1_threshold": 0.75,
+      "gate2_threshold": 0.5,
+      "model_wide_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+      "promote_rule": "PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED"
+    },
+    "parent_promotion_receipt_sha256": "d4c0cfd648b16a5d3b0bb21791e25434fb7cca9a2d8e5c3d794653d269c1cd4a",
+    "parent_stage_a_experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001",
+    "parent_v3_reference_floors": {
+      "minimum_family_score": 0.96,
+      "minimum_top1_top2_margin": 0.01,
+      "status": "REFERENCE_ONLY_PENDING_V5_CALIBRATION"
+    },
+    "retrieval_only_on": "EVIDENCE_PRESENT",
+    "rule": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+    "schema": "hyperlex.classification.v5.stage_b_integration.v1",
+    "semantic_stage_a_labels": [
+      "NO_EVIDENCE",
+      "EVIDENCE_PRESENT",
+      "UNCERTAIN"
+    ],
+    "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+    "train": false,
+    "v5_reserve": null
+  },
+  "frozen_stage_a": {
+    "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "STAGE_A_BEST_EPOCH": 11,
+    "architecture": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1",
+    "architecture_receipt_sha256": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697",
+    "gate1_threshold": 0.75,
+    "gate2_threshold": 0.5,
+    "model_wide_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "promote_rule": "PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED"
+  },
+  "index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+  "metrics": {
+    "decision_counts": {
+      "ABSTAIN": 239,
+      "AMBIGUOUS": 428,
+      "FAMILY": 93,
+      "NONE": 1291
+    },
+    "false_evidence_entry_rate_on_none": 0.04233226837060703,
+    "family_emission_coverage": 0.14599686028257458,
+    "family_emission_precision": 0.8172043010752689,
+    "family_emission_recall": 0.11930926216640503,
+    "n": 2051,
+    "n_family_emitted": 93,
+    "n_present_gold": 637,
+    "none_precision": 0.8814872192099148,
+    "none_recall": 0.9089456869009584,
+    "primary_gate_max": 0.05,
+    "primary_gate_pass": true,
+    "secondary_gate_min": 0.8,
+    "secondary_gate_pass": true,
+    "selective_accuracy": 0.8771676300578035,
+    "uncertain_rate": 0.113603120429059
+  },
+  "next_action": "AUTHORIZE_SEAL_NEW_V5_RESERVE_THEN_ONE_SHOT_SCORE",
+  "receipt_sha256": "51323ff4457d7d004043f19cf08df624df64e600245ea6f705c38c70e79a5866",
+  "rule": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+  "schema": "hyperlex.classification.v5.stage_b_validation.v1",
+  "surface_dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+  "v5_reserve": null,
+  "wire_action": "WIRE_V5_STAGE_B_RETRIEVAL_ON_STAGE_A_BEST"
+}

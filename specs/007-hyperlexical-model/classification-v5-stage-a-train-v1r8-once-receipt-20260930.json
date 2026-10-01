@@ -1,0 +1,184 @@
+{
+  "ACCEPTANCE_GATES": {
+    "EVIDENCE_PRESENT_recall": {
+      "pass": false,
+      "threshold": 0.7,
+      "value": 0.5274725274725275
+    },
+    "NO_EVIDENCE_recall": {
+      "pass": true,
+      "threshold": 0.9,
+      "value": 0.987220447284345
+    },
+    "false_evidence_entry_rate_on_none": {
+      "pass": true,
+      "threshold": 0.05,
+      "value": 0.011980830670926517
+    }
+  },
+  "ACTUAL_EPOCHS": 12,
+  "ARCHITECTURE_CHANGE_JUSTIFIED": false,
+  "ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION_JUSTIFIED": true,
+  "BALANCED_ACCURACY": 0.5048976582522908,
+  "BEST": "UNCHANGED",
+  "CODE_REVISION": "e35c6483d8667a636960e4d80b0d386420cc7c07",
+  "CONFUSION": {
+    "EVIDENCE_PRESENT->EVIDENCE_PRESENT": 336,
+    "EVIDENCE_PRESENT->NO_EVIDENCE": 297,
+    "EVIDENCE_PRESENT->UNCERTAIN": 4,
+    "NO_EVIDENCE->EVIDENCE_PRESENT": 15,
+    "NO_EVIDENCE->NO_EVIDENCE": 1236,
+    "NO_EVIDENCE->UNCERTAIN": 1,
+    "UNCERTAIN->EVIDENCE_PRESENT": 5,
+    "UNCERTAIN->NO_EVIDENCE": 56
+  },
+  "DATASET_SHA256": "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-002",
+  "FALSE_ENTRY_CHANGE": -0.05717394430163111,
+  "FALSE_EVIDENCE_ENTRY_RATE_ON_NONE": 0.011980830670926517,
+  "MACRO_F1": 0.5156177721346149,
+  "NEXT_ACTION": "ARCHITECTURE_OR_OBJECTIVE_INVESTIGATION",
+  "NONE_F1": 0.8701161562829989,
+  "NONE_PRECISION": 0.7778477029578351,
+  "NONE_RECALL": 0.987220447284345,
+  "OBSERVED_INFERRED": {
+    "INFERRED": {
+      "EVIDENCE_PRESENT_recall": 0.9456521739130435,
+      "NO_EVIDENCE_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 447,
+      "stage_a_macro_f1": 0.624659028914348,
+      "uncertain_rate": 0.0022371364653243847
+    },
+    "OBSERVED": {
+      "EVIDENCE_PRESENT_recall": 0.45688073394495415,
+      "NO_EVIDENCE_recall": 0.9831578947368421,
+      "false_evidence_entry_rate_on_none": 0.015789473684210527,
+      "n": 1503,
+      "stage_a_macro_f1": 0.4899199602955167,
+      "uncertain_rate": 0.0026613439787092482
+    }
+  },
+  "OPTIMIZER_STEPS": 21324,
+  "ORDINARY_FP_COUNT_CHANGE": -49,
+  "ORDINARY_NONE_FALSE_PRESENT": 11,
+  "OTHER_NONE_FALSE_PRESENT": 4,
+  "PARENT_ORDINARY_NONE_FALSE_PRESENT": 60,
+  "PARENT_OTHER_NONE_FALSE_PRESENT": 3,
+  "PARENT_PRESENT_TO_NONE": 146,
+  "PARENT_PRESENT_TO_UNCERTAIN": 3,
+  "PARENT_UNCERTAIN_MISCLASSIFIED": 53,
+  "PRESENT_F1": 0.6767371601208458,
+  "PRESENT_FN_COUNT_CHANGE": 151,
+  "PRESENT_PRECISION": 0.9438202247191011,
+  "PRESENT_RECALL": 0.5274725274725275,
+  "PRESENT_RECALL_CHANGE": -0.1202816096433118,
+  "PRESENT_TO_NONE": 297,
+  "PRESENT_TO_UNCERTAIN": 4,
+  "PRIMARY_DIAGNOSIS": "RESIDUAL_PRESENT_RECALL_FAILURE",
+  "PROCESS_EXIT": "CLEAN",
+  "PROMOTION_CANDIDATE": false,
+  "PROMOTION_CRITERIA_STATUS": "FAIL",
+  "RESERVE": "unused",
+  "RESTORED_EPOCH": 10,
+  "RUN_RECEIPT_SHA256": "c0008f3c260c5d3004bd5345d9c97ff71702e9260a54138cb8134b0960d18fa1",
+  "SCIENTIFIC_RESULT": "SETTLED_FAIL",
+  "SEED": 42,
+  "SELECTED_CHECKPOINT": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-20260930/classification-v5-stage-a-002/selected/model.safetensors",
+  "SELECTED_CHECKPOINT_SHA256": "b22e9c208627ea843d949ba2dfe0b576d6f74624c6f8f372ca52c47e4bb5213b",
+  "SPECIFICITY_CHANGE": -48,
+  "STAGE_A_GATE_STATUS": "FAIL",
+  "SUBTYPE": {
+    "AMBIGUOUS_EVIDENCE": {
+      "NO_EVIDENCE_recall": null,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": null,
+      "support": 61
+    },
+    "GENERIC_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 53
+    },
+    "HARD_NONE": {
+      "NO_EVIDENCE_recall": 0.965034965034965,
+      "UNCERTAIN_count": 1,
+      "UNCERTAIN_rate": 0.006993006993006993,
+      "false_EVIDENCE_PRESENT_count": 4,
+      "false_EVIDENCE_PRESENT_rate": 0.027972027972027972,
+      "support": 143
+    },
+    "LEXICAL_LOOKALIKE_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 91
+    },
+    "NEAR_DOMAIN_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 148
+    },
+    "ORDINARY_DOMAIN_NONE": {
+      "NO_EVIDENCE_recall": 0.9853917662682603,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 11,
+      "false_EVIDENCE_PRESENT_rate": 0.014608233731739707,
+      "support": 753
+    },
+    "POSITIVE_EVIDENCE": {
+      "NO_EVIDENCE_recall": null,
+      "UNCERTAIN_count": 4,
+      "UNCERTAIN_rate": 0.006279434850863423,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": null,
+      "support": 637
+    },
+    "SHORT_ATOM_NONE": {
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_count": 0,
+      "UNCERTAIN_rate": 0.0,
+      "false_EVIDENCE_PRESENT_count": 0,
+      "false_EVIDENCE_PRESENT_rate": 0.0,
+      "support": 64
+    }
+  },
+  "TERMINATED_NORMALLY": true,
+  "THRESHOLD_GRID": {
+    "chosen": null,
+    "feasible": false,
+    "n_candidates": 45,
+    "n_passing": 0
+  },
+  "TRAINING_COMPLETE": true,
+  "TRAINING_CONFIG_SHA256": "2ce1b29bf2be54cc03ac25d66301bf0991226dffd3a1d94bcdaa7a48559d40af",
+  "TRAINING_STATUS": "COMPLETE",
+  "UNCERTAIN_F1": 0.0,
+  "UNCERTAIN_MISCLASSIFIED": 61,
+  "UNCERTAIN_PRECISION": 0.0,
+  "UNCERTAIN_RECALL": 0.0,
+  "diagnostic_cohort_deltas": {
+    "ORDINARY_DOMAIN_FALSE_PRESENT": -49,
+    "OTHER_NONE_FALSE_PRESENT": 1,
+    "PRESENT_FALSE_NONE": 151,
+    "PRESENT_FALSE_UNCERTAIN": 1,
+    "UNCERTAIN_MISCLASSIFIED": 8
+  },
+  "note": "No threshold pair on the preregistered grid satisfied all three acceptance gates (n_passing=0). Reported validation metrics use fallback none=0.50/present=0.55 for diagnostic display only; SELECTED checkpoint retained as failed scientific evidence. BEST unchanged; reserve unused.",
+  "parent_diagnosis": "MIXED_STAGE_A_FAILURE",
+  "private_run_root": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-20260930/classification-v5-stage-a-002",
+  "schema": "hyperlex.classification.v5.stage_a_train_v1r8_once.v1",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R8",
+  "train": true
+}

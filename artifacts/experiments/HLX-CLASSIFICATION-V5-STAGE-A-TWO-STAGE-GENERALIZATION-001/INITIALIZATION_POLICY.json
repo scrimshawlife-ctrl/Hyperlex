@@ -1,0 +1,13 @@
+{
+  "base_encoder_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "base_encoder_source": "MODEL_WIDE_BEST",
+  "conflict_with_stage_a_best_continuation": false,
+  "gate_heads": "fresh_xavier_uniform_bias_zeros",
+  "head_init": "xavier_uniform_bias_zeros",
+  "last_two_encoder_layers_source": "MODEL_WIDE_BEST_overlay",
+  "policy": "FRESH_RETRAIN_FROM_MODEL_WIDE_BEST:encoder_overlay_from_9fba0f66; gate1/gate2 heads freshly initialized; do_not_load_STAGE_A_BEST_cd2829c1",
+  "scientific_interpretation": "V1R1 is a fresh retraining comparison, not fine-tuning the previous Stage-A candidate on a remediation surface.",
+  "stage_a_best_continuation": false,
+  "stage_a_best_sha256_reference_only": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "trunk": "ModernBERT-base"
+}

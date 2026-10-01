@@ -1,0 +1,177 @@
+{
+  "ACTION": "BUILD_V5_STAGE_A_GENERALIZATION_SURFACE_V1",
+  "BEST": "UNCHANGED",
+  "BEST_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_BEST_MUTATED": false,
+  "STAGE_B_MUTATED": false,
+  "THRESHOLDS_MUTATED": false,
+  "TRAIN": false,
+  "artifact_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-generalization-surface-v1-20261001",
+  "artifact_hashes": {
+    "ARTIFACT_HASHES.json": "e2c4d2b50a3c86acda68199f6f9876c0f85b185482cd9d8e3ecb9332f2a93727",
+    "CELL_DIAGNOSTICS.json": "98beeb484e19a3bafba93f0b18eb2f860d57c9d13497ebaa5ffd4bf1fa9320ee",
+    "CELL_GAPS_PREACQUIRE.json": "0b57044f4d0713a8e7e7a52ed2a062410f8563fef34b171c9b45ba2b4451759e",
+    "COMPONENT_SPLIT_WITNESS.json": "d6baac9ec868a607464043e3038d8f8294a204c3ac15604d80375201cdb018cf",
+    "CONTRACT.json": "f0d0041c0aa670e1ff8b291acec8ec659ca88d3d626028d7ded5c579c11cb46e",
+    "CONTRAST_PAIR_WITNESS.json": "9a28a3cef93f25123c47c5f5d7353041613524e40e8ebd50e553b69e80b2359b",
+    "DISJOINTNESS_WITNESS.json": "b578a4a8e7f214057a4d7766ef388d0a2af78bf76151e88c209550bcd62c1ada",
+    "EMBEDDING_HARDNESS.json": "40dd7861889a4a3bb51212db9a304bdf432ad7789192233c4894d5383af4ce43",
+    "EVIDENCE_SURFACE.jsonl": "7567edcdf74c1033a07e3ae1d42b0e54ed0804b78fd7ba340c35752ac13df09f",
+    "INFERRED_MATCHED_FILLS.jsonl": "5da7924fa0f9ea759989c033925413c7e9691a8569adbf6073d0127eb77907cc",
+    "ISOLATION.json": "94228d1353d843a6f56e77af96d86ea7384383ce88d835cc0d2c7bbc4e890ac5",
+    "MANIFEST.json": "4ff5252b8695525e4f7914742f9e9ce84664e8f6fc70dd0d6d02516911575334",
+    "OBSERVED_ACQUIRE_WIKT.jsonl": "e1091b3eedab9ca80684f78b627e855df9be146e23d74f3b98d0415e5262f36c",
+    "OBSERVED_ACQUIRE_WIKT_ATOMS.jsonl": "972903f51417902e48ab8c9f74c1c7f9f198252fc39a1e0e8a7592c1466214ff",
+    "OBSERVED_ACQUIRE_WIKT_ATOM_NONE.jsonl": "a7032e008238d47ce7dd579f87120c28367c99bcb63e218220ebc67de2dfa9b4",
+    "OBSERVED_ACQUIRE_WP.jsonl": "3bd19b7f0ecc79eaedec7bd9fb04f375118eb383c2d93c619c98ef888d015e4a",
+    "PROVENANCE_WITNESS.json": "e13c30a02b7c6da2cc4b3c675985a9d9c36b718d731981045a7cc330f9a1917a",
+    "READINESS.json": "585b450a25a8133008e19baee73511bd0d674f70cd3119153b03d707a171352c",
+    "SHORTCUT_DIAGNOSTICS.json": "46438315fe7eb8ee30098d6b6a83d9ee61b1cdbef5a718147f6c3f95a1cc6239",
+    "SOURCE_DOMAIN_WITNESS.json": "37d7e716b64c57249e302108684b3c0fce7e40b23dbb02b908f20c4e131a0eb3",
+    "SPLIT_MANIFEST.json": "44b165165099090825887ed1651b171c2ca67c4ff72706d921619177a9a8bff8",
+    "SUMMARY.json": "619e095fdae0c12a210048b35badfb8501abe6f3c6b434460981b1e7143d3c9f"
+  },
+  "counts": {
+    "by_label": {
+      "EVIDENCE_PRESENT": 1223,
+      "NO_EVIDENCE": 1202,
+      "UNCERTAIN": 199
+    },
+    "by_primary_cell": {
+      "DEFINITION_STYLE/EVIDENCE_PRESENT": 308,
+      "DEFINITION_STYLE/NO_EVIDENCE": 332,
+      "ORDINARY_PROSE/EVIDENCE_PRESENT": 380,
+      "ORDINARY_PROSE/NO_EVIDENCE": 379,
+      "PROSE/EVIDENCE_PRESENT": 306,
+      "PROSE/NO_EVIDENCE": 261,
+      "SHORT_ATOM/EVIDENCE_PRESENT": 229,
+      "SHORT_ATOM/NO_EVIDENCE": 230
+    },
+    "by_provenance": {
+      "INFERRED": 1521,
+      "OBSERVED": 1103
+    },
+    "total": 2624,
+    "train": 1907,
+    "validation": 717
+  },
+  "dataset_sha256": "7567edcdf74c1033a07e3ae1d42b0e54ed0804b78fd7ba340c35752ac13df09f",
+  "design_rule": "BUILD_V5_STAGE_A_GENERALIZATION_SURFACE_V1",
+  "disjointness": {
+    "cross_split_near_duplicate_clusters": 0,
+    "heldout_overlap": 0,
+    "measurement_only_overlap": 0,
+    "pass": true,
+    "spent_v2_reserve_overlap": 0,
+    "spent_v3_reserve_overlap": 0,
+    "spent_v4_reserve_overlap": 0,
+    "train_validation_identity_overlap": 0,
+    "train_validation_near_duplicate_group_overlap": 0,
+    "train_validation_parent_lineage_overlap": 0,
+    "train_validation_source_hash_overlap": 0
+  },
+  "domain_coverage": {
+    "missing_none_for_present_domains": {
+      "astronomy": 13,
+      "betting-sharp": 13,
+      "crypto-degen": 8,
+      "internet-slang": 12,
+      "mathematics": 11,
+      "technology-ai": 14
+    },
+    "missing_present_for_none_domains": {
+      "near-domain": 2
+    },
+    "pass": false
+  },
+  "embedding_hardness": {
+    "frac_nearest_opposite_cosine_ge_0_75": 0.9814432989690721,
+    "mean_nearest_opposite_label_cosine": 0.9472508734034509,
+    "median_nearest_opposite_label_cosine": 0.9720413088798523,
+    "pass": true
+  },
+  "gate_pass": {
+    "all_disjointness_pass": true,
+    "cell_support_floors_pass": false,
+    "domain_coverage_pass": false,
+    "duplicate_quality_pass": true,
+    "embedding_hardness_pass": true,
+    "label_provenance_invalid_rows_zero": true,
+    "lexical_overlap_pass": false,
+    "pairing_pass": true,
+    "schema_integrity_pass": true,
+    "shallow_shortcut_pass": false,
+    "source_provenance_floors_pass": false,
+    "spent_reserve_overlap_pass": true,
+    "surface_balance_pass": false
+  },
+  "gate_rule": "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_READINESS_GATES_V1",
+  "lexical_overlap": {
+    "pass": false,
+    "shared_high_frequency_tokens": 84,
+    "top_100_token_jaccard": 0.2345679012345679
+  },
+  "matched_pairs": {
+    "DEFINITION_STYLE": 279,
+    "ORDINARY_PROSE": 160,
+    "PROSE": 108,
+    "SHORT_ATOM": 229,
+    "matched_positive_negative_pairs": 776,
+    "pass": true
+  },
+  "next_action": "REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES",
+  "parent_diagnosis": "STAGE_A_GENERALIZATION_FAILURE",
+  "provenance": {
+    "critical_cells_observed_fraction": {
+      "DEFINITION_STYLE/EVIDENCE_PRESENT": 0.4878048780487805,
+      "DEFINITION_STYLE/NO_EVIDENCE": 0.5730337078651685,
+      "SHORT_ATOM/EVIDENCE_PRESENT": 0.9913793103448276,
+      "SHORT_ATOM/NO_EVIDENCE": 0.9396551724137931
+    },
+    "observed_validation_fraction": 0.5258019525801952,
+    "pass": true
+  },
+  "readiness_sha256": "585b450a25a8133008e19baee73511bd0d674f70cd3119153b03d707a171352c",
+  "ready": false,
+  "receipt_sha256": "424865bac9243f6aaab4daf35a2aa4fa3ff7372c3e6b9984603209faaedc48b6",
+  "schema_integrity": {
+    "gold_invalid_rows": 0,
+    "pass": true
+  },
+  "shallow_shortcut": {
+    "length_only_balanced_accuracy": 0.6205357142857143,
+    "pass": false,
+    "surface_only_balanced_accuracy": 0.5632124308646972,
+    "surface_only_macro_f1": 0.5517769821865176,
+    "tfidf_balanced_accuracy": 0.7719209496829893
+  },
+  "source_diversity": {
+    "EVIDENCE_PRESENT_top_share": 0.2788225674570728,
+    "NO_EVIDENCE_top_share": 0.2737104825291181,
+    "pass": false,
+    "top_family": "wiktionary_aggregate"
+  },
+  "spent_reserve": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "spent_reserve_overlap_n": 0,
+  "spent_reserve_status": "SPENT / IMMUTABLE",
+  "state": "PREREGISTERED",
+  "surface_balance": {
+    "ATOM_rate_diff": 0.00410327295880536,
+    "PROSE_rate_diff": 0.004935219714213046,
+    "definition_style_rate_diff": 0.0243665844470173,
+    "median_token_count_ratio": 1.3846153846153846,
+    "pass": false,
+    "punctuation_rate_diff": 0.0259338823410969
+  },
+  "surface_rule": "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1",
+  "surface_version": "classification-v5-stage-a-generalization-surface-v1-20261001",
+  "train_cell_gaps": {
+    "train:SHORT_ATOM/EVIDENCE_PRESENT": 37,
+    "train:SHORT_ATOM/NO_EVIDENCE": 36
+  },
+  "v1r9_mutated": false,
+  "v1r9_surface_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a"
+}

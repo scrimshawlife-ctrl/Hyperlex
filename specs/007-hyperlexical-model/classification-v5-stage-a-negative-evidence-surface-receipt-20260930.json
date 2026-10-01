@@ -1,0 +1,151 @@
+{
+  "BEST": "UNCHANGED",
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "counts_by_provenance": {
+    "INFERRED": 2571,
+    "OBSERVED": 545
+  },
+  "counts_by_subtype": {
+    "AMBIGUOUS_EVIDENCE": 244,
+    "GENERIC_NONE": 290,
+    "HARD_NONE": 320,
+    "LEXICAL_LOOKALIKE_NONE": 290,
+    "NEAR_DOMAIN_NONE": 320,
+    "ORDINARY_DOMAIN_NONE": 461,
+    "POSITIVE_EVIDENCE": 951,
+    "SHORT_ATOM_NONE": 240
+  },
+  "dataset_sha256": "3add3aa624bab8e578d461574ea8344f3e2c4b7eec30ddbb9faffbe2c0bea3eb",
+  "design_rule": "DESIGN_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE",
+  "disjointness_pass": true,
+  "hub_sha256": "0d8f4532f84ed9fade3fd4e69af0d1e0717fb1098d40754e95c0090d8282bfe1",
+  "n": 3116,
+  "ordinary_domain_coverage": {
+    "min_domains_required": 8,
+    "n_labeled_ordinary_domains": 10,
+    "n_ordinary_domain_none": 461,
+    "ordinary_topic_domains": {
+      "anatomy": 45,
+      "astronomy": 45,
+      "botany": 45,
+      "chemistry": 45,
+      "geology": 45,
+      "mathematics": 45,
+      "meteorology": 45,
+      "ornithology": 45,
+      "physics": 45,
+      "unspecified": 11,
+      "zoology": 45
+    },
+    "pass": true,
+    "positive_family_topics": {
+      "ai-native": 595,
+      "betting-sharp": 33,
+      "conflict-aggression": 12,
+      "crypto-degen": 54,
+      "fashion-aesthetic": 11,
+      "gaming-meta": 106,
+      "identity-affiliation": 10,
+      "internet-slang": 19,
+      "memetic": 14,
+      "music-entertainment": 7,
+      "politics-civic": 12,
+      "regional-cultural": 8,
+      "relationship-dating": 10,
+      "social-evaluation": 18,
+      "spiritual-mystic": 7,
+      "sports-competition": 12,
+      "technology-ai": 13,
+      "workplace-career": 10
+    }
+  },
+  "paired_positive_negative_count": 293,
+  "pools": {
+    "AMBIGUOUS_EVIDENCE": 244,
+    "GENERIC_NONE": 290,
+    "HARD_NONE": 320,
+    "LEXICAL_LOOKALIKE_NONE": 290,
+    "NEAR_DOMAIN_NONE": 320,
+    "ORDINARY_DOMAIN_NONE": 461,
+    "POSITIVE_EVIDENCE": 951,
+    "SHORT_ATOM_NONE": 240
+  },
+  "readiness_state": "READY",
+  "receipt_sha256": "081d574cc9b2739d5234177379c5a791835248d83cd11db6a45decb678c57a25",
+  "shallow": {
+    "bag_of_words_val_accuracy": 0.8336192109777015,
+    "critical": [],
+    "length_only_threshold_words": 23,
+    "length_only_val_accuracy": 0.7564322469982847,
+    "majority_baseline_val_accuracy": 0.6689536878216124,
+    "n_train_binary": 2289,
+    "n_validation_binary": 583,
+    "pass": true,
+    "surface_feature_atom_means_none": false,
+    "surface_feature_val_accuracy": 0.5849056603773585
+  },
+  "shortcut": {
+    "atom_prose_by_subtype": {
+      "AMBIGUOUS_EVIDENCE": {
+        "AMBIGUOUS": 45,
+        "ATOM": 197,
+        "PROSE": 2
+      },
+      "GENERIC_NONE": {
+        "ATOM": 131,
+        "PROSE": 159
+      },
+      "HARD_NONE": {
+        "ATOM": 129,
+        "PROSE": 191
+      },
+      "LEXICAL_LOOKALIKE_NONE": {
+        "PROSE": 290
+      },
+      "NEAR_DOMAIN_NONE": {
+        "PROSE": 320
+      },
+      "ORDINARY_DOMAIN_NONE": {
+        "ATOM": 2,
+        "PROSE": 459
+      },
+      "POSITIVE_EVIDENCE": {
+        "ATOM": 265,
+        "PROSE": 686
+      },
+      "SHORT_ATOM_NONE": {
+        "ATOM": 240
+      }
+    },
+    "critical_shortcuts": [],
+    "mean_word_count_by_subtype": {
+      "AMBIGUOUS_EVIDENCE": 2.1598360655737703,
+      "GENERIC_NONE": 6.689655172413793,
+      "HARD_NONE": 8.559375,
+      "LEXICAL_LOOKALIKE_NONE": 17.817241379310346,
+      "NEAR_DOMAIN_NONE": 9.8875,
+      "ORDINARY_DOMAIN_NONE": 15.811279826464208,
+      "POSITIVE_EVIDENCE": 19.463722397476342,
+      "SHORT_ATOM_NONE": 1.2916666666666667
+    },
+    "pass": true
+  },
+  "spent_reserve_overlap": 0,
+  "split_counts": {
+    "train": 2478,
+    "validation": 638
+  },
+  "stage_a_train_contract": true,
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1",
+  "train": false,
+  "validation_subtype_counts": {
+    "AMBIGUOUS_EVIDENCE": 55,
+    "GENERIC_NONE": 58,
+    "HARD_NONE": 62,
+    "LEXICAL_LOOKALIKE_NONE": 50,
+    "NEAR_DOMAIN_NONE": 77,
+    "ORDINARY_DOMAIN_NONE": 103,
+    "POSITIVE_EVIDENCE": 193,
+    "SHORT_ATOM_NONE": 40
+  }
+}

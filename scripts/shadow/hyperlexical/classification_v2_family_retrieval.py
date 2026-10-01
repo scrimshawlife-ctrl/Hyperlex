@@ -157,12 +157,24 @@ def cosine(left: Sequence[float], right: Sequence[float]) -> float:
 def build_index_records(
     rows: Sequence[Mapping[str, Any]],
     embeddings_by_identity: Mapping[str, Sequence[float]],
+    *,
+    family_vocabulary: Sequence[str] | None = None,
 ) -> dict[str, Any]:
-    """Assemble the sealed training-side index. Embeddings are supplied externally."""
+    """Assemble the sealed training-side index. Embeddings are supplied externally.
+
+    ``family_vocabulary`` defaults to the full active ontology. Callers may pass a
+    surface-supported subset (e.g. V1R9's 17 families) when a family has no
+    train exemplars on that surface.
+    """
+    vocabulary = tuple(family_vocabulary or ACTIVE_FAMILY_VOCABULARY)
+    vocab_set = set(vocabulary)
     chosen: list[dict[str, Any]] = []
     seen: set[str] = set()
     for row in rows:
         if not is_admissible_index_row(row):
+            continue
+        family = str(row["lineage"])
+        if family not in vocab_set:
             continue
         identity = normalized_text_sha256(str(row["text"]))
         if identity in seen:
@@ -174,7 +186,7 @@ def build_index_records(
         record = {
             "embedding": unit,
             "embedding_hash": embedding_hash(unit),
-            "family": str(row["lineage"]),
+            "family": family,
             "provenance": str(row["class"]),
             "source_hash": source_hash(str(row["text"])),
             "source_identity": identity,
@@ -182,13 +194,13 @@ def build_index_records(
         chosen.append(record)
         seen.add(identity)
     chosen.sort(key=lambda item: (item["family"], item["source_identity"]))
-    by_family: dict[str, list[dict[str, Any]]] = {name: [] for name in ACTIVE_FAMILY_VOCABULARY}
+    by_family: dict[str, list[dict[str, Any]]] = {name: [] for name in vocabulary}
     for record in chosen:
         by_family[record["family"]].append(record)
-    missing = [name for name in ACTIVE_FAMILY_VOCABULARY if not by_family[name]]
+    missing = [name for name in vocabulary if not by_family[name]]
     if missing:
         raise ValueError(f"families_without_exemplars:{missing}")
-    supports = {name: len(by_family[name]) for name in ACTIVE_FAMILY_VOCABULARY}
+    supports = {name: len(by_family[name]) for name in vocabulary}
     index = {
         "canonical_family_decision": CANONICAL_FAMILY_DECISION,
         "export_sha256": FORWARD_HUB_EXPORT_SHA256,
@@ -214,15 +226,21 @@ def build_index_records(
 def family_scores(
     query_embedding: Sequence[float],
     index_records: Sequence[Mapping[str, Any]],
+    *,
+    family_vocabulary: Sequence[str] | None = None,
 ) -> dict[str, Any]:
+    vocabulary = tuple(family_vocabulary or ACTIVE_FAMILY_VOCABULARY)
+    vocab_index = {name: index for index, name in enumerate(vocabulary)}
     hidden = _l2_normalize(query_embedding)
     by_family: dict[str, list[float]] = defaultdict(list)
     for record in index_records:
         family = str(record["family"])
+        if family not in vocab_index:
+            continue
         by_family[family].append(cosine(hidden, record["embedding"]))
     scores: dict[str, float] = {}
     m_used: dict[str, int] = {}
-    for family in ACTIVE_FAMILY_VOCABULARY:
+    for family in vocabulary:
         sims = by_family.get(family) or []
         if not sims:
             raise ValueError(f"family_without_exemplars:{family}")
@@ -231,7 +249,7 @@ def family_scores(
         m_used[family] = m
     ranked = sorted(
         scores.items(),
-        key=lambda item: (-item[1], ACTIVE_FAMILY_VOCABULARY.index(item[0])),
+        key=lambda item: (-item[1], vocab_index[item[0]]),
     )
     return {
         "candidates": [

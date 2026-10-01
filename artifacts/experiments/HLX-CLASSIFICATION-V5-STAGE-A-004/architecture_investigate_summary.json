@@ -1,0 +1,18 @@
+{
+  "BEST": "UNCHANGED",
+  "BOTTLENECK": "MIXED",
+  "DATASET_SHA256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "INVESTIGATION_STATUS": "COMPLETE",
+  "NEXT_ACTION": "DESIGN_V5_STAGE_A_ARCHITECTURE_REDESIGN_SPEC",
+  "PRIMARY_DECISION": "STAGE_A_ARCHITECTURE_REDESIGN_REQUIRED",
+  "RESERVE": "unused",
+  "SELECTED_CHECKPOINT_SHA256": "82840630a89ea9e9b34fdfc010d455e6bbfce05ecfcb29abe2929505e9e21fdd",
+  "SEPARABILITY": "PARTIALLY_SEPARABLE",
+  "TRAIN": false,
+  "architecture_change_required": true,
+  "dataset_change_required": false,
+  "new_experiment_required": false,
+  "private_diag_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r9-20260930/classification-v5-stage-a-004/diagnostics/architecture_investigation",
+  "receipt_sha256": "7b16550c7049fd46a28f3201fb84ccf61a960cd1f3e27933671ebf4c1a8479cd",
+  "smallest_reversible_redesign": "B_TWO_STAGE_DECISION_GRAPH"
+}

@@ -1,0 +1,95 @@
+{
+  "by_reason": {
+    "CONFLICTING_EVIDENCE": {
+      "boundary_class": {
+        "CENTERED_BETWEEN": 93,
+        "NONE_LIKE": 1,
+        "PRESENT_LIKE": 5
+      },
+      "n": 99,
+      "nearest_none_cosine": {
+        "mean": 0.9692854736790513
+      },
+      "nearest_present_cosine": {
+        "mean": 0.9726069388967572
+      },
+      "present_minus_none_margin": {
+        "mean": 0.003321465217705929
+      }
+    },
+    "INSUFFICIENT_CONTEXT": {
+      "boundary_class": {
+        "CENTERED_BETWEEN": 78,
+        "NONE_LIKE": 7,
+        "PRESENT_LIKE": 15
+      },
+      "n": 100,
+      "nearest_none_cosine": {
+        "mean": 0.9293276792764664
+      },
+      "nearest_present_cosine": {
+        "mean": 0.9307038825750351
+      },
+      "present_minus_none_margin": {
+        "mean": 0.0013762032985687256
+      }
+    },
+    "MULTIPLE_PLAUSIBLE_INTERPRETATIONS": {
+      "boundary_class": {
+        "CENTERED_BETWEEN": 95,
+        "NONE_LIKE": 1,
+        "PRESENT_LIKE": 4
+      },
+      "n": 100,
+      "nearest_none_cosine": {
+        "mean": 0.9666404104232789
+      },
+      "nearest_present_cosine": {
+        "mean": 0.9693770158290863
+      },
+      "present_minus_none_margin": {
+        "mean": 0.0027366054058074953
+      }
+    },
+    "PARTIAL_REQUIRED_CORE": {
+      "boundary_class": {
+        "CENTERED_BETWEEN": 54,
+        "NONE_LIKE": 4,
+        "PRESENT_LIKE": 24
+      },
+      "n": 82,
+      "nearest_none_cosine": {
+        "mean": 0.9362263032575933
+      },
+      "nearest_present_cosine": {
+        "mean": 0.9495323729224321
+      },
+      "present_minus_none_margin": {
+        "mean": 0.013306069664838837
+      }
+    },
+    "UNRESOLVED_SOURCE_MEANING": {
+      "boundary_class": {
+        "CENTERED_BETWEEN": 59,
+        "PRESENT_LIKE": 2
+      },
+      "n": 61,
+      "nearest_none_cosine": {
+        "mean": 0.9712949043414632
+      },
+      "nearest_present_cosine": {
+        "mean": 0.9749044922531628
+      },
+      "present_minus_none_margin": {
+        "mean": 0.003609587911699639
+      }
+    }
+  },
+  "n": 442,
+  "placement_rates": {
+    "CENTERED_BETWEEN": 0.8574660633484162,
+    "ISOLATED": 0.0,
+    "NONE_LIKE": 0.029411764705882353,
+    "PRESENT_LIKE": 0.11312217194570136
+  }
+}

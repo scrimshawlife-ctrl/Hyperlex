@@ -1,0 +1,49 @@
+{
+  "SELECTED_CHECKPOINT_SHA256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "cold_load": true,
+  "metrics": {
+    "EVIDENCE_PRESENT_recall": 0.7048665620094191,
+    "NO_EVIDENCE_recall": 0.9089456869009584,
+    "UNCERTAIN_recall": 0.6790123456790124,
+    "false_evidence_entry_rate_on_none": 0.04233226837060703,
+    "gate1_threshold": 0.75,
+    "gate2_present_threshold": 0.5,
+    "stage_a_macro_f1": 0.7411485290305739
+  },
+  "n_validation": 2051,
+  "parity": {
+    "deltas": {
+      "EVIDENCE_PRESENT_recall": {
+        "actual": 0.7048665620094191,
+        "delta": 0.0,
+        "expected": 0.7048665620094191
+      },
+      "NO_EVIDENCE_recall": {
+        "actual": 0.9089456869009584,
+        "delta": 0.0,
+        "expected": 0.9089456869009584
+      },
+      "UNCERTAIN_recall": {
+        "actual": 0.6790123456790124,
+        "delta": 0.0,
+        "expected": 0.6790123456790124
+      },
+      "false_evidence_entry_rate_on_none": {
+        "actual": 0.04233226837060703,
+        "delta": 0.0,
+        "expected": 0.04233226837060703
+      },
+      "stage_a_macro_f1": {
+        "actual": 0.7411485290305739,
+        "delta": 0.0,
+        "expected": 0.7411485290305739
+      }
+    },
+    "pass": true,
+    "tolerance_abs": 1e-09
+  },
+  "pass": true,
+  "replay_hash": "fc601e69569594d55eb150ee9b467eb37ce0c1b3015e29d88d54aecb7eda6474",
+  "schema": "hyperlex.classification.v5.stage_a_two_stage_promotion_replay.v1",
+  "thresholds_match": true
+}

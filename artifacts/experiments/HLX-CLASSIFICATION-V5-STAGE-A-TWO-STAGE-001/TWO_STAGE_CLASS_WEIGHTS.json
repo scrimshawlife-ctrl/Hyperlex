@@ -1,0 +1,96 @@
+{
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "5496015af99ec768d8914a282db465abe75e99f2243fbc864d674bb5cad539d6",
+  "CLASS_WEIGHT_RESOLUTION_RULE": "RESOLVE_V5_TWO_STAGE_CLASS_WEIGHTS",
+  "Gate1": {
+    "NO_EVIDENCE": {
+      "INFERRED_count": 3235,
+      "OBSERVED_count": 319,
+      "effective_count": 1936.5,
+      "final_clipped_weight": 0.7182189774877286,
+      "final_weight": 0.7182189774877286,
+      "normalized_weight": 0.7182189774877286,
+      "raw_row_count": 3554,
+      "raw_weight": 0.8105456495074479,
+      "rows": 3554
+    },
+    "POSSIBLE_EVIDENCE": {
+      "INFERRED_count": 550,
+      "OBSERVED_count": 333,
+      "effective_count": 608.0,
+      "final_clipped_weight": 1.2817810225122714,
+      "final_weight": 1.2817810225122714,
+      "normalized_weight": 1.2817810225122714,
+      "raw_row_count": 883,
+      "raw_weight": 1.4465532991799581,
+      "rows": 883
+    },
+    "class_weights": {
+      "NO_EVIDENCE": 0.7182189774877286,
+      "POSSIBLE_EVIDENCE": 1.2817810225122714
+    },
+    "coverage": {
+      "n_none": 3554,
+      "n_possible": 883,
+      "n_train": 4437
+    }
+  },
+  "Gate2": {
+    "CONFIRMED_PRESENT": {
+      "INFERRED_count": 463,
+      "OBSERVED_count": 140,
+      "effective_count": 371.5,
+      "final_clipped_weight": 0.8875770947370494,
+      "final_weight": 0.8875770947370494,
+      "normalized_weight": 0.8875770947370494,
+      "raw_row_count": 603,
+      "raw_weight": 0.9046016649744586,
+      "rows": 603
+    },
+    "UNCERTAIN": {
+      "INFERRED_count": 87,
+      "OBSERVED_count": 193,
+      "effective_count": 236.5,
+      "final_clipped_weight": 1.1124229052629504,
+      "final_weight": 1.1124229052629504,
+      "normalized_weight": 1.1124229052629504,
+      "raw_row_count": 280,
+      "raw_weight": 1.133760231334848,
+      "rows": 280
+    },
+    "class_weights": {
+      "CONFIRMED_PRESENT": 0.8875770947370494,
+      "UNCERTAIN": 1.1124229052629504
+    },
+    "coverage": {
+      "n_eligible": 883,
+      "n_none_excluded": 3554,
+      "n_present": 603,
+      "n_uncertain": 280
+    }
+  },
+  "clip_policy": {
+    "max": 2.0,
+    "min": 0.5,
+    "renormalize_after_clip": false
+  },
+  "code_revision": "71c56804edcf3a9aa9d0df7184ef0d81cdfd1822",
+  "dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "literal_weights": {
+    "gate1": {
+      "NO_EVIDENCE": 0.7182189774877286,
+      "POSSIBLE_EVIDENCE": 1.2817810225122714
+    },
+    "gate2": {
+      "CONFIRMED_PRESENT": 0.8875770947370494,
+      "UNCERTAIN": 1.1124229052629504
+    }
+  },
+  "provenance_weights": {
+    "INFERRED": 0.5,
+    "OBSERVED": 1.0
+  },
+  "resolution_formula_version": "HYPERLEX_V5_TWO_STAGE_CLASS_WEIGHTS_V1",
+  "schema": "hyperlex.classification.v5.stage_a_two_stage_class_weights.v1",
+  "train_only": true,
+  "train_split_sha256": "cee13cbe7412755444a1cd8d831f85ce0607a6e8266fba0e882a4578f3b6db4c"
+}

@@ -1,0 +1,344 @@
+{
+  "ACTION": "REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES",
+  "BEST": "UNCHANGED",
+  "BEST_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_BEST_MUTATED": false,
+  "STAGE_B_MUTATED": false,
+  "THRESHOLDS_MUTATED": false,
+  "TRAIN": false,
+  "artifact_dir": "/home/morpheus/hlx-private/classification-v5-stage-a-generalization-surface-v1r1-20261001",
+  "artifact_hashes": {
+    "ARTIFACT_HASHES.json": "0a7bb37829d0a57ffce3dbc40df43e76c73f2e03c42d14857d276514a068f8d9",
+    "BASELINE_FREEZE.json": "e3c5a389fd9ea554c54851a4c19ff2d8ba74d60f6a4c6d924530c766b8c90e4a",
+    "CELL_DIAGNOSTICS.json": "8f08f7ef933db8ef07284d58c6c0edd6dabf2af2219b2f914116a9990fa80849",
+    "COMPONENT_SPLIT_WITNESS.json": "9096d5edd81b8e21e437b2eb5f786af31afe01baf9cb1a4c3de75c4e8f6a673c",
+    "CONTRACT.json": "147ca99b1eeee8e56771800f22a02280cf44532f49136f01ee624941445ce14b",
+    "CONTRAST_PAIR_WITNESS.json": "7aa313f17ba85995ebe22259a61559e5607a855241a6a5844605321a42951a04",
+    "DISJOINTNESS_WITNESS.json": "b578a4a8e7f214057a4d7766ef388d0a2af78bf76151e88c209550bcd62c1ada",
+    "EMBEDDING_HARDNESS.json": "8e8f89935714450c0e543cb1a5fd61ed591ae419de23b6ec151e271716bd0b61",
+    "EVIDENCE_SURFACE.jsonl": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+    "ISOLATION.json": "0d8f9ca5e9e9a666feb094769cb84e8e98a73366bbb99ab21a4b02691f75ba1a",
+    "MANIFEST.json": "340c3661831a5409468b5a57987b6135f5f8de674eea6737afcaa8c7073ad27f",
+    "PROVENANCE_WITNESS.json": "d591312730faa703412d01bd9bd23b3ac4fd6968b502bc938ac0ac63303607c9",
+    "READINESS.json": "c4b5fc0725b919c1dd11acfd575d594d8ddd76839836e5a3928f4d6c07030c96",
+    "REMEDIATION_DELTA.json": "f560fb93302bd30980db8f5dd2ba8aaac1ecad1adf6a3a34e42e631bab70a006",
+    "REMEDIATION_TARGETS.json": "95345a545b98a8489b09b0eb4659f3a61f8aadbc1cc8449d10d28c88b92d9b8d",
+    "SHORTCUT_DIAGNOSTICS.json": "c89ed83ee21e3252479651dc5ddadb8cea7723c25473931148bd21732b74f8c8",
+    "SOURCE_DOMAIN_WITNESS.json": "6f310210c4331fc68b828cb25d6ac117f140fa69d09aa30f88d1333ee8b554c1",
+    "SPLIT_MANIFEST.json": "f43e9aefa3d5e08b17f33b1fac5893e47017e8b4362655b0042a5eb95ca03781",
+    "SUMMARY.json": "77ac57eec79df67697087da03f30c6cc2f795ee3430ebad14a40a356daf6f91c"
+  },
+  "counts": {
+    "by_label": {
+      "EVIDENCE_PRESENT": 1535,
+      "NO_EVIDENCE": 1851,
+      "UNCERTAIN": 199
+    },
+    "by_primary_cell": {
+      "DEFINITION_STYLE/EVIDENCE_PRESENT": 308,
+      "DEFINITION_STYLE/NO_EVIDENCE": 448,
+      "ORDINARY_PROSE/EVIDENCE_PRESENT": 493,
+      "ORDINARY_PROSE/NO_EVIDENCE": 646,
+      "PROSE/EVIDENCE_PRESENT": 408,
+      "PROSE/NO_EVIDENCE": 447,
+      "SHORT_ATOM/EVIDENCE_PRESENT": 326,
+      "SHORT_ATOM/NO_EVIDENCE": 310
+    },
+    "by_provenance": {
+      "INFERRED": 2481,
+      "OBSERVED": 1104
+    },
+    "total": 3585,
+    "train": 2531,
+    "validation": 1054
+  },
+  "dataset_sha256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "design_rule": "REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES",
+  "disjointness": {
+    "metrics": {
+      "cross_split_near_duplicate_clusters": 0,
+      "heldout_overlap": 0,
+      "measurement_only_overlap": 0,
+      "spent_v2_reserve_overlap": 0,
+      "spent_v3_reserve_overlap": 0,
+      "spent_v4_reserve_overlap": 0,
+      "train_validation_identity_overlap": 0,
+      "train_validation_near_duplicate_group_overlap": 0,
+      "train_validation_parent_lineage_overlap": 0,
+      "train_validation_source_hash_overlap": 0
+    },
+    "near_duplicate_method": "hlx.v5.near_duplicate.normalized_jaccard_v1",
+    "pass": true
+  },
+  "domain_coverage": {
+    "failures": [],
+    "none_domain_counts": {
+      "ai-native": 493,
+      "anatomy": 46,
+      "astronomy": 49,
+      "betting-sharp": 37,
+      "botany": 274,
+      "chemistry": 172,
+      "crypto-degen": 40,
+      "gaming-meta": 52,
+      "geology": 52,
+      "internet-slang": 32,
+      "mathematics": 48,
+      "meteorology": 80,
+      "near-domain": 69,
+      "ornithology": 91,
+      "physics": 46,
+      "technology-ai": 37,
+      "zoology": 66
+    },
+    "pass": true,
+    "present_domain_counts": {
+      "ai-native": 552,
+      "anatomy": 46,
+      "astronomy": 66,
+      "betting-sharp": 87,
+      "botany": 46,
+      "chemistry": 46,
+      "crypto-degen": 60,
+      "gaming-meta": 207,
+      "geology": 46,
+      "internet-slang": 66,
+      "mathematics": 63,
+      "meteorology": 46,
+      "near-domain": 32,
+      "ornithology": 46,
+      "physics": 46,
+      "technology-ai": 34,
+      "zoology": 46
+    }
+  },
+  "embedding_hardness": {
+    "frac_nearest_opposite_cosine_ge_0_75": 0.8797991730655641,
+    "mean_nearest_opposite_label_cosine": 0.8412362933158875,
+    "median_nearest_opposite_label_cosine": 0.8528282642364502,
+    "n_none": 1851,
+    "n_present": 1535
+  },
+  "gate_pass": {
+    "all_disjointness_pass": true,
+    "cell_support_floors_pass": true,
+    "domain_coverage_pass": true,
+    "duplicate_quality_pass": true,
+    "embedding_hardness_pass": true,
+    "label_provenance_invalid_rows_zero": true,
+    "lexical_overlap_pass": true,
+    "pairing_pass": true,
+    "schema_integrity_pass": true,
+    "shallow_shortcut_pass": true,
+    "source_provenance_floors_pass": true,
+    "spent_reserve_overlap_pass": true,
+    "surface_balance_pass": true
+  },
+  "lexical_overlap": {
+    "pass": true,
+    "shared_high_frequency_tokens": 123,
+    "top_100_token_jaccard": 0.4925373134328358
+  },
+  "matched_pairs": {
+    "gaps": {},
+    "matched_by_surface": {
+      "DEFINITION_STYLE": 302,
+      "ORDINARY_PROSE": 380,
+      "PROSE": 259,
+      "SHORT_ATOM": 307
+    },
+    "matched_positive_negative_pairs": 1248,
+    "pass": true
+  },
+  "next_action": "AUTHORIZE_V5_STAGE_A_TWO_STAGE_RETRAIN_ON_GENERALIZATION_SURFACE",
+  "parent_surface_sha256": "7567edcdf74c1033a07e3ae1d42b0e54ed0804b78fd7ba340c35752ac13df09f",
+  "parent_surface_version": "classification-v5-stage-a-generalization-surface-v1-20261001",
+  "provenance": {
+    "critical_cells": {
+      "DEFINITION_STYLE/EVIDENCE_PRESENT": {
+        "n": 80,
+        "observed": 45,
+        "observed_fraction": 0.5625
+      },
+      "DEFINITION_STYLE/NO_EVIDENCE": {
+        "n": 139,
+        "observed": 85,
+        "observed_fraction": 0.6115107913669064
+      },
+      "SHORT_ATOM/EVIDENCE_PRESENT": {
+        "n": 156,
+        "observed": 137,
+        "observed_fraction": 0.8782051282051282
+      },
+      "SHORT_ATOM/NO_EVIDENCE": {
+        "n": 152,
+        "observed": 130,
+        "observed_fraction": 0.8552631578947368
+      }
+    },
+    "failures": [],
+    "observed_validation_fraction": 0.5227703984819735,
+    "pass": true,
+    "provenance_counts": {
+      "INFERRED": 2481,
+      "OBSERVED": 1104
+    }
+  },
+  "readiness_sha256": "c4b5fc0725b919c1dd11acfd575d594d8ddd76839836e5a3928f4d6c07030c96",
+  "ready": true,
+  "receipt_sha256": "3dbdd9b2cc30600698340f979d20a2c9b8559b9eafbbc24baf4fb1007e737fb9",
+  "remediation_delta": {
+    "added_rows": 961,
+    "previous_rows": 2624,
+    "removed_rows": 0,
+    "retained_rows": 2624,
+    "strategy": "FRESH_NON_WIKTIONARY_MATCHED_CONTRAST_ADDITIONS"
+  },
+  "schema_integrity": {
+    "metrics": {
+      "duplicate_identities": 0,
+      "invalid_schema_rows": 0,
+      "invalid_span_rows": 0,
+      "label_subtype_mismatches": 0,
+      "missing_source_hashes": 0,
+      "nonfinite_values": 0,
+      "unknown_family_refs": 0
+    },
+    "pass": true
+  },
+  "shallow_shortcut": {
+    "failures": [],
+    "length_only_balanced_accuracy": 0.551608151548979,
+    "length_only_threshold_words": 24,
+    "pass": true,
+    "surface_only_balanced_accuracy": 0.4310534399838849,
+    "surface_only_macro_f1": 0.426430680755957,
+    "tfidf_balanced_accuracy": 0.7479205660424868
+  },
+  "short_atom_counts": {
+    "SHORT_ATOM/EVIDENCE_PRESENT": {
+      "train": 170,
+      "validation": 156
+    },
+    "SHORT_ATOM/NO_EVIDENCE": {
+      "train": 158,
+      "validation": 152
+    }
+  },
+  "source_diversity": {
+    "distributions": {
+      "EVIDENCE_PRESENT": {
+        "counts": {
+          "hub_observed_ai-native": 7,
+          "inferred_POSITIVE_EVIDENCE_0": 328,
+          "inferred_POSITIVE_EVIDENCE_1": 287,
+          "inferred_POSITIVE_EVIDENCE_2": 285,
+          "inferred_POSITIVE_EVIDENCE_3": 287,
+          "wiktionary_aggregate": 341
+        },
+        "n": 1535,
+        "top_share": 0.2221498371335505
+      },
+      "NO_EVIDENCE": {
+        "counts": {
+          "hub_observed_none": 27,
+          "inferred_HARD_NONE_0": 4,
+          "inferred_HARD_NONE_1": 5,
+          "inferred_HARD_NONE_2": 3,
+          "inferred_HARD_NONE_3": 2,
+          "inferred_LEXICAL_LOOKALIKE_NONE_0": 193,
+          "inferred_LEXICAL_LOOKALIKE_NONE_1": 187,
+          "inferred_LEXICAL_LOOKALIKE_NONE_2": 163,
+          "inferred_LEXICAL_LOOKALIKE_NONE_3": 201,
+          "inferred_NEAR_DOMAIN_NONE_0": 45,
+          "inferred_NEAR_DOMAIN_NONE_1": 31,
+          "inferred_NEAR_DOMAIN_NONE_2": 29,
+          "inferred_NEAR_DOMAIN_NONE_3": 40,
+          "inferred_ORDINARY_DOMAIN_NONE_0": 77,
+          "inferred_ORDINARY_DOMAIN_NONE_1": 56,
+          "inferred_ORDINARY_DOMAIN_NONE_2": 78,
+          "inferred_ORDINARY_DOMAIN_NONE_3": 56,
+          "inferred_SHORT_ATOM_NONE_0": 37,
+          "inferred_SHORT_ATOM_NONE_1": 25,
+          "inferred_SHORT_ATOM_NONE_2": 26,
+          "inferred_SHORT_ATOM_NONE_3": 36,
+          "wikipedia_anatomy_0": 7,
+          "wikipedia_anatomy_1": 4,
+          "wikipedia_anatomy_2": 9,
+          "wikipedia_anatomy_3": 3,
+          "wikipedia_astronomy_1": 2,
+          "wikipedia_astronomy_2": 1,
+          "wikipedia_astronomy_3": 1,
+          "wikipedia_botany_0": 8,
+          "wikipedia_botany_1": 6,
+          "wikipedia_botany_2": 11,
+          "wikipedia_botany_3": 9,
+          "wikipedia_chemistry_0": 6,
+          "wikipedia_chemistry_1": 9,
+          "wikipedia_chemistry_2": 9,
+          "wikipedia_chemistry_3": 6,
+          "wikipedia_geology_0": 8,
+          "wikipedia_geology_1": 6,
+          "wikipedia_geology_2": 7,
+          "wikipedia_geology_3": 7,
+          "wikipedia_mathematics_0": 1,
+          "wikipedia_mathematics_1": 1,
+          "wikipedia_mathematics_2": 2,
+          "wikipedia_mathematics_3": 1,
+          "wikipedia_meteorology_0": 1,
+          "wikipedia_meteorology_1": 2,
+          "wikipedia_meteorology_3": 1,
+          "wikipedia_ornithology_0": 5,
+          "wikipedia_ornithology_1": 5,
+          "wikipedia_ornithology_2": 6,
+          "wikipedia_ornithology_3": 5,
+          "wikipedia_physics_0": 5,
+          "wikipedia_physics_1": 5,
+          "wikipedia_physics_2": 7,
+          "wikipedia_physics_3": 4,
+          "wikipedia_zoology_0": 10,
+          "wikipedia_zoology_1": 6,
+          "wikipedia_zoology_2": 9,
+          "wikipedia_zoology_3": 6,
+          "wiktionary_aggregate": 329
+        },
+        "n": 1851,
+        "top_share": 0.17774176121015667
+      }
+    },
+    "failures": [],
+    "pass": true
+  },
+  "spent_reserve": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "spent_reserve_overlap_n": 0,
+  "spent_reserve_status": "SPENT / IMMUTABLE",
+  "state": "READY",
+  "strategy": "FRESH_NON_WIKTIONARY_MATCHED_CONTRAST_ADDITIONS",
+  "surface_balance": {
+    "EVIDENCE_PRESENT": {
+      "ATOM_rate": 0.21237785016286645,
+      "PROSE_rate": 0.7876221498371335,
+      "definition_style_rate": 0.2006514657980456,
+      "median_token_count": 15.0,
+      "n": 1535,
+      "punctuation_present_rate": 0.7361563517915309
+    },
+    "NO_EVIDENCE": {
+      "ATOM_rate": 0.16747703943814155,
+      "PROSE_rate": 0.8319827120475418,
+      "definition_style_rate": 0.24203133441383037,
+      "median_token_count": 16.0,
+      "n": 1851,
+      "punctuation_present_rate": 0.8001080497028633
+    },
+    "failures": [],
+    "median_token_count_ratio": 0.9375,
+    "pass": true
+  },
+  "surface_rule": "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1R1",
+  "surface_version": "classification-v5-stage-a-generalization-surface-v1r1-20261001",
+  "v1r9_mutated": false
+}

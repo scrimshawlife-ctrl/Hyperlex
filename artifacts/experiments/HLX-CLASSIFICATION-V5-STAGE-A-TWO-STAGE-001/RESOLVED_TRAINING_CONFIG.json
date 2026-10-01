@@ -1,0 +1,209 @@
+{
+  "acceptance_gates": {
+    "EVIDENCE_PRESENT_recall_min": 0.7,
+    "NO_EVIDENCE_recall_min": 0.9,
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "optimize_family_metrics_before_stage_a_pass": false
+  },
+  "architecture": {
+    "encoder": "ModernBERT-base",
+    "flat_head_status": "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION",
+    "forbidden_additions": [
+      "mlp_head",
+      "attention_block",
+      "prototype",
+      "retrieval",
+      "family_head"
+    ],
+    "gate1_head": "linear_hidden_to_2_logits",
+    "gate2_head": "linear_hidden_to_2_logits",
+    "head_init": "xavier_uniform_bias_zeros",
+    "last_trainable_encoder_layers": 2,
+    "pooling": "last_hidden_state[:,0]",
+    "shared_encoder": true,
+    "trainable": {
+      "gate1_head": true,
+      "gate2_head": true,
+      "last_trainable_encoder_layers": 2,
+      "mutate_best": false
+    }
+  },
+  "architecture_receipt_sha256": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697",
+  "best_encoder_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "checkpoint_selection": {
+    "formula": "0.50 * Gate1_macro_F1 + 0.50 * Gate2_macro_F1",
+    "gate2_scope": "PRESENT_AND_UNCERTAIN_GOLD_ONLY",
+    "strict_improvement": true,
+    "tie_break": [
+      "lower_gate1_false_possible_entry_rate",
+      "higher_gate2_CONFIRMED_PRESENT_recall",
+      "earlier_epoch"
+    ]
+  },
+  "class_weight_artifact_sha256": "5496015af99ec768d8914a282db465abe75e99f2243fbc864d674bb5cad539d6",
+  "code_revision": "71c56804edcf3a9aa9d0df7184ef0d81cdfd1822",
+  "dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001",
+  "flat_head_status": "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION",
+  "forward": {
+    "fields": [
+      "gate1_logits",
+      "gate2_logits",
+      "gate1_probabilities",
+      "gate2_probabilities"
+    ],
+    "gate1_logits": {
+      "order": [
+        "NO_EVIDENCE",
+        "POSSIBLE_EVIDENCE"
+      ],
+      "shape": [
+        2
+      ]
+    },
+    "gate2_logits": {
+      "order": [
+        "UNCERTAIN",
+        "CONFIRMED_PRESENT"
+      ],
+      "shape": [
+        2
+      ]
+    },
+    "note": "Gate-2 logits may be computed for all rows; loss and canonical decision are masked unless Gate-1 permits entry.",
+    "pooling": "last_hidden_state[:,0]",
+    "schema": "hyperlex.classification.v5.stage_a_two_stage_forward.v1"
+  },
+  "gate1_class_weights_literal": {
+    "NO_EVIDENCE": 0.7182189774877286,
+    "POSSIBLE_EVIDENCE": 1.2817810225122714
+  },
+  "gate1_gold_mapping": {
+    "EVIDENCE_PRESENT": 1,
+    "NO_EVIDENCE": 0,
+    "UNCERTAIN": 1
+  },
+  "gate2_class_weights_literal": {
+    "CONFIRMED_PRESENT": 0.8875770947370494,
+    "UNCERTAIN": 1.1124229052629504
+  },
+  "gate2_gold_mapping": {
+    "EVIDENCE_PRESENT": 1,
+    "UNCERTAIN": 0
+  },
+  "gate2_mask_rule": "gold_NO_EVIDENCE_excluded_from_gate2_loss",
+  "gold_label_rule": "HYPERLEX_V5_STAGE_A_GOLD_LABEL_MAPPING_V1",
+  "gold_mapping_sha256": "f9e48f05aa2a367361d84072282540e3b31b6c6be01a07379b8e3349b9aa7a9d",
+  "label_provenance_contract_sha256": "5da53bcbf8f533c908078d54a52e594620b882ac7976cc7ad6fde86f0682fa91",
+  "label_provenance_rule": "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1",
+  "loss": {
+    "L_total": "L_gate1 + lambda_gate2 * L_gate2",
+    "focal_forbidden": true,
+    "gate1": {
+      "loss": "binary_weighted_cross_entropy",
+      "scope": "all_stage_a_rows",
+      "targets": {
+        "NO_EVIDENCE": 0,
+        "POSSIBLE_EVIDENCE": 1
+      }
+    },
+    "gate2": {
+      "loss": "binary_weighted_cross_entropy",
+      "none_rows_contribute": false,
+      "scope": "EVIDENCE_PRESENT_and_UNCERTAIN_gold_only",
+      "targets": {
+        "CONFIRMED_PRESENT": 1,
+        "UNCERTAIN": 0
+      }
+    },
+    "lambda_gate2": 1.0,
+    "name": "two_stage_weighted_binary_ce",
+    "provenance_multipliers": {
+      "INFERRED": 0.5,
+      "OBSERVED": 1.0
+    }
+  },
+  "optimization": {
+    "early_stopping_patience": 4,
+    "gradient_accumulation": 1,
+    "learning_rate": 2e-05,
+    "max_epochs": 12,
+    "max_grad_norm": 1.0,
+    "micro_batch_size": 8,
+    "minimum_epochs": 4,
+    "mixed_precision": "runtime_supported_deterministic_only",
+    "optimizer": "AdamW",
+    "warmup_ratio": 0.05,
+    "weight_decay": 0.01
+  },
+  "parent_experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-004",
+  "parent_flat_selected_checkpoint_sha256": "82840630a89ea9e9b34fdfc010d455e6bbfce05ecfcb29abe2929505e9e21fdd",
+  "parent_primary_decision": "STAGE_A_ARCHITECTURE_REDESIGN_REQUIRED",
+  "provenance_weights": {
+    "INFERRED": 0.5,
+    "OBSERVED": 1.0
+  },
+  "rule": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1",
+  "schema": "hyperlex.classification.v5.stage_a_two_stage_config.v1",
+  "seed": 42,
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+  "threshold_grids": {
+    "gate1_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "gate2_present_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "n_combinations": 100
+  },
+  "threshold_selection": {
+    "acceptance_required": [
+      "false_evidence_entry_rate_on_none <= 0.05",
+      "EVIDENCE_PRESENT_recall >= 0.70",
+      "NO_EVIDENCE_recall >= 0.90"
+    ],
+    "fail_if_no_feasible": "SETTLED_FAIL",
+    "maximize_in_order": [
+      "stage_a_macro_f1",
+      "EVIDENCE_PRESENT_recall",
+      "UNCERTAIN_recall",
+      "minimize_false_evidence_entry",
+      "higher_gate1_threshold",
+      "higher_gate2_present_threshold"
+    ],
+    "n_grid_combinations": 100
+  },
+  "tokenization": {
+    "max_length": 64,
+    "padding": "right",
+    "tokenizer_identity": "local_files_only:ModernBERT-base",
+    "truncation": true
+  },
+  "train_rule": "HYPERLEX_V5_STAGE_A_TWO_STAGE_TRAIN_V1",
+  "train_run_limit": 1,
+  "trainable": {
+    "gate1_head": true,
+    "gate2_head": true,
+    "last_trainable_encoder_layers": 2,
+    "mutate_best": false
+  },
+  "training_config_sha256": "0117faca8e56501e15cea4f69ce9dffd2900b25cfdc7dcabc427651b18d7b0b6"
+}

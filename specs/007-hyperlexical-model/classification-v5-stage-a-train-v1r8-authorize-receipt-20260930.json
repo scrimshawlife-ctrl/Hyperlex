@@ -1,0 +1,79 @@
+{
+  "AUTHORIZATION_RECEIPT_SHA256": "66a0b6f83a23aa5942340313a9a4b16e8b7652a535a72f2c83e886a612f82ee2",
+  "BEST_MUTATED": false,
+  "CODE_REVISION": "e35c6483d8667a636960e4d80b0d386420cc7c07",
+  "CURRENT_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "DATASET_SHA256": "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-002",
+  "GATE_EVAL_SHA256": "73680e69e6d5bc7d9cbc4dd6b39c5ebfa663cc38b7bd005227f2217b8290b939",
+  "INPUT_IDENTITY": "PASS",
+  "NEXT_ACTION": "TRAIN_V5_STAGE_A_ONCE",
+  "PRIVATE_AUTH_DIR": "/home/morpheus/hlx-private/classification-v5-stage-a-train-v1r8-20260930",
+  "READINESS_RECEIPT_SHA256": "e61621af2193bf49778a437b5ac0cf4ed44952557fdb13830e5fe749d80a718a",
+  "RESERVE_CONSUMED": false,
+  "SCIENTIFIC_RESULT": "NOT_COMPUTABLE",
+  "SURFACE_READINESS": "PASS",
+  "TRAINING_CONFIG_SHA256": "2ce1b29bf2be54cc03ac25d66301bf0991226dffd3a1d94bcdaa7a48559d40af",
+  "TRAINING_RUN_LIMIT": 1,
+  "TRAINING_STATUS": "AUTHORIZED_NOT_STARTED",
+  "TRAIN_AUTHORIZED": true,
+  "architecture": {
+    "classes": [
+      "NO_EVIDENCE",
+      "EVIDENCE_PRESENT",
+      "UNCERTAIN"
+    ],
+    "encoder": "ModernBERT-base",
+    "head": "linear_hidden_to_3_logits",
+    "head_init": "xavier_uniform_bias_zeros",
+    "last_trainable_encoder_layers": 2,
+    "pooling": "last_hidden_state[:,0]"
+  },
+  "artifact_hashes": {
+    "AUTHORIZATION.json": "e230b1f54e5a8135a04a2fca79e4306f39848a7f2059f0b61a60bd2e9b4f690e",
+    "CLASS_WEIGHTS.json": "f3992ec44c1b2875bf20a8c8ca765ba28f6b661e1c1aaf59ec6e52d4d8c2b3b9",
+    "LABEL_PROVENANCE.jsonl": "b7d2e629f4702f2c80d477598736f532f29ff6997001846748dde086bcee8cf8",
+    "LABEL_PROVENANCE_STATS.json": "83cf6391d5a13b0bc0b905ac73afbb65b7dacd49e25ae052df65a51adf8124c2",
+    "RESOLVED_TRAINING_CONFIG.json": "2bccdbb1877caadf3baca912f43f6414fd06f07c20b215a121ef8ff0b91cdb13",
+    "STAGE_A_TRAIN_CONTRACT.json": "72244af4c061c0a36aa0e0e870b8283fd7867f4da110287bc7abbb6c9afb7b88"
+  },
+  "class_weights": {
+    "EVIDENCE_PRESENT": 0.871574519528987,
+    "NO_EVIDENCE": 0.5,
+    "UNCERTAIN": 1.7466788753540448
+  },
+  "effective_counts_train": {
+    "EVIDENCE_PRESENT": 371.5,
+    "NO_EVIDENCE": 1936.5,
+    "UNCERTAIN": 92.5
+  },
+  "label_provenance": {
+    "counts_by_authority": {
+      "CANONICAL_RULE": 4253,
+      "DERIVED_RULE": 696,
+      "SOURCE_ASSERTED": 1341
+    },
+    "counts_by_derivation": {
+      "AMBIGUITY_SETTLEMENT": 244,
+      "DIRECT": 1341,
+      "MAPPED": 572,
+      "NEGATIVE_EXCLUSION": 3437,
+      "PAIRWISE_CONTRAST": 696
+    },
+    "counts_by_gate_label": {
+      "EVIDENCE_PRESENT": 1240,
+      "NO_EVIDENCE": 4806,
+      "UNCERTAIN": 244
+    },
+    "invalid_provenance_rows": 0,
+    "n_valid": 6290,
+    "rule": "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1"
+  },
+  "loss": "weighted_cross_entropy",
+  "parent_diagnosis": "MIXED_STAGE_A_FAILURE",
+  "rule": "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1",
+  "schema": "hyperlex.classification.v5.stage_a_train_authorize.v1",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R8",
+  "train": false,
+  "train_authorized": true
+}

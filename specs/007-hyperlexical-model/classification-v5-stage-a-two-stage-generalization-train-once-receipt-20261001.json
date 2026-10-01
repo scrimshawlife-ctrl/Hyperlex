@@ -1,0 +1,193 @@
+{
+  "AUTHORIZATION_RECEIPT_SHA256": "f7d4f3ad03dd4d13ea34dfb380451840e29f5e82e924eccfbe96532f865e8f2f",
+  "BEST": "UNCHANGED",
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "80b7f8991ec14b39223e232fad3a4590d54548f9fcd68cc9c70e9884f7aba5a4",
+  "DATASET_SHA256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-GENERALIZATION-001",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "RESERVE": "SPENT",
+  "RUN_RECEIPT_SHA256": "35d9a70675dc320116d68e52dda52bc6118140ae401d709ed104b5ae290d8025",
+  "SCIENTIFIC_RESULT": "SETTLED_FAIL",
+  "SELECTED_CHECKPOINT_SHA256": "26841d5f3a8b9cd4237f79203b80697f2da186e7d4b30ab6c08d528adba56e76",
+  "SPENT_RESERVE": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "STAGE_A_BEST_MUTATED": false,
+  "TRAINING_CONFIG_SHA256": "1527ae1887b362f4e659409fcf3e4c15f0d2b410c8157759c5a12c1372166e31",
+  "TRAINING_STATUS": "COMPLETE",
+  "TWO_STAGE_SPLIT_WITNESS_SHA256": "44f5841f9c3eb7b5ab3d1b79ecf9df8ff3143bb50b496ea6398de748d2635805",
+  "acceptance_gates": {
+    "EVIDENCE_PRESENT_recall": {
+      "gate": 0.7,
+      "pass": true,
+      "value": 0.8907363420427553
+    },
+    "NO_EVIDENCE_recall": {
+      "gate": 0.9,
+      "pass": false,
+      "value": 0.784452296819788
+    },
+    "false_evidence_entry_rate_on_none": {
+      "gate": 0.05,
+      "pass": false,
+      "value": 0.20141342756183744
+    }
+  },
+  "component_metrics": {
+    "gate1": {
+      "NO_EVIDENCE_recall": 0.784452296819788,
+      "POSSIBLE_EVIDENCE_recall": 0.9036885245901639,
+      "false_possible_entry_rate": 0.21554770318021202,
+      "macro_f1": 0.8396571450175399
+    },
+    "gate2": {
+      "CONFIRMED_PRESENT_recall": 0.8907363420427553,
+      "UNCERTAIN_recall": 0.8955223880597015,
+      "macro_f1": 0.8138195639185424,
+      "n_eligible": 488
+    },
+    "note": "Component metrics are diagnostic; end-to-end gates remain authoritative."
+  },
+  "generalization_cells": {
+    "DEFINITION_STYLE/EVIDENCE_PRESENT": {
+      "Gate1_block_rate": 0.025,
+      "Gate2_reject_rate_among_entered": 0.01282051282051282,
+      "false_evidence_entry_rate_on_none": null,
+      "n": 80,
+      "recall": 0.9625,
+      "support": 80,
+      "target_label": "EVIDENCE_PRESENT"
+    },
+    "DEFINITION_STYLE/NO_EVIDENCE": {
+      "Gate1_block_rate": 0.8848920863309353,
+      "Gate2_reject_rate_among_entered": 0.1875,
+      "false_evidence_entry_rate_on_none": 0.09352517985611511,
+      "n": 139,
+      "recall": 0.8848920863309353,
+      "support": 139,
+      "target_label": "NO_EVIDENCE"
+    },
+    "ORDINARY_PROSE/EVIDENCE_PRESENT": {
+      "Gate1_block_rate": 0.0,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": null,
+      "n": 106,
+      "recall": 1.0,
+      "support": 106,
+      "target_label": "EVIDENCE_PRESENT"
+    },
+    "ORDINARY_PROSE/NO_EVIDENCE": {
+      "Gate1_block_rate": 0.9611111111111111,
+      "Gate2_reject_rate_among_entered": 0.7142857142857143,
+      "false_evidence_entry_rate_on_none": 0.011111111111111112,
+      "n": 180,
+      "recall": 0.9611111111111111,
+      "support": 180,
+      "target_label": "NO_EVIDENCE"
+    },
+    "PROSE/EVIDENCE_PRESENT": {
+      "Gate1_block_rate": 0.05063291139240506,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": null,
+      "n": 79,
+      "recall": 0.9493670886075949,
+      "support": 79,
+      "target_label": "EVIDENCE_PRESENT"
+    },
+    "PROSE/NO_EVIDENCE": {
+      "Gate1_block_rate": 0.8315789473684211,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": 0.16842105263157894,
+      "n": 95,
+      "recall": 0.8315789473684211,
+      "support": 95,
+      "target_label": "NO_EVIDENCE"
+    },
+    "SHORT_ATOM/EVIDENCE_PRESENT": {
+      "Gate1_block_rate": 0.25,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": null,
+      "n": 156,
+      "recall": 0.75,
+      "support": 156,
+      "target_label": "EVIDENCE_PRESENT"
+    },
+    "SHORT_ATOM/NO_EVIDENCE": {
+      "Gate1_block_rate": 0.45394736842105265,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": 0.5460526315789473,
+      "n": 152,
+      "recall": 0.45394736842105265,
+      "support": 152,
+      "target_label": "NO_EVIDENCE"
+    }
+  },
+  "n_threshold_passing": 0,
+  "promotion_candidate": false,
+  "restored_epoch": 12,
+  "route_diagnostics": {
+    "NONE_FP": {
+      "leaked_through_both_gates": 114,
+      "leaked_through_gate1": 122
+    },
+    "PRESENT_FN": {
+      "blocked_at_gate1": 45,
+      "passed_gate1_rejected_at_gate2": 1
+    },
+    "UNCERTAIN": {
+      "blocked_at_gate1": 2,
+      "correctly_routed": 58,
+      "promoted_incorrectly_to_PRESENT": 7
+    }
+  },
+  "selected_thresholds": {
+    "gate1_threshold": null,
+    "gate2_present_threshold": null
+  },
+  "selection_score": 0.8976427205356838,
+  "stage_a_best_comparison": {
+    "PARENT_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "STAGE_A_BEST_MUTATED": false,
+    "comparison_only": true,
+    "deltas": {
+      "EVIDENCE_PRESENT_recall": {
+        "delta": 0.18583634204275534,
+        "reference": 0.7049,
+        "value": 0.8907363420427553
+      },
+      "NO_EVIDENCE_recall": {
+        "delta": -0.12444770318021203,
+        "reference": 0.9089,
+        "value": 0.784452296819788
+      },
+      "UNCERTAIN_recall": {
+        "delta": 0.18667164179104467,
+        "reference": 0.679,
+        "value": 0.8656716417910447
+      },
+      "false_evidence_entry_rate_on_none": {
+        "delta": 0.15911342756183744,
+        "reference": 0.0423,
+        "value": 0.20141342756183744
+      },
+      "stage_a_macro_f1": {
+        "delta": 0.10012319210565357,
+        "reference": 0.7411,
+        "value": 0.8412231921056535
+      }
+    },
+    "reference": {
+      "EVIDENCE_PRESENT_recall": 0.7049,
+      "NO_EVIDENCE_recall": 0.9089,
+      "UNCERTAIN_recall": 0.679,
+      "false_evidence_entry_rate_on_none": 0.0423,
+      "stage_a_macro_f1": 0.7411
+    }
+  },
+  "train": true,
+  "validation_metrics": {
+    "EVIDENCE_PRESENT_recall": 0.8907363420427553,
+    "NO_EVIDENCE_recall": 0.784452296819788,
+    "UNCERTAIN_recall": 0.8656716417910447,
+    "false_evidence_entry_rate_on_none": 0.20141342756183744,
+    "stage_a_macro_f1": 0.8412231921056535
+  }
+}

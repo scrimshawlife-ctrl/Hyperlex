@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v5.stage_a_two_stage_promotion_review.v1",
+  "title": "Stage-A two-stage promotion review receipt",
+  "type": "object",
+  "required": [
+    "PROMOTION_DECISION",
+    "PROMOTION_REVIEW",
+    "NEXT_ACTION",
+    "SELECTED_CHECKPOINT_SHA256",
+    "SELECTED_EPOCH",
+    "BEST",
+    "RESERVE",
+    "TRAIN",
+    "promote",
+    "review_receipt_sha256",
+    "schema"
+  ],
+  "properties": {
+    "PROMOTION_DECISION": {
+      "enum": [
+        "PROMOTION_READY",
+        "PROMOTION_BLOCKED",
+        "PROMOTION_REVIEW_INVALID"
+      ]
+    },
+    "PROMOTION_REVIEW": {
+      "enum": ["VALID", "INVALID"]
+    },
+    "NEXT_ACTION": {
+      "type": "string"
+    },
+    "SELECTED_CHECKPOINT_SHA256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "SELECTED_EPOCH": {
+      "type": "integer"
+    },
+    "BEST": {
+      "const": "UNCHANGED"
+    },
+    "RESERVE": {
+      "const": "unused"
+    },
+    "TRAIN": {
+      "const": false
+    },
+    "promote": {
+      "const": false
+    },
+    "review_receipt_sha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "schema": {
+      "const": "hyperlex.classification.v5.stage_a_two_stage_promotion_review.v1"
+    }
+  },
+  "additionalProperties": true
+}

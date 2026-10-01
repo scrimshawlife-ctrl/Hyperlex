@@ -1,0 +1,18 @@
+{
+  "EVIDENCE_PRESENT_recall_min": 0.7,
+  "NO_EVIDENCE_recall_min": 0.9,
+  "contract_sha256": "ed30d146ce3c227feee5c3ee2aae3ead372970592fb6770523dc93152ea4e07f",
+  "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-001",
+  "false_evidence_entry_rate_on_none_max": 0.05,
+  "optimize_family_metrics_before_stage_a_pass": false,
+  "preregistered": true,
+  "rule": "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1",
+  "scope": "model_acceptance_after_authorized_train",
+  "surface_dataset_sha256": "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9",
+  "surface_ready": true,
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R7",
+  "train_authorized": true,
+  "training_config_sha256": "4d2eaabd52976da6beecfac1175770a9f3402c82d0b124942638488aa8ab4d7e",
+  "training_run_limit": 1,
+  "training_status": "AUTHORIZED_NOT_STARTED"
+}

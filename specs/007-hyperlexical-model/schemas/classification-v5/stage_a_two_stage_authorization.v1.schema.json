@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v5.stage_a_two_stage_authorization.v1",
+  "title": "AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1 receipt format",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "rule",
+    "AUTHORIZE_RULE",
+    "EXPERIMENT_ID",
+    "DATASET_SHA256",
+    "TRAINING_CONFIG_SHA256",
+    "TRAIN_AUTHORIZED",
+    "TRAINING_STATUS",
+    "TRAINING_RUN_LIMIT",
+    "BEST",
+    "BEST_MUTATED",
+    "RESERVE_CONSUMED",
+    "SCIENTIFIC_RESULT",
+    "train"
+  ],
+  "properties": {
+    "schema": {
+      "const": "hyperlex.classification.v5.stage_a_two_stage_authorization.v1"
+    },
+    "rule": {
+      "const": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1"
+    },
+    "AUTHORIZE_RULE": {
+      "const": "AUTHORIZE_V5_STAGE_A_TWO_STAGE_TRAIN_V1"
+    },
+    "EXPERIMENT_ID": {
+      "const": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001"
+    },
+    "ARCHITECTURE_RECEIPT_SHA256": {
+      "const": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697"
+    },
+    "CLASS_WEIGHT_ARTIFACT_SHA256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "DATASET_SHA256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "TRAINING_CONFIG_SHA256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "TRAIN_AUTHORIZED": { "type": "boolean" },
+    "TRAINING_STATUS": {
+      "enum": ["AUTHORIZED_NOT_STARTED", "RUNNING", "COMPLETE", "BLOCKED"]
+    },
+    "TRAINING_RUN_LIMIT": { "const": 1 },
+    "BEST": { "const": "UNCHANGED" },
+    "BEST_MUTATED": { "const": false },
+    "RESERVE_CONSUMED": { "const": false },
+    "SCIENTIFIC_RESULT": {
+      "enum": ["NOT_COMPUTABLE", "SETTLED_PASS", "SETTLED_FAIL"]
+    },
+    "train": { "const": false },
+    "flat_head_status": {
+      "const": "DEPRECATED_FOR_V5_STAGE_A_CANONICAL_DECISION"
+    }
+  }
+}

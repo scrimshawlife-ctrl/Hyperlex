@@ -1,0 +1,29 @@
+{
+  "BEST_MUTATED": false,
+  "CURRENT_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "CODE_REVISION": "fab24e4cff80e9282b2a66b4a48880eb2475be3c",
+  "DATASET_SHA256": "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9",
+  "EXPERIMENT_ID": null,
+  "GATE_EVAL_SHA256": "0a4ad7871351f592371aa93e44207b19039949c4acc598daf69e8b225217af11",
+  "INPUT_IDENTITY": "PASS",
+  "NEXT_ACTION": "AUTHORIZE_V5_STAGE_A_TRAIN_V1",
+  "PROMOTION_CANDIDATE": false,
+  "RECEIPT_SHA256": "f07e4c04708bdb0e0e58f91e11d393f852356822f0d9531336667af25b713a40",
+  "RESERVE_CONSUMED": false,
+  "SCIENTIFIC_RESULT": "NOT_COMPUTABLE",
+  "SURFACE_READINESS": "PASS",
+  "TRAINING_CONFIG_SHA256": null,
+  "TRAINING_STATUS": "NOT_STARTED",
+  "missing_configuration": [
+    "classification_v5_stage_a.py TRAIN_HYPERPARAMS",
+    "run_classification_v5_stage_a_train.py",
+    "resolved architecture/optimizer/LR/batch/epochs/seed/loss/tokenizer/threshold recipe",
+    "train_authorized=true"
+  ],
+  "schema": "hyperlex.classification.v5.stage_a_train_once_stop.v1",
+  "stop_reason": "canonical_v5_stage_a_training_recipe_missing",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R7",
+  "train": false,
+  "train_authorized": false,
+  "train_contract_rule": "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1"
+}

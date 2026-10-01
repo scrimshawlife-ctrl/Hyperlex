@@ -1,0 +1,32 @@
+{
+  "BEST": "UNCHANGED",
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "dataset_sha256": "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9",
+  "gate_eval_sha256": "0a4ad7871351f592371aa93e44207b19039949c4acc598daf69e8b225217af11",
+  "gate_rule": "HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1",
+  "n": 5877,
+  "next_action": "TRAIN_V5_STAGE_A_ONCE",
+  "parent_surface_dataset_sha256": "3add3aa624bab8e578d461574ea8344f3e2c4b7eec30ddbb9faffbe2c0bea3eb",
+  "private_surface_dir": "hlx-private/classification-v5-stage-a-negative-evidence-surface-v1r7-20260930",
+  "receipt_sha256": "f07e4c04708bdb0e0e58f91e11d393f852356822f0d9531336667af25b713a40",
+  "remediate_rule": "REMEDIATE_V5_STAGE_A_SURFACE_V1",
+  "remediation_stats": {
+    "added": 3758,
+    "from_hub_rebuild": 1578,
+    "from_observed_acquire": 378,
+    "from_prior": 3116,
+    "from_shared_vocab": 1296,
+    "reassigned": 5877,
+    "removed": 1745
+  },
+  "reserve": false,
+  "schema": "hyperlex.classification.v5.stage_a_surface_remediate_receipt.v1",
+  "split_counts": {
+    "train": 4489,
+    "validation": 1388
+  },
+  "state": "READY",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R7",
+  "train": false,
+  "train_authorized": false
+}

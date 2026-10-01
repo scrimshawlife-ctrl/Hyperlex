@@ -1,0 +1,79 @@
+{
+  "AUTHORIZATION_RECEIPT_SHA256": "c9b262de5e3a33abfd52e29cc92715d7809d9470a205226d93d538cd952f0b57",
+  "BEST": "UNCHANGED",
+  "BEST_SHA256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "5496015af99ec768d8914a282db465abe75e99f2243fbc864d674bb5cad539d6",
+  "DATASET_SHA256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001",
+  "NEXT_ACTION": "STOP_OR_PROMOTE_REVIEW",
+  "RESERVE": "unused",
+  "RUN_RECEIPT_SHA256": "9c358d2cae25bfe75b4825c30b7334573897eef7ed9615a56f57041db6e444db",
+  "SCIENTIFIC_RESULT": "SETTLED_PASS",
+  "SELECTED_CHECKPOINT_SHA256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "TRAINING_CONFIG_SHA256": "0117faca8e56501e15cea4f69ce9dffd2900b25cfdc7dcabc427651b18d7b0b6",
+  "TRAINING_STATUS": "COMPLETE",
+  "TWO_STAGE_SPLIT_WITNESS_SHA256": "ecb88025b1b3355d837a2d81cbd87909d2f961e8800adbef21589c5f3b564fb1",
+  "acceptance_gates": {
+    "EVIDENCE_PRESENT_recall": {
+      "gate": 0.7,
+      "pass": true,
+      "value": 0.7048665620094191
+    },
+    "NO_EVIDENCE_recall": {
+      "gate": 0.9,
+      "pass": true,
+      "value": 0.9089456869009584
+    },
+    "false_evidence_entry_rate_on_none": {
+      "gate": 0.05,
+      "pass": true,
+      "value": 0.04233226837060703
+    }
+  },
+  "component_metrics": {
+    "gate1": {
+      "NO_EVIDENCE_recall": 0.9089456869009584,
+      "POSSIBLE_EVIDENCE_recall": 0.8085106382978723,
+      "false_possible_entry_rate": 0.09105431309904154,
+      "macro_f1": 0.8618711340063165
+    },
+    "gate2": {
+      "CONFIRMED_PRESENT_recall": 0.7048665620094191,
+      "UNCERTAIN_recall": 0.845679012345679,
+      "macro_f1": 0.6854545824192275,
+      "n_eligible": 799
+    },
+    "note": "Component metrics are diagnostic; end-to-end gates remain authoritative."
+  },
+  "n_threshold_passing": 4,
+  "promotion_candidate": true,
+  "restored_epoch": 11,
+  "route_diagnostics": {
+    "NONE_FP": {
+      "leaked_through_both_gates": 53,
+      "leaked_through_gate1": 114
+    },
+    "PRESENT_FN": {
+      "blocked_at_gate1": 126,
+      "passed_gate1_rejected_at_gate2": 62
+    },
+    "UNCERTAIN": {
+      "blocked_at_gate1": 27,
+      "correctly_routed": 110,
+      "promoted_incorrectly_to_PRESENT": 25
+    }
+  },
+  "selected_thresholds": {
+    "gate1_threshold": 0.75,
+    "gate2_present_threshold": 0.5
+  },
+  "selection_score": 0.8167525809111703,
+  "train": true,
+  "validation_metrics": {
+    "EVIDENCE_PRESENT_recall": 0.7048665620094191,
+    "NO_EVIDENCE_recall": 0.9089456869009584,
+    "UNCERTAIN_recall": 0.6790123456790124,
+    "false_evidence_entry_rate_on_none": 0.04233226837060703,
+    "stage_a_macro_f1": 0.7411485290305739
+  }
+}

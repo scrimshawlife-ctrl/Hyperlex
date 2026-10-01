@@ -1,0 +1,1026 @@
+{
+  "ACTION": "PRESERVE_RESERVE_FAIL_AND_DIAGNOSE_V5_GENERALIZATION",
+  "BEST": "UNCHANGED",
+  "BEST_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_BEST_MUTATED": false,
+  "TRAIN": false,
+  "code_revision": "a06b562b0f2c7c80a8b106f69027a9b031095d5b",
+  "diagnosis": {
+    "architecture_change_justified": false,
+    "dataset_change_justified": true,
+    "deltas": {
+      "NONE_recall": -0.3351751950976798,
+      "PRESENT_recall": -0.333797379619482,
+      "false_entry": 0.056028387367097886
+    },
+    "diagnosis": "STAGE_A_GENERALIZATION_FAILURE",
+    "distribution_mismatch": false,
+    "remediation": "NEW_STAGE_A_TRAINING_SURFACE",
+    "stage_a_bad": true,
+    "stage_b_bad": false,
+    "stage_b_index_change_justified": false,
+    "stage_b_starved_by_stage_a": false
+  },
+  "family_coverage": [
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "betting-sharp",
+      "flags": [
+        "DOMAIN_SHIFT",
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY",
+        "GOOD_RETRIEVAL_BAD_MARGIN"
+      ],
+      "index_support": 38,
+      "nearest_exemplar_similarity_mean": 0.5827047158459031,
+      "reserve_support": 27,
+      "validation_support": 45
+    },
+    {
+      "correct_emitted_count": 4,
+      "emitted_count": 4,
+      "family": "crypto-degen",
+      "flags": [
+        "WRONG_NEAREST_FAMILY",
+        "GOOD_RETRIEVAL_BAD_MARGIN"
+      ],
+      "index_support": 54,
+      "nearest_exemplar_similarity_mean": 0.6368160069843053,
+      "reserve_support": 27,
+      "validation_support": 40
+    },
+    {
+      "correct_emitted_count": 5,
+      "emitted_count": 5,
+      "family": "gaming-meta",
+      "flags": [
+        "WRONG_NEAREST_FAMILY",
+        "GOOD_RETRIEVAL_BAD_MARGIN"
+      ],
+      "index_support": 75,
+      "nearest_exemplar_similarity_mean": 0.6318216895325965,
+      "reserve_support": 26,
+      "validation_support": 57
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "conflict-aggression",
+      "flags": [
+        "NO_EMISSION"
+      ],
+      "index_support": 38,
+      "nearest_exemplar_similarity_mean": 0.7402242846212814,
+      "reserve_support": 8,
+      "validation_support": 41
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "fashion-aesthetic",
+      "flags": [
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY",
+        "GOOD_RETRIEVAL_BAD_MARGIN"
+      ],
+      "index_support": 34,
+      "nearest_exemplar_similarity_mean": 0.8428733806209516,
+      "reserve_support": 8,
+      "validation_support": 40
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "identity-affiliation",
+      "flags": [
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY",
+        "GOOD_RETRIEVAL_BAD_MARGIN"
+      ],
+      "index_support": 18,
+      "nearest_exemplar_similarity_mean": 0.7794359945744617,
+      "reserve_support": 8,
+      "validation_support": 17
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "music-entertainment",
+      "flags": [
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY"
+      ],
+      "index_support": 29,
+      "nearest_exemplar_similarity_mean": 0.7577673318532556,
+      "reserve_support": 8,
+      "validation_support": 49
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 1,
+      "family": "politics-civic",
+      "flags": [
+        "WRONG_NEAREST_FAMILY",
+        "GOOD_RETRIEVAL_BAD_MARGIN"
+      ],
+      "index_support": 32,
+      "nearest_exemplar_similarity_mean": 0.7785939462346319,
+      "reserve_support": 8,
+      "validation_support": 56
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "regional-cultural",
+      "flags": [
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY"
+      ],
+      "index_support": 34,
+      "nearest_exemplar_similarity_mean": 0.7678296428744468,
+      "reserve_support": 8,
+      "validation_support": 45
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "social-evaluation",
+      "flags": [
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY",
+        "GOOD_RETRIEVAL_BAD_MARGIN"
+      ],
+      "index_support": 35,
+      "nearest_exemplar_similarity_mean": 0.7434736088577077,
+      "reserve_support": 8,
+      "validation_support": 48
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "spiritual-mystic",
+      "flags": [
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY"
+      ],
+      "index_support": 29,
+      "nearest_exemplar_similarity_mean": 0.7325032416418709,
+      "reserve_support": 8,
+      "validation_support": 28
+    },
+    {
+      "correct_emitted_count": 1,
+      "emitted_count": 1,
+      "family": "technology-ai",
+      "flags": [
+        "WRONG_NEAREST_FAMILY",
+        "GOOD_RETRIEVAL_BAD_MARGIN"
+      ],
+      "index_support": 42,
+      "nearest_exemplar_similarity_mean": 0.7992690769676023,
+      "reserve_support": 8,
+      "validation_support": 46
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "sports-competition",
+      "flags": [
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY"
+      ],
+      "index_support": 31,
+      "nearest_exemplar_similarity_mean": 0.6706832580418489,
+      "reserve_support": 4,
+      "validation_support": 36
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "relationship-dating",
+      "flags": [
+        "NO_EMISSION",
+        "WRONG_NEAREST_FAMILY"
+      ],
+      "index_support": 16,
+      "nearest_exemplar_similarity_mean": 0.6568793870600582,
+      "reserve_support": 2,
+      "validation_support": 11
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "internet-slang",
+      "flags": [
+        "NO_EMISSION"
+      ],
+      "index_support": 38,
+      "nearest_exemplar_similarity_mean": 0.715194867467199,
+      "reserve_support": 1,
+      "validation_support": 23
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "memetic",
+      "flags": [],
+      "index_support": 28,
+      "nearest_exemplar_similarity_mean": null,
+      "reserve_support": 0,
+      "validation_support": 14
+    },
+    {
+      "correct_emitted_count": 0,
+      "emitted_count": 0,
+      "family": "workplace-career",
+      "flags": [],
+      "index_support": 32,
+      "nearest_exemplar_similarity_mean": null,
+      "reserve_support": 0,
+      "validation_support": 41
+    }
+  ],
+  "frozen_thresholds": {
+    "gate1_threshold": 0.75,
+    "gate2_threshold": 0.5,
+    "minimum_family_margin": 0.07,
+    "minimum_family_score": 0.64
+  },
+  "next_action": "NEW_STAGE_A_TRAINING_SURFACE \u2014 diagnosis=STAGE_A_GENERALIZATION_FAILURE; preserve spent reserve; do not retune 0.75/0.50 or 0.64/0.07; do not train on reserve mistakes; do not add reserve identities to the Stage-B index.",
+  "ood_rule": {
+    "in_distribution_min": 0.78,
+    "method": "nearest_train_cosine",
+    "near_distribution_min": 0.62,
+    "note": "IN_DISTRIBUTION if nearest_train_sim >= 0.78; NEAR_DISTRIBUTION if >= 0.62; else OUT_OF_DISTRIBUTION. Thresholds frozen from validation nearest-train similarity P20/P5 band.",
+    "preregistered_on": "V1R9_validation_vs_train"
+  },
+  "preservation": {
+    "V5_PROMOTION_RESERVE_001": "SPENT",
+    "V5_PROMOTION_RESULT": "RESERVE_FAIL",
+    "evaluation_spent": true,
+    "move_MODEL_WIDE_BEST": false,
+    "move_STAGE_A_BEST": false,
+    "production_promotion": "REJECTED",
+    "rebuild_index": false,
+    "reserve_id": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+    "retune_thresholds": false,
+    "reuse_as_calibration": false,
+    "reuse_as_index": false,
+    "reuse_as_train": false,
+    "reuse_as_validation": false
+  },
+  "rebuild_index": false,
+  "recalibrate": false,
+  "receipt_sha256": "823c985b6f3dca4ef15c4c41be3f54f8e2787ff2839d3e0664563af38c3e3fca",
+  "representation": {
+    "reserve": {
+      "distribution_class_counts": {
+        "IN_DISTRIBUTION": 170,
+        "NEAR_DISTRIBUTION": 78,
+        "OUT_OF_DISTRIBUTION": 2
+      },
+      "gate1_margin": {
+        "mean": -0.019127408342471494,
+        "n": 250,
+        "p10": -0.7499982759136188,
+        "p50": 0.2492104639857562,
+        "p90": 0.24999999401481476
+      },
+      "gate2_margin": {
+        "mean": -0.02783473332399653,
+        "n": 250,
+        "p10": -0.4999963295688541,
+        "p50": -0.16047374796977099,
+        "p90": 0.4999399012229241
+      },
+      "nearest_train_similarity": {
+        "mean": 0.8169431414922403,
+        "n": 250,
+        "p10": 0.6965804533799593,
+        "p50": 0.8309686818311063,
+        "p90": 0.9186253043935645
+      },
+      "nearest_validation_similarity": {
+        "mean": 0.8324338404443999,
+        "n": 250,
+        "p10": 0.7137853393404704,
+        "p50": 0.8463604374571075,
+        "p90": 0.9392524344682082
+      },
+      "ood_rule": {
+        "in_distribution_min": 0.78,
+        "method": "nearest_train_cosine",
+        "near_distribution_min": 0.62,
+        "note": "IN_DISTRIBUTION if nearest_train_sim >= 0.78; NEAR_DISTRIBUTION if >= 0.62; else OUT_OF_DISTRIBUTION. Thresholds frozen from validation nearest-train similarity P20/P5 band.",
+        "preregistered_on": "V1R9_validation_vs_train"
+      },
+      "p_confirmed": {
+        "mean": 0.47216526667600345,
+        "n": 250,
+        "p10": 3.670431145925139e-06,
+        "p50": 0.339526252030229,
+        "p90": 0.9999399012229241
+      },
+      "p_possible": {
+        "mean": 0.7308725916575285,
+        "n": 250,
+        "p10": 1.7240863812274823e-06,
+        "p50": 0.9992104639857562,
+        "p90": 0.9999999940148148
+      }
+    },
+    "validation": {
+      "distribution_class_counts": {
+        "IN_DISTRIBUTION": 1913,
+        "NEAR_DISTRIBUTION": 127,
+        "OUT_OF_DISTRIBUTION": 11
+      },
+      "gate1_margin": {
+        "mean": -0.3467317943091854,
+        "n": 2051,
+        "p10": -0.7499999502592869,
+        "p50": -0.7157739244774838,
+        "p90": 0.2499915901545604
+      },
+      "gate2_margin": {
+        "mean": 0.10523265634475043,
+        "n": 2051,
+        "p10": -0.4999038908486071,
+        "p50": 0.41842701311014596,
+        "p90": 0.49999814851128577
+      },
+      "nearest_train_similarity": {
+        "mean": 0.8717637505153052,
+        "n": 2051,
+        "p10": 0.8017228385960248,
+        "p50": 0.8754137947519098,
+        "p90": 0.9477784834937555
+      },
+      "nearest_validation_similarity": {
+        "mean": null,
+        "n": 0,
+        "p10": null,
+        "p50": null,
+        "p90": null
+      },
+      "ood_rule": {
+        "in_distribution_min": 0.78,
+        "method": "nearest_train_cosine",
+        "near_distribution_min": 0.62,
+        "note": "IN_DISTRIBUTION if nearest_train_sim >= 0.78; NEAR_DISTRIBUTION if >= 0.62; else OUT_OF_DISTRIBUTION. Thresholds frozen from validation nearest-train similarity P20/P5 band.",
+        "preregistered_on": "V1R9_validation_vs_train"
+      },
+      "p_confirmed": {
+        "mean": 0.6052326563447504,
+        "n": 2051,
+        "p10": 9.610915139292445e-05,
+        "p50": 0.918427013110146,
+        "p90": 0.9999981485112858
+      },
+      "p_possible": {
+        "mean": 0.4032682056908146,
+        "n": 2051,
+        "p10": 4.974071307991868e-08,
+        "p50": 0.0342260755225162,
+        "p90": 0.9999915901545604
+      }
+    }
+  },
+  "reserve_hashes": {
+    "identity_list_sha256": "bc87c62d502aa51cffcac55a3b1cd0791cc527d8356fd146f8769b8685498a82",
+    "manifest_sha256": "6d475119184b0ad54b1d50be952fedd88c01f3955991879268f70136dc87e1a1",
+    "rows_sha256": "0b71fcbf59ad0dad38dd11a3f40f11ecea61214e61fd7aa7b2cd0f5f8032d711",
+    "seal_sha256": "21903beabdf9a71a9893a1bd37a37182895f3b14a12344eb3eec78e8ceb1e360"
+  },
+  "reserve_id": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "routing": {
+    "NONE": {
+      "CORRECT_NONE": 35,
+      "LEAKED_GATE1_TO_PRESENT": 6,
+      "LEAKED_GATE1_TO_UNCERTAIN": 20
+    },
+    "PRESENT": {
+      "BLOCKED_AT_GATE1": 34,
+      "CORRECT_PRESENT": 59,
+      "PASSED_GATE1_REJECTED_GATE2": 66
+    },
+    "UNCERTAIN": {
+      "BLOCKED_AS_NONE": 3,
+      "CORRECT_UNCERTAIN": 18,
+      "PROMOTED_PRESENT": 9
+    },
+    "dominant_NONE_failure_cohorts": [
+      [
+        "LEAKED_GATE1_TO_UNCERTAIN|subtype=HARD_NONE|prov=OBSERVED|form=ATOM|src=hub_or_surface",
+        10
+      ],
+      [
+        "LEAKED_GATE1_TO_UNCERTAIN|subtype=GENERIC_NONE|prov=OBSERVED|form=ATOM|src=hub_or_surface",
+        6
+      ],
+      [
+        "LEAKED_GATE1_TO_PRESENT|subtype=SHORT_ATOM_NONE|prov=OBSERVED|form=ATOM|src=hub_or_surface",
+        3
+      ],
+      [
+        "LEAKED_GATE1_TO_UNCERTAIN|subtype=SHORT_ATOM_NONE|prov=OBSERVED|form=ATOM|src=hub_or_surface",
+        2
+      ],
+      [
+        "LEAKED_GATE1_TO_PRESENT|subtype=ORDINARY_DOMAIN_NONE|prov=INFERRED|form=ATOM|src=hub_or_surface",
+        2
+      ],
+      [
+        "LEAKED_GATE1_TO_PRESENT|subtype=GENERIC_NONE|prov=OBSERVED|form=ATOM|src=hub_or_surface",
+        1
+      ],
+      [
+        "LEAKED_GATE1_TO_UNCERTAIN|subtype=LEXICAL_LOOKALIKE_NONE|prov=INFERRED|form=AMBIGUOUS_FORM|src=synthetic_fill",
+        1
+      ],
+      [
+        "LEAKED_GATE1_TO_UNCERTAIN|subtype=NEAR_DOMAIN_NONE|prov=OBSERVED|form=PROSE|src=hub_or_surface",
+        1
+      ]
+    ],
+    "dominant_PRESENT_failure_cohorts": [
+      [
+        "PASSED_GATE1_REJECTED_GATE2|subtype=POSITIVE_EVIDENCE|prov=OBSERVED|form=ATOM|src=hub_or_surface",
+        51
+      ],
+      [
+        "BLOCKED_AT_GATE1|subtype=POSITIVE_EVIDENCE|prov=OBSERVED|form=PROSE|src=wiktionary_acquire",
+        23
+      ],
+      [
+        "PASSED_GATE1_REJECTED_GATE2|subtype=POSITIVE_EVIDENCE|prov=OBSERVED|form=PROSE|src=wiktionary_acquire",
+        12
+      ],
+      [
+        "BLOCKED_AT_GATE1|subtype=POSITIVE_EVIDENCE|prov=OBSERVED|form=PROSE|src=hub_or_surface",
+        5
+      ],
+      [
+        "BLOCKED_AT_GATE1|subtype=POSITIVE_EVIDENCE|prov=OBSERVED|form=ATOM|src=wiktionary_acquire",
+        4
+      ],
+      [
+        "PASSED_GATE1_REJECTED_GATE2|subtype=POSITIVE_EVIDENCE|prov=OBSERVED|form=PROSE|src=hub_or_surface",
+        3
+      ],
+      [
+        "BLOCKED_AT_GATE1|subtype=POSITIVE_EVIDENCE|prov=OBSERVED|form=ATOM|src=hub_or_surface",
+        2
+      ]
+    ],
+    "dominant_UNCERTAIN_failure_cohorts": [
+      [
+        "PROMOTED_PRESENT|subtype=AMBIGUOUS_EVIDENCE|prov=INFERRED|form=ATOM|src=hub_or_surface",
+        8
+      ],
+      [
+        "BLOCKED_AS_NONE|subtype=AMBIGUOUS_EVIDENCE|prov=OBSERVED|form=AMBIGUOUS_FORM|src=hub_or_surface",
+        3
+      ],
+      [
+        "PROMOTED_PRESENT|subtype=AMBIGUOUS_EVIDENCE|prov=OBSERVED|form=AMBIGUOUS_FORM|src=hub_or_surface",
+        1
+      ]
+    ]
+  },
+  "rule": "HYPERLEX_V5_RESERVE_FAIL_GENERALIZATION_DIAGNOSE_V1",
+  "schema": "hyperlex.classification.v5.reserve_fail_generalization_diagnose.v1",
+  "stage_a": {
+    "deltas": {
+      "NONE_recall": -0.3351751950976798,
+      "PRESENT_recall": -0.333797379619482,
+      "UNCERTAIN_recall": -0.07901234567901239,
+      "false_entry": 0.056028387367097886
+    },
+    "dominant_NONE_to_UNCERTAIN_cohorts": [
+      {
+        "cohort": "label_authority=HUMAN_SETTLED",
+        "error_rate_delta": null,
+        "recall_delta": null,
+        "reserve_error_count": 20,
+        "reserve_error_rate": 0.32786885245901637,
+        "reserve_recall": 0.5737704918032787,
+        "reserve_support": 61,
+        "validation_error_count": 0,
+        "validation_error_rate": null,
+        "validation_recall": null,
+        "validation_support": 0
+      },
+      {
+        "cohort": "label_derivation=semantic_source_evidence",
+        "error_rate_delta": null,
+        "recall_delta": null,
+        "reserve_error_count": 20,
+        "reserve_error_rate": 0.32786885245901637,
+        "reserve_recall": 0.5737704918032787,
+        "reserve_support": 61,
+        "validation_error_count": 0,
+        "validation_error_rate": null,
+        "validation_recall": null,
+        "validation_support": 0
+      },
+      {
+        "cohort": "source_family=hub_or_surface",
+        "error_rate_delta": 0.4377704855661768,
+        "recall_delta": -0.5711703999619537,
+        "reserve_error_count": 19,
+        "reserve_error_rate": 0.4418604651162791,
+        "reserve_recall": 0.4186046511627907,
+        "reserve_support": 43,
+        "validation_error_count": 2,
+        "validation_error_rate": 0.00408997955010225,
+        "validation_recall": 0.9897750511247444,
+        "validation_support": 489
+      },
+      {
+        "cohort": "provenance=OBSERVED",
+        "error_rate_delta": 0.40025673940949935,
+        "recall_delta": -0.4441335044929397,
+        "reserve_error_count": 19,
+        "reserve_error_rate": 0.4634146341463415,
+        "reserve_recall": 0.43902439024390244,
+        "reserve_support": 41,
+        "validation_error_count": 60,
+        "validation_error_rate": 0.06315789473684211,
+        "validation_recall": 0.8831578947368421,
+        "validation_support": 950
+      },
+      {
+        "cohort": "atom_prose=ATOM",
+        "error_rate_delta": 0.6,
+        "recall_delta": -0.7886363636363636,
+        "reserve_error_count": 18,
+        "reserve_error_rate": 0.6,
+        "reserve_recall": 0.2,
+        "reserve_support": 30,
+        "validation_error_count": 0,
+        "validation_error_rate": 0.0,
+        "validation_recall": 0.9886363636363636,
+        "validation_support": 176
+      },
+      {
+        "cohort": "length_bucket=3-5",
+        "error_rate_delta": 0.6946463978849967,
+        "recall_delta": -0.8486450760079313,
+        "reserve_error_count": 12,
+        "reserve_error_rate": 0.7058823529411765,
+        "reserve_recall": 0.11764705882352941,
+        "reserve_support": 17,
+        "validation_error_count": 1,
+        "validation_error_rate": 0.011235955056179775,
+        "validation_recall": 0.9662921348314607,
+        "validation_support": 89
+      },
+      {
+        "cohort": "family_or_domain=HARD_NONE",
+        "error_rate_delta": 0.8118279569892474,
+        "recall_delta": -0.8010752688172044,
+        "reserve_error_count": 10,
+        "reserve_error_rate": 0.8333333333333334,
+        "reserve_recall": 0.16666666666666666,
+        "reserve_support": 12,
+        "validation_error_count": 2,
+        "validation_error_rate": 0.021505376344086023,
+        "validation_recall": 0.967741935483871,
+        "validation_support": 93
+      },
+      {
+        "cohort": "none_subtype=HARD_NONE",
+        "error_rate_delta": 0.8193473193473194,
+        "recall_delta": -0.8123543123543124,
+        "reserve_error_count": 10,
+        "reserve_error_rate": 0.8333333333333334,
+        "reserve_recall": 0.16666666666666666,
+        "reserve_support": 12,
+        "validation_error_count": 2,
+        "validation_error_rate": 0.013986013986013986,
+        "validation_recall": 0.9790209790209791,
+        "validation_support": 143
+      }
+    ],
+    "dominant_PRESENT_miss_cohorts": [
+      {
+        "cohort": "label_authority=HUMAN_SETTLED",
+        "error_rate_delta": null,
+        "recall_delta": null,
+        "reserve_error_count": 34,
+        "reserve_error_rate": 0.2138364779874214,
+        "reserve_recall": 0.3710691823899371,
+        "reserve_support": 159,
+        "validation_error_count": 0,
+        "validation_error_rate": null,
+        "validation_recall": null,
+        "validation_support": 0
+      },
+      {
+        "cohort": "label_derivation=semantic_source_evidence",
+        "error_rate_delta": null,
+        "recall_delta": null,
+        "reserve_error_count": 34,
+        "reserve_error_rate": 0.2138364779874214,
+        "reserve_recall": 0.3710691823899371,
+        "reserve_support": 159,
+        "validation_error_count": 0,
+        "validation_error_rate": null,
+        "validation_recall": null,
+        "validation_support": 0
+      },
+      {
+        "cohort": "none_subtype=NA",
+        "error_rate_delta": 0.0160342801852236,
+        "recall_delta": -0.333797379619482,
+        "reserve_error_count": 34,
+        "reserve_error_rate": 0.2138364779874214,
+        "reserve_recall": 0.3710691823899371,
+        "reserve_support": 159,
+        "validation_error_count": 126,
+        "validation_error_rate": 0.1978021978021978,
+        "validation_recall": 0.7048665620094191,
+        "validation_support": 637
+      },
+      {
+        "cohort": "provenance=OBSERVED",
+        "error_rate_delta": -0.015521320177716236,
+        "recall_delta": -0.2858115515550171,
+        "reserve_error_count": 34,
+        "reserve_error_rate": 0.2138364779874214,
+        "reserve_recall": 0.3710691823899371,
+        "reserve_support": 159,
+        "validation_error_count": 125,
+        "validation_error_rate": 0.22935779816513763,
+        "validation_recall": 0.6568807339449542,
+        "validation_support": 545
+      },
+      {
+        "cohort": "atom_prose=PROSE",
+        "error_rate_delta": 0.19340728011248245,
+        "recall_delta": -0.2882101754934125,
+        "reserve_error_count": 28,
+        "reserve_error_rate": 0.3783783783783784,
+        "reserve_recall": 0.4189189189189189,
+        "reserve_support": 74,
+        "validation_error_count": 96,
+        "validation_error_rate": 0.18497109826589594,
+        "validation_recall": 0.7071290944123314,
+        "validation_support": 519
+      },
+      {
+        "cohort": "source_family=wiktionary_acquire",
+        "error_rate_delta": null,
+        "recall_delta": null,
+        "reserve_error_count": 27,
+        "reserve_error_rate": 0.39705882352941174,
+        "reserve_recall": 0.4264705882352941,
+        "reserve_support": 68,
+        "validation_error_count": 0,
+        "validation_error_rate": null,
+        "validation_recall": null,
+        "validation_support": 0
+      },
+      {
+        "cohort": "length_bucket=1-2",
+        "error_rate_delta": -0.1423128917291385,
+        "recall_delta": -0.36610544426692887,
+        "reserve_error_count": 11,
+        "reserve_error_rate": 0.13924050632911392,
+        "reserve_recall": 0.3037974683544304,
+        "reserve_support": 79,
+        "validation_error_count": 29,
+        "validation_error_rate": 0.2815533980582524,
+        "validation_recall": 0.6699029126213593,
+        "validation_support": 103
+      },
+      {
+        "cohort": "length_bucket=6-12",
+        "error_rate_delta": 0.17708761826408884,
+        "recall_delta": -0.23570547099958866,
+        "reserve_error_count": 11,
+        "reserve_error_rate": 0.4230769230769231,
+        "reserve_recall": 0.38461538461538464,
+        "reserve_support": 26,
+        "validation_error_count": 46,
+        "validation_error_rate": 0.24598930481283424,
+        "validation_recall": 0.6203208556149733,
+        "validation_support": 187
+      }
+    ],
+    "dominant_false_entry_cohorts": [
+      {
+        "cohort": "label_authority=HUMAN_SETTLED",
+        "error_rate_delta": null,
+        "recall_delta": null,
+        "reserve_error_count": 6,
+        "reserve_error_rate": 0.09836065573770492,
+        "reserve_recall": 0.5737704918032787,
+        "reserve_support": 61,
+        "validation_error_count": 0,
+        "validation_error_rate": null,
+        "validation_recall": null,
+        "validation_support": 0
+      },
+      {
+        "cohort": "label_derivation=semantic_source_evidence",
+        "error_rate_delta": null,
+        "recall_delta": null,
+        "reserve_error_count": 6,
+        "reserve_error_rate": 0.09836065573770492,
+        "reserve_recall": 0.5737704918032787,
+        "reserve_support": 61,
+        "validation_error_count": 0,
+        "validation_error_rate": null,
+        "validation_recall": null,
+        "validation_support": 0
+      },
+      {
+        "cohort": "source_family=hub_or_surface",
+        "error_rate_delta": 0.13339991439577686,
+        "recall_delta": -0.5711703999619537,
+        "reserve_error_count": 6,
+        "reserve_error_rate": 0.13953488372093023,
+        "reserve_recall": 0.4186046511627907,
+        "reserve_support": 43,
+        "validation_error_count": 3,
+        "validation_error_rate": 0.006134969325153374,
+        "validation_recall": 0.9897750511247444,
+        "validation_support": 489
+      },
+      {
+        "cohort": "atom_prose=ATOM",
+        "error_rate_delta": 0.18863636363636366,
+        "recall_delta": -0.7886363636363636,
+        "reserve_error_count": 6,
+        "reserve_error_rate": 0.2,
+        "reserve_recall": 0.2,
+        "reserve_support": 30,
+        "validation_error_count": 2,
+        "validation_error_rate": 0.011363636363636364,
+        "validation_recall": 0.9886363636363636,
+        "validation_support": 176
+      },
+      {
+        "cohort": "provenance=OBSERVED",
+        "error_rate_delta": 0.04387676508344031,
+        "recall_delta": -0.4441335044929397,
+        "reserve_error_count": 4,
+        "reserve_error_rate": 0.0975609756097561,
+        "reserve_recall": 0.43902439024390244,
+        "reserve_support": 41,
+        "validation_error_count": 51,
+        "validation_error_rate": 0.05368421052631579,
+        "validation_recall": 0.8831578947368421,
+        "validation_support": 950
+      },
+      {
+        "cohort": "length_bucket=3-5",
+        "error_rate_delta": 0.15399867812293458,
+        "recall_delta": -0.8486450760079313,
+        "reserve_error_count": 3,
+        "reserve_error_rate": 0.17647058823529413,
+        "reserve_recall": 0.11764705882352941,
+        "reserve_support": 17,
+        "validation_error_count": 2,
+        "validation_error_rate": 0.02247191011235955,
+        "validation_recall": 0.9662921348314607,
+        "validation_support": 89
+      },
+      {
+        "cohort": "length_bucket=1-2",
+        "error_rate_delta": 0.17069327731092437,
+        "recall_delta": -0.6706932773109243,
+        "reserve_error_count": 3,
+        "reserve_error_rate": 0.1875,
+        "reserve_recall": 0.3125,
+        "reserve_support": 16,
+        "validation_error_count": 2,
+        "validation_error_rate": 0.01680672268907563,
+        "validation_recall": 0.9831932773109243,
+        "validation_support": 119
+      },
+      {
+        "cohort": "family_or_domain=SHORT_ATOM_NONE",
+        "error_rate_delta": 0.359375,
+        "recall_delta": -0.609375,
+        "reserve_error_count": 3,
+        "reserve_error_rate": 0.375,
+        "reserve_recall": 0.375,
+        "reserve_support": 8,
+        "validation_error_count": 1,
+        "validation_error_rate": 0.015625,
+        "validation_recall": 0.984375,
+        "validation_support": 64
+      }
+    ],
+    "reserve": {
+      "NONE_recall": 0.5737704918032787,
+      "PRESENT_recall": 0.3710691823899371,
+      "UNCERTAIN_recall": 0.6,
+      "false_entry": 0.09836065573770492,
+      "n": 250,
+      "n_none": 61,
+      "n_present": 159,
+      "n_uncertain": 30
+    },
+    "validation": {
+      "NONE_recall": 0.9089456869009584,
+      "PRESENT_recall": 0.7048665620094191,
+      "UNCERTAIN_recall": 0.6790123456790124,
+      "false_entry": 0.04233226837060703,
+      "n": 2051,
+      "n_none": 1252,
+      "n_present": 637,
+      "n_uncertain": 162
+    }
+  },
+  "stage_b": {
+    "family_failure_split": {
+      "pure_stage_b_family_failures": 1,
+      "stage_a_induced_family_failures": 4
+    },
+    "reserve_correct_present": {
+      "decision_counts": {
+        "ABSTAIN": 12,
+        "AMBIGUOUS": 36,
+        "FAMILY": 11
+      },
+      "family_emission_coverage": 0.1864406779661017,
+      "family_emission_precision": 0.9090909090909091,
+      "margin_distribution": {
+        "mean": 0.04633607426034662,
+        "n": 59,
+        "p50": 0.02000345075752563
+      },
+      "n_correct_stage_a_present": 59,
+      "score_distribution": {
+        "mean": 0.7608190024366502,
+        "n": 59,
+        "p50": 0.7987243914002352
+      },
+      "top1_accuracy": 0.4067796610169492,
+      "top2_accuracy": 0.559322033898305
+    },
+    "validation_correct_present": {
+      "decision_counts": {
+        "ABSTAIN": 5,
+        "AMBIGUOUS": 355,
+        "FAMILY": 89
+      },
+      "family_emission_coverage": 0.19821826280623608,
+      "family_emission_precision": 0.8539325842696629,
+      "margin_distribution": {
+        "mean": 0.05158264020660361,
+        "n": 449,
+        "p50": 0.01713576634209113
+      },
+      "n_correct_stage_a_present": 449,
+      "score_distribution": {
+        "mean": 0.8500098579553793,
+        "n": 449,
+        "p50": 0.8473565721699843
+      },
+      "top1_accuracy": 0.43875278396436523,
+      "top2_accuracy": 0.534521158129176
+    },
+    "validation_end_to_end": {
+      "family_emission_coverage": 0.14599686028257458,
+      "family_emission_precision": 0.8172043010752689,
+      "family_emission_recall": 0.11930926216640503
+    }
+  },
+  "stage_b_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+  "wrong_emissions": [
+    {
+      "classification": "STAGE_A_AND_B_COMPOUND",
+      "cohort": {
+        "atom_prose": "ATOM",
+        "family_or_domain": "gaming-meta",
+        "label_authority": "HUMAN_SETTLED",
+        "label_derivation": "semantic_source_evidence",
+        "length_bucket": "1-2",
+        "none_subtype": "NA",
+        "provenance": "INFERRED",
+        "source_family": "hub_or_surface"
+      },
+      "family_score": 0.8906344380320134,
+      "frozen_evidence_note": "Compound path: gold was not a settled PRESENT family emission target (UNCERTAIN or mismatched Stage-A), yet FAMILY was emitted.",
+      "gold_family": null,
+      "gold_stage_a_label": "UNCERTAIN",
+      "identity": "0198505e7ebdc0bea22f44e0f46b51ced90d1bc84691cccb7675aa8e2cb19864",
+      "margin": 0.25717795338917315,
+      "p_confirmed": 0.999999036362371,
+      "p_possible": 0.9999273635028305,
+      "runner_up_family": "memetic",
+      "runner_up_score": 0.6334564846428402,
+      "stage_a_decision": "EVIDENCE_PRESENT",
+      "stage_b_predicted_family": "gaming-meta"
+    },
+    {
+      "classification": "STAGE_A_FALSE_ENTRY",
+      "cohort": {
+        "atom_prose": "ATOM",
+        "family_or_domain": "SHORT_ATOM_NONE",
+        "label_authority": "HUMAN_SETTLED",
+        "label_derivation": "semantic_source_evidence",
+        "length_bucket": "1-2",
+        "none_subtype": "SHORT_ATOM_NONE",
+        "provenance": "OBSERVED",
+        "source_family": "hub_or_surface"
+      },
+      "family_score": 0.7281085113591649,
+      "frozen_evidence_note": "Gold NO_EVIDENCE crossed both frozen gates into PRESENT; Stage-B then emitted a FAMILY under floors 0.64/0.07.",
+      "gold_family": null,
+      "gold_stage_a_label": "NO_EVIDENCE",
+      "identity": "10d6ca9498d30db86f14982f88d0e58e35010637743e3cc13ea832cc4f468e54",
+      "margin": 0.11047428221477851,
+      "p_confirmed": 0.9386717638382512,
+      "p_possible": 0.9944155034984449,
+      "runner_up_family": "social-evaluation",
+      "runner_up_score": 0.6176342291443864,
+      "stage_a_decision": "EVIDENCE_PRESENT",
+      "stage_b_predicted_family": "conflict-aggression"
+    },
+    {
+      "classification": "STAGE_A_AND_B_COMPOUND",
+      "cohort": {
+        "atom_prose": "ATOM",
+        "family_or_domain": "gaming-meta",
+        "label_authority": "HUMAN_SETTLED",
+        "label_derivation": "semantic_source_evidence",
+        "length_bucket": "1-2",
+        "none_subtype": "NA",
+        "provenance": "INFERRED",
+        "source_family": "hub_or_surface"
+      },
+      "family_score": 0.7117859562467945,
+      "frozen_evidence_note": "Compound path: gold was not a settled PRESENT family emission target (UNCERTAIN or mismatched Stage-A), yet FAMILY was emitted.",
+      "gold_family": null,
+      "gold_stage_a_label": "UNCERTAIN",
+      "identity": "10eba02c7f5284c2842eff22e78f14cf47ef3c94722a779030556ad4167c35fb",
+      "margin": 0.1390863958188161,
+      "p_confirmed": 0.9994706755620205,
+      "p_possible": 0.9993661091438363,
+      "runner_up_family": "memetic",
+      "runner_up_score": 0.5726995604279784,
+      "stage_a_decision": "EVIDENCE_PRESENT",
+      "stage_b_predicted_family": "gaming-meta"
+    },
+    {
+      "classification": "STAGE_A_AND_B_COMPOUND",
+      "cohort": {
+        "atom_prose": "ATOM",
+        "family_or_domain": "gaming-meta",
+        "label_authority": "HUMAN_SETTLED",
+        "label_derivation": "semantic_source_evidence",
+        "length_bucket": "1-2",
+        "none_subtype": "NA",
+        "provenance": "INFERRED",
+        "source_family": "hub_or_surface"
+      },
+      "family_score": 0.6789279428651934,
+      "frozen_evidence_note": "Compound path: gold was not a settled PRESENT family emission target (UNCERTAIN or mismatched Stage-A), yet FAMILY was emitted.",
+      "gold_family": null,
+      "gold_stage_a_label": "UNCERTAIN",
+      "identity": "1232dab546da41b95148687bd682ef3acf0f3cf2ee0861f06cf602856d341068",
+      "margin": 0.10579671286575265,
+      "p_confirmed": 0.9954366184400518,
+      "p_possible": 0.9999999999986502,
+      "runner_up_family": "music-entertainment",
+      "runner_up_score": 0.5731312299994408,
+      "stage_a_decision": "EVIDENCE_PRESENT",
+      "stage_b_predicted_family": "gaming-meta"
+    },
+    {
+      "classification": "STAGE_B_WRONG_FAMILY",
+      "cohort": {
+        "atom_prose": "ATOM",
+        "family_or_domain": "politics-civic",
+        "label_authority": "HUMAN_SETTLED",
+        "label_derivation": "semantic_source_evidence",
+        "length_bucket": "3-5",
+        "none_subtype": "NA",
+        "provenance": "OBSERVED",
+        "source_family": "hub_or_surface"
+      },
+      "family_score": 0.7218494821816291,
+      "frozen_evidence_note": "Stage A correctly admitted PRESENT; Stage-B top1 disagreed with gold family under the frozen index/floors.",
+      "gold_family": "politics-civic",
+      "gold_stage_a_label": "EVIDENCE_PRESENT",
+      "identity": "a20458cd412db693db00d1dafee076330f1971cf9db572fe6ed6f3600f9738f8",
+      "margin": 0.08950553440080444,
+      "p_confirmed": 0.990381839747485,
+      "p_possible": 0.99995534776346,
+      "runner_up_family": "politics-civic",
+      "runner_up_score": 0.6323439477808247,
+      "stage_a_decision": "EVIDENCE_PRESENT",
+      "stage_b_predicted_family": "conflict-aggression"
+    }
+  ]
+}

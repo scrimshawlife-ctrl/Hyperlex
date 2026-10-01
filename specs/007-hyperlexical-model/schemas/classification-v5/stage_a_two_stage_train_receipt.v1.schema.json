@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.classification.v5.stage_a_two_stage_train_receipt.v1",
+  "title": "Two-stage Stage-A train receipt format",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "EXPERIMENT_ID",
+    "DATASET_SHA256",
+    "TRAINING_CONFIG_SHA256",
+    "SELECTED_CHECKPOINT_SHA256",
+    "RUN_RECEIPT_SHA256",
+    "SCIENTIFIC_RESULT",
+    "acceptance_gates",
+    "gate1_confusion",
+    "gate2_confusion",
+    "end_to_end_confusion",
+    "route_diagnostics",
+    "component_metrics",
+    "threshold_grid",
+    "BEST",
+    "RESERVE",
+    "TRAIN"
+  ],
+  "properties": {
+    "schema": {
+      "const": "hyperlex.classification.v5.stage_a_two_stage_train_receipt.v1"
+    },
+    "EXPERIMENT_ID": {
+      "const": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001"
+    },
+    "SCIENTIFIC_RESULT": {
+      "enum": ["SETTLED_PASS", "SETTLED_FAIL"]
+    },
+    "BEST": { "const": "UNCHANGED" },
+    "RESERVE": { "const": "unused" },
+    "TRAIN": { "const": true },
+    "acceptance_gates": {
+      "type": "object",
+      "required": [
+        "false_evidence_entry_rate_on_none",
+        "EVIDENCE_PRESENT_recall",
+        "NO_EVIDENCE_recall"
+      ]
+    },
+    "component_metrics": {
+      "type": "object",
+      "required": ["gate1", "gate2"],
+      "properties": {
+        "gate1": {
+          "type": "object",
+          "required": [
+            "NO_EVIDENCE_recall",
+            "POSSIBLE_EVIDENCE_recall",
+            "false_possible_entry_rate"
+          ]
+        },
+        "gate2": {
+          "type": "object",
+          "required": [
+            "CONFIRMED_PRESENT_recall",
+            "UNCERTAIN_recall",
+            "macro_f1"
+          ]
+        }
+      }
+    },
+    "route_diagnostics": {
+      "type": "object",
+      "required": ["PRESENT_FN", "NONE_FP", "UNCERTAIN"]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_BEST_EPOCH": 11,
+  "architecture": "HYPERLEX_V5_STAGE_A_TWO_STAGE_DECISION_GRAPH_V1",
+  "architecture_receipt_sha256": "631427cc4c1b09bac1e3a2c5e081c7e9fc0947babda26c03cb73895f47754697",
+  "checkpoint_sha256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "code_revision": "1a30323adf8c51acd4a79a93d84a70baef3d443d",
+  "component": "STAGE_A",
+  "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001",
+  "forward_schema": "hyperlex.classification.v5.stage_a_two_stage_forward.v1",
+  "gate1_threshold": 0.75,
+  "gate2_threshold": 0.5,
+  "load_sequence": [
+    "modernbert_trunk",
+    "model_wide_BEST_encoder_overlay",
+    "STAGE_A_BEST_adapted_layers_20_21",
+    "gate1_head",
+    "gate2_head"
+  ],
+  "model_wide_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "model_wide_BEST_mutated": false,
+  "parent_encoder_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "previous_STAGE_A_BEST": null,
+  "promoted_at": "2026-09-30T23:20:17Z",
+  "promotion_rule": "PROMOTE_V5_STAGE_A_TWO_STAGE_SELECTED",
+  "schema": "hyperlex.classification.v5.stage_a_best_pointer.v1",
+  "semantic_outputs": [
+    "NO_EVIDENCE",
+    "EVIDENCE_PRESENT",
+    "UNCERTAIN"
+  ],
+  "weights_path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v5-stage-a-two-stage-001/model.safetensors"
+}

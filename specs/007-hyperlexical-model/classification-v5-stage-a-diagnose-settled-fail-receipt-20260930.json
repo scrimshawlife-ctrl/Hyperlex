@@ -1,0 +1,83 @@
+{
+  "ARCHITECTURE_CHANGE_JUSTIFIED": false,
+  "BEST_MUTATED": false,
+  "BOOTSTRAP_95_FALSE_ENTRY": {
+    "ci95_high": 0.17567567567567566,
+    "ci95_low": 0.06896551724137931,
+    "n": 2000
+  },
+  "CODE_REVISION": "aa00b61f2c6e984412394251c7f1cf31001210f2",
+  "CONCENTRATION": {
+    "false_PRESENT_OBSERVED": 62,
+    "false_PRESENT_ORDINARY_DOMAIN_NONE": 60,
+    "share_observed_among_false_PRESENT": 0.9841269841269841,
+    "share_ordinary_among_false_PRESENT": 0.9523809523809523
+  },
+  "CONTROLLED_DELTAS": {
+    "EVIDENCE_PRESENT_recall": -0.40909090909090917,
+    "NO_EVIDENCE_recall": -0.12574850299401197,
+    "UNCERTAIN_recall": 0.0,
+    "false_evidence_entry_rate": 0.11976047904191615,
+    "matched_n": 302,
+    "mean_P_EVIDENCE_PRESENT": -0.10065036699108215
+  },
+  "CONTROLLED_INTERPRETATION": "INSUFFICIENT_MATCHED_SUPPORT",
+  "COUNTERFACTUAL_MINIMUM_CORRECTIONS": {
+    "NONE_to_NONE": 0,
+    "PRESENT_false_negatives_to_PRESENT": 23,
+    "false_PRESENT_to_non_PRESENT": 18,
+    "notes": "Accounting only under frozen diagnostic thresholds; not threshold optimization."
+  },
+  "CURRENT_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "DATASET_CHANGE_JUSTIFIED": true,
+  "DATASET_SHA256": "a81ca68ad3310981c60d2500a83a0989adeb967cbee6ad6dff003ed2c705efa9",
+  "ERROR_COHORT_COUNTS": {
+    "ORDINARY_DOMAIN_FALSE_PRESENT": 60,
+    "OTHER_NONE_FALSE_PRESENT": 3,
+    "PRESENT_FALSE_NONE": 146,
+    "PRESENT_FALSE_UNCERTAIN": 3,
+    "UNCERTAIN_MISCLASSIFIED": 53
+  },
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-001",
+  "LABEL_PROVENANCE_AUDIT": {
+    "LABEL_PROVENANCE_CLEAN": 215
+  },
+  "MATCHED_COVERAGE": 0.4182825484764543,
+  "MATCHED_N": 302,
+  "NEXT_ACTION": "REMEDIATE_V5_STAGE_A_MIXED_FAILURE",
+  "ORDINARY_DOMAIN_FALSE_PRESENT_N": 60,
+  "ORDINARY_FALSE_ALL_OBSERVED": {
+    "OBSERVED": 60
+  },
+  "OVERALL_METRICS": {
+    "EVIDENCE_PRESENT_recall": 0.6477541371158393,
+    "NO_EVIDENCE_recall": 0.9286498353457738,
+    "false_evidence_entry_rate_on_none": 0.06915477497255763
+  },
+  "PRIMARY_DIAGNOSIS": "MIXED_STAGE_A_FAILURE",
+  "PRIVATE_DIAG_DIR": "/home/morpheus/hlx-private/classification-v5-stage-a-train-20260930/diagnosis-settled-fail-20260930",
+  "RAW_DELTAS": {
+    "EVIDENCE_PRESENT_recall": -0.529923273657289,
+    "NO_EVIDENCE_recall": -0.13660641118341765,
+    "UNCERTAIN_recall": -0.021739130434782608,
+    "false_evidence_entry_rate": 0.13226801638949146,
+    "mean_P_EVIDENCE_PRESENT": -0.009146802635940088
+  },
+  "RECEIPT_SHA256": "246bbae77d55d8b0c97193b4452f13ac33410dd552ab7eaeadc4e85466abe9cd",
+  "RESERVE_CONSUMED": false,
+  "SELECTED_CHECKPOINT_SHA256": "3b1b574acceea183363b8cea41e1b7e4e13dc934bacc66deb4b3b8caeabc90a7",
+  "SMALLEST_REMEDIATION": "Jointly remediate OBSERVED ordinary-domain NONE acquisition and source/domain skew; defer architecture change.",
+  "TRAIN": false,
+  "controlled_comparison_rule": "HYPERLEX_V5_STAGE_A_CONTROLLED_COMPARISON_V1",
+  "decision_rationale": {
+    "controlled_interpretation": "INSUFFICIENT_MATCHED_SUPPORT",
+    "flagged_domain_count": 19,
+    "flagged_source_count": 15,
+    "provenance_clean_rate": 1.0,
+    "provenance_questionable_rate": 0.0,
+    "share_observed_among_false_PRESENT": 0.9841269841269841,
+    "share_ordinary_among_false_PRESENT": 0.9523809523809523
+  },
+  "rule": "HYPERLEX_V5_STAGE_A_DIAGNOSE_SETTLED_FAIL_V1",
+  "schema": "hyperlex.classification.v5.stage_a_diagnose_settled_fail.v1"
+}

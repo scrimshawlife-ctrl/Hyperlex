@@ -1,0 +1,995 @@
+{
+  "BEST_MUTATED": false,
+  "EVIDENCE_PRESENT_recall": 0.8907363420427553,
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NO_EVIDENCE_recall": 0.784452296819788,
+  "RESERVE": "SPENT",
+  "SCIENTIFIC_RESULT": "SETTLED_FAIL",
+  "SELECTED_CHECKPOINT_SHA256": "26841d5f3a8b9cd4237f79203b80697f2da186e7d4b30ab6c08d528adba56e76",
+  "SPENT_RESERVE": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "SPENT_RESERVE_OVERLAP": 0,
+  "STAGE_A_BEST_MUTATED": false,
+  "TRAINING_STATUS": "COMPLETE",
+  "UNCERTAIN_recall": 0.8656716417910447,
+  "by_domain": {
+    "ai-native": {
+      "EVIDENCE_PRESENT_recall": 0.9444444444444444,
+      "NO_EVIDENCE_recall": 0.8504672897196262,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.14953271028037382,
+      "n": 127,
+      "stage_a_macro_f1": 0.8604131769960915
+    },
+    "anatomy": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.8181818181818182,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 19,
+      "stage_a_macro_f1": 0.6333333333333333
+    },
+    "astronomy": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 16,
+      "stage_a_macro_f1": 0.6666666666666666
+    },
+    "betting-sharp": {
+      "EVIDENCE_PRESENT_recall": 0.7317073170731707,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 51,
+      "stage_a_macro_f1": 0.8219200259025418
+    },
+    "botany": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.7801418439716312,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.19148936170212766,
+      "n": 150,
+      "stage_a_macro_f1": 0.4254980079681275
+    },
+    "chemistry": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.6885245901639344,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.3114754098360656,
+      "n": 75,
+      "stage_a_macro_f1": 0.4704262204778627
+    },
+    "crypto-degen": {
+      "EVIDENCE_PRESENT_recall": 0.8571428571428571,
+      "NO_EVIDENCE_recall": 0.6666666666666666,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.3333333333333333,
+      "n": 27,
+      "stage_a_macro_f1": 0.4978111319574734
+    },
+    "fashion-aesthetic": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 4,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "gaming-meta": {
+      "EVIDENCE_PRESENT_recall": 0.75,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 109,
+      "stage_a_macro_f1": 0.46258503401360535
+    },
+    "geology": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.9166666666666666,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.041666666666666664,
+      "n": 37,
+      "stage_a_macro_f1": 0.6398282340311326
+    },
+    "internet-slang": {
+      "EVIDENCE_PRESENT_recall": 0.85,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 44,
+      "stage_a_macro_f1": 0.9063063063063064
+    },
+    "mathematics": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 22,
+      "stage_a_macro_f1": 0.6666666666666666
+    },
+    "memetic": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.7272727272727273,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 22,
+      "stage_a_macro_f1": 0.28070175438596495
+    },
+    "meteorology": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.5365853658536586,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.4634146341463415,
+      "n": 49,
+      "stage_a_macro_f1": 0.38518518518518524
+    },
+    "near-domain": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 17,
+      "stage_a_macro_f1": 0.6666666666666666
+    },
+    "ornithology": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.6046511627906976,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.3953488372093023,
+      "n": 53,
+      "stage_a_macro_f1": 0.4313879096487792
+    },
+    "physics": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 28,
+      "stage_a_macro_f1": 0.6666666666666666
+    },
+    "politics-civic": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "regional-cultural": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.6,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 5,
+      "stage_a_macro_f1": 0.24999999999999997
+    },
+    "social-evaluation": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 4,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "sports-competition": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.5,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.2222222222222222
+    },
+    "technology-ai": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 24,
+      "stage_a_macro_f1": 1.0
+    },
+    "unspecified": {
+      "EVIDENCE_PRESENT_recall": 0.96,
+      "NO_EVIDENCE_recall": 0.6578947368421053,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.34210526315789475,
+      "n": 138,
+      "stage_a_macro_f1": 0.5549763145992526
+    },
+    "zoology": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.9473684210526315,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 29,
+      "stage_a_macro_f1": 0.6576576576576577
+    }
+  },
+  "by_length_band": {
+    "1-4": {
+      "EVIDENCE_PRESENT_recall": 0.7531645569620253,
+      "NO_EVIDENCE_recall": 0.45394736842105265,
+      "UNCERTAIN_recall": 0.7368421052631579,
+      "false_evidence_entry_rate_on_none": 0.5460526315789473,
+      "n": 329,
+      "stage_a_macro_f1": 0.6770222115049701
+    },
+    "17-32": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.937799043062201,
+      "UNCERTAIN_recall": 0.9285714285714286,
+      "false_evidence_entry_rate_on_none": 0.03827751196172249,
+      "n": 322,
+      "stage_a_macro_f1": 0.9355681706270488
+    },
+    "33-64": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.9629629629629629,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.037037037037037035,
+      "n": 79,
+      "stage_a_macro_f1": 0.6572027553159628
+    },
+    "5-8": {
+      "EVIDENCE_PRESENT_recall": 0.9545454545454546,
+      "NO_EVIDENCE_recall": 0.7777777777777778,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.18518518518518517,
+      "n": 71,
+      "stage_a_macro_f1": 0.5876923076923077
+    },
+    "9-16": {
+      "EVIDENCE_PRESENT_recall": 0.9479166666666666,
+      "NO_EVIDENCE_recall": 0.8741721854304636,
+      "UNCERTAIN_recall": 0.8333333333333334,
+      "false_evidence_entry_rate_on_none": 0.11258278145695365,
+      "n": 253,
+      "stage_a_macro_f1": 0.8406504065040651
+    }
+  },
+  "by_provenance": {
+    "INFERRED": {
+      "EVIDENCE_PRESENT_recall": 0.9790794979079498,
+      "NO_EVIDENCE_recall": 0.9166666666666666,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.08333333333333333,
+      "n": 503,
+      "stage_a_macro_f1": 0.630872324023009
+    },
+    "OBSERVED": {
+      "EVIDENCE_PRESENT_recall": 0.7747252747252747,
+      "NO_EVIDENCE_recall": 0.6688741721854304,
+      "UNCERTAIN_recall": 0.8656716417910447,
+      "false_evidence_entry_rate_on_none": 0.304635761589404,
+      "n": 551,
+      "stage_a_macro_f1": 0.7579482757384716
+    }
+  },
+  "by_source_family": {
+    "hub_observed_ai-native": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 6,
+      "stage_a_macro_f1": 0.6666666666666666
+    },
+    "hub_observed_none": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.25,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.75,
+      "n": 12,
+      "stage_a_macro_f1": 0.13333333333333333
+    },
+    "inferred_HARD_NONE_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 1.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.0
+    },
+    "inferred_HARD_NONE_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_HARD_NONE_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_LEXICAL_LOOKALIKE_NONE_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.8723404255319149,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.1276595744680851,
+      "n": 47,
+      "stage_a_macro_f1": 0.3106060606060606
+    },
+    "inferred_LEXICAL_LOOKALIKE_NONE_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.9,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.1,
+      "n": 40,
+      "stage_a_macro_f1": 0.31578947368421056
+    },
+    "inferred_LEXICAL_LOOKALIKE_NONE_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.8709677419354839,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.12903225806451613,
+      "n": 31,
+      "stage_a_macro_f1": 0.3103448275862069
+    },
+    "inferred_LEXICAL_LOOKALIKE_NONE_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.9069767441860465,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.09302325581395349,
+      "n": 43,
+      "stage_a_macro_f1": 0.3170731707317073
+    },
+    "inferred_NEAR_DOMAIN_NONE_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 8,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_NEAR_DOMAIN_NONE_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 9,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_NEAR_DOMAIN_NONE_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_NEAR_DOMAIN_NONE_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 5,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_ORDINARY_DOMAIN_NONE_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 15,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_ORDINARY_DOMAIN_NONE_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 13,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_ORDINARY_DOMAIN_NONE_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 17,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_ORDINARY_DOMAIN_NONE_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 7,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_POSITIVE_EVIDENCE_0": {
+      "EVIDENCE_PRESENT_recall": 0.9848484848484849,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 66,
+      "stage_a_macro_f1": 0.33078880407124683
+    },
+    "inferred_POSITIVE_EVIDENCE_1": {
+      "EVIDENCE_PRESENT_recall": 0.9811320754716981,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 53,
+      "stage_a_macro_f1": 0.33015873015873015
+    },
+    "inferred_POSITIVE_EVIDENCE_2": {
+      "EVIDENCE_PRESENT_recall": 1.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 58,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_POSITIVE_EVIDENCE_3": {
+      "EVIDENCE_PRESENT_recall": 0.9516129032258065,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 62,
+      "stage_a_macro_f1": 0.325068870523416
+    },
+    "inferred_SHORT_ATOM_NONE_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 6,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "inferred_SHORT_ATOM_NONE_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.8333333333333334,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.16666666666666666,
+      "n": 6,
+      "stage_a_macro_f1": 0.30303030303030304
+    },
+    "inferred_SHORT_ATOM_NONE_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.7142857142857143,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.2857142857142857,
+      "n": 7,
+      "stage_a_macro_f1": 0.27777777777777773
+    },
+    "inferred_SHORT_ATOM_NONE_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_anatomy_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.8,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 5,
+      "stage_a_macro_f1": 0.29629629629629634
+    },
+    "wikipedia_anatomy_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.5,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.2222222222222222
+    },
+    "wikipedia_anatomy_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_betting-sharp_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_botany_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.6,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.2,
+      "n": 5,
+      "stage_a_macro_f1": 0.24999999999999997
+    },
+    "wikipedia_botany_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 4,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_botany_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 7,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_botany_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 7,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_chemistry_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_chemistry_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 5,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_chemistry_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 4,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_chemistry_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_fashion-aesthetic_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_fashion-aesthetic_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_fashion-aesthetic_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_geology_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 5,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_geology_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.75,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 4,
+      "stage_a_macro_f1": 0.2857142857142857
+    },
+    "wikipedia_geology_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.75,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.25,
+      "n": 4,
+      "stage_a_macro_f1": 0.2857142857142857
+    },
+    "wikipedia_geology_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_internet-slang_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 2,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_internet-slang_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 4,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_internet-slang_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 7,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_internet-slang_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_memetic_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_memetic_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.6666666666666666,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 6,
+      "stage_a_macro_f1": 0.26666666666666666
+    },
+    "wikipedia_memetic_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 5,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_memetic_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.75,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 4,
+      "stage_a_macro_f1": 0.2857142857142857
+    },
+    "wikipedia_meteorology_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_meteorology_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_ornithology_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_ornithology_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_physics_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_physics_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_physics_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_politics-civic_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_politics-civic_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_sports-competition_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.0
+    },
+    "wikipedia_sports-competition_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_technology-ai_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_technology-ai_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_technology-ai_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.0,
+      "UNCERTAIN_recall": 1.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_zoology_0": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 0.8,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 5,
+      "stage_a_macro_f1": 0.29629629629629634
+    },
+    "wikipedia_zoology_1": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 1,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_zoology_2": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 4,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wikipedia_zoology_3": {
+      "EVIDENCE_PRESENT_recall": 0.0,
+      "NO_EVIDENCE_recall": 1.0,
+      "UNCERTAIN_recall": 0.0,
+      "false_evidence_entry_rate_on_none": 0.0,
+      "n": 3,
+      "stage_a_macro_f1": 0.3333333333333333
+    },
+    "wiktionary_aggregate": {
+      "EVIDENCE_PRESENT_recall": 0.7696629213483146,
+      "NO_EVIDENCE_recall": 0.5862068965517241,
+      "UNCERTAIN_recall": 0.7058823529411765,
+      "false_evidence_entry_rate_on_none": 0.39901477832512317,
+      "n": 398,
+      "stage_a_macro_f1": 0.6893067033976125
+    }
+  },
+  "component_metrics": {
+    "gate1": {
+      "NO_EVIDENCE_recall": 0.784452296819788,
+      "POSSIBLE_EVIDENCE_recall": 0.9036885245901639,
+      "false_possible_entry_rate": 0.21554770318021202,
+      "macro_f1": 0.8396571450175399
+    },
+    "gate2": {
+      "CONFIRMED_PRESENT_recall": 0.8907363420427553,
+      "UNCERTAIN_recall": 0.8955223880597015,
+      "macro_f1": 0.8138195639185424,
+      "n_eligible": 488
+    },
+    "note": "Component metrics are diagnostic; end-to-end gates remain authoritative."
+  },
+  "disposition": "SETTLED_FAIL",
+  "epochs_ran": 12,
+  "false_evidence_entry_rate_on_none": 0.20141342756183744,
+  "gate1_threshold": null,
+  "gate2_present_threshold": null,
+  "generalization_cells": {
+    "DEFINITION_STYLE/EVIDENCE_PRESENT": {
+      "Gate1_block_rate": 0.025,
+      "Gate2_reject_rate_among_entered": 0.01282051282051282,
+      "false_evidence_entry_rate_on_none": null,
+      "n": 80,
+      "recall": 0.9625,
+      "support": 80,
+      "target_label": "EVIDENCE_PRESENT"
+    },
+    "DEFINITION_STYLE/NO_EVIDENCE": {
+      "Gate1_block_rate": 0.8848920863309353,
+      "Gate2_reject_rate_among_entered": 0.1875,
+      "false_evidence_entry_rate_on_none": 0.09352517985611511,
+      "n": 139,
+      "recall": 0.8848920863309353,
+      "support": 139,
+      "target_label": "NO_EVIDENCE"
+    },
+    "ORDINARY_PROSE/EVIDENCE_PRESENT": {
+      "Gate1_block_rate": 0.0,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": null,
+      "n": 106,
+      "recall": 1.0,
+      "support": 106,
+      "target_label": "EVIDENCE_PRESENT"
+    },
+    "ORDINARY_PROSE/NO_EVIDENCE": {
+      "Gate1_block_rate": 0.9611111111111111,
+      "Gate2_reject_rate_among_entered": 0.7142857142857143,
+      "false_evidence_entry_rate_on_none": 0.011111111111111112,
+      "n": 180,
+      "recall": 0.9611111111111111,
+      "support": 180,
+      "target_label": "NO_EVIDENCE"
+    },
+    "PROSE/EVIDENCE_PRESENT": {
+      "Gate1_block_rate": 0.05063291139240506,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": null,
+      "n": 79,
+      "recall": 0.9493670886075949,
+      "support": 79,
+      "target_label": "EVIDENCE_PRESENT"
+    },
+    "PROSE/NO_EVIDENCE": {
+      "Gate1_block_rate": 0.8315789473684211,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": 0.16842105263157894,
+      "n": 95,
+      "recall": 0.8315789473684211,
+      "support": 95,
+      "target_label": "NO_EVIDENCE"
+    },
+    "SHORT_ATOM/EVIDENCE_PRESENT": {
+      "Gate1_block_rate": 0.25,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": null,
+      "n": 156,
+      "recall": 0.75,
+      "support": 156,
+      "target_label": "EVIDENCE_PRESENT"
+    },
+    "SHORT_ATOM/NO_EVIDENCE": {
+      "Gate1_block_rate": 0.45394736842105265,
+      "Gate2_reject_rate_among_entered": 0.0,
+      "false_evidence_entry_rate_on_none": 0.5460526315789473,
+      "n": 152,
+      "recall": 0.45394736842105265,
+      "support": 152,
+      "target_label": "NO_EVIDENCE"
+    }
+  },
+  "n_threshold_passing": 0,
+  "optimizer_steps": 3804,
+  "promotion_candidate": false,
+  "receipt_sha256": "35d9a70675dc320116d68e52dda52bc6118140ae401d709ed104b5ae290d8025",
+  "restored_epoch": 12,
+  "route_diagnostics": {
+    "NONE_FP": {
+      "leaked_through_both_gates": 114,
+      "leaked_through_gate1": 122
+    },
+    "PRESENT_FN": {
+      "blocked_at_gate1": 45,
+      "passed_gate1_rejected_at_gate2": 1
+    },
+    "UNCERTAIN": {
+      "blocked_at_gate1": 2,
+      "correctly_routed": 58,
+      "promoted_incorrectly_to_PRESENT": 7
+    }
+  },
+  "run_root": "/home/morpheus/hlx-private/classification-v5-stage-a-two-stage-generalization-train-v1-20261001/classification-v5-stage-a-two-stage-generalization-001",
+  "selection_score": 0.8976427205356838,
+  "split_witness_sha256": "44f5841f9c3eb7b5ab3d1b79ecf9df8ff3143bb50b496ea6398de748d2635805",
+  "stage_a_best_comparison": {
+    "PARENT_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "STAGE_A_BEST_MUTATED": false,
+    "comparison_only": true,
+    "deltas": {
+      "EVIDENCE_PRESENT_recall": {
+        "delta": 0.18583634204275534,
+        "reference": 0.7049,
+        "value": 0.8907363420427553
+      },
+      "NO_EVIDENCE_recall": {
+        "delta": -0.12444770318021203,
+        "reference": 0.9089,
+        "value": 0.784452296819788
+      },
+      "UNCERTAIN_recall": {
+        "delta": 0.18667164179104467,
+        "reference": 0.679,
+        "value": 0.8656716417910447
+      },
+      "false_evidence_entry_rate_on_none": {
+        "delta": 0.15911342756183744,
+        "reference": 0.0423,
+        "value": 0.20141342756183744
+      },
+      "stage_a_macro_f1": {
+        "delta": 0.10012319210565357,
+        "reference": 0.7411,
+        "value": 0.8412231921056535
+      }
+    },
+    "reference": {
+      "EVIDENCE_PRESENT_recall": 0.7049,
+      "NO_EVIDENCE_recall": 0.9089,
+      "UNCERTAIN_recall": 0.679,
+      "false_evidence_entry_rate_on_none": 0.0423,
+      "stage_a_macro_f1": 0.7411
+    }
+  },
+  "stage_a_macro_f1": 0.8412231921056535
+}

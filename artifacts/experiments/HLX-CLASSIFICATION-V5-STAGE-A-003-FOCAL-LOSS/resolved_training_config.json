@@ -1,0 +1,163 @@
+{
+  "acceptance_gates": {
+    "EVIDENCE_PRESENT_recall_min": 0.7,
+    "NO_EVIDENCE_recall_min": 0.9,
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "optimize_family_metrics_before_stage_a_pass": false
+  },
+  "architecture": {
+    "encoder": "ModernBERT-base",
+    "head": "linear_hidden_to_3_logits",
+    "head_init": "xavier_uniform_bias_zeros",
+    "pooling": "last_hidden_state[:,0]"
+  },
+  "best_encoder_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "checkpoint_selection": {
+    "metric": "stage_a_macro_f1",
+    "strict_improvement": true,
+    "tie_break": [
+      "lower_false_evidence_entry_rate_on_none",
+      "higher_NO_EVIDENCE_recall",
+      "earlier_epoch"
+    ]
+  },
+  "class_order": [
+    "NO_EVIDENCE",
+    "EVIDENCE_PRESENT",
+    "UNCERTAIN"
+  ],
+  "class_weight_report": {
+    "class_weights": {
+      "EVIDENCE_PRESENT": 0.871574519528987,
+      "NO_EVIDENCE": 0.5,
+      "UNCERTAIN": 1.7466788753540448
+    },
+    "effective_counts": {
+      "EVIDENCE_PRESENT": 371.5,
+      "NO_EVIDENCE": 1936.5,
+      "UNCERTAIN": 92.5
+    },
+    "normalized_weights": {
+      "EVIDENCE_PRESENT": 0.871574519528987,
+      "NO_EVIDENCE": 0.38174660511696795,
+      "UNCERTAIN": 1.7466788753540448
+    },
+    "policy": {
+      "clip_max": 2.0,
+      "clip_min": 0.5,
+      "formula": "sqrt(median(effective_count)/effective_count_c); normalize mean=1.0; clip",
+      "source_split": "train"
+    },
+    "provenance_multipliers": {
+      "INFERRED": 0.5,
+      "OBSERVED": 1.0
+    },
+    "raw_weights": {
+      "EVIDENCE_PRESENT": 1.0,
+      "NO_EVIDENCE": 0.43799651844258825,
+      "UNCERTAIN": 2.004049953523169
+    }
+  },
+  "code_revision": "d58e078fd776475d886cd1f516ea9f2e99816bd9",
+  "dataset_sha256": "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b",
+  "decision_policy": "UNCHANGED_decide_evidence_P_PRESENT_only",
+  "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS",
+  "label_provenance_rule": "HYPERLEX_V5_STAGE_A_LABEL_PROVENANCE_V1",
+  "loss": {
+    "ALLOW_FOCAL_LOSS_FOR": "HLX-CLASSIFICATION-V5-STAGE-A-003-FOCAL-LOSS",
+    "alpha_policy": "NONE",
+    "focal_loss_spec_sha256": "dce6dbf5c1d1239d000396090cb01f24f16009605becb9ba41fcce18af768b5f",
+    "forbidden": [
+      "contrastive",
+      "family",
+      "prototype",
+      "reserve_derived_weighting",
+      "focal_alpha",
+      "gamma_sweep"
+    ],
+    "formula": "p = softmax(logits); p_t = p[y]; base_ce = class_weight[y] * provenance_multiplier * (-log p_t); focal = (1 - p_t)^gamma * base_ce; batch_loss = mean(focal over examples). No focal alpha. gamma frozen at 2.0.",
+    "gamma": 2.0,
+    "name": "weighted_focal_cross_entropy",
+    "numerical_implementation": "stable_log_softmax",
+    "provenance_multipliers": {
+      "INFERRED": 0.5,
+      "OBSERVED": 1.0
+    },
+    "reduction": "MEAN_OVER_VALID_EXAMPLES",
+    "scope": "experiment_scoped_exception_to_parent_forbidden_focal"
+  },
+  "optimization": {
+    "early_stopping_patience": 4,
+    "gradient_accumulation": 1,
+    "learning_rate": 2e-05,
+    "max_epochs": 12,
+    "max_grad_norm": 1.0,
+    "micro_batch_size": 8,
+    "minimum_epochs": 4,
+    "mixed_precision": "runtime_supported_deterministic_only",
+    "optimizer": "AdamW",
+    "warmup_ratio": 0.05,
+    "weight_decay": 0.01
+  },
+  "parent_experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-002",
+  "parent_training_config_sha256": "2ce1b29bf2be54cc03ac25d66301bf0991226dffd3a1d94bcdaa7a48559d40af",
+  "rule": "HYPERLEX_CLASSIFICATION_V5_STAGE_A_TRAIN_V1",
+  "schema": "hyperlex.classification.v5.stage_a_003_resolved_config.v1",
+  "seed": 42,
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R8",
+  "threshold_grid": {
+    "none_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "present_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "require_none_lt_present": true
+  },
+  "threshold_selection": {
+    "acceptance_required": [
+      "false_evidence_entry_rate_on_none <= 0.05",
+      "EVIDENCE_PRESENT_recall >= 0.70",
+      "NO_EVIDENCE_recall >= 0.90"
+    ],
+    "fail_if_no_feasible": "SETTLED_FAIL",
+    "maximize_in_order": [
+      "stage_a_macro_f1",
+      "EVIDENCE_PRESENT_recall",
+      "NO_EVIDENCE_recall",
+      "uncertain_band_width"
+    ],
+    "score": "evidence_score = P(EVIDENCE_PRESENT)"
+  },
+  "tokenization": {
+    "max_length": 64,
+    "padding": "right",
+    "tokenizer_identity": "local_files_only:ModernBERT-base",
+    "truncation": true
+  },
+  "train_run_limit": 1,
+  "trainable": {
+    "evidence_head": true,
+    "last_trainable_encoder_layers": 2,
+    "mutate_best": false
+  },
+  "training_config_sha256": "b8aad3ba30fa1c96803551fc03c132c0390caa6c3eb86f5846eda3b329665231"
+}

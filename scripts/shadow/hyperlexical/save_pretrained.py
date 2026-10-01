@@ -16,6 +16,8 @@ _HEAD_NAMES = (
     "applicability",
     "family_head",
     "evidence_head",
+    "gate1_head",
+    "gate2_head",
 )
 
 

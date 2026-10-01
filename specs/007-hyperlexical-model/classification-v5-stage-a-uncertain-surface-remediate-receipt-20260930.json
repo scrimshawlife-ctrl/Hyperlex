@@ -1,0 +1,208 @@
+{
+  "BEST": "UNCHANGED",
+  "best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "disjointness": {
+    "cross_split_near_duplicate_clusters": 0,
+    "identity_overlap": 0,
+    "parent_lineage_overlap": 0,
+    "source_hash_overlap": 0
+  },
+  "final_state": "READY",
+  "gate_rule": "HYPERLEX_V5_STAGE_A_SURFACE_READINESS_GATES_V1",
+  "n": 6488,
+  "n_train": 4437,
+  "n_validation": 2051,
+  "next_action": "AUTHORIZE_V5_STAGE_A_NEXT_RUN_ON_REMEDIATED_SURFACE",
+  "original_v5_gate_table": {
+    "acquisition": true,
+    "disjointness": true,
+    "duplicate_quality": true,
+    "embedding_hardness": true,
+    "gate_pass": true,
+    "lexical_overlap": true,
+    "pairing": true,
+    "provenance": true,
+    "schema_integrity": true,
+    "shallow_shortcut": true,
+    "surface_balance": true,
+    "topic_balance": true,
+    "validation": true
+  },
+  "parent_diagnosis": "MIXED_UNCERTAIN_SURFACE_FAILURE",
+  "parent_surface_dataset_sha256": "c0fdd82d1734585a7d852318ac5b390cc5e2c50908c0ef9f9eba4b3f7ebedc8b",
+  "present_uncertain_boundary": {
+    "PRESENT_UNCERTAIN_BOUNDARY_CONFLICT": false,
+    "absorbed_sample": [],
+    "n_absorbed_into_non_present": 0,
+    "n_genuine_present_fn": 39,
+    "n_missing_from_surface": 0,
+    "note": "Prior GENUINELY_UNCERTAIN PRESENT FNs must remain gold PRESENT."
+  },
+  "remediate_rule": "REMEDIATE_V5_UNCERTAIN_SURFACE",
+  "reserve": "UNUSED",
+  "selected_checkpoint_sha256": "dba6d49103d7c895d7febc46c81491a07ea19acd551f86b3a9fd9f0a1c0782a3",
+  "semantic_placement": {
+    "by_reason_keys": [
+      "CONFLICTING_EVIDENCE",
+      "INSUFFICIENT_CONTEXT",
+      "MULTIPLE_PLAUSIBLE_INTERPRETATIONS",
+      "PARTIAL_REQUIRED_CORE",
+      "UNRESOLVED_SOURCE_MEANING"
+    ],
+    "placement_rates": {
+      "CENTERED_BETWEEN": 0.8574660633484162,
+      "ISOLATED": 0.0,
+      "NONE_LIKE": 0.029411764705882353,
+      "PRESENT_LIKE": 0.11312217194570136
+    }
+  },
+  "settlement_sha256": "7f7bb4ea7de2bf6b60bf715e5d54eb400c388930dd37ec3e31cd614c87f678d3",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+  "train": false,
+  "uncertain_gate_table": {
+    "all_five_reasons_represented": true,
+    "atom_share": true,
+    "prose_share": true,
+    "reason_CONFLICTING_EVIDENCE": true,
+    "reason_INSUFFICIENT_CONTEXT": true,
+    "reason_MULTIPLE_PLAUSIBLE_INTERPRETATIONS": true,
+    "reason_PARTIAL_REQUIRED_CORE": true,
+    "reason_UNRESOLVED_SOURCE_MEANING": true,
+    "required_fields_missing_rows": true,
+    "semantic_placement": true,
+    "source_family_cap": true,
+    "uncertain_observed_share": true,
+    "validation_source_family_cap": true,
+    "validation_uncertain_observed_share": true
+  },
+  "uncertain_support": {
+    "UNCERTAIN_total": 442,
+    "UNCERTAIN_train": 280,
+    "UNCERTAIN_validation": 162,
+    "atom_share_train": 0.17857142857142858,
+    "atom_share_validation": 0.2345679012345679,
+    "by_ATOM_PROSE": {
+      "all": {
+        "AMBIGUOUS": 13,
+        "ATOM": 88,
+        "PROSE": 341
+      },
+      "train": {
+        "AMBIGUOUS": 7,
+        "ATOM": 50,
+        "PROSE": 223
+      },
+      "validation": {
+        "AMBIGUOUS": 6,
+        "ATOM": 38,
+        "PROSE": 118
+      }
+    },
+    "by_ambiguity_reason": {
+      "CONFLICTING_EVIDENCE": {
+        "ATOM_PROSE": {
+          "ATOM": 9,
+          "PROSE": 90
+        },
+        "observed_train": 32,
+        "observed_validation": 26,
+        "source_families": [
+          "inf",
+          "wik",
+          "wp"
+        ],
+        "total": 99,
+        "train": 58,
+        "validation": 41
+      },
+      "INSUFFICIENT_CONTEXT": {
+        "ATOM_PROSE": {
+          "ATOM": 53,
+          "PROSE": 47
+        },
+        "observed_train": 57,
+        "observed_validation": 43,
+        "source_families": [
+          "hub_obs",
+          "wp"
+        ],
+        "total": 100,
+        "train": 57,
+        "validation": 43
+      },
+      "MULTIPLE_PLAUSIBLE_INTERPRETATIONS": {
+        "ATOM_PROSE": {
+          "AMBIGUOUS": 13,
+          "ATOM": 15,
+          "PROSE": 72
+        },
+        "observed_train": 46,
+        "observed_validation": 19,
+        "source_families": [
+          "hub_obs",
+          "inf",
+          "wik",
+          "wp"
+        ],
+        "total": 100,
+        "train": 67,
+        "validation": 33
+      },
+      "PARTIAL_REQUIRED_CORE": {
+        "ATOM_PROSE": {
+          "ATOM": 7,
+          "PROSE": 75
+        },
+        "observed_train": 27,
+        "observed_validation": 21,
+        "source_families": [
+          "hub_obs",
+          "inf",
+          "wik",
+          "wp"
+        ],
+        "total": 82,
+        "train": 52,
+        "validation": 30
+      },
+      "UNRESOLVED_SOURCE_MEANING": {
+        "ATOM_PROSE": {
+          "ATOM": 4,
+          "PROSE": 57
+        },
+        "observed_train": 31,
+        "observed_validation": 9,
+        "source_families": [
+          "inf",
+          "wik"
+        ],
+        "total": 61,
+        "train": 46,
+        "validation": 15
+      }
+    },
+    "by_provenance": {
+      "INFERRED": 131,
+      "OBSERVED": 311
+    },
+    "max_source_family_share": 0.3009049773755656,
+    "observed_share": 0.7036199095022625,
+    "prose_share_train": 0.7964285714285714,
+    "prose_share_validation": 0.7283950617283951,
+    "source_family_shares": {
+      "hub_obs": 0.10180995475113122,
+      "inf": 0.29638009049773756,
+      "wik": 0.3009049773755656,
+      "wp": 0.3009049773755656
+    },
+    "validation_max_source_family_share": 0.2962962962962963,
+    "validation_observed_share": 0.7283950617283951,
+    "validation_source_family_shares": {
+      "hub_obs": 0.13580246913580246,
+      "inf": 0.2716049382716049,
+      "wik": 0.2962962962962963,
+      "wp": 0.2962962962962963
+    }
+  }
+}
