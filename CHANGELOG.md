@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Remediate V5 Stage-A generalization surface → V1R1 (Spec 007):**
+  `REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES` seals successor
+  `HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1R1`
+  (`classification-v5-stage-a-generalization-surface-v1r1-20261001`,
+  `4095036e…`). Retains all 2624 V1 rows; adds 961 fresh non-Wiktionary
+  matched contrasts (remove 0). Clears SHORT_ATOM train floors, Wik share,
+  bilateral domains, token ratio, top100 Jaccard, length/TF-IDF shortcuts →
+  **`READY`**. Parent V1 unmutated; no train/retune/Stage-B/BEST moves;
+  spent-reserve overlap 0. Receipt
+  `classification-v5-stage-a-generalization-surface-v1r1-receipt-20261001.json`
+  (`3dbdd9b2…`). Next:
+  `AUTHORIZE_V5_STAGE_A_TWO_STAGE_RETRAIN_ON_GENERALIZATION_SURFACE`.
+
 - **Build V5 Stage-A generalization surface v1 (Spec 007):**
   `BUILD_V5_STAGE_A_GENERALIZATION_SURFACE_V1` seals matched-boundary
   surface `classification-v5-stage-a-generalization-surface-v1-20261001`
