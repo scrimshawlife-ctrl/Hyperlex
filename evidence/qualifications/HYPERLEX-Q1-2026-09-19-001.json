@@ -1,0 +1,40 @@
+{
+  "receipt_id": "HYPERLEX-Q1-2026-09-19-001",
+  "qualification": "HYPERLEX-Q1",
+  "decision": "UNQUALIFIED",
+  "scope": "controlled transform-export fixtures only",
+  "repository": "scrimshawlife-ctrl/Hyperlex",
+  "implementation_revision": "5e89bfbcaaa47fba58c04ddf15d5bbe12b80db5f",
+  "issued_utc": "2026-09-19T23:05:00Z",
+  "reviewer": {
+    "class": "SHADOW_ADVISORY",
+    "actor": "Abraxas Orchestrator / Grok",
+    "independent": false
+  },
+  "evidence": [
+    {"kind": "github_workflow", "name": "Hyperlex Skill Validation", "run_id": 35466262293, "run_number": 566, "head_sha": "b16bf5f40838c3903e69e77e92ed3a6967dd351c", "conclusion": "failure", "classification": "path-resolution defect; retained"},
+    {"kind": "github_workflow", "name": "Hyperlex Skill Validation", "run_id": 35466333294, "run_number": 567, "head_sha": "5e89bfbcaaa47fba58c04ddf15d5bbe12b80db5f", "conclusion": "success"}
+  ],
+  "verified_on_head": [
+    "schema path resolution from repository root",
+    "deterministic source/output hashing",
+    "epistemic_status restricted to OBSERVED or NOT_COMPUTABLE",
+    "missing required runtime binding fails closed",
+    "missing required seed fails closed",
+    "contamination and fallback survive serialization"
+  ],
+  "limitations": [
+    "AC-HQ1 not met",
+    "No independent reviewer",
+    "Stale-revision fixture currently asserts identity change, not rejection",
+    "No fixture-hash ledger in this receipt",
+    "Does not assign latent truth",
+    "Does not unlock Hyperlex -> Noesis pairwise",
+    "Does not authorize EXP-001"
+  ],
+  "next_permitted_work": [
+    "Harden stale-revision and contamination fixture classes to AC-HQ1",
+    "Issue a later receipt only after independent review or explicit remain-provisional operator decision",
+    "Pairwise remains BLOCKED"
+  ]
+}
