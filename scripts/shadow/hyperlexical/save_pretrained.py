@@ -18,6 +18,9 @@ _HEAD_NAMES = (
     "evidence_head",
     "gate1_head",
     "gate2_head",
+    # Factorized Stage-A heads (must be present for promote/cold-load).
+    "relation_head",
+    "resolvability_head",
 )
 
 
