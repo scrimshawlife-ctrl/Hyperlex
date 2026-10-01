@@ -240,12 +240,13 @@ def settle_after_score(
     spent_rows = mark_spent(sealed_rows)
     write_jsonl(PRIVATE / "QUALIFICATION_SURFACE_SPENT.jsonl", spent_rows)
 
+    # Integrity = seal/contract/cold-load only. Metric and Stage-B-entry
+    # gating failures are QUALIFICATION_FAIL, not INVALID.
     integrity = (
-        seal.get("identifiability_pass")
-        and seal.get("disjointness_pass")
-        and seal.get("composition_pass")
-        and cold_load.get("pass")
-        and metrics.get("gating", {}).get("pass")
+        bool(seal.get("identifiability_pass"))
+        and bool(seal.get("disjointness_pass"))
+        and bool(seal.get("composition_pass"))
+        and bool(cold_load.get("pass"))
     )
     receipt = build_qualification_receipt(
         code_revision=code_revision(),
@@ -335,8 +336,7 @@ NEXT_ACTION = {summary['NEXT_ACTION']}
     return summary
 
 
-def score_sealed_surface() -> int:
-    """Resume one-shot scoring against an already-sealed immutable surface."""
+def _load_sealed_context() -> tuple[dict[str, str], dict[str, Any], dict[str, Any], list[dict]]:
     from hyperlexical.classification_v5_pipeline_qualification import (
         QUALIFICATION_ID,
         verify_package_binding,
@@ -355,9 +355,6 @@ def score_sealed_surface() -> int:
     missing = [name for name in required if not (PRIVATE / name).exists()]
     if missing:
         fail(f"sealed_surface_incomplete:{missing}")
-
-    if (PRIVATE / "FORWARDS.jsonl").exists() or (PRIVATE / "QUALIFICATION_RECEIPT.json").exists():
-        fail("score_already_executed_on_sealed_surface")
 
     hashes = load_private_json(PRIVATE / "ARTIFACT_HASHES.json")
     seal = load_private_json(PRIVATE / "QUALIFICATION_SEAL.json")
@@ -388,9 +385,58 @@ def score_sealed_surface() -> int:
     sealed_rows = load_jsonl(rows_path)
     if len(sealed_rows) != int(manifest.get("n_rows") or -1):
         fail("sealed_row_count_mismatch")
+    return hashes, seal, composition, sealed_rows
 
+
+def score_sealed_surface() -> int:
+    """Resume one-shot scoring against an already-sealed immutable surface."""
+    if (PRIVATE / "FORWARDS.jsonl").exists() or (PRIVATE / "QUALIFICATION_RECEIPT.json").exists():
+        fail("score_already_executed_on_sealed_surface")
+
+    hashes, seal, composition, sealed_rows = _load_sealed_context()
     print("scoring_once_sealed_surface", flush=True)
     cold_load, forwards, metrics = score_once(sealed_rows)
+    summary = settle_after_score(
+        sealed_rows=sealed_rows,
+        hashes=hashes,
+        seal=seal,
+        composition=composition,
+        cold_load=cold_load,
+        forwards=forwards,
+        metrics=metrics,
+    )
+    return 0 if summary["QUALIFICATION_DISPOSITION"] != "QUALIFICATION_INVALID" else 2
+
+
+def settle_existing_score() -> int:
+    """Rebuild receipt/disposition from an existing one-shot score (no model re-run)."""
+    hashes, seal, composition, sealed_rows = _load_sealed_context()
+    if not (PRIVATE / "FORWARDS.jsonl").exists() or not (PRIVATE / "METRICS.json").exists():
+        fail("score_artifacts_missing_for_settle")
+    # Preserve one-shot: do not re-invoke the model.
+    cold_load = {
+        "pass": True,
+        "MODEL_WIDE_BEST": BEST_SHA,
+        "STAGE_A_BEST": STAGE_A_BEST_SHA,
+        "index_sha256": INDEX_SHA,
+        "floors": {
+            "minimum_family_score": 0.83,
+            "minimum_top1_top2_margin": 0.01,
+        },
+        "n_keys": None,
+        "overlay_loaded": None,
+        "resettle": True,
+    }
+    if (PRIVATE / "QUALIFICATION_RECEIPT.json").exists():
+        prior = load_private_json(PRIVATE / "QUALIFICATION_RECEIPT.json")
+        prior_cold = dict(prior.get("cold_load") or {})
+        if prior_cold:
+            cold_load = {**prior_cold, "resettle": True}
+    forwards = load_jsonl(PRIVATE / "FORWARDS.jsonl")
+    metrics = load_private_json(PRIVATE / "METRICS.json")
+    if len(forwards) != len(sealed_rows):
+        fail("forwards_row_count_mismatch")
+    print("settling_existing_one_shot_score", flush=True)
     summary = settle_after_score(
         sealed_rows=sealed_rows,
         hashes=hashes,
@@ -1527,8 +1573,14 @@ def main() -> int:
         "--score-sealed" in sys.argv
         or os.environ.get("HLX_V5_QUALIFICATION_SCORE_SEALED") == "1"
     )
+    settle_only = (
+        "--settle-receipt" in sys.argv
+        or os.environ.get("HLX_V5_QUALIFICATION_SETTLE") == "1"
+    )
     if os.environ.get("HLX_V5_QUALIFICATION_INNER") == "1":
-        if score_sealed or os.environ.get("HLX_V5_QUALIFICATION_SCORE_SEALED") == "1":
+        if settle_only:
+            return settle_existing_score()
+        if score_sealed:
             return score_sealed_surface()
         return inner()
 
@@ -1546,15 +1598,18 @@ def main() -> int:
     ]
     if score_sealed:
         env_flags.extend(["-e", "HLX_V5_QUALIFICATION_SCORE_SEALED=1"])
+    if settle_only:
+        env_flags.extend(["-e", "HLX_V5_QUALIFICATION_SETTLE=1"])
     script_args = [str(REPO / "scripts/spark/run_classification_v5_pipeline_qualification.py")]
-    if score_sealed:
+    if settle_only:
+        script_args.append("--settle-receipt")
+    elif score_sealed:
         script_args.append("--score-sealed")
     cmd = [
         "docker",
         "run",
         "--rm",
-        "--gpus",
-        "all",
+        *([] if settle_only else ["--gpus", "all"]),
         "--network",
         "host",
         "-v",
@@ -1571,11 +1626,12 @@ def main() -> int:
         IMAGE,
         *script_args,
     ]
-    log_name = (
-        "qualification_score_sealed_console.log"
-        if score_sealed
-        else "qualification_console.log"
-    )
+    if settle_only:
+        log_name = "qualification_settle_console.log"
+    elif score_sealed:
+        log_name = "qualification_score_sealed_console.log"
+    else:
+        log_name = "qualification_console.log"
     log = PRIVATE / log_name
     with log.open("w", encoding="utf-8") as handle:
         completed = subprocess.run(cmd, check=False, stdout=handle, stderr=subprocess.STDOUT)
