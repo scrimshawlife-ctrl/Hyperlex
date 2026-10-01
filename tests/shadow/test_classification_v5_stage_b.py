@@ -29,12 +29,16 @@ def test_stage_b_contract_pins_stage_a_best():
     assert contract["rule"] == STAGE_B_RULE
     assert contract["experiment_id"] == EXPERIMENT_ID
     assert contract["STAGE_A_BEST"] == STAGE_A_BEST_SHA256
-    assert STAGE_A_BEST_SHA256.startswith("cd2829c1")
+    assert STAGE_A_BEST_SHA256.startswith("f2b00c5d")
+    assert contract["STAGE_A_CANONICAL"] == "HYPERLEX_V5_STAGE_A_CANONICAL_V1"
     assert contract["retrieval_only_on"] == "EVIDENCE_PRESENT"
     assert contract["train"] is False
     assert contract["v5_reserve"] is None
-    assert contract["frozen_stage_a"]["gate1_threshold"] == 0.75
-    assert contract["frozen_stage_a"]["gate2_threshold"] == 0.50
+    assert contract["index_rebuilt"] is False
+    assert contract["floors_retuned"] is False
+    assert contract["frozen_stage_a"]["relation_threshold"] == 0.60
+    assert contract["frozen_stage_a"]["resolvability_threshold"] == 0.75
+    assert contract["frozen_stage_a"]["deprecated_gate1_gate2"]["status"] == "HISTORICAL"
     assert contract["entry_invariant"]["UNCERTAIN"] == "ABSTAIN"
 
 
@@ -84,7 +88,7 @@ def test_gold_mapping_and_design_freeze():
     ] == "ABSTAIN"
     freeze = design_freeze_receipt(code_revision="deadbeef")
     assert freeze["NEXT_ACTION"] == WIRE_ACTION
-    assert freeze["STAGE_A_BEST"].startswith("cd2829c1")
+    assert freeze["STAGE_A_BEST"].startswith("f2b00c5d")
     assert freeze["TRAIN"] is False
     auth_ok = reserve_authorization(
         {"primary_gate_pass": True, "secondary_gate_pass": True}

@@ -1,0 +1,550 @@
+{
+  "audit": {
+    "PREVIOUS_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "STAGE_A_BEST_canonical": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "active_needs_fix": [],
+    "active_runtime_files": [
+      "scripts/shadow/hyperlexical/classification_v5_stage_a_b_pipeline.py",
+      "scripts/shadow/hyperlexical/classification_v5_stage_a_canonical.py",
+      "scripts/shadow/hyperlexical/classification_v5_stage_a_factorized_objective.py",
+      "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_promote.py",
+      "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_repro_promote.py",
+      "scripts/shadow/hyperlexical/classification_v5_stage_b.py",
+      "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+      "scripts/shadow/hyperlexical/save_pretrained.py",
+      "scripts/spark/run_classification_v5_stage_a_b_integration_verify.py",
+      "scripts/spark/run_classification_v5_stage_a_canonical_freeze.py"
+    ],
+    "active_spec_files": [
+      "CHANGELOG.md",
+      "specs/007-hyperlexical-model/classification-v5-stage-a-b-pipeline-20261001.md",
+      "specs/007-hyperlexical-model/classification-v5-stage-a-b-pipeline-receipt-20261001.json",
+      "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-20261001.md",
+      "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+      "specs/007-hyperlexical-model/classification-v5-stage-b-active-contract-20261001.json",
+      "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+      "specs/007-hyperlexical-model/model-card.draft.md"
+    ],
+    "hits": [
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 9,
+        "intentional_historical_mention": true,
+        "kind": "superseded_STAGE_A_BEST",
+        "needs_fix": false,
+        "path": "CHANGELOG.md",
+        "pattern": "cd2829c1"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "deprecated_training_target",
+        "needs_fix": false,
+        "path": "CHANGELOG.md",
+        "pattern": "POSSIBLE_EVIDENCE"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_decide",
+        "needs_fix": false,
+        "path": "CHANGELOG.md",
+        "pattern": "decide_evidence"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 3,
+        "intentional_historical_mention": true,
+        "kind": "deprecated_training_target",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_canonical.py",
+        "pattern": "POSSIBLE_EVIDENCE"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_canonical.py",
+        "pattern": "gate1_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_canonical.py",
+        "pattern": "gate2_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 3,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_canonical.py",
+        "pattern": "evidence_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_decide",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_canonical.py",
+        "pattern": "decide_evidence"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_forward_schema",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_canonical.py",
+        "pattern": "two_stage_forward"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 7,
+        "intentional_historical_mention": true,
+        "kind": "deprecated_training_target",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_factorized_objective.py",
+        "pattern": "POSSIBLE_EVIDENCE"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "superseded_STAGE_A_BEST",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_promote.py",
+        "pattern": "cd2829c1"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 8,
+        "intentional_historical_mention": true,
+        "kind": "deprecated_training_target",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_promote.py",
+        "pattern": "POSSIBLE_EVIDENCE"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 3,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_promote.py",
+        "pattern": "gate1_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 4,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_promote.py",
+        "pattern": "gate2_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 6,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_promote.py",
+        "pattern": "evidence_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "superseded_STAGE_A_BEST",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_repro_promote.py",
+        "pattern": "cd2829c1"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 7,
+        "intentional_historical_mention": true,
+        "kind": "deprecated_training_target",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_repro_promote.py",
+        "pattern": "POSSIBLE_EVIDENCE"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_repro_promote.py",
+        "pattern": "gate2_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_a_ident_filtered_repro_promote.py",
+        "pattern": "evidence_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_b.py",
+        "pattern": "gate1_threshold"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stage_b.py",
+        "pattern": "gate2_threshold"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "superseded_STAGE_A_BEST",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "cd2829c1"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "deprecated_training_target",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "POSSIBLE_EVIDENCE"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "gate1_threshold"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "gate2_threshold"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 3,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "gate1_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 3,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "gate2_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 3,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "evidence_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_decide",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "decide_evidence"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_forward_schema",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/classification_v5_stale_reference_audit.py",
+        "pattern": "two_stage_forward"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/save_pretrained.py",
+        "pattern": "gate1_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/save_pretrained.py",
+        "pattern": "gate2_head"
+      },
+      {
+        "classification": "ACTIVE_RUNTIME",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_head",
+        "needs_fix": false,
+        "path": "scripts/shadow/hyperlexical/save_pretrained.py",
+        "pattern": "evidence_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-b-pipeline-receipt-20261001.json",
+        "pattern": "gate1_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-b-pipeline-receipt-20261001.json",
+        "pattern": "gate2_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-b-pipeline-receipt-20261001.json",
+        "pattern": "evidence_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 6,
+        "intentional_historical_mention": true,
+        "kind": "superseded_STAGE_A_BEST",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "cd2829c1"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 7,
+        "intentional_historical_mention": true,
+        "kind": "deprecated_training_target",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "POSSIBLE_EVIDENCE"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "gate1_threshold"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "gate2_threshold"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 4,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "gate1_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 5,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "gate2_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 6,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "evidence_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 4,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_decide",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "decide_evidence"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 3,
+        "intentional_historical_mention": true,
+        "kind": "legacy_forward_schema",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-a-canonical-receipt-20261001.json",
+        "pattern": "two_stage_forward"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "superseded_STAGE_A_BEST",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-b-active-contract-20261001.json",
+        "pattern": "cd2829c1"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-b-active-contract-20261001.json",
+        "pattern": "gate1_threshold"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 1,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stage-b-active-contract-20261001.json",
+        "pattern": "gate2_threshold"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 5,
+        "intentional_historical_mention": true,
+        "kind": "superseded_STAGE_A_BEST",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "cd2829c1"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 6,
+        "intentional_historical_mention": true,
+        "kind": "deprecated_training_target",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "POSSIBLE_EVIDENCE"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "gate1_threshold"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_threshold",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "gate2_threshold"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 4,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "gate1_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 5,
+        "intentional_historical_mention": true,
+        "kind": "legacy_two_stage_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "gate2_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 5,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_head",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "evidence_head"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 3,
+        "intentional_historical_mention": true,
+        "kind": "legacy_flat_decide",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "decide_evidence"
+      },
+      {
+        "classification": "ACTIVE_SPEC",
+        "count": 2,
+        "intentional_historical_mention": true,
+        "kind": "legacy_forward_schema",
+        "needs_fix": false,
+        "path": "specs/007-hyperlexical-model/classification-v5-stale-reference-audit-20261001.json",
+        "pattern": "two_stage_forward"
+      }
+    ],
+    "n_active_needs_fix": 0,
+    "n_hits": 57,
+    "pass": true,
+    "policy": "Fix only ACTIVE_RUNTIME / ACTIVE_SPEC stale bindings on the live canonical surface. Historical receipts/runners/artifacts retained."
+  },
+  "receipt_sha256": "034b93315bdbd7b77cc4f53ab4a143f286d94266bc39448a6ed69db9e8ece8e0",
+  "schema": "hyperlex.classification.v5.stale_reference_audit.v1"
+}

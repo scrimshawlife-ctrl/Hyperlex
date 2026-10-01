@@ -1,0 +1,258 @@
+{
+  "BEST_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "NEXT_ACTION": "EVALUATE_FULL_V5_PIPELINE_OR_PRODUCTION_PACKAGING",
+  "PIPELINE_ID": "HYPERLEX_V5_STAGE_A_B_PIPELINE_V1",
+  "PIPELINE_RECEIPT_SHA256": "0842705f3b3c57989f398ab38185a9f48a84ed93c20176b0fc8445d64b34a3df",
+  "PIPELINE_RULE": "FREEZE_V5_STAGE_A_B_PIPELINE_CONTRACT",
+  "RESERVE_CONSUMED": false,
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+  "STAGE_A_RESEARCH_LOOP": "CLOSED_FOR_CURRENT_FAILURE_CLASS",
+  "TRAIN": false,
+  "V5_STAGE_A_STATE": "CANONICAL_FROZEN",
+  "code_revision": "df59d91368bb90aab274bba7bd837137481a91b3",
+  "contract": {
+    "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "PIPELINE_ID": "HYPERLEX_V5_STAGE_A_B_PIPELINE_V1",
+    "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+    "STAGE_A_RESEARCH_LOOP": "CLOSED_FOR_CURRENT_FAILURE_CLASS",
+    "STAGE_B_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-B-001",
+    "STAGE_B_RULE": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+    "V5_STAGE_A_STATE": "CANONICAL_FROZEN",
+    "dependencies": {
+      "model_wide_best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+      "stage_a_checkpoint_sha256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+      "stage_a_contract": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+      "stage_b_contract_rule": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+      "stage_b_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+      "stage_b_minimum_family_score": 0.64,
+      "stage_b_minimum_top1_top2_margin": 0.07
+    },
+    "flow": [
+      "text",
+      "canonical_stage_a",
+      "NO_EVIDENCE->stop",
+      "UNCERTAIN->abstain",
+      "EVIDENCE_PRESENT->stage_b_retrieval",
+      "family_decision_or_abstain_or_ambiguity"
+    ],
+    "forward_schema": "hyperlex.classification.v5.stage_a_canonical_forward.v1",
+    "known_limitations": {
+      "CONTEXT_DEPENDENT_GOLD": "OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT",
+      "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+      "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT"
+    },
+    "reserve_scored": false,
+    "schema": "hyperlex.classification.v5.stage_a_b_pipeline.v1",
+    "train": false
+  },
+  "frozen_at": "2026-10-01T06:58:19Z",
+  "integration": {
+    "checkpoint_key_contract": {
+      "factorized_head_names": [
+        "relation_head",
+        "resolvability_head"
+      ],
+      "has_adapted_encoder": true,
+      "incomplete_historical_refused": "8b2de4472dc0ebd65a6b4b7577dc3272d63db2490a1b6f6dbbcc54db50077e41",
+      "legacy_heads_present": {
+        "evidence_head": false,
+        "gate1_head": false,
+        "gate2_head": false
+      },
+      "n_keys": 16,
+      "pass": true,
+      "required_keys_present": {
+        "relation_head.bias": true,
+        "relation_head.weight": true,
+        "resolvability_head.bias": true,
+        "resolvability_head.weight": true
+      }
+    },
+    "entry_gating": {
+      "cases": {
+        "EVIDENCE_PRESENT": {
+          "action": "PERMIT_STAGE_B",
+          "evidence_decision": "EVIDENCE_PRESENT",
+          "family_retrieval": "PERMITTED",
+          "stage_b_permitted": true
+        },
+        "NO_EVIDENCE": {
+          "action": "STOP",
+          "evidence_decision": "NO_EVIDENCE",
+          "family_retrieval": "FORBIDDEN",
+          "stage_b_permitted": false
+        },
+        "UNCERTAIN": {
+          "action": "ABSTAIN",
+          "evidence_decision": "UNCERTAIN",
+          "family_retrieval": "FORBIDDEN",
+          "note": "UNCERTAIN stops before family retrieval",
+          "stage_b_permitted": false
+        }
+      },
+      "checks": {
+        "may_invoke_present_only": true,
+        "none_never_enters": true,
+        "present_enters": true,
+        "uncertain_never_enters": true
+      },
+      "pass": true
+    },
+    "pass": true,
+    "probability_smoke": {
+      "checks": {
+        "none_stops": true,
+        "present_enters": true,
+        "uncertain_abstains": true
+      },
+      "samples": [
+        {
+          "forward": {
+            "canonical_id": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+            "compatibility_adapter": "DEPRECATED_USE_CANONICAL_FORWARD",
+            "compatibility_schema": "hyperlex.classification.v5.stage_a_factorized_forward.v1",
+            "input_contract_version": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+            "internal_fields": [
+              "p_relation",
+              "p_resolvable"
+            ],
+            "legacy_aliases": {
+              "P_PRESENT": 0.9,
+              "evidence_decision": "UNCERTAIN",
+              "status": "DEPRECATED_COMPATIBILITY_ONLY"
+            },
+            "objective_version": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+            "p_relation": 0.9,
+            "p_resolvable": 0.5,
+            "parent_model_wide_best_sha": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+            "relation_threshold": 0.6,
+            "resolvability_threshold": 0.75,
+            "schema": "hyperlex.classification.v5.stage_a_canonical_forward.v1",
+            "semantic_outputs": [
+              "NO_EVIDENCE",
+              "EVIDENCE_PRESENT",
+              "UNCERTAIN"
+            ],
+            "stage_a_checkpoint_sha": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+            "stage_a_decision": "UNCERTAIN"
+          },
+          "invokes_stage_b": false,
+          "stage_a_decision": "UNCERTAIN",
+          "stage_b_entry": {
+            "action": "ABSTAIN",
+            "evidence_decision": "UNCERTAIN",
+            "family_retrieval": "FORBIDDEN",
+            "note": "UNCERTAIN stops before family retrieval",
+            "stage_b_permitted": false
+          }
+        },
+        {
+          "forward": {
+            "canonical_id": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+            "compatibility_adapter": "DEPRECATED_USE_CANONICAL_FORWARD",
+            "compatibility_schema": "hyperlex.classification.v5.stage_a_factorized_forward.v1",
+            "input_contract_version": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+            "internal_fields": [
+              "p_relation",
+              "p_resolvable"
+            ],
+            "legacy_aliases": {
+              "P_PRESENT": 0.9,
+              "evidence_decision": "EVIDENCE_PRESENT",
+              "status": "DEPRECATED_COMPATIBILITY_ONLY"
+            },
+            "objective_version": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+            "p_relation": 0.9,
+            "p_resolvable": 0.8,
+            "parent_model_wide_best_sha": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+            "relation_threshold": 0.6,
+            "resolvability_threshold": 0.75,
+            "schema": "hyperlex.classification.v5.stage_a_canonical_forward.v1",
+            "semantic_outputs": [
+              "NO_EVIDENCE",
+              "EVIDENCE_PRESENT",
+              "UNCERTAIN"
+            ],
+            "stage_a_checkpoint_sha": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+            "stage_a_decision": "EVIDENCE_PRESENT"
+          },
+          "invokes_stage_b": true,
+          "stage_a_decision": "EVIDENCE_PRESENT",
+          "stage_b_entry": {
+            "action": "PERMIT_STAGE_B",
+            "evidence_decision": "EVIDENCE_PRESENT",
+            "family_retrieval": "PERMITTED",
+            "stage_b_permitted": true
+          }
+        },
+        {
+          "forward": {
+            "canonical_id": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+            "compatibility_adapter": "DEPRECATED_USE_CANONICAL_FORWARD",
+            "compatibility_schema": "hyperlex.classification.v5.stage_a_factorized_forward.v1",
+            "input_contract_version": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+            "internal_fields": [
+              "p_relation",
+              "p_resolvable"
+            ],
+            "legacy_aliases": {
+              "P_PRESENT": 0.4,
+              "evidence_decision": "NO_EVIDENCE",
+              "status": "DEPRECATED_COMPATIBILITY_ONLY"
+            },
+            "objective_version": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+            "p_relation": 0.4,
+            "p_resolvable": 0.8,
+            "parent_model_wide_best_sha": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+            "relation_threshold": 0.6,
+            "resolvability_threshold": 0.75,
+            "schema": "hyperlex.classification.v5.stage_a_canonical_forward.v1",
+            "semantic_outputs": [
+              "NO_EVIDENCE",
+              "EVIDENCE_PRESENT",
+              "UNCERTAIN"
+            ],
+            "stage_a_checkpoint_sha": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+            "stage_a_decision": "NO_EVIDENCE"
+          },
+          "invokes_stage_b": false,
+          "stage_a_decision": "NO_EVIDENCE",
+          "stage_b_entry": {
+            "action": "STOP",
+            "evidence_decision": "NO_EVIDENCE",
+            "family_retrieval": "FORBIDDEN",
+            "stage_b_permitted": false
+          }
+        }
+      ]
+    },
+    "serialization_fail_closed": true,
+    "stage_b_parent_and_floors": {
+      "checks": {
+        "entry_invariant_none": true,
+        "entry_invariant_present": true,
+        "entry_invariant_uncertain": true,
+        "floors_retuned": true,
+        "index_rebuilt": true,
+        "index_unchanged": true,
+        "margin_floor_unchanged": true,
+        "model_wide_best": true,
+        "parent_canonical_id": true,
+        "parent_stage_a_best": true,
+        "score_floor_unchanged": true
+      },
+      "contract_slice": {
+        "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+        "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+        "frozen_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+        "minimum_family_score": 0.64,
+        "minimum_top1_top2_margin": 0.07
+      },
+      "pass": true
+    }
+  },
+  "schema": "hyperlex.classification.v5.stage_a_b_pipeline.v1"
+}

@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- **Freeze V5 Stage-A canonical + Stage-A/B pipeline (Spec 007):**
+  Phase close: `HYPERLEX_V5_STAGE_A_CANONICAL_V1` binds `STAGE_A_BEST=f2b00c5d…`
+  and `MODEL_WIDE_BEST=9fba0f66…` under factorized objective + V1R2
+  identifiability contract (text-only, `AUTO_RELABEL=false`, thr 0.60/0.75).
+  Serialization fail-closed for incomplete factorized heads. Stage-B parent pin
+  updated to canonical Stage A; index `3fd6c87a…` and floors 0.64/0.07 frozen
+  (`index_rebuilt=false`). Entry gating verified (NONE/UNCERTAIN never enter;
+  PRESENT enters). Stale active references audited (live surface only). Pipeline
+  `HYPERLEX_V5_STAGE_A_B_PIPELINE_V1` frozen.
+  `V5_STAGE_A_STATE=CANONICAL_FROZEN`;
+  `STAGE_A_RESEARCH_LOOP=CLOSED_FOR_CURRENT_FAILURE_CLASS`. Receipts
+  `classification-v5-stage-a-canonical-receipt-20261001.json` (`11cd3502…`),
+  `classification-v5-stage-a-b-pipeline-receipt-20261001.json` (`0842705f…`).
+  Next phase: `EVALUATE_FULL_V5_PIPELINE_OR_PRODUCTION_PACKAGING`.
+
 - **Retry promote ident-filtered factorized Stage-A candidate (Spec 007):**
   `RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE` promotes the
   complete REPRO-001 checkpoint `f2b00c5d…` (epoch 11, score 0.9673) to

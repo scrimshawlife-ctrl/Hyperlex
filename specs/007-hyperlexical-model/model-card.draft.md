@@ -7,3 +7,32 @@ Canonical draft for Hub shape: `hf-package/README.md`.
 **Name:** `name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). This pin may be called **Hyperlexical**.
 
 Do not upload (Hub not authorized). Hub card name: `hyperlex-structure-149m` (locked C31). Local train-out paths keep `hyperlex-encoder-modernbert-base-seed-*`. Weights stay off git.
+
+---
+
+## V5 Stage-A / Stage-B pipeline (2026-10-01)
+
+**Canonical Stage A:** `HYPERLEX_V5_STAGE_A_CANONICAL_V1`
+
+| Pin | Value |
+| --- | --- |
+| `STAGE_A_BEST` | `f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa` |
+| `MODEL_WIDE_BEST` | `9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6` |
+| Objective | `HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1` |
+| Surface | `HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2` |
+| Input | `text` only (`AUTO_RELABEL=false`) |
+| Thresholds | relation `0.60`, resolvability `0.75` |
+
+**Decision:** `p_resolvable < 0.75 → UNCERTAIN`; else `p_relation ≥ 0.60 → EVIDENCE_PRESENT`; else `NO_EVIDENCE`.
+
+**Validation (sealed):** false_entry `0.03357`; PRESENT recall `0.951`; NONE recall `0.965`.
+
+**Limitations (do not overclaim):**
+
+- `DOMAIN_IRRELEVANT_GENERALIZATION = NOT_ESTABLISHED`
+- `SHORT_ATOM_POSITIVE_GENERALIZATION = LOW_SUPPORT`
+- `CONTEXT_DEPENDENT_GOLD = OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT`
+
+**Stage B:** enters only on `EVIDENCE_PRESENT`. Index/floors frozen (`index_sha256=3fd6c87a…`, score `0.64`, margin `0.07`). Parent pin updated to canonical Stage A; index not rebuilt.
+
+**Pipeline:** `HYPERLEX_V5_STAGE_A_B_PIPELINE_V1` · `V5_STAGE_A_STATE=CANONICAL_FROZEN` · research loop closed for the current failure class.

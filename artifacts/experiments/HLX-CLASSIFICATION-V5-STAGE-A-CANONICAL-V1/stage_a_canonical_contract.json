@@ -1,0 +1,106 @@
+{
+  "CANONICAL_ID": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_A_BEST_EPOCH": 11,
+  "STAGE_A_RESEARCH_LOOP": "CLOSED_FOR_CURRENT_FAILURE_CLASS",
+  "V5_STAGE_A_STATE": "CANONICAL_FROZEN",
+  "auto_relabel": false,
+  "central_scientific_conclusion": "Gold/input identifiability repair, not architecture escalation, resolved the dominant Stage-A failure.",
+  "decision_outputs": [
+    "NO_EVIDENCE",
+    "EVIDENCE_PRESENT",
+    "UNCERTAIN"
+  ],
+  "deprecated_runtime": {
+    "Gate1_Gate2_semantics": "HISTORICAL",
+    "POSSIBLE_EVIDENCE": "DEPRECATED_AS_STAGE_A_TRAINING_TARGET",
+    "allowed_historical_uses": [
+      "historical_replay",
+      "scientific_comparison",
+      "compatibility_diagnostics"
+    ],
+    "decide_evidence_P_PRESENT": "HISTORICAL_COMPATIBILITY_ONLY",
+    "flat_evidence_head": "DEPRECATED_FOR_CANONICAL_STAGE_A",
+    "historical_artifacts_deleted": false,
+    "incomplete_packaging_artifact": {
+      "checkpoint_sha256": "8b2de4472dc0ebd65a6b4b7577dc3272d63db2490a1b6f6dbbcc54db50077e41",
+      "status": "NON_PROMOTABLE_PACKAGING_ARTIFACT"
+    },
+    "previous_STAGE_A_BEST": {
+      "checkpoint_sha256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+      "status": "SUPERSEDED_STAGE_A_BEST"
+    },
+    "two_stage_forward_schema": "HISTORICAL"
+  },
+  "explicit_limitations": {
+    "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+    "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT",
+    "SHORT_ATOM_PRESENT_SUPPORT": 11,
+    "note": "Passing aggregate gates must not be described as establishing broad short-atom positive generalization."
+  },
+  "forward_schema": "hyperlex.classification.v5.stage_a_canonical_forward.v1",
+  "gold_identifiability": {
+    "AUTO_RELABEL": false,
+    "CONTRACT_ID": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+    "CONTRACT_RECEIPT_SHA256": "4ce0e5faccef3772bbefdfc42f878446602ffa59f4d7ae9933652b687a41e3e4",
+    "FILTER_RECEIPT_SHA256": "e8e2ab7f6773717ea94743a36084eae3f775d907936fadbe07d1c457bdd82ca3",
+    "MODEL_INPUT": [
+      "text"
+    ],
+    "SURFACE_ID": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+    "V1R2_ANNOTATION_SHA256": "95d5436555da33ef7aaccf4c32194c29f00caced9a17adf2d2f65f12db7dc1fc",
+    "V1R2_DATASET_SHA256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+    "V1R2_EXCLUSION_MANIFEST_SHA256": "661c9edb095f7f7dc28a24256b42e0a2796f9ab78fbabc24b23cf9bd57b06d69",
+    "canonical_rule": "If MODEL_INPUT=text, definitive supervised gold must be identifiable from text.",
+    "context_dependent_definitive_gold": "EXCLUDED_FROM_ACTIVE_SUPERVISION",
+    "historical_v1r1_and_excluded_rows": "RETAINED_AS_EVIDENCE"
+  },
+  "inference_policy": "if P(RESOLVABLE) < 0.75 -> UNCERTAIN; else if P(EVIDENCE_RELATION_PRESENT) >= 0.60 -> EVIDENCE_PRESENT; else NO_EVIDENCE",
+  "internal_semantics": [
+    "p_relation",
+    "p_resolvable"
+  ],
+  "known_limitations": {
+    "CONTEXT_DEPENDENT_GOLD": "OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT",
+    "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+    "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT"
+  },
+  "load_sequence": [
+    "modernbert_trunk",
+    "model_wide_BEST_encoder_overlay",
+    "STAGE_A_BEST_adapted_layers_20_21",
+    "relation_head",
+    "resolvability_head"
+  ],
+  "model_input": [
+    "text"
+  ],
+  "objective_id": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "objective_receipt_sha256": "45746d706d819da41eb56e788f13f4a873f8dc136c0057c9fa238a53b5bacfdc",
+  "original_settled_receipt_sha256": "4a7d565ca607234c604bcec40acab33e3cbecc4da6e4adc86a0b2b79bb091a4b",
+  "parent_model_wide_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "promotion_receipt_sha256": "9541664c87b27e56d25171579f2ef0b5810a1ebcbbc023298ce2919749f9b370",
+  "relation_threshold": 0.6,
+  "repro_run_receipt_sha256": "8b8585a8637176a64adf9ce6cff2a076fd4bf938070aef02203fa46978e20ed1",
+  "required_factorized_keys": [
+    "relation_head.weight",
+    "relation_head.bias",
+    "resolvability_head.weight",
+    "resolvability_head.bias"
+  ],
+  "reserve": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "reserve_status": "SPENT",
+  "resolvability_threshold": 0.75,
+  "schema": "hyperlex.classification.v5.stage_a_canonical.v1",
+  "serialization": {
+    "factorized_head_names": [
+      "relation_head",
+      "resolvability_head"
+    ],
+    "factorized_heads_required": true,
+    "fail_closed_if_incomplete": true,
+    "head_drop_regression_covered": true
+  },
+  "surface_id": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2"
+}

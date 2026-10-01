@@ -1,8 +1,9 @@
-"""HYPERLEX_V5_STAGE_B_INTEGRATION_V1 — Stage-B against promoted STAGE_A_BEST.
+"""HYPERLEX_V5_STAGE_B_INTEGRATION_V1 — Stage-B against canonical STAGE_A_BEST.
 
-Wires family retrieval behind the promoted two-stage Stage-A contract.
-Does not train Stage-A/B, does not score reserve, does not mutate BEST or
-STAGE_A_BEST thresholds.
+Wires family retrieval behind the factorized Stage-A canonical contract
+(HYPERLEX_V5_STAGE_A_CANONICAL_V1). Does not train Stage-A/B, does not
+score reserve, does not mutate BEST, does not rebuild the Stage-B index,
+and does not retune score/margin floors.
 """
 
 from __future__ import annotations
@@ -30,21 +31,26 @@ from .classification_v5_stage_a import (
     canonical_json,
     sha256_text,
 )
-from .classification_v5_stage_a_two_stage import (
-    ARCHITECTURE_RECEIPT_SHA256,
-    AUTHORIZED_DATASET_SHA,
-    AUTHORIZED_SURFACE_RULE,
-    TWO_STAGE_RULE,
-)
-from .classification_v5_stage_a_two_stage_promote import (
-    CANONICAL_GATE1_THRESHOLD,
-    CANONICAL_GATE2_THRESHOLD,
+from .classification_v5_stage_a_canonical import (
+    CANONICAL_ID,
     MODEL_WIDE_BEST_SHA256,
-    PROMOTE_RULE,
-    STAGE_A_BEST_SHA256,
+    PROMOTION_RECEIPT_SHA256,
     STAGE_A_BEST_EPOCH,
+    STAGE_A_BEST_SHA256,
     may_invoke_stage_b,
     stage_b_entry_from_stage_a,
+)
+from .classification_v5_stage_a_factorized_objective import OBJECTIVE_ID
+from .classification_v5_stage_a_ident_filtered_promote import (
+    CANONICAL_RELATION_THRESHOLD,
+    CANONICAL_RESOLVABILITY_THRESHOLD,
+)
+from .classification_v5_stage_a_ident_filtered_repro_promote import (
+    PREVIOUS_STAGE_A_BEST_SHA256,
+)
+from .classification_v5_stage_a_two_stage import (
+    AUTHORIZED_DATASET_SHA,
+    AUTHORIZED_SURFACE_RULE,
 )
 
 STAGE_B_RULE = "HYPERLEX_V5_STAGE_B_INTEGRATION_V1"
@@ -52,10 +58,21 @@ WIRE_ACTION = "WIRE_V5_STAGE_B_RETRIEVAL_ON_STAGE_A_BEST"
 EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-B-001"
 SCHEMA_CONTRACT = "hyperlex.classification.v5.stage_b_integration.v1"
 SCHEMA_VALIDATION = "hyperlex.classification.v5.stage_b_validation.v1"
-PARENT_PROMOTION_RECEIPT_SHA256 = (
-    "d4c0cfd648b16a5d3b0bb21791e25434fb7cca9a2d8e5c3d794653d269c1cd4a"
+# Parent promotion is the REPRO factorized Stage-A promote (not two-stage).
+PARENT_PROMOTION_RECEIPT_SHA256 = PROMOTION_RECEIPT_SHA256
+PARENT_STAGE_A_EXPERIMENT_ID = (
+    "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001"
 )
-PARENT_STAGE_A_EXPERIMENT_ID = "HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-001"
+PARENT_STAGE_A_CANONICAL = CANONICAL_ID
+
+# Sealed Stage-B retrieval artifacts — content frozen; only parent pin updates.
+FROZEN_INDEX_SHA256 = (
+    "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21"
+)
+FROZEN_MINIMUM_FAMILY_SCORE = 0.64
+FROZEN_MINIMUM_TOP1_TOP2_MARGIN = 0.07
+INDEX_REBUILT = False
+FLOORS_RETUNED = False
 
 # Parent v3 floors are reference-only until V5 validation recalibrates.
 PARENT_V3_REFERENCE_FLOORS = {
@@ -67,19 +84,30 @@ PARENT_V3_REFERENCE_FLOORS = {
 FROZEN_STAGE_A = {
     "STAGE_A_BEST": STAGE_A_BEST_SHA256,
     "STAGE_A_BEST_EPOCH": STAGE_A_BEST_EPOCH,
-    "architecture": TWO_STAGE_RULE,
-    "architecture_receipt_sha256": ARCHITECTURE_RECEIPT_SHA256,
-    "gate1_threshold": CANONICAL_GATE1_THRESHOLD,
-    "gate2_threshold": CANONICAL_GATE2_THRESHOLD,
+    "STAGE_A_CANONICAL": PARENT_STAGE_A_CANONICAL,
+    "architecture": OBJECTIVE_ID,
+    "relation_threshold": CANONICAL_RELATION_THRESHOLD,
+    "resolvability_threshold": CANONICAL_RESOLVABILITY_THRESHOLD,
     "model_wide_BEST": MODEL_WIDE_BEST_SHA256,
-    "promote_rule": PROMOTE_RULE,
+    "promote_rule": "RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE",
+    "previous_STAGE_A_BEST": PREVIOUS_STAGE_A_BEST_SHA256,
+    "previous_STAGE_A_BEST_status": "SUPERSEDED_STAGE_A_BEST",
+    # Gate1/Gate2 retained only as historical superseded semantics.
+    "deprecated_gate1_gate2": {
+        "status": "HISTORICAL",
+        "superseded_checkpoint": PREVIOUS_STAGE_A_BEST_SHA256,
+        "gate1_threshold": 0.75,
+        "gate2_threshold": 0.50,
+    },
 }
 
 
 def stage_b_contract() -> dict[str, Any]:
     return {
         "BEST": "UNCHANGED",
+        "MODEL_WIDE_BEST": MODEL_WIDE_BEST_SHA256,
         "STAGE_A_BEST": STAGE_A_BEST_SHA256,
+        "STAGE_A_CANONICAL": PARENT_STAGE_A_CANONICAL,
         "dataset_sha256": AUTHORIZED_DATASET_SHA,
         "emission_precision_min": FAMILY_EMISSION_PRECISION_MIN_AFTER_GATE,
         "entry_invariant": {
@@ -90,7 +118,12 @@ def stage_b_contract() -> dict[str, Any]:
         },
         "experiment_id": EXPERIMENT_ID,
         "false_evidence_entry_rate_on_none_max": FALSE_EVIDENCE_ENTRY_RATE_ON_NONE_MAX,
+        "floors_retuned": FLOORS_RETUNED,
+        "frozen_index_sha256": FROZEN_INDEX_SHA256,
         "frozen_stage_a": dict(FROZEN_STAGE_A),
+        "index_rebuilt": INDEX_REBUILT,
+        "minimum_family_score": FROZEN_MINIMUM_FAMILY_SCORE,
+        "minimum_top1_top2_margin": FROZEN_MINIMUM_TOP1_TOP2_MARGIN,
         "parent_promotion_receipt_sha256": PARENT_PROMOTION_RECEIPT_SHA256,
         "parent_stage_a_experiment_id": PARENT_STAGE_A_EXPERIMENT_ID,
         "parent_v3_reference_floors": dict(PARENT_V3_REFERENCE_FLOORS),

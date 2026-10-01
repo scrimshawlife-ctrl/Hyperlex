@@ -1,0 +1,57 @@
+{
+  "BEST": "UNCHANGED",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+  "dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+  "emission_precision_min": 0.8,
+  "entry_invariant": {
+    "EVIDENCE_PRESENT": "PERMIT_STAGE_B",
+    "NO_EVIDENCE": "STOP",
+    "UNCERTAIN": "ABSTAIN",
+    "rule": "Stage B may execute only when Stage A == EVIDENCE_PRESENT"
+  },
+  "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-B-001",
+  "false_evidence_entry_rate_on_none_max": 0.05,
+  "floors_retuned": false,
+  "frozen_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+  "frozen_stage_a": {
+    "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "STAGE_A_BEST_EPOCH": 11,
+    "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+    "architecture": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+    "deprecated_gate1_gate2": {
+      "gate1_threshold": 0.75,
+      "gate2_threshold": 0.5,
+      "status": "HISTORICAL",
+      "superseded_checkpoint": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c"
+    },
+    "model_wide_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "previous_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "previous_STAGE_A_BEST_status": "SUPERSEDED_STAGE_A_BEST",
+    "promote_rule": "RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE",
+    "relation_threshold": 0.6,
+    "resolvability_threshold": 0.75
+  },
+  "index_rebuilt": false,
+  "minimum_family_score": 0.64,
+  "minimum_top1_top2_margin": 0.07,
+  "parent_promotion_receipt_sha256": "9541664c87b27e56d25171579f2ef0b5810a1ebcbbc023298ce2919749f9b370",
+  "parent_stage_a_experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001",
+  "parent_v3_reference_floors": {
+    "minimum_family_score": 0.96,
+    "minimum_top1_top2_margin": 0.01,
+    "status": "REFERENCE_ONLY_PENDING_V5_CALIBRATION"
+  },
+  "retrieval_only_on": "EVIDENCE_PRESENT",
+  "rule": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+  "schema": "hyperlex.classification.v5.stage_b_integration.v1",
+  "semantic_stage_a_labels": [
+    "NO_EVIDENCE",
+    "EVIDENCE_PRESENT",
+    "UNCERTAIN"
+  ],
+  "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+  "train": false,
+  "v5_reserve": null
+}

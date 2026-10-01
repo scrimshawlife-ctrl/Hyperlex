@@ -1,0 +1,36 @@
+{
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "cold_load_pass": true,
+  "entry_gating_pass": true,
+  "factorized_heads_pass": true,
+  "floors_retuned": false,
+  "frozen_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+  "index_rebuilt": false,
+  "minimum_family_score": 0.64,
+  "minimum_top1_top2_margin": 0.07,
+  "n_keys": 16,
+  "parent_pin_pass": true,
+  "pass": true,
+  "smoke_decisions": [
+    {
+      "decision": "NO_EVIDENCE",
+      "p_relation": 2.619881570353755e-06,
+      "p_resolvable": 0.9999995231628418,
+      "text": "meme"
+    },
+    {
+      "decision": "EVIDENCE_PRESENT",
+      "p_relation": 0.9191325306892395,
+      "p_resolvable": 0.9999992847442627,
+      "text": "the discourse around aesthetic capitalism is getting weird"
+    },
+    {
+      "decision": "NO_EVIDENCE",
+      "p_relation": 0.0008917930535972118,
+      "p_resolvable": 1.0,
+      "text": "asdf qwerty zxcv"
+    }
+  ],
+  "stage_b_contract_stage_a": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa"
+}
