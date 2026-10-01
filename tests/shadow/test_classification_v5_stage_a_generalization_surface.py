@@ -14,6 +14,7 @@ from hyperlexical.classification_v5_stage_a_generalization_surface import (  # n
     CELL_TRAIN_FLOOR,
     CRITICAL_CELLS,
     CRITICAL_VAL_FLOOR,
+    DESIGN_RULE_REMEDIATE,
     EMBEDDING_HARDNESS,
     GATE_RULE,
     PAIRING_FLOORS,
@@ -21,7 +22,9 @@ from hyperlexical.classification_v5_stage_a_generalization_surface import (  # n
     SHALLOW_SHORTCUT,
     SURFACE_BALANCE,
     SURFACE_RULE,
+    SURFACE_RULE_V1R1,
     assign_primary_cell,
+    compute_remediation_targets,
     frozen_generalization_gates,
     preregistration_contract,
     source_family,
@@ -101,3 +104,50 @@ def test_wiktionary_shards_collapse_to_one_source_family():
     }
     assert source_family(a) == "wiktionary_aggregate"
     assert source_family(b) == "wiktionary_aggregate"
+
+
+def test_remediation_targets_dilution_math_and_frozen_gates():
+    # Sealed V1 baseline counts from readiness freeze.
+    baseline = {
+        "median_token_ratio": 1.3846153846153846,
+        "domain_deficits": {
+            "need_none": {
+                "astronomy": {"target_24": 17},
+                "betting-sharp": {"target_24": 17},
+                "crypto-degen": {"target_24": 12},
+                "internet-slang": {"target_24": 16},
+                "mathematics": {"target_24": 15},
+                "technology-ai": {"target_24": 18},
+            },
+            "need_present": {"near-domain": {"target_24": 6}},
+        },
+        "wiktionary_share": {
+            "EVIDENCE_PRESENT": {
+                "count": 341,
+                "n": 1223,
+                "required_new_nonwik_at_0_24": 198,
+                "required_new_nonwik_at_0_25": 141,
+            },
+            "NO_EVIDENCE": {
+                "count": 329,
+                "n": 1202,
+                "required_new_nonwik_at_0_24": 169,
+                "required_new_nonwik_at_0_25": 114,
+            },
+        },
+    }
+    targets = compute_remediation_targets(baseline)
+    assert targets["strategy"] == "FRESH_NON_WIKTIONARY_MATCHED_CONTRAST_ADDITIONS"
+    assert targets["required_new_nonwik_present"] == 198
+    assert targets["required_new_nonwik_none"] == 169
+    assert targets["gate_max_source_share"] == 0.25
+    assert targets["acquisition_target_max_source_share"] == 0.24
+    assert targets["length_direction"]["longer_label_needed"] == "NO_EVIDENCE"
+    assert targets["fresh_short_atom_present"] == 40
+    assert SURFACE_RULE_V1R1.endswith("V1R1")
+    assert DESIGN_RULE_REMEDIATE.startswith("REMEDIATE_")
+    # Readiness contract must remain frozen during remediation.
+    gates = frozen_generalization_gates()
+    assert gates["source_diversity"]["max_source_family_share"] == 0.25
+    assert gates["shallow_shortcut"]["tfidf_balanced_accuracy_max"] == 0.75
+    assert gates["surface_balance"]["median_token_count_ratio_max"] == 1.18

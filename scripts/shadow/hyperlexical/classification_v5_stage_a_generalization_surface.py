@@ -44,9 +44,24 @@ from .classification_v5_surface_readiness_gates import (
 from .holdout_guard import normalized_text_sha256
 
 SURFACE_RULE = "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1"
+SURFACE_RULE_V1R1 = "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1R1"
 DESIGN_RULE = "BUILD_V5_STAGE_A_GENERALIZATION_SURFACE_V1"
+DESIGN_RULE_REMEDIATE = "REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES"
 GATE_RULE = "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_READINESS_GATES_V1"
 PARENT_DIAGNOSIS = "STAGE_A_GENERALIZATION_FAILURE"
+PARENT_SURFACE_SHA_V1 = (
+    "7567edcdf74c1033a07e3ae1d42b0e54ed0804b78fd7ba340c35752ac13df09f"
+)
+LENGTH_BANDS = ((1, 4), (5, 8), (9, 16), (17, 32), (33, 64))
+DOMAIN_NONE_DEFICITS = (
+    "astronomy",
+    "betting-sharp",
+    "crypto-degen",
+    "internet-slang",
+    "mathematics",
+    "technology-ai",
+)
+DOMAIN_PRESENT_DEFICITS = ("near-domain",)
 STAGE_A_BEST_SHA = (
     "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c"
 )
@@ -643,6 +658,13 @@ def _split_bucket(identity: str) -> str:
     return "validation" if int(digest[:8], 16) % 5 == 0 else "train"
 
 
+def length_band(token_count: int) -> str:
+    for lo, hi in LENGTH_BANDS:
+        if lo <= token_count <= hi:
+            return f"{lo}-{hi}"
+    return "65+"
+
+
 def assign_splits_by_component(
     rows: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
@@ -709,6 +731,22 @@ def assign_splits_by_component(
                     counts[cell][split] += 1
         return counts
 
+    def train_floors_safe_after_move(key: str, *, to_validation: bool) -> bool:
+        """Refuse moves that would drop any cell below its train floor."""
+        counts = recount()
+        for cell in PRIMARY_CELLS:
+            group_n = sum(1 for m in components[key] if m.get("primary_cell") == cell)
+            if group_n <= 0:
+                continue
+            if to_validation:
+                if counts[cell]["train"] - group_n < CELL_TRAIN_FLOOR:
+                    return False
+            else:
+                val_floor = CRITICAL_VAL_FLOOR if cell in CRITICAL_CELLS else CELL_VAL_FLOOR
+                if counts[cell]["validation"] - group_n < val_floor:
+                    return False
+        return True
+
     # Promote train→validation groups until cell floors met (critical first).
     # Prefer OBSERVED-rich groups so critical-cell OBSERVED floors are reachable.
     order = list(CRITICAL_CELLS) + [c for c in PRIMARY_CELLS if c not in CRITICAL_CELLS]
@@ -728,14 +766,15 @@ def assign_splits_by_component(
             counts = recount()
             if counts[cell]["validation"] >= floor:
                 break
-            # Avoid overshoot that starves train floors for small cells.
             group_n = sum(1 for m in components[key] if m.get("primary_cell") == cell)
             if counts[cell]["validation"] + group_n > floor + 15 and counts[cell]["train"] - group_n < CELL_TRAIN_FLOOR:
+                continue
+            if not train_floors_safe_after_move(key, to_validation=True):
                 continue
             group_split[key] = "validation"
 
     # Second pass: boost overall validation OBSERVED toward 50% without
-    # breaking cell floors (move OBSERVED train singletons → validation).
+    # breaking cell floors (move OBSERVED train groups → validation).
     def val_obs_frac() -> float:
         val_rows = [
             m
@@ -760,6 +799,8 @@ def assign_splits_by_component(
     for _obs, _n, _anchor, key in obs_train:
         if val_obs_frac() >= PROVENANCE["observed_validation_fraction_min"]:
             break
+        if not train_floors_safe_after_move(key, to_validation=True):
+            continue
         group_split[key] = "validation"
 
     # Critical-cell OBSERVED fraction boost (especially SHORT_ATOM NONE).
@@ -792,7 +833,32 @@ def assign_splits_by_component(
             frac, _o, _nval = cell_obs_frac(cell)
             if frac >= PROVENANCE["critical_cell_observed_fraction_min"]:
                 break
+            if not train_floors_safe_after_move(key, to_validation=True):
+                continue
             group_split[key] = "validation"
+
+    # Final pass: restore train floors by demoting validation→train when total
+    # support permits, without violating validation floors.
+    for cell in order:
+        candidates = []
+        for key, members in components.items():
+            if group_split[key] != "validation":
+                continue
+            cell_n = sum(1 for m in members if m.get("primary_cell") == cell)
+            if cell_n <= 0:
+                continue
+            obs = sum(1 for m in members if m.get("provenance") == "OBSERVED")
+            anchor = sorted(m["identity"] for m in members)[0]
+            # Prefer INFERRED / larger cell mass for train restoration.
+            candidates.append((obs, -cell_n, anchor, key))
+        candidates.sort()
+        for _obs, _cell_n, _anchor, key in candidates:
+            counts = recount()
+            if counts[cell]["train"] >= CELL_TRAIN_FLOOR:
+                break
+            if not train_floors_safe_after_move(key, to_validation=False):
+                continue
+            group_split[key] = "train"
 
     assigned = []
     witness = []
@@ -1576,6 +1642,8 @@ def assemble_surface_artifacts(payload: Mapping[str, Any]) -> dict[str, Any]:
     rows = list(payload["rows"])
     pair_records = list(payload["pair_records"])
     readiness = payload["readiness"]
+    surface_rule = str(payload.get("surface_rule") or SURFACE_RULE)
+    design_rule = str(payload.get("design_rule") or DESIGN_RULE)
     dataset_body = "\n".join(canonical_json(row) for row in rows) + ("\n" if rows else "")
     dataset_sha = sha256_text(dataset_body)
     split_manifest = {
@@ -1600,17 +1668,20 @@ def assemble_surface_artifacts(payload: Mapping[str, Any]) -> dict[str, Any]:
     manifest = {
         "counts": counts,
         "dataset_sha256": dataset_sha,
-        "design_rule": DESIGN_RULE,
+        "design_rule": design_rule,
         "gate_rule": GATE_RULE,
         "parent_diagnosis": PARENT_DIAGNOSIS,
+        "parent_surface_sha256": payload.get("parent_surface_sha256"),
         "schema_sha256": dict(SCHEMA_SHA),
         "spent_reserve": SPENT_RESERVE,
         "stage_a_best_sha256": STAGE_A_BEST_SHA,
         "model_wide_best_sha256": MODEL_WIDE_BEST_SHA,
         "state": readiness.get("state"),
-        "surface_rule": SURFACE_RULE,
+        "surface_rule": surface_rule,
         "v1r9_surface_sha256": V1R9_SURFACE_SHA,
     }
+    readiness = dict(readiness)
+    readiness["surface_rule"] = surface_rule
     return {
         "contrast_pair_witness": {
             "n": len(pair_records),
@@ -1633,7 +1704,7 @@ def assemble_surface_artifacts(payload: Mapping[str, Any]) -> dict[str, Any]:
             "counts": counts,
             "ready": readiness.get("ready"),
             "state": readiness.get("state"),
-            "surface_rule": SURFACE_RULE,
+            "surface_rule": surface_rule,
         },
     }
 
@@ -1836,4 +1907,298 @@ def build_generalization_surface(
         "readiness": readiness,
         "rows": rows,
         "validation_cell_counts": split_result["validation_cell_counts"],
+    }
+
+
+def freeze_baseline_failures(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Record sealed V1 failure snapshot (readiness thresholds unchanged)."""
+    present = [r for r in rows if r["evidence_label"] == "EVIDENCE_PRESENT"]
+    none = [r for r in rows if r["evidence_label"] == "NO_EVIDENCE"]
+    wik_p = sum(1 for r in present if source_family(r) == "wiktionary_aggregate")
+    wik_n = sum(1 for r in none if source_family(r) == "wiktionary_aggregate")
+    sa = {}
+    for cell in ("SHORT_ATOM/NO_EVIDENCE", "SHORT_ATOM/EVIDENCE_PRESENT"):
+        sub = [r for r in rows if r.get("primary_cell") == cell]
+        sa[cell] = {
+            "total": len(sub),
+            "train": sum(1 for r in sub if r["split"] == "train"),
+            "validation": sum(1 for r in sub if r["split"] == "validation"),
+        }
+    present_med = _median([float(word_count(r["text"])) for r in present])
+    none_med = _median([float(word_count(r["text"])) for r in none])
+    ratio = (
+        (present_med / none_med) if present_med and none_med else None
+    )
+    domain_present = Counter(domain_key(r) for r in present)
+    domain_none = Counter(domain_key(r) for r in none)
+    return {
+        "SHORT_ATOM": sa,
+        "domain_deficits": {
+            "need_none": {
+                d: {
+                    "present": domain_present.get(d, 0),
+                    "none": domain_none.get(d, 0),
+                    "required_additions": max(0, 20 - domain_none.get(d, 0)),
+                    "target_24": max(0, 24 - domain_none.get(d, 0)),
+                }
+                for d in DOMAIN_NONE_DEFICITS
+            },
+            "need_present": {
+                d: {
+                    "present": domain_present.get(d, 0),
+                    "none": domain_none.get(d, 0),
+                    "required_additions": max(0, 20 - domain_present.get(d, 0)),
+                    "target_24": max(0, 24 - domain_present.get(d, 0)),
+                }
+                for d in DOMAIN_PRESENT_DEFICITS
+            },
+        },
+        "length_bands": {
+            "EVIDENCE_PRESENT": dict(
+                Counter(length_band(word_count(r["text"])) for r in present)
+            ),
+            "NO_EVIDENCE": dict(
+                Counter(length_band(word_count(r["text"])) for r in none)
+            ),
+        },
+        "median_token_ratio": ratio,
+        "median_tokens": {
+            "EVIDENCE_PRESENT": present_med,
+            "NO_EVIDENCE": none_med,
+        },
+        "n": len(rows),
+        "parent_surface_sha256": PARENT_SURFACE_SHA_V1,
+        "shallow_baseline": {
+            "length_only_BA": 0.6205357142857143,
+            "surface_macroF1": 0.5517769821865176,
+            "surface_only_BA": 0.5632124308646972,
+            "TFIDF_BA": 0.7719209496829893,
+        },
+        "top100_Jaccard_baseline": 0.2345679012345679,
+        "wiktionary_share": {
+            "EVIDENCE_PRESENT": {
+                "count": wik_p,
+                "n": len(present),
+                "share": (wik_p / len(present)) if present else 0.0,
+                "required_new_nonwik_at_0_25": max(
+                    0, math.ceil(wik_p / 0.25) - len(present)
+                ),
+                "required_new_nonwik_at_0_24": max(
+                    0, math.ceil(wik_p / 0.24) - len(present)
+                ),
+            },
+            "NO_EVIDENCE": {
+                "count": wik_n,
+                "n": len(none),
+                "share": (wik_n / len(none)) if none else 0.0,
+                "required_new_nonwik_at_0_25": max(
+                    0, math.ceil(wik_n / 0.25) - len(none)
+                ),
+                "required_new_nonwik_at_0_24": max(
+                    0, math.ceil(wik_n / 0.24) - len(none)
+                ),
+            },
+        },
+    }
+
+
+def compute_remediation_targets(baseline: Mapping[str, Any]) -> dict[str, Any]:
+    """Exact acquisition targets for one constrained remediation pass."""
+    wik = baseline["wiktionary_share"]
+    return {
+        "acquisition_target_max_source_share": 0.24,
+        "domain_none_targets": {
+            d: int(v["target_24"]) for d, v in baseline["domain_deficits"]["need_none"].items()
+        },
+        "domain_present_targets": {
+            d: int(v["target_24"])
+            for d, v in baseline["domain_deficits"]["need_present"].items()
+        },
+        "fresh_short_atom_none": 40,
+        "fresh_short_atom_present": 40,
+        "gate_max_source_share": SOURCE_DIVERSITY["max_source_family_share"],
+        "length_direction": {
+            "longer_label_needed": "NO_EVIDENCE"
+            if (baseline.get("median_token_ratio") or 0) > 1.0
+            else "EVIDENCE_PRESENT",
+            "shorter_label_needed": "EVIDENCE_PRESENT"
+            if (baseline.get("median_token_ratio") or 0) > 1.0
+            else "NO_EVIDENCE",
+            "reason": "median_token_ratio = PRESENT_median / NONE_median",
+        },
+        "new_matched_pairs_target": 200,
+        "required_new_nonwik_none": int(
+            wik["NO_EVIDENCE"]["required_new_nonwik_at_0_24"]
+        ),
+        "required_new_nonwik_present": int(
+            wik["EVIDENCE_PRESENT"]["required_new_nonwik_at_0_24"]
+        ),
+        "strategy": "FRESH_NON_WIKTIONARY_MATCHED_CONTRAST_ADDITIONS",
+    }
+
+
+def build_successor_surface_from_examples(
+    examples: Sequence[Mapping[str, Any]],
+    *,
+    ontology: Sequence[str],
+    blocked_reasons: Mapping[str, str] | None = None,
+    heldout_ids: set[str] | None = None,
+    measurement_ids: set[str] | None = None,
+    spent_ids: set[str] | None = None,
+    embedding_report: Mapping[str, Any] | None = None,
+    surface_rule: str = SURFACE_RULE_V1R1,
+    design_rule: str = DESIGN_RULE_REMEDIATE,
+    parent_surface_sha256: str = PARENT_SURFACE_SHA_V1,
+) -> dict[str, Any]:
+    """Assemble successor from already-built examples (no destructive cell cap)."""
+    stamped = stamp_source_buckets([dict(r) for r in examples])
+    # Soft caps only — prefer retention; do not eject remediation mass.
+    soft_caps = {
+        "SHORT_ATOM/NO_EVIDENCE": 400,
+        "SHORT_ATOM/EVIDENCE_PRESENT": 400,
+        "PROSE/NO_EVIDENCE": 600,
+        "PROSE/EVIDENCE_PRESENT": 600,
+        "DEFINITION_STYLE/NO_EVIDENCE": 500,
+        "DEFINITION_STYLE/EVIDENCE_PRESENT": 500,
+        "ORDINARY_PROSE/NO_EVIDENCE": 550,
+        "ORDINARY_PROSE/EVIDENCE_PRESENT": 550,
+    }
+    selected = select_cell_balanced(stamped, targets=soft_caps)
+    paired_rows, pair_records = build_matched_contrast_pairs(selected)
+    paired_rows, pair_records = _force_definition_matched_pairs(paired_rows, pair_records)
+    paired_rows = stamp_source_buckets(paired_rows)
+    split_result = assign_splits_by_component(paired_rows)
+    rows = dedupe_near_duplicates_within_split(split_result["rows"])
+    alive = {r["identity"] for r in rows}
+    pair_records = [
+        p
+        for p in pair_records
+        if p.get("positive_identity") in alive and p.get("negative_identity") in alive
+    ]
+    readiness = evaluate_generalization_readiness(
+        rows,
+        pair_records=pair_records,
+        ontology=ontology,
+        blocked=blocked_reasons,
+        heldout_ids=heldout_ids,
+        measurement_ids=measurement_ids,
+        spent_ids=spent_ids,
+        embedding_report=embedding_report,
+    )
+    readiness["surface_rule"] = surface_rule
+    assembled = assemble_surface_artifacts(
+        {
+            "design_rule": design_rule,
+            "pair_records": pair_records,
+            "parent_surface_sha256": parent_surface_sha256,
+            "readiness": readiness,
+            "rows": rows,
+            "surface_rule": surface_rule,
+        }
+    )
+    return {
+        "assembled": assembled,
+        "component_witness": split_result["component_witness"],
+        "pair_records": pair_records,
+        "readiness": readiness,
+        "rows": rows,
+        "validation_cell_counts": split_result["validation_cell_counts"],
+    }
+
+
+def remediation_delta_report(
+    *,
+    baseline_rows: Sequence[Mapping[str, Any]],
+    successor_rows: Sequence[Mapping[str, Any]],
+    baseline_readiness: Mapping[str, Any],
+    successor_readiness: Mapping[str, Any],
+    baseline_freeze: Mapping[str, Any],
+    targets: Mapping[str, Any],
+) -> dict[str, Any]:
+    base_ids = {r["identity"] for r in baseline_rows}
+    succ_ids = {r["identity"] for r in successor_rows}
+    retained = base_ids & succ_ids
+    added_ids = succ_ids - base_ids
+    removed_ids = base_ids - succ_ids
+    added_rows = [r for r in successor_rows if r["identity"] in added_ids]
+
+    def bucket(rows: Sequence[Mapping[str, Any]], key_fn) -> dict[str, int]:
+        return dict(Counter(key_fn(r) for r in rows))
+
+    def metric_path(readiness: Mapping[str, Any], path: Sequence[str]) -> Any:
+        cur: Any = readiness
+        for part in path:
+            if not isinstance(cur, Mapping) or part not in cur:
+                return None
+            cur = cur[part]
+        return cur
+
+    metric_specs = {
+        "cell_support_floors": ("gate_pass", "cell_support_floors_pass"),
+        "domain_coverage": ("gate_pass", "domain_coverage_pass"),
+        "embedding_hardness": ("gate_pass", "embedding_hardness_pass"),
+        "length_only_BA": ("details", "shallow_shortcut", "length_only_balanced_accuracy"),
+        "lexical_top100_jaccard": ("details", "lexical_overlap", "top_100_token_jaccard"),
+        "median_token_ratio": ("details", "surface_balance", "median_token_count_ratio"),
+        "pairing": ("gate_pass", "pairing_pass"),
+        "provenance": ("details", "provenance", "pass"),
+        "shallow_shortcut": ("gate_pass", "shallow_shortcut_pass"),
+        "source_diversity": ("details", "source_diversity", "pass"),
+        "spent_reserve_overlap": ("gate_pass", "spent_reserve_overlap_pass"),
+        "surface_balance": ("gate_pass", "surface_balance_pass"),
+        "tfidf_BA": ("details", "shallow_shortcut", "tfidf_balanced_accuracy"),
+        "wik_share_present": (
+            "details",
+            "source_diversity",
+            "distributions",
+            "EVIDENCE_PRESENT",
+            "top_share",
+        ),
+        "wik_share_none": (
+            "details",
+            "source_diversity",
+            "distributions",
+            "NO_EVIDENCE",
+            "top_share",
+        ),
+    }
+    metrics = {}
+    for name, path in metric_specs.items():
+        before = metric_path(baseline_readiness, path)
+        after = metric_path(successor_readiness, path)
+        delta = None
+        if isinstance(before, (int, float)) and isinstance(after, (int, float)):
+            delta = after - before
+        pass_after = None
+        if name in successor_readiness.get("gate_pass", {}):
+            pass_after = successor_readiness["gate_pass"][name]
+        elif name.endswith("_pass") is False and isinstance(after, bool):
+            pass_after = after
+        metrics[name] = {
+            "after": after,
+            "before": before,
+            "delta": delta,
+            "pass_after": pass_after,
+        }
+
+    return {
+        "added_rows": len(added_ids),
+        "additions_by": {
+            "cell": bucket(added_rows, lambda r: r.get("primary_cell") or "none"),
+            "domain": bucket(added_rows, domain_key),
+            "label": bucket(added_rows, lambda r: r["evidence_label"]),
+            "length_band": bucket(
+                added_rows, lambda r: length_band(word_count(r["text"]))
+            ),
+            "provenance": bucket(added_rows, lambda r: r.get("provenance")),
+            "source_family": bucket(added_rows, source_family),
+            "subtype": bucket(added_rows, lambda r: r.get("evidence_subtype")),
+        },
+        "baseline_freeze": baseline_freeze,
+        "previous_rows": len(baseline_rows),
+        "readiness_metrics": metrics,
+        "removed_rows": len(removed_ids),
+        "retained_rows": len(retained),
+        "strategy": targets.get("strategy"),
+        "targets": dict(targets),
     }
