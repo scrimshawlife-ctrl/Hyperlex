@@ -1339,8 +1339,8 @@ def select_cell_balanced(
     targets = dict(targets or {})
     default_cap = {
         # Keep SHORT_ATOM NONE near PRESENT mass so length/surface balance holds.
-        "SHORT_ATOM/NO_EVIDENCE": 320,
-        "SHORT_ATOM/EVIDENCE_PRESENT": 320,
+        "SHORT_ATOM/NO_EVIDENCE": 260,
+        "SHORT_ATOM/EVIDENCE_PRESENT": 260,
         "PROSE/NO_EVIDENCE": 360,
         "PROSE/EVIDENCE_PRESENT": 360,
         "DEFINITION_STYLE/NO_EVIDENCE": 360,
@@ -1361,7 +1361,17 @@ def select_cell_balanced(
 
     def pref(row: Mapping[str, Any]) -> tuple:
         note = str(row.get("notes") or "")
-        matched = 0 if ("lookalike" in note or "def_matched" in note or "ordinary_present_fill" in note) else 1
+        matched = (
+            0
+            if (
+                "lookalike" in note
+                or "def_matched" in note
+                or "ordinary_present_fill" in note
+                or "nearcopy" in note
+                or "wikt_atom_none" in note
+            )
+            else 1
+        )
         return (
             0 if row.get("provenance") == "OBSERVED" else 1,
             matched,
@@ -1383,7 +1393,12 @@ def select_cell_balanced(
         matched_pool = [
             r
             for r in pool
-            if ("lookalike" in str(r.get("notes") or "") or "def_matched" in str(r.get("notes") or ""))
+            if (
+                "lookalike" in str(r.get("notes") or "")
+                or "def_matched" in str(r.get("notes") or "")
+                or "nearcopy" in str(r.get("notes") or "")
+                or "wikt_atom_none" in str(r.get("notes") or "")
+            )
         ]
         matched_ids = {r["identity"] for r in matched_pool}
         other_pool = [r for r in pool if r["identity"] not in matched_ids]

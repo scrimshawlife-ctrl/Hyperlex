@@ -539,6 +539,63 @@ def acquire_wiktionary_definitions(
     return rows
 
 
+def acquire_wiktionary_short_atom_none(
+    *,
+    blocked_ids: set[str],
+    blocked_src: set[str],
+    need: int,
+) -> list[dict[str, Any]]:
+    """OBSERVED SHORT_ATOM NONE lemmas from ordinary-domain labels (no slang)."""
+    from hyperlexical.classification_v5_stage_a_generalization_surface import (
+        assign_primary_cell,
+        source_sha256,
+    )
+    from hyperlexical.holdout_guard import normalized_text_sha256
+
+    rows: list[dict[str, Any]] = []
+    for domain, labels in ORDINARY_LABELS.items():
+        if len(rows) >= need:
+            break
+        for label in labels:
+            if len(rows) >= need:
+                break
+            titles = search_titles(label, scan_cap=60)
+            for title in titles:
+                if len(rows) >= need:
+                    break
+                text = title.strip()
+                if not (1 <= len(text.split()) <= 3):
+                    continue
+                if any(ch in text for ch in ".,;:?!"):
+                    continue
+                if assign_primary_cell(text=text, evidence_label="NO_EVIDENCE") != "SHORT_ATOM/NO_EVIDENCE":
+                    continue
+                identity = normalized_text_sha256(text)
+                src = source_sha256(text)
+                if identity in blocked_ids or src in blocked_src:
+                    continue
+                rows.append(
+                    {
+                        "class": "OBSERVED",
+                        "evidence_subtype": "SHORT_ATOM_NONE",
+                        "jev": "OFF",
+                        "lineage": "none",
+                        "notes": f"v5_gen_wikt_atom_none:{domain}",
+                        "rights": "CC-BY-SA",
+                        "source_url": f"https://en.wiktionary.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
+                        "split": "train",
+                        "surface": "train",
+                        "task": "classify",
+                        "text": text,
+                        "topic_domain": domain,
+                    }
+                )
+                blocked_ids.add(identity)
+                blocked_src.add(src)
+    print(f"acquire_wikt_atom_none n={len(rows)}", flush=True)
+    return rows
+
+
 def acquire_wiktionary_short_atoms(
     *,
     blocked_ids: set[str],
@@ -893,7 +950,7 @@ def synthesize_matched_fills(
                 "surface": "train",
                 "task": "classify",
                 "text": text,
-                "topic_domain": "short-atom",
+                "topic_domain": "unspecified",
             }
         ):
             need_sa_none -= 1
@@ -1002,7 +1059,36 @@ def synthesize_matched_fills(
                 "surface": "train",
                 "task": "classify",
                 "text": text,
-                "topic_domain": "short-atom",
+                "topic_domain": "unspecified",
+            }
+        )
+
+    # Near-copy lookalikes: neutralize family cues but keep PRESENT wording/length.
+    for idx, pos in enumerate(sorted(positives, key=lambda r: r.get("identity", ""))[:600]):
+        pos_text = str(pos.get("text") or "").strip()
+        if len(pos_text.split()) < 5:
+            continue
+        text = re.sub(
+            r"\b(rizz|sus|degen|meme|slang|aura|flex|simp|cap|mid|meta|clutch|jargon)\b",
+            "neutral",
+            pos_text,
+            flags=re.I,
+        )
+        text = f"{text} ordinary restatement {idx}"
+        if text.casefold() == pos_text.casefold():
+            continue
+        admit(
+            {
+                "class": "INFERRED",
+                "evidence_subtype": "LEXICAL_LOOKALIKE_NONE",
+                "jev": "OFF",
+                "lineage": "none",
+                "notes": f"v5_gen_nearcopy_lookalike:{pos.get('identity','')[:12]}",
+                "split": "train",
+                "surface": "train",
+                "task": "classify",
+                "text": text,
+                "topic_domain": pos.get("topic_domain") or domain_from_pos(pos),
             }
         )
 
@@ -1436,7 +1522,31 @@ def main() -> int:
             "\n".join(canonical_json(r) for r in atoms) + ("\n" if atoms else ""),
         )
 
-    source_rows = source_rows + wikt + wp + atoms
+    atom_none_path = DEST / "OBSERVED_ACQUIRE_WIKT_ATOM_NONE.jsonl"
+    if atom_none_path.exists() and atom_none_path.stat().st_size > 0:
+        atom_none = load_jsonl(atom_none_path)
+        print(f"resume_wikt_atom_none n={len(atom_none)}", flush=True)
+        for row in atom_none:
+            text = str(row.get("text") or "")
+            if text:
+                acq_block_ids.add(normalized_text_sha256(text))
+                from hyperlexical.classification_v5_stage_a_generalization_surface import (
+                    source_sha256 as _ssh,
+                )
+
+                acq_block_src.add(_ssh(text))
+    else:
+        atom_none = acquire_wiktionary_short_atom_none(
+            blocked_ids=acq_block_ids,
+            blocked_src=acq_block_src,
+            need=220,
+        )
+        write_private(
+            atom_none_path,
+            "\n".join(canonical_json(r) for r in atom_none) + ("\n" if atom_none else ""),
+        )
+
+    source_rows = source_rows + wikt + wp + atoms + atom_none
     provisional2 = collect_examples(
         source_rows, blocked_ids=set(blocked_ids), blocked_source_hashes=set(blocked_src)
     )
