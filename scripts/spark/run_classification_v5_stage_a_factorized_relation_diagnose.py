@@ -406,15 +406,25 @@ def inner() -> int:
             if loaded["loaded"] < 12:
                 fail(f"encoder_overlay_incomplete:{path}:{loaded['loaded']}")
             if kind == "two_stage":
+                if "weight" not in (split.get("gate1_head") or {}):
+                    fail(f"missing_gate1_head:{path}")
                 head = nn.Linear(HIDDEN, 2)
                 with torch.no_grad():
                     head.weight.copy_(split["gate1_head"]["weight"])
                     head.bias.copy_(split["gate1_head"]["bias"])
             elif kind == "factorized":
-                head = nn.Linear(HIDDEN, 2)
-                with torch.no_grad():
-                    head.weight.copy_(split["relation_head"]["weight"])
-                    head.bias.copy_(split["relation_head"]["bias"])
+                # flatten_weight_tensors historically omitted relation_head /
+                # resolvability_head from _HEAD_NAMES, so selected ckpt is
+                # encoder-only. Geometry audits still valid; native head
+                # scores come from frozen train receipt.
+                rel = split.get("relation_head") or {}
+                if "weight" in rel:
+                    head = nn.Linear(HIDDEN, 2)
+                    with torch.no_grad():
+                        head.weight.copy_(rel["weight"])
+                        head.bias.copy_(rel["bias"])
+                else:
+                    head = None
         freeze_encoder(encoder, last_trainable=2)
         encoder.to(device).eval()
         if head is not None:
@@ -453,14 +463,15 @@ def inner() -> int:
                     output_hidden_states=return_hidden_states,
                 )
                 hs = out.last_hidden_state  # [1,T,H]
-                attn = encoded["attention_mask"][0].bool()
+                attn_2d = encoded["attention_mask"].bool()  # [1,T]
+                attn = attn_2d[0]
                 if pooling == "cls":
                     pooled = hs[:, 0]
                 elif pooling == "mean":
-                    mask = attn.unsqueeze(-1).float()
+                    mask = attn_2d.unsqueeze(-1).float()  # [1,T,1]
                     pooled = (hs * mask).sum(1) / mask.sum(1).clamp(min=1.0)
                 elif pooling == "max":
-                    masked = hs.masked_fill(~attn.unsqueeze(-1), -1e9)
+                    masked = hs.masked_fill(~attn_2d.unsqueeze(-1), -1e9)
                     pooled = masked.max(1).values
                 elif pooling == "first_content":
                     # first non-special content token ≈ index 1 for ModernBERT/BERT
@@ -559,6 +570,15 @@ def inner() -> int:
             native_pred = [1 if s >= 0.50 else 0 for s in scores]
             native_fpr = 1.0 - recall_for(y_val, native_pred, 0)
             native_rec = recall_for(y_val, native_pred, 1)
+        # Factorized selected ckpt lacks persisted relation_head; use frozen
+        # train-receipt native SHORT_ATOM metrics for that model only.
+        if name.startswith("FACTORIZED") and native_fpr is None:
+            native_fpr = float(
+                FROZEN_OBSERVED_OUTCOME["SHORT_ATOM_NONE_relation_FPR"]
+            )
+            native_rec = float(
+                FROZEN_OBSERVED_OUTCOME["SHORT_ATOM_PRESENT_relation_recall"]
+            )
         cross[name] = {
             "geometry": geom,
             "linear_probe_BA": balanced_accuracy(y_val, pred),
@@ -569,6 +589,11 @@ def inner() -> int:
             "PRESENT_recall_native": native_rec,
             "NONE_FPR_linear": 1.0 - recall_for(y_val, pred, 0),
             "PRESENT_recall_linear": recall_for(y_val, pred, 1),
+            "native_head_source": (
+                "frozen_train_receipt"
+                if name.startswith("FACTORIZED") and head is None
+                else ("checkpoint_head" if head is not None else "none")
+            ),
         }
 
     # Displacement on SHORT_ATOM val identities (aligned)
@@ -991,9 +1016,20 @@ def inner() -> int:
         "requires_external_context_fraction": requires_ext_frac,
         "missing_input_material": missing_input_material,
         "displacement_class": displacement_class,
+        "subtype_BA_gain": subtype_gain,
+        "metadata_all_BA": float(
+            meta_diag["embedding+all_metadata"]["SHORT_ATOM_BA"]
+        ),
         "frozen_observed": FROZEN_OBSERVED_OUTCOME,
         "n_short_atom_train": len(sa_train),
         "n_short_atom_val": len(sa_val),
+        "factorized_checkpoint_note": (
+            "selected factorized model.safetensors contains encoder overlays "
+            "only; relation_head/resolvability_head were dropped by "
+            "flatten_weight_tensors _HEAD_NAMES whitelist at train save time. "
+            "Encoder SHA 8a6981c1… is authoritative for geometry; native "
+            "head metrics taken from frozen train receipt."
+        ),
     }
 
     receipt = assemble_diagnosis_receipt(audit)
@@ -1056,11 +1092,18 @@ Read-only. No train, relabel, surface, threshold, Stage-B, reserve, or BEST move
         "FACTORIZED_FAILED_8a6981c1",
     ):
         c = cross[name]
+        nf = c["NONE_FPR_native"]
+        nf_s = f"{nf:.3f}" if isinstance(nf, float) else str(nf)
+        pr = (
+            c["PRESENT_recall_native"]
+            if c["PRESENT_recall_native"] is not None
+            else c["PRESENT_recall_linear"]
+        )
+        pr_s = f"{pr:.3f}" if isinstance(pr, float) else str(pr)
         md += (
             f"| {name} | {c['geometry']['centroid_cosine']:.3f} | "
             f"{c['linear_probe_BA']:.3f} | {c['nonlinear_probe_BA']:.3f} | "
-            f"{c['NONE_FPR_native']}/{c['NONE_FPR_linear']:.3f} | "
-            f"{(c['PRESENT_recall_native'] if c['PRESENT_recall_native'] is not None else c['PRESENT_recall_linear']):} |\n"
+            f"{nf_s}/{c['NONE_FPR_linear']:.3f} | {pr_s} |\n"
         )
 
     md += f"""

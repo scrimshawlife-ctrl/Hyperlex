@@ -277,16 +277,39 @@ def decide_primary_diagnosis(audit: Mapping[str, Any]) -> dict[str, Any]:
     displacement = str(audit.get("displacement_class") or "")
 
     reasons: list[str] = []
+    subtype_gain = float(audit.get("subtype_BA_gain") or 0.0)
+    meta_recovers = subtype_gain >= 0.15 or float(
+        audit.get("metadata_all_BA") or 0.0
+    ) >= 0.85
 
-    if irr.get("IRREDUCIBLE_SEMANTIC_OVERLAP"):
+    # If diagnostic metadata (esp. subtype) recovers separation while text
+    # embeddings do not, gold semantics live outside the model input — that
+    # is MODEL_INPUT_INFORMATION_DEFICIT, not irreducible text overlap.
+    if meta_recovers and (missing_input or ext_frac >= 0.25):
         return {
-            "primary_diagnosis": "IRREDUCIBLE_SEMANTIC_OVERLAP",
+            "primary_diagnosis": "MODEL_INPUT_INFORMATION_DEFICIT",
             "reasons": [
-                "no layer / probe / pooling / token path recovers SHORT_ATOM separation",
-                "collisions or external-context dependence present",
+                f"subtype_BA_gain={subtype_gain:.3f} (diagnostic only)",
+                f"requires_external_context_fraction={ext_frac:.3f}",
+                "text embedding probes do not separate SHORT_ATOM NONE/PRESENT",
+                "do not treat subtype as production model input",
             ],
             "confidence": "high",
         }
+
+    if irr.get("IRREDUCIBLE_SEMANTIC_OVERLAP"):
+        # Irreducible only when metadata also fails to recover — otherwise
+        # the failure is an input-contract / gold-identifiability problem.
+        if not meta_recovers:
+            return {
+                "primary_diagnosis": "IRREDUCIBLE_SEMANTIC_OVERLAP",
+                "reasons": [
+                    "no layer / probe / pooling / token path recovers SHORT_ATOM separation",
+                    "collisions or external-context dependence present",
+                    "metadata diagnostic does not recover separation either",
+                ],
+                "confidence": "high",
+            }
 
     if missing_input or ext_frac >= 0.30 or collisions > 0:
         reasons = [
@@ -379,6 +402,10 @@ def decide_next_action(primary: str) -> str:
 
 def dataset_consequence(primary: str, audit: Mapping[str, Any]) -> str:
     if primary == "MODEL_INPUT_INFORMATION_DEFICIT":
+        # Large subtype/metadata recovery means gold is encoded outside text;
+        # repair the gold/identifiability contract rather than enriching input.
+        if float(audit.get("subtype_BA_gain") or 0.0) >= 0.15:
+            return "GOLD_CONTRACT_REPAIR_REQUIRED"
         if bool(audit.get("missing_input_material")):
             return "INPUT_ENRICHMENT_REQUIRED"
         return "GOLD_CONTRACT_REPAIR_REQUIRED"

@@ -195,7 +195,17 @@ def test_primary_model_input_deficit_without_full_irreducible():
         "REVISE_GOLD_IDENTIFIABILITY_CONTRACT"
     )
     assert (
-        dataset_consequence(primary["primary_diagnosis"], {"missing_input_material": True})
+        dataset_consequence(
+            primary["primary_diagnosis"],
+            {"missing_input_material": True, "subtype_BA_gain": 0.43},
+        )
+        == "GOLD_CONTRACT_REPAIR_REQUIRED"
+    )
+    assert (
+        dataset_consequence(
+            primary["primary_diagnosis"],
+            {"missing_input_material": True, "subtype_BA_gain": 0.0},
+        )
         == "INPUT_ENRICHMENT_REQUIRED"
     )
     assert "INPUT_ENRICHMENT_REQUIRED" in DATASET_CONSEQUENCES
