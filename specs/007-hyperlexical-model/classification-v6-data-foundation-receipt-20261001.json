@@ -13,7 +13,7 @@
   "V5_CANONICAL_MUTATED": false,
   "V5_RESEARCH_BASELINE": "HYPERLEX_V5_RESEARCH_BASELINE",
   "V5_RETUNED": false,
-  "V6_DATA_FOUNDATION_RECEIPT_SHA256": "58d660229709171058726e2d992ae2ecbfbe9722e810c4705645465e2aee2b6a",
+  "V6_DATA_FOUNDATION_RECEIPT_SHA256": "fb4441ef33a4b5499887cb939e320a3b421bbef76b6329355201642676cd9303",
   "V6_DATA_FOUNDATION_STATE": "V6_DATA_FOUNDATION_PARTIAL",
   "audit": {
     "disjointness": {
@@ -65,7 +65,7 @@
       "OPERATING_DISTRIBUTION_DEFINED": true,
       "QUALIFICATION_SEALED": false,
       "REPRESENTATIVE_VALIDATION_READY": false,
-      "TRAIN_READY": false
+      "TRAIN_READY": true
     },
     "human_agreement": {
       "metrics": null,
@@ -75,19 +75,22 @@
     },
     "ontology": {
       "class_counts": {
-        "BOUNDARY_SENSITIVE": 17,
-        "CLEARLY_SEPARABLE": 80,
-        "ONTOLOGY_REVIEW_REQUIRED": 52,
-        "STRUCTURALLY_OVERLAPPING": 4
+        "ONTOLOGY_REVIEW_REQUIRED": 152,
+        "STRUCTURALLY_OVERLAPPING": 1
       },
       "families_needing_review": [
         "ai-native",
         "betting-sharp",
+        "conflict-aggression",
+        "crypto-degen",
         "fashion-aesthetic",
         "gaming-meta",
+        "identity-affiliation",
+        "internet-slang",
         "memetic",
         "music-entertainment",
         "politics-civic",
+        "regional-cultural",
         "relationship-dating",
         "social-evaluation",
         "spiritual-mystic",
@@ -102,281 +105,281 @@
           "a": "gaming-meta",
           "b": "betting-sharp",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9285772570066098,
-          "lexical_overlap": 0.11242603550295859
+          "embedding_overlap": 0.9675875707871086,
+          "lexical_overlap": 0.0703012912482066
+        },
+        {
+          "a": "gaming-meta",
+          "b": "crypto-degen",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9788790139037914,
+          "lexical_overlap": 0.10227272727272728
+        },
+        {
+          "a": "gaming-meta",
+          "b": "internet-slang",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9867259263686942,
+          "lexical_overlap": 0.12088974854932302
         },
         {
           "a": "gaming-meta",
           "b": "memetic",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.901696319661239,
-          "lexical_overlap": 0.08274647887323944
+          "embedding_overlap": 0.994342946289558,
+          "lexical_overlap": 0.1045828437132785
         },
         {
           "a": "gaming-meta",
           "b": "social-evaluation",
-          "class": "STRUCTURALLY_OVERLAPPING",
-          "embedding_overlap": 0.8896999897391292,
-          "lexical_overlap": 0.06637168141592921
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9799345232097201,
+          "lexical_overlap": 0.0989159891598916
         },
         {
           "a": "gaming-meta",
           "b": "relationship-dating",
-          "class": "STRUCTURALLY_OVERLAPPING",
-          "embedding_overlap": 0.8869064364468683,
-          "lexical_overlap": 0.0972972972972973
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9855657797520558,
+          "lexical_overlap": 0.1211031175059952
+        },
+        {
+          "a": "gaming-meta",
+          "b": "conflict-aggression",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9848107029272087,
+          "lexical_overlap": 0.08568329718004339
+        },
+        {
+          "a": "gaming-meta",
+          "b": "technology-ai",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9945585521729864,
+          "lexical_overlap": 0.12384259259259259
         },
         {
           "a": "gaming-meta",
           "b": "workplace-career",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9604928326339753,
-          "lexical_overlap": 0.0815450643776824
+          "embedding_overlap": 0.985217682561335,
+          "lexical_overlap": 0.09567496723460026
         },
         {
           "a": "gaming-meta",
           "b": "sports-competition",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9361691679777548,
-          "lexical_overlap": 0.10655737704918032
+          "embedding_overlap": 0.9807908600483929,
+          "lexical_overlap": 0.10087719298245613
         },
         {
           "a": "gaming-meta",
           "b": "music-entertainment",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9686153639115683,
-          "lexical_overlap": 0.06266318537859007
+          "embedding_overlap": 0.9891466065052202,
+          "lexical_overlap": 0.107981220657277
         },
         {
           "a": "gaming-meta",
           "b": "fashion-aesthetic",
-          "class": "STRUCTURALLY_OVERLAPPING",
-          "embedding_overlap": 0.898038564608314,
-          "lexical_overlap": 0.07112970711297072
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.985182767950664,
+          "lexical_overlap": 0.11864406779661017
+        },
+        {
+          "a": "gaming-meta",
+          "b": "regional-cultural",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.983406938549262,
+          "lexical_overlap": 0.09399477806788512
         },
         {
           "a": "gaming-meta",
           "b": "spiritual-mystic",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9188737971517281,
-          "lexical_overlap": 0.11688311688311688
+          "embedding_overlap": 0.9863377780857705,
+          "lexical_overlap": 0.10656753407682776
+        },
+        {
+          "a": "gaming-meta",
+          "b": "identity-affiliation",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9750164534664277,
+          "lexical_overlap": 0.12236842105263158
         },
         {
           "a": "gaming-meta",
           "b": "politics-civic",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9036992982596396,
-          "lexical_overlap": 0.07712765957446809
+          "embedding_overlap": 0.9847831825381128,
+          "lexical_overlap": 0.10419485791610285
+        },
+        {
+          "a": "gaming-meta",
+          "b": "ai-native",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9608321943667353,
+          "lexical_overlap": 0.11839080459770115
+        },
+        {
+          "a": "betting-sharp",
+          "b": "crypto-degen",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9918577784347116,
+          "lexical_overlap": 0.08286252354048965
+        },
+        {
+          "a": "betting-sharp",
+          "b": "internet-slang",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9488686092546891,
+          "lexical_overlap": 0.06427688504326329
         },
         {
           "a": "betting-sharp",
           "b": "memetic",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9301883220956336,
-          "lexical_overlap": 0.10785824345146379
+          "embedding_overlap": 0.9691673071228273,
+          "lexical_overlap": 0.08813559322033898
         },
         {
           "a": "betting-sharp",
           "b": "social-evaluation",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9223286360961465,
-          "lexical_overlap": 0.078125
+          "embedding_overlap": 0.9733833843100994,
+          "lexical_overlap": 0.11038961038961038
         },
         {
           "a": "betting-sharp",
           "b": "relationship-dating",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9074164372461339,
-          "lexical_overlap": 0.12831858407079647
+          "embedding_overlap": 0.958414140246246,
+          "lexical_overlap": 0.07966101694915254
+        },
+        {
+          "a": "betting-sharp",
+          "b": "conflict-aggression",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.979285956560009,
+          "lexical_overlap": 0.06838905775075987
+        },
+        {
+          "a": "betting-sharp",
+          "b": "technology-ai",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.974597920121128,
+          "lexical_overlap": 0.0768
         },
         {
           "a": "betting-sharp",
           "b": "workplace-career",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9604689474903788,
-          "lexical_overlap": 0.0755287009063444
+          "embedding_overlap": 0.9898003251436376,
+          "lexical_overlap": 0.09795918367346938
         },
         {
           "a": "betting-sharp",
           "b": "sports-competition",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9674578455325333,
-          "lexical_overlap": 0.10173160173160173
+          "embedding_overlap": 0.9861654185323153,
+          "lexical_overlap": 0.08591885441527446
         },
         {
           "a": "betting-sharp",
           "b": "music-entertainment",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9501163894034178,
-          "lexical_overlap": 0.09656652360515021
+          "embedding_overlap": 0.9620042873469461,
+          "lexical_overlap": 0.07846410684474124
         },
         {
           "a": "betting-sharp",
           "b": "fashion-aesthetic",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9344563241190232,
-          "lexical_overlap": 0.0941385435168739
+          "embedding_overlap": 0.9702474126485332,
+          "lexical_overlap": 0.07213578500707214
+        },
+        {
+          "a": "betting-sharp",
+          "b": "regional-cultural",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9762421916374765,
+          "lexical_overlap": 0.0931174089068826
         },
         {
           "a": "betting-sharp",
           "b": "spiritual-mystic",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9606227879179848,
-          "lexical_overlap": 0.1341772151898734
+          "embedding_overlap": 0.9674677111868317,
+          "lexical_overlap": 0.08775137111517367
+        },
+        {
+          "a": "betting-sharp",
+          "b": "identity-affiliation",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9397337495419937,
+          "lexical_overlap": 0.06936416184971098
         },
         {
           "a": "betting-sharp",
           "b": "politics-civic",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.966287710709053,
-          "lexical_overlap": 0.09698275862068965
+          "embedding_overlap": 0.9721256591384216,
+          "lexical_overlap": 0.081419624217119
         },
         {
-          "a": "memetic",
+          "a": "betting-sharp",
+          "b": "ai-native",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9259639692337341,
+          "lexical_overlap": 0.08346709470304976
+        },
+        {
+          "a": "crypto-degen",
+          "b": "internet-slang",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9641000035747255,
+          "lexical_overlap": 0.09777777777777778
+        },
+        {
+          "a": "crypto-degen",
+          "b": "memetic",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9774954376891137,
+          "lexical_overlap": 0.0800561797752809
+        },
+        {
+          "a": "crypto-degen",
           "b": "social-evaluation",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9916413221527868,
-          "lexical_overlap": 0.037300177619893425
+          "embedding_overlap": 0.9728521810306066,
+          "lexical_overlap": 0.0865874363327674
         },
         {
-          "a": "memetic",
+          "a": "crypto-degen",
           "b": "relationship-dating",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9924463511939727,
-          "lexical_overlap": 0.10798816568047337
+          "embedding_overlap": 0.9680276809282172,
+          "lexical_overlap": 0.10564399421128799
         },
         {
-          "a": "memetic",
+          "a": "crypto-degen",
+          "b": "conflict-aggression",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9792715615699099,
+          "lexical_overlap": 0.07932379713914174
+        },
+        {
+          "a": "crypto-degen",
+          "b": "technology-ai",
+          "class": "ONTOLOGY_REVIEW_REQUIRED",
+          "embedding_overlap": 0.9797385914283102,
+          "lexical_overlap": 0.09140518417462483
+        },
+        {
+          "a": "crypto-degen",
           "b": "workplace-career",
           "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9187362020486936,
-          "lexical_overlap": 0.05871886120996441
-        },
-        {
-          "a": "memetic",
-          "b": "sports-competition",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9693717107117317,
-          "lexical_overlap": 0.0967741935483871
-        },
-        {
-          "a": "memetic",
-          "b": "music-entertainment",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9252601545263325,
-          "lexical_overlap": 0.09329446064139942
-        },
-        {
-          "a": "memetic",
-          "b": "fashion-aesthetic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9937521473123755,
-          "lexical_overlap": 0.10038610038610038
-        },
-        {
-          "a": "memetic",
-          "b": "spiritual-mystic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9838389006164423,
-          "lexical_overlap": 0.11165048543689321
-        },
-        {
-          "a": "memetic",
-          "b": "politics-civic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9763801607861403,
-          "lexical_overlap": 0.11641791044776119
-        },
-        {
-          "a": "social-evaluation",
-          "b": "relationship-dating",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9898481761974983,
-          "lexical_overlap": 0.07758620689655173
-        },
-        {
-          "a": "social-evaluation",
-          "b": "workplace-career",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.90705406167921,
-          "lexical_overlap": 0.07281553398058252
-        },
-        {
-          "a": "social-evaluation",
-          "b": "sports-competition",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9638082910442284,
-          "lexical_overlap": 0.06552706552706553
-        },
-        {
-          "a": "social-evaluation",
-          "b": "music-entertainment",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.918772287224923,
-          "lexical_overlap": 0.07122507122507123
-        },
-        {
-          "a": "social-evaluation",
-          "b": "fashion-aesthetic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.994370801400948,
-          "lexical_overlap": 0.06415929203539823
-        },
-        {
-          "a": "social-evaluation",
-          "b": "spiritual-mystic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9807190665090766,
-          "lexical_overlap": 0.07931034482758621
-        },
-        {
-          "a": "social-evaluation",
-          "b": "politics-civic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9710449307229724,
-          "lexical_overlap": 0.06552706552706553
-        },
-        {
-          "a": "relationship-dating",
-          "b": "workplace-career",
-          "class": "STRUCTURALLY_OVERLAPPING",
-          "embedding_overlap": 0.895056368445755,
-          "lexical_overlap": 0.06629834254143646
-        },
-        {
-          "a": "relationship-dating",
-          "b": "sports-competition",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9609929489723489,
-          "lexical_overlap": 0.1
-        },
-        {
-          "a": "relationship-dating",
-          "b": "music-entertainment",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9044396508654399,
-          "lexical_overlap": 0.0841683366733467
-        },
-        {
-          "a": "relationship-dating",
-          "b": "fashion-aesthetic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9880594969675549,
-          "lexical_overlap": 0.09121621621621621
-        },
-        {
-          "a": "relationship-dating",
-          "b": "spiritual-mystic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9738944924508192,
-          "lexical_overlap": 0.13270142180094788
-        },
-        {
-          "a": "relationship-dating",
-          "b": "politics-civic",
-          "class": "ONTOLOGY_REVIEW_REQUIRED",
-          "embedding_overlap": 0.9616163927996059,
-          "lexical_overlap": 0.1
+          "embedding_overlap": 0.9899428741360033,
+          "lexical_overlap": 0.08306188925081433
         }
       ]
     },
@@ -392,427 +395,457 @@
       "BASE_REPRESENTATION_AUDITED"
     ],
     "rejected": {
-      "filtered": 41
+      "filtered": 154
     },
     "representation": {
-      "between_family_sim_mean": 0.76775605749252,
-      "nearest_family_purity": 0.26506024096385544,
-      "present_none_centroid_cosine": 0.9641426801681519,
+      "between_family_sim_mean": 0.9795487488445065,
+      "nearest_family_purity": 0.25,
+      "present_none_centroid_cosine": 0.992544949054718,
       "viability": "BASE_REPRESENTATION_INADEQUATE",
-      "within_family_sim_mean": 0.8202844204028912
+      "within_family_sim_mean": 0.8215769519244093
     },
     "retrieval": {
-      "coverage": 0.12048192771084337,
-      "family_precision": 0.5,
-      "n_rep_none": 171,
-      "n_rep_present": 83,
-      "n_rep_unc": 12,
-      "n_train_present": 180,
-      "top1": 0.26506024096385544,
-      "viability": "RETRIEVAL_PARTIAL"
+      "coverage": 0.0718562874251497,
+      "family_precision": 0.2708333333333333,
+      "n_rep_none": 248,
+      "n_rep_present": 668,
+      "n_rep_unc": 51,
+      "n_train_present": 1521,
+      "top1": 0.25,
+      "viability": "RETRIEVAL_NOT_VIABLE"
     },
     "shortcut_diagnostics": {
       "DEVELOPMENT_VALIDATION": {
         "flags": [
           {
-            "label": "EVIDENCE_PRESENT",
-            "label_share": 1.0,
-            "n": 37,
-            "pmi": 1.2012664427284938,
-            "source_root": "v6_wikt_present"
+            "label": "NO_EVIDENCE",
+            "label_share": 0.8404255319148937,
+            "n": 79,
+            "pmi": 1.3647881558991826,
+            "source_root": "v6_wp_ordinary"
           }
         ],
-        "n": 123
+        "n": 368
       },
       "REPRESENTATIVE_VALIDATION": {
         "flags": [
           {
-            "label": "EVIDENCE_PRESENT",
-            "label_share": 1.0,
-            "n": 83,
-            "pmi": 1.1646557009854133,
-            "source_root": "v6_wikt_present"
-          }
-        ],
-        "n": 266
-      },
-      "TRAIN": {
-        "flags": [
-          {
-            "label": "EVIDENCE_PRESENT",
-            "label_share": 1.0,
-            "n": 180,
-            "pmi": 1.1871656860098598,
-            "source_root": "v6_wikt_present"
+            "label": "NO_EVIDENCE",
+            "label_share": 0.8387096774193549,
+            "n": 208,
+            "pmi": 1.3607697492885686,
+            "source_root": "v6_wp_ordinary"
           },
           {
             "label": "UNCERTAIN",
             "label_share": 1.0,
-            "n": 20,
-            "pmi": 3.384390263345808,
+            "n": 51,
+            "pmi": 2.9423728627290213,
             "source_root": "v6_wikt_uncertain"
           }
         ],
-        "n": 590
+        "n": 967
+      },
+      "TRAIN": {
+        "flags": [
+          {
+            "label": "NO_EVIDENCE",
+            "label_share": 0.8316831683168316,
+            "n": 420,
+            "pmi": 1.4383794211864125,
+            "source_root": "v6_wp_ordinary"
+          },
+          {
+            "label": "UNCERTAIN",
+            "label_share": 1.0,
+            "n": 102,
+            "pmi": 3.0379650371773117,
+            "source_root": "v6_wikt_uncertain"
+          }
+        ],
+        "n": 2128
       }
     },
     "summaries": {
       "DEVELOPMENT_VALIDATION": {
         "construction": {
-          "NATURAL": 123
+          "NATURAL": 368
         },
         "family_counts": {
-          "betting-sharp": 1,
-          "crypto-degen": 1,
-          "fashion-aesthetic": 2,
-          "gaming-meta": 4,
-          "memetic": 1,
-          "music-entertainment": 7,
-          "politics-civic": 5,
-          "relationship-dating": 2,
-          "social-evaluation": 4,
-          "spiritual-mystic": 7,
-          "workplace-career": 3
+          "ai-native": 13,
+          "betting-sharp": 20,
+          "conflict-aggression": 17,
+          "crypto-degen": 17,
+          "fashion-aesthetic": 8,
+          "gaming-meta": 12,
+          "identity-affiliation": 10,
+          "internet-slang": 13,
+          "memetic": 14,
+          "music-entertainment": 10,
+          "politics-civic": 11,
+          "regional-cultural": 16,
+          "relationship-dating": 17,
+          "social-evaluation": 18,
+          "spiritual-mystic": 13,
+          "sports-competition": 13,
+          "technology-ai": 16,
+          "workplace-career": 17
         },
         "labels": {
-          "EVIDENCE_PRESENT": 37,
-          "NO_EVIDENCE": 83,
-          "UNCERTAIN": 3
+          "EVIDENCE_PRESENT": 255,
+          "NO_EVIDENCE": 94,
+          "UNCERTAIN": 19
         },
         "length": {
-          "long": 40,
-          "mean": 132.3739837398374,
-          "med": 41,
-          "short": 42
+          "long": 130,
+          "mean": 156.32608695652175,
+          "med": 187,
+          "short": 51
         },
-        "max_family_share_among_present": 0.1891891891891892,
-        "n": 123,
-        "n_families_present": 11,
+        "max_family_share_among_present": 0.0784313725490196,
+        "n": 368,
+        "n_families_present": 18,
         "natural_share": 1.0,
         "observed_share": 1.0,
         "provenance": {
-          "OBSERVED": 123
+          "OBSERVED": 368
         },
         "source_family_top": [
           [
-            "v6_wikt_present:music-entertainment:music",
-            7
+            "v6_wikt_present:betting-sharp",
+            20
           ],
           [
-            "v6_wp_ordinary:oceanography",
-            5
+            "v6_wikt_present:social-evaluation",
+            18
           ],
           [
-            "v6_wikt_atom_none:paleontology",
-            5
+            "v6_wikt_present:conflict-aggression",
+            17
           ],
           [
-            "v6_wikt_present:spiritual-mystic:occult",
-            5
+            "v6_wikt_present:workplace-career",
+            17
           ],
           [
-            "v6_wikt_atom_none:oceanography",
-            5
+            "v6_wikt_present:relationship-dating",
+            17
           ],
           [
-            "v6_wp_ordinary:numismatics",
-            5
+            "v6_wikt_present:crypto-degen",
+            17
           ],
           [
-            "v6_wikt_atom_none:botany",
-            5
+            "v6_wikt_present:regional-cultural",
+            16
           ],
           [
-            "v6_wikt_atom_none:numismatics",
-            4
+            "v6_wikt_present:technology-ai",
+            16
           ],
           [
-            "v6_wp_ordinary:mineralogy",
-            4
+            "v6_wikt_present:memetic",
+            14
           ],
           [
-            "v6_wp_ordinary:hydrology",
-            4
+            "v6_wikt_present:internet-slang",
+            13
           ],
           [
-            "v6_wp_ordinary:botany",
-            4
+            "v6_wikt_present:spiritual-mystic",
+            13
           ],
           [
-            "v6_wp_ordinary:cartography",
-            4
+            "v6_wikt_present:sports-competition",
+            13
           ]
         ]
       },
       "QUALIFICATION": {
         "construction": {
-          "NATURAL": 90
+          "NATURAL": 375
         },
         "family_counts": {
-          "betting-sharp": 2,
-          "conflict-aggression": 1,
-          "fashion-aesthetic": 3,
-          "gaming-meta": 3,
-          "memetic": 6,
-          "music-entertainment": 1,
-          "politics-civic": 1,
-          "relationship-dating": 1,
-          "social-evaluation": 4,
-          "spiritual-mystic": 5,
-          "sports-competition": 3,
-          "workplace-career": 1
+          "ai-native": 15,
+          "betting-sharp": 14,
+          "conflict-aggression": 17,
+          "crypto-degen": 13,
+          "fashion-aesthetic": 16,
+          "gaming-meta": 11,
+          "identity-affiliation": 14,
+          "internet-slang": 8,
+          "memetic": 15,
+          "music-entertainment": 17,
+          "politics-civic": 19,
+          "regional-cultural": 10,
+          "relationship-dating": 18,
+          "social-evaluation": 12,
+          "spiritual-mystic": 24,
+          "sports-competition": 17,
+          "technology-ai": 19,
+          "workplace-career": 23
         },
         "labels": {
-          "EVIDENCE_PRESENT": 31,
-          "NO_EVIDENCE": 55,
-          "UNCERTAIN": 4
+          "EVIDENCE_PRESENT": 282,
+          "NO_EVIDENCE": 77,
+          "UNCERTAIN": 16
         },
         "length": {
-          "long": 39,
-          "mean": 169.45555555555555,
-          "med": 25,
-          "short": 26
+          "long": 130,
+          "mean": 162.89333333333335,
+          "med": 203,
+          "short": 42
         },
-        "max_family_share_among_present": 0.1935483870967742,
-        "n": 90,
-        "n_families_present": 12,
+        "max_family_share_among_present": 0.0851063829787234,
+        "n": 375,
+        "n_families_present": 18,
         "natural_share": 1.0,
         "observed_share": 1.0,
         "provenance": {
-          "OBSERVED": 90
+          "OBSERVED": 375
         },
         "source_family_top": [
           [
-            "v6_wp_ordinary:archaeology",
-            7
+            "v6_wikt_present:spiritual-mystic",
+            24
           ],
           [
-            "v6_wikt_present:memetic:meme",
-            6
+            "v6_wikt_present:workplace-career",
+            23
           ],
           [
-            "v6_wp_ordinary:chemistry",
-            5
+            "v6_wikt_present:politics-civic",
+            19
           ],
           [
-            "v6_wp_ordinary:oceanography",
-            4
+            "v6_wikt_present:technology-ai",
+            19
           ],
           [
-            "v6_wikt_present:social-evaluation:slang",
-            4
+            "v6_wikt_present:relationship-dating",
+            18
           ],
           [
-            "v6_wikt_present:spiritual-mystic:occult",
-            4
+            "v6_wikt_present:conflict-aggression",
+            17
           ],
           [
-            "v6_wp_ordinary:botany",
-            4
+            "v6_wikt_present:music-entertainment",
+            17
           ],
           [
-            "v6_wp_ordinary:entomology",
-            3
+            "v6_wikt_present:sports-competition",
+            17
           ],
           [
-            "v6_wp_ordinary:cartography",
-            3
+            "v6_wikt_present:fashion-aesthetic",
+            16
           ],
           [
-            "v6_wp_ordinary:hydrology",
-            3
+            "v6_wikt_present:memetic",
+            15
           ],
           [
-            "v6_wikt_present:fashion-aesthetic:fashion",
-            3
+            "v6_wikt_present:ai-native",
+            15
           ],
           [
-            "v6_wikt_atom_none:philately",
-            3
+            "v6_wikt_present:betting-sharp",
+            14
           ]
         ]
       },
       "REPRESENTATIVE_VALIDATION": {
         "construction": {
-          "NATURAL": 266
+          "NATURAL": 967
         },
         "family_counts": {
-          "betting-sharp": 7,
-          "conflict-aggression": 2,
-          "fashion-aesthetic": 11,
-          "gaming-meta": 5,
-          "memetic": 6,
-          "music-entertainment": 7,
-          "politics-civic": 11,
-          "relationship-dating": 6,
-          "social-evaluation": 5,
-          "spiritual-mystic": 11,
-          "sports-competition": 11,
-          "workplace-career": 1
+          "ai-native": 39,
+          "betting-sharp": 34,
+          "conflict-aggression": 31,
+          "crypto-degen": 35,
+          "fashion-aesthetic": 40,
+          "gaming-meta": 47,
+          "identity-affiliation": 46,
+          "internet-slang": 38,
+          "memetic": 38,
+          "music-entertainment": 35,
+          "politics-civic": 28,
+          "regional-cultural": 29,
+          "relationship-dating": 42,
+          "social-evaluation": 34,
+          "spiritual-mystic": 41,
+          "sports-competition": 37,
+          "technology-ai": 39,
+          "workplace-career": 35
         },
         "labels": {
-          "EVIDENCE_PRESENT": 83,
-          "NO_EVIDENCE": 171,
-          "UNCERTAIN": 12
+          "EVIDENCE_PRESENT": 668,
+          "NO_EVIDENCE": 248,
+          "UNCERTAIN": 51
         },
         "length": {
-          "long": 112,
-          "mean": 171.203007518797,
-          "med": 75,
-          "short": 79
+          "long": 346,
+          "mean": 156.85418821096172,
+          "med": 467,
+          "short": 154
         },
-        "max_family_share_among_present": 0.13253012048192772,
-        "n": 266,
-        "n_families_present": 12,
+        "max_family_share_among_present": 0.07035928143712575,
+        "n": 967,
+        "n_families_present": 18,
         "natural_share": 1.0,
         "observed_share": 1.0,
         "provenance": {
-          "OBSERVED": 266
+          "OBSERVED": 967
         },
         "source_family_top": [
           [
-            "v6_wp_ordinary:mineralogy",
-            13
+            "v6_wikt_present:gaming-meta",
+            47
           ],
           [
-            "v6_wp_ordinary:chemistry",
-            12
+            "v6_wikt_present:identity-affiliation",
+            46
           ],
           [
-            "v6_wp_ordinary:cartography",
-            12
+            "v6_wikt_present:relationship-dating",
+            42
           ],
           [
-            "v6_wikt_present:sports-competition:sports",
-            10
+            "v6_wikt_present:spiritual-mystic",
+            41
           ],
           [
-            "v6_wp_ordinary:numismatics",
-            10
+            "v6_wikt_present:fashion-aesthetic",
+            40
           ],
           [
-            "v6_wp_ordinary:mycology",
-            10
+            "v6_wikt_present:ai-native",
+            39
           ],
           [
-            "v6_wikt_present:fashion-aesthetic:fashion",
-            10
+            "v6_wikt_present:technology-ai",
+            39
           ],
           [
-            "v6_wp_ordinary:hydrology",
-            10
+            "v6_wikt_present:memetic",
+            38
           ],
           [
-            "v6_wp_ordinary:botany",
-            9
+            "v6_wikt_present:internet-slang",
+            38
           ],
           [
-            "v6_wikt_present:spiritual-mystic:occult",
-            9
+            "v6_wikt_present:sports-competition",
+            37
           ],
           [
-            "v6_wp_ordinary:archaeology",
-            9
+            "v6_wikt_present:music-entertainment",
+            35
           ],
           [
-            "v6_wikt_present:betting-sharp:poker",
-            7
+            "v6_wikt_present:crypto-degen",
+            35
           ]
         ]
       },
       "TRAIN": {
         "construction": {
-          "NATURAL": 590
+          "NATURAL": 2128
         },
         "family_counts": {
-          "ai-native": 3,
-          "betting-sharp": 15,
-          "crypto-degen": 1,
-          "fashion-aesthetic": 22,
-          "gaming-meta": 7,
-          "memetic": 22,
-          "music-entertainment": 23,
-          "politics-civic": 27,
-          "relationship-dating": 11,
-          "social-evaluation": 8,
-          "spiritual-mystic": 16,
-          "sports-competition": 15,
-          "technology-ai": 1,
-          "workplace-career": 9
+          "ai-native": 89,
+          "betting-sharp": 85,
+          "conflict-aggression": 88,
+          "crypto-degen": 85,
+          "fashion-aesthetic": 89,
+          "gaming-meta": 86,
+          "identity-affiliation": 84,
+          "internet-slang": 87,
+          "memetic": 88,
+          "music-entertainment": 88,
+          "politics-civic": 92,
+          "regional-cultural": 77,
+          "relationship-dating": 71,
+          "social-evaluation": 80,
+          "spiritual-mystic": 78,
+          "sports-competition": 87,
+          "technology-ai": 85,
+          "workplace-career": 82
         },
         "labels": {
-          "EVIDENCE_PRESENT": 180,
-          "NO_EVIDENCE": 390,
-          "UNCERTAIN": 20
+          "EVIDENCE_PRESENT": 1521,
+          "NO_EVIDENCE": 505,
+          "UNCERTAIN": 102
         },
         "length": {
-          "long": 235,
-          "mean": 149.39830508474577,
-          "med": 172,
-          "short": 183
+          "long": 739,
+          "mean": 156.90366541353384,
+          "med": 1038,
+          "short": 351
         },
-        "max_family_share_among_present": 0.15,
-        "n": 590,
-        "n_families_present": 14,
+        "max_family_share_among_present": 0.060486522024983565,
+        "n": 2128,
+        "n_families_present": 18,
         "natural_share": 1.0,
         "observed_share": 1.0,
         "provenance": {
-          "OBSERVED": 590
+          "OBSERVED": 2128
         },
         "source_family_top": [
           [
-            "v6_wp_ordinary:oceanography",
-            26
+            "v6_wikt_present:politics-civic",
+            92
           ],
           [
-            "v6_wp_ordinary:mycology",
-            25
+            "v6_wikt_present:ai-native",
+            89
           ],
           [
-            "v6_wp_ordinary:hydrology",
-            23
+            "v6_wikt_present:fashion-aesthetic",
+            89
           ],
           [
-            "v6_wp_ordinary:numismatics",
-            23
+            "v6_wikt_present:conflict-aggression",
+            88
           ],
           [
-            "v6_wp_ordinary:botany",
-            23
+            "v6_wikt_present:memetic",
+            88
           ],
           [
-            "v6_wikt_present:music-entertainment:music",
-            22
+            "v6_wikt_present:music-entertainment",
+            88
           ],
           [
-            "v6_wikt_present:memetic:meme",
-            22
+            "v6_wikt_present:internet-slang",
+            87
           ],
           [
-            "v6_wp_ordinary:cartography",
-            21
+            "v6_wikt_present:sports-competition",
+            87
           ],
           [
-            "v6_wp_ordinary:mineralogy",
-            21
+            "v6_wikt_present:gaming-meta",
+            86
           ],
           [
-            "v6_wp_ordinary:chemistry",
-            19
+            "v6_wikt_present:betting-sharp",
+            85
           ],
           [
-            "v6_wikt_atom_none:oceanography",
-            18
+            "v6_wikt_present:crypto-degen",
+            85
           ],
           [
-            "v6_wikt_present:fashion-aesthetic:fashion",
-            18
+            "v6_wikt_present:technology-ai",
+            85
           ]
         ]
       }
     }
   },
-  "code_revision": "c8e3013065e917d7185ee367f799906ed0ada648",
+  "code_revision": "513dd51151a862031ecd6fadac4c29ac1d7e7118",
   "dataset_roles": {
     "DEVELOPMENT_VALIDATION": {
       "optimizable": "checkpoint_selection_and_ordinary_debugging_only",
@@ -900,7 +933,7 @@
     "OPERATING_DISTRIBUTION_DEFINED": true,
     "QUALIFICATION_SEALED": false,
     "REPRESENTATIVE_VALIDATION_READY": false,
-    "TRAIN_READY": false
+    "TRAIN_READY": true
   },
   "gold_contract": {
     "auto_relabel": false,
@@ -1066,5 +1099,5 @@
     }
   },
   "schema": "hyperlex.classification.v6.data_foundation.v1",
-  "settled_at": "2026-10-01T18:46:22Z"
+  "settled_at": "2026-10-01T20:28:29Z"
 }

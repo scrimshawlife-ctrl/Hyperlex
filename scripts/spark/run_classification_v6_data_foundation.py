@@ -543,6 +543,176 @@ def acquire_raw(blocked: dict[str, set[str]]) -> list[dict]:
     return raw
 
 
+def acquire_none_topup(blocked: dict[str, set[str]], target_extra: int = 1200) -> list[dict]:
+    """Acquire additional NATURAL NO_EVIDENCE / UNCERTAIN rows only."""
+    from hyperlexical.classification_v6_data_foundation_acquire import (
+        DOMAIN_IRRELEVANT_CATEGORIES,
+        FAMILY_LABELS,
+        ORDINARY_NONE_LABELS,
+        WIKI_ORDINARY_CATEGORIES,
+        clean_wikitext,
+    )
+    from hyperlexical.classification_v2 import ACTIVE_FAMILY_VOCABULARY
+    from hyperlexical.holdout_guard import normalized_text_sha256
+    from hyperlexical.classification_v5_surface_readiness_gates import near_duplicate_key
+
+    raw: list[dict] = []
+    seen_text = set(blocked["blocked_text"])
+    seen_src = set(blocked["blocked_src"])
+    seen_near = set(blocked["blocked_near"])
+
+    def admit(row: dict) -> bool:
+        text = row["text"]
+        src = normalized_text_sha256(text)
+        near = near_duplicate_key(text)
+        if text in seen_text or src in seen_src or near in seen_near:
+            return False
+        seen_text.add(text)
+        seen_src.add(src)
+        seen_near.add(near)
+        raw.append(row)
+        return True
+
+    for domain, labels in ORDINARY_NONE_LABELS.items():
+        if len(raw) >= target_extra:
+            break
+        cat = WIKI_ORDINARY_CATEGORIES.get(domain)
+        titles = category_titles(WIKI_API, cat, limit=220) if cat else []
+        # second page of category via continue handled inside category_titles limit
+        pages = fetch_wikitext(WIKI_API, titles)
+        got = 0
+        for title, content in pages.items():
+            if got >= 120 or len(raw) >= target_extra:
+                break
+            paras = [
+                clean_wikitext(p)
+                for p in content.split("\n\n")
+                if p.strip() and not p.strip().startswith("{")
+            ]
+            for para in paras[:3]:
+                if 40 <= len(para) <= 450:
+                    if admit(
+                        {
+                            "text": para,
+                            "evidence_label": "NO_EVIDENCE",
+                            "evidence_subtype": "ORDINARY_DOMAIN_NONE",
+                            "gold_family": None,
+                            "topic_domain": domain,
+                            "source_family": f"v6_wp_ordinary_topup:{domain}",
+                            "source_url": f"https://en.wikipedia.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
+                            "provenance": "OBSERVED",
+                            "construction_tag": "NATURAL",
+                            "construction_role": "PRODUCT_EXPECTED",
+                        }
+                    ):
+                        got += 1
+                        break
+        for label in labels:
+            payload = _api(
+                WIKT_API,
+                {"action": "query", "list": "search", "srsearch": label, "srlimit": "40"},
+            )
+            for hit in payload.get("query", {}).get("search", []):
+                title = hit["title"]
+                if " " in title or not (2 <= len(title) <= 24):
+                    continue
+                if admit(
+                    {
+                        "text": title.strip(),
+                        "evidence_label": "NO_EVIDENCE",
+                        "evidence_subtype": "SHORT_ATOM_NONE",
+                        "gold_family": None,
+                        "topic_domain": domain,
+                        "source_family": f"v6_wikt_atom_none_topup:{domain}",
+                        "source_url": f"https://en.wiktionary.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
+                        "provenance": "OBSERVED",
+                        "construction_tag": "NATURAL",
+                        "construction_role": "PRODUCT_EXPECTED",
+                        "primary_cell": "SHORT_ATOM/NO_EVIDENCE",
+                    }
+                ):
+                    got += 1
+                if got >= 160 or len(raw) >= target_extra:
+                    break
+        print(f"topup_none {domain} raw={len(raw)}", flush=True)
+
+    for key, cat in DOMAIN_IRRELEVANT_CATEGORIES.items():
+        if len(raw) >= target_extra:
+            break
+        titles = category_titles(WIKI_API, cat, limit=120)
+        pages = fetch_wikitext(WIKI_API, titles)
+        for title, content in pages.items():
+            if len(raw) >= target_extra:
+                break
+            paras = [
+                clean_wikitext(p)
+                for p in content.split("\n\n")
+                if p.strip() and not p.strip().startswith("{")
+            ]
+            for para in paras[:1]:
+                if 40 <= len(para) <= 350:
+                    admit(
+                        {
+                            "text": para,
+                            "evidence_label": "NO_EVIDENCE",
+                            "evidence_subtype": "HARD_NONE",
+                            "gold_family": None,
+                            "topic_domain": key,
+                            "source_family": f"v6_wp_irrelevant_topup:{key}",
+                            "source_url": f"https://en.wikipedia.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
+                            "provenance": "OBSERVED",
+                            "construction_tag": "NATURAL",
+                            "construction_role": "PRODUCT_EXPECTED",
+                            "notes": "domain_irrelevant",
+                        }
+                    )
+
+    unc = 0
+    for family in ACTIVE_FAMILY_VOCABULARY:
+        if len(raw) >= target_extra + 200:
+            break
+        for label in FAMILY_LABELS.get(family, ())[:1]:
+            q = _api(
+                WIKT_API,
+                {"action": "query", "list": "search", "srsearch": label, "srlimit": "25"},
+            )
+            titles = [h["title"] for h in q.get("query", {}).get("search", [])]
+            pages = fetch_wikitext(WIKT_API, titles)
+            for title, content in pages.items():
+                senses = []
+                for line in content.splitlines():
+                    if line.startswith("#"):
+                        t = clean_wikitext(re.sub(r"^[#*:]+", "", line))
+                        if len(t) >= 20:
+                            senses.append(t)
+                if len(senses) < 2:
+                    continue
+                text = senses[0] + " / " + senses[1]
+                if admit(
+                    {
+                        "text": text,
+                        "evidence_label": "UNCERTAIN",
+                        "evidence_subtype": "AMBIGUOUS_EVIDENCE",
+                        "gold_family": None,
+                        "topic_domain": "ambiguous",
+                        "source_family": f"v6_wikt_uncertain_topup:{family}",
+                        "source_url": f"https://en.wiktionary.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
+                        "provenance": "OBSERVED",
+                        "construction_tag": "NATURAL",
+                        "construction_role": "PRODUCT_EXPECTED",
+                        "uncertainty_reason": "competing_textual_senses_unresolved",
+                        "notes": "MULTI_SENSE_UNRESOLVED",
+                    }
+                ):
+                    unc += 1
+                if unc >= 150:
+                    break
+            if unc >= 150:
+                break
+    print(f"topup_total_raw={len(raw)} uncertain_added~{unc}", flush=True)
+    return raw
+
+
 def ontology_audit(present_rows: list[dict], embeddings: dict[str, Any]) -> dict[str, Any]:
     from hyperlexical.classification_v6_data_foundation import classify_ontology_pair
     from hyperlexical.classification_v2 import ACTIVE_FAMILY_VOCABULARY
@@ -832,27 +1002,72 @@ failure taxonomy, measurement design, and regression baselines only.
         flush=True,
     )
 
-    print("acquiring_raw", flush=True)
-    raw = acquire_raw(blocked)
-    write_jsonl(PRIVATE / "RAW_ACQUIRE.jsonl", raw)
-
-    print("finalizing", flush=True)
-    finalized = []
+    topup = os.environ.get("HLX_V6_FOUNDATION_TOPUP") == "1"
     rejected = Counter()
-    for row in raw:
-        try:
-            out = finalize_candidate(row)
-        except Exception as exc:  # noqa: BLE001
-            rejected[type(exc).__name__] += 1
-            continue
-        if out is None:
-            rejected["filtered"] += 1
-            continue
-        if out["identity"] in blocked["blocked_ids"]:
-            rejected["blocked_identity"] += 1
-            continue
-        finalized.append(out)
-    finalized = enforce_train_family_cap(finalized, max_share=MAX_FAMILY_SHARE_TRAIN)
+    if topup and (PRIVATE / "TRAIN.jsonl").is_file():
+        print("topup_mode_loading_existing", flush=True)
+        existing: list[dict] = []
+        for name in (
+            "TRAIN",
+            "DEVELOPMENT_VALIDATION",
+            "REPRESENTATIVE_VALIDATION",
+        ):
+            path = PRIVATE / f"{name}.jsonl"
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    existing.append(json.loads(line))
+        qpath = QUAL_PRIVATE / "QUALIFICATION_ROWS.jsonl"
+        if qpath.is_file():
+            for line in sudo_read_text(qpath).splitlines():
+                if line.strip():
+                    existing.append(json.loads(line))
+        # Block existing identities from top-up duplicates.
+        for row in existing:
+            blocked["blocked_ids"].add(row["identity"])
+            blocked["blocked_text"].add(row["text"])
+            blocked["blocked_src"].add(row["source_sha256"])
+            blocked["blocked_near"].add(row["near_duplicate_key"])
+        print(f"existing_rows={len(existing)}", flush=True)
+        print("acquiring_none_topup", flush=True)
+        raw = acquire_none_topup(blocked, target_extra=1200)
+        write_jsonl(PRIVATE / "RAW_TOPUP.jsonl", raw)
+        finalized = list(existing)
+        for row in raw:
+            try:
+                out = finalize_candidate(row)
+            except Exception as exc:  # noqa: BLE001
+                rejected[type(exc).__name__] += 1
+                continue
+            if out is None:
+                rejected["filtered"] += 1
+                continue
+            if out["identity"] in {r["identity"] for r in existing}:
+                rejected["dup_identity"] += 1
+                continue
+            finalized.append(out)
+        # Re-apply train family cap only on TRAIN present.
+        finalized = enforce_train_family_cap(finalized, max_share=MAX_FAMILY_SHARE_TRAIN)
+    else:
+        print("acquiring_raw", flush=True)
+        raw = acquire_raw(blocked)
+        write_jsonl(PRIVATE / "RAW_ACQUIRE.jsonl", raw)
+
+        print("finalizing", flush=True)
+        finalized = []
+        for row in raw:
+            try:
+                out = finalize_candidate(row)
+            except Exception as exc:  # noqa: BLE001
+                rejected[type(exc).__name__] += 1
+                continue
+            if out is None:
+                rejected["filtered"] += 1
+                continue
+            if out["identity"] in blocked["blocked_ids"]:
+                rejected["blocked_identity"] += 1
+                continue
+            finalized.append(out)
+        finalized = enforce_train_family_cap(finalized, max_share=MAX_FAMILY_SHARE_TRAIN)
 
     splits = {
         "TRAIN": [r for r in finalized if r["split"] == "TRAIN"],
