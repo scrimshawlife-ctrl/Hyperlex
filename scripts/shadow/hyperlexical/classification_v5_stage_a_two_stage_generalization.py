@@ -27,6 +27,7 @@ from .classification_v5_stage_a_gold_label_mapping import RULE_ID as GOLD_LABEL_
 from .classification_v5_stage_a_two_stage import (
     ARCHITECTURE_RECEIPT_SHA256,
     CHECKPOINT_SELECTION,
+    CLASS_BALANCED_SAMPLER,
     CLASS_WEIGHT_FORMULA_VERSION,
     DROP_LAST,
     FLAT_HEAD_STATUS,
@@ -36,23 +37,31 @@ from .classification_v5_stage_a_two_stage import (
     GATE2_PRESENT_THRESHOLDS,
     LAMBDA_GATE2,
     LAST_TRAINABLE_ENCODER_LAYERS,
+    OVERSAMPLING,
     REPLACEMENT,
     SAMPLER,
     SCHEMA_AUTHORIZATION,
     SCHEMA_CLASS_WEIGHTS,
     SCHEMA_CONFIG,
+    SCHEMA_SPLIT_WITNESS,
     THRESHOLD_SELECTION,
     TWO_STAGE_RULE,
+    UNDERSAMPLING,
     architecture_contract,
     compute_gate1_class_weights,
     compute_gate2_class_weights,
+    decide_two_stage,
     forward_contract_schema,
+    full_pass_batch_indices,
     gate2_eligible,
     gold_mapping_contract_sha256,
     identity_list_sha256,
     label_provenance_contract_sha256,
     loss_contract,
+    split_lines_sha256,
 )
+from .classification_v2_surface import word_count
+from .classification_v5_stage_a_generalization_surface import length_band
 
 AUTHORIZE_RULE = "AUTHORIZE_V5_STAGE_A_TWO_STAGE_RETRAIN_ON_GENERALIZATION_SURFACE"
 CLASS_WEIGHT_RESOLUTION_RULE = "RESOLVE_V5_STAGE_A_V1R1_TWO_STAGE_CLASS_WEIGHTS"
@@ -85,6 +94,12 @@ PARENT_GENERALIZATION_SURFACE_SHA = PARENT_SURFACE_SHA_V1
 
 EXPECTED_TRAIN_ROWS = 2531
 EXPECTED_VALIDATION_ROWS = 1054
+EXPECTED_GATE1_NO_ROWS = 1285
+EXPECTED_GATE1_POSSIBLE_ROWS = 1246
+EXPECTED_GATE2_UNCERTAIN_ROWS = 132
+EXPECTED_GATE2_PRESENT_ROWS = 1114
+EXPECTED_GATE2_ELIGIBLE_ROWS = 1246
+EXPECTED_OPTIMIZER_STEPS_PER_EPOCH = 317  # ceil(2531 / 8)
 EXPECTED_TRAIN_SPLIT_SHA256 = (
     "d8565270bcc391e6e2c7967b679f88b598ce397d4e1031e8155a89c6beea2973"
 )
@@ -96,6 +111,49 @@ EXPECTED_TRAIN_IDENTITY_LIST_SHA256 = (
 )
 EXPECTED_VALIDATION_IDENTITY_LIST_SHA256 = (
     "8264c9460c74a150d590dd4634e15db6c44319c879d2917891e9914a252c1c8d"
+)
+EXPECTED_GATE2_ELIGIBLE_IDENTITY_SHA256 = (
+    "a0bb5d0039c60b24285562912a49cfa62e34fca034ff57f21b1e020f16f453ef"
+)
+
+# Sealed by AUTHORIZE_V5_STAGE_A_TWO_STAGE_RETRAIN_ON_GENERALIZATION_SURFACE.
+AUTHORIZED_CLASS_WEIGHT_ARTIFACT_SHA256 = (
+    "80b7f8991ec14b39223e232fad3a4590d54548f9fcd68cc9c70e9884f7aba5a4"
+)
+AUTHORIZED_TRAINING_CONFIG_SHA256 = (
+    "1527ae1887b362f4e659409fcf3e4c15f0d2b410c8157759c5a12c1372166e31"
+)
+AUTHORIZED_AUTH_RECEIPT_SHA256 = (
+    "f7d4f3ad03dd4d13ea34dfb380451840e29f5e82e924eccfbe96532f865e8f2f"
+)
+LITERAL_GATE1_WEIGHTS = {
+    "NO_EVIDENCE": 1.0006485087033488,
+    "POSSIBLE_EVIDENCE": 0.9993514912966515,
+}
+LITERAL_GATE2_WEIGHTS = {
+    "UNCERTAIN": 1.375376244120633,
+    "CONFIRMED_PRESENT": 0.6246237558793669,
+}
+DATASET_SPLIT_RULE = "HYPERLEX_V5_STAGE_A_V1R1_TWO_STAGE_DATASET_SPLIT_V1"
+
+# Read-only canonical Stage-A validation reference (current STAGE_A_BEST).
+STAGE_A_BEST_VALIDATION_REFERENCE = {
+    "EVIDENCE_PRESENT_recall": 0.7049,
+    "NO_EVIDENCE_recall": 0.9089,
+    "UNCERTAIN_recall": 0.6790,
+    "false_evidence_entry_rate_on_none": 0.0423,
+    "stage_a_macro_f1": 0.7411,
+}
+
+CRITICAL_DIAGNOSTIC_CELLS = (
+    "SHORT_ATOM/NO_EVIDENCE",
+    "SHORT_ATOM/EVIDENCE_PRESENT",
+    "DEFINITION_STYLE/NO_EVIDENCE",
+    "DEFINITION_STYLE/EVIDENCE_PRESENT",
+    "PROSE/NO_EVIDENCE",
+    "PROSE/EVIDENCE_PRESENT",
+    "ORDINARY_PROSE/NO_EVIDENCE",
+    "ORDINARY_PROSE/EVIDENCE_PRESENT",
 )
 
 # Existing two-stage train contract: trunk + MODEL_WIDE_BEST encoder overlay;
@@ -500,6 +558,274 @@ def generalization_authorization_contract(
         "train_authorized": True,
         "two_stage_architecture_rule": TWO_STAGE_RULE,
     }
+
+
+def build_v1r1_two_stage_split_witness(
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    dataset_sha256: str,
+    dataset_path: str,
+    code_revision: str,
+    disjointness: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """V1R1-bound split witness — does not reuse V1R9 row-count pins."""
+    if dataset_sha256 != AUTHORIZED_DATASET_SHA:
+        raise ValueError("INPUT_IDENTITY:dataset_mismatch")
+    train_rows = [row for row in rows if row.get("split") == "train"]
+    val_rows = [row for row in rows if row.get("split") == "validation"]
+    if len(train_rows) != EXPECTED_TRAIN_ROWS:
+        raise ValueError(f"INPUT_IDENTITY:train_rows!={EXPECTED_TRAIN_ROWS}")
+    if len(val_rows) != EXPECTED_VALIDATION_ROWS:
+        raise ValueError(f"INPUT_IDENTITY:val_rows!={EXPECTED_VALIDATION_ROWS}")
+
+    train_ids = [str(row["identity"]) for row in train_rows]
+    val_ids = [str(row["identity"]) for row in val_rows]
+    train_id_sha = identity_list_sha256(train_ids)
+    val_id_sha = identity_list_sha256(val_ids)
+    train_split_sha = split_lines_sha256(dataset_path, split="train")
+    val_split_sha = split_lines_sha256(dataset_path, split="validation")
+
+    g1_no = [row for row in train_rows if str(row["evidence_label"]) == "NO_EVIDENCE"]
+    g1_possible = [
+        row
+        for row in train_rows
+        if str(row["evidence_label"]) in {"EVIDENCE_PRESENT", "UNCERTAIN"}
+    ]
+    g2_uncertain = [
+        row for row in train_rows if str(row["evidence_label"]) == "UNCERTAIN"
+    ]
+    g2_present = [
+        row for row in train_rows if str(row["evidence_label"]) == "EVIDENCE_PRESENT"
+    ]
+    g2_eligible_ids = sorted(str(row["identity"]) for row in g1_possible)
+    gate2_elig_sha = identity_list_sha256(g2_eligible_ids)
+
+    if len(g1_no) != EXPECTED_GATE1_NO_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate1_no_rows")
+    if len(g1_possible) != EXPECTED_GATE1_POSSIBLE_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate1_possible_rows")
+    if len(g2_uncertain) != EXPECTED_GATE2_UNCERTAIN_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate2_uncertain_rows")
+    if len(g2_present) != EXPECTED_GATE2_PRESENT_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate2_present_rows")
+    if len(g2_uncertain) + len(g2_present) != EXPECTED_GATE2_ELIGIBLE_ROWS:
+        raise ValueError("INPUT_IDENTITY:gate2_eligible_rows")
+    if train_split_sha != EXPECTED_TRAIN_SPLIT_SHA256:
+        raise ValueError("INPUT_IDENTITY:train_split_sha_mismatch")
+    if val_split_sha != EXPECTED_VALIDATION_SPLIT_SHA256:
+        raise ValueError("INPUT_IDENTITY:val_split_sha_mismatch")
+    if train_id_sha != EXPECTED_TRAIN_IDENTITY_LIST_SHA256:
+        raise ValueError("INPUT_IDENTITY:train_identity_list_mismatch")
+    if val_id_sha != EXPECTED_VALIDATION_IDENTITY_LIST_SHA256:
+        raise ValueError("INPUT_IDENTITY:val_identity_list_mismatch")
+    if gate2_elig_sha != EXPECTED_GATE2_ELIGIBLE_IDENTITY_SHA256:
+        raise ValueError("INPUT_IDENTITY:gate2_eligible_identity_mismatch")
+
+    id_overlap = len(set(train_ids) & set(val_ids))
+    if id_overlap != 0:
+        raise ValueError("INPUT_IDENTITY:train_val_identity_overlap")
+
+    lineage_overlap = 0
+    if disjointness is not None:
+        metrics = dict(disjointness.get("metrics") or {})
+        lineage_overlap = int(
+            metrics.get("train_validation_parent_lineage_overlap")
+            or disjointness.get("parent_lineage_overlap")
+            or 0
+        )
+        source_overlap = int(
+            metrics.get("train_validation_source_hash_overlap")
+            or disjointness.get("source_hash_overlap")
+            or 0
+        )
+        near_dup = int(
+            metrics.get("train_validation_near_duplicate_group_overlap") or 0
+        )
+        identity_overlap = int(
+            metrics.get("train_validation_identity_overlap")
+            or disjointness.get("identity_overlap")
+            or 0
+        )
+        spent_overlap = int(metrics.get("spent_v4_reserve_overlap") or 0)
+        if (
+            identity_overlap != 0
+            or lineage_overlap != 0
+            or source_overlap != 0
+            or near_dup != 0
+            or spent_overlap != 0
+            or disjointness.get("pass") is not True
+        ):
+            raise ValueError("INPUT_IDENTITY:disjointness_fail")
+
+    batch_size = int(TRAIN_HYPERPARAMS["micro_batch_size"])
+    steps = len(
+        full_pass_batch_indices(
+            EXPECTED_TRAIN_ROWS,
+            batch_size=batch_size,
+            seed=int(TRAIN_HYPERPARAMS["seed"]),
+            drop_last=DROP_LAST,
+        )
+    )
+    if steps != EXPECTED_OPTIMIZER_STEPS_PER_EPOCH:
+        raise ValueError(
+            f"INPUT_IDENTITY:optimizer_steps_per_epoch!={EXPECTED_OPTIMIZER_STEPS_PER_EPOCH}"
+        )
+
+    witness = {
+        "DATASET_SPLIT_RULE": DATASET_SPLIT_RULE,
+        "class_balanced_sampler": CLASS_BALANCED_SAMPLER,
+        "code_revision": code_revision,
+        "dataset_sha256": dataset_sha256,
+        "drop_last": DROP_LAST,
+        "gate1_no_rows": EXPECTED_GATE1_NO_ROWS,
+        "gate1_possible_rows": EXPECTED_GATE1_POSSIBLE_ROWS,
+        "gate2_eligible_identity_sha256": gate2_elig_sha,
+        "gate2_eligible_rows": EXPECTED_GATE2_ELIGIBLE_ROWS,
+        "gate2_present_rows": EXPECTED_GATE2_PRESENT_ROWS,
+        "gate2_uncertain_rows": EXPECTED_GATE2_UNCERTAIN_ROWS,
+        "optimizer_steps_per_epoch": steps,
+        "oversampling": OVERSAMPLING,
+        "replacement": REPLACEMENT,
+        "sampling": SAMPLER,
+        "schema": SCHEMA_SPLIT_WITNESS,
+        "shuffle_seed": int(TRAIN_HYPERPARAMS["seed"]),
+        "spent_reserve": SPENT_RESERVE,
+        "spent_reserve_overlap": SPENT_RESERVE_OVERLAP,
+        "spent_reserve_status": SPENT_RESERVE_STATUS,
+        "surface_rule": AUTHORIZED_SURFACE_RULE,
+        "train_dataloader_len": steps,
+        "train_identity_list_sha256": train_id_sha,
+        "train_rows": EXPECTED_TRAIN_ROWS,
+        "train_split_sha256": train_split_sha,
+        "train_validation_identity_overlap": id_overlap,
+        "train_validation_lineage_overlap": lineage_overlap,
+        "undersampling": UNDERSAMPLING,
+        "validation_identity_list_sha256": val_id_sha,
+        "validation_rows": EXPECTED_VALIDATION_ROWS,
+        "validation_split_sha256": val_split_sha,
+    }
+    witness["TWO_STAGE_SPLIT_WITNESS_SHA256"] = sha256_text(
+        canonical_json(
+            {k: v for k, v in witness.items() if k != "TWO_STAGE_SPLIT_WITNESS_SHA256"}
+        )
+    )
+    return witness
+
+
+def cell_route_diagnostics(
+    *,
+    rows: Sequence[Mapping[str, Any]],
+    golds: Sequence[str],
+    p_possible: Sequence[float],
+    p_confirmed: Sequence[float],
+    gate1_threshold: float,
+    gate2_present_threshold: float,
+) -> dict[str, Any]:
+    """Per-primary_cell support / recall / false-entry / Gate1 block / Gate2 reject."""
+    from collections import defaultdict
+
+    from .classification_v5_stage_a import evaluate_decisions
+
+    buckets: dict[str, list[int]] = defaultdict(list)
+    for index, row in enumerate(rows):
+        cell = str(row.get("primary_cell") or "UNKNOWN")
+        buckets[cell].append(index)
+
+    out: dict[str, Any] = {}
+    for cell in CRITICAL_DIAGNOSTIC_CELLS:
+        indices = buckets.get(cell, [])
+        if not indices:
+            out[cell] = {
+                "Gate1_block_rate": None,
+                "Gate2_reject_rate_among_entered": None,
+                "false_evidence_entry_rate_on_none": None,
+                "n": 0,
+                "recall": None,
+                "support": 0,
+            }
+            continue
+        cell_golds = [golds[i] for i in indices]
+        decisions = [
+            decide_two_stage(
+                p_possible=float(p_possible[i]),
+                p_confirmed=float(p_confirmed[i]),
+                gate1_threshold=gate1_threshold,
+                gate2_present_threshold=gate2_present_threshold,
+            )
+            for i in indices
+        ]
+        metrics = evaluate_decisions(cell_golds, decisions)
+        entered = [i for i in indices if float(p_possible[i]) >= gate1_threshold]
+        blocked = len(indices) - len(entered)
+        gate1_block_rate = blocked / len(indices)
+        if entered:
+            rejected = sum(
+                1
+                for i in entered
+                if float(p_confirmed[i]) < gate2_present_threshold
+            )
+            gate2_reject = rejected / len(entered)
+        else:
+            gate2_reject = None
+        label = cell.split("/", 1)[-1]
+        recall = metrics["by_label"].get(label, {}).get("recall")
+        out[cell] = {
+            "Gate1_block_rate": gate1_block_rate,
+            "Gate2_reject_rate_among_entered": gate2_reject,
+            "false_evidence_entry_rate_on_none": metrics[
+                "false_evidence_entry_rate_on_none"
+            ]
+            if label == "NO_EVIDENCE"
+            else None,
+            "n": len(indices),
+            "recall": recall,
+            "support": len(indices),
+            "target_label": label,
+        }
+    # Also include any non-critical cells present for completeness.
+    for cell, indices in sorted(buckets.items()):
+        if cell in out:
+            continue
+        cell_golds = [golds[i] for i in indices]
+        decisions = [
+            decide_two_stage(
+                p_possible=float(p_possible[i]),
+                p_confirmed=float(p_confirmed[i]),
+                gate1_threshold=gate1_threshold,
+                gate2_present_threshold=gate2_present_threshold,
+            )
+            for i in indices
+        ]
+        metrics = evaluate_decisions(cell_golds, decisions)
+        out[cell] = {
+            "n": len(indices),
+            "stage_a_macro_f1": metrics["stage_a_macro_f1"],
+            "support": len(indices),
+        }
+    return out
+
+
+def compare_to_stage_a_best(validation_metrics: Mapping[str, Any]) -> dict[str, Any]:
+    """Read-only deltas vs frozen STAGE_A_BEST validation reference."""
+    deltas = {}
+    for key, ref in STAGE_A_BEST_VALIDATION_REFERENCE.items():
+        value = float(validation_metrics[key])
+        deltas[key] = {
+            "delta": value - float(ref),
+            "reference": float(ref),
+            "value": value,
+        }
+    return {
+        "PARENT_STAGE_A_BEST": PARENT_STAGE_A_BEST_SHA,
+        "STAGE_A_BEST_MUTATED": False,
+        "comparison_only": True,
+        "deltas": deltas,
+        "reference": dict(STAGE_A_BEST_VALIDATION_REFERENCE),
+    }
+
+
+def row_length_band(row: Mapping[str, Any]) -> str:
+    return length_band(word_count(str(row.get("text") or "")))
 
 
 def generalization_runner_authorization_checks(

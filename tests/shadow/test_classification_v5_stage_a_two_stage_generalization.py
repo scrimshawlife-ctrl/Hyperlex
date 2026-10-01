@@ -148,3 +148,34 @@ def test_resolve_v1r1_weights_formula_on_matching_pins(monkeypatch):
     assert cfg["split"]["TRAIN_ROWS"] == 2531
     assert "training_config_sha256" in cfg
     assert cfg["spent_reserve_access"].startswith("FORBIDDEN")
+
+
+def test_train_pins_and_steps():
+    from hyperlexical.classification_v5_stage_a_two_stage_generalization import (
+        AUTHORIZED_AUTH_RECEIPT_SHA256,
+        AUTHORIZED_CLASS_WEIGHT_ARTIFACT_SHA256,
+        AUTHORIZED_TRAINING_CONFIG_SHA256,
+        EXPECTED_GATE2_ELIGIBLE_ROWS,
+        EXPECTED_OPTIMIZER_STEPS_PER_EPOCH,
+        EXPECTED_TRAIN_ROWS,
+        INITIALIZATION_POLICY,
+        LITERAL_GATE1_WEIGHTS,
+        LITERAL_GATE2_WEIGHTS,
+        DROP_LAST,
+        full_pass_batch_indices,
+    )
+    assert AUTHORIZED_AUTH_RECEIPT_SHA256.startswith("f7d4f3ad")
+    assert AUTHORIZED_CLASS_WEIGHT_ARTIFACT_SHA256.startswith("80b7f899")
+    assert AUTHORIZED_TRAINING_CONFIG_SHA256.startswith("1527ae18")
+    assert EXPECTED_TRAIN_ROWS == 2531
+    assert EXPECTED_GATE2_ELIGIBLE_ROWS == 1246
+    assert EXPECTED_OPTIMIZER_STEPS_PER_EPOCH == 317
+    assert INITIALIZATION_POLICY["stage_a_best_continuation"] is False
+    assert LITERAL_GATE1_WEIGHTS["NO_EVIDENCE"] == 1.0006485087033488
+    assert LITERAL_GATE2_WEIGHTS["UNCERTAIN"] == 1.375376244120633
+    steps = len(
+        full_pass_batch_indices(
+            EXPECTED_TRAIN_ROWS, batch_size=8, seed=42, drop_last=DROP_LAST
+        )
+    )
+    assert steps == 317
