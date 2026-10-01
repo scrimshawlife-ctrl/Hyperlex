@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Train ident-filtered factorized once (Spec 007):**
+  `TRAIN_STAGE_A_IDENT_FILTERED_FACTORIZED_ONCE` executes the single
+  authorized fresh retrain from MODEL_WIDE_BEST on V1R2 under unchanged
+  factorized objective. `SCIENTIFIC_RESULT=SETTLED_PASS`. Selected
+  checkpoint `8b2de447…` (epoch 11, score 0.9673); thresholds
+  relation 0.60 / resolvability 0.75; 100/100 grid pairs feasible.
+  Gates: false_entry 0.034≤0.05; PRESENT recall 0.951≥0.70; NONE recall
+  0.965≥0.90. SHORT_ATOM NONE relation FPR 0.013 (prior factorized 0.539).
+  SHORT_ATOM PRESENT validation n=4 → `LOW_SUPPORT`. BEST / STAGE_A_BEST /
+  V1R2 / spent reserve unchanged. Receipt
+  `classification-v5-stage-a-ident-filtered-factorized-train-once-receipt-20261001.json`
+  (`4a7d565c…`). Next:
+  `PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE`.
+
 - **Authorize ident-filtered factorized train (Spec 007):**
   `AUTHORIZE_STAGE_A_IDENT_FILTERED_FACTORIZED_TRAIN` binds experiment
   `HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-001` to
