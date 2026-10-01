@@ -1,0 +1,8 @@
+{
+  "DETERMINISTIC_AFTER_SETTLEMENT": 122,
+  "NEEDS_ROW_LEVEL_HUMAN_RESETTLEMENT": 140,
+  "UNUSABLE": 0,
+  "auto_relabeled_in_this_phase": false,
+  "bounded_settlement_queue_n": 140,
+  "queue_focus": "identity-affiliation PRESENT rows on TRAIN/DEV/REP"
+}

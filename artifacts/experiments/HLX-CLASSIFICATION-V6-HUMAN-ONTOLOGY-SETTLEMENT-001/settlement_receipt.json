@@ -1,0 +1,778 @@
+{
+  "ENCODER_CHOSEN": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-HUMAN-ONTOLOGY-SETTLEMENT-001",
+  "FINAL_ONTOLOGY_ID": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+  "GEOMETRY_USED_TO_DECIDE_ONTOLOGY": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "NEXT_ACTION": "REBUILD_V6_DATA_LABELS_AND_DESIGN_MODEL_PHASE",
+  "PARENT_ONTOLOGY_RECEIPT": "9377d66906a1232dbf64b7d38ee70316e1f81aae7b04af4bc8cffcef41820dd0",
+  "PHASE_RULE": "COMPLETE_V6_HUMAN_ONTOLOGY_SETTLEMENT",
+  "QUAL_ROWS_INSPECTED": false,
+  "TRAIN": false,
+  "V5_HISTORY_MUTATED": false,
+  "V6_HUMAN_ONTOLOGY_SETTLEMENT_RECEIPT_SHA256": "04a765032f17c663959e151b3fd968d0f445e017bd310b536b9843d0b45b874b",
+  "V6_ONTOLOGY_STATE": "V6_ONTOLOGY_READY",
+  "agreement": {
+    "annotation_mode": "DUAL_INDEPENDENT_OPERATOR_PROTOCOL",
+    "annotation_mode_note": "Two independent text-only operator protocols (domain-first vs function-first). Acquisition gold and model scores were not shown. Not two separate biological humans; treated as operator settlement evidence for this phase.",
+    "axes": {
+      "crypto_markets": {
+        "cohen_kappa": 1.0,
+        "n_pos_either": 0,
+        "negative_agreement": 1.0,
+        "positive_agreement": 0.0,
+        "raw_agreement": 1.0
+      },
+      "evaluative_stance": {
+        "cohen_kappa": 1.0,
+        "n_pos_either": 0,
+        "negative_agreement": 1.0,
+        "positive_agreement": 0.0,
+        "raw_agreement": 1.0
+      },
+      "gambling_betting": {
+        "cohen_kappa": 0.6629213483146077,
+        "n_pos_either": 2,
+        "negative_agreement": 0.9915966386554622,
+        "positive_agreement": 0.5,
+        "raw_agreement": 0.9916666666666667
+      },
+      "identity_relevance": {
+        "cohen_kappa": 1.0,
+        "confusion": {
+          "CLEAR_NEGATIVE->CLEAR_NEGATIVE": 117,
+          "INSUFFICIENT_CONTEXT->INSUFFICIENT_CONTEXT": 3
+        },
+        "raw_agreement": 1.0
+      },
+      "relational_intimacy": {
+        "cohen_kappa": 1.0,
+        "n_pos_either": 3,
+        "negative_agreement": 1.0,
+        "positive_agreement": 1.0,
+        "raw_agreement": 1.0
+      },
+      "stage_a": {
+        "cohen_kappa": 1.0,
+        "raw_agreement": 1.0
+      }
+    },
+    "mean_domain_jaccard": 0.9958333333333333,
+    "mean_function_jaccard": 1.0,
+    "n_adjudicated_disagreement": 0,
+    "n_annotators": 2,
+    "n_rows": 120,
+    "stability_criteria": {
+      "HUMAN_STABLE": {
+        "min_kappa": 0.6,
+        "min_raw_agreement": 0.8,
+        "note": "Or raw>=0.90 when prevalence skew makes kappa unstable"
+      },
+      "HUMAN_UNSTABLE": {
+        "or_kappa_lt": 0.35,
+        "raw_agreement_lt": 0.65
+      },
+      "HUMAN_USABLE_WITH_SOFT_BOUNDARY": {
+        "min_kappa": 0.35,
+        "min_raw_agreement": 0.65
+      },
+      "INSUFFICIENT_SUPPORT": {
+        "positive_cases_lt": 5
+      },
+      "frozen_before_review": true
+    }
+  },
+  "boundary_settlement": {
+    "evaluative_vs_relational": {
+      "decision": "SEPARATE_COMPATIBLE_LABELS",
+      "deprecate_either": false,
+      "evaluative_stability": "INSUFFICIENT_SUPPORT",
+      "hierarchy": null,
+      "n_rows_with_both_signals": 0,
+      "rationale": "Evaluation/judgment and relation/intimacy are distinguishable when cues are present and may co-occur; do not force exclusivity. Soft boundary retained for partner-directed insults (MULTI_LABEL allowed).",
+      "relational_stability": "INSUFFICIENT_SUPPORT"
+    },
+    "gambling_vs_crypto": {
+      "crypto_exclusions": "ordinary finance, generic 'token' without crypto sense",
+      "crypto_inclusions": "crypto-asset / blockchain / DeFi / NFT market evidence",
+      "crypto_stability": "INSUFFICIENT_SUPPORT",
+      "decision": "SEPARATE_DOMAINS_WITH_STRICT_GAMBLING",
+      "gambling_exclusions": "metaphorical 'bet', speculative-market talk without wagering, ordinary coin minting, storage 'bit' units",
+      "gambling_inclusions": "actual betting/wagering/casino/bookmaking semantics",
+      "gambling_stability": "INSUFFICIENT_SUPPORT",
+      "internet_register_overlap": "mediation co-label only; not a third market domain",
+      "multi_label": "allowed when both wagering and crypto-market evidence present",
+      "rationale": "Problematic overlaps were mostly false gold / metaphor / ordinary-coin senses, not a single merged market family."
+    },
+    "hierarchical_multilabel_contradicted": false,
+    "identity_affiliation": {
+      "decision": "CONTEXT_ONLY",
+      "n_adjudicated_positive": 0,
+      "n_insufficient_context": 3,
+      "options_rejected": {
+        "DEPRECATE": "Acceptable synonym; CONTEXT_ONLY preferred to allow future metadata",
+        "KEEP_AS_AXIS": "Would reintroduce unstable definitive gold",
+        "KEEP_AS_LABEL": "Text-identifiability fails on natural sample",
+        "MERGE": "No single merge target without smuggling context dependence"
+      },
+      "rationale": "Dual protocols rarely assign CLEAR_POSITIVE identity from text alone; demonym/geography/language rows are INSUFFICIENT_CONTEXT. Identity is not admissible as definitive exclusive Stage-B gold. Retain only as optional contextual metadata outside Stage B, not KEEP_AS_LABEL.",
+      "stability": "INSUFFICIENT_SUPPORT"
+    },
+    "structure_remains": "HIERARCHICAL_MULTI_LABEL"
+  },
+  "code_revision": "b5c225eac1a1c15c093b19b8e7e604706471388c",
+  "final_ontology": {
+    "FINAL_ONTOLOGY_ID": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+    "cardinality": {
+      "domain_labels": "multi-hot",
+      "exclusive_flat_argmax": false,
+      "function_labels": "multi-hot",
+      "mediation_labels": "multi-hot"
+    },
+    "co_label_rules": {
+      "invalid": [
+        [
+          "mediation.internet_register as sole exclusive Stage-B emit"
+        ],
+        [
+          "ai_discourse without technology"
+        ],
+        [
+          "identity-affiliation as definitive Stage-B gold"
+        ],
+        [
+          "regional-cultural as Stage-B family"
+        ]
+      ],
+      "relation_types": {
+        "ai_discourse\u2192technology": "required_parent",
+        "evaluative\u00d7relational": "independent_compatible",
+        "gambling\u00d7crypto": "independent_compatible",
+        "internet_register": "optional_co_label"
+      },
+      "valid": [
+        [
+          "domain.sports",
+          "domain.gambling_betting"
+        ],
+        [
+          "domain.gaming",
+          "function.conflictive_force"
+        ],
+        [
+          "domain.politics_civic",
+          "function.memetic_form"
+        ],
+        [
+          "function.evaluative_stance",
+          "function.relational_intimacy"
+        ],
+        [
+          "domain.gambling_betting",
+          "domain.crypto_markets"
+        ],
+        [
+          "domain.technology",
+          "domain.technology.ai_discourse"
+        ]
+      ]
+    },
+    "deprecated": [
+      {
+        "may_remain": "metadata / future contextual dimension",
+        "name": "regional-cultural",
+        "stage_b": false,
+        "status": "DEPRECATED"
+      },
+      {
+        "decision": "CONTEXT_ONLY",
+        "name": "identity-affiliation",
+        "stage_b": false,
+        "status": "CONTEXT_ONLY"
+      },
+      {
+        "name": "internet-slang exclusive family",
+        "replaced_by": "mediation.internet_register",
+        "status": "DEPRECATED_AS_EXCLUSIVE"
+      }
+    ],
+    "domains": [
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "gameplay / gamer-community evidence",
+        "disallowed_combinations": [],
+        "exclusions": "Generic 'player' without game sense; sports athletes; AI agents.",
+        "id": "domain.gaming",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "gaming",
+        "parent": null,
+        "positive_semantic_core": "gameplay / gamer-community evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "wagering-market evidence",
+        "disallowed_combinations": [],
+        "exclusions": "metaphorical 'bet', speculative-market talk without wagering, ordinary coin minting, storage 'bit' units",
+        "id": "domain.gambling",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "gambling_betting",
+        "parent": null,
+        "positive_semantic_core": "actual betting/wagering/casino/bookmaking semantics",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "crypto-asset / chain-market evidence",
+        "disallowed_combinations": [],
+        "exclusions": "ordinary finance, generic 'token' without crypto sense",
+        "id": "domain.crypto",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "crypto_markets",
+        "parent": null,
+        "positive_semantic_core": "crypto-asset / blockchain / DeFi / NFT market evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "athletic sports evidence",
+        "disallowed_combinations": [],
+        "exclusions": "Gaming esports (gaming-meta); figurative competition alone.",
+        "id": "domain.sports",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "sports",
+        "parent": null,
+        "positive_semantic_core": "athletic sports evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "music / film / TV entertainment evidence",
+        "disallowed_combinations": [],
+        "exclusions": "Generic 'performance' in computing; fashion runway alone.",
+        "id": "domain.entertainment",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "entertainment_media",
+        "parent": null,
+        "positive_semantic_core": "music / film / TV entertainment evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "clothing / aesthetic-style evidence",
+        "disallowed_combinations": [],
+        "exclusions": "Abstract 'aesthetic' philosophy without style sense.",
+        "id": "domain.fashion",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "fashion_style",
+        "parent": null,
+        "positive_semantic_core": "clothing / aesthetic-style evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "workplace / career / org evidence",
+        "disallowed_combinations": [],
+        "exclusions": "Generic 'service'/'channel' without workplace sense.",
+        "id": "domain.workplace",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "workplace",
+        "parent": null,
+        "positive_semantic_core": "workplace / career / org evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "political / civic institutional evidence",
+        "disallowed_combinations": [],
+        "exclusions": "Generic conflict/war without civic framing; sports 'left wing'.",
+        "id": "domain.politics",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "politics_civic",
+        "parent": null,
+        "positive_semantic_core": "political / civic institutional evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "occult / astrology / spiritual practice evidence",
+        "disallowed_combinations": [],
+        "exclusions": "Metaphorical 'magic' in tech/gaming without spiritual sense.",
+        "id": "domain.spiritual",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "spiritual_esoteric",
+        "parent": null,
+        "positive_semantic_core": "occult / astrology / spiritual practice evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "other domains/functions/mediation when text-supported",
+        "axis": "domain",
+        "definition": "computing / software / systems evidence",
+        "disallowed_combinations": [],
+        "exclusions": "AI-community slang that is specifically model/agent discourse (ai-native).",
+        "id": "domain.technology",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "technology",
+        "parent": null,
+        "positive_semantic_core": "computing / software / systems evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+      },
+      {
+        "allowed_co_labels": "functions/mediation; requires technology parent",
+        "axis": "domain",
+        "definition": "AI-agent / LLM / prompt community evidence",
+        "disallowed_combinations": [
+          "ai_discourse without technology"
+        ],
+        "exclusions": "generic computing without AI-community evidence",
+        "id": "domain.technology.ai_discourse",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "ai_discourse",
+        "parent": "domain.technology",
+        "positive_semantic_core": "AI-agent / LLM / prompt community evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "child implies parent; if only weak AI metaphor \u2192 INSUFFICIENT_CONTEXT"
+      }
+    ],
+    "functions": [
+      {
+        "allowed_co_labels": "compatible with domains and other functions",
+        "axis": "function",
+        "definition": "praise / insult / pejoration / prestige judgment",
+        "disallowed_combinations": [],
+        "exclusions": "Neutral description without stance; pure demonym without evaluation.",
+        "id": "function.evaluative_stance",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "evaluative_stance",
+        "parent": null,
+        "positive_semantic_core": "praise / insult / pejoration / prestige judgment",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "partner-directed insults may MULTI_LABEL with relational_intimacy"
+      },
+      {
+        "allowed_co_labels": "compatible with domains and other functions",
+        "axis": "function",
+        "definition": "romantic / dating / intimate partnership evidence",
+        "disallowed_combinations": [],
+        "exclusions": "Platonic affiliation; workplace 'partner'; evaluative insult alone.",
+        "id": "function.relational_intimacy",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "relational_intimacy",
+        "parent": null,
+        "positive_semantic_core": "romantic / dating / intimate partnership evidence",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "partner-directed insults may MULTI_LABEL with relational_intimacy"
+      },
+      {
+        "allowed_co_labels": "compatible with domains and other functions",
+        "axis": "function",
+        "definition": "hostility / violence / combat framing",
+        "disallowed_combinations": [],
+        "exclusions": "Metaphorical 'fight' for sports/competition without hostility sense.",
+        "id": "function.conflictive_force",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "conflictive_force",
+        "parent": null,
+        "positive_semantic_core": "hostility / violence / combat framing",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "partner-directed insults may MULTI_LABEL with relational_intimacy"
+      },
+      {
+        "allowed_co_labels": "compatible with domains and other functions",
+        "axis": "function",
+        "definition": "meme format / macro / copypasta / template virality",
+        "disallowed_combinations": [],
+        "exclusions": "Any viral topic without memetic form; political content alone.",
+        "id": "function.memetic_form",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "memetic_form",
+        "parent": null,
+        "positive_semantic_core": "meme format / macro / copypasta / template virality",
+        "text_identifiability": "TEXT_IDENTIFIABLE",
+        "uncertainty_rules": "partner-directed insults may MULTI_LABEL with relational_intimacy"
+      }
+    ],
+    "hierarchy": [
+      {
+        "child": "domain.technology.ai_discourse",
+        "constraint": "required_parent",
+        "parent": "domain.technology"
+      }
+    ],
+    "identity_decision": "CONTEXT_ONLY",
+    "internet_register_decision": "MEDIATION_REGISTER_LABEL",
+    "mediation": [
+      {
+        "allowed_co_labels": "any domain/function",
+        "axis": "mediation",
+        "definition": "internet-mediated informal register / netspeak",
+        "disallowed_combinations": [
+          "exclusive_family_decision"
+        ],
+        "exclusions": "must not be sole exclusive Stage-B decision",
+        "id": "mediation.internet_register",
+        "minimum_support": {
+          "DEV": 8,
+          "REP": 15,
+          "TRAIN": 40
+        },
+        "name": "internet_register",
+        "parent": null,
+        "positive_semantic_core": "online register evidence",
+        "text_identifiability": "MIXED",
+        "uncertainty_rules": "optional co-label"
+      }
+    ],
+    "parent_lineage": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1",
+    "regional_decision": "DEPRECATED",
+    "stage_b_task": "HIERARCHICAL_MULTI_LABEL",
+    "structure": "HIERARCHICAL_MULTI_LABEL",
+    "uncertainty_semantics": {
+      "ANNOTATOR_DISAGREEMENT": "hold out from definitive gold",
+      "CLEAR_NEGATIVE": "label absent",
+      "CLEAR_POSITIVE": "label supported by text",
+      "INSUFFICIENT_CONTEXT": "text underdetermined",
+      "MULTI_LABEL_POSITIVE": "multiple labels simultaneously true",
+      "ONTOLOGY_BOUNDARY_UNCLEAR": "boundary case for human queue",
+      "do_not_use_generic_AMBIGUOUS": true
+    }
+  },
+  "gates": {
+    "active_label_definitions_frozen": true,
+    "co_label_rules_frozen": true,
+    "evaluation_relational_settled": true,
+    "gambling_crypto_settled": true,
+    "hierarchy_frozen": true,
+    "identifiability_verified": true,
+    "identity_settled": true,
+    "migration_contract_sealed": true,
+    "structure_frozen": true,
+    "support_viable": true
+  },
+  "geometry_diagnostic": {
+    "human_coherent_labels_still_difficult_for_MODEL_WIDE_BEST": true,
+    "note": "Not used to revise labels. Human/operator settlement is authoritative. Prior MODEL_WIDE_BEST cluster margin remained negative; architecture implications deferred.",
+    "prior_margin_within_minus_between": -0.1499772246914004,
+    "prior_nearest_cluster_purity": 0.1785885741718675,
+    "source": "prior_proposed_geometry_reuse",
+    "used_to_decide_ontology": false
+  },
+  "migration_counts_train_dev_rep": {
+    "AUTO_MIGRATABLE": 4166,
+    "HUMAN_RESETTLEMENT_REQUIRED": 386
+  },
+  "migration_map": [
+    {
+      "domain": [
+        "domain.gaming"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "gaming-meta",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.gambling"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "RULE_DERIVED",
+      "mediation": [],
+      "old_label": "betting-sharp",
+      "rule": "only if wagering semantics; else drop domain mapping",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.crypto"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "RULE_DERIVED",
+      "mediation": [],
+      "old_label": "crypto-degen",
+      "rule": "only if crypto-asset/chain evidence",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.sports"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "sports-competition",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.entertainment"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "music-entertainment",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.fashion"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "fashion-aesthetic",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.workplace"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "workplace-career",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.politics"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "politics-civic",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.spiritual"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "spiritual-mystic",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.technology"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "technology-ai",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [
+        "domain.technology",
+        "domain.technology.ai_discourse"
+      ],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "MULTI_LABEL",
+      "mediation": [],
+      "old_label": "ai-native",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [],
+      "function": [
+        "function.evaluative_stance"
+      ],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "social-evaluation",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [],
+      "function": [
+        "function.relational_intimacy"
+      ],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "relationship-dating",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [],
+      "function": [
+        "function.conflictive_force"
+      ],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "conflict-aggression",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [],
+      "function": [
+        "function.memetic_form"
+      ],
+      "human_review_requirement": false,
+      "mapping_type": "DIRECT",
+      "mediation": [],
+      "old_label": "memetic",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "MULTI_LABEL",
+      "mediation": [
+        "mediation.internet_register"
+      ],
+      "old_label": "internet-slang",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [],
+      "function": [],
+      "human_review_requirement": false,
+      "mapping_type": "DEPRECATED",
+      "mediation": [],
+      "old_label": "regional-cultural",
+      "settlement_status": "SETTLED"
+    },
+    {
+      "domain": [],
+      "function": [],
+      "human_review_requirement": true,
+      "mapping_type": "DEPRECATED",
+      "mediation": [],
+      "note": "CONTEXT_ONLY per settlement (CONTEXT_ONLY); rows need human resettlement or drop from Stage-B gold",
+      "old_label": "identity-affiliation",
+      "settlement_status": "SETTLED"
+    }
+  ],
+  "model_design_constraints": {
+    "hierarchical_constraints": true,
+    "independent_domain_function_prediction": true,
+    "multi_label_heads": true,
+    "new_encoder": "undecided_in_this_phase",
+    "note": "Task requires hierarchical multi-label learning with parent consistency; encoder/retriever choice deferred to model-design phase.",
+    "parent_child_consistency_enforcement": true,
+    "verification_retrieval_assistance": "optional_later"
+  },
+  "n_annotated_rows": 120,
+  "qualification_handling": {
+    "also_acceptable": "A_retain_sealed_rows_but_require_blind_reannotation",
+    "inspected": false,
+    "preferred": "B",
+    "reason": "Old exclusive family gold + ontology cardinality change make blind re-annotation of the same rows possible but a fresh surface better matches NATURAL operating distribution under V1_FINAL.",
+    "recommendation": "B_replace_with_new_fresh_qualification_surface",
+    "sealed_id": "HYPERLEX_V6_QUALIFICATION_001"
+  },
+  "resettlement_queue": {
+    "DETERMINISTIC_AFTER_SETTLEMENT": 122,
+    "NEEDS_ROW_LEVEL_HUMAN_RESETTLEMENT": 140,
+    "UNUSABLE": 0,
+    "auto_relabeled_in_this_phase": false,
+    "bounded_settlement_queue_n": 140,
+    "queue_focus": "identity-affiliation PRESENT rows on TRAIN/DEV/REP"
+  },
+  "schema": "hyperlex.classification.v6.human_ontology_settlement.v1",
+  "settled_at": "2026-10-01T21:45:38Z",
+  "stability_criteria_frozen_before_review": true,
+  "stage_a_consequence": {
+    "reopen": false,
+    "stage_a": "evidence/relation admission layer",
+    "stage_b": "hierarchical multi-label semantic characterization"
+  }
+}

@@ -1,0 +1,4831 @@
+[
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "011763653f0168cd4cc5dd271ecb38f63b683911f282d251c736af50a616def7",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "05727c1b8e4160f510e66387e60c3b51ca5855f29b7642163da2a50fa4c08d9c",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "14b5df34ddcf7cc85933f89078496f9ee68b0fdeb045b766cf91721389617a2a",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "157eeb997c9de3f7d5531cd016470b0766ce7e83f0b7864be7ca0481a92c5494",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "15bb5bcfc4154b3ecbccb8aa4bf9d0b5e922d35c762273cdeeb022004d284b37",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "189e1bce1af0046fadf01621b7d34c27ca6a6392bbea58f4ead56cd8f34b4a14",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "1cf50159a39cc80da5169deb5186769b44d303cb4fc168ad25c838eb07cb5987",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "1ebd05ed86796bde527ba3b0af0539f462f915f951745a7c7bb8748df06720a7",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "203383b640f637fc593fd3c74578e5f769e142d2bad10e63ea0387fc28a65e52",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "23845cb98ad01755b1325d1a614fff0db0a78b80dfc93ae3c4f9bbfab6916924",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "240e60d9df057218f3ff6d79be02d36937779f39f0d7547cc5666c1beca1998a",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "24a6eabd9d000087c8bdb98e7a90521f7b1b591bfd223958ae065a276a4adcae",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "24b3ada3e38f1aaad757644019b1381b98218abbcc41c728db6b6e97be8ff1dd",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "25fab009fbd025a7de336b284c727104703dbf349b9e78aaf24e19469a49f605",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "268d1ebf01765bff293bef8f5dae3280fc61bfbe08d582bf65145ab723f317ec",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "278e4a8a7b04c22b00e831dec88530123f6703ff5a32a01c5c2f0334f7b54193",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "2a07d92b97aedac7d1c4be3bb40366b76dd37caf606872265b867a627d36d717",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "2b4cc700af4b47473232cd3db2a0748219ab138a100f69ee7efc74ee1005cf9b",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "2c35075020ec6093de6f728481bd8b288c0cb1df1b0f2103b065de9fc3b3ee6a",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "2d28fb3732b67d0741fd2263dec08eff863c39fb42a1f5c895b6030313a2e447",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "2e8b827f3f896556906faaf8e0739600b82d20f9b71f643ce6a587e8150403ef",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "2edfd828c292665e309cd026191c6f5166edcf31e0bf56b2fe5fa12ad748ab64",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "373d9eb3aac36803209c45f6145bb7a29aba6a275f75eca72a00a4bb8bc06682",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "3835f9f528323ce68945ac3cb46a52d63ad372f9e1502f8915680f2e889cfcac",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "39a9bd862000210478a16babd94e47942ec55845e8337252b4a5a90897addc35",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "3ab3ed8d96656132d473a085d07def56f17ca36b46b43c149c290c14833189cb",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "3be279acdc2218c02c8cbdba1d6f709105cd8ba732c981ff3526a85e97f9c52a",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "3d57420e15d86ed126002e7db814aed6c1d4bf2851e2dc2c2d4d91124049374c",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "3d94b5d12e4cfcac56a60150427834f2bd0cf0784d62db40397427e4627dd36a",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "3e0597bf9307411a17e216040b9050495aa8ef97a587fbb0f1becccdcfbbc2c6",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "41beb0dd34e933e57af06ffffe3b998e01455985a39bd43d6cabc51aab925993",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "42223b5036898a1076a9316d62c35b4391ae1ec01f50d4f589737a8988a7a4de",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "441c38aeb81d08a16481eac61859620680e3e4fb27e3d59f15b39b7c1389e443",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "44613f5e5928ade2747b4a35046cf5a1eb88e008317fc3a6679b9a38ccd80342",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "48a92bbb66e58ff6b3fa0859cb6e090d427299a3f0bb12fed03327554d46d077",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "4bd41ee4c4fb6a0065f8c9cc7494c6cdbf3b6379a0f7a56a14f5b8c8d9538d6e",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "4e4dc52563c3438e58eaf8ee405eeaa5fb5f1c968c8789a06b222e7b7d54e53d",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "4f9551f4359d9f2b7d289ea3a9c908f6e72b4b7ef5a4082a79b353aba7adc9a4",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "50759486862be686c873d09ed286b3689c52c0950ce960334bfcd257e23fd16e",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "workplace"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "51ad80c95cd93a6adf5b1d8731643c8749cafe5c87ae9a6b191c3027b7cf4102",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "workplace"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "workplace"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "531530022ee9a78dbaa11fd8a3de638e0aa3c0484443a6b94de68a2415716641",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "53fba6e37617093c0a2a72b5da543a5582c3b8a10bec52d9d2d7f89b57091996",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "581a3c081846e5219deccf052198c68028af7dcf8c5e917b634a7e36dcc0d5b3",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "5916cce729f973e7d8455812c1d4a2adb4c24ffe8197a35d29620e347d5c88c8",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "politics_civic"
+      ],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "MULTI_LABEL_POSITIVE"
+    },
+    "identity": "5b23a5faf396808efd70faf47d490ff33c03543b0364abfc6c2080a3deed6cfe",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "politics_civic"
+      ],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "MULTI_LABEL_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "politics_civic"
+      ],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "MULTI_LABEL_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "5d77d595137453908baad3c917ca740df14655ae0c5266ccf5d4aed4fc8f9f6c",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "5fa088b44a436529e10a27ba65b1c0f9e9d900ceceacffd0f4643a1bdaea84e9",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "63d64e576d3a4432ca7146547fd5a4f4a8857a9f0efce0a4938dad576708adf3",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "67d7419ccb92a80255b03b7e59b45816f55dbc779b0b232d0c0953668494a00e",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "681d50fcb4c96c0958e3ca83c947e8696d37dd83ef86ad7a23c409c30ff2cb5e",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "69b36b0545a30113033735a92963e2b686097b017f350fdd359131037f200c8f",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "6a027fd6150660a0500ba76936ba322111d2018dbee5f9db7558b392fee2ad69",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "6aedec12638bec43974a91d734de88d549386a1d714be7a02a803d6faa8d8ad5",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "6ec70352763e135f8abcb985fd5ce42be09823dca9d9b398926a29c9d32ce03d",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "7764698bd4d79848deea20e62bd2386daabe08387ebfaee4f3c34fbc376c8a18",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "780dab2f3d5a975a0aa347bc146e7350074e9a5f108cb653057c8622fe3d7fc8",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "7a6474cd4a5ad36c29816aa4c40531f7d0ea58c9d697e961cc29842ce68e5f31",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "entertainment_media"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "7cd471f1905406c69c8490cd7b95fac5331926a48e5589cc0250575893668f20",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "7de2fa6bfb5f81ceb05be9dd9525999e4506956deb8e7b5392b18fafc7cb977f",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "7e70ccc0fe408ca1aa8ff7bf1d7cafe08ef478e9ef0262d924b488d89b218dd0",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "81d10477071e8d2f085c036b866999d7d6d91c53050707b9e45ff9bfa2759e32",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "8284ab3307e6ee223c4a3ff9e69bba024abad986069b6d84cf5ccdf88ab28560",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "852b789527019132caf0a916c2b8f308a8a3ac52a6c8e627b0d3e18cdea3ee46",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "86ab022a2dacf424036efbb80380f86eacaa983c0eab6daeb097a1047f9ff2b7",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "870b39bdaeb6425fe17af33fb1598b562d6526df2f7ceca1f541ee1cd2d16230",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "8eafee327bb7a6b30e9d5f141feddab07fc33d0535cec1b460b0f95dc49fa036",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "93625108596efee76e01536d11640543ef222c45ddfee6bfa1be1a9e535f6c03",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "947b8b29f50222e0947dc2dda27cc2c7a3f6274305e0a6948af4d55d8a597b21",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "95c776fc26d5642dfec50513543f4b794369a0eb55ce7bf60ae923eaeadf456f",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "979bb38f8353c8570dbe7ce1478014014139c5672268ad9c60ba45bc84527fc4",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "9958ae1c87f39371c08179ae11ff1449c403d187fc650694eb983d3912b57686",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "9a560a0e4b58558d5085a2d28c60707b969a9be62852673941a00d5b9e417cf0",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "9b6a50ab8d4b2848d4b93c266fbf24d2bae4c055ce36ee89c86362b57e08c5c7",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "9b9c1c7a00d386e14ae0ed693cd0c72853bbc5e1f3e33cd72e83ec645046e03d",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "9bc8c196a72863b402c466d6acd3ac12cef88f4172290f311a099ac357dbbc5c",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "9eee3636de62a0f1e60174d6c50df6a1297fe62636105039e3a5b0c8c3578e50",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "9eff61c4a7598579b51a2292a9d9278509dfb5166e1b8d4627d5fc1695b08c5b",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "a0ecde1886ca7e832ff6daa24f537d184e154be5720d5c58fdf2a6572d6f3bdc",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "a376a53538fb3a7bb45c42ced73d6c7d7561289e39747ac6e0cb31d728fe6481",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "a482046af817554ced13d3fa802cdc2b5ec3621662bfa1cbbb243589b206c063",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "a58ea3635064dab0f94e5025c47ab1dfffe2e902ce75ca0b8171d2461bab3c00",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "fashion_style"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "a8b87d2b5a574a59ee575ce446b08b11ccbab20453a56dbce22b1142b249e3e9",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "fashion_style"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "fashion_style"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "a99880cd5c273797a1a8fc0e70339cca100d0c1cc058c39188ddcbc950419097",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "ai_discourse",
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "MULTI_LABEL_POSITIVE"
+    },
+    "identity": "b11fb58ead6e8782c3dd31545b07569ce7e1be1593806eb21d40e69135212bc7",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "ai_discourse",
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "MULTI_LABEL_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "ai_discourse",
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "MULTI_LABEL_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "b334674f437a9f269656d6a4be2b639df6de94020eda67b43dd651a7bb3ca70f",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "b44ab542b550af6f067c1df7ddcd2e8f9b83436d8630acae2c661ddf0f1f2005",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "INSUFFICIENT_CONTEXT",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "b46f60734ae71b795bb1ded8ae9ad67d31d0d9210da5ab8a36d64a190675f226",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "b83d560d23b6a4a14d9e17ae8c76b4397156610092014a86feb1ec6e94d05c76",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "bfbb9b43d5f9dc7e30c035eadaa3bc2b882ce873ab4e97c3a340e911f4e28d4e",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "c340a9381a7185ab25447ceaaaaf4cb23a948e0ca23b4fb3dac31da4d53bbda4",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "c3478e6d5f02adbcc415536d5e526f61c4287c0e868bd9fa40e2fb860fafad79",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "c72ee0c9ec680b5c7157b5b4ee0cfb30535f5e2abf52b119696ccaf119f76b21",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "c9774128771d5fa6f4d08e3940884683ac6cc0807da400471a6ebe5a30c4e3db",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "ccb5615519de5acc80fa4433d90cf149d6e869d1f7405b802dc39f31542f3cb8",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "ccc25d9d5f6b54574fda1ae2407f1b88cfe685eeaa54af44f1aad5c5cc7212c8",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "technology"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "cd07a949f412a9c7b6403b654e04773d893aad90bfa017ca3650f3848f6368a9",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "d05bc17059e3bae0a03f0b1183949e00fc18d40678589b675b8686de312da7cc",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "d2556b04164727a7a3109b9d0b360518c25990e4898f42f04c995a24fc68928c",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "d4a7803f3a99f25d686df59472e2e99a4cf997acfe11f6ffdd5840266a81ce00",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "d60b208dc1ea9a95274a6f75a7f5653efed16e40bdab3062619d5ad81bf44053",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [
+        "relational_intimacy"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "d850f08209d0ba9c83b0773cfd204ee5bde506cfdfc205125099150f1daaddb3",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "dac75a326ef07f58308fc09088d73bf95a463158466bb593d78ceb1ac1624493",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "db3858f283809c21733290a00af53e19cf744f0cb2a7d0d1bfa9b802dd7d82fe",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "db81d571981841860522830ec38ebd6e9b0c39ca29827ab8b73b93dd029b447e",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "dcbcdf78644da5c5d5a8ac351dd87d97e014924463e0f0b00c41da1d792fc637",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "dd76dad0632733c926c5a817b9f02dbcf9a8f6b60c591a0f26ec21c9be61602d",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "politics_civic"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "e1bbbb03368b5698c5c57ef71b02185d2cd47d82f1676c17a496001b60c78a76",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "politics_civic"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "politics_civic"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "e416ac987666fa4183f036e331d63434386607265b607ba946623c2a329d332e",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "fashion_style"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "e52d08fddd6ad97ad97cf6cda192814809e3a19d750231d9b1545939f286e6a1",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "fashion_style"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "fashion_style"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "UNCERTAIN",
+      "status": "AGREED",
+      "uncertainty": "INSUFFICIENT_CONTEXT"
+    },
+    "identity": "e5d17277e03e8ff689d17e2f443122b081cb9b9c90a2d5ab92faeb009b21791e",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "UNCERTAIN"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "INSUFFICIENT_CONTEXT",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "UNCERTAIN"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "gambling_betting"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "e6d5632ebfedd29058cc0e00bf2b9db95c77d174c864e0042078026a98af290b",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "gambling_betting"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "gambling_betting"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "ea4977e4ce2044dd1f8659830b61f7dc8b804d496b692b0b0a2d15e55da9fec2",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "ee0456d0213b0effe53c5917c41e9122afd1e584e9df7cf610a200931f4458ec",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [
+        "gambling_betting",
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "MULTI_LABEL_POSITIVE"
+    },
+    "identity": "f3d55b829878295916c58aa2473cb8c46dbadb36b392e63f0e71a1bdb5140d2c",
+    "pair_metrics": {
+      "domain_jaccard": 0.5,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [
+        "gambling_betting",
+        "gaming"
+      ],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "MULTI_LABEL_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "f452840027754e577b7febfb948d4ac6dffaf2334fc4ab43b32fe655ef3e6c7f",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "f759b3d78080cad699afaaa789da7219453388add7ef866dc39476e6b143d9ae",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "faf6618f29aeb7431c4a4c6bfdd6e4795215dc088f13e7abd3ab67eda1196033",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "EVIDENCE_PRESENT",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_POSITIVE"
+    },
+    "identity": "fb06c89054d5e7716d07617d3dc98e37376206bc8edc08964bff5b5005b849b0",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [
+        "conflictive_force"
+      ],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_POSITIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "EVIDENCE_PRESENT"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "fed5c470ced7630ff9ddcf6a99f09ce034594a179b6b6940ce8590371047db59",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  },
+  {
+    "adjudicated": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "stage_a": "NO_EVIDENCE",
+      "status": "AGREED",
+      "uncertainty": "CLEAR_NEGATIVE"
+    },
+    "identity": "ffdb632227e0781a226d806b0a1a79bc4fafc64a7a316c6d34f2a138eb9e0116",
+    "pair_metrics": {
+      "domain_jaccard": 1.0,
+      "function_jaccard": 1.0,
+      "identity_agree": true,
+      "mediation_jaccard": 1.0,
+      "stage_agree": true
+    },
+    "rater_a": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "domain-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "A_DOMAIN_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    },
+    "rater_b": {
+      "domains": [],
+      "functions": [],
+      "identity_relevance": "CLEAR_NEGATIVE",
+      "mediation": [],
+      "notes": "function-first protocol",
+      "outcome": "CLEAR_NEGATIVE",
+      "rater": "B_FUNCTION_FIRST",
+      "stage_a": "NO_EVIDENCE"
+    }
+  }
+]

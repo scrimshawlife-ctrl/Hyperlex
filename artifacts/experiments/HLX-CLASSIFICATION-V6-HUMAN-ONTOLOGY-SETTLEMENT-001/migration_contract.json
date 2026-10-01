@@ -1,0 +1,200 @@
+[
+  {
+    "domain": [
+      "domain.gaming"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "gaming-meta",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.gambling"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "RULE_DERIVED",
+    "mediation": [],
+    "old_label": "betting-sharp",
+    "rule": "only if wagering semantics; else drop domain mapping",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.crypto"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "RULE_DERIVED",
+    "mediation": [],
+    "old_label": "crypto-degen",
+    "rule": "only if crypto-asset/chain evidence",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.sports"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "sports-competition",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.entertainment"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "music-entertainment",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.fashion"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "fashion-aesthetic",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.workplace"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "workplace-career",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.politics"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "politics-civic",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.spiritual"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "spiritual-mystic",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.technology"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "technology-ai",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [
+      "domain.technology",
+      "domain.technology.ai_discourse"
+    ],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "MULTI_LABEL",
+    "mediation": [],
+    "old_label": "ai-native",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [],
+    "function": [
+      "function.evaluative_stance"
+    ],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "social-evaluation",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [],
+    "function": [
+      "function.relational_intimacy"
+    ],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "relationship-dating",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [],
+    "function": [
+      "function.conflictive_force"
+    ],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "conflict-aggression",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [],
+    "function": [
+      "function.memetic_form"
+    ],
+    "human_review_requirement": false,
+    "mapping_type": "DIRECT",
+    "mediation": [],
+    "old_label": "memetic",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "MULTI_LABEL",
+    "mediation": [
+      "mediation.internet_register"
+    ],
+    "old_label": "internet-slang",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [],
+    "function": [],
+    "human_review_requirement": false,
+    "mapping_type": "DEPRECATED",
+    "mediation": [],
+    "old_label": "regional-cultural",
+    "settlement_status": "SETTLED"
+  },
+  {
+    "domain": [],
+    "function": [],
+    "human_review_requirement": true,
+    "mapping_type": "DEPRECATED",
+    "mediation": [],
+    "note": "CONTEXT_ONLY per settlement (CONTEXT_ONLY); rows need human resettlement or drop from Stage-B gold",
+    "old_label": "identity-affiliation",
+    "settlement_status": "SETTLED"
+  }
+]

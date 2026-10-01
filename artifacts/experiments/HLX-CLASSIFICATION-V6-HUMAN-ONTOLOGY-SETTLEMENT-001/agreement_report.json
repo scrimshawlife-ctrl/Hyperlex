@@ -1,0 +1,70 @@
+{
+  "annotation_mode": "DUAL_INDEPENDENT_OPERATOR_PROTOCOL",
+  "annotation_mode_note": "Two independent text-only operator protocols (domain-first vs function-first). Acquisition gold and model scores were not shown. Not two separate biological humans; treated as operator settlement evidence for this phase.",
+  "axes": {
+    "crypto_markets": {
+      "cohen_kappa": 1.0,
+      "n_pos_either": 0,
+      "negative_agreement": 1.0,
+      "positive_agreement": 0.0,
+      "raw_agreement": 1.0
+    },
+    "evaluative_stance": {
+      "cohen_kappa": 1.0,
+      "n_pos_either": 0,
+      "negative_agreement": 1.0,
+      "positive_agreement": 0.0,
+      "raw_agreement": 1.0
+    },
+    "gambling_betting": {
+      "cohen_kappa": 0.6629213483146077,
+      "n_pos_either": 2,
+      "negative_agreement": 0.9915966386554622,
+      "positive_agreement": 0.5,
+      "raw_agreement": 0.9916666666666667
+    },
+    "identity_relevance": {
+      "cohen_kappa": 1.0,
+      "confusion": {
+        "CLEAR_NEGATIVE->CLEAR_NEGATIVE": 117,
+        "INSUFFICIENT_CONTEXT->INSUFFICIENT_CONTEXT": 3
+      },
+      "raw_agreement": 1.0
+    },
+    "relational_intimacy": {
+      "cohen_kappa": 1.0,
+      "n_pos_either": 3,
+      "negative_agreement": 1.0,
+      "positive_agreement": 1.0,
+      "raw_agreement": 1.0
+    },
+    "stage_a": {
+      "cohen_kappa": 1.0,
+      "raw_agreement": 1.0
+    }
+  },
+  "mean_domain_jaccard": 0.9958333333333333,
+  "mean_function_jaccard": 1.0,
+  "n_adjudicated_disagreement": 0,
+  "n_annotators": 2,
+  "n_rows": 120,
+  "stability_criteria": {
+    "HUMAN_STABLE": {
+      "min_kappa": 0.6,
+      "min_raw_agreement": 0.8,
+      "note": "Or raw>=0.90 when prevalence skew makes kappa unstable"
+    },
+    "HUMAN_UNSTABLE": {
+      "or_kappa_lt": 0.35,
+      "raw_agreement_lt": 0.65
+    },
+    "HUMAN_USABLE_WITH_SOFT_BOUNDARY": {
+      "min_kappa": 0.35,
+      "min_raw_agreement": 0.65
+    },
+    "INSUFFICIENT_SUPPORT": {
+      "positive_cases_lt": 5
+    },
+    "frozen_before_review": true
+  }
+}

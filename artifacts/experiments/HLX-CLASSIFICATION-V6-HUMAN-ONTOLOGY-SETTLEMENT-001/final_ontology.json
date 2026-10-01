@@ -1,0 +1,396 @@
+{
+  "FINAL_ONTOLOGY_ID": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+  "cardinality": {
+    "domain_labels": "multi-hot",
+    "exclusive_flat_argmax": false,
+    "function_labels": "multi-hot",
+    "mediation_labels": "multi-hot"
+  },
+  "co_label_rules": {
+    "invalid": [
+      [
+        "mediation.internet_register as sole exclusive Stage-B emit"
+      ],
+      [
+        "ai_discourse without technology"
+      ],
+      [
+        "identity-affiliation as definitive Stage-B gold"
+      ],
+      [
+        "regional-cultural as Stage-B family"
+      ]
+    ],
+    "relation_types": {
+      "ai_discourse\u2192technology": "required_parent",
+      "evaluative\u00d7relational": "independent_compatible",
+      "gambling\u00d7crypto": "independent_compatible",
+      "internet_register": "optional_co_label"
+    },
+    "valid": [
+      [
+        "domain.sports",
+        "domain.gambling_betting"
+      ],
+      [
+        "domain.gaming",
+        "function.conflictive_force"
+      ],
+      [
+        "domain.politics_civic",
+        "function.memetic_form"
+      ],
+      [
+        "function.evaluative_stance",
+        "function.relational_intimacy"
+      ],
+      [
+        "domain.gambling_betting",
+        "domain.crypto_markets"
+      ],
+      [
+        "domain.technology",
+        "domain.technology.ai_discourse"
+      ]
+    ]
+  },
+  "deprecated": [
+    {
+      "may_remain": "metadata / future contextual dimension",
+      "name": "regional-cultural",
+      "stage_b": false,
+      "status": "DEPRECATED"
+    },
+    {
+      "decision": "CONTEXT_ONLY",
+      "name": "identity-affiliation",
+      "stage_b": false,
+      "status": "CONTEXT_ONLY"
+    },
+    {
+      "name": "internet-slang exclusive family",
+      "replaced_by": "mediation.internet_register",
+      "status": "DEPRECATED_AS_EXCLUSIVE"
+    }
+  ],
+  "domains": [
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "gameplay / gamer-community evidence",
+      "disallowed_combinations": [],
+      "exclusions": "Generic 'player' without game sense; sports athletes; AI agents.",
+      "id": "domain.gaming",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "gaming",
+      "parent": null,
+      "positive_semantic_core": "gameplay / gamer-community evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "wagering-market evidence",
+      "disallowed_combinations": [],
+      "exclusions": "metaphorical 'bet', speculative-market talk without wagering, ordinary coin minting, storage 'bit' units",
+      "id": "domain.gambling",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "gambling_betting",
+      "parent": null,
+      "positive_semantic_core": "actual betting/wagering/casino/bookmaking semantics",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "crypto-asset / chain-market evidence",
+      "disallowed_combinations": [],
+      "exclusions": "ordinary finance, generic 'token' without crypto sense",
+      "id": "domain.crypto",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "crypto_markets",
+      "parent": null,
+      "positive_semantic_core": "crypto-asset / blockchain / DeFi / NFT market evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "athletic sports evidence",
+      "disallowed_combinations": [],
+      "exclusions": "Gaming esports (gaming-meta); figurative competition alone.",
+      "id": "domain.sports",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "sports",
+      "parent": null,
+      "positive_semantic_core": "athletic sports evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "music / film / TV entertainment evidence",
+      "disallowed_combinations": [],
+      "exclusions": "Generic 'performance' in computing; fashion runway alone.",
+      "id": "domain.entertainment",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "entertainment_media",
+      "parent": null,
+      "positive_semantic_core": "music / film / TV entertainment evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "clothing / aesthetic-style evidence",
+      "disallowed_combinations": [],
+      "exclusions": "Abstract 'aesthetic' philosophy without style sense.",
+      "id": "domain.fashion",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "fashion_style",
+      "parent": null,
+      "positive_semantic_core": "clothing / aesthetic-style evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "workplace / career / org evidence",
+      "disallowed_combinations": [],
+      "exclusions": "Generic 'service'/'channel' without workplace sense.",
+      "id": "domain.workplace",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "workplace",
+      "parent": null,
+      "positive_semantic_core": "workplace / career / org evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "political / civic institutional evidence",
+      "disallowed_combinations": [],
+      "exclusions": "Generic conflict/war without civic framing; sports 'left wing'.",
+      "id": "domain.politics",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "politics_civic",
+      "parent": null,
+      "positive_semantic_core": "political / civic institutional evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "occult / astrology / spiritual practice evidence",
+      "disallowed_combinations": [],
+      "exclusions": "Metaphorical 'magic' in tech/gaming without spiritual sense.",
+      "id": "domain.spiritual",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "spiritual_esoteric",
+      "parent": null,
+      "positive_semantic_core": "occult / astrology / spiritual practice evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "other domains/functions/mediation when text-supported",
+      "axis": "domain",
+      "definition": "computing / software / systems evidence",
+      "disallowed_combinations": [],
+      "exclusions": "AI-community slang that is specifically model/agent discourse (ai-native).",
+      "id": "domain.technology",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "technology",
+      "parent": null,
+      "positive_semantic_core": "computing / software / systems evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "INSUFFICIENT_CONTEXT if domain sense underdetermined"
+    },
+    {
+      "allowed_co_labels": "functions/mediation; requires technology parent",
+      "axis": "domain",
+      "definition": "AI-agent / LLM / prompt community evidence",
+      "disallowed_combinations": [
+        "ai_discourse without technology"
+      ],
+      "exclusions": "generic computing without AI-community evidence",
+      "id": "domain.technology.ai_discourse",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "ai_discourse",
+      "parent": "domain.technology",
+      "positive_semantic_core": "AI-agent / LLM / prompt community evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "child implies parent; if only weak AI metaphor \u2192 INSUFFICIENT_CONTEXT"
+    }
+  ],
+  "functions": [
+    {
+      "allowed_co_labels": "compatible with domains and other functions",
+      "axis": "function",
+      "definition": "praise / insult / pejoration / prestige judgment",
+      "disallowed_combinations": [],
+      "exclusions": "Neutral description without stance; pure demonym without evaluation.",
+      "id": "function.evaluative_stance",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "evaluative_stance",
+      "parent": null,
+      "positive_semantic_core": "praise / insult / pejoration / prestige judgment",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "partner-directed insults may MULTI_LABEL with relational_intimacy"
+    },
+    {
+      "allowed_co_labels": "compatible with domains and other functions",
+      "axis": "function",
+      "definition": "romantic / dating / intimate partnership evidence",
+      "disallowed_combinations": [],
+      "exclusions": "Platonic affiliation; workplace 'partner'; evaluative insult alone.",
+      "id": "function.relational_intimacy",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "relational_intimacy",
+      "parent": null,
+      "positive_semantic_core": "romantic / dating / intimate partnership evidence",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "partner-directed insults may MULTI_LABEL with relational_intimacy"
+    },
+    {
+      "allowed_co_labels": "compatible with domains and other functions",
+      "axis": "function",
+      "definition": "hostility / violence / combat framing",
+      "disallowed_combinations": [],
+      "exclusions": "Metaphorical 'fight' for sports/competition without hostility sense.",
+      "id": "function.conflictive_force",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "conflictive_force",
+      "parent": null,
+      "positive_semantic_core": "hostility / violence / combat framing",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "partner-directed insults may MULTI_LABEL with relational_intimacy"
+    },
+    {
+      "allowed_co_labels": "compatible with domains and other functions",
+      "axis": "function",
+      "definition": "meme format / macro / copypasta / template virality",
+      "disallowed_combinations": [],
+      "exclusions": "Any viral topic without memetic form; political content alone.",
+      "id": "function.memetic_form",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "memetic_form",
+      "parent": null,
+      "positive_semantic_core": "meme format / macro / copypasta / template virality",
+      "text_identifiability": "TEXT_IDENTIFIABLE",
+      "uncertainty_rules": "partner-directed insults may MULTI_LABEL with relational_intimacy"
+    }
+  ],
+  "hierarchy": [
+    {
+      "child": "domain.technology.ai_discourse",
+      "constraint": "required_parent",
+      "parent": "domain.technology"
+    }
+  ],
+  "identity_decision": "CONTEXT_ONLY",
+  "internet_register_decision": "MEDIATION_REGISTER_LABEL",
+  "mediation": [
+    {
+      "allowed_co_labels": "any domain/function",
+      "axis": "mediation",
+      "definition": "internet-mediated informal register / netspeak",
+      "disallowed_combinations": [
+        "exclusive_family_decision"
+      ],
+      "exclusions": "must not be sole exclusive Stage-B decision",
+      "id": "mediation.internet_register",
+      "minimum_support": {
+        "DEV": 8,
+        "REP": 15,
+        "TRAIN": 40
+      },
+      "name": "internet_register",
+      "parent": null,
+      "positive_semantic_core": "online register evidence",
+      "text_identifiability": "MIXED",
+      "uncertainty_rules": "optional co-label"
+    }
+  ],
+  "parent_lineage": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1",
+  "regional_decision": "DEPRECATED",
+  "stage_b_task": "HIERARCHICAL_MULTI_LABEL",
+  "structure": "HIERARCHICAL_MULTI_LABEL",
+  "uncertainty_semantics": {
+    "ANNOTATOR_DISAGREEMENT": "hold out from definitive gold",
+    "CLEAR_NEGATIVE": "label absent",
+    "CLEAR_POSITIVE": "label supported by text",
+    "INSUFFICIENT_CONTEXT": "text underdetermined",
+    "MULTI_LABEL_POSITIVE": "multiple labels simultaneously true",
+    "ONTOLOGY_BOUNDARY_UNCLEAR": "boundary case for human queue",
+    "do_not_use_generic_AMBIGUOUS": true
+  }
+}

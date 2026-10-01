@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+- **Complete V6 human ontology settlement (Spec 007):**
+  Dual independent text-only operator protocols on the 120-row sample
+  (acquisition gold / model scores withheld). Structure remains
+  `HIERARCHICAL_MULTI_LABEL`. Settlements: identity-affiliation
+  **`CONTEXT_ONLY`** (not Stage-B gold); evaluative vs relational
+  **`SEPARATE_COMPATIBLE_LABELS`**; gambling vs crypto
+  **`SEPARATE_DOMAINS_WITH_STRICT_GAMBLING`** (wagering-only gambling).
+  Freeze `HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL` + migration contract.
+  TRAIN/DEV/REP: AUTO_MIGRATABLE 4166 / HUMAN_RESETTLEMENT 386 (bounded
+  identity queue n=140; no auto-relabel this phase). QUAL uninspected;
+  prefer new qualification surface. Geometry not used to decide.
+  Disposition **`V6_ONTOLOGY_READY`**. Receipt
+  `classification-v6-human-ontology-settlement-receipt-20261001.json`
+  (`04a76503…`). No train. Next:
+  `REBUILD_V6_DATA_LABELS_AND_DESIGN_MODEL_PHASE`.
+
 - **Revise Hyperlex V6 ontology before modeling (Spec 007):**
   Freeze `HYPERLEX_V5_FAMILY_ONTOLOGY` as `HISTORICAL_RESEARCH_ONTOLOGY`.
   Semantic-level diagnosis: flat 18-way conflates DOMAIN × RELATION ×

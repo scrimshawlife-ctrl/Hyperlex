@@ -1,0 +1,38 @@
+{
+  "evaluative_vs_relational": {
+    "decision": "SEPARATE_COMPATIBLE_LABELS",
+    "deprecate_either": false,
+    "evaluative_stability": "INSUFFICIENT_SUPPORT",
+    "hierarchy": null,
+    "n_rows_with_both_signals": 0,
+    "rationale": "Evaluation/judgment and relation/intimacy are distinguishable when cues are present and may co-occur; do not force exclusivity. Soft boundary retained for partner-directed insults (MULTI_LABEL allowed).",
+    "relational_stability": "INSUFFICIENT_SUPPORT"
+  },
+  "gambling_vs_crypto": {
+    "crypto_exclusions": "ordinary finance, generic 'token' without crypto sense",
+    "crypto_inclusions": "crypto-asset / blockchain / DeFi / NFT market evidence",
+    "crypto_stability": "INSUFFICIENT_SUPPORT",
+    "decision": "SEPARATE_DOMAINS_WITH_STRICT_GAMBLING",
+    "gambling_exclusions": "metaphorical 'bet', speculative-market talk without wagering, ordinary coin minting, storage 'bit' units",
+    "gambling_inclusions": "actual betting/wagering/casino/bookmaking semantics",
+    "gambling_stability": "INSUFFICIENT_SUPPORT",
+    "internet_register_overlap": "mediation co-label only; not a third market domain",
+    "multi_label": "allowed when both wagering and crypto-market evidence present",
+    "rationale": "Problematic overlaps were mostly false gold / metaphor / ordinary-coin senses, not a single merged market family."
+  },
+  "hierarchical_multilabel_contradicted": false,
+  "identity_affiliation": {
+    "decision": "CONTEXT_ONLY",
+    "n_adjudicated_positive": 0,
+    "n_insufficient_context": 3,
+    "options_rejected": {
+      "DEPRECATE": "Acceptable synonym; CONTEXT_ONLY preferred to allow future metadata",
+      "KEEP_AS_AXIS": "Would reintroduce unstable definitive gold",
+      "KEEP_AS_LABEL": "Text-identifiability fails on natural sample",
+      "MERGE": "No single merge target without smuggling context dependence"
+    },
+    "rationale": "Dual protocols rarely assign CLEAR_POSITIVE identity from text alone; demonym/geography/language rows are INSUFFICIENT_CONTEXT. Identity is not admissible as definitive exclusive Stage-B gold. Retain only as optional contextual metadata outside Stage B, not KEEP_AS_LABEL.",
+    "stability": "INSUFFICIENT_SUPPORT"
+  },
+  "structure_remains": "HIERARCHICAL_MULTI_LABEL"
+}

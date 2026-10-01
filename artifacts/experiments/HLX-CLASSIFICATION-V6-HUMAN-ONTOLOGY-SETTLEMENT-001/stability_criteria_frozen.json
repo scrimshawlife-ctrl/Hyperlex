@@ -1,0 +1,19 @@
+{
+  "HUMAN_STABLE": {
+    "min_kappa": 0.6,
+    "min_raw_agreement": 0.8,
+    "note": "Or raw>=0.90 when prevalence skew makes kappa unstable"
+  },
+  "HUMAN_UNSTABLE": {
+    "or_kappa_lt": 0.35,
+    "raw_agreement_lt": 0.65
+  },
+  "HUMAN_USABLE_WITH_SOFT_BOUNDARY": {
+    "min_kappa": 0.35,
+    "min_raw_agreement": 0.65
+  },
+  "INSUFFICIENT_SUPPORT": {
+    "positive_cases_lt": 5
+  },
+  "frozen_before_review": true
+}
