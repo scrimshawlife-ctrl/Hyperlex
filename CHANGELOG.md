@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+- **Authorize ident-filtered factorized reproduction train (Spec 007):**
+  `AUTHORIZE_REPRODUCE_IDENT_FILTERED_FACTORIZED_TRAIN` binds
+  `HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001`
+  as a packaging-repair reproduction of parent `…-001` (`SETTLED_PASS`,
+  selected encoder-only `8b2de447…`). Scientific inputs reused: V1R2
+  `492ed367…`, annotations `95d54365…`, exclusion `661c9edb…`, class weights
+  `13e8d0ca…` (literals verified, not recomputed), splits/identity hashes
+  exact, objective/hparams/seed/gates unchanged.
+  `SCIENTIFIC_CONFIG_PARITY=PASS`. Serializer fix `9edf8fc` is the only
+  intended implementation delta; saves must
+  `require_factorized_heads_in_flat`. RNG order verified from original
+  runner (not byte-guaranteed). BEST / V1R2 / reserve unchanged.
+  `TRAIN_AUTHORIZED=true` / `AUTHORIZED_NOT_STARTED` /
+  `SCIENTIFIC_RESULT=NOT_COMPUTABLE`. Receipt
+  `classification-v5-stage-a-ident-filtered-factorized-repro-authorize-receipt-20261001.json`
+  (`09f3d456…`). Next:
+  `REPRODUCE_IDENT_FILTERED_FACTORIZED_TRAIN_ONCE`.
+
 - **Repair ident-filtered factorized checkpoint serialization — FAIL (Spec 007):**
   `REPAIR_IDENT_FILTERED_FACTORIZED_CHECKPOINT_SERIALIZATION` scanned retained
   selected-run artifacts for exact epoch-11 `relation_head` /

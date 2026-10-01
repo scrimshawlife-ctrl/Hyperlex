@@ -1,0 +1,38 @@
+{
+  "checks": {
+    "head_init_xavier_uniform_bias_zeros": true,
+    "initialization_policy_fresh_from_model_wide_best": true,
+    "not_silently_redefined": true,
+    "order_established_from_original_runner": true,
+    "seed_42": true
+  },
+  "contract": {
+    "encoder": "MODEL_WIDE_BEST 9fba0f66\u2026 overlay after trunk load",
+    "gaps": [
+      "no torch.cuda.manual_seed in original runner",
+      "no numpy.random.seed / random.seed in original runner",
+      "no cudnn.deterministic / benchmark=False recorded",
+      "tokenizer/encoder construction sits between manual_seed and Xavier"
+    ],
+    "order": [
+      "torch.manual_seed(42)",
+      "AutoTokenizer.from_pretrained(trunk, local_files_only=True)",
+      "AutoModel.from_pretrained(trunk, local_files_only=True)",
+      "apply_encoder_trainable(MODEL_WIDE_BEST_9fba0f66)",
+      "freeze_encoder(last_trainable=2)",
+      "nn.Linear(HIDDEN, 2)  # relation_head default init",
+      "nn.Linear(HIDDEN, 2)  # resolvability_head default init",
+      "nn.init.xavier_uniform_(relation_head.weight)",
+      "nn.init.zeros_(relation_head.bias)",
+      "nn.init.xavier_uniform_(resolvability_head.weight)",
+      "nn.init.zeros_(resolvability_head.bias)"
+    ],
+    "relation_head": "fresh Xavier under seed 42 after Linear() constructors",
+    "reproduction_class_implication": "ORDER_ESTABLISHED_NOT_BYTE_GUARANTEED: exact tensor reproduction is not promised; scientific-config identity is.",
+    "resolvability_head": "fresh Xavier under seed 42 after relation Xavier",
+    "seed": 42,
+    "silently_redefined": false,
+    "status": "VERIFIED_FROM_ORIGINAL_RUNNER"
+  },
+  "pass": true
+}

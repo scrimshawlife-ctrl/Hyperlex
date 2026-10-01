@@ -1,0 +1,367 @@
+{
+  "ANNOTATION_SHA256": "95d5436555da33ef7aaccf4c32194c29f00caced9a17adf2d2f65f12db7dc1fc",
+  "AUTHORIZE_RULE": "AUTHORIZE_REPRODUCE_IDENT_FILTERED_FACTORIZED_TRAIN",
+  "CHECKPOINT_REPAIR_RECEIPT_SHA256": "6b04194718f7cbe9645816c7cf9064419f5759d2080bf4bad9c2093281b4d15b",
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "13e8d0ca250839500b71b4b9e23d8238a90488987b9a49cd2c6d2fc336f77fc6",
+  "CURRENT_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "CURRENT_STAGE_A_BEST_MUTATED": false,
+  "DATASET_SHA256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+  "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+  "EXCLUSION_MANIFEST_SHA256": "661c9edb095f7f7dc28a24256b42e0a2796f9ab78fbabc24b23cf9bd57b06d69",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001",
+  "EXPLICIT_LIMITATIONS": {
+    "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+    "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT",
+    "SHORT_ATOM_PRESENT_SUPPORT": 11,
+    "note": "Passing aggregate gates must not be described as establishing broad short-atom positive generalization."
+  },
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "REPRODUCE_IDENT_FILTERED_FACTORIZED_TRAIN_ONCE",
+  "OBJECTIVE_ID": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "ORIGINAL_AUTH_RECEIPT_SHA256": "6341d0831327bdc3c912b133025b7265c62986badf369819d44dcaf506da42ed",
+  "ORIGINAL_RUN_RECEIPT_SHA256": "4a7d565ca607234c604bcec40acab33e3cbecc4da6e4adc86a0b2b79bb091a4b",
+  "ORIGINAL_SCIENTIFIC_RESULT": "SETTLED_PASS",
+  "ORIGINAL_SELECTED_ENCODER_ONLY_SHA256": "8b2de4472dc0ebd65a6b4b7577dc3272d63db2490a1b6f6dbbcc54db50077e41",
+  "ORIGINAL_SELECTED_EPOCH": 11,
+  "ORIGINAL_TRAINING_CONFIG_SHA256": "e252f1ba7beb577f0beb90bc9de294a16a8b808508081bb5b081b530fcaab460",
+  "PARENT_EXPERIMENT": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-001",
+  "PROMOTION_INVALID_RECEIPT_SHA256": "1123d70dec32b82709a9c44225471a90fd358d985ecc55751f22d5a56696829e",
+  "REPRODUCTION_CLASSIFICATION_DEFERRED": true,
+  "REPRODUCTION_CLASSIFICATION_VALUES": [
+    "EXACT_REPRODUCTION",
+    "NUMERICALLY_EQUIVALENT_REPRODUCTION",
+    "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION",
+    "REPRODUCTION_DIVERGED"
+  ],
+  "REPRODUCTION_REASON": "SELECTED_FACTORIZED_HEADS_NOT_SERIALIZED",
+  "REPRODUCTION_TRAINING_CONFIG_SHA256": "731c0b260fb5f6966c47d1700d522c42aad8126b6be2f482b078eb6c8ab8325e",
+  "SCIENTIFIC_CONFIG_PARITY": "PASS",
+  "SCIENTIFIC_QUESTION": "Does the original ident-filtered factorized SETTLED_PASS reproduce as a complete cold-loadable checkpoint once factorized heads survive serialization, under identical scientific inputs?",
+  "SCIENTIFIC_RESULT": "NOT_COMPUTABLE",
+  "SERIALIZATION_FIX_COMMIT": "9edf8fc682a072924e4dc76d6e5733b0f3f0090f",
+  "SERIALIZER_VERSION": "factorized_heads_whitelisted_v1",
+  "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT",
+  "SPENT_RESERVE": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "SPENT_RESERVE_STATUS": "SPENT",
+  "STAGE_B_MUTATED": false,
+  "TRAINING_RUN_LIMIT": 1,
+  "TRAINING_STATUS": "AUTHORIZED_NOT_STARTED",
+  "TRAIN_AUTHORIZED": true,
+  "V1R2_MUTATED": false,
+  "acceptance_gates": {
+    "EVIDENCE_PRESENT_recall_min": 0.7,
+    "NO_EVIDENCE_recall_min": 0.9,
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "optimize_family_metrics_before_stage_a_pass": false
+  },
+  "architecture": {
+    "ARCHITECTURE_CHANGE_REQUIRED": false,
+    "encoder": "ModernBERT-base",
+    "forbidden_additions": [
+      "mlp_head",
+      "attention_block",
+      "retrieval",
+      "prototype_scoring",
+      "domain_head",
+      "family_head"
+    ],
+    "head_init": "xavier_uniform_bias_zeros",
+    "last_trainable_encoder_layers": 2,
+    "note": "Encoder topology and two-head form unchanged; only head semantics/objective change from Gate1/Gate2.",
+    "pooling": "last_hidden_state[:,0]",
+    "relation_head": "linear_hidden_to_2_logits",
+    "resolvability_head": "linear_hidden_to_2_logits",
+    "shared_encoder": true,
+    "trainable": {
+      "last_trainable_encoder_layers": 2,
+      "mutate_best": false,
+      "relation_head": true,
+      "resolvability_head": true
+    }
+  },
+  "checkpoint_selection": {
+    "formula": "0.50 * relation_macro_F1 + 0.50 * resolvability_macro_F1",
+    "relation_scope": "relation_loss_eligible_validation_rows",
+    "resolvability_scope": "all_validation_rows",
+    "strict_improvement": true,
+    "tie_break": [
+      "lower_relation_false_positive_rate",
+      "higher_relation_positive_recall",
+      "higher_resolvability_UNRESOLVABLE_recall",
+      "earlier_epoch"
+    ]
+  },
+  "class_weight_parity": {
+    "CLASS_WEIGHT_ARTIFACT_SHA256": "13e8d0ca250839500b71b4b9e23d8238a90488987b9a49cd2c6d2fc336f77fc6",
+    "pass": true,
+    "recomputed": false,
+    "relation": {
+      "EVIDENCE_RELATION_PRESENT": 1.1014225267843571,
+      "NO_EVIDENCE_RELATION": 0.8985774732156429
+    },
+    "resolvability": {
+      "RESOLVABLE": 0.5,
+      "UNRESOLVABLE": 1.7030222347950057
+    }
+  },
+  "code_revision": "9edf8fc682a072924e4dc76d6e5733b0f3f0090f",
+  "initialization_policy": {
+    "base_encoder_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "base_encoder_source": "MODEL_WIDE_BEST",
+    "conflict_with_stage_a_best_continuation": false,
+    "forbidden_initializations": [
+      "STAGE_A_BEST_cd2829c1",
+      "failed_factorized_8a6981c1",
+      "failed_two_stage_26841d5f"
+    ],
+    "head_init": "xavier_uniform_bias_zeros",
+    "last_two_encoder_layers_source": "MODEL_WIDE_BEST_overlay",
+    "policy": "FRESH_RETRAIN_FROM_MODEL_WIDE_BEST:encoder_overlay_from_9fba0f66; relation_head/resolvability_head freshly Xavier-initialized; do_not_load_STAGE_A_BEST_or_prior_failed_ckpts",
+    "relation_head": "fresh_xavier_uniform_bias_zeros",
+    "resolvability_head": "fresh_xavier_uniform_bias_zeros",
+    "scientific_interpretation": "Ident-filtered factorized objective fresh retrain from MODEL_WIDE_BEST on V1R2; tests gold-contract repair only.",
+    "stage_a_best_continuation": false,
+    "stage_a_best_sha256_reference_only": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "trunk": "ModernBERT-base"
+  },
+  "lambda_resolvability": 1.0,
+  "loss": {
+    "L_total": "L_relation + lambda_resolvability * L_resolvability",
+    "class_weights": {
+      "resolve_separately_per_head": true,
+      "reuse_previous_gate1_gate2_weights": false,
+      "source_split": "train_only"
+    },
+    "focal_forbidden": true,
+    "lambda_optimized_in_this_pass": false,
+    "lambda_resolvability": 1.0,
+    "name": "factorized_relation_weighted_ce",
+    "provenance_multipliers": {
+      "INFERRED": 0.5,
+      "OBSERVED": 1.0
+    },
+    "relation": {
+      "loss": "weighted_cross_entropy",
+      "masked": "AMBIGUOUS_EVIDENCE / semantic_resolvable == 0",
+      "scope": "semantic_resolvable == 1",
+      "targets": {
+        "EVIDENCE_RELATION_PRESENT": 1,
+        "NO_EVIDENCE_RELATION": 0
+      }
+    },
+    "resolvability": {
+      "loss": "weighted_cross_entropy",
+      "scope": "all_valid_stage_a_rows",
+      "targets": {
+        "RESOLVABLE": 1,
+        "UNRESOLVABLE": 0
+      }
+    }
+  },
+  "optimizer_hyperparams": {
+    "early_stopping_patience": 4,
+    "gradient_accumulation": 1,
+    "learning_rate": 2e-05,
+    "max_epochs": 12,
+    "max_grad_norm": 1.0,
+    "max_len": 64,
+    "micro_batch_size": 8,
+    "minimum_epochs": 4,
+    "optimizer": "AdamW",
+    "sampling": "deterministic full-pass; no replacement; no over/under sampling",
+    "seed": 42,
+    "warmup_ratio": 0.05,
+    "weight_decay": 0.01
+  },
+  "original_settled_metrics": {
+    "EVIDENCE_PRESENT_recall": 0.951310861423221,
+    "NO_EVIDENCE_recall": 0.9646643109540636,
+    "SHORT_ATOM_NONE_relation_FPR": 0.013,
+    "false_evidence_entry_rate_on_none": 0.03356890459363958,
+    "prior_unfiltered_SHORT_ATOM_NONE_relation_FPR": 0.539,
+    "relation_threshold": 0.6,
+    "resolvability_threshold": 0.75,
+    "selected_epoch": 11
+  },
+  "receipt_sha256": "09f3d456961aaa9027ff35ac653f3d6aeee627ceee1eb705fcd83dc9b9c3205b",
+  "rng_contract": {
+    "checks": {
+      "head_init_xavier_uniform_bias_zeros": true,
+      "initialization_policy_fresh_from_model_wide_best": true,
+      "not_silently_redefined": true,
+      "order_established_from_original_runner": true,
+      "seed_42": true
+    },
+    "contract": {
+      "encoder": "MODEL_WIDE_BEST 9fba0f66\u2026 overlay after trunk load",
+      "gaps": [
+        "no torch.cuda.manual_seed in original runner",
+        "no numpy.random.seed / random.seed in original runner",
+        "no cudnn.deterministic / benchmark=False recorded",
+        "tokenizer/encoder construction sits between manual_seed and Xavier"
+      ],
+      "order": [
+        "torch.manual_seed(42)",
+        "AutoTokenizer.from_pretrained(trunk, local_files_only=True)",
+        "AutoModel.from_pretrained(trunk, local_files_only=True)",
+        "apply_encoder_trainable(MODEL_WIDE_BEST_9fba0f66)",
+        "freeze_encoder(last_trainable=2)",
+        "nn.Linear(HIDDEN, 2)  # relation_head default init",
+        "nn.Linear(HIDDEN, 2)  # resolvability_head default init",
+        "nn.init.xavier_uniform_(relation_head.weight)",
+        "nn.init.zeros_(relation_head.bias)",
+        "nn.init.xavier_uniform_(resolvability_head.weight)",
+        "nn.init.zeros_(resolvability_head.bias)"
+      ],
+      "relation_head": "fresh Xavier under seed 42 after Linear() constructors",
+      "reproduction_class_implication": "ORDER_ESTABLISHED_NOT_BYTE_GUARANTEED: exact tensor reproduction is not promised; scientific-config identity is.",
+      "resolvability_head": "fresh Xavier under seed 42 after relation Xavier",
+      "seed": 42,
+      "silently_redefined": false,
+      "status": "VERIFIED_FROM_ORIGINAL_RUNNER"
+    },
+    "pass": true
+  },
+  "save_policy": {
+    "both_independently_cold_loadable": true,
+    "checkpoint_manifest_schema": "hyperlex.classification.v5.stage_a_ident_filtered_factorized_complete_checkpoint_manifest.v1",
+    "encoder_only_factorized_checkpoint_valid": false,
+    "fail_save_if_either_head_missing": true,
+    "manifest_must_include": [
+      "relation_head.weight hash",
+      "relation_head.bias hash",
+      "resolvability_head.weight hash",
+      "resolvability_head.bias hash",
+      "adapted encoder tensor hashes",
+      "parent MODEL_WIDE_BEST",
+      "experiment ID",
+      "epoch"
+    ],
+    "persist_complete_state_on_new_best": true,
+    "require_factorized_heads_in_flat": true,
+    "required_tensors": [
+      "relation_head.weight",
+      "relation_head.bias",
+      "resolvability_head.weight",
+      "resolvability_head.bias"
+    ],
+    "retain": [
+      "SELECTED_COMPLETE_CHECKPOINT",
+      "FINAL_COMPLETE_CHECKPOINT"
+    ]
+  },
+  "schema": "hyperlex.classification.v5.stage_a_ident_filtered_factorized_reproduction_authorization.v1",
+  "scientific_parity": {
+    "SCIENTIFIC_CONFIG_PARITY": "PASS",
+    "excluded_keys": [
+      "PARENT_EXPERIMENT",
+      "REPRODUCTION_REASON",
+      "serializer_version",
+      "serialization_fix_commit",
+      "factorized_head_save_enforcement",
+      "require_factorized_heads_in_flat",
+      "checkpoint_manifest_schema",
+      "save_policy",
+      "retain_selected_and_final_complete_checkpoints",
+      "schema",
+      "code_revision",
+      "EXPERIMENT_ID",
+      "training_config_sha256",
+      "original_training_config_sha256",
+      "SCIENTIFIC_CONFIG_PARITY",
+      "scientific_config_sha256"
+    ],
+    "original_scientific_config_sha256": "5d86eef13e383ddebc1c869f6c24786a015944475cce7ca167666f145e077e51",
+    "pass": true,
+    "reproduction_scientific_config_sha256": "5d86eef13e383ddebc1c869f6c24786a015944475cce7ca167666f145e077e51"
+  },
+  "serialization_regression_tests": {
+    "factorized_head_names_whitelisted": [
+      "relation_head",
+      "resolvability_head"
+    ],
+    "flatten_preserves_relation_head": true,
+    "flatten_preserves_resolvability_head": true,
+    "historical_incomplete_rejected": true,
+    "pass": true,
+    "require_factorized_heads_fail_on_incomplete": true,
+    "require_factorized_heads_fail_on_wrong_shape": true,
+    "require_factorized_heads_pass_on_complete": true,
+    "split_roundtrip_relation_bias": true,
+    "split_roundtrip_resolvability_weight": true
+  },
+  "spent_reserve_access_for_train_val_select_threshold_diag": false,
+  "split_identity": {
+    "RELATION_ELIGIBLE_TRAIN_SHA256": "2ac99867ae66d9c3c0b8e30227df11c5da5dfc4caa190dbc4ae667df78954ad4",
+    "RELATION_MASKED_TRAIN_SHA256": "77b431716025dbf9d944c862003f5f439ac29f1801dcfaa336f587177ddbccbf",
+    "TRAIN_IDENTITY_SHA256": "69ef5c7813c2666ec21dd770423f8f82caa661edc91841af00e95e3e47f886d7",
+    "TRAIN_ROWS": 2272,
+    "TRAIN_SPLIT_SHA256": "d0eb1f10329d859bbc51a9774727442f455e9b2dab030b21dcd871d31f396727",
+    "VALIDATION_IDENTITY_SHA256": "03add594c4f2e1e96d1c094a3ac9c45775bc02ebf80faa0ed7c840a7da44290c",
+    "VALIDATION_ROWS": 848,
+    "VALIDATION_SPLIT_SHA256": "52f234ce807f1e67fd6b896ecdd45c733cf146bd1dc9b25f98fbd93809a9f8e2",
+    "checks": {
+      "RELATION_ELIGIBLE_TRAIN_SHA256": true,
+      "RELATION_MASKED_TRAIN_SHA256": true,
+      "TRAIN_IDENTITY_SHA256": true,
+      "TRAIN_ROWS": true,
+      "TRAIN_SPLIT_SHA256": true,
+      "VALIDATION_IDENTITY_SHA256": true,
+      "VALIDATION_ROWS": true,
+      "VALIDATION_SPLIT_SHA256": true,
+      "relation_eligible_train_n": true,
+      "relation_masked_train_n": true
+    },
+    "pass": true
+  },
+  "threshold_grids": {
+    "do_not_force_original_winning_pair": true,
+    "n_pairs": 100,
+    "relation_threshold": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "resolvability_threshold": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ]
+  },
+  "threshold_selection": {
+    "acceptance_required": [
+      "false_evidence_entry_rate_on_none <= 0.05",
+      "EVIDENCE_PRESENT_recall >= 0.70",
+      "NO_EVIDENCE_recall >= 0.90"
+    ],
+    "fail_if_no_feasible": "SETTLED_FAIL",
+    "maximize_in_order": [
+      "stage_a_macro_f1",
+      "EVIDENCE_PRESENT_recall",
+      "UNCERTAIN_recall",
+      "minimize_false_evidence_entry",
+      "higher_relation_threshold",
+      "higher_resolvability_threshold"
+    ],
+    "n_grid_combinations": 100
+  },
+  "whitelisted_factorized_heads": [
+    "relation_head",
+    "resolvability_head"
+  ]
+}

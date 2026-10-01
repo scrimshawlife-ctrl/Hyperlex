@@ -1,0 +1,24 @@
+{
+  "SCIENTIFIC_CONFIG_PARITY": "PASS",
+  "excluded_keys": [
+    "PARENT_EXPERIMENT",
+    "REPRODUCTION_REASON",
+    "serializer_version",
+    "serialization_fix_commit",
+    "factorized_head_save_enforcement",
+    "require_factorized_heads_in_flat",
+    "checkpoint_manifest_schema",
+    "save_policy",
+    "retain_selected_and_final_complete_checkpoints",
+    "schema",
+    "code_revision",
+    "EXPERIMENT_ID",
+    "training_config_sha256",
+    "original_training_config_sha256",
+    "SCIENTIFIC_CONFIG_PARITY",
+    "scientific_config_sha256"
+  ],
+  "original_scientific_config_sha256": "5d86eef13e383ddebc1c869f6c24786a015944475cce7ca167666f145e077e51",
+  "pass": true,
+  "reproduction_scientific_config_sha256": "5d86eef13e383ddebc1c869f6c24786a015944475cce7ca167666f145e077e51"
+}

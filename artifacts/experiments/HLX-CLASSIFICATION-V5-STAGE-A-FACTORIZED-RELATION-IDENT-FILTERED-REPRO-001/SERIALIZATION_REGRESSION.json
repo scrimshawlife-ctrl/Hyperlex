@@ -1,0 +1,15 @@
+{
+  "factorized_head_names_whitelisted": [
+    "relation_head",
+    "resolvability_head"
+  ],
+  "flatten_preserves_relation_head": true,
+  "flatten_preserves_resolvability_head": true,
+  "historical_incomplete_rejected": true,
+  "pass": true,
+  "require_factorized_heads_fail_on_incomplete": true,
+  "require_factorized_heads_fail_on_wrong_shape": true,
+  "require_factorized_heads_pass_on_complete": true,
+  "split_roundtrip_relation_bias": true,
+  "split_roundtrip_resolvability_weight": true
+}

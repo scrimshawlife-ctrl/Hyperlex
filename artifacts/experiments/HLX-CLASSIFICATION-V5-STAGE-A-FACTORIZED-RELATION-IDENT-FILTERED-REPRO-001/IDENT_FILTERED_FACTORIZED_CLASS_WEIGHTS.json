@@ -1,0 +1,107 @@
+{
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "13e8d0ca250839500b71b4b9e23d8238a90488987b9a49cd2c6d2fc336f77fc6",
+  "CLASS_WEIGHT_RESOLUTION_RULE": "RESOLVE_STAGE_A_IDENT_FILTERED_FACTORIZED_CLASS_WEIGHTS",
+  "DATASET_VERSION": "V1R2",
+  "OBJECTIVE_ID": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "SURFACE_ID": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+  "annotation_sha256": "95d5436555da33ef7aaccf4c32194c29f00caced9a17adf2d2f65f12db7dc1fc",
+  "clip_policy": {
+    "max": 2.0,
+    "min": 0.5,
+    "renormalize_after_clip": false
+  },
+  "code_revision": "4bf24609fb487ab8c35aec223b05c72f1019ea6e",
+  "dataset_sha256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+  "exclusion_manifest_sha256": "661c9edb095f7f7dc28a24256b42e0a2796f9ab78fbabc24b23cf9bd57b06d69",
+  "literal_weights": {
+    "relation": {
+      "EVIDENCE_RELATION_PRESENT": 1.1014225267843571,
+      "NO_EVIDENCE_RELATION": 0.8985774732156429
+    },
+    "resolvability": {
+      "RESOLVABLE": 0.5,
+      "UNRESOLVABLE": 1.7030222347950057
+    }
+  },
+  "parent_dataset_sha256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "provenance_weights": {
+    "INFERRED": 0.5,
+    "OBSERVED": 1.0
+  },
+  "relation": {
+    "EVIDENCE_RELATION_PRESENT": {
+      "INFERRED_count": 871,
+      "OBSERVED_count": 77,
+      "effective_count": 512.5,
+      "final_clipped_weight": 1.1014225267843571,
+      "final_weight": 1.1014225267843571,
+      "normalized_weight": 1.1014225267843571,
+      "raw_row_count": 948,
+      "raw_weight": 1.118579238228174,
+      "rows": 948
+    },
+    "NO_EVIDENCE_RELATION": {
+      "INFERRED_count": 1030,
+      "OBSERVED_count": 255,
+      "effective_count": 770.0,
+      "final_clipped_weight": 0.8985774732156429,
+      "final_weight": 0.8985774732156429,
+      "normalized_weight": 0.8985774732156429,
+      "raw_row_count": 1285,
+      "raw_weight": 0.9125744943796138,
+      "rows": 1285
+    },
+    "class_weights": {
+      "EVIDENCE_RELATION_PRESENT": 1.1014225267843571,
+      "NO_EVIDENCE_RELATION": 0.8985774732156429
+    },
+    "coverage": {
+      "n_eligible": 2233,
+      "n_masked": 39,
+      "n_train": 2272,
+      "n_uncertain": 39
+    },
+    "eligible_identity_list_sha256": "2ac99867ae66d9c3c0b8e30227df11c5da5dfc4caa190dbc4ae667df78954ad4",
+    "masked_identity_list_sha256": "77b431716025dbf9d944c862003f5f439ac29f1801dcfaa336f587177ddbccbf"
+  },
+  "resolution_formula_version": "HYPERLEX_V5_IDENT_FILTERED_FACTORIZED_CLASS_WEIGHTS_V1",
+  "resolvability": {
+    "RESOLVABLE": {
+      "INFERRED_count": 1901,
+      "OBSERVED_count": 332,
+      "effective_count": 1282.5,
+      "final_clipped_weight": 0.5,
+      "final_weight": 0.5,
+      "normalized_weight": 0.29697776520499425,
+      "raw_row_count": 2233,
+      "raw_weight": 0.7177775967265718,
+      "rows": 2233
+    },
+    "UNRESOLVABLE": {
+      "INFERRED_count": 0,
+      "OBSERVED_count": 39,
+      "effective_count": 39.0,
+      "final_clipped_weight": 1.7030222347950057,
+      "final_weight": 1.7030222347950057,
+      "normalized_weight": 1.7030222347950057,
+      "raw_row_count": 39,
+      "raw_weight": 4.1161034598644015,
+      "rows": 39
+    },
+    "class_weights": {
+      "RESOLVABLE": 0.5,
+      "UNRESOLVABLE": 1.7030222347950057
+    },
+    "coverage": {
+      "n_eligible": 2272,
+      "n_resolvable": 2233,
+      "n_unresolvable": 39
+    }
+  },
+  "reused_prior_factorized_weights": false,
+  "schema": "hyperlex.classification.v5.stage_a_ident_filtered_factorized_class_weights.v1",
+  "surface_receipt_sha256": "e8e2ab7f6773717ea94743a36084eae3f775d907936fadbe07d1c457bdd82ca3",
+  "train_identity_list_sha256": "69ef5c7813c2666ec21dd770423f8f82caa661edc91841af00e95e3e47f886d7",
+  "train_only": true,
+  "train_split_sha256": "d0eb1f10329d859bbc51a9774727442f455e9b2dab030b21dcd871d31f396727"
+}
