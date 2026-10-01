@@ -13,8 +13,9 @@
   top100 Jaccard 0.235, length BA 0.621, TF-IDF BA 0.772, domain coverage
   gaps → **`PREREGISTERED`** (not READY). No train, no retune, no Stage-B
   mutation, no BEST moves, V1R9 unmutated. Receipt
-  `classification-v5-stage-a-generalization-surface-receipt-20261001.json`.
-  Next: `REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES` (not retrain).
+  `classification-v5-stage-a-generalization-surface-receipt-20261001.json`
+  (`424865ba…`). Next: `REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES`
+  (not retrain).
 
 - **Preserve RESERVE_FAIL + diagnose V5 generalization (Spec 007):**
   `PRESERVE_RESERVE_FAIL_AND_DIAGNOSE_V5_GENERALIZATION` freezes
