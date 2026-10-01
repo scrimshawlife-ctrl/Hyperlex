@@ -19,7 +19,7 @@ import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 REPO = Path(os.environ.get("HLX_REPO") or "/home/morpheus/Hyperlex")
 if not (REPO / "scripts" / "shadow" / "hyperlexical").is_dir():
