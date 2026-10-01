@@ -1,0 +1,27 @@
+{
+  "AUTHORIZE_RULE": "AUTHORIZE_STAGE_A_FACTORIZED_RELATION_TRAIN",
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "47e5877338e363ac2dbf6b32d0f7ab8048370d9727ecfe7ec2f32118ffcc5ad6",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-001",
+  "NEXT_ACTION": "TRAIN_STAGE_A_FACTORIZED_RELATION_ONCE",
+  "OBJECTIVE_ID": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "TRAINING_CONFIG_SHA256": "618079c7d797ddae98c3b0961f1fe7a6954f32983560971fa4c50821facae751",
+  "TRAINING_STATUS": "AUTHORIZED_NOT_STARTED",
+  "TRAIN_AUTHORIZED": true,
+  "annotation_sha256": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+  "auth_dest": "/home/morpheus/hlx-private/classification-v5-stage-a-factorized-relation-train-v1-20261001",
+  "dataset_sha256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "receipt_sha256": "133d8dd0bd347e2f5b905a20cbb4acf216f524110c8d553c7a6fdb89c1020f5a",
+  "relation_eligible_train": 2399,
+  "relation_masked_train": 132,
+  "relation_weights": {
+    "EVIDENCE_RELATION_PRESENT": 1.0461976770558497,
+    "NO_EVIDENCE_RELATION": 0.9538023229441501
+  },
+  "resolvability_weights": {
+    "RESOLVABLE": 0.5,
+    "UNRESOLVABLE": 1.5314299338122987
+  },
+  "spec_receipt": "/home/morpheus/Hyperlex/specs/007-hyperlexical-model/classification-v5-stage-a-factorized-relation-authorize-receipt-20261001.json",
+  "train_split_sha256": "d8565270bcc391e6e2c7967b679f88b598ce397d4e1031e8155a89c6beea2973",
+  "validation_split_sha256": "3b8d588d7413099fb0e64ea89c162adacc8ec2b7d5beae910af48a828cb65869"
+}

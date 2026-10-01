@@ -1,0 +1,225 @@
+{
+  "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-001",
+  "FACTORIZED_OBJECTIVE_SPEC": "FROZEN",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "OBJECTIVE_ID": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "OBJECTIVE_RECEIPT_SHA256": "45746d706d819da41eb56e788f13f4a873f8dc136c0057c9fa238a53b5bacfdc",
+  "OBJECTIVE_RULE": "SPEC_STAGE_A_FACTORIZED_OBJECTIVE",
+  "PARENT_DECOMPOSITION": "RELATION_ONLY_DECOMPOSITION",
+  "POSSIBLE_EVIDENCE_STATUS": "DEPRECATED_AS_STAGE_A_TRAINING_TARGET",
+  "SEMANTIC_DECOMPOSITION_RECEIPT_SHA256": "93202898969e7102016db97abfa2bdf2fd7921dbba1ade90310e4b7693f5d032",
+  "STAGE_A_BEST_reference_only": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "acceptance_gates": {
+    "EVIDENCE_PRESENT_recall_min": 0.7,
+    "NO_EVIDENCE_recall_min": 0.9,
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "optimize_family_metrics_before_stage_a_pass": false
+  },
+  "annotation_sha256": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+  "architecture": {
+    "ARCHITECTURE_CHANGE_REQUIRED": false,
+    "encoder": "ModernBERT-base",
+    "forbidden_additions": [
+      "mlp_head",
+      "attention_block",
+      "retrieval",
+      "prototype_scoring",
+      "domain_head",
+      "family_head"
+    ],
+    "head_init": "xavier_uniform_bias_zeros",
+    "last_trainable_encoder_layers": 2,
+    "note": "Encoder topology and two-head form unchanged; only head semantics/objective change from Gate1/Gate2.",
+    "pooling": "last_hidden_state[:,0]",
+    "relation_head": "linear_hidden_to_2_logits",
+    "resolvability_head": "linear_hidden_to_2_logits",
+    "shared_encoder": true,
+    "trainable": {
+      "last_trainable_encoder_layers": 2,
+      "mutate_best": false,
+      "relation_head": true,
+      "resolvability_head": true
+    }
+  },
+  "checkpoint_selection": {
+    "formula": "0.50 * relation_macro_F1 + 0.50 * resolvability_macro_F1",
+    "relation_scope": "relation_loss_eligible_validation_rows",
+    "resolvability_scope": "all_validation_rows",
+    "strict_improvement": true,
+    "tie_break": [
+      "lower_relation_false_positive_rate",
+      "higher_relation_positive_recall",
+      "higher_resolvability_UNRESOLVABLE_recall",
+      "earlier_epoch"
+    ]
+  },
+  "class_weight_artifact_sha256": "47e5877338e363ac2dbf6b32d0f7ab8048370d9727ecfe7ec2f32118ffcc5ad6",
+  "code_revision": "4bf24609fb487ab8c35aec223b05c72f1019ea6e",
+  "dataset_sha256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "drop_last": false,
+  "early_stopping_patience": 4,
+  "expected_optimizer_steps_per_epoch": 317,
+  "expected_train_rows": 2531,
+  "expected_validation_rows": 1054,
+  "gradient_accumulation": 1,
+  "head_definitions": {
+    "domain_head": false,
+    "relation_head": {
+      "labels": [
+        "NO_EVIDENCE_RELATION",
+        "EVIDENCE_RELATION_PRESENT"
+      ],
+      "logits": 2,
+      "mask": "evidence_relation_present == MASKED"
+    },
+    "resolvability_head": {
+      "labels": [
+        "UNRESOLVABLE",
+        "RESOLVABLE"
+      ],
+      "logits": 2,
+      "mask": null
+    }
+  },
+  "initialization_policy": {
+    "base_encoder_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "base_encoder_source": "MODEL_WIDE_BEST",
+    "conflict_with_stage_a_best_continuation": false,
+    "head_init": "xavier_uniform_bias_zeros",
+    "last_two_encoder_layers_source": "MODEL_WIDE_BEST_overlay",
+    "policy": "FRESH_RETRAIN_FROM_MODEL_WIDE_BEST:encoder_overlay_from_9fba0f66; relation_head/resolvability_head freshly Xavier-initialized; do_not_load_STAGE_A_BEST_cd2829c1",
+    "relation_head": "fresh_xavier_uniform_bias_zeros",
+    "resolvability_head": "fresh_xavier_uniform_bias_zeros",
+    "scientific_interpretation": "Factorized relation objective fresh retrain from MODEL_WIDE_BEST; not a STAGE_A_BEST continuation.",
+    "stage_a_best_continuation": false,
+    "stage_a_best_sha256_reference_only": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "trunk": "ModernBERT-base"
+  },
+  "lambda_resolvability": 1.0,
+  "learning_rate": 2e-05,
+  "loss": {
+    "L_total": "L_relation + lambda_resolvability * L_resolvability",
+    "class_weights": {
+      "resolve_separately_per_head": true,
+      "reuse_previous_gate1_gate2_weights": false,
+      "source_split": "train_only"
+    },
+    "focal_forbidden": true,
+    "lambda_optimized_in_this_pass": false,
+    "lambda_resolvability": 1.0,
+    "name": "factorized_relation_weighted_ce",
+    "provenance_multipliers": {
+      "INFERRED": 0.5,
+      "OBSERVED": 1.0
+    },
+    "relation": {
+      "loss": "weighted_cross_entropy",
+      "masked": "AMBIGUOUS_EVIDENCE / semantic_resolvable == 0",
+      "scope": "semantic_resolvable == 1",
+      "targets": {
+        "EVIDENCE_RELATION_PRESENT": 1,
+        "NO_EVIDENCE_RELATION": 0
+      }
+    },
+    "resolvability": {
+      "loss": "weighted_cross_entropy",
+      "scope": "all_valid_stage_a_rows",
+      "targets": {
+        "RESOLVABLE": 1,
+        "UNRESOLVABLE": 0
+      }
+    }
+  },
+  "max_epochs": 12,
+  "max_grad_norm": 1.0,
+  "max_length": 64,
+  "micro_batch_size": 8,
+  "minimum_epochs": 4,
+  "optimizer": "AdamW",
+  "padding": "right",
+  "pooling": "last_hidden_state[:,0]",
+  "provenance_weights": {
+    "INFERRED": 0.5,
+    "OBSERVED": 1.0
+  },
+  "readiness_sha256": "c4b5fc0725b919c1dd11acfd575d594d8ddd76839836e5a3928f4d6c07030c96",
+  "relation_class_weights_literal": {
+    "EVIDENCE_RELATION_PRESENT": 1.0461976770558497,
+    "NO_EVIDENCE_RELATION": 0.9538023229441501
+  },
+  "relation_eligible_identity_list_sha256": "b2778c525a96f3b13279faa5103a339b60c5382ae77eff1c52ec7df8fe883309",
+  "relation_masked_identity_list_sha256": "151dcaab88e12acbfbb22824d9573d92b66e5ec266326ec2c934eef2266cf5c0",
+  "resolvability_class_weights_literal": {
+    "RESOLVABLE": 0.5,
+    "UNRESOLVABLE": 1.5314299338122987
+  },
+  "sampling": {
+    "class_balanced_sampler": false,
+    "oversampling": false,
+    "replacement": false,
+    "strategy": "full_pass_deterministic_shuffle",
+    "undersampling": false
+  },
+  "schema": "hyperlex.classification.v5.stage_a_factorized_relation_training_config.v1",
+  "seed": 42,
+  "spent_reserve": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "spent_reserve_overlap": 0,
+  "spent_reserve_status": "SPENT",
+  "surface_receipt_sha256": "3dbdd9b2cc30600698340f979d20a2c9b8559b9eafbbc24baf4fb1007e737fb9",
+  "surface_rule": "HYPERLEX_V5_STAGE_A_GENERALIZATION_SURFACE_V1R1",
+  "surface_version": "classification-v5-stage-a-generalization-surface-v1r1-20261001",
+  "threshold_grids": {
+    "n_pairs": 100,
+    "relation_threshold": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "resolvability_threshold": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ]
+  },
+  "threshold_selection": {
+    "acceptance_required": [
+      "false_evidence_entry_rate_on_none <= 0.05",
+      "EVIDENCE_PRESENT_recall >= 0.70",
+      "NO_EVIDENCE_recall >= 0.90"
+    ],
+    "fail_if_no_feasible": "SETTLED_FAIL",
+    "maximize_in_order": [
+      "stage_a_macro_f1",
+      "EVIDENCE_PRESENT_recall",
+      "UNCERTAIN_recall",
+      "minimize_false_evidence_entry",
+      "higher_relation_threshold",
+      "higher_resolvability_threshold"
+    ],
+    "n_grid_combinations": 100
+  },
+  "tokenizer_identity": "local_files_only:ModernBERT-base",
+  "train_identity_list_sha256": "5a6f98c63d41b3cb145d454ed790f4c3e41049cf4cd6ffcea1c5e3d91e5de345",
+  "train_split_sha256": "d8565270bcc391e6e2c7967b679f88b598ce397d4e1031e8155a89c6beea2973",
+  "trainable_layers": 2,
+  "training_config_sha256": "618079c7d797ddae98c3b0961f1fe7a6954f32983560971fa4c50821facae751",
+  "validation_identity_list_sha256": "8264c9460c74a150d590dd4634e15db6c44319c879d2917891e9914a252c1c8d",
+  "validation_split_sha256": "3b8d588d7413099fb0e64ea89c162adacc8ec2b7d5beae910af48a828cb65869",
+  "warmup_ratio": 0.05,
+  "weight_decay": 0.01
+}

@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Authorize factorized relation Stage-A train (Spec 007):**
+  `AUTHORIZE_STAGE_A_FACTORIZED_RELATION_TRAIN` binds experiment
+  `HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-001` to objective
+  `HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1`, V1R1
+  `4095036e…`, annotations `4ac88450…`. Fresh train-only class weights
+  sealed (`47e58773…`): relation eligible 2399 / masked 132; resolvability
+  eligible 2531; final relation weights ≈0.954/1.046; resolvability
+  1.531/0.50. Fresh init from MODEL_WIDE_BEST; STAGE_A_BEST untouched;
+  spent reserve unused. `TRAIN_AUTHORIZED=true` /
+  `AUTHORIZED_NOT_STARTED`. Receipt
+  `classification-v5-stage-a-factorized-relation-authorize-receipt-20261001.json`
+  (`133d8dd0…`). Next: `TRAIN_STAGE_A_FACTORIZED_RELATION_ONCE`.
+
 - **Stage-A factorized relation objective V1 (Spec 007):**
   `SPEC_STAGE_A_FACTORIZED_OBJECTIVE` freezes
   `HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1`. Gate1 target

@@ -1,0 +1,14 @@
+{
+  "base_encoder_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "base_encoder_source": "MODEL_WIDE_BEST",
+  "conflict_with_stage_a_best_continuation": false,
+  "head_init": "xavier_uniform_bias_zeros",
+  "last_two_encoder_layers_source": "MODEL_WIDE_BEST_overlay",
+  "policy": "FRESH_RETRAIN_FROM_MODEL_WIDE_BEST:encoder_overlay_from_9fba0f66; relation_head/resolvability_head freshly Xavier-initialized; do_not_load_STAGE_A_BEST_cd2829c1",
+  "relation_head": "fresh_xavier_uniform_bias_zeros",
+  "resolvability_head": "fresh_xavier_uniform_bias_zeros",
+  "scientific_interpretation": "Factorized relation objective fresh retrain from MODEL_WIDE_BEST; not a STAGE_A_BEST continuation.",
+  "stage_a_best_continuation": false,
+  "stage_a_best_sha256_reference_only": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "trunk": "ModernBERT-base"
+}
