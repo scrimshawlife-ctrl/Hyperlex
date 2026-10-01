@@ -300,7 +300,14 @@ def enforce_train_family_cap(
 def disjointness_report(
     splits: Mapping[str, Sequence[Mapping[str, Any]]],
     blocked: Mapping[str, set[str]],
+    *,
+    historical_blocked: Mapping[str, set[str]] | None = None,
 ) -> dict[str, Any]:
+    """Report cross-split and historical-spent overlap.
+
+    ``blocked`` may include current-corpus identities during top-up dedupe.
+    Overlap against spent history must use ``historical_blocked`` when provided.
+    """
     ids: dict[str, set[str]] = {}
     src: dict[str, set[str]] = {}
     near: dict[str, set[str]] = {}
@@ -319,18 +326,21 @@ def disjointness_report(
                 "near_overlap": len(near[a] & near[b]),
             }
 
+    hist = historical_blocked if historical_blocked is not None else blocked
     blocked_overlap = {
-        "identity": sum(len(ids[n] & blocked.get("blocked_ids", set())) for n in names),
-        "source": sum(len(src[n] & blocked.get("blocked_src", set())) for n in names),
-        "near": sum(len(near[n] & blocked.get("blocked_near", set())) for n in names),
+        "identity": sum(len(ids[n] & hist.get("blocked_ids", set())) for n in names),
+        "source": sum(len(src[n] & hist.get("blocked_src", set())) for n in names),
+        "near": sum(len(near[n] & hist.get("blocked_near", set())) for n in names),
         "text": sum(
-            len({r.get("text") for r in splits[n]} & blocked.get("blocked_text", set()))
+            len({r.get("text") for r in splits[n]} & hist.get("blocked_text", set()))
             for n in names
         ),
     }
     ok = (
         all(
-            v["identity_overlap"] == 0 and v["source_overlap"] == 0 and v["near_overlap"] == 0
+            v["identity_overlap"] == 0
+            and v["source_overlap"] == 0
+            and v["near_overlap"] == 0
             for v in pairwise.values()
         )
         and all(v == 0 for v in blocked_overlap.values())

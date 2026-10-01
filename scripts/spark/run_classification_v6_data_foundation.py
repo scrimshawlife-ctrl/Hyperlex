@@ -1003,8 +1003,33 @@ failure taxonomy, measurement design, and regression baselines only.
     )
 
     topup = os.environ.get("HLX_V6_FOUNDATION_TOPUP") == "1"
+    settle_only = os.environ.get("HLX_V6_FOUNDATION_SETTLE_ONLY") == "1"
     rejected = Counter()
-    if topup and (PRIVATE / "TRAIN.jsonl").is_file():
+    historical_blocked = {
+        "blocked_ids": set(blocked["blocked_ids"]),
+        "blocked_src": set(blocked["blocked_src"]),
+        "blocked_text": set(blocked["blocked_text"]),
+        "blocked_near": set(blocked["blocked_near"]),
+    }
+    if settle_only and (PRIVATE / "TRAIN.jsonl").is_file():
+        print("settle_only_loading_existing", flush=True)
+        finalized = []
+        for name in (
+            "TRAIN",
+            "DEVELOPMENT_VALIDATION",
+            "REPRESENTATIVE_VALIDATION",
+        ):
+            path = PRIVATE / f"{name}.jsonl"
+            for line in sudo_read_text(path).splitlines():
+                if line.strip():
+                    finalized.append(json.loads(line))
+        qpath = QUAL_PRIVATE / "QUALIFICATION_ROWS.jsonl"
+        if qpath.is_file():
+            for line in sudo_read_text(qpath).splitlines():
+                if line.strip():
+                    finalized.append(json.loads(line))
+        print(f"existing_rows={len(finalized)}", flush=True)
+    elif topup and (PRIVATE / "TRAIN.jsonl").is_file():
         print("topup_mode_loading_existing", flush=True)
         existing: list[dict] = []
         for name in (
@@ -1013,7 +1038,7 @@ failure taxonomy, measurement design, and regression baselines only.
             "REPRESENTATIVE_VALIDATION",
         ):
             path = PRIVATE / f"{name}.jsonl"
-            for line in path.read_text(encoding="utf-8").splitlines():
+            for line in sudo_read_text(path).splitlines():
                 if line.strip():
                     existing.append(json.loads(line))
         qpath = QUAL_PRIVATE / "QUALIFICATION_ROWS.jsonl"
@@ -1021,7 +1046,8 @@ failure taxonomy, measurement design, and regression baselines only.
             for line in sudo_read_text(qpath).splitlines():
                 if line.strip():
                     existing.append(json.loads(line))
-        # Block existing identities from top-up duplicates.
+        # Dedupe against current corpus during top-up; historical witness uses
+        # historical_blocked only.
         for row in existing:
             blocked["blocked_ids"].add(row["identity"])
             blocked["blocked_text"].add(row["text"])
@@ -1116,7 +1142,9 @@ failure taxonomy, measurement design, and regression baselines only.
     write_repo(REPO_ART / "qualification_metadata.json", qual_meta)
     write_repo(REPO_ART / "qualification_seal.json", qual_seal)
 
-    disjoint = disjointness_report(splits, blocked)
+    disjoint = disjointness_report(
+        splits, blocked, historical_blocked=historical_blocked
+    )
     write_private(PRIVATE / "DISJOINTNESS_WITNESS.json", disjoint)
     write_repo(REPO_ART / "disjointness_witness.json", disjoint)
 
@@ -1134,16 +1162,22 @@ failure taxonomy, measurement design, and regression baselines only.
     write_private(PRIVATE / "SHORTCUT_DIAGNOSTICS.json", shortcut_private)
     write_repo(REPO_ART / "shortcut_diagnostics.json", shortcut)
 
-    print("geometry_and_retrieval", flush=True)
-    geometry = run_geometry(splits)
-    ontology = ontology_audit(
-        [r for r in splits["TRAIN"] if r["evidence_label"] == "EVIDENCE_PRESENT"],
-        geometry,
-    )
-    write_private(PRIVATE / "REPRESENTATION_GEOMETRY.json", geometry)
-    write_private(PRIVATE / "ONTOLOGY_AUDIT.json", ontology)
-    write_repo(REPO_ART / "representation_geometry.json", geometry)
-    write_repo(REPO_ART / "ontology_audit.json", ontology)
+    if settle_only and (PRIVATE / "REPRESENTATION_GEOMETRY.json").is_file():
+        print("settle_only_reuse_geometry", flush=True)
+        geometry = json.loads(sudo_read_text(PRIVATE / "REPRESENTATION_GEOMETRY.json"))
+        ontology = json.loads(sudo_read_text(PRIVATE / "ONTOLOGY_AUDIT.json"))
+        # Recompute ontology broken flag is already in file; keep.
+    else:
+        print("geometry_and_retrieval", flush=True)
+        geometry = run_geometry(splits)
+        ontology = ontology_audit(
+            [r for r in splits["TRAIN"] if r["evidence_label"] == "EVIDENCE_PRESENT"],
+            geometry,
+        )
+        write_private(PRIVATE / "REPRESENTATION_GEOMETRY.json", geometry)
+        write_private(PRIVATE / "ONTOLOGY_AUDIT.json", ontology)
+        write_repo(REPO_ART / "representation_geometry.json", geometry)
+        write_repo(REPO_ART / "ontology_audit.json", ontology)
 
     # Human agreement protocol sample (rows for operator; second rater blank)
     sample_pool = (
@@ -1304,6 +1338,8 @@ def main() -> int:
         f"HLX_V5_STAGE_A_CODE_REVISION={revision}",
         "-e",
         f"HLX_V6_FOUNDATION_TOPUP={os.environ.get('HLX_V6_FOUNDATION_TOPUP', '0')}",
+        "-e",
+        f"HLX_V6_FOUNDATION_SETTLE_ONLY={os.environ.get('HLX_V6_FOUNDATION_SETTLE_ONLY', '0')}",
         "--entrypoint",
         "python3",
         IMAGE,
