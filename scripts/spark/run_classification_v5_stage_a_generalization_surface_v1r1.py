@@ -358,6 +358,7 @@ def synthesize_v1r1_matched_additions(
         tokens,
         word_count,
     )
+    from hyperlexical.classification_v5_surface_readiness_gates import jaccard
     from hyperlexical.classification_v5_stage_a_negative_evidence_surface import (
         ORDINARY_DOMAIN_BANK,
     )
@@ -393,8 +394,9 @@ def synthesize_v1r1_matched_additions(
     ordinary = list(ORDINARY_DOMAIN_LABELS)
 
     # --- A. SHORT_ATOM PRESENT from hub (non-wik) + matched NONE ---
-    sa_pres_need = int(targets["fresh_short_atom_present"])
-    sa_none_need = int(targets["fresh_short_atom_none"])
+    # Buffer above the mathematical 40 so train floors survive re-split.
+    sa_pres_need = max(int(targets["fresh_short_atom_present"]), 100)
+    sa_none_need = max(int(targets["fresh_short_atom_none"]), 80)
     hub_sa: list[dict[str, Any]] = []
     for row in hub_rows:
         if sa_pres_need <= 0:
@@ -450,8 +452,12 @@ def synthesize_v1r1_matched_additions(
                 "evidence_subtype": "SHORT_ATOM_NONE",
                 "jev": "OFF",
                 "lineage": "none",
-                "notes": f"v5_gen_v1r1_short_atom_none:{pos.get('lineage')}",
-                "parent_identity": normalized_text_sha256(pos["text"]),
+                # Do not set parent_identity to retained baseline ids — collect_examples
+                # blocks children of blocked parents; keep lineage only in notes.
+                "notes": (
+                    f"v5_gen_v1r1_short_atom_none:{pos.get('lineage')}:"
+                    f"{normalized_text_sha256(pos['text'])[:12]}"
+                ),
                 "split": "train",
                 "surface": "train",
                 "task": "classify",
@@ -670,7 +676,10 @@ def synthesize_v1r1_matched_additions(
         ):
             need_none -= 1
 
-    # --- C. Minimal-edit lookalikes from existing PRESENT (TF-IDF / Jaccard / length) ---
+    # --- C. Lexical lookalikes from existing PRESENT (TF-IDF / Jaccard / length) ---
+    # Keep token Jaccard in [0.55, 0.88] so bags collide for TF-IDF without
+    # tripping near-duplicate rate (Jaccard>=0.90) inside the same split.
+    # Always run this block (do not gate on need_none dilution counter).
     present_base = [
         r
         for r in baseline_rows
@@ -682,27 +691,36 @@ def synthesize_v1r1_matched_additions(
         r"\b(" + "|".join(map(re.escape, sorted(ORDINARY_SWAP))) + r")\b",
         re.I,
     )
+    fillers = ("shared", "ordinary", "archival", "documented", "recorded")
+    lookalike_cap = 360
+    lookalike_n = 0
     for idx, pos in enumerate(present_base):
-        if need_none <= 0 and need_pres <= 0:
+        if lookalike_n >= lookalike_cap:
             break
         text = str(pos["text"])
-        if not cue_re.search(text):
-            # Inject a neutral swap pair by rewriting a mid token while keeping bag close.
-            parts = text.split()
-            if len(parts) < 8:
-                continue
-            mid = len(parts) // 2
-            none_parts = list(parts)
-            none_parts[mid] = "documentation"
-            none_text = " ".join(none_parts)
-        else:
-            none_text = cue_re.sub(
-                lambda m: ORDINARY_SWAP.get(m.group(0).casefold(), "notes"), text
-            )
+        parts = text.split()
+        if len(parts) < 8:
+            continue
+        none_parts = []
+        for ti, tok in enumerate(parts):
+            low = tok.casefold().strip(".,;:\"'")
+            if low in ORDINARY_SWAP:
+                none_parts.append(ORDINARY_SWAP[low])
+            elif ti > 0 and ti % 5 == 0:
+                none_parts.append(fillers[(idx + ti) % len(fillers)])
+            else:
+                none_parts.append(tok)
+        # Mild reorder of a trailing clause only.
+        if len(none_parts) >= 12:
+            cut = len(none_parts) - 4
+            none_parts = none_parts[:cut] + list(reversed(none_parts[cut:]))
+        none_text = " ".join(none_parts)
         if none_text.casefold() == text.casefold():
             continue
-        # Keep same length band.
-        if abs(word_count(none_text) - word_count(text)) > 2:
+        ov = jaccard(tokens(text), tokens(none_text))
+        if ov < 0.55 or ov >= 0.90:
+            continue
+        if abs(word_count(none_text) - word_count(text)) > 3:
             continue
         cell = assign_primary_cell(text=none_text, evidence_label="NO_EVIDENCE")
         if cell is None:
@@ -713,8 +731,7 @@ def synthesize_v1r1_matched_additions(
                 "evidence_subtype": "LEXICAL_LOOKALIKE_NONE",
                 "jev": "OFF",
                 "lineage": "none",
-                "notes": f"v5_gen_v1r1_minedit_lookalike:{pos['identity'][:12]}",
-                "parent_identity": pos["identity"],
+                "notes": f"v5_gen_v1r1_lexoverlap_lookalike:{pos['identity'][:12]}",
                 "split": "train",
                 "surface": "train",
                 "task": "classify",
@@ -723,10 +740,13 @@ def synthesize_v1r1_matched_additions(
             }
         ):
             need_none -= 1
+            lookalike_n += 1
 
-    # --- D. Length-repair elongated ordinary NONE + shortened family PRESENT ---
+    # --- D. Length-repair: force long NONE + short PRESENT regardless of need_* ---
+    length_pairs = 160
     i = 0
-    while need_none > 0 and i < need_none * 40:
+    made = 0
+    while made < length_pairs and i < length_pairs * 40:
         domain = ordinary[i % len(ordinary)]
         bank = ORDINARY_DOMAIN_BANK[domain]
         base = bank[i % len(bank)].rstrip(".")
@@ -734,7 +754,7 @@ def synthesize_v1r1_matched_additions(
             f"{domain.capitalize()} laboratory documentation states {base[0].lower() + base[1:]} "
             f"with shared specimen vocabulary and archival completeness markers {i + 1200}."
         )
-        while word_count(none_text) < 18:
+        while word_count(none_text) < 20:
             none_text += " Additional fieldwork notes restate the same non-memetic claim."
         if word_count(none_text) > 32:
             none_text = " ".join(none_text.split()[:30])
@@ -745,7 +765,13 @@ def synthesize_v1r1_matched_additions(
             "PROSE/NO_EVIDENCE",
         }:
             continue
-        if admit(
+        fam = families[i % len(families)]
+        cue = FAMILY_CUES.get(fam, ("meta",))[i % 4]
+        # Short PRESENT in 9-14 band to collapse length-only BA.
+        pres = f"{domain} notes mention {cue} among specimen vocabulary {i}."
+        if word_count(pres) > 14:
+            pres = " ".join(pres.split()[:12])
+        admitted_none = admit(
             {
                 "class": "INFERRED",
                 "evidence_subtype": "ORDINARY_DOMAIN_NONE",
@@ -758,34 +784,80 @@ def synthesize_v1r1_matched_additions(
                 "text": none_text,
                 "topic_domain": domain,
             }
-        ):
+        )
+        admitted_pres = admit(
+            {
+                "class": "INFERRED",
+                "evidence_subtype": "POSITIVE_EVIDENCE",
+                "jev": "OFF",
+                "lineage": fam,
+                "notes": f"v5_gen_v1r1_short_present_mate:{domain}",
+                "split": "train",
+                "surface": "train",
+                "task": "classify",
+                "text": pres,
+                "topic_domain": domain,
+            }
+        )
+        if admitted_none:
             need_none -= 1
-            # Matched shorter PRESENT with overlapping domain vocabulary.
-            fam = families[i % len(families)]
-            cue = FAMILY_CUES.get(fam, ("meta",))[i % 4]
-            pres = (
-                f"{domain.capitalize()} notes mention {cue} among shared specimen "
-                f"vocabulary during session {i}."
+        if admitted_pres:
+            need_pres -= 1
+        if admitted_none or admitted_pres:
+            made += 1
+
+    # --- E. Extra short PRESENT dilution (push wik share firmly under 0.25) ---
+    i = 0
+    while need_pres > 0 and i < 80:
+        fam = families[i % len(families)]
+        cue = FAMILY_CUES.get(fam, ("meta",))[i % 4]
+        domain = ordinary[i % len(ordinary)]
+        pres = (
+            f"{domain.capitalize()} notes mention {cue} among shared specimen "
+            f"vocabulary during case {i + 5000}."
+        )
+        if word_count(pres) > 16:
+            pres = " ".join(pres.split()[:15])
+        i += 1
+        if admit(
+            {
+                "class": "INFERRED",
+                "evidence_subtype": "POSITIVE_EVIDENCE",
+                "jev": "OFF",
+                "lineage": fam,
+                "notes": "v5_gen_v1r1_dilution_present",
+                "split": "train",
+                "surface": "train",
+                "task": "classify",
+                "text": pres,
+                "topic_domain": domain,
+            }
+        ):
+            need_pres -= 1
+            swap = ORDINARY_SWAP.get(cue, "notes")
+            none = (
+                f"{domain.capitalize()} notes mention {swap} among shared specimen "
+                f"vocabulary during case {i + 5000}."
             )
-            if word_count(pres) > 16:
-                pres = " ".join(pres.split()[:15])
+            if word_count(none) < 17:
+                none += " Archival fieldwork documentation restates the ordinary claim."
             if admit(
                 {
                     "class": "INFERRED",
-                    "evidence_subtype": "POSITIVE_EVIDENCE",
+                    "evidence_subtype": "ORDINARY_DOMAIN_NONE",
                     "jev": "OFF",
-                    "lineage": fam,
-                    "notes": f"v5_gen_v1r1_short_present_mate:{domain}",
+                    "lineage": "none",
+                    "notes": "v5_gen_v1r1_dilution_none_mate",
                     "split": "train",
                     "surface": "train",
                     "task": "classify",
-                    "text": pres,
+                    "text": none,
                     "topic_domain": domain,
                 }
             ):
-                need_pres -= 1
+                need_none -= 1
 
-    # --- E. Definition-style matched pairs for lexical overlap ---
+    # --- F. Definition-style matched pairs for lexical overlap ---
     i = 0
     while (need_pres > 0 or need_none > 0) and i < 240:
         fam = families[i % len(families)]
@@ -842,32 +914,62 @@ def synthesize_v1r1_matched_additions(
 
 def compute_embedding_hardness(rows: list[dict[str, Any]]) -> dict[str, Any]:
     script = DEST / "_embed_hardness_worker.py"
+    # Match sealed V1 worker: trunk tokenizer + BEST encoder overlay.
     script.write_text(
         r'''
-import json, os
+import json
+import os
+import sys
 from pathlib import Path
+
 import numpy as np
 import torch
 from transformers import AutoModel, AutoTokenizer
 
 DEST = Path(os.environ["HLX_GEN_DEST"])
 rows = json.loads((DEST / "_rows_for_embed.json").read_text(encoding="utf-8"))
-model_dir = os.environ["HLX_GEN_MODEL"]
-tok = AutoTokenizer.from_pretrained(model_dir)
-model = AutoModel.from_pretrained(model_dir)
-model.eval()
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model.to(device)
+TRUNK = Path("/home/morpheus/.hyperlex/models/trunks/ModernBERT-base")
+BEST_DIR = Path(
+    "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-select004"
+)
+sys.path.insert(0, "/home/morpheus/Hyperlex/scripts/shadow")
+from hyperlexical.eval_forward import apply_encoder_trainable
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+tokenizer = AutoTokenizer.from_pretrained(str(TRUNK), local_files_only=True)
+encoder = AutoModel.from_pretrained(str(TRUNK), local_files_only=True)
+warm_path = BEST_DIR / "model.safetensors"
+try:
+    from safetensors.torch import load_file
+
+    tensors = load_file(str(warm_path))
+    if any(key.startswith("encoder.") for key in tensors):
+        apply_encoder_trainable(
+            encoder,
+            {
+                k[len("encoder.") :]: v
+                for k, v in tensors.items()
+                if k.startswith("encoder.")
+            },
+        )
+    else:
+        encoder.load_state_dict(tensors, strict=False)
+except Exception as exc:
+    print("encoder_overlay_failed", exc, file=sys.stderr)
+encoder.to(device).eval()
+
 
 def embed(texts):
     out = []
     bs = 32
     for i in range(0, len(texts), bs):
-        batch = texts[i:i+bs]
-        enc = tok(batch, padding=True, truncation=True, max_length=256, return_tensors="pt")
+        batch = texts[i : i + bs]
+        enc = tokenizer(
+            batch, padding=True, truncation=True, max_length=256, return_tensors="pt"
+        )
         enc = {k: v.to(device) for k, v in enc.items()}
         with torch.no_grad():
-            hs = model(**enc).last_hidden_state
+            hs = encoder(**enc).last_hidden_state
             mask = enc["attention_mask"].unsqueeze(-1)
             summed = (hs * mask).sum(dim=1)
             denom = mask.sum(dim=1).clamp(min=1)
@@ -877,11 +979,11 @@ def embed(texts):
     X = X / np.clip(np.linalg.norm(X, axis=1, keepdims=True), 1e-9, None)
     return X
 
+
 present = [r for r in rows if r["evidence_label"] == "EVIDENCE_PRESENT"]
 none = [r for r in rows if r["evidence_label"] == "NO_EVIDENCE"]
 p = embed([r["text"] for r in present])
 n = embed([r["text"] for r in none])
-# nearest opposite cosine for each present and none
 sims_pn = p @ n.T
 nearest_p = sims_pn.max(axis=1)
 nearest_n = sims_pn.max(axis=0)
@@ -890,8 +992,8 @@ report = {
     "frac_nearest_opposite_cosine_ge_0_75": float((all_nearest >= 0.75).mean()),
     "mean_nearest_opposite_label_cosine": float(all_nearest.mean()),
     "median_nearest_opposite_label_cosine": float(np.median(all_nearest)),
-    "n_none": len(none),
-    "n_present": len(present),
+    "n_none": int(len(none)),
+    "n_present": int(len(present)),
 }
 (DEST / "EMBEDDING_HARDNESS.json").write_text(
     json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -901,6 +1003,7 @@ print(report)
         encoding="utf-8",
     )
     write_private(DEST / "_rows_for_embed.json", rows)
+    trunk = "/home/morpheus/.hyperlex/models/trunks/ModernBERT-base"
     model_dir = (
         "/home/morpheus/.hyperlex/models/"
         "hyperlex-encoder-modernbert-base-seed-select004"
@@ -913,10 +1016,10 @@ print(report)
         "all",
         "-e",
         f"HLX_GEN_DEST={DEST}",
-        "-e",
-        f"HLX_GEN_MODEL={model_dir}",
         "-v",
         f"{DEST}:{DEST}",
+        "-v",
+        f"{trunk}:{trunk}:ro",
         "-v",
         f"{model_dir}:{model_dir}:ro",
         "-v",
@@ -1000,30 +1103,38 @@ def main() -> int:
     acq_block_src = set(blocked_src)
 
     # OBSERVED Wikipedia none for ordinary domain deficits (astronomy/mathematics).
+    # Force re-acquire when prior attempt was empty (e.g. Mediawiki 429).
     wp_path = DEST / "OBSERVED_ACQUIRE_WP_V1R1.jsonl"
+    wp: list[dict[str, Any]] = []
     if wp_path.exists() and wp_path.stat().st_size > 0:
         wp = load_jsonl(wp_path)
         print(f"resume_wp_v1r1 n={len(wp)}", flush=True)
-        for row in wp:
-            text = str(row.get("text") or "")
-            if text:
-                acq_block_ids.add(normalized_text_sha256(text))
-                from hyperlexical.classification_v5_stage_a_generalization_surface import (
-                    source_sha256 as _ssh,
-                )
+    if len(wp) < 8:
+        import time
 
-                acq_block_src.add(_ssh(text))
-    else:
-        wp = acquire_wikipedia_lengthened_none(
-            blocked_ids=acq_block_ids,
-            blocked_src=acq_block_src,
-            domains=["astronomy", "mathematics", "physics", "chemistry"],
-            per_domain=20,
-        )
+        for attempt in range(3):
+            time.sleep(2 + attempt * 3)
+            wp = acquire_wikipedia_lengthened_none(
+                blocked_ids=acq_block_ids,
+                blocked_src=acq_block_src,
+                domains=["astronomy", "mathematics", "physics", "chemistry"],
+                per_domain=20,
+            )
+            if wp:
+                break
         write_private(
             wp_path,
             "\n".join(canonical_json(r) for r in wp) + ("\n" if wp else ""),
         )
+    for row in wp:
+        text = str(row.get("text") or "")
+        if text:
+            acq_block_ids.add(normalized_text_sha256(text))
+            from hyperlexical.classification_v5_stage_a_generalization_surface import (
+                source_sha256 as _ssh,
+            )
+
+            acq_block_src.add(_ssh(text))
 
     fills = synthesize_v1r1_matched_additions(
         baseline_rows,

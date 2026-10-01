@@ -849,14 +849,29 @@ def assign_splits_by_component(
                 continue
             obs = sum(1 for m in members if m.get("provenance") == "OBSERVED")
             anchor = sorted(m["identity"] for m in members)[0]
-            # Prefer INFERRED / larger cell mass for train restoration.
-            candidates.append((obs, -cell_n, anchor, key))
+            # Prefer small INFERRED groups first so tiny train gaps can close.
+            candidates.append((len(members), obs, -cell_n, anchor, key))
         candidates.sort()
-        for _obs, _cell_n, _anchor, key in candidates:
+        for _n, _obs, _cell_n, _anchor, key in candidates:
             counts = recount()
             if counts[cell]["train"] >= CELL_TRAIN_FLOOR:
                 break
-            if not train_floors_safe_after_move(key, to_validation=False):
+            val_floor = CRITICAL_VAL_FLOOR if cell in CRITICAL_CELLS else CELL_VAL_FLOOR
+            group_n = sum(1 for m in components[key] if m.get("primary_cell") == cell)
+            if counts[cell]["validation"] - group_n < val_floor:
+                continue
+            # Only require that *this* cell stays above val floor; other cells in
+            # the group are checked softly (allow if they remain >= floor).
+            ok = True
+            for other in PRIMARY_CELLS:
+                on = sum(1 for m in components[key] if m.get("primary_cell") == other)
+                if on <= 0:
+                    continue
+                ofloor = CRITICAL_VAL_FLOOR if other in CRITICAL_CELLS else CELL_VAL_FLOOR
+                if counts[other]["validation"] - on < ofloor:
+                    ok = False
+                    break
+            if not ok:
                 continue
             group_split[key] = "train"
 
@@ -2054,14 +2069,14 @@ def build_successor_surface_from_examples(
     stamped = stamp_source_buckets([dict(r) for r in examples])
     # Soft caps only — prefer retention; do not eject remediation mass.
     soft_caps = {
-        "SHORT_ATOM/NO_EVIDENCE": 400,
-        "SHORT_ATOM/EVIDENCE_PRESENT": 400,
-        "PROSE/NO_EVIDENCE": 600,
-        "PROSE/EVIDENCE_PRESENT": 600,
-        "DEFINITION_STYLE/NO_EVIDENCE": 500,
-        "DEFINITION_STYLE/EVIDENCE_PRESENT": 500,
-        "ORDINARY_PROSE/NO_EVIDENCE": 550,
-        "ORDINARY_PROSE/EVIDENCE_PRESENT": 550,
+        "SHORT_ATOM/NO_EVIDENCE": 420,
+        "SHORT_ATOM/EVIDENCE_PRESENT": 420,
+        "PROSE/NO_EVIDENCE": 800,
+        "PROSE/EVIDENCE_PRESENT": 700,
+        "DEFINITION_STYLE/NO_EVIDENCE": 700,
+        "DEFINITION_STYLE/EVIDENCE_PRESENT": 700,
+        "ORDINARY_PROSE/NO_EVIDENCE": 900,
+        "ORDINARY_PROSE/EVIDENCE_PRESENT": 700,
     }
     selected = select_cell_balanced(stamped, targets=soft_caps)
     paired_rows, pair_records = build_matched_contrast_pairs(selected)
