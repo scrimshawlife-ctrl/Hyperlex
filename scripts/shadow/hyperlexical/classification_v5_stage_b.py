@@ -208,6 +208,9 @@ def stage_b_family_vocabulary(
 def build_stage_b_index(
     surface_rows: Sequence[Mapping[str, Any]],
     embeddings_by_identity: Mapping[str, Sequence[float]],
+    *,
+    surface_rule: str | None = None,
+    surface_dataset_sha256: str | None = None,
 ) -> dict[str, Any]:
     source = surface_rows_to_index_source(surface_rows)
     vocabulary = stage_b_family_vocabulary(surface_rows)
@@ -217,8 +220,10 @@ def build_stage_b_index(
         source, embeddings_by_identity, family_vocabulary=vocabulary
     )
     index["rule"] = STAGE_B_RULE
-    index["surface_rule"] = AUTHORIZED_SURFACE_RULE
-    index["surface_dataset_sha256"] = AUTHORIZED_DATASET_SHA
+    index["surface_rule"] = surface_rule or AUTHORIZED_SURFACE_RULE
+    index["surface_dataset_sha256"] = (
+        surface_dataset_sha256 or AUTHORIZED_DATASET_SHA
+    )
     index["stage_a_best_sha256"] = STAGE_A_BEST_SHA256
     index["model_wide_best_sha256"] = MODEL_WIDE_BEST_SHA256
     index["family_vocabulary"] = list(vocabulary)
