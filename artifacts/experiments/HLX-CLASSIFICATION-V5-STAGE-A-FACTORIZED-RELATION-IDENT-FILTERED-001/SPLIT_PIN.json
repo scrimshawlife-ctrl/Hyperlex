@@ -1,0 +1,11 @@
+{
+  "expected": {
+    "train_identity_list_sha256": "69ef5c7813c2666ec21dd770423f8f82caa661edc91841af00e95e3e47f886d7",
+    "train_rows": 2272,
+    "train_split_sha256": "d0eb1f10329d859bbc51a9774727442f455e9b2dab030b21dcd871d31f396727",
+    "validation_identity_list_sha256": "03add594c4f2e1e96d1c094a3ac9c45775bc02ebf80faa0ed7c840a7da44290c",
+    "validation_rows": 848,
+    "validation_split_sha256": "52f234ce807f1e67fd6b896ecdd45c733cf146bd1dc9b25f98fbd93809a9f8e2"
+  },
+  "pass": true
+}

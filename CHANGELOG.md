@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Authorize ident-filtered factorized train (Spec 007):**
+  `AUTHORIZE_STAGE_A_IDENT_FILTERED_FACTORIZED_TRAIN` binds experiment
+  `HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-001` to
+  V1R2 `492ed367…`, annotations `95d54365…`, exclusion `661c9edb…`, objective
+  `HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1`. Parent splits
+  preserved (train 2272 / val 848). Fresh train-only weights sealed
+  (`13e8d0ca…`): relation ≈0.899/1.101; resolvability 1.703/0.50. Relation
+  train eligible 2233 / masked 39. Fresh init from MODEL_WIDE_BEST;
+  `TRAIN_AUTHORIZED=true` / `AUTHORIZED_NOT_STARTED`. Receipt
+  `classification-v5-stage-a-ident-filtered-factorized-authorize-receipt-20261001.json`
+  (`6341d083…`). Next: `TRAIN_STAGE_A_IDENT_FILTERED_FACTORIZED_ONCE`.
+
 - **Apply gold identifiability filter → V1R2 (Spec 007):**
   `APPLY_GOLD_IDENTIFIABILITY_FILTER` emits membership-only surface
   `HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2` from V1R1

@@ -16,6 +16,9 @@ from hyperlexical.classification_v5_stage_a_gold_identifiability_filter import (
     V1R2_EXCLUSION_MANIFEST_SHA256_PIN,
 )
 from hyperlexical.classification_v5_stage_a_ident_filtered_authorize import (  # noqa: E402
+    AUTHORIZED_AUTH_RECEIPT_SHA256,
+    AUTHORIZED_CLASS_WEIGHT_ARTIFACT_SHA256,
+    AUTHORIZED_TRAINING_CONFIG_SHA256,
     AUTHORIZE_RULE,
     EXPECTED_RELATION_ELIGIBLE_TOTAL,
     EXPECTED_RELATION_TRAIN_ELIGIBLE,
@@ -49,6 +52,9 @@ def test_authorize_pins():
     assert EXPECTED_RELATION_TRAIN_MASKED == 39
     assert SHORT_ATOM_POSITIVE_GENERALIZATION == "LOW_SUPPORT"
     assert "identifiable from the model-visible text" in SCIENTIFIC_QUESTION
+    assert AUTHORIZED_CLASS_WEIGHT_ARTIFACT_SHA256.startswith("13e8d0ca")
+    assert AUTHORIZED_TRAINING_CONFIG_SHA256.startswith("e252f1ba")
+    assert AUTHORIZED_AUTH_RECEIPT_SHA256.startswith("6341d083")
 
 
 def test_initialization_and_weights():

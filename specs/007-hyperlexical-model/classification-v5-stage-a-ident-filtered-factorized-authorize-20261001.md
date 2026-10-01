@@ -1,0 +1,53 @@
+# Classification v5 — Authorize ident-filtered factorized train
+
+```text
+RULE = AUTHORIZE_STAGE_A_IDENT_FILTERED_FACTORIZED_TRAIN
+EXPERIMENT = HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-001
+SURFACE = V1R2 / 492ed36751c7fdc4…
+ANNOTATIONS = 95d5436555da33ef…
+EXCLUSION = 661c9edb095f7f7d…
+FILTER_RECEIPT = e8e2ab7f6773717e…
+OBJECTIVE = HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1
+TRAIN_AUTHORIZED = true
+TRAINING_STATUS = AUTHORIZED_NOT_STARTED
+TRAINING_RUN_LIMIT = 1
+SCIENTIFIC_RESULT = NOT_COMPUTABLE
+CLASS_WEIGHT_ARTIFACT = 13e8d0ca25083950…
+TRAINING_CONFIG = e252f1ba7beb577f…
+receipt = 6341d0831327bdc3…
+STAGE_A_BEST = cd2829c1… UNCHANGED
+MODEL_WIDE_BEST = 9fba0f66… UNCHANGED
+NEXT_ACTION = TRAIN_STAGE_A_IDENT_FILTERED_FACTORIZED_ONCE
+```
+
+Authorization only. No train. V1R2 unmodified. Excluded identities not restored.
+
+## Splits (parent membership preserved)
+
+| Split | n | split SHA | identity SHA |
+|---|---:|---|---|
+| train | 2272 | d0eb1f10329d859b… | 69ef5c7813c2666e… |
+| validation | 848 | 52f234ce807f1e67… | 03add594c4f2e1e9… |
+
+## Relation train eligibility
+
+| Set | n | identity SHA |
+|---|---:|---|
+| eligible | 2233 | 2ac99867ae66d9c3… |
+| masked (UNCERTAIN) | 39 | 77b431716025dbf9… |
+
+## Class weights (train-only, fresh)
+
+**Relation:** `{'NO_EVIDENCE_RELATION': 0.8985774732156429, 'EVIDENCE_RELATION_PRESENT': 1.1014225267843571}`
+
+**Resolvability:** `{'UNRESOLVABLE': 1.7030222347950057, 'RESOLVABLE': 0.5}`
+
+## Limitations
+
+```text
+DOMAIN_IRRELEVANT_GENERALIZATION = NOT_ESTABLISHED
+SHORT_ATOM_POSITIVE_GENERALIZATION = LOW_SUPPORT (n_PRESENT=11)
+MODEL_INPUT = text
+```
+
+Do **not** train until `TRAIN_STAGE_A_IDENT_FILTERED_FACTORIZED_ONCE` is explicitly executed.
