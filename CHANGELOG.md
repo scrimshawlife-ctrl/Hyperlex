@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- **Review V5 qualification failure at system level (Spec 007):**
+  Read-only audit of `QUALIFICATION_FAIL` on spent surface
+  `HYPERLEX_V5_PIPELINE_QUALIFICATION_001`. Finds
+  **MATERIAL_DISTRIBUTION_SHIFT** (V1R2 paired/inferred vs fresh OBSERVED),
+  Stage-A collapse with SHORT_ATOM NONE local success preserved
+  (false_entry 0.0), Stage-B independent failure on A-correct PRESENT
+  (fam_prec 0.275; ai-native attractor 42.6% index mass), ontology
+  **NOT_RELIABLY_SEPARABLE** (between-centroid sim > within), threshold/
+  floor counterfactuals **STRUCTURAL_OVERLAP** (no rescue). Diagnosis
+  **`MIXED_SYSTEM_GENERALIZATION_FAILURE`**; disposition
+  **`V5_RESEARCH_PROTOTYPE`**; surface
+  `QUALIFICATION_SURFACE_HARD_BUT_VALID`. Rejects threshold/floor/matched-
+  surface/index-enlarge/reserve/local-loss micro-fixes. Receipt
+  `classification-v5-qualification-failure-system-review-receipt-20261001.json`
+  (`6ba921e1…`). No train/retune/index rebuild/BEST move. Next:
+  `BUILD_REPRESENTATIVE_V6_DATA_FOUNDATION`.
+
 - **Qualify V5 pipeline on fresh evaluation surface (Spec 007):**
   `QUALIFY_HYPERLEX_V5_PIPELINE_ON_FRESH_EVALUATION_SURFACE` built a fresh
   text-identifiable surface (n=500; PRESENT 243 / NONE 203 / UNCERTAIN 54;

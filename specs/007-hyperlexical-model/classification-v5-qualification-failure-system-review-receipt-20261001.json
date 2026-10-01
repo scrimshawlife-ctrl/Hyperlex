@@ -1,0 +1,1067 @@
+{
+  "BEST_MUTATED": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-QUALIFICATION-FAILURE-SYSTEM-REVIEW-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "INDEX_REBUILT": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "NEXT_ACTION": "BUILD_REPRESENTATIVE_V6_DATA_FOUNDATION",
+  "PIPELINE_DEPENDENCY_MANIFEST_SHA256": "c2d19befb17be2337bc5f4ef97ebaf8ef20ea71ab5dd467830325654088f242a",
+  "PRIMARY_REMEDIATION_PHASE": "BUILD_REPRESENTATIVE_V6_DATA_FOUNDATION",
+  "QUALIFICATION_ID": "HYPERLEX_V5_PIPELINE_QUALIFICATION_001",
+  "QUALIFICATION_SURFACE_VALIDITY": "QUALIFICATION_SURFACE_HARD_BUT_VALID",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "REJECTED_MICRO_FIXES": {
+    "another_local_loss_change": false,
+    "another_reserve": false,
+    "another_stage_a_matched_surface": false,
+    "another_stage_b_floor_tune": false,
+    "more_stage_a_threshold_tuning": false,
+    "simply_enlarging_existing_index": false
+  },
+  "RELEASE_ELIGIBLE": false,
+  "REVIEW_ID": "HYPERLEX_V5_QUALIFICATION_FAILURE_SYSTEM_REVIEW_001",
+  "REVIEW_RULE": "REVIEW_V5_QUALIFICATION_FAILURE_AT_SYSTEM_LEVEL",
+  "SEAL_PACKAGE_RECEIPT_SHA256": "0e468234df919f030ea2f83b2867afd2e2352568df1d12f60bdc41e69e83e049",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_B_INDEX": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+  "SYSTEM_DIAGNOSIS": "MIXED_SYSTEM_GENERALIZATION_FAILURE",
+  "SYSTEM_REVIEW_RECEIPT_SHA256": "6ba921e12fa7e0d4afc212d17ea7038de3050b7d9d72fa8fd996aaa0da112496",
+  "THRESHOLDS_CHANGED": false,
+  "TRAIN": false,
+  "V5_DISPOSITION": "V5_RESEARCH_PROTOTYPE",
+  "audit": {
+    "REVIEW_ID": "HYPERLEX_V5_QUALIFICATION_FAILURE_SYSTEM_REVIEW_001",
+    "REVIEW_RULE": "REVIEW_V5_QUALIFICATION_FAILURE_AT_SYSTEM_LEVEL",
+    "distribution": {
+      "lexical_nearest": {
+        "qual_to_train_max_jaccard": {
+          "mean": 0.16463336858412478,
+          "n": 500,
+          "p10": 0.09166666666666666,
+          "p50": 0.16666666666666666,
+          "p90": 0.23529411764705882
+        },
+        "qual_to_val_max_jaccard": {
+          "mean": 0.15992014916447989,
+          "n": 500,
+          "p10": 0.08333333333333333,
+          "p50": 0.16666666666666666,
+          "p90": 0.23529411764705882
+        }
+      },
+      "qualification": {
+        "labels": {
+          "EVIDENCE_PRESENT": 243,
+          "NO_EVIDENCE": 203,
+          "UNCERTAIN": 54
+        },
+        "length": {
+          "mean": 130.968,
+          "n": 500,
+          "p10": 42.0,
+          "p50": 100.0,
+          "p90": 260.0
+        },
+        "length_bands": {
+          "long": 134,
+          "med": 319,
+          "short": 47
+        },
+        "n": 500,
+        "n_families_present": 15,
+        "paired_share": 0.0,
+        "provenance_observed_share": 1.0,
+        "source_family_top": [
+          [
+            "qual_wikt_atom_none:mycology",
+            40
+          ],
+          [
+            "qual_wikt_uncertain:betting-sharp",
+            23
+          ],
+          [
+            "qual_wikt_present:technology-ai:computing",
+            22
+          ],
+          [
+            "qual_wikt_uncertain:gaming-meta",
+            22
+          ],
+          [
+            "qual_wikt_present:spiritual-mystic:astrology",
+            20
+          ],
+          [
+            "qual_wikt_present:social-evaluation:slang",
+            20
+          ],
+          [
+            "qual_wikt_present:politics-civic:politics",
+            20
+          ],
+          [
+            "qual_wikt_present:fashion-aesthetic:fashion",
+            20
+          ],
+          [
+            "qual_wikt_present:betting-sharp:gambling",
+            20
+          ],
+          [
+            "qual_wikt_present:workplace-career:management",
+            19
+          ],
+          [
+            "qual_wikt_present:music-entertainment:music",
+            19
+          ],
+          [
+            "qual_wikt_present:relationship-dating:sexuality",
+            18
+          ]
+        ],
+        "subtypes": {
+          "AMBIGUOUS_EVIDENCE": 54,
+          "LEXICAL_LOOKALIKE_NONE": 28,
+          "ORDINARY_DOMAIN_NONE": 132,
+          "POSITIVE_EVIDENCE": 243,
+          "SHORT_ATOM_NONE": 43
+        },
+        "topic_domain_top": [
+          [
+            "mycology",
+            64
+          ],
+          [
+            "ambiguous",
+            54
+          ],
+          [
+            "entomology",
+            32
+          ],
+          [
+            "technology-ai",
+            22
+          ],
+          [
+            "spiritual-mystic",
+            20
+          ],
+          [
+            "social-evaluation",
+            20
+          ],
+          [
+            "politics-civic",
+            20
+          ],
+          [
+            "fashion-aesthetic",
+            20
+          ],
+          [
+            "betting-sharp",
+            20
+          ],
+          [
+            "workplace-career",
+            19
+          ],
+          [
+            "sports-competition",
+            19
+          ],
+          [
+            "gaming-meta",
+            19
+          ]
+        ]
+      },
+      "rationale": [
+        "qualification is 100% OBSERVED unpaired Wiktionary/Wikipedia fresh domains",
+        "V1R2 validation is majority INFERRED with high pair_group/matched-contrast share",
+        "NONE topic domains barely overlap (qual mycology/entomology vs val botany/chemistry)",
+        "mean max token Jaccard qual\u2192train \u2248 0.16 indicates weak lexical neighborhood support",
+        "Stage-B index is 42.6% ai-native attractor mass vs balanced qual PRESENT families"
+      ],
+      "stage_a_shift_class": "MATERIAL_DISTRIBUTION_SHIFT",
+      "stage_b_index": {
+        "ai_native_share": 0.42616033755274263,
+        "family_support": {
+          "ai-native": 404,
+          "betting-sharp": 63,
+          "conflict-aggression": 17,
+          "crypto-degen": 60,
+          "fashion-aesthetic": 17,
+          "gaming-meta": 84,
+          "identity-affiliation": 18,
+          "internet-slang": 58,
+          "memetic": 17,
+          "music-entertainment": 19,
+          "politics-civic": 18,
+          "regional-cultural": 14,
+          "relationship-dating": 29,
+          "social-evaluation": 26,
+          "spiritual-mystic": 16,
+          "sports-competition": 19,
+          "technology-ai": 52,
+          "workplace-career": 17
+        },
+        "index_sha256": "4febe96ea179597eb7792b376ed9eedbc9295a2fd8b5fa0eec969719f015c1f4",
+        "n": 948
+      },
+      "stage_b_shift_class": "MATERIAL_DISTRIBUTION_SHIFT",
+      "v1r2_validation": {
+        "labels": {
+          "EVIDENCE_PRESENT": 267,
+          "NO_EVIDENCE": 566,
+          "UNCERTAIN": 15
+        },
+        "length": {
+          "mean": 107.95636792452831,
+          "n": 848,
+          "p10": 6.0,
+          "p50": 112.0,
+          "p90": 210.0
+        },
+        "length_bands": {
+          "long": 157,
+          "med": 518,
+          "short": 173
+        },
+        "n": 848,
+        "pair_group_share": 0.8018867924528302,
+        "paired_share": 0.8018867924528302,
+        "primary_cell": {
+          "DEFINITION_STYLE/EVIDENCE_PRESENT": 80,
+          "DEFINITION_STYLE/NO_EVIDENCE": 139,
+          "ORDINARY_PROSE/EVIDENCE_PRESENT": 106,
+          "ORDINARY_PROSE/NO_EVIDENCE": 180,
+          "PROSE/EVIDENCE_PRESENT": 77,
+          "PROSE/NO_EVIDENCE": 95,
+          "SHORT_ATOM/EVIDENCE_PRESENT": 4,
+          "SHORT_ATOM/NO_EVIDENCE": 152,
+          "null": 15
+        },
+        "provenance": {
+          "INFERRED": 486,
+          "OBSERVED": 362
+        },
+        "source_bucket_top": [
+          [
+            "v5_src_inf_POSITIVE_EVIDENCE_2",
+            64
+          ],
+          [
+            "v5_src_inf_POSITIVE_EVIDENCE_0",
+            61
+          ],
+          [
+            "v5_src_inf_POSITIVE_EVIDENCE_3",
+            51
+          ],
+          [
+            "v5_src_inf_POSITIVE_EVIDENCE_1",
+            46
+          ],
+          [
+            "v5_src_inf_LEXICAL_LOOKALIKE_NONE_1",
+            44
+          ],
+          [
+            "v5_src_inf_LEXICAL_LOOKALIKE_NONE_0",
+            44
+          ],
+          [
+            "v5_src_inf_LEXICAL_LOOKALIKE_NONE_2",
+            39
+          ],
+          [
+            "v5_src_inf_LEXICAL_LOOKALIKE_NONE_3",
+            34
+          ],
+          [
+            "v5_src_wik_botany_0",
+            30
+          ],
+          [
+            "v5_src_wik_botany_3",
+            30
+          ],
+          [
+            "v5_src_wik_botany_2",
+            26
+          ],
+          [
+            "v5_src_wik_botany_1",
+            25
+          ]
+        ],
+        "source_family_top": [
+          [
+            "wiktionary_aggregate",
+            248
+          ],
+          [
+            "inferred_POSITIVE_EVIDENCE_3",
+            59
+          ],
+          [
+            "inferred_POSITIVE_EVIDENCE_0",
+            58
+          ],
+          [
+            "inferred_POSITIVE_EVIDENCE_2",
+            56
+          ],
+          [
+            "inferred_POSITIVE_EVIDENCE_1",
+            49
+          ],
+          [
+            "inferred_LEXICAL_LOOKALIKE_NONE_0",
+            47
+          ],
+          [
+            "inferred_LEXICAL_LOOKALIKE_NONE_3",
+            43
+          ],
+          [
+            "inferred_LEXICAL_LOOKALIKE_NONE_1",
+            40
+          ],
+          [
+            "inferred_LEXICAL_LOOKALIKE_NONE_2",
+            31
+          ],
+          [
+            "inferred_ORDINARY_DOMAIN_NONE_2",
+            17
+          ],
+          [
+            "inferred_ORDINARY_DOMAIN_NONE_0",
+            15
+          ],
+          [
+            "inferred_ORDINARY_DOMAIN_NONE_1",
+            13
+          ]
+        ],
+        "subtypes": {
+          "AMBIGUOUS_EVIDENCE": 15,
+          "HARD_NONE": 16,
+          "LEXICAL_LOOKALIKE_NONE": 161,
+          "NEAR_DOMAIN_NONE": 25,
+          "ORDINARY_DOMAIN_NONE": 223,
+          "POSITIVE_EVIDENCE": 267,
+          "SHORT_ATOM_NONE": 141
+        },
+        "topic_domain_top": [
+          [
+            "botany",
+            150
+          ],
+          [
+            null,
+            114
+          ],
+          [
+            "ai-native",
+            111
+          ],
+          [
+            "chemistry",
+            75
+          ],
+          [
+            "ornithology",
+            53
+          ],
+          [
+            "meteorology",
+            49
+          ],
+          [
+            "geology",
+            37
+          ],
+          [
+            "gaming-meta",
+            32
+          ],
+          [
+            "zoology",
+            29
+          ],
+          [
+            "physics",
+            28
+          ],
+          [
+            "technology-ai",
+            24
+          ],
+          [
+            "mathematics",
+            22
+          ]
+        ]
+      }
+    },
+    "failure_attribution": {
+      "distribution_shift": "MAJOR",
+      "ontology_collision": "MATERIAL_via_ai-native_attractor",
+      "quantitative_anchors": {
+        "error_counts": {
+          "COMPOUND": 0,
+          "STAGE_A_FALSE_ENTRY": 63,
+          "STAGE_B_WRONG_FAMILY": 37
+        },
+        "stage_a_false_entry_delta": 0.2817,
+        "stage_b_precision_v1r2_vs_a_correct_qual": {
+          "qual_a_correct_family_precision": 0.27450980392156865,
+          "v1r2_family_precision": 0.8089887640449438
+        }
+      },
+      "representation_weakness": "MATERIAL",
+      "stage_a_admission_failure": "MAJOR",
+      "stage_b_family_discrimination_failure": "MAJOR_INDEPENDENT",
+      "validation_selection_bias": "MAJOR"
+    },
+    "identifiability_repair": {
+      "hidden_failure_classes": [
+        "ORDINARY_DOMAIN_NONE_GENERALIZATION",
+        "LEXICAL_LOOKALIKE_NONE_GENERALIZATION",
+        "UNCERTAIN_RESOLVABILITY_ON_FRESH_AMBIGUITY",
+        "PRESENT_RECALL_ON_UNPAIRED_FRESH_EVIDENCE",
+        "STAGE_B_FAMILY_DISCRIMINATION_UNDER_INDEX_ATTRACTORS"
+      ],
+      "local_causal_success": true,
+      "qualification_short_atom_none_false_entry": 0.0,
+      "qualification_short_atom_none_n": 43,
+      "qualification_short_atom_none_recall": 1.0,
+      "repaired_failure_class": "SHORT_ATOM_NONE_FALSE_ENTRY_ON_TEXT_IDENTIFIABLE_ATOMS",
+      "scope": "LOCAL_CAUSAL_SUCCESS_WITHIN_GLOBAL_GENERALIZATION_FAILURE"
+    },
+    "index_family_audit": {
+      "ai-native": {
+        "a_correct_family_emits": 3,
+        "class": "WELL_SUPPORTED",
+        "index_support": 404,
+        "qualification_present_support": 5,
+        "wrong_emit_count": 0
+      },
+      "betting-sharp": {
+        "a_correct_family_emits": 9,
+        "class": "WELL_SUPPORTED",
+        "index_support": 63,
+        "qualification_present_support": 20,
+        "wrong_emit_count": 1
+      },
+      "conflict-aggression": {
+        "a_correct_family_emits": 1,
+        "class": "LOW_INDEX_DIVERSITY",
+        "index_support": 17,
+        "qualification_present_support": 8,
+        "wrong_emit_count": 1
+      },
+      "fashion-aesthetic": {
+        "a_correct_family_emits": 3,
+        "class": "LOW_INDEX_DIVERSITY",
+        "index_support": 17,
+        "qualification_present_support": 20,
+        "wrong_emit_count": 3
+      },
+      "gaming-meta": {
+        "a_correct_family_emits": 4,
+        "class": "WRONG_FAMILY_ATTRACTOR",
+        "index_support": 84,
+        "qualification_present_support": 19,
+        "wrong_emit_count": 1
+      },
+      "internet-slang": {
+        "a_correct_family_emits": 3,
+        "class": "WRONG_FAMILY_ATTRACTOR",
+        "index_support": 58,
+        "qualification_present_support": 13,
+        "wrong_emit_count": 3
+      },
+      "music-entertainment": {
+        "a_correct_family_emits": 3,
+        "class": "LOW_INDEX_DIVERSITY",
+        "index_support": 19,
+        "qualification_present_support": 19,
+        "wrong_emit_count": 3
+      },
+      "politics-civic": {
+        "a_correct_family_emits": 2,
+        "class": "LOW_INDEX_DIVERSITY",
+        "index_support": 18,
+        "qualification_present_support": 20,
+        "wrong_emit_count": 2
+      },
+      "regional-cultural": {
+        "a_correct_family_emits": 0,
+        "class": "LOW_INDEX_DIVERSITY",
+        "index_support": 14,
+        "qualification_present_support": 1,
+        "wrong_emit_count": 0
+      },
+      "relationship-dating": {
+        "a_correct_family_emits": 1,
+        "class": "WRONG_FAMILY_ATTRACTOR",
+        "index_support": 29,
+        "qualification_present_support": 18,
+        "wrong_emit_count": 1
+      },
+      "social-evaluation": {
+        "a_correct_family_emits": 1,
+        "class": "WRONG_FAMILY_ATTRACTOR",
+        "index_support": 26,
+        "qualification_present_support": 20,
+        "wrong_emit_count": 1
+      },
+      "spiritual-mystic": {
+        "a_correct_family_emits": 1,
+        "class": "LOW_INDEX_DIVERSITY",
+        "index_support": 16,
+        "qualification_present_support": 20,
+        "wrong_emit_count": 1
+      },
+      "sports-competition": {
+        "a_correct_family_emits": 4,
+        "class": "LOW_INDEX_DIVERSITY",
+        "index_support": 19,
+        "qualification_present_support": 19,
+        "wrong_emit_count": 4
+      },
+      "technology-ai": {
+        "a_correct_family_emits": 9,
+        "class": "WRONG_FAMILY_ATTRACTOR",
+        "index_support": 52,
+        "qualification_present_support": 22,
+        "wrong_emit_count": 9
+      },
+      "workplace-career": {
+        "a_correct_family_emits": 7,
+        "class": "LOW_INDEX_DIVERSITY",
+        "index_support": 17,
+        "qualification_present_support": 19,
+        "wrong_emit_count": 7
+      }
+    },
+    "intended_distribution": {
+      "alignment": {
+        "intended_vs_index": "INDEX_SKEWED_TO_TRAIN_SUPPORT",
+        "intended_vs_qualification": "CLOSER_TO_FRESH_OBSERVED_OPERATING_INPUT",
+        "intended_vs_v1r2": "PARTIAL_TARGETED_DIAGNOSTIC"
+      },
+      "development_represents_operating_env": false,
+      "intended_input": "fresh text-only lexical/domain evidence spans for active-family slang/meme/domain classification; Stage A gates evidence sufficiency; Stage B retrieves family",
+      "product_contract_sources": [
+        "specs/007-hyperlexical-model/classification-architecture-v3.md",
+        "specs/007-hyperlexical-model/classification-v5-pipeline-qualification-20261001.md",
+        "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1"
+      ]
+    },
+    "metrics_snapshot": {
+      "false_entry": 0.31527093596059114,
+      "family_emission_precision": 0.12280701754385964,
+      "none_recall": 0.6847290640394089,
+      "present_recall": 0.5843621399176955,
+      "selective_accuracy": 0.425,
+      "uncertain_recall": 0.0
+    },
+    "offline_at": "2026-10-01T17:59:29Z",
+    "ontology_separability": "ONTOLOGY_NOT_RELIABLY_SEPARABLE",
+    "qualification_receipt_sha256": "88ed9fb5566a3ae359328e7eed1b0eb2aefa34acc580f15fd1505b6831d944e2",
+    "representation": {
+      "encoder": "STAGE_A_BEST_overlay_on_MODEL_WIDE_BEST_trunk",
+      "notes": [
+        "Index nearest-neighbor top1 accuracy on qual PRESENT is far below V1R2 selective accuracy.",
+        "Wrong-family best similarity rivals or exceeds correct-family best similarity on average.",
+        "PRESENT/NONE centroid cosine remains high on qualification, consistent with Stage-A overlap."
+      ],
+      "ontology_separability": "ONTOLOGY_NOT_RELIABLY_SEPARABLE",
+      "overlay_loaded": 12,
+      "pooling": "cls_l2_normalized_matches_sealed_pipeline",
+      "qual_present_centroid_between_sim": {
+        "mean": 0.8543805142243703,
+        "n": 105,
+        "p10": 0.6933004260063171,
+        "p50": 0.8752583265304565,
+        "p90": 0.939815878868103
+      },
+      "qual_present_centroid_within_sim": {
+        "mean": 0.6458775776123319,
+        "n": 2134,
+        "p10": 0.43402719497680664,
+        "p50": 0.6727324724197388,
+        "p90": 0.8129113912582397
+      },
+      "qual_present_correct_family_best_sim": {
+        "mean": 0.7366134413966426,
+        "n": 243,
+        "p10": 0.5618499517440796,
+        "p50": 0.7469300031661987,
+        "p90": 0.8685271739959717
+      },
+      "qual_present_index_top1_family_accuracy": 0.13168724279835392,
+      "qual_present_nearest_index_sim": {
+        "mean": 0.8360208738978507,
+        "n": 243,
+        "p10": 0.7642881870269775,
+        "p50": 0.8356454372406006,
+        "p90": 0.9074705839157104
+      },
+      "qual_present_stage_a_vs_base_centroid_cosine": 0.7753953337669373,
+      "qual_present_vs_none_centroid_cosine": 0.916606605052948,
+      "qual_present_vs_none_centroid_cosine_base": 0.9606606960296631,
+      "qual_present_wrong_family_best_sim": {
+        "mean": 0.831032807934922,
+        "n": 243,
+        "p10": 0.7626181840896606,
+        "p50": 0.8310630321502686,
+        "p90": 0.9024790525436401
+      },
+      "representation_class": "MIXED_REPRESENTATION_FAILURE",
+      "val_present_nearest_index_sim": {
+        "mean": 0.9497639253344875,
+        "n": 267,
+        "p10": 0.8667128682136536,
+        "p50": 0.9755204916000366,
+        "p90": 0.9942636489868164
+      },
+      "val_present_vs_none_centroid_cosine": 0.8025232553482056,
+      "val_present_vs_none_centroid_cosine_base": 0.971341073513031
+    },
+    "stage_a": {
+      "by_length_band": {
+        "long": {
+          "false_entry": {
+            "n": 55,
+            "rate": 0.45454545454545453
+          },
+          "present_recall": {
+            "n": 27,
+            "rate": 0.8148148148148148
+          },
+          "uncertain_recall": {
+            "n": 52,
+            "rate": 0.0
+          }
+        },
+        "med": {
+          "false_entry": {
+            "n": 103,
+            "rate": 0.36893203883495146
+          },
+          "present_recall": {
+            "n": 214,
+            "rate": 0.5607476635514018
+          },
+          "uncertain_recall": {
+            "n": 2,
+            "rate": 0.0
+          }
+        },
+        "short": {
+          "false_entry": {
+            "n": 45,
+            "rate": 0.022222222222222223
+          },
+          "present_recall": {
+            "n": 2,
+            "rate": 0.0
+          },
+          "uncertain_recall": {
+            "n": 0,
+            "rate": null
+          }
+        }
+      },
+      "learned": "V1R2_SPECIFIC_LEXICAL_SOURCE_DOMAIN_BOUNDARIES",
+      "none_by_subtype": {
+        "LEXICAL_LOOKALIKE_NONE": {
+          "false_entry": 0.42857142857142855,
+          "n": 28,
+          "none_recall": 0.5714285714285714
+        },
+        "ORDINARY_DOMAIN_NONE": {
+          "false_entry": 0.3939393939393939,
+          "n": 132,
+          "none_recall": 0.6060606060606061
+        },
+        "SHORT_ATOM_NONE": {
+          "false_entry": 0.0,
+          "n": 43,
+          "none_recall": 1.0
+        }
+      },
+      "not_learned": "TRUE_RELATION_DETECTOR_UNDER_FRESH_TEXT_ONLY_CONTRACT",
+      "present_by_family": {
+        "ai-native": {
+          "n": 5,
+          "present_recall": 0.8
+        },
+        "betting-sharp": {
+          "n": 20,
+          "present_recall": 0.85
+        },
+        "conflict-aggression": {
+          "n": 8,
+          "present_recall": 0.375
+        },
+        "fashion-aesthetic": {
+          "n": 20,
+          "present_recall": 0.65
+        },
+        "gaming-meta": {
+          "n": 19,
+          "present_recall": 0.8421052631578947
+        },
+        "internet-slang": {
+          "n": 13,
+          "present_recall": 0.6923076923076923
+        },
+        "music-entertainment": {
+          "n": 19,
+          "present_recall": 0.42105263157894735
+        },
+        "politics-civic": {
+          "n": 20,
+          "present_recall": 0.7
+        },
+        "regional-cultural": {
+          "n": 1,
+          "present_recall": 0.0
+        },
+        "relationship-dating": {
+          "n": 18,
+          "present_recall": 0.2222222222222222
+        },
+        "social-evaluation": {
+          "n": 20,
+          "present_recall": 0.3
+        },
+        "spiritual-mystic": {
+          "n": 20,
+          "present_recall": 0.35
+        },
+        "sports-competition": {
+          "n": 19,
+          "present_recall": 0.631578947368421
+        },
+        "technology-ai": {
+          "n": 22,
+          "present_recall": 0.6363636363636364
+        },
+        "workplace-career": {
+          "n": 19,
+          "present_recall": 0.7894736842105263
+        }
+      },
+      "qualification": {
+        "false_entry": 0.31527093596059114,
+        "none_recall": 0.6847290640394089,
+        "present_recall": 0.5843621399176955,
+        "uncertain_recall": 0.0
+      },
+      "uncertain": {
+        "decisions": {
+          "EVIDENCE_PRESENT": 48,
+          "NO_EVIDENCE": 6
+        },
+        "n": 54,
+        "reasons": {
+          "competing_textual_senses_unresolved": 54
+        }
+      },
+      "v1r2_validation": {
+        "false_entry": 0.03356890459363958,
+        "n_validation": 848,
+        "none_recall": 0.965,
+        "present_recall": 0.951310861423221,
+        "uncertain_recall_tiny_cohort": 1.0
+      }
+    },
+    "stage_a_calibration": {
+      "any_threshold_region_rescues_primary_gates": false,
+      "best_diagnostic_point": {
+        "deficit": 0.37006527600397326,
+        "false_entry": 0.10344827586206896,
+        "none_recall": 0.896551724137931,
+        "present_recall": 0.3868312757201646,
+        "relation": 0.98,
+        "resolvability": 0.4
+      },
+      "classification": "STRUCTURAL_OVERLAP",
+      "note": "Diagnostic only \u2014 no production threshold may be taken from this sweep.",
+      "score_distributions": {
+        "EVIDENCE_PRESENT": {
+          "p_relation": {
+            "mean": 0.6007017315526473,
+            "n": 243,
+            "p10": 0.0007920031785033643,
+            "p50": 0.875953197479248,
+            "p90": 0.9999607801437378
+          },
+          "p_resolvable": {
+            "mean": 0.9990872652442367,
+            "n": 243,
+            "p10": 0.9989696741104126,
+            "p50": 0.9999796152114868,
+            "p90": 0.9999997615814209
+          }
+        },
+        "NO_EVIDENCE": {
+          "p_relation": {
+            "mean": 0.3536538810688579,
+            "n": 203,
+            "p10": 4.207653182675131e-05,
+            "p50": 0.1242738664150238,
+            "p90": 0.9818768501281738
+          },
+          "p_resolvable": {
+            "mean": 0.9960419764659675,
+            "n": 203,
+            "p10": 0.9902797341346741,
+            "p50": 0.9999276399612427,
+            "p90": 0.9999994039535522
+          }
+        },
+        "UNCERTAIN": {
+          "p_relation": {
+            "mean": 0.8912344199984714,
+            "n": 54,
+            "p10": 0.38272711634635925,
+            "p50": 0.9978255033493042,
+            "p90": 0.9999973773956299
+          },
+          "p_resolvable": {
+            "mean": 0.9952751177328604,
+            "n": 54,
+            "p10": 0.9852790832519531,
+            "p50": 0.9998452663421631,
+            "p90": 0.9999985694885254
+          }
+        }
+      }
+    },
+    "stage_b_independent": {
+      "confusion_top": [
+        [
+          [
+            "technology-ai",
+            "ai-native"
+          ],
+          7
+        ],
+        [
+          [
+            "workplace-career",
+            "ai-native"
+          ],
+          5
+        ],
+        [
+          [
+            "sports-competition",
+            "betting-sharp"
+          ],
+          3
+        ],
+        [
+          [
+            "fashion-aesthetic",
+            "ai-native"
+          ],
+          2
+        ],
+        [
+          [
+            "internet-slang",
+            "ai-native"
+          ],
+          2
+        ],
+        [
+          [
+            "music-entertainment",
+            "ai-native"
+          ],
+          2
+        ],
+        [
+          [
+            "conflict-aggression",
+            "betting-sharp"
+          ],
+          1
+        ],
+        [
+          [
+            "politics-civic",
+            "ai-native"
+          ],
+          1
+        ],
+        [
+          [
+            "relationship-dating",
+            "ai-native"
+          ],
+          1
+        ],
+        [
+          [
+            "technology-ai",
+            "internet-slang"
+          ],
+          1
+        ],
+        [
+          [
+            "gaming-meta",
+            "ai-native"
+          ],
+          1
+        ],
+        [
+          [
+            "fashion-aesthetic",
+            "betting-sharp"
+          ],
+          1
+        ],
+        [
+          [
+            "politics-civic",
+            "betting-sharp"
+          ],
+          1
+        ],
+        [
+          [
+            "workplace-career",
+            "betting-sharp"
+          ],
+          1
+        ],
+        [
+          [
+            "workplace-career",
+            "technology-ai"
+          ],
+          1
+        ]
+      ],
+      "coverage": 0.3591549295774648,
+      "decision_counts": {
+        "ABSTAIN": 72,
+        "AMBIGUOUS": 19,
+        "FAMILY": 51
+      },
+      "family_emitted": 51,
+      "family_precision": 0.27450980392156865,
+      "floor_counterfactual_class": "STRUCTURAL_OVERLAP",
+      "floor_note": "Wrong FAMILY emits have mean score \u2265 correct emits under frozen floors; failure is not rescued by raising floors without collapsing coverage further. Diagnostic only \u2014 no production floor may be taken from this review.",
+      "independent_generalization_failure": true,
+      "margin_correct": {
+        "mean": 0.06358412361766744,
+        "n": 14,
+        "p10": 0.022952978081738684,
+        "p50": 0.06842920062685831,
+        "p90": 0.0971268629940738
+      },
+      "margin_wrong": {
+        "mean": 0.037846951822379626,
+        "n": 37,
+        "p10": 0.011255034298645938,
+        "p50": 0.03107359862421999,
+        "p90": 0.06793001065695325
+      },
+      "score_all_emits": {
+        "mean": 0.8858589291036961,
+        "n": 51,
+        "p10": 0.8416678225790291,
+        "p50": 0.8825796132024699,
+        "p90": 0.9349150745536393
+      },
+      "score_correct": {
+        "mean": 0.8778761767972406,
+        "n": 14,
+        "p10": 0.8416678225790291,
+        "p50": 0.8799439145227055,
+        "p90": 0.917175347110904
+      },
+      "score_wrong": {
+        "mean": 0.8888794299764089,
+        "n": 37,
+        "p10": 0.8350832435215277,
+        "p50": 0.8831891887224135,
+        "p90": 0.9432479624205384
+      },
+      "support_a_correct_present": 142,
+      "top1_accuracy_on_emits": 0.27450980392156865,
+      "wrong_attractor_counts": {
+        "ai-native": 24,
+        "betting-sharp": 9,
+        "crypto-degen": 1,
+        "internet-slang": 1,
+        "social-evaluation": 1,
+        "technology-ai": 1
+      }
+    },
+    "surface_validity": {
+      "checks": {
+        "disjoint_from_blocked_surfaces": true,
+        "domain_irrelevant_unsupported_reported": true,
+        "family_coverage_ge_12": true,
+        "label_quality_text_identifiable": true,
+        "observed_provenance": true,
+        "short_atom_present_shortfall_reported": true,
+        "source_mix_not_single_family_dominant": true
+      },
+      "disposition": "QUALIFICATION_SURFACE_HARD_BUT_VALID",
+      "note": "Harder and unpaired relative to V1R2, but admissible under the text-only product contract; failure must not be dismissed as pathological labeling."
+    },
+    "validation_bias": {
+      "disposition": "OVERFIT_DEVELOPMENT_SURFACE",
+      "signals": [
+        "high matched-contrast / pair_group share on V1R2 validation",
+        "majority INFERRED provenance on validation",
+        "source buckets concentrated in inferred POSITIVE/LOOKALIKE templates",
+        "NONE domains in validation (botany/chemistry) do not cover qualification NONE domains",
+        "Stage-B floors tuned on same V1R2 validation family geometry",
+        "index mass dominated by ai-native from train-side support"
+      ]
+    }
+  },
+  "derived": {
+    "PRIMARY_REMEDIATION_PHASE": "BUILD_REPRESENTATIVE_V6_DATA_FOUNDATION",
+    "QUALIFICATION_SURFACE_VALIDITY": "QUALIFICATION_SURFACE_HARD_BUT_VALID",
+    "SYSTEM_DIAGNOSIS": "MIXED_SYSTEM_GENERALIZATION_FAILURE",
+    "V5_DISPOSITION": "V5_RESEARCH_PROTOTYPE",
+    "evidence_flags": {
+      "material_distribution_shift": true,
+      "no_threshold_rescue": true,
+      "stage_a_collapse": true,
+      "stage_b_independent_failure": true,
+      "structural_overlap": true
+    },
+    "ontology_separability": "ONTOLOGY_NOT_RELIABLY_SEPARABLE",
+    "representation_class": "MIXED_REPRESENTATION_FAILURE"
+  },
+  "preserved_truths": [
+    "gold_identifiability_mattered",
+    "serialization_defect_was_real",
+    "factorized_checkpoint_is_loadable",
+    "SHORT_ATOM_NONE_historical_failure_was_repaired",
+    "Stage_B_works_on_its_original_V1R2_validation_surface"
+  ],
+  "reviewed_at": "2026-10-01T17:59:52Z",
+  "schema": "hyperlex.classification.v5.qualification_failure_system_review.v1"
+}
