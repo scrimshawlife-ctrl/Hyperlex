@@ -59,6 +59,23 @@ def utc_now_iso() -> str:
     )
 
 
+def jsonable(obj: Any) -> Any:
+    """Make nested structures safe for sort_keys JSON (None dict keys → 'null')."""
+    if isinstance(obj, dict):
+        return {
+            ("null" if key is None else str(key)): jsonable(value)
+            for key, value in obj.items()
+        }
+    if isinstance(obj, (list, tuple)):
+        return [jsonable(x) for x in obj]
+    if isinstance(obj, float):
+        # Keep NaN/Inf out of receipts.
+        if obj != obj or obj in (float("inf"), float("-inf")):
+            return None
+        return obj
+    return obj
+
+
 def derive_system_diagnosis(audit: Mapping[str, Any]) -> dict[str, Any]:
     """Map audit evidence onto the sealed system diagnosis enums."""
     stage_a = dict(audit.get("stage_a") or {})
