@@ -1,0 +1,379 @@
+{
+  "A_retained_trainer_state_before_flatten": false,
+  "B_retained_in_memory_or_export": false,
+  "C_deterministic_selected_epoch_state": false,
+  "NO_LIVE_TRAINER": true,
+  "allowed_source_classes": [
+    "A_retained_selected_epoch_trainer_state_before_flattening",
+    "B_retained_in_memory_or_export_artifact_with_exact_heads",
+    "C_deterministic_selected_epoch_state_artifact_with_exact_heads"
+  ],
+  "authoritative_selected_head_source": null,
+  "exact_selected_epoch_heads_available": false,
+  "extras_pt_pkl_bin": [],
+  "forbidden_source_classes": [
+    "fresh_xavier_initialization",
+    "final_epoch_heads_substituted_for_selected_epoch",
+    "heads_from_another_experiment",
+    "retrained_heads",
+    "reconstructed_weights_from_metrics_or_logits"
+  ],
+  "hit_count": 0,
+  "inspected": [
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 1,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0001-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "d0045ad54038181b30cd429a08f821ec53598e31ecfa555ed8188829f48bfb4c",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 2,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0002-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "3bb6b086d389f88c321ca1cc7231dc0e57c846787c560189b73651a1e29f725e",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 3,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0003-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "919d93016a6cf6d2e8a7b7c53330fec8b979bfd28cc5b48ddc8f57806887861b",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 4,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0004-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "d3323ba305323f97df50322724a376bdde7cad1828a1085b03f5bdec0502776c",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 5,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0005-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "7ebe651005df120b896c46e7b120365e99ea69e6e868a81b13e6b02c15b4a9f8",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 6,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0006-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "43ffc34ea45ff675dc59d5f96793191f04a5a357d05996708d9c2ea445cf557f",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 7,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0007-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "6ecdc1634d675633939946aeb7b29f838dbeba26de5baf827ce860b0db2f09fd",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 9,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0009-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "bd3c9cff8cbc277a4f04aeaba4586503bfec7460d386b021be32ff3d63bb266f",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 11,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/tmp_checkpoints/checkpoint-0011-selected-candidate/model.safetensors",
+      "role": "tmp_selected_candidate",
+      "sha256": "8b2de4472dc0ebd65a6b4b7577dc3272d63db2490a1b6f6dbbcc54db50077e41",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 11,
+      "path": "/home/morpheus/hlx-private/classification-v5-stage-a-ident-filtered-factorized-train-v1-20261001/classification-v5-stage-a-ident-filtered-factorized-001/selected/model.safetensors",
+      "role": "selected_persisted",
+      "sha256": "8b2de4472dc0ebd65a6b4b7577dc3272d63db2490a1b6f6dbbcc54db50077e41",
+      "usable_as_selected_head_source": false
+    },
+    {
+      "classification": {
+        "architecture": {
+          "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+          "checks": {
+            "has_encoder_overlay": true,
+            "has_relation_head": false,
+            "has_resolvability_head": false,
+            "no_flat_evidence_head": true,
+            "no_gate1_head": true,
+            "no_gate2_head": true
+          },
+          "n_keys": 12,
+          "pass": false
+        },
+        "has_all_required_heads": false,
+        "missing_required_heads": [
+          "relation_head.weight",
+          "relation_head.bias",
+          "resolvability_head.weight",
+          "resolvability_head.bias"
+        ],
+        "n_encoder_keys": 12,
+        "n_keys": 12,
+        "present_required_heads": []
+      },
+      "epoch": 11,
+      "path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v5-stage-a-ident-filtered-factorized-001/model.safetensors",
+      "role": "selected_published",
+      "sha256": "8b2de4472dc0ebd65a6b4b7577dc3272d63db2490a1b6f6dbbcc54db50077e41",
+      "usable_as_selected_head_source": false
+    }
+  ],
+  "live_trainer_present": false,
+  "recoverable_sources": [],
+  "scan_note": "all retained safetensors are encoder-only (n_keys=12, heads=[]); epoch-11 sha matches incomplete selected 8b2de447\u2026"
+}

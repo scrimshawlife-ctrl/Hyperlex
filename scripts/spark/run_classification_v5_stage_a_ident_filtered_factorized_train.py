@@ -474,6 +474,7 @@ def inner() -> int:
     from hyperlexical.layout import HIDDEN, MAX_LEN
     from hyperlexical.loop import freeze_encoder
     from hyperlexical.save_pretrained import (
+        assert_factorized_heads_in_flat,
         collect_encoder_trainable,
         flatten_weight_tensors,
         split_weight_tensors,
@@ -672,6 +673,7 @@ def inner() -> int:
                 },
             }
         )
+        assert_factorized_heads_in_flat(flat)
         save_file(flat, str(path / "model.safetensors"))
         write_private(path / "meta.json", {"epoch": epoch, "role": role, "temporary": True})
         return path
@@ -1011,6 +1013,7 @@ def inner() -> int:
             },
         }
     )
+    assert_factorized_heads_in_flat(flat)
     selected_weights = selected_dir / "model.safetensors"
     save_file(flat, str(selected_weights))
     selected_config = {

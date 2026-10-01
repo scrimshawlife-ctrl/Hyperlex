@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- **Repair ident-filtered factorized checkpoint serialization — FAIL (Spec 007):**
+  `REPAIR_IDENT_FILTERED_FACTORIZED_CHECKPOINT_SERIALIZATION` scanned retained
+  selected-run artifacts for exact epoch-11 `relation_head` /
+  `resolvability_head` tensors. `hit_count=0` (all safetensors encoder-only
+  `8b2de447…`; no trainer state / export / live trainer). Sealed
+  `REPAIR_NOT_POSSIBLE_WITHOUT_RETRAIN` without manufacturing a candidate.
+  Whitelist permanently includes factorized heads; `require_factorized_heads_in_flat`
+  + train-save asserts added; regression tests land. `STAGE_A_BEST` /
+  MODEL_WIDE_BEST / V1R2 / thresholds / reserve unchanged.
+  `SCIENTIFIC_RESULT=SETTLED_PASS` preserved (source = original settled run).
+  Receipt
+  `classification-v5-stage-a-ident-filtered-factorized-checkpoint-repair-receipt-20261001.json`
+  (`6b041947…`). Next:
+  `AUTHORIZE_REPRODUCE_IDENT_FILTERED_FACTORIZED_TRAIN`.
+
 - **Promote ident-filtered factorized candidate — INVALID (Spec 007):**
   `PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE` preflight passes on
   sealed SETTLED_PASS pins, but cold-load of selected `8b2de447…` fails closed:

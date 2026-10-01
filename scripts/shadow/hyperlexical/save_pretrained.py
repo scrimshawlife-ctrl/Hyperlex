@@ -4,11 +4,16 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any, Mapping
 
 from .layout import FAMILIES, HIDDEN, LAST_TRAINABLE, LAYERS, MAX_LEN, MODEL_ID_SEED, TRUNK
 
 CARD_NAME = "hyperlex-encoder-modernbert-base-seed"
 ENCODER_PREFIX = "encoder."
+FACTORIZED_HEAD_NAMES = (
+    "relation_head",
+    "resolvability_head",
+)
 _HEAD_NAMES = (
     "classify",
     "role_head",
@@ -19,9 +24,12 @@ _HEAD_NAMES = (
     "gate1_head",
     "gate2_head",
     # Factorized Stage-A heads (must be present for promote/cold-load).
-    "relation_head",
-    "resolvability_head",
+    *FACTORIZED_HEAD_NAMES,
 )
+
+# Canonical Stage-A factorized head shapes: Linear(HIDDEN, 2).
+FACTORIZED_HEAD_WEIGHT_SHAPE = (2, HIDDEN)
+FACTORIZED_HEAD_BIAS_SHAPE = (2,)
 
 
 def encoder_tensor_key(name: str) -> str:
@@ -44,6 +52,80 @@ def flatten_weight_tensors(state: dict) -> dict:
         for key, value in encoder.items():
             tensors[encoder_tensor_key(str(key))] = value
     return tensors
+
+
+def _tensor_shape(value: Any) -> tuple[int, ...] | None:
+    if value is None:
+        return None
+    shape = getattr(value, "shape", None)
+    if shape is not None:
+        try:
+            return tuple(int(x) for x in shape)
+        except Exception:
+            return None
+    if isinstance(value, (list, tuple)):
+        if not value:
+            return (0,)
+        if isinstance(value[0], (list, tuple)):
+            return (len(value), len(value[0]))
+        return (len(value),)
+    return None
+
+
+def require_factorized_heads_in_flat(tensors: Mapping[str, Any]) -> dict[str, Any]:
+    """Fail-closed check that factorized Stage-A heads survived flatten/save."""
+    keys = set(str(k) for k in tensors.keys())
+    required = [
+        f"{name}.{suffix}"
+        for name in FACTORIZED_HEAD_NAMES
+        for suffix in ("weight", "bias")
+    ]
+    missing = [key for key in required if key not in keys]
+    shape_errors = []
+    for name in FACTORIZED_HEAD_NAMES:
+        weight_key = f"{name}.weight"
+        bias_key = f"{name}.bias"
+        if weight_key in tensors:
+            shape = _tensor_shape(tensors[weight_key])
+            if shape is not None and shape != FACTORIZED_HEAD_WEIGHT_SHAPE:
+                shape_errors.append(
+                    {
+                        "tensor": weight_key,
+                        "observed": list(shape),
+                        "expected": list(FACTORIZED_HEAD_WEIGHT_SHAPE),
+                    }
+                )
+        if bias_key in tensors:
+            shape = _tensor_shape(tensors[bias_key])
+            if shape is not None and shape != FACTORIZED_HEAD_BIAS_SHAPE:
+                shape_errors.append(
+                    {
+                        "tensor": bias_key,
+                        "observed": list(shape),
+                        "expected": list(FACTORIZED_HEAD_BIAS_SHAPE),
+                    }
+                )
+    return {
+        "pass": not missing and not shape_errors,
+        "missing": missing,
+        "present": [key for key in required if key in keys],
+        "required": required,
+        "shape_errors": shape_errors,
+        "factorized_head_names": list(FACTORIZED_HEAD_NAMES),
+    }
+
+
+def assert_factorized_heads_in_flat(tensors: Mapping[str, Any]) -> dict[str, Any]:
+    """Raise if flatten/save dropped or misshaped factorized heads."""
+    report = require_factorized_heads_in_flat(tensors)
+    if report["pass"]:
+        return report
+    parts = []
+    if report["missing"]:
+        parts.append(f"missing={report['missing']}")
+    if report["shape_errors"]:
+        parts.append(f"shape_errors={report['shape_errors']}")
+    raise ValueError(f"factorized_heads_invalid:{';'.join(parts)}")
 
 
 def split_weight_tensors(tensors: dict) -> dict:
