@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **Promote ident-filtered factorized candidate — INVALID (Spec 007):**
+  `PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE` preflight passes on
+  sealed SETTLED_PASS pins, but cold-load of selected `8b2de447…` fails closed:
+  checkpoint is encoder-only (`relation_head`/`resolvability_head` dropped by
+  `flatten_weight_tensors` whitelist at train save). `STAGE_A_BEST` remains
+  `cd2829c1…`; MODEL_WIDE_BEST / V1R2 / reserve unchanged. Whitelist fixed for
+  future saves. Receipt
+  `classification-v5-stage-a-ident-filtered-factorized-promotion-receipt-20261001.json`
+  (`1123d70d…`). Next:
+  `REPAIR_IDENT_FILTERED_FACTORIZED_CHECKPOINT_SERIALIZATION`.
+
 - **Train ident-filtered factorized once (Spec 007):**
   `TRAIN_STAGE_A_IDENT_FILTERED_FACTORIZED_ONCE` executes the single
   authorized fresh retrain from MODEL_WIDE_BEST on V1R2 under unchanged
