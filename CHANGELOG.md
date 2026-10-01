@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Reassess V6 task signal and pretrained representation (Spec 007):**
+  Diagnostic phase after architecture bakeoff exhaustion. Freeze zero-shot
+  CONTROL reference REP≈0.162. Axis/label audits, description
+  adequacy/sensitivity/oracle, human-vs-model learnability, learning curves,
+  frozen vs partial vs full fine-tune, probes, sentence/NLI pretrained
+  comparison. No architecture-family bakeoff; floors locked; QUAL sealed.
+
 - **Continue V6 architecture bake-off — architecture reset (Spec 007):**
   After `V6_BAKEOFF_NO_ADVANCE` (REP macro-F1 ≈0.024), replace A/B/C retuning
   with tracks **D** (label-description NLI/cross-encoder), **E** (joint
