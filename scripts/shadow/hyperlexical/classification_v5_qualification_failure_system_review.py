@@ -143,7 +143,8 @@ def build_system_review_receipt(
     *,
     reviewed_at: str | None = None,
 ) -> dict[str, Any]:
-    derived = derive_system_diagnosis(audit)
+    clean_audit = jsonable(dict(audit))
+    derived = derive_system_diagnosis(clean_audit)
     payload = {
         "BEST_MUTATED": False,
         "EXPERIMENT_ID": EXPERIMENT_ID,
@@ -167,7 +168,7 @@ def build_system_review_receipt(
         "THRESHOLDS_CHANGED": False,
         "TRAIN": False,
         "V5_DISPOSITION": derived["V5_DISPOSITION"],
-        "audit": dict(audit),
+        "audit": clean_audit,
         "derived": derived,
         "preserved_truths": list(PRESERVED_TRUTHS),
         "reviewed_at": reviewed_at or utc_now_iso(),

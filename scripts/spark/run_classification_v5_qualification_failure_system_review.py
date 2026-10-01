@@ -888,9 +888,11 @@ def settle(payload: dict[str, Any]) -> dict[str, Any]:
         utc_now_iso,
     )
 
-    receipt = build_system_review_receipt(payload, reviewed_at=utc_now_iso())
     PRIVATE.mkdir(mode=0o700, parents=True, exist_ok=True)
+    # Round-trip through JSON to drop None keys / numpy scalars before hashing.
     write_private(PRIVATE / "OFFLINE_AUDIT.json", payload)
+    clean_payload = json.loads((PRIVATE / "OFFLINE_AUDIT.json").read_text(encoding="utf-8"))
+    receipt = build_system_review_receipt(clean_payload, reviewed_at=utc_now_iso())
     write_private(PRIVATE / "SYSTEM_REVIEW_RECEIPT.json", receipt)
     write_private(PRIVATE / "SUMMARY.json", {
         "REVIEW_ID": REVIEW_ID,
@@ -941,6 +943,7 @@ def inner() -> int:
     write_private(PRIVATE / "OFFLINE_AUDIT.partial.json", offline)
     print("embedding_geometry", flush=True)
     full = embedding_geometry(offline)
+    write_private(PRIVATE / "OFFLINE_AUDIT.with_geometry.json", full)
     print("settling", flush=True)
     settle(full)
     if sudo_sha256(BEST_WEIGHTS) != BEST_SHA or sudo_sha256(STAGE_A_BEST_WEIGHTS) != STAGE_A_BEST_SHA:
@@ -948,9 +951,23 @@ def inner() -> int:
     return 0
 
 
+def settle_only() -> int:
+    """Resume settlement from a saved geometry audit (no model re-run)."""
+    path = PRIVATE / "OFFLINE_AUDIT.with_geometry.json"
+    if not path.exists():
+        fail("missing_OFFLINE_AUDIT.with_geometry.json")
+    payload = json.loads(sudo_read_text(path))
+    settle(payload)
+    return 0
+
+
 def main() -> int:
+    settle_mode = (
+        "--settle-only" in sys.argv
+        or os.environ.get("HLX_V5_SYSTEM_REVIEW_SETTLE") == "1"
+    )
     if os.environ.get("HLX_V5_SYSTEM_REVIEW_INNER") == "1":
-        return inner()
+        return settle_only() if settle_mode else inner()
 
     PRIVATE.mkdir(mode=0o700, parents=True, exist_ok=True)
     revision = subprocess.run(
@@ -959,12 +976,27 @@ def main() -> int:
         capture_output=True,
         text=True,
     ).stdout.strip()
+    env_flags = [
+        "-e",
+        "PYTHONPATH=/home/morpheus/Hyperlex/scripts/shadow",
+        "-e",
+        "HLX_V2_FORWARD_ONTOLOGY=1",
+        "-e",
+        "HLX_V5_SYSTEM_REVIEW_INNER=1",
+        "-e",
+        f"HLX_V5_STAGE_A_CODE_REVISION={revision}",
+    ]
+    script_args = [
+        str(REPO / "scripts/spark/run_classification_v5_qualification_failure_system_review.py")
+    ]
+    if settle_mode:
+        env_flags.extend(["-e", "HLX_V5_SYSTEM_REVIEW_SETTLE=1"])
+        script_args.append("--settle-only")
     cmd = [
         "docker",
         "run",
         "--rm",
-        "--gpus",
-        "all",
+        *([] if settle_mode else ["--gpus", "all"]),
         "--network",
         "host",
         "-v",
@@ -975,20 +1007,15 @@ def main() -> int:
         "/home/morpheus/.hyperlex:/home/morpheus/.hyperlex",
         "-w",
         str(REPO),
-        "-e",
-        "PYTHONPATH=/home/morpheus/Hyperlex/scripts/shadow",
-        "-e",
-        "HLX_V2_FORWARD_ONTOLOGY=1",
-        "-e",
-        "HLX_V5_SYSTEM_REVIEW_INNER=1",
-        "-e",
-        f"HLX_V5_STAGE_A_CODE_REVISION={revision}",
+        *env_flags,
         "--entrypoint",
         "python3",
         IMAGE,
-        str(REPO / "scripts/spark/run_classification_v5_qualification_failure_system_review.py"),
+        *script_args,
     ]
-    log = PRIVATE / "system_review_console.log"
+    log = PRIVATE / (
+        "system_review_settle_console.log" if settle_mode else "system_review_console.log"
+    )
     with log.open("w", encoding="utf-8") as handle:
         completed = subprocess.run(cmd, check=False, stdout=handle, stderr=subprocess.STDOUT)
     try:
