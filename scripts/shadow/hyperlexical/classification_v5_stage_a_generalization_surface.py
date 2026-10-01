@@ -728,6 +728,10 @@ def assign_splits_by_component(
             counts = recount()
             if counts[cell]["validation"] >= floor:
                 break
+            # Avoid overshoot that starves train floors for small cells.
+            group_n = sum(1 for m in components[key] if m.get("primary_cell") == cell)
+            if counts[cell]["validation"] + group_n > floor + 15 and counts[cell]["train"] - group_n < CELL_TRAIN_FLOOR:
+                continue
             group_split[key] = "validation"
 
     # Second pass: boost overall validation OBSERVED toward 50% without
@@ -1460,6 +1464,7 @@ def enforce_source_family_cap(
     *,
     max_share: float,
 ) -> list[dict[str, Any]]:
+    """Prefer diluting with non-offender rows; drop unpaired offenders only if needed."""
     out = [dict(r) for r in rows]
     for _guard in range(64):
         changed = False
@@ -1473,20 +1478,34 @@ def enforce_source_family_cap(
             top_fam, top_n = counts.most_common(1)[0]
             if top_n / n <= max_share:
                 continue
-            # Drop excess rows from the offending family (prefer unpaired first).
+            # Dilute first: keep all labeled, but if share still high after prior
+            # loops, drop unpaired non-OBSERVED offenders.
             offenders = sorted(
-                [r for r in labeled if source_family(r) == top_fam],
-                key=lambda item: (
-                    0 if not item.get("pair_group_id") else 1,
-                    0 if item.get("provenance") != "OBSERVED" else 1,
-                    0 if "nearcopy" not in str(item.get("notes") or "") else 1,
-                    item["identity"],
-                ),
+                [
+                    r
+                    for r in labeled
+                    if source_family(r) == top_fam
+                    and r.get("provenance") != "OBSERVED"
+                    and not r.get("pair_group_id")
+                ],
+                key=lambda item: item["identity"],
             )
-            # Target share with a little slack so post-dedupe/split still holds.
-            target_n = int(max_share * 0.98 * n)
-            drop_n = max(1, top_n - target_n)
-            drop_ids = {r["identity"] for r in offenders[:drop_n]}
+            # Need top_n / (n - drop) <= max_share => drop >= n - top_n/max_share
+            need_drop = max(1, int(n - (top_n / max_share) + 1))
+            drop_ids = {r["identity"] for r in offenders[:need_drop]}
+            if not drop_ids:
+                # Last resort: drop unpaired OBSERVED offenders outside critical cells.
+                offenders = sorted(
+                    [
+                        r
+                        for r in labeled
+                        if source_family(r) == top_fam
+                        and not r.get("pair_group_id")
+                        and r.get("primary_cell") not in CRITICAL_CELLS
+                    ],
+                    key=lambda item: item["identity"],
+                )
+                drop_ids = {r["identity"] for r in offenders[:need_drop]}
             if not drop_ids:
                 continue
             labeled = [r for r in labeled if r["identity"] not in drop_ids]
