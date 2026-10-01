@@ -1,0 +1,354 @@
+{
+  "ANNOTATION_ONLY_METADATA": [
+    "subtype",
+    "family_or_domain_label",
+    "source_family",
+    "source_provenance",
+    "pair_identity",
+    "contrast_partner",
+    "dictionary_sense",
+    "external_definition",
+    "review_notes",
+    "label_derivation_metadata"
+  ],
+  "ARCHITECTURE_CHANGE_JUSTIFIED": false,
+  "AUTO_RELABEL": false,
+  "CANONICAL_PRINCIPLE": "A text-only classifier may not be trained or evaluated against a semantic distinction that requires hidden metadata, pair context, source provenance, dictionary sense, or annotation-side information unavailable at inference.",
+  "CONTRACT_ID": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+  "CONTRACT_RULE": "REVISE_GOLD_IDENTIFIABILITY_CONTRACT",
+  "CONTRACT_STATE": "FROZEN_SPEC",
+  "DATASET_CONSEQUENCE": "ANNOTATION_FILTER_ONLY",
+  "DATASET_MUTATED": false,
+  "DIAGNOSIS_RECEIPT_SHA256": "827c0e2be1619def2af0b93fc58b8edb04bc791a3ba4ed78e823819ba87a5c81",
+  "FACTORIZED_ANNOTATION_SHA256": "4ac884504e4b2fe27e0e5de159847a158c43e2c0d75832ddc5b5c657279778b6",
+  "FACTORIZED_FAILED_CHECKPOINT_SHA256": "8a6981c1f742f127d397770462c345ddcce922895add2f4f52828c49d816d9cd",
+  "INPUT_CONTRACT_EXPANSION_JUSTIFIED": false,
+  "MODEL_INPUT": [
+    "text"
+  ],
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEW_DATASET_VERSION_REQUIRED": true,
+  "NEXT_ACTION": "APPLY_GOLD_IDENTIFIABILITY_FILTER",
+  "NEXT_ACTION_AUTHORIZED": false,
+  "OBJECTIVE_ID": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "OBJECTIVE_RECEIPT_SHA256": "45746d706d819da41eb56e788f13f4a873f8dc136c0057c9fa238a53b5bacfdc",
+  "PARENT_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-001",
+  "PRIMARY_DIAGNOSIS_PIN": "MODEL_INPUT_INFORMATION_DEFICIT",
+  "PRIMARY_REPAIR": "FILTER_CONTEXT_DEPENDENT_GOLD",
+  "PROPOSED_FUTURE_GATES": {
+    "context_required_definitive_gold": 0,
+    "e2e_eval_TEXT_IDENTIFIABLE_or_genuine_SEMANTICALLY_UNDERDETERMINED": 1.0,
+    "hidden_metadata_dependent_gold": 0,
+    "relation_training_targets_TEXT_IDENTIFIABLE": 1.0
+  },
+  "REPAIR_SCOPE": "FILTER_ONLY",
+  "SPENT_RESERVE": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "SPENT_RESERVE_OVERLAP": 0,
+  "SPENT_RESERVE_STATUS": "SPENT",
+  "STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "STAGE_A_BEST_MUTATED": false,
+  "TRAIN_AUTHORIZED": false,
+  "V1R1_DATASET_SHA256": "4095036e5af3ad7cfe9f038dd3e1f46e4ef0ea18db4c4b7186fc2b02e96d4274",
+  "V1R1_MUTATED": false,
+  "V1R2_CREATED": false,
+  "aggregate": {
+    "NEW_DATASET_VERSION_REQUIRED": true,
+    "ambiguous_uncertainty": {
+      "failure_types": {
+        "GENUINE_TEXTUAL_UNCERTAINTY": 54,
+        "MISSING_ANNOTATION_CONTEXT": 145
+      },
+      "n": 199,
+      "reason_buckets": {
+        "CONTEXT": 128,
+        "MULTI": 54,
+        "OTHER": 17
+      }
+    },
+    "base_identifiability_counts": {
+      "CONTEXT_REQUIRED": 465,
+      "INSUFFICIENT_TEXT": 54,
+      "TEXT_IDENTIFIABLE": 3066
+    },
+    "class_balance": {
+      "domain_coverage_n": 18,
+      "minimum_cell_support": 54,
+      "n_source_families": 65,
+      "relation_negative": 1851,
+      "relation_positive": 1215,
+      "resolvability_negative": 54,
+      "resolvability_positive": 3066,
+      "source_concentration_top3": [
+        [
+          "wiktionary_aggregate",
+          450
+        ],
+        [
+          "inferred_POSITIVE_EVIDENCE_0",
+          296
+        ],
+        [
+          "inferred_POSITIVE_EVIDENCE_3",
+          268
+        ]
+      ]
+    },
+    "decision_preview": {
+      "NEXT_ACTION_AUTHORIZED": false,
+      "dataset_consequence": "ANNOTATION_FILTER_ONLY",
+      "invalid_definitive_gold": 320,
+      "next_action": "APPLY_GOLD_IDENTIFIABILITY_FILTER",
+      "primary_repair": "FILTER_CONTEXT_DEPENDENT_GOLD",
+      "repair_scope": "FILTER_ONLY"
+    },
+    "disposition_counts": {
+      "EXCLUDE_FROM_TEXT_ONLY_STAGE_A": 465,
+      "KEEP_FOR_RESOLVABILITY_ONLY": 54,
+      "KEEP_GOLD": 3066
+    },
+    "e2e_evaluation_admissible": 3120,
+    "identifiability_counts": {
+      "CONTEXT_REQUIRED": 145,
+      "INSUFFICIENT_TEXT": 54,
+      "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 320,
+      "TEXT_IDENTIFIABLE": 3066
+    },
+    "n_rows": 3585,
+    "none_identifiability": {
+      "SHORT_ATOM_NONE": {
+        "TEXT_IDENTIFIABLE_NO_RELATION": 310
+      },
+      "all_NONE": {
+        "TEXT_IDENTIFIABLE_NO_RELATION": 1851
+      }
+    },
+    "present_identifiability": {
+      "DEFINITION_STYLE_PRESENT": {
+        "CONTEXT_REQUIRED_base": 0,
+        "INSUFFICIENT_TEXT_base": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 0,
+        "TEXT_IDENTIFIABLE": 308,
+        "relation_train_admissible": 308,
+        "total": 308
+      },
+      "PROSE_PRESENT": {
+        "CONTEXT_REQUIRED_base": 5,
+        "INSUFFICIENT_TEXT_base": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 5,
+        "TEXT_IDENTIFIABLE": 896,
+        "relation_train_admissible": 896,
+        "total": 901
+      },
+      "SHORT_ATOM_PRESENT": {
+        "CONTEXT_REQUIRED_base": 315,
+        "INSUFFICIENT_TEXT_base": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 315,
+        "TEXT_IDENTIFIABLE": 11,
+        "relation_train_admissible": 11,
+        "total": 326
+      },
+      "all_PRESENT": {
+        "CONTEXT_REQUIRED_base": 320,
+        "INSUFFICIENT_TEXT_base": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 320,
+        "TEXT_IDENTIFIABLE": 1215,
+        "relation_train_admissible": 1215,
+        "total": 1535
+      }
+    },
+    "relation_training_admissible": 3066,
+    "repaired_surface": {
+      "SHORT_ATOM_NONE_relation_eligible": 310,
+      "SHORT_ATOM_PRESENT_relation_eligible": 11,
+      "dataset_emitted": false,
+      "end_to_end_evaluation_eligible": 3120,
+      "gold_counts_e2e_eligible": {
+        "EVIDENCE_PRESENT": 1215,
+        "NO_EVIDENCE": 1851,
+        "UNCERTAIN": 54
+      },
+      "gold_counts_relation_eligible": {
+        "EVIDENCE_PRESENT": 1215,
+        "NO_EVIDENCE": 1851
+      },
+      "planning_witness_only": true,
+      "relation_train_eligible": 3066,
+      "resolvability_train_eligible": 3120,
+      "source_family_relation_eligible": {
+        "hub_observed_ai-native": 1,
+        "hub_observed_none": 27,
+        "inferred_HARD_NONE_0": 4,
+        "inferred_HARD_NONE_1": 5,
+        "inferred_HARD_NONE_2": 3,
+        "inferred_HARD_NONE_3": 2,
+        "inferred_LEXICAL_LOOKALIKE_NONE_0": 193,
+        "inferred_LEXICAL_LOOKALIKE_NONE_1": 187,
+        "inferred_LEXICAL_LOOKALIKE_NONE_2": 163,
+        "inferred_LEXICAL_LOOKALIKE_NONE_3": 201,
+        "inferred_NEAR_DOMAIN_NONE_0": 45,
+        "inferred_NEAR_DOMAIN_NONE_1": 31,
+        "inferred_NEAR_DOMAIN_NONE_2": 29,
+        "inferred_NEAR_DOMAIN_NONE_3": 40,
+        "inferred_ORDINARY_DOMAIN_NONE_0": 77,
+        "inferred_ORDINARY_DOMAIN_NONE_1": 56,
+        "inferred_ORDINARY_DOMAIN_NONE_2": 78,
+        "inferred_ORDINARY_DOMAIN_NONE_3": 56,
+        "inferred_POSITIVE_EVIDENCE_0": 296,
+        "inferred_POSITIVE_EVIDENCE_1": 265,
+        "inferred_POSITIVE_EVIDENCE_2": 264,
+        "inferred_POSITIVE_EVIDENCE_3": 268,
+        "inferred_SHORT_ATOM_NONE_0": 37,
+        "inferred_SHORT_ATOM_NONE_1": 25,
+        "inferred_SHORT_ATOM_NONE_2": 26,
+        "inferred_SHORT_ATOM_NONE_3": 36,
+        "wikipedia_anatomy_0": 7,
+        "wikipedia_anatomy_1": 4,
+        "wikipedia_anatomy_2": 9,
+        "wikipedia_anatomy_3": 3,
+        "wikipedia_astronomy_1": 2,
+        "wikipedia_astronomy_2": 1,
+        "wikipedia_astronomy_3": 1,
+        "wikipedia_botany_0": 8,
+        "wikipedia_botany_1": 6,
+        "wikipedia_botany_2": 11,
+        "wikipedia_botany_3": 9,
+        "wikipedia_chemistry_0": 6,
+        "wikipedia_chemistry_1": 9,
+        "wikipedia_chemistry_2": 9,
+        "wikipedia_chemistry_3": 6,
+        "wikipedia_geology_0": 8,
+        "wikipedia_geology_1": 6,
+        "wikipedia_geology_2": 7,
+        "wikipedia_geology_3": 7,
+        "wikipedia_mathematics_0": 1,
+        "wikipedia_mathematics_1": 1,
+        "wikipedia_mathematics_2": 2,
+        "wikipedia_mathematics_3": 1,
+        "wikipedia_meteorology_0": 1,
+        "wikipedia_meteorology_1": 2,
+        "wikipedia_meteorology_3": 1,
+        "wikipedia_ornithology_0": 5,
+        "wikipedia_ornithology_1": 5,
+        "wikipedia_ornithology_2": 6,
+        "wikipedia_ornithology_3": 5,
+        "wikipedia_physics_0": 5,
+        "wikipedia_physics_1": 5,
+        "wikipedia_physics_2": 7,
+        "wikipedia_physics_3": 4,
+        "wikipedia_zoology_0": 10,
+        "wikipedia_zoology_1": 6,
+        "wikipedia_zoology_2": 9,
+        "wikipedia_zoology_3": 6,
+        "wiktionary_aggregate": 450
+      },
+      "topic_domain_relation_eligible": {
+        "": 556,
+        "ai-native": 504,
+        "anatomy": 92,
+        "astronomy": 115,
+        "betting-sharp": 77,
+        "botany": 320,
+        "chemistry": 218,
+        "crypto-degen": 74,
+        "gaming-meta": 97,
+        "geology": 98,
+        "internet-slang": 64,
+        "mathematics": 111,
+        "meteorology": 126,
+        "near-domain": 101,
+        "ornithology": 137,
+        "physics": 92,
+        "technology-ai": 71,
+        "unspecified": 101,
+        "zoology": 112
+      }
+    },
+    "repaired_surface_viability": "REPAIRED_SURFACE_VIABLE",
+    "required_external_information_distribution": {
+      "ANNOTATOR_NOTE": 465,
+      "DICTIONARY_SENSE": 341,
+      "DOMAIN_SENSE": 451,
+      "NONE": 3120,
+      "PAIR_CONTEXT": 311,
+      "PROVENANCE_CONTEXT": 465,
+      "SOURCE_CONTEXT": 44
+    },
+    "resolvability_training_admissible": 3120,
+    "short_atom_disposition_by_label": {
+      "CONTEXT_DEPENDENT_RELATION": {
+        "EVIDENCE_PRESENT": 315
+      },
+      "LEXEME_ONLY": {
+        "NO_EVIDENCE": 308
+      },
+      "SELF_CONTAINED_RELATION": {
+        "EVIDENCE_PRESENT": 11,
+        "NO_EVIDENCE": 2
+      }
+    },
+    "short_atom_disposition_counts": {
+      "CONTEXT_DEPENDENT_RELATION": 315,
+      "LEXEME_ONLY": 308,
+      "SELF_CONTAINED_RELATION": 13
+    },
+    "split_counts": {
+      "train": 2531,
+      "validation": 1054
+    },
+    "subtype_identifiability_table": {
+      "AMBIGUOUS_EVIDENCE": {
+        "CONTEXT_REQUIRED": 145,
+        "INSUFFICIENT_TEXT": 54,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 0,
+        "TEXT_IDENTIFIABLE": 0,
+        "total": 199
+      },
+      "HARD_NONE": {
+        "CONTEXT_REQUIRED": 0,
+        "INSUFFICIENT_TEXT": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 0,
+        "TEXT_IDENTIFIABLE": 41,
+        "total": 41
+      },
+      "LEXICAL_LOOKALIKE_NONE": {
+        "CONTEXT_REQUIRED": 0,
+        "INSUFFICIENT_TEXT": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 0,
+        "TEXT_IDENTIFIABLE": 744,
+        "total": 744
+      },
+      "NEAR_DOMAIN_NONE": {
+        "CONTEXT_REQUIRED": 0,
+        "INSUFFICIENT_TEXT": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 0,
+        "TEXT_IDENTIFIABLE": 145,
+        "total": 145
+      },
+      "ORDINARY_DOMAIN_NONE": {
+        "CONTEXT_REQUIRED": 0,
+        "INSUFFICIENT_TEXT": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 0,
+        "TEXT_IDENTIFIABLE": 637,
+        "total": 637
+      },
+      "POSITIVE_EVIDENCE": {
+        "CONTEXT_REQUIRED": 0,
+        "INSUFFICIENT_TEXT": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 320,
+        "TEXT_IDENTIFIABLE": 1215,
+        "total": 1535
+      },
+      "SHORT_ATOM_NONE": {
+        "CONTEXT_REQUIRED": 0,
+        "INSUFFICIENT_TEXT": 0,
+        "INVALID_GOLD_FOR_TEXT_ONLY_MODEL": 0,
+        "TEXT_IDENTIFIABLE": 284,
+        "total": 284
+      }
+    }
+  },
+  "n_rows_classified": 3585,
+  "receipt_sha256": "4ce0e5faccef3772bbefdfc42f878446602ffa59f4d7ae9933652b687a41e3e4",
+  "schema": "hyperlex.classification.v5.stage_a_gold_identifiability_contract.v1"
+}

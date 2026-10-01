@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+- **Gold identifiability contract V1 (Spec 007):**
+  `REVISE_GOLD_IDENTIFIABILITY_CONTRACT` freezes
+  `HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1` with
+  `MODEL_INPUT = text` only. Read-only V1R1 audit (3585 rows): 
+  TEXT_IDENTIFIABLE 3066 / INVALID_GOLD 320 / CONTEXT_REQUIRED 145 /
+  INSUFFICIENT_TEXT 54. SHORT_ATOM PRESENT: 315/326 context-dependent
+  (invalid for text-only); only 11 remain relation-train admissible.
+  All 1851 NONE are text-identifiable no-relation. AMBIGUOUS: 54 genuine
+  textual uncertainty vs 145 missing annotation context. Recommended
+  dispositions (not applied): KEEP_GOLD 3066 / EXCLUDE 465 /
+  KEEP_FOR_RESOLVABILITY_ONLY 54. Hypothetical repaired surface viable
+  (relation +/- 1215/1851). Primary repair
+  `FILTER_CONTEXT_DEPENDENT_GOLD`; next (unauthorized)
+  `APPLY_GOLD_IDENTIFIABILITY_FILTER`. No V1R1 mutation, auto-relabel,
+  V1R2, input expansion, or BEST moves. Receipt
+  `classification-v5-stage-a-gold-identifiability-contract-receipt-20261001.json`
+  (`4ce0e5fa…`).
+
 - **Diagnose factorized relation SETTLED_FAIL (Spec 007):**
   `DIAGNOSE_STAGE_A_FACTORIZED_RELATION_SETTLED_FAIL` (read-only) freezes
   cross-checkpoint SHORT_ATOM geometry on V1R1 for MODEL_WIDE_BEST /
