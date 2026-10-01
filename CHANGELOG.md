@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Qualify V5 pipeline on fresh evaluation surface (Spec 007):**
+  `QUALIFY_HYPERLEX_V5_PIPELINE_ON_FRESH_EVALUATION_SURFACE` builds a fresh
+  text-identifiable qualification surface disjoint from V1R2/index/reserves,
+  seals it, and one-shot scores the frozen V5 Stage-A/B V1R2 package. No
+  train/retune/index rebuild/reserve reuse. Hub remains unauthorized.
+  Experiment `HYPERLEX_V5_PIPELINE_QUALIFICATION_001`.
+
 - **Seal + package V5 Stage-A/B V1R2 pipeline (Spec 007):**
   `SEAL_AND_PACKAGE_HYPERLEX_V5_STAGE_A_B_V1R2_PIPELINE` freezes
   `HYPERLEX_V5_STAGE_A_B_PIPELINE_V1` on canonical Stage-A `f2b00c5d…` +
