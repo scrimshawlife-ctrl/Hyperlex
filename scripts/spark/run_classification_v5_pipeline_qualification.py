@@ -204,12 +204,203 @@ def code_revision() -> str:
 
 
 def load_jsonl(path: Path) -> list[dict]:
+    text = sudo_read_text(path) if not os.access(path, os.R_OK) else path.read_text(
+        encoding="utf-8"
+    )
     rows = []
-    with path.open(encoding="utf-8") as handle:
-        for line in handle:
-            if line.strip():
-                rows.append(json.loads(line))
+    for line in text.splitlines():
+        if line.strip():
+            rows.append(json.loads(line))
     return rows
+
+
+def load_private_json(path: Path) -> dict:
+    return json.loads(sudo_read_text(path))
+
+
+def settle_after_score(
+    *,
+    sealed_rows: list[dict],
+    hashes: dict[str, str],
+    seal: dict[str, Any],
+    composition: dict[str, Any],
+    cold_load: dict[str, Any],
+    forwards: list[dict],
+    metrics: dict[str, Any],
+) -> dict[str, Any]:
+    from hyperlexical.classification_v5_pipeline_qualification import (
+        QUALIFICATION_ID,
+        build_qualification_receipt,
+        utc_now_iso,
+    )
+
+    write_jsonl(PRIVATE / "FORWARDS.jsonl", forwards)
+    write_private(PRIVATE / "METRICS.json", metrics)
+
+    spent_rows = mark_spent(sealed_rows)
+    write_jsonl(PRIVATE / "QUALIFICATION_SURFACE_SPENT.jsonl", spent_rows)
+
+    integrity = (
+        seal.get("identifiability_pass")
+        and seal.get("disjointness_pass")
+        and seal.get("composition_pass")
+        and cold_load.get("pass")
+        and metrics.get("gating", {}).get("pass")
+    )
+    receipt = build_qualification_receipt(
+        code_revision=code_revision(),
+        surface_hashes=hashes,
+        composition=composition,
+        disjointness=load_private_json(PRIVATE / "DISJOINTNESS_WITNESS.json"),
+        identifiability=load_private_json(PRIVATE / "IDENTIFIABILITY_WITNESS.json"),
+        metrics=metrics,
+        cold_load=cold_load,
+        integrity_pass=bool(integrity),
+        scored_at=utc_now_iso(),
+    )
+    write_private(PRIVATE / "QUALIFICATION_RECEIPT.json", receipt)
+
+    summary = {
+        "QUALIFICATION_DISPOSITION": receipt["QUALIFICATION_DISPOSITION"],
+        "QUALIFICATION_ID": QUALIFICATION_ID,
+        "QUALIFICATION_RECEIPT_SHA256": receipt["QUALIFICATION_RECEIPT_SHA256"],
+        "RELEASE_ELIGIBLE": receipt["RELEASE_ELIGIBLE"],
+        "HUB_PUBLISH_AUTHORIZED": receipt["HUB_PUBLISH_AUTHORIZED"],
+        "NEXT_ACTION": receipt["NEXT_ACTION"],
+        "n_rows": len(sealed_rows),
+        "labels": composition.get("labels"),
+        "n_families": composition.get("n_families"),
+        "short_atom_none": composition.get("short_atom_none"),
+        "short_atom_present": composition.get("short_atom_present"),
+        "false_entry": metrics.get("false_evidence_entry_rate_on_none"),
+        "present_recall": metrics.get("present_recall"),
+        "none_recall": metrics.get("none_recall"),
+        "uncertain_recall": metrics.get("uncertain_recall"),
+        "family_precision": metrics.get("family_emission_precision"),
+        "selective_accuracy": metrics.get("selective_accuracy"),
+        "primary_gate_pass": metrics.get("primary_gate_pass"),
+        "qualification_seal_sha256": hashes.get("qualification_seal_sha256"),
+        "qualification_rows_sha256": hashes.get("qualification_rows_sha256"),
+        "MODEL_WIDE_BEST": BEST_SHA,
+        "STAGE_A_BEST": STAGE_A_BEST_SHA,
+        "STAGE_B_INDEX": INDEX_SHA,
+        "TRAIN": False,
+        "RESERVE_CONSUMED": False,
+        "score_mode": "sealed_surface_once",
+    }
+    write_private(PRIVATE / "SUMMARY.json", summary)
+
+    write_repo(REPO_ART / "SUMMARY.json", summary)
+    write_repo(REPO_ART / "qualification_receipt.json", receipt)
+    write_repo(REPO_ART / "metrics.json", metrics)
+    write_repo(REPO_ART / "composition.json", composition)
+    write_repo(REPO_ART / "qualification_seal.json", seal)
+    write_repo(
+        REPO_ART / "artifact_hashes.json",
+        load_private_json(PRIVATE / "ARTIFACT_HASHES.json"),
+    )
+    write_repo(
+        SPEC / "classification-v5-pipeline-qualification-receipt-20261001.json",
+        receipt,
+    )
+    write_repo(
+        SPEC / "classification-v5-pipeline-qualification-20261001.md",
+        f"""# QUALIFY_HYPERLEX_V5_PIPELINE_ON_FRESH_EVALUATION_SURFACE
+
+```text
+QUALIFICATION_DISPOSITION = {summary['QUALIFICATION_DISPOSITION']}
+QUALIFICATION_ID = {QUALIFICATION_ID}
+n_rows = {summary['n_rows']}
+labels = {summary['labels']}
+families = {summary['n_families']}
+false_entry = {summary['false_entry']}
+PRESENT_recall = {summary['present_recall']}
+NONE_recall = {summary['none_recall']}
+family_precision = {summary['family_precision']}
+selective_accuracy = {summary['selective_accuracy']}
+RELEASE_ELIGIBLE = {summary['RELEASE_ELIGIBLE']}
+HUB_PUBLISH_AUTHORIZED = {summary['HUB_PUBLISH_AUTHORIZED']}
+RECEIPT = {summary['QUALIFICATION_RECEIPT_SHA256']}
+NEXT_ACTION = {summary['NEXT_ACTION']}
+```
+""",
+    )
+
+    if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
+        fail("BEST_mutated")
+    if sudo_sha256(STAGE_A_BEST_WEIGHTS) != STAGE_A_BEST_SHA:
+        fail("STAGE_A_BEST_mutated")
+
+    print(json.dumps(summary, indent=2, sort_keys=True))
+    return summary
+
+
+def score_sealed_surface() -> int:
+    """Resume one-shot scoring against an already-sealed immutable surface."""
+    from hyperlexical.classification_v5_pipeline_qualification import (
+        QUALIFICATION_ID,
+        verify_package_binding,
+    )
+
+    required = [
+        "QUALIFICATION_SURFACE.jsonl",
+        "QUALIFICATION_MANIFEST.json",
+        "QUALIFICATION_SEAL.json",
+        "ARTIFACT_HASHES.json",
+        "IDENTIFIABILITY_WITNESS.json",
+        "DISJOINTNESS_WITNESS.json",
+        "SOURCE_DOMAIN_WITNESS.json",
+        "LABEL_PROVENANCE_WITNESS.json",
+    ]
+    missing = [name for name in required if not (PRIVATE / name).exists()]
+    if missing:
+        fail(f"sealed_surface_incomplete:{missing}")
+
+    if (PRIVATE / "FORWARDS.jsonl").exists() or (PRIVATE / "QUALIFICATION_RECEIPT.json").exists():
+        fail("score_already_executed_on_sealed_surface")
+
+    hashes = load_private_json(PRIVATE / "ARTIFACT_HASHES.json")
+    seal = load_private_json(PRIVATE / "QUALIFICATION_SEAL.json")
+    manifest = load_private_json(PRIVATE / "QUALIFICATION_MANIFEST.json")
+    composition = dict(manifest.get("composition") or {})
+
+    binding_check = verify_package_binding(manifest.get("binding") or {})
+    if not binding_check.get("pass"):
+        fail(json.dumps({"binding_mismatch": binding_check}, sort_keys=True))
+
+    rows_path = PRIVATE / "QUALIFICATION_SURFACE.jsonl"
+    rows_sha = sudo_sha256(rows_path)
+    if rows_sha != hashes.get("qualification_rows_sha256"):
+        fail("rows_sha_mismatch_vs_artifact_hashes")
+    if rows_sha != seal.get("qualification_rows_sha256"):
+        fail("rows_sha_mismatch_vs_seal")
+    if seal.get("QUALIFICATION_ID") != QUALIFICATION_ID:
+        fail("qualification_id_mismatch")
+    if not seal.get("immutable"):
+        fail("seal_not_immutable")
+    if not (
+        seal.get("identifiability_pass")
+        and seal.get("disjointness_pass")
+        and seal.get("composition_pass")
+    ):
+        fail(json.dumps({"seal_integrity_failed": seal}, sort_keys=True))
+
+    sealed_rows = load_jsonl(rows_path)
+    if len(sealed_rows) != int(manifest.get("n_rows") or -1):
+        fail("sealed_row_count_mismatch")
+
+    print("scoring_once_sealed_surface", flush=True)
+    cold_load, forwards, metrics = score_once(sealed_rows)
+    summary = settle_after_score(
+        sealed_rows=sealed_rows,
+        hashes=hashes,
+        seal=seal,
+        composition=composition,
+        cold_load=cold_load,
+        forwards=forwards,
+        metrics=metrics,
+    )
+    return 0 if summary["QUALIFICATION_DISPOSITION"] != "QUALIFICATION_INVALID" else 2
 
 
 def _api(api: str, params: dict[str, str]) -> dict[str, Any]:
@@ -1143,9 +1334,9 @@ def score_once(rows: list[dict]) -> tuple[dict, list[dict], dict]:
     from transformers import AutoModel, AutoTokenizer
 
     from hyperlexical.classification_v5_pipeline_qualification import (
-        compose_runtime_row,
         score_qualification_rows,
     )
+    from hyperlexical.classification_v5_seal_and_package import compose_runtime_row
     from hyperlexical.classification_v5_stage_a_canonical import (
         decide_canonical_stage_a,
         may_invoke_stage_b,
@@ -1273,12 +1464,6 @@ def mark_spent(rows: list[dict]) -> list[dict]:
 
 
 def inner() -> int:
-    from hyperlexical.classification_v5_pipeline_qualification import (
-        QUALIFICATION_ID,
-        build_qualification_receipt,
-        utc_now_iso,
-    )
-
     if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
         fail("MODEL_WIDE_BEST_mismatch_pre")
     if sudo_sha256(STAGE_A_BEST_WEIGHTS) != STAGE_A_BEST_SHA:
@@ -1325,114 +1510,26 @@ def inner() -> int:
 
     print("scoring_once", flush=True)
     cold_load, forwards, metrics = score_once(sealed_rows)
-    write_jsonl(PRIVATE / "FORWARDS.jsonl", forwards)
-    write_private(PRIVATE / "METRICS.json", metrics)
-
-    spent_rows = mark_spent(sealed_rows)
-    write_jsonl(PRIVATE / "QUALIFICATION_SURFACE_SPENT.jsonl", spent_rows)
-
-    integrity = (
-        seal.get("identifiability_pass")
-        and seal.get("disjointness_pass")
-        and seal.get("composition_pass")
-        and cold_load.get("pass")
-        and metrics.get("gating", {}).get("pass")
-    )
-    receipt = build_qualification_receipt(
-        code_revision=code_revision(),
-        surface_hashes=hashes,
+    summary = settle_after_score(
+        sealed_rows=sealed_rows,
+        hashes=hashes,
+        seal=seal,
         composition=composition,
-        disjointness=json.loads((PRIVATE / "DISJOINTNESS_WITNESS.json").read_text()),
-        identifiability=json.loads(
-            (PRIVATE / "IDENTIFIABILITY_WITNESS.json").read_text()
-        ),
-        metrics=metrics,
         cold_load=cold_load,
-        integrity_pass=bool(integrity),
-        scored_at=utc_now_iso(),
+        forwards=forwards,
+        metrics=metrics,
     )
-    write_private(PRIVATE / "QUALIFICATION_RECEIPT.json", receipt)
-
-    summary = {
-        "QUALIFICATION_DISPOSITION": receipt["QUALIFICATION_DISPOSITION"],
-        "QUALIFICATION_ID": QUALIFICATION_ID,
-        "QUALIFICATION_RECEIPT_SHA256": receipt["QUALIFICATION_RECEIPT_SHA256"],
-        "RELEASE_ELIGIBLE": receipt["RELEASE_ELIGIBLE"],
-        "HUB_PUBLISH_AUTHORIZED": receipt["HUB_PUBLISH_AUTHORIZED"],
-        "NEXT_ACTION": receipt["NEXT_ACTION"],
-        "n_rows": len(sealed_rows),
-        "labels": composition.get("labels"),
-        "n_families": composition.get("n_families"),
-        "short_atom_none": composition.get("short_atom_none"),
-        "short_atom_present": composition.get("short_atom_present"),
-        "false_entry": metrics.get("false_evidence_entry_rate_on_none"),
-        "present_recall": metrics.get("present_recall"),
-        "none_recall": metrics.get("none_recall"),
-        "uncertain_recall": metrics.get("uncertain_recall"),
-        "family_precision": metrics.get("family_emission_precision"),
-        "selective_accuracy": metrics.get("selective_accuracy"),
-        "primary_gate_pass": metrics.get("primary_gate_pass"),
-        "qualification_seal_sha256": hashes.get("qualification_seal_sha256"),
-        "qualification_rows_sha256": hashes.get("qualification_rows_sha256"),
-        "MODEL_WIDE_BEST": BEST_SHA,
-        "STAGE_A_BEST": STAGE_A_BEST_SHA,
-        "STAGE_B_INDEX": INDEX_SHA,
-        "TRAIN": False,
-        "RESERVE_CONSUMED": False,
-    }
-    write_private(PRIVATE / "SUMMARY.json", summary)
-
-    # Repo artifacts (no full surface jsonl in git — hashes/receipts only)
-    write_repo(REPO_ART / "SUMMARY.json", summary)
-    write_repo(REPO_ART / "qualification_receipt.json", receipt)
-    write_repo(REPO_ART / "metrics.json", metrics)
-    write_repo(REPO_ART / "composition.json", composition)
-    write_repo(
-        REPO_ART / "qualification_seal.json",
-        json.loads((PRIVATE / "QUALIFICATION_SEAL.json").read_text()),
-    )
-    write_repo(
-        REPO_ART / "artifact_hashes.json",
-        json.loads((PRIVATE / "ARTIFACT_HASHES.json").read_text()),
-    )
-    write_repo(
-        SPEC / "classification-v5-pipeline-qualification-receipt-20261001.json",
-        receipt,
-    )
-    write_repo(
-        SPEC / "classification-v5-pipeline-qualification-20261001.md",
-        f"""# QUALIFY_HYPERLEX_V5_PIPELINE_ON_FRESH_EVALUATION_SURFACE
-
-```text
-QUALIFICATION_DISPOSITION = {summary['QUALIFICATION_DISPOSITION']}
-QUALIFICATION_ID = {QUALIFICATION_ID}
-n_rows = {summary['n_rows']}
-labels = {summary['labels']}
-families = {summary['n_families']}
-false_entry = {summary['false_entry']}
-PRESENT_recall = {summary['present_recall']}
-NONE_recall = {summary['none_recall']}
-family_precision = {summary['family_precision']}
-selective_accuracy = {summary['selective_accuracy']}
-RELEASE_ELIGIBLE = {summary['RELEASE_ELIGIBLE']}
-HUB_PUBLISH_AUTHORIZED = {summary['HUB_PUBLISH_AUTHORIZED']}
-RECEIPT = {summary['QUALIFICATION_RECEIPT_SHA256']}
-NEXT_ACTION = {summary['NEXT_ACTION']}
-```
-""",
-    )
-
-    if sudo_sha256(BEST_WEIGHTS) != BEST_SHA:
-        fail("BEST_mutated")
-    if sudo_sha256(STAGE_A_BEST_WEIGHTS) != STAGE_A_BEST_SHA:
-        fail("STAGE_A_BEST_mutated")
-
-    print(json.dumps(summary, indent=2, sort_keys=True))
     return 0 if summary["QUALIFICATION_DISPOSITION"] != "QUALIFICATION_INVALID" else 2
 
 
 def main() -> int:
+    score_sealed = (
+        "--score-sealed" in sys.argv
+        or os.environ.get("HLX_V5_QUALIFICATION_SCORE_SEALED") == "1"
+    )
     if os.environ.get("HLX_V5_QUALIFICATION_INNER") == "1":
+        if score_sealed or os.environ.get("HLX_V5_QUALIFICATION_SCORE_SEALED") == "1":
+            return score_sealed_surface()
         return inner()
 
     PRIVATE.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -1466,7 +1563,17 @@ def main() -> int:
         IMAGE,
         str(REPO / "scripts/spark/run_classification_v5_pipeline_qualification.py"),
     ]
-    log = PRIVATE / "qualification_console.log"
+    if score_sealed:
+        idx = cmd.index("HLX_V5_QUALIFICATION_INNER=1")
+        cmd.insert(idx, "HLX_V5_QUALIFICATION_SCORE_SEALED=1")
+        cmd.insert(idx, "-e")
+        cmd.append("--score-sealed")
+    log_name = (
+        "qualification_score_sealed_console.log"
+        if score_sealed
+        else "qualification_console.log"
+    )
+    log = PRIVATE / log_name
     with log.open("w", encoding="utf-8") as handle:
         completed = subprocess.run(cmd, check=False, stdout=handle, stderr=subprocess.STDOUT)
     try:
