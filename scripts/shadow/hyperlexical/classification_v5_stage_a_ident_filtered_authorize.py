@@ -56,7 +56,9 @@ from .classification_v5_stage_a_two_stage import (
     _account_row,
     _empty_class_account,
     _finalize_binary_accounts,
+    full_pass_batch_indices,
     identity_list_sha256,
+    split_lines_sha256,
 )
 from .classification_v5_stage_a_two_stage_generalization import (
     PARENT_STAGE_A_BEST_SHA,
@@ -248,6 +250,95 @@ def verify_exclusion_integrity(
         "overlap": 0,
         "pass": True,
     }
+
+
+def build_v1r2_ident_filtered_split_witness(
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    dataset_sha256: str,
+    dataset_path: str,
+    code_revision: str,
+    exclusion_identities: Sequence[str] | None = None,
+) -> dict[str, Any]:
+    """V1R2 split witness — parent membership preserved; no new split."""
+    if dataset_sha256 != V1R2_DATASET_SHA256_PIN:
+        raise ValueError("INPUT_IDENTITY:dataset_mismatch")
+    train_rows = [row for row in rows if row.get("split") == "train"]
+    val_rows = [row for row in rows if row.get("split") == "validation"]
+    train_ids = [str(row["identity"]) for row in train_rows]
+    val_ids = [str(row["identity"]) for row in val_rows]
+    train_id_sha = identity_list_sha256(train_ids)
+    val_id_sha = identity_list_sha256(val_ids)
+    train_split_sha = split_lines_sha256(dataset_path, split="train")
+    val_split_sha = split_lines_sha256(dataset_path, split="validation")
+    verify_v1r2_split_pins(
+        train_rows=train_rows,
+        validation_rows=val_rows,
+        train_split_sha256=train_split_sha,
+        validation_split_sha256=val_split_sha,
+        train_identity_list_sha256=train_id_sha,
+        validation_identity_list_sha256=val_id_sha,
+    )
+    if exclusion_identities is not None:
+        excluded = set(str(x) for x in exclusion_identities)
+        resurrected = (set(train_ids) | set(val_ids)) & excluded
+        if resurrected:
+            raise ValueError(f"EXCLUSION_RESURRECTION:{len(resurrected)}")
+    steps = len(
+        full_pass_batch_indices(
+            EXPECTED_TRAIN_ROWS,
+            batch_size=int(TRAIN_HYPERPARAMS["micro_batch_size"]),
+            seed=int(TRAIN_HYPERPARAMS["seed"]),
+            drop_last=DROP_LAST,
+        )
+    )
+    if steps != EXPECTED_OPTIMIZER_STEPS_PER_EPOCH:
+        raise ValueError(
+            f"INPUT_IDENTITY:optimizer_steps_per_epoch!={EXPECTED_OPTIMIZER_STEPS_PER_EPOCH}"
+        )
+    witness = {
+        "DATASET_VERSION": DATASET_VERSION,
+        "SURFACE_ID": SURFACE_ID,
+        "class_balanced_sampler": False,
+        "code_revision": code_revision,
+        "dataset_sha256": dataset_sha256,
+        "drop_last": DROP_LAST,
+        "exclusion_resurrection": 0,
+        "optimizer_steps_per_epoch": steps,
+        "oversampling": False,
+        "parent_split_membership_preserved": True,
+        "relation_train_eligible": EXPECTED_RELATION_TRAIN_ELIGIBLE,
+        "relation_train_masked": EXPECTED_RELATION_TRAIN_MASKED,
+        "replacement": False,
+        "sampling": "full_pass_deterministic_shuffle",
+        "schema": (
+            "hyperlex.classification.v5."
+            "stage_a_ident_filtered_factorized_split_witness.v1"
+        ),
+        "shuffle_seed": int(TRAIN_HYPERPARAMS["seed"]),
+        "spent_reserve": SPENT_RESERVE,
+        "spent_reserve_overlap": SPENT_RESERVE_OVERLAP,
+        "spent_reserve_status": SPENT_RESERVE_STATUS,
+        "train_dataloader_len": steps,
+        "train_identity_list_sha256": train_id_sha,
+        "train_rows": EXPECTED_TRAIN_ROWS,
+        "train_split_sha256": train_split_sha,
+        "train_validation_identity_overlap": 0,
+        "undersampling": False,
+        "validation_identity_list_sha256": val_id_sha,
+        "validation_rows": EXPECTED_VALIDATION_ROWS,
+        "validation_split_sha256": val_split_sha,
+    }
+    witness["V1R2_IDENT_FILTERED_SPLIT_WITNESS_SHA256"] = sha256_text(
+        canonical_json(
+            {
+                k: v
+                for k, v in witness.items()
+                if k != "V1R2_IDENT_FILTERED_SPLIT_WITNESS_SHA256"
+            }
+        )
+    )
+    return witness
 
 
 def verify_v1r2_split_pins(
