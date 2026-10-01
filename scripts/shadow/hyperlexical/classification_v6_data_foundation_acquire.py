@@ -228,7 +228,13 @@ def enforce_train_family_cap(
     *,
     max_share: float = MAX_FAMILY_SHARE_TRAIN,
 ) -> list[dict[str, Any]]:
-    """Downsample TRAIN PRESENT rows so no family exceeds max_share."""
+    """Downsample TRAIN PRESENT rows so no family exceeds max_share.
+
+    Finds the largest per-family keep-count ``k`` such that
+    ``max_family_count / total <= max_share``. If the active family set is too
+    small for the bound (theoretical floor is ``1/n_families``), keeps the
+    equalized best-effort sample and leaves the residual share for audit.
+    """
     train = [dict(r) for r in rows if r.get("split") == "TRAIN"]
     other = [dict(r) for r in rows if r.get("split") != "TRAIN"]
     present = [r for r in train if r.get("evidence_label") == "EVIDENCE_PRESENT"]
@@ -239,25 +245,24 @@ def enforce_train_family_cap(
     by_fam: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in present:
         by_fam[str(row.get("gold_family"))].append(row)
-    # iterative cap against current retained present count
-    retained: list[dict[str, Any]] = []
-    # sort families by size descending; greedily keep up to cap of final size estimate
-    # Use target total = min(len(present), max over iterative)
-    target_total = len(present)
-    max_n = max(1, int(target_total * max_share))
-    # If still over after first pass, reduce target
-    for _ in range(3):
-        retained = []
-        max_n = max(1, int(target_total * max_share))
-        for fam in sorted(by_fam, key=lambda f: (-len(by_fam[f]), f)):
-            bucket = sorted(by_fam[fam], key=lambda r: r["identity"])
-            retained.extend(bucket[:max_n])
-        target_total = len(retained)
-        shares = Counter(r["gold_family"] for r in retained)
-        if not shares:
+    for fam in by_fam:
+        by_fam[fam] = sorted(by_fam[fam], key=lambda r: r["identity"])
+
+    max_avail = max(len(v) for v in by_fam.values())
+    retained: list[dict[str, Any]] = list(present)
+    for k in range(max_avail, 0, -1):
+        candidate: list[dict[str, Any]] = []
+        for fam in sorted(by_fam):
+            candidate.extend(by_fam[fam][:k])
+        if not candidate:
+            continue
+        top = max(Counter(r["gold_family"] for r in candidate).values())
+        if top / len(candidate) <= max_share + 1e-9:
+            retained = candidate
             break
-        if max(shares.values()) / max(1, len(retained)) <= max_share + 1e-9:
-            break
+    else:
+        # Impossible under max_share with current family cardinality — equalize at 1.
+        retained = [by_fam[fam][0] for fam in sorted(by_fam) if by_fam[fam]]
     return other + non_present + retained
 
 
