@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Continue V6 architecture bake-off — architecture reset (Spec 007):**
+  After `V6_BAKEOFF_NO_ADVANCE` (REP macro-F1 ≈0.024), replace A/B/C retuning
+  with tracks **D** (label-description NLI/cross-encoder), **E** (joint
+  text–label embeddings), **F** (hierarchy-aware contrastive), plus CONTROL vs
+  EXTERNAL encoder controls and a read-only zero-shot text↔label-description
+  diagnostic. Floors locked (REP system ≥0.20, hierarchy viol ≤0.05, axis
+  macro-F1 ≥0.10). QUAL sealed. Ontology/migration gold unchanged.
+
 - **Rebuild V6 labels and run architecture bake-off (Spec 007):**
   Amended settlement protocol with three-level multi-label agreement
   (per-label / per-example Jaccard·set-F1 / boundary matrices + Wilson CIs);
