@@ -1,0 +1,51 @@
+{
+  "CANONICAL_ID": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+  "DIAGNOSE_RULE": "DIAGNOSE_V5_PIPELINE_BEFORE_PACKAGING",
+  "NEXT_ACTION": "ALIGN_V5_STAGE_B_TO_V1R2_OR_SCOPED_CROSS_SURFACE_EVAL",
+  "PIPELINE_DIAGNOSIS_RECEIPT_SHA256": "f3e7cabe03de16f1158bb6c8e6e4a7f310bc6683a11c45f7f5907e29aff8a165",
+  "PIPELINE_EVAL_PASS": false,
+  "PIPELINE_EVAL_RECEIPT_SHA256": "585684297968ea2d661894bfec7c74096e7a8944f44f444250fee11c4ff43cab",
+  "PRIMARY_DIAGNOSIS": "STAGE_A_V1R2_CANONICAL_ON_STAGE_B_V1R9_SURFACE",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "allowed_next_phases": [
+    "BUILD_V1R2_STAGE_B_INDEX_UNDER_CANONICAL_STAGE_A",
+    "SCOPED_CROSS_SURFACE_COMPARISON_WITHOUT_PROMOTION",
+    "HOLD_PACKAGING_LOCAL_ONLY_UNTIL_ALIGNMENT"
+  ],
+  "findings": {
+    "entry_gating_intact": true,
+    "false_entry_gate": 0.05,
+    "false_entry_on_v1r9": 0.19488817891373802,
+    "family_emission_precision": 0.7608695652173914,
+    "index_embedding_parent_stage_a": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "index_encoder_parent_mismatch": true,
+    "primary_gate_pass": false,
+    "query_encoder_stage_a": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "stage_a_canonical_dataset_sha256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+    "stage_a_canonical_surface": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+    "stage_b_eval_dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+    "stage_b_eval_surface": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+    "stage_b_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+    "surface_mismatch": true
+  },
+  "forbidden_now": [
+    "score_spent_reserve",
+    "retrain_stage_a",
+    "silent_hub_publish",
+    "claim_full_pipeline_pass_on_v1r9"
+  ],
+  "index_rebuilt": false,
+  "reserve_scored": false,
+  "root_causes": [
+    {
+      "detail": "Canonical Stage-A was settled on identifiability-filtered V1R2; frozen Stage-B index/validation surface remains V1R9.",
+      "id": "SURFACE_MISMATCH"
+    },
+    {
+      "detail": "Index embeddings sealed under superseded two-stage STAGE_A_BEST; queries encode under factorized canonical STAGE_A_BEST. Index rebuild forbidden by freeze contract.",
+      "id": "INDEX_ENCODER_PARENT_MISMATCH"
+    }
+  ],
+  "schema": "hyperlex.classification.v5.pipeline_diagnosis.v1",
+  "train": false
+}

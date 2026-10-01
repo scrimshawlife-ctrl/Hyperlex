@@ -1,0 +1,176 @@
+{
+  "BEST_MUTATED": false,
+  "CANONICAL_ID": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+  "EVAL_RULE": "EVALUATE_FULL_V5_PIPELINE",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-PIPELINE-EVAL-001",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "DIAGNOSE_V5_PIPELINE_BEFORE_PACKAGING",
+  "PIPELINE_EVAL_PASS": false,
+  "PIPELINE_EVAL_RECEIPT_SHA256": "585684297968ea2d661894bfec7c74096e7a8944f44f444250fee11c4ff43cab",
+  "PIPELINE_ID": "HYPERLEX_V5_STAGE_A_B_PIPELINE_V1",
+  "RESERVE_CONSUMED": false,
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_B_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-B-001",
+  "STAGE_B_RULE": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+  "TRAIN": false,
+  "V5_STAGE_A_STATE": "CANONICAL_FROZEN",
+  "checks": {
+    "evaluation_pass": false,
+    "index_pin_match": true,
+    "stage_a_parent_match": true
+  },
+  "code_revision": "8eb12a7809333ced94831e73add988487ddb0855",
+  "evaluated_at": "2026-10-01T07:14:53Z",
+  "evaluation": {
+    "decision_counts": {
+      "EVIDENCE_PRESENT": 614,
+      "NO_EVIDENCE": 1424,
+      "UNCERTAIN": 13
+    },
+    "floors": {
+      "floors_retuned": false,
+      "minimum_family_score": 0.64,
+      "minimum_top1_top2_margin": 0.07
+    },
+    "gating": {
+      "entry_contract_pass": true,
+      "none_entered_stage_b": 0,
+      "pass": true,
+      "present_blocked_from_stage_b": 0,
+      "uncertain_entered_stage_b": 0
+    },
+    "metrics": {
+      "decision_counts": {
+        "ABSTAIN": 22,
+        "AMBIGUOUS": 559,
+        "FAMILY": 46,
+        "NONE": 1424
+      },
+      "false_evidence_entry_rate_on_none": 0.19488817891373802,
+      "family_emission_coverage": 0.07221350078492936,
+      "family_emission_precision": 0.7608695652173914,
+      "family_emission_recall": 0.054945054945054944,
+      "n": 2051,
+      "n_family_emitted": 46,
+      "n_present_gold": 637,
+      "none_precision": 0.702247191011236,
+      "none_recall": 0.7987220447284346,
+      "primary_gate_max": 0.05,
+      "primary_gate_pass": false,
+      "secondary_gate_min": 0.8,
+      "secondary_gate_pass": false,
+      "selective_accuracy": 0.7040816326530612,
+      "uncertain_rate": 0.006338371526084837
+    },
+    "n": 2051,
+    "pass": false
+  },
+  "frozen_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+  "index_embedding_parent_stage_a": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "index_rebuilt": false,
+  "index_sha256_observed": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+  "known_limitations": {
+    "CONTEXT_DEPENDENT_GOLD": "OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT",
+    "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+    "HUB_PUBLISH": "NOT_AUTHORIZED",
+    "INDEX_ENCODER_PARENT_MISMATCH": "Stage-B index embeddings sealed under superseded STAGE_A_BEST cd2829c1b5fb823f\u2026; queries encode under canonical STAGE_A_BEST f2b00c5dfeb08728\u2026. Index not rebuilt by contract.",
+    "RESERVE": "SPENT_NOT_RESCORED",
+    "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT"
+  },
+  "pipeline_contract": {
+    "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "PIPELINE_ID": "HYPERLEX_V5_STAGE_A_B_PIPELINE_V1",
+    "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+    "STAGE_A_RESEARCH_LOOP": "CLOSED_FOR_CURRENT_FAILURE_CLASS",
+    "STAGE_B_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-B-001",
+    "STAGE_B_RULE": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+    "V5_STAGE_A_STATE": "CANONICAL_FROZEN",
+    "dependencies": {
+      "model_wide_best_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+      "stage_a_checkpoint_sha256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+      "stage_a_contract": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+      "stage_b_contract_rule": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+      "stage_b_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+      "stage_b_minimum_family_score": 0.64,
+      "stage_b_minimum_top1_top2_margin": 0.07
+    },
+    "flow": [
+      "text",
+      "canonical_stage_a",
+      "NO_EVIDENCE->stop",
+      "UNCERTAIN->abstain",
+      "EVIDENCE_PRESENT->stage_b_retrieval",
+      "family_decision_or_abstain_or_ambiguity"
+    ],
+    "forward_schema": "hyperlex.classification.v5.stage_a_canonical_forward.v1",
+    "known_limitations": {
+      "CONTEXT_DEPENDENT_GOLD": "OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT",
+      "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+      "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT"
+    },
+    "reserve_scored": false,
+    "schema": "hyperlex.classification.v5.stage_a_b_pipeline.v1",
+    "train": false
+  },
+  "schema": "hyperlex.classification.v5.pipeline_evaluation.v1",
+  "stage_b_contract": {
+    "BEST": "UNCHANGED",
+    "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+    "dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a",
+    "emission_precision_min": 0.8,
+    "entry_invariant": {
+      "EVIDENCE_PRESENT": "PERMIT_STAGE_B",
+      "NO_EVIDENCE": "STOP",
+      "UNCERTAIN": "ABSTAIN",
+      "rule": "Stage B may execute only when Stage A == EVIDENCE_PRESENT"
+    },
+    "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-B-001",
+    "false_evidence_entry_rate_on_none_max": 0.05,
+    "floors_retuned": false,
+    "frozen_index_sha256": "3fd6c87a5825f3f2a25a81f1a769a77aa69e03ddca5b370f9247672d93aaee21",
+    "frozen_stage_a": {
+      "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+      "STAGE_A_BEST_EPOCH": 11,
+      "STAGE_A_CANONICAL": "HYPERLEX_V5_STAGE_A_CANONICAL_V1",
+      "architecture": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+      "deprecated_gate1_gate2": {
+        "gate1_threshold": 0.75,
+        "gate2_threshold": 0.5,
+        "status": "HISTORICAL",
+        "superseded_checkpoint": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c"
+      },
+      "model_wide_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+      "previous_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+      "previous_STAGE_A_BEST_status": "SUPERSEDED_STAGE_A_BEST",
+      "promote_rule": "RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE",
+      "relation_threshold": 0.6,
+      "resolvability_threshold": 0.75
+    },
+    "index_rebuilt": false,
+    "minimum_family_score": 0.64,
+    "minimum_top1_top2_margin": 0.07,
+    "parent_promotion_receipt_sha256": "9541664c87b27e56d25171579f2ef0b5810a1ebcbbc023298ce2919749f9b370",
+    "parent_stage_a_experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001",
+    "parent_v3_reference_floors": {
+      "minimum_family_score": 0.96,
+      "minimum_top1_top2_margin": 0.01,
+      "status": "REFERENCE_ONLY_PENDING_V5_CALIBRATION"
+    },
+    "retrieval_only_on": "EVIDENCE_PRESENT",
+    "rule": "HYPERLEX_V5_STAGE_B_INTEGRATION_V1",
+    "schema": "hyperlex.classification.v5.stage_b_integration.v1",
+    "semantic_stage_a_labels": [
+      "NO_EVIDENCE",
+      "EVIDENCE_PRESENT",
+      "UNCERTAIN"
+    ],
+    "surface_rule": "HYPERLEX_V5_STAGE_A_NEGATIVE_EVIDENCE_SURFACE_V1R9",
+    "train": false,
+    "v5_reserve": null
+  },
+  "surface_dataset_sha256": "8d4be8301b89b191841342fe11ef647c838b32e56e6d133b610c232264c5d00a"
+}

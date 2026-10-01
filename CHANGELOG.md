@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Evaluate full V5 pipeline + packaging (Spec 007):**
+  `EVALUATE_FULL_V5_PIPELINE` ran factorized `STAGE_A_BEST=f2b00c5d…` against
+  frozen Stage-B index `3fd6c87a…` / floors 0.64/0.07 on V1R9 validation
+  (n=2051). Entry gating intact (NONE/UNCERTAIN never enter). Primary gate
+  failed: false_entry 0.195 on V1R9 (Stage-A canonical is V1R2). Diagnosis
+  `STAGE_A_V1R2_CANONICAL_ON_STAGE_B_V1R9_SURFACE` (+ index encoder parent
+  mismatch vs superseded `cd2829c1…`). Production packaging contract sealed
+  locally with `PACKAGING_READY=false`, Hub unpublished. Receipts
+  `classification-v5-pipeline-eval-receipt-20261001.json` (`58568429…`),
+  `classification-v5-pipeline-diagnosis-receipt-20261001.json` (`f3e7cabe…`),
+  `classification-v5-production-packaging-receipt-20261001.json` (`86e6c490…`).
+  Next: `ALIGN_V5_STAGE_B_TO_V1R2_OR_SCOPED_CROSS_SURFACE_EVAL`.
+
 - **Freeze V5 Stage-A canonical + Stage-A/B pipeline (Spec 007):**
   Phase close: `HYPERLEX_V5_STAGE_A_CANONICAL_V1` binds `STAGE_A_BEST=f2b00c5d…`
   and `MODEL_WIDE_BEST=9fba0f66…` under factorized objective + V1R2
