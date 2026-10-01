@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Apply gold identifiability filter → V1R2 (Spec 007):**
+  `APPLY_GOLD_IDENTIFIABILITY_FILTER` emits membership-only surface
+  `HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2` from V1R1
+  under contract `4ce0e5fa…`. Kept 3120 / excluded 465 (no auto-relabel).
+  Labels: PRESENT 1215 / NONE 1851 / UNCERTAIN 54 (genuine textual only).
+  Relation-loss eligible 3066; SHORT_ATOM PRESENT kept 11 / NONE 310.
+  Dataset `492ed367…`; annotations `95d54365…`; exclusion manifest
+  `661c9edb…`. `TRAIN_AUTHORIZED=false`. V1R1 / BEST / Stage-B / spent
+  reserve unchanged. Receipt
+  `classification-v5-stage-a-gold-identifiability-filter-receipt-20261001.json`
+  (`e8e2ab7f…`). Next:
+  `AUTHORIZE_STAGE_A_IDENT_FILTERED_FACTORIZED_TRAIN`.
+
 - **Gold identifiability contract V1 (Spec 007):**
   `REVISE_GOLD_IDENTIFIABILITY_CONTRACT` freezes
   `HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1` with

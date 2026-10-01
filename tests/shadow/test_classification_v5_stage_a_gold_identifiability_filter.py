@@ -19,11 +19,14 @@ from hyperlexical.classification_v5_stage_a_gold_identifiability_filter import (
     EXPECTED_EXCLUDE_N,
     EXPECTED_KEEP_N,
     EXPECTED_V1R1_N,
+    FILTER_RECEIPT_SHA256_PIN,
     FILTER_RULE,
     KEEP_DISPOSITIONS,
     NEXT_ACTION,
     SURFACE_ID,
     TRAIN_AUTHORIZED,
+    V1R2_ANNOTATION_SHA256_PIN,
+    V1R2_DATASET_SHA256_PIN,
     assemble_filter_receipt,
 )
 
@@ -34,6 +37,9 @@ def test_filter_pins():
     assert SURFACE_ID.endswith("V1R2")
     assert TRAIN_AUTHORIZED is False
     assert CONTRACT_RECEIPT_SHA256_PIN.startswith("4ce0e5fa")
+    assert V1R2_DATASET_SHA256_PIN.startswith("492ed367")
+    assert V1R2_ANNOTATION_SHA256_PIN.startswith("95d54365")
+    assert FILTER_RECEIPT_SHA256_PIN.startswith("e8e2ab7f")
     assert EXPECTED_V1R1_N == 3585
     assert EXPECTED_KEEP_N == 3120
     assert EXPECTED_EXCLUDE_N == 465

@@ -1,0 +1,63 @@
+{
+  "AUTO_RELABEL": false,
+  "DATASET_SHA256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+  "DATASET_VERSION": "V1R2",
+  "FACTORIZED_ANNOTATION_SHA256": "95d5436555da33ef7aaccf4c32194c29f00caced9a17adf2d2f65f12db7dc1fc",
+  "FILTER_RULE": "APPLY_GOLD_IDENTIFIABILITY_FILTER",
+  "NEXT_ACTION": "AUTHORIZE_STAGE_A_IDENT_FILTERED_FACTORIZED_TRAIN",
+  "SURFACE_ID": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+  "TRAIN_AUTHORIZED": false,
+  "V1R1_MUTATED": false,
+  "V1R2_CREATED": true,
+  "balance": {
+    "minimum_cell_support": 54,
+    "relation_negative": 1851,
+    "relation_positive": 1215,
+    "resolvability_negative": 54,
+    "resolvability_positive": 3066
+  },
+  "counts": {
+    "SHORT_ATOM_NONE": 310,
+    "SHORT_ATOM_PRESENT": 11,
+    "by_disposition": {
+      "EXCLUDE_FROM_TEXT_ONLY_STAGE_A": 465,
+      "KEEP_FOR_RESOLVABILITY_ONLY": 54,
+      "KEEP_GOLD": 3066
+    },
+    "by_label": {
+      "EVIDENCE_PRESENT": 1215,
+      "NO_EVIDENCE": 1851,
+      "UNCERTAIN": 54
+    },
+    "by_primary_cell": {
+      "DEFINITION_STYLE/EVIDENCE_PRESENT": 308,
+      "DEFINITION_STYLE/NO_EVIDENCE": 448,
+      "NONE": 54,
+      "ORDINARY_PROSE/EVIDENCE_PRESENT": 493,
+      "ORDINARY_PROSE/NO_EVIDENCE": 646,
+      "PROSE/EVIDENCE_PRESENT": 403,
+      "PROSE/NO_EVIDENCE": 447,
+      "SHORT_ATOM/EVIDENCE_PRESENT": 11,
+      "SHORT_ATOM/NO_EVIDENCE": 310
+    },
+    "by_split": {
+      "train": 2272,
+      "validation": 848
+    },
+    "by_subtype": {
+      "AMBIGUOUS_EVIDENCE": 54,
+      "HARD_NONE": 41,
+      "LEXICAL_LOOKALIKE_NONE": 744,
+      "NEAR_DOMAIN_NONE": 145,
+      "ORDINARY_DOMAIN_NONE": 637,
+      "POSITIVE_EVIDENCE": 1215,
+      "SHORT_ATOM_NONE": 284
+    },
+    "excluded": 465,
+    "kept": 3120,
+    "parent_v1r1": 3585,
+    "relation_loss_eligible": 3066,
+    "resolvability_loss_eligible": 3120
+  },
+  "viability": "REPAIRED_SURFACE_VIABLE"
+}
