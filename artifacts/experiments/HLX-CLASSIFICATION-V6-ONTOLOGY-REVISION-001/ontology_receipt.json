@@ -1,0 +1,2447 @@
+{
+  "ENCODER_CHOSEN": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-ONTOLOGY-REVISION-001",
+  "FOUNDATION_ID": "HYPERLEX_V6_DATA_FOUNDATION_V1",
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "NEXT_ACTION": "COMPLETE_V6_HUMAN_ONTOLOGY_SETTLEMENT",
+  "ONTOLOGY_LINEAGE_ID": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1",
+  "OPERATING_DISTRIBUTION_ID": "HYPERLEX_V6_OPERATING_DISTRIBUTION_V1",
+  "PHASE_RULE": "REVISE_HYPERLEX_V6_ONTOLOGY_BEFORE_MODELING",
+  "PRODUCTION_RETRIEVER": false,
+  "QUAL_ROWS_INSPECTED": false,
+  "TRAIN": false,
+  "V5_HISTORY_MUTATED": false,
+  "V6_ONTOLOGY_REVISION_RECEIPT_SHA256": "9377d66906a1232dbf64b7d38ee70316e1f81aae7b04af4bc8cffcef41820dd0",
+  "V6_ONTOLOGY_STATE": "V6_ONTOLOGY_BLOCKED_ON_HUMAN_AGREEMENT",
+  "audit": {
+    "QUAL_ROWS_INSPECTED": false,
+    "geometry": {
+      "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+      "between_family_sim_mean": 0.9776875058809916,
+      "cluster_counts": {
+        "domain.crypto": 120,
+        "domain.entertainment": 123,
+        "domain.fashion": 129,
+        "domain.gambling": 119,
+        "domain.gaming": 133,
+        "domain.politics": 120,
+        "domain.spiritual": 119,
+        "domain.sports": 124,
+        "domain.technology": 124,
+        "domain.technology.ai_discourse": 128,
+        "domain.workplace": 117,
+        "function.conflictive_force": 119,
+        "function.evaluative_stance": 244,
+        "function.memetic_form": 126,
+        "function.relational_intimacy": 113,
+        "mediation.internet_register": 125
+      },
+      "confusion_graph_top": [
+        {
+          "gold": "function.evaluative_stance",
+          "n": 72,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "function.relational_intimacy",
+          "n": 56,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.gaming",
+          "n": 53,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.entertainment",
+          "n": 47,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.fashion",
+          "n": 46,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "function.memetic_form",
+          "n": 45,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "function.conflictive_force",
+          "n": 40,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.politics",
+          "n": 37,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.spiritual",
+          "n": 35,
+          "pred": "function.evaluative_stance"
+        },
+        {
+          "gold": "domain.technology",
+          "n": 35,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.sports",
+          "n": 33,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.spiritual",
+          "n": 33,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.politics",
+          "n": 30,
+          "pred": "function.evaluative_stance"
+        },
+        {
+          "gold": "domain.sports",
+          "n": 28,
+          "pred": "domain.gambling"
+        },
+        {
+          "gold": "domain.crypto",
+          "n": 28,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.gambling",
+          "n": 28,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.technology",
+          "n": 27,
+          "pred": "function.evaluative_stance"
+        },
+        {
+          "gold": "domain.workplace",
+          "n": 24,
+          "pred": "mediation.internet_register"
+        },
+        {
+          "gold": "domain.fashion",
+          "n": 24,
+          "pred": "function.evaluative_stance"
+        },
+        {
+          "gold": "function.evaluative_stance",
+          "n": 22,
+          "pred": "function.conflictive_force"
+        }
+      ],
+      "encoder": "MODEL_WIDE_BEST",
+      "geometry_adequate_alone": false,
+      "geometry_improved": true,
+      "historical_comparison": {
+        "note": "Old figures from V6 foundation audit on exclusive 18-way labels.",
+        "old_between": 0.98,
+        "old_purity": 0.25,
+        "old_within": 0.822
+      },
+      "margin_within_minus_between": -0.1499772246914004,
+      "n_clusters": 16,
+      "n_present_mapped": 2083,
+      "nearest_cluster_purity": 0.1785885741718675,
+      "note": "Geometry is validation-only. Proposed ontology may still show residual overlap due to category-proxy noise in V6 PRESENT gold; human-separability and cardinality correctness remain primary.",
+      "within_family_sim_mean": 0.8277102811895912
+    },
+    "human_agreement_sample_status": "AWAITING_OPERATOR_ANNOTATION",
+    "human_dependencies": [
+      {
+        "boundary": "identity-affiliation resettlement",
+        "confirm_if": "Dual annotators agree whether text-identifiable affiliation maps to evaluative_stance, politics, both, or neither",
+        "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE"
+      },
+      {
+        "boundary": "evaluative_stance vs relational_intimacy soft boundary",
+        "confirm_if": "Agree on exclusive vs co-label for partner-directed insults",
+        "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE"
+      },
+      {
+        "boundary": "gambling vs crypto soft market slang",
+        "confirm_if": "Agree stake/token senses are separable from text alone",
+        "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE"
+      }
+    ],
+    "identifiability": {
+      "domain.crypto": "TEXT_IDENTIFIABLE",
+      "domain.entertainment": "TEXT_IDENTIFIABLE",
+      "domain.fashion": "TEXT_IDENTIFIABLE",
+      "domain.gambling": "TEXT_IDENTIFIABLE",
+      "domain.gaming": "TEXT_IDENTIFIABLE",
+      "domain.politics": "TEXT_IDENTIFIABLE",
+      "domain.spiritual": "TEXT_IDENTIFIABLE",
+      "domain.sports": "TEXT_IDENTIFIABLE",
+      "domain.technology": "TEXT_IDENTIFIABLE",
+      "domain.technology.ai_discourse": "TEXT_IDENTIFIABLE",
+      "domain.workplace": "TEXT_IDENTIFIABLE",
+      "function.conflictive_force": "TEXT_IDENTIFIABLE",
+      "function.evaluative_stance": "TEXT_IDENTIFIABLE",
+      "function.memetic_form": "TEXT_IDENTIFIABLE",
+      "function.relational_intimacy": "TEXT_IDENTIFIABLE",
+      "mediation.internet_register": "MIXED"
+    },
+    "migration_consequence": {
+      "overall": {
+        "DIRECT_MAP": 4152,
+        "HUMAN_RESETTLEMENT_REQUIRED": 262,
+        "RULE_DERIVABLE": 138
+      },
+      "per_split": {
+        "DEVELOPMENT_VALIDATION": {
+          "DIRECT_MAP": 467,
+          "HUMAN_RESETTLEMENT_REQUIRED": 26,
+          "RULE_DERIVABLE": 13
+        },
+        "REPRESENTATIVE_VALIDATION": {
+          "DIRECT_MAP": 1137,
+          "HUMAN_RESETTLEMENT_REQUIRED": 75,
+          "RULE_DERIVABLE": 38
+        },
+        "TRAIN": {
+          "DIRECT_MAP": 2548,
+          "HUMAN_RESETTLEMENT_REQUIRED": 161,
+          "RULE_DERIVABLE": 87
+        }
+      }
+    },
+    "multilabel_estimate": {
+      "AGGREGATE_PRESENT": {
+        "fraction_boundary_ambiguous": 0.0,
+        "fraction_clearly_single_family_under_exclusive_task": 0.9811783960720131,
+        "fraction_plausibly_multi_family": 0.018821603927986905,
+        "label_cardinality_finding": "SINGLE_LABEL_APPROPRIATE",
+        "n_present": 2444,
+        "recommended_cardinality": "HIERARCHICAL_MULTI_LABEL_REQUIRED"
+      },
+      "DEVELOPMENT_VALIDATION": {
+        "fraction_boundary_ambiguous": 0.0,
+        "fraction_clearly_single_family_under_exclusive_task": 0.9764705882352941,
+        "fraction_plausibly_multi_family": 0.023529411764705882,
+        "label_cardinality_finding": "SINGLE_LABEL_APPROPRIATE",
+        "n_present": 255,
+        "recommended_cardinality": "HIERARCHICAL_MULTI_LABEL_REQUIRED"
+      },
+      "REPRESENTATIVE_VALIDATION": {
+        "fraction_boundary_ambiguous": 0.0,
+        "fraction_clearly_single_family_under_exclusive_task": 0.9850299401197605,
+        "fraction_plausibly_multi_family": 0.014970059880239521,
+        "label_cardinality_finding": "SINGLE_LABEL_APPROPRIATE",
+        "n_present": 668,
+        "recommended_cardinality": "HIERARCHICAL_MULTI_LABEL_REQUIRED"
+      },
+      "TRAIN": {
+        "fraction_boundary_ambiguous": 0.0,
+        "fraction_clearly_single_family_under_exclusive_task": 0.980276134122288,
+        "fraction_plausibly_multi_family": 0.01972386587771203,
+        "label_cardinality_finding": "SINGLE_LABEL_APPROPRIATE",
+        "n_present": 1521,
+        "recommended_cardinality": "HIERARCHICAL_MULTI_LABEL_REQUIRED"
+      }
+    },
+    "purpose_unclear_families": [
+      "regional-cultural",
+      "identity-affiliation"
+    ],
+    "remaining_human_critical": true,
+    "support": {
+      "all_active_meet_minimum": true,
+      "by_label": {
+        "domain.crypto": {
+          "DEVELOPMENT_VALIDATION": 17,
+          "REPRESENTATIVE_VALIDATION": 35,
+          "TOTAL": 137,
+          "TRAIN": 85,
+          "meets_minimum": true
+        },
+        "domain.entertainment": {
+          "DEVELOPMENT_VALIDATION": 10,
+          "REPRESENTATIVE_VALIDATION": 35,
+          "TOTAL": 133,
+          "TRAIN": 88,
+          "meets_minimum": true
+        },
+        "domain.fashion": {
+          "DEVELOPMENT_VALIDATION": 8,
+          "REPRESENTATIVE_VALIDATION": 40,
+          "TOTAL": 137,
+          "TRAIN": 89,
+          "meets_minimum": true
+        },
+        "domain.gambling": {
+          "DEVELOPMENT_VALIDATION": 20,
+          "REPRESENTATIVE_VALIDATION": 34,
+          "TOTAL": 139,
+          "TRAIN": 85,
+          "meets_minimum": true
+        },
+        "domain.gaming": {
+          "DEVELOPMENT_VALIDATION": 12,
+          "REPRESENTATIVE_VALIDATION": 47,
+          "TOTAL": 145,
+          "TRAIN": 86,
+          "meets_minimum": true
+        },
+        "domain.politics": {
+          "DEVELOPMENT_VALIDATION": 21,
+          "REPRESENTATIVE_VALIDATION": 74,
+          "TOTAL": 271,
+          "TRAIN": 176,
+          "meets_minimum": true
+        },
+        "domain.spiritual": {
+          "DEVELOPMENT_VALIDATION": 13,
+          "REPRESENTATIVE_VALIDATION": 41,
+          "TOTAL": 132,
+          "TRAIN": 78,
+          "meets_minimum": true
+        },
+        "domain.sports": {
+          "DEVELOPMENT_VALIDATION": 13,
+          "REPRESENTATIVE_VALIDATION": 37,
+          "TOTAL": 137,
+          "TRAIN": 87,
+          "meets_minimum": true
+        },
+        "domain.technology": {
+          "DEVELOPMENT_VALIDATION": 29,
+          "REPRESENTATIVE_VALIDATION": 78,
+          "TOTAL": 281,
+          "TRAIN": 174,
+          "meets_minimum": true
+        },
+        "domain.technology.ai_discourse": {
+          "DEVELOPMENT_VALIDATION": 13,
+          "REPRESENTATIVE_VALIDATION": 39,
+          "TOTAL": 141,
+          "TRAIN": 89,
+          "meets_minimum": true
+        },
+        "domain.workplace": {
+          "DEVELOPMENT_VALIDATION": 17,
+          "REPRESENTATIVE_VALIDATION": 35,
+          "TOTAL": 134,
+          "TRAIN": 82,
+          "meets_minimum": true
+        },
+        "function.conflictive_force": {
+          "DEVELOPMENT_VALIDATION": 17,
+          "REPRESENTATIVE_VALIDATION": 31,
+          "TOTAL": 136,
+          "TRAIN": 88,
+          "meets_minimum": true
+        },
+        "function.evaluative_stance": {
+          "DEVELOPMENT_VALIDATION": 28,
+          "REPRESENTATIVE_VALIDATION": 80,
+          "TOTAL": 272,
+          "TRAIN": 164,
+          "meets_minimum": true
+        },
+        "function.memetic_form": {
+          "DEVELOPMENT_VALIDATION": 14,
+          "REPRESENTATIVE_VALIDATION": 38,
+          "TOTAL": 140,
+          "TRAIN": 88,
+          "meets_minimum": true
+        },
+        "function.relational_intimacy": {
+          "DEVELOPMENT_VALIDATION": 17,
+          "REPRESENTATIVE_VALIDATION": 42,
+          "TOTAL": 130,
+          "TRAIN": 71,
+          "meets_minimum": true
+        },
+        "mediation.internet_register": {
+          "DEVELOPMENT_VALIDATION": 13,
+          "REPRESENTATIVE_VALIDATION": 38,
+          "TOTAL": 138,
+          "TRAIN": 87,
+          "meets_minimum": true
+        }
+      },
+      "minimum_rule": {
+        "MIN_DEV_SUPPORT": 8,
+        "MIN_REP_SUPPORT": 15,
+        "MIN_TRAIN_SUPPORT": 40
+      }
+    },
+    "support_viable": true,
+    "v6_present_gold_noise_note": "Category-proxy PRESENT acquisition produced many off-family dictionary rows; ontology decisions are grounded in semantic contracts + co-occurrence structure, with geometry as secondary validation only."
+  },
+  "candidate_structures": {
+    "A_flat_revised": {
+      "cons": [
+        "Still forbids legitimate co-occurrence",
+        "Cannot express AI\u2282technology without losing a distinction or forcing exclusivity"
+      ],
+      "description": "Fewer mutually exclusive families (~10\u201312).",
+      "pros": [
+        "Simple Stage-B head",
+        "Easier metrics"
+      ],
+      "score_notes": "Better than 18-way but structurally insufficient."
+    },
+    "B_hierarchical_single_label": {
+      "cons": [
+        "Still single-label at leaves; multi-aspect text forced into one leaf"
+      ],
+      "description": "Broad domain \u2192 narrow family; still exclusive at decision time.",
+      "pros": [
+        "Captures AI\u2282technology",
+        "Clear parents"
+      ],
+      "score_notes": "Good for hierarchy, weak for co-occurrence."
+    },
+    "C_multi_label_flat": {
+      "cons": [
+        "technology vs ai-native remains sibling confusion without parent"
+      ],
+      "description": "Independent memberships without hierarchy.",
+      "pros": [
+        "Natural co-occurrence",
+        "Matches operating text"
+      ],
+      "score_notes": "Strong; needs hierarchy for AI subtype."
+    },
+    "D_hierarchical_multi_label": {
+      "cons": [
+        "Harder evaluation design",
+        "Requires label resettlement for some rows"
+      ],
+      "description": "Domain tree + function labels + optional mediation; preferred.",
+      "preferred": true,
+      "pros": [
+        "Matches semantic-level diagnosis",
+        "Preserves AI subtype",
+        "Represents co-occurrence",
+        "Deprecates unstable exclusive buckets"
+      ],
+      "score_notes": "Preferred on semantic/operational grounds."
+    }
+  },
+  "co_label_rules": {
+    "invalid": [
+      [
+        "mediation.internet_register_alone_as_exclusive_family",
+        "internet_register cannot be the sole exclusive Stage-B decision"
+      ],
+      [
+        "domain.technology.ai_discourse_without_domain.technology",
+        "child requires parent domain.technology"
+      ]
+    ],
+    "uncertainty_condition": "If domain evidence is present but function force is unresolved, emit domain labels and mark function as INSUFFICIENT_CONTEXT rather than forcing one.",
+    "valid": [
+      [
+        "domain.sports",
+        "domain.gambling"
+      ],
+      [
+        "domain.gaming",
+        "function.conflictive_force"
+      ],
+      [
+        "domain.politics",
+        "function.memetic_form"
+      ],
+      [
+        "domain.technology",
+        "mediation.internet_register"
+      ],
+      [
+        "function.evaluative_stance",
+        "function.memetic_form"
+      ],
+      [
+        "domain.technology",
+        "domain.technology.ai_discourse"
+      ]
+    ]
+  },
+  "code_revision": "34d6dd535f249f783dbe1a302361b280c89a9e70",
+  "family_purpose": {
+    "ai-native": {
+      "canonical_definition": "AI-native community slang: agents, prompts, LLMs, model talk.",
+      "downstream_use": "AI-native attractor historically dominated Stage B.",
+      "exclusions": "Generic computing without AI sense; sci-fi 'android' without AI-native register.",
+      "neighbors": [
+        "technology-ai",
+        "internet-slang",
+        "memetic"
+      ],
+      "note": "Subtype of technology domain; should not be a flat sibling of technology-ai.",
+      "positive_inclusion": "AI-agent/model/prompt community evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "betting-sharp": {
+      "canonical_definition": "Gambling/betting market language (odds, vig, spreads, bookmakers).",
+      "downstream_use": "Betting-sharp family tracking.",
+      "exclusions": "Metaphorical 'bet' as stance without market; crypto staking without wager framing.",
+      "neighbors": [
+        "crypto-degen",
+        "sports-competition"
+      ],
+      "positive_inclusion": "Wagering-market evidence required.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "conflict-aggression": {
+      "canonical_definition": "Conflictive/aggressive force: violence, combat, hostility framing.",
+      "downstream_use": "Conflict-aggression tracking.",
+      "exclusions": "Metaphorical 'fight' for sports/competition without hostility sense.",
+      "neighbors": [
+        "sports-competition",
+        "politics-civic",
+        "gaming-meta"
+      ],
+      "positive_inclusion": "Aggression/conflict lexical evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "PRAGMATIC_FUNCTION"
+    },
+    "crypto-degen": {
+      "canonical_definition": "Cryptocurrency / DeFi / NFT market discourse.",
+      "downstream_use": "Crypto-degen lineage.",
+      "exclusions": "Generic 'token' in NLP; ordinary finance without crypto.",
+      "neighbors": [
+        "betting-sharp",
+        "technology-ai",
+        "ai-native"
+      ],
+      "positive_inclusion": "Crypto-asset or chain-market evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "fashion-aesthetic": {
+      "canonical_definition": "Fashion, clothing, aesthetic-style discourse.",
+      "downstream_use": "Fashion-aesthetic lineage.",
+      "exclusions": "Abstract 'aesthetic' philosophy without style sense.",
+      "neighbors": [
+        "music-entertainment",
+        "identity-affiliation"
+      ],
+      "positive_inclusion": "Garment/style/aesthetic evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "gaming-meta": {
+      "canonical_definition": "Competitive/multiplayer game discourse: balance, meta, skill asymmetry, match-end status speech tied to play.",
+      "downstream_use": "Route gaming slang lineage / virality analysis.",
+      "exclusions": "Generic 'player' without game sense; sports athletes; AI agents.",
+      "neighbors": [
+        "sports-competition",
+        "internet-slang",
+        "memetic",
+        "conflict-aggression"
+      ],
+      "positive_inclusion": "Text encodes game-play / gamer-community lexical evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "identity-affiliation": {
+      "canonical_definition": "Identity/affiliation labels (demonym, ethnicity, gender, group).",
+      "downstream_use": "Identity tracking; high confusion with evaluation.",
+      "exclusions": "Evaluative slurs without affiliation sense; mere demonym geography.",
+      "neighbors": [
+        "social-evaluation",
+        "politics-civic",
+        "regional-cultural"
+      ],
+      "note": "Often CONTEXT_DEPENDENT or overlaps evaluative/political axes; needs redefinition or multi-label mapping, not flat exclusive bucket.",
+      "positive_inclusion": "Explicit affiliation/identity category evidence.",
+      "purpose_status": "PURPOSE_UNCLEAR",
+      "semantic_level": "SEMANTIC_RELATION"
+    },
+    "internet-slang": {
+      "canonical_definition": "Internet-mediated informal register / netspeak.",
+      "downstream_use": "Historically a catch-all; overlaps almost every domain.",
+      "exclusions": "Domain content that merely appears online; offline slang.",
+      "neighbors": [
+        "memetic",
+        "social-evaluation",
+        "ai-native"
+      ],
+      "note": "Register/mediation label, not a mutually exclusive domain family.",
+      "positive_inclusion": "Online-register evidence (chat, forum, netspeak).",
+      "purpose_status": "ESTABLISHED_BUT_NON_EXCLUSIVE",
+      "semantic_level": "PRAGMATIC_FUNCTION"
+    },
+    "memetic": {
+      "canonical_definition": "Meme formats, macros, copypasta, template-driven viral form.",
+      "downstream_use": "Memetic emergence tracking.",
+      "exclusions": "Any viral topic without memetic form; political content alone.",
+      "neighbors": [
+        "internet-slang",
+        "politics-civic",
+        "social-evaluation"
+      ],
+      "positive_inclusion": "Memetic-form evidence (format/template/viral replication).",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "PRAGMATIC_FUNCTION"
+    },
+    "music-entertainment": {
+      "canonical_definition": "Music and screen entertainment discourse.",
+      "downstream_use": "Entertainment domain.",
+      "exclusions": "Generic 'performance' in computing; fashion runway alone.",
+      "neighbors": [
+        "fashion-aesthetic",
+        "memetic"
+      ],
+      "positive_inclusion": "Music/film/TV performance evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "politics-civic": {
+      "canonical_definition": "Politics, government, civic policy discourse.",
+      "downstream_use": "Politics-civic lineage.",
+      "exclusions": "Generic conflict/war without civic framing; sports 'left wing'.",
+      "neighbors": [
+        "conflict-aggression",
+        "identity-affiliation",
+        "memetic"
+      ],
+      "positive_inclusion": "Political/civic institutional evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "regional-cultural": {
+      "canonical_definition": "Regional/dialectal variety markers.",
+      "downstream_use": "Often annotation metadata, not a content family.",
+      "exclusions": "Topic about a place without variety marking; demonyms as identity.",
+      "neighbors": [
+        "identity-affiliation",
+        "internet-slang"
+      ],
+      "note": "Variety marking is frequently CONTEXT_DEPENDENT or dictionary-label metadata; weak as a mutually exclusive Stage-B family.",
+      "positive_inclusion": "Explicit dialect/region variety evidence in text.",
+      "purpose_status": "PURPOSE_UNCLEAR",
+      "semantic_level": "DOMAIN"
+    },
+    "relationship-dating": {
+      "canonical_definition": "Romantic/intimate relationship and dating discourse.",
+      "downstream_use": "Relationship-dating lineage.",
+      "exclusions": "Platonic affiliation; workplace 'partner'; evaluative insult alone.",
+      "neighbors": [
+        "social-evaluation",
+        "identity-affiliation"
+      ],
+      "positive_inclusion": "Romantic/courtship/partner evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "SEMANTIC_RELATION"
+    },
+    "social-evaluation": {
+      "canonical_definition": "Evaluative stance and status judgment: praise, insult, pejoration, prestige/hierarchy labeling (merge of approval-disapproval + social-status).",
+      "downstream_use": "Social-evaluation / status speech.",
+      "exclusions": "Neutral description without stance; pure demonym without evaluation.",
+      "neighbors": [
+        "relationship-dating",
+        "identity-affiliation",
+        "conflict-aggression"
+      ],
+      "positive_inclusion": "Evaluative or status-hierarchy lexical evidence in text.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "PRAGMATIC_FUNCTION"
+    },
+    "spiritual-mystic": {
+      "canonical_definition": "Occult, astrology, esoteric, spiritual practice discourse.",
+      "downstream_use": "Spiritual-mystic lineage.",
+      "exclusions": "Metaphorical 'magic' in tech/gaming without spiritual sense.",
+      "neighbors": [
+        "identity-affiliation",
+        "memetic"
+      ],
+      "positive_inclusion": "Esoteric/spiritual practice evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "sports-competition": {
+      "canonical_definition": "Athletic sports competition discourse.",
+      "downstream_use": "Sports family.",
+      "exclusions": "Gaming esports (gaming-meta); figurative competition alone.",
+      "neighbors": [
+        "gaming-meta",
+        "betting-sharp",
+        "conflict-aggression"
+      ],
+      "positive_inclusion": "Sport/athlete/league evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "technology-ai": {
+      "canonical_definition": "Computing/software/technology discourse broadly.",
+      "downstream_use": "Technology domain.",
+      "exclusions": "AI-community slang that is specifically model/agent discourse (ai-native).",
+      "neighbors": [
+        "ai-native",
+        "workplace-career",
+        "crypto-degen"
+      ],
+      "note": "Overlaps ai-native; hierarchical parent of AI-discourse subtype.",
+      "positive_inclusion": "Tech/software/systems evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    },
+    "workplace-career": {
+      "canonical_definition": "Workplace, corporate, career discourse.",
+      "downstream_use": "Workplace-corp lineage.",
+      "exclusions": "Generic 'service'/'channel' without workplace sense.",
+      "neighbors": [
+        "technology-ai",
+        "social-evaluation"
+      ],
+      "positive_inclusion": "Work/org/career evidence.",
+      "purpose_status": "ESTABLISHED",
+      "semantic_level": "DOMAIN"
+    }
+  },
+  "gates": {
+    "active_family_definitions_frozen": true,
+    "identifiability_checked": true,
+    "label_cardinality_semantics_frozen": true,
+    "migration_map_sealed": true,
+    "ontology_structure_chosen": true,
+    "support_viability_checked": true
+  },
+  "hierarchy_candidates": [
+    {
+      "child": "domain.technology.ai_discourse",
+      "parent": "domain.technology",
+      "relation": "ai_discourse \u2282 technology"
+    },
+    {
+      "children": [
+        "domain.*",
+        "function.*",
+        "mediation.*"
+      ],
+      "parent": "semantic_levels",
+      "relation": "orthogonal axes under hierarchical multi-label"
+    }
+  ],
+  "historical_ontology": {
+    "HISTORICAL_ONTOLOGY_ID": "HYPERLEX_V5_FAMILY_ONTOLOGY",
+    "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "V5_RESEARCH_BASELINE": "HYPERLEX_V5_RESEARCH_BASELINE",
+    "families": [
+      "gaming-meta",
+      "betting-sharp",
+      "crypto-degen",
+      "internet-slang",
+      "memetic",
+      "social-evaluation",
+      "relationship-dating",
+      "conflict-aggression",
+      "technology-ai",
+      "workplace-career",
+      "sports-competition",
+      "music-entertainment",
+      "fashion-aesthetic",
+      "regional-cultural",
+      "spiritual-mystic",
+      "identity-affiliation",
+      "politics-civic",
+      "ai-native"
+    ],
+    "foundation_receipt_pin": "8ea02186f28afd517c25fef2782e6e5930523ac403ecd01087734c4616383357",
+    "mutable": false,
+    "n_families": 18,
+    "new_lineage": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1",
+    "note": "V5/V6-current 18-family flat vocabulary is frozen as research history. V6 modeling must use the new ontology lineage.",
+    "rewrite_historical_experiments": false,
+    "state": "HISTORICAL_RESEARCH_ONTOLOGY"
+  },
+  "merge_candidates": [
+    {
+      "action": "HIERARCHICAL_MERGE",
+      "decidability": "DECIDABLE_NOW",
+      "distinctions_lost_if_flat_merge": "AI-community slang specificity",
+      "downstream_matters": true,
+      "expected_confusion_reduction": "High",
+      "human_annotation_benefit": "High \u2014 removes forced exclusive sibling choice",
+      "members": [
+        "technology-ai",
+        "ai-native"
+      ],
+      "shared_semantic_core": "computing / AI systems discourse"
+    },
+    {
+      "action": "DEMOTE_TO_MEDIATION_CO_LABEL",
+      "decidability": "DECIDABLE_NOW",
+      "distinctions_lost_if_kept_exclusive": "None useful; exclusivity was the bug",
+      "downstream_matters": true,
+      "expected_confusion_reduction": "High",
+      "human_annotation_benefit": "High",
+      "members": [
+        "internet-slang",
+        "*"
+      ],
+      "shared_semantic_core": "online register co-occurs with domains/functions"
+    }
+  ],
+  "migration_map": [
+    {
+      "from": "gaming-meta",
+      "state": "KEEP",
+      "to": [
+        "domain.gaming"
+      ]
+    },
+    {
+      "from": "betting-sharp",
+      "state": "RENAME",
+      "to": [
+        "domain.gambling"
+      ]
+    },
+    {
+      "from": "crypto-degen",
+      "state": "RENAME",
+      "to": [
+        "domain.crypto"
+      ]
+    },
+    {
+      "from": "sports-competition",
+      "state": "RENAME",
+      "to": [
+        "domain.sports"
+      ]
+    },
+    {
+      "from": "music-entertainment",
+      "state": "RENAME",
+      "to": [
+        "domain.entertainment"
+      ]
+    },
+    {
+      "from": "fashion-aesthetic",
+      "state": "RENAME",
+      "to": [
+        "domain.fashion"
+      ]
+    },
+    {
+      "from": "workplace-career",
+      "state": "RENAME",
+      "to": [
+        "domain.workplace"
+      ]
+    },
+    {
+      "from": "politics-civic",
+      "state": "KEEP",
+      "to": [
+        "domain.politics"
+      ]
+    },
+    {
+      "from": "spiritual-mystic",
+      "state": "RENAME",
+      "to": [
+        "domain.spiritual"
+      ]
+    },
+    {
+      "from": "technology-ai",
+      "state": "PARENT",
+      "to": [
+        "domain.technology"
+      ]
+    },
+    {
+      "from": "ai-native",
+      "state": "CHILD",
+      "to": [
+        "domain.technology",
+        "domain.technology.ai_discourse"
+      ]
+    },
+    {
+      "from": "social-evaluation",
+      "state": "RENAME",
+      "to": [
+        "function.evaluative_stance"
+      ]
+    },
+    {
+      "from": "relationship-dating",
+      "state": "RENAME",
+      "to": [
+        "function.relational_intimacy"
+      ]
+    },
+    {
+      "from": "conflict-aggression",
+      "state": "RENAME",
+      "to": [
+        "function.conflictive_force"
+      ]
+    },
+    {
+      "from": "memetic",
+      "state": "RENAME",
+      "to": [
+        "function.memetic_form"
+      ]
+    },
+    {
+      "from": "internet-slang",
+      "state": "MULTI_LABEL_MAP",
+      "to": [
+        "mediation.internet_register"
+      ]
+    },
+    {
+      "from": "regional-cultural",
+      "state": "DEPRECATE",
+      "to": []
+    },
+    {
+      "from": "identity-affiliation",
+      "note": "MULTI_LABEL_MAP only when text-identifiable; else HUMAN_RESETTLEMENT",
+      "state": "UNRESOLVED",
+      "to": [
+        "function.evaluative_stance",
+        "domain.politics"
+      ]
+    }
+  ],
+  "modeling_gate_open": false,
+  "note": "Structure and definitions frozen; limited boundaries still require human agreement before full label rebuild.",
+  "pairwise_matrix": [
+    {
+      "a": "gaming-meta",
+      "b": "betting-sharp",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "crypto-degen",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "internet-slang",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "memetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "social-evaluation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "relationship-dating",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "conflict-aggression",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Trash talk can be gaming domain + conflictive function."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "technology-ai",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "workplace-career",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "sports-competition",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Esports vs athletic sports; usually decidable from text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "music-entertainment",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "fashion-aesthetic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "regional-cultural",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "gaming-meta",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "crypto-degen",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "low_to_moderate",
+      "note": "Market slang overlap; stake/token senses collide."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "internet-slang",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "memetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "social-evaluation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "relationship-dating",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "conflict-aggression",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "technology-ai",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "workplace-career",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "sports-competition",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Sports betting legitimately co-labels."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "music-entertainment",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "fashion-aesthetic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "regional-cultural",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "betting-sharp",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "internet-slang",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "memetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "social-evaluation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "relationship-dating",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "conflict-aggression",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "technology-ai",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "workplace-career",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "sports-competition",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "music-entertainment",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "fashion-aesthetic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "regional-cultural",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "crypto-degen",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "internet-slang",
+      "b": "memetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Register vs memetic form often co-occur."
+    },
+    {
+      "a": "internet-slang",
+      "b": "social-evaluation",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level functions; co-occurrence often legitimate."
+    },
+    {
+      "a": "internet-slang",
+      "b": "relationship-dating",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "conflict-aggression",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level functions; co-occurrence often legitimate."
+    },
+    {
+      "a": "internet-slang",
+      "b": "technology-ai",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "workplace-career",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "sports-competition",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "music-entertainment",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "fashion-aesthetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "regional-cultural",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "spiritual-mystic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "politics-civic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "internet-slang",
+      "b": "ai-native",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate"
+    },
+    {
+      "a": "memetic",
+      "b": "social-evaluation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate"
+    },
+    {
+      "a": "memetic",
+      "b": "relationship-dating",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "conflict-aggression",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level functions; co-occurrence often legitimate."
+    },
+    {
+      "a": "memetic",
+      "b": "technology-ai",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "workplace-career",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "sports-competition",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "music-entertainment",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "fashion-aesthetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "regional-cultural",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "spiritual-mystic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "memetic",
+      "b": "politics-civic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate"
+    },
+    {
+      "a": "memetic",
+      "b": "ai-native",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "relationship-dating",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "low_to_moderate",
+      "note": "Evaluative insults about partners vs dating lexicon."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "conflict-aggression",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level functions; co-occurrence often legitimate."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "technology-ai",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "workplace-career",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "sports-competition",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "music-entertainment",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "fashion-aesthetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "regional-cultural",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "spiritual-mystic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "identity-affiliation",
+      "class": "UNRESOLVABLE_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "high",
+      "note": "Slurs vs identity labels; hidden-context risk."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "politics-civic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "social-evaluation",
+      "b": "ai-native",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "conflict-aggression",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "technology-ai",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "workplace-career",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "sports-competition",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "music-entertainment",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "fashion-aesthetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "regional-cultural",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "spiritual-mystic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "identity-affiliation",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level functions; co-occurrence often legitimate."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "politics-civic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "relationship-dating",
+      "b": "ai-native",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "technology-ai",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "workplace-career",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "sports-competition",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "music-entertainment",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "fashion-aesthetic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "regional-cultural",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "spiritual-mystic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "politics-civic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate"
+    },
+    {
+      "a": "conflict-aggression",
+      "b": "ai-native",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "technology-ai",
+      "b": "workplace-career",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate"
+    },
+    {
+      "a": "technology-ai",
+      "b": "sports-competition",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "technology-ai",
+      "b": "music-entertainment",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "technology-ai",
+      "b": "fashion-aesthetic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "technology-ai",
+      "b": "regional-cultural",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "technology-ai",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "technology-ai",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "technology-ai",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "technology-ai",
+      "b": "ai-native",
+      "class": "HIERARCHICAL",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "high",
+      "subtype": "ai-native \u2282 technology"
+    },
+    {
+      "a": "workplace-career",
+      "b": "sports-competition",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "workplace-career",
+      "b": "music-entertainment",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "workplace-career",
+      "b": "fashion-aesthetic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "workplace-career",
+      "b": "regional-cultural",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "workplace-career",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "workplace-career",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "workplace-career",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "workplace-career",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "sports-competition",
+      "b": "music-entertainment",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "sports-competition",
+      "b": "fashion-aesthetic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "sports-competition",
+      "b": "regional-cultural",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "sports-competition",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "sports-competition",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "sports-competition",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "sports-competition",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "music-entertainment",
+      "b": "fashion-aesthetic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate"
+    },
+    {
+      "a": "music-entertainment",
+      "b": "regional-cultural",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "music-entertainment",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "music-entertainment",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "music-entertainment",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "music-entertainment",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "fashion-aesthetic",
+      "b": "regional-cultural",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "fashion-aesthetic",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "fashion-aesthetic",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "fashion-aesthetic",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "fashion-aesthetic",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "regional-cultural",
+      "b": "spiritual-mystic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "regional-cultural",
+      "b": "identity-affiliation",
+      "class": "UNRESOLVABLE_BOUNDARY",
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "definition_overlap": "high",
+      "note": "Variety vs identity often needs hidden context."
+    },
+    {
+      "a": "regional-cultural",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "regional-cultural",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "spiritual-mystic",
+      "b": "identity-affiliation",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "spiritual-mystic",
+      "b": "politics-civic",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "spiritual-mystic",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    },
+    {
+      "a": "identity-affiliation",
+      "b": "politics-civic",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "identity-affiliation",
+      "b": "ai-native",
+      "class": "MULTI_LABEL_COMPATIBLE",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Different semantic levels; exclusive flat head forces false conflict."
+    },
+    {
+      "a": "politics-civic",
+      "b": "ai-native",
+      "class": "SOFT_BOUNDARY",
+      "decidability": "DECIDABLE_NOW",
+      "definition_overlap": "low_to_moderate",
+      "note": "Same-level domains; usually exclusive unless mixed-topic text."
+    }
+  ],
+  "pairwise_summary": {
+    "class_counts": {
+      "HIERARCHICAL": 1,
+      "MULTI_LABEL_COMPATIBLE": 81,
+      "SOFT_BOUNDARY": 69,
+      "UNRESOLVABLE_BOUNDARY": 2
+    },
+    "n_pairs": 153,
+    "needs_human": 9
+  },
+  "preferred_ontology": {
+    "ONTOLOGY_LINEAGE_ID": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1",
+    "cardinality": {
+      "domain_labels": "multi-label (0..n)",
+      "exclusive_flat_argmax": false,
+      "function_labels": "multi-label (0..n)",
+      "mediation_labels": "multi-label (0..1 typical)"
+    },
+    "deprecated": [
+      {
+        "action": "DEPRECATE",
+        "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+        "from": [
+          "regional-cultural"
+        ],
+        "id": "deprecated.regional_variety",
+        "reason": "Primarily variety metadata; often CONTEXT_DEPENDENT as family gold."
+      },
+      {
+        "action": "DEPRECATE_AS_EXCLUSIVE",
+        "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+        "from": [
+          "identity-affiliation"
+        ],
+        "id": "deprecated.identity_affiliation_exclusive",
+        "reason": "Identity/affiliation is not a stable exclusive flat family; map to evaluative_stance and/or politics when text-identifiable, else leave for human resettlement."
+      }
+    ],
+    "domains": [
+      {
+        "from": [
+          "gaming-meta"
+        ],
+        "id": "domain.gaming",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "gaming",
+        "positive_core": "gameplay / gamer-community evidence"
+      },
+      {
+        "from": [
+          "betting-sharp"
+        ],
+        "id": "domain.gambling",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "gambling_betting",
+        "positive_core": "wagering-market evidence"
+      },
+      {
+        "from": [
+          "crypto-degen"
+        ],
+        "id": "domain.crypto",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "crypto_markets",
+        "positive_core": "crypto-asset / chain-market evidence"
+      },
+      {
+        "from": [
+          "sports-competition"
+        ],
+        "id": "domain.sports",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "sports",
+        "positive_core": "athletic sports evidence"
+      },
+      {
+        "from": [
+          "music-entertainment"
+        ],
+        "id": "domain.entertainment",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "entertainment_media",
+        "positive_core": "music / film / TV entertainment evidence"
+      },
+      {
+        "from": [
+          "fashion-aesthetic"
+        ],
+        "id": "domain.fashion",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "fashion_style",
+        "positive_core": "clothing / aesthetic-style evidence"
+      },
+      {
+        "from": [
+          "workplace-career"
+        ],
+        "id": "domain.workplace",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "workplace",
+        "positive_core": "workplace / career / org evidence"
+      },
+      {
+        "from": [
+          "politics-civic"
+        ],
+        "id": "domain.politics",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "politics_civic",
+        "positive_core": "political / civic institutional evidence"
+      },
+      {
+        "from": [
+          "spiritual-mystic"
+        ],
+        "id": "domain.spiritual",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "spiritual_esoteric",
+        "positive_core": "occult / astrology / spiritual practice evidence"
+      },
+      {
+        "children": [
+          {
+            "from": [
+              "ai-native"
+            ],
+            "id": "domain.technology.ai_discourse",
+            "identifiability": "TEXT_IDENTIFIABLE",
+            "label": "ai_discourse",
+            "positive_core": "AI-agent / LLM / prompt community evidence"
+          }
+        ],
+        "from": [
+          "technology-ai"
+        ],
+        "id": "domain.technology",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "technology",
+        "positive_core": "computing / software / systems evidence"
+      }
+    ],
+    "functions": [
+      {
+        "from": [
+          "social-evaluation"
+        ],
+        "id": "function.evaluative_stance",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "evaluative_stance",
+        "positive_core": "praise / insult / pejoration / prestige judgment"
+      },
+      {
+        "from": [
+          "relationship-dating"
+        ],
+        "id": "function.relational_intimacy",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "relational_intimacy",
+        "positive_core": "romantic / dating / intimate partnership evidence"
+      },
+      {
+        "from": [
+          "conflict-aggression"
+        ],
+        "id": "function.conflictive_force",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "conflictive_force",
+        "positive_core": "hostility / violence / combat framing"
+      },
+      {
+        "from": [
+          "memetic"
+        ],
+        "id": "function.memetic_form",
+        "identifiability": "TEXT_IDENTIFIABLE",
+        "label": "memetic_form",
+        "positive_core": "meme format / macro / copypasta / template virality"
+      }
+    ],
+    "mediation": [
+      {
+        "from": [
+          "internet-slang"
+        ],
+        "id": "mediation.internet_register",
+        "identifiability": "MIXED",
+        "label": "internet_register",
+        "note": "Optional co-label; never exclusive Stage-B decision alone.",
+        "positive_core": "internet-mediated informal register / netspeak"
+      }
+    ],
+    "minimum_support_rule": {
+      "MIN_DEV_SUPPORT": 8,
+      "MIN_REP_SUPPORT": 15,
+      "MIN_TRAIN_SUPPORT": 40,
+      "applies_to": "active definitive leaves used for learning/eval"
+    },
+    "rationale": "Geometry (between>within), retrieval non-viability, and 152 review pairs are consistent with overlapping dimensions forced into exclusive buckets. Separating DOMAIN \u00d7 FUNCTION \u00d7 MEDIATION with hierarchy for AI\u2282technology is the smallest structure that preserves useful distinctions without unstable exclusive boundaries. Flat reduction alone cannot express legitimate co-occurrence (e.g., sports+gambling, gaming+conflict, politics+memetic).",
+    "semantic_levels": {
+      "domain": "aboutness / community topic",
+      "function": "pragmatic or relational force",
+      "mediation": "optional register/channel marker"
+    },
+    "structure": "HIERARCHICAL_MULTI_LABEL",
+    "structure_code": "D"
+  },
+  "qualification_consequence": {
+    "also_consider": "new_qualification_surface",
+    "consequence": "human_re-settlement_after_unsealing_under_future_qualification_protocol",
+    "metadata_only_migration": false,
+    "no_change": false,
+    "reason": "QUAL uses the historical exclusive family schema. Hierarchical multi-label cannot be metadata-only migrated without reading/resettling gold. Keep seal; do not compromise holdout now.",
+    "sealed_rows_inspected": false
+  },
+  "schema": "hyperlex.classification.v6.ontology_revision.v1",
+  "semantic_level_diagnosis": {
+    "diagnosis": "The flat 18-way ontology conflates DOMAIN aboutness (gaming/crypto/sports/\u2026), SEMANTIC_RELATION (relationship/identity), and PRAGMATIC_FUNCTION (evaluation/memetic/internet-register/conflict). A single mutually exclusive Stage-B head cannot represent this.",
+    "dominant_level_in_current_ontology": "MIXED_DOMAIN_AND_PRAGMATIC",
+    "level_counts": {
+      "DOMAIN": 12,
+      "PRAGMATIC_FUNCTION": 4,
+      "SEMANTIC_RELATION": 2
+    },
+    "required_separation": [
+      "DOMAIN",
+      "SEMANTIC_RELATION",
+      "PRAGMATIC_FUNCTION"
+    ]
+  },
+  "settled_at": "2026-10-01T21:29:41Z",
+  "split_redefinition_candidates": [
+    {
+      "decidability": "NEEDS_HUMAN_AGREEMENT_EVIDENCE",
+      "family": "identity-affiliation",
+      "modes": [
+        "explicit group affiliation claims",
+        "demonyms / ethnonyms",
+        "evaluative slurs targeting identity"
+      ],
+      "recommendation": "REDEFINE_OUT_OF_EXCLUSIVE_FAMILY",
+      "split": false
+    },
+    {
+      "decidability": "DECIDABLE_NOW",
+      "family": "regional-cultural",
+      "modes": [
+        "dialect labels",
+        "regional slang senses",
+        "culture-topic prose"
+      ],
+      "recommendation": "DEPRECATE_AS_STAGE_B_FAMILY",
+      "split": false
+    },
+    {
+      "decidability": "DECIDABLE_NOW",
+      "family": "conflict-aggression",
+      "modes": [
+        "military lexicon",
+        "interpersonal hostility",
+        "gaming trash-talk"
+      ],
+      "recommendation": "KEEP_AS_FUNCTION_WITH_CO_LABELS",
+      "split": false
+    }
+  ],
+  "stage_a_consequence": {
+    "default": "Stage A remains a logically separate evidence/relation gate (EVIDENCE_PRESENT / NO_EVIDENCE / UNCERTAIN) before Stage B labeling.",
+    "gold_contract": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+    "interaction": "Ontology revision changes what Stage B emits after PRESENT, not the definition of evidence sufficiency. No Stage A reopen without new evidence.",
+    "reopen_stage_a": false
+  },
+  "stage_b_task": {
+    "alternatives_rejected": {
+      "FLAT_SINGLE_LABEL": "Contradicts co-occurrence evidence",
+      "HIERARCHICAL_SINGLE_LABEL": "Hierarchy helps AI\u2282tech but not multi-aspect text",
+      "MULTI_LABEL": "Close; missing explicit AI hierarchy",
+      "RETRIEVAL_PLUS_VERIFICATION": "May be a later architecture; not the ontology/task definition itself"
+    },
+    "outputs": {
+      "abstain_axes": "per-axis insufficient context allowed",
+      "domain_labels": "multi-hot over domain leaves/parents",
+      "function_labels": "multi-hot over functions",
+      "mediation_labels": "multi-hot over mediation"
+    },
+    "task": "HIERARCHICAL_MULTI_LABEL"
+  },
+  "uncertainty_semantics": {
+    "annotation_disagreement": {
+      "gold": "ANNOTATOR_DISAGREEMENT",
+      "meaning": "Human raters disagree; hold out from definitive training gold"
+    },
+    "do_not_collapse_to_single_AMBIGUOUS": true,
+    "insufficient_context": {
+      "gold": "INSUFFICIENT_CONTEXT",
+      "meaning": "Text underdetermined for definitive labels (Stage A UNCERTAIN / CONTEXT_DEPENDENT)"
+    },
+    "multi_label_co_occurrence": {
+      "gold": "MULTI_LABEL_POSITIVE",
+      "meaning": "Multiple V6 labels simultaneously true; not uncertain"
+    },
+    "ontology_ambiguity": {
+      "gold": "ONTOLOGY_UNRESOLVED",
+      "meaning": "Text fits multiple exclusive historical buckets; needs resettlement under new ontology"
+    }
+  }
+}

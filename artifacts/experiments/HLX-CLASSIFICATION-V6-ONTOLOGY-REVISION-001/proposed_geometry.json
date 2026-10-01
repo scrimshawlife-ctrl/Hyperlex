@@ -1,0 +1,139 @@
+{
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "between_family_sim_mean": 0.9776875058809916,
+  "cluster_counts": {
+    "domain.crypto": 120,
+    "domain.entertainment": 123,
+    "domain.fashion": 129,
+    "domain.gambling": 119,
+    "domain.gaming": 133,
+    "domain.politics": 120,
+    "domain.spiritual": 119,
+    "domain.sports": 124,
+    "domain.technology": 124,
+    "domain.technology.ai_discourse": 128,
+    "domain.workplace": 117,
+    "function.conflictive_force": 119,
+    "function.evaluative_stance": 244,
+    "function.memetic_form": 126,
+    "function.relational_intimacy": 113,
+    "mediation.internet_register": 125
+  },
+  "confusion_graph_top": [
+    {
+      "gold": "function.evaluative_stance",
+      "n": 72,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "function.relational_intimacy",
+      "n": 56,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.gaming",
+      "n": 53,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.entertainment",
+      "n": 47,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.fashion",
+      "n": 46,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "function.memetic_form",
+      "n": 45,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "function.conflictive_force",
+      "n": 40,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.politics",
+      "n": 37,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.spiritual",
+      "n": 35,
+      "pred": "function.evaluative_stance"
+    },
+    {
+      "gold": "domain.technology",
+      "n": 35,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.sports",
+      "n": 33,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.spiritual",
+      "n": 33,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.politics",
+      "n": 30,
+      "pred": "function.evaluative_stance"
+    },
+    {
+      "gold": "domain.sports",
+      "n": 28,
+      "pred": "domain.gambling"
+    },
+    {
+      "gold": "domain.crypto",
+      "n": 28,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.gambling",
+      "n": 28,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.technology",
+      "n": 27,
+      "pred": "function.evaluative_stance"
+    },
+    {
+      "gold": "domain.workplace",
+      "n": 24,
+      "pred": "mediation.internet_register"
+    },
+    {
+      "gold": "domain.fashion",
+      "n": 24,
+      "pred": "function.evaluative_stance"
+    },
+    {
+      "gold": "function.evaluative_stance",
+      "n": 22,
+      "pred": "function.conflictive_force"
+    }
+  ],
+  "encoder": "MODEL_WIDE_BEST",
+  "geometry_adequate_alone": false,
+  "geometry_improved": true,
+  "historical_comparison": {
+    "note": "Old figures from V6 foundation audit on exclusive 18-way labels.",
+    "old_between": 0.98,
+    "old_purity": 0.25,
+    "old_within": 0.822
+  },
+  "margin_within_minus_between": -0.1499772246914004,
+  "n_clusters": 16,
+  "n_present_mapped": 2083,
+  "nearest_cluster_purity": 0.1785885741718675,
+  "note": "Geometry is validation-only. Proposed ontology may still show residual overlap due to category-proxy noise in V6 PRESENT gold; human-separability and cardinality correctness remain primary.",
+  "within_family_sim_mean": 0.8277102811895912
+}

@@ -1,0 +1,122 @@
+{
+  "all_active_meet_minimum": true,
+  "by_label": {
+    "domain.crypto": {
+      "DEVELOPMENT_VALIDATION": 17,
+      "REPRESENTATIVE_VALIDATION": 35,
+      "TOTAL": 137,
+      "TRAIN": 85,
+      "meets_minimum": true
+    },
+    "domain.entertainment": {
+      "DEVELOPMENT_VALIDATION": 10,
+      "REPRESENTATIVE_VALIDATION": 35,
+      "TOTAL": 133,
+      "TRAIN": 88,
+      "meets_minimum": true
+    },
+    "domain.fashion": {
+      "DEVELOPMENT_VALIDATION": 8,
+      "REPRESENTATIVE_VALIDATION": 40,
+      "TOTAL": 137,
+      "TRAIN": 89,
+      "meets_minimum": true
+    },
+    "domain.gambling": {
+      "DEVELOPMENT_VALIDATION": 20,
+      "REPRESENTATIVE_VALIDATION": 34,
+      "TOTAL": 139,
+      "TRAIN": 85,
+      "meets_minimum": true
+    },
+    "domain.gaming": {
+      "DEVELOPMENT_VALIDATION": 12,
+      "REPRESENTATIVE_VALIDATION": 47,
+      "TOTAL": 145,
+      "TRAIN": 86,
+      "meets_minimum": true
+    },
+    "domain.politics": {
+      "DEVELOPMENT_VALIDATION": 21,
+      "REPRESENTATIVE_VALIDATION": 74,
+      "TOTAL": 271,
+      "TRAIN": 176,
+      "meets_minimum": true
+    },
+    "domain.spiritual": {
+      "DEVELOPMENT_VALIDATION": 13,
+      "REPRESENTATIVE_VALIDATION": 41,
+      "TOTAL": 132,
+      "TRAIN": 78,
+      "meets_minimum": true
+    },
+    "domain.sports": {
+      "DEVELOPMENT_VALIDATION": 13,
+      "REPRESENTATIVE_VALIDATION": 37,
+      "TOTAL": 137,
+      "TRAIN": 87,
+      "meets_minimum": true
+    },
+    "domain.technology": {
+      "DEVELOPMENT_VALIDATION": 29,
+      "REPRESENTATIVE_VALIDATION": 78,
+      "TOTAL": 281,
+      "TRAIN": 174,
+      "meets_minimum": true
+    },
+    "domain.technology.ai_discourse": {
+      "DEVELOPMENT_VALIDATION": 13,
+      "REPRESENTATIVE_VALIDATION": 39,
+      "TOTAL": 141,
+      "TRAIN": 89,
+      "meets_minimum": true
+    },
+    "domain.workplace": {
+      "DEVELOPMENT_VALIDATION": 17,
+      "REPRESENTATIVE_VALIDATION": 35,
+      "TOTAL": 134,
+      "TRAIN": 82,
+      "meets_minimum": true
+    },
+    "function.conflictive_force": {
+      "DEVELOPMENT_VALIDATION": 17,
+      "REPRESENTATIVE_VALIDATION": 31,
+      "TOTAL": 136,
+      "TRAIN": 88,
+      "meets_minimum": true
+    },
+    "function.evaluative_stance": {
+      "DEVELOPMENT_VALIDATION": 28,
+      "REPRESENTATIVE_VALIDATION": 80,
+      "TOTAL": 272,
+      "TRAIN": 164,
+      "meets_minimum": true
+    },
+    "function.memetic_form": {
+      "DEVELOPMENT_VALIDATION": 14,
+      "REPRESENTATIVE_VALIDATION": 38,
+      "TOTAL": 140,
+      "TRAIN": 88,
+      "meets_minimum": true
+    },
+    "function.relational_intimacy": {
+      "DEVELOPMENT_VALIDATION": 17,
+      "REPRESENTATIVE_VALIDATION": 42,
+      "TOTAL": 130,
+      "TRAIN": 71,
+      "meets_minimum": true
+    },
+    "mediation.internet_register": {
+      "DEVELOPMENT_VALIDATION": 13,
+      "REPRESENTATIVE_VALIDATION": 38,
+      "TOTAL": 138,
+      "TRAIN": 87,
+      "meets_minimum": true
+    }
+  },
+  "minimum_rule": {
+    "MIN_DEV_SUPPORT": 8,
+    "MIN_REP_SUPPORT": 15,
+    "MIN_TRAIN_SUPPORT": 40
+  }
+}

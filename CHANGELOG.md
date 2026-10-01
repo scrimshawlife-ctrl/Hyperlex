@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- **Revise Hyperlex V6 ontology before modeling (Spec 007):**
+  Freeze `HYPERLEX_V5_FAMILY_ONTOLOGY` as `HISTORICAL_RESEARCH_ONTOLOGY`.
+  Semantic-level diagnosis: flat 18-way conflates DOMAIN × RELATION ×
+  FUNCTION. Preferred lineage `HYPERLEX_V6_FAMILY_ONTOLOGY_V1` =
+  **hierarchical multi-label** (10 domains + AI⊂technology child, 4
+  functions, optional internet_register mediation; deprecate
+  regional-cultural exclusive; identity-affiliation unresolved for human
+  settlement). Stage-B task spec `HIERARCHICAL_MULTI_LABEL`. Support
+  viability PASS on mapped TRAIN/DEV/REP; geometry validation still
+  inadequate (margin within−between ≈ −0.150; purity ≈ 0.179) under noisy
+  category-proxy gold. QUAL not inspected; consequence =
+  human re-settlement / new surface later. Disposition
+  **`V6_ONTOLOGY_BLOCKED_ON_HUMAN_AGREEMENT`**. Receipt
+  `classification-v6-ontology-revision-receipt-20261001.json`
+  (`9377d669…`). No train / encoder choice / retriever. Next:
+  `COMPLETE_V6_HUMAN_ONTOLOGY_SETTLEMENT`.
+
 - **Build representative V6 data foundation (Spec 007):**
   Freeze `HYPERLEX_V5_RESEARCH_BASELINE` (not release-qualified). Define
   `HYPERLEX_V6_OPERATING_DISTRIBUTION_V1`, independent

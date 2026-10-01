@@ -1,0 +1,24 @@
+{
+  "overall": {
+    "DIRECT_MAP": 4152,
+    "HUMAN_RESETTLEMENT_REQUIRED": 262,
+    "RULE_DERIVABLE": 138
+  },
+  "per_split": {
+    "DEVELOPMENT_VALIDATION": {
+      "DIRECT_MAP": 467,
+      "HUMAN_RESETTLEMENT_REQUIRED": 26,
+      "RULE_DERIVABLE": 13
+    },
+    "REPRESENTATIVE_VALIDATION": {
+      "DIRECT_MAP": 1137,
+      "HUMAN_RESETTLEMENT_REQUIRED": 75,
+      "RULE_DERIVABLE": 38
+    },
+    "TRAIN": {
+      "DIRECT_MAP": 2548,
+      "HUMAN_RESETTLEMENT_REQUIRED": 161,
+      "RULE_DERIVABLE": 87
+    }
+  }
+}
