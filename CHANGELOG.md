@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Build V5 Stage-A generalization surface v1 (Spec 007):**
+  `BUILD_V5_STAGE_A_GENERALIZATION_SURFACE_V1` seals matched-boundary
+  surface `classification-v5-stage-a-generalization-surface-v1-20261001`
+  (`7567edcd…`; n=2624; train 1907 / val 717; PRESENT 1223 / NONE 1202 /
+  UNCERTAIN 199; matched pairs 776). Critical SHORT_ATOM / DEFINITION_STYLE
+  validation floors and pairing/provenance/disjointness/embedding-hardness /
+  spent-reserve-overlap PASS. FAIL gates: SHORT_ATOM train floors,
+  wiktionary_aggregate source share (~0.27), median token ratio 1.385,
+  top100 Jaccard 0.235, length BA 0.621, TF-IDF BA 0.772, domain coverage
+  gaps → **`PREREGISTERED`** (not READY). No train, no retune, no Stage-B
+  mutation, no BEST moves, V1R9 unmutated. Receipt
+  `classification-v5-stage-a-generalization-surface-receipt-20261001.json`.
+  Next: `REMEDIATE_V5_STAGE_A_GENERALIZATION_SURFACE_GATES` (not retrain).
+
 - **Preserve RESERVE_FAIL + diagnose V5 generalization (Spec 007):**
   `PRESERVE_RESERVE_FAIL_AND_DIAGNOSE_V5_GENERALIZATION` freezes
   `HYPERLEX_V5_PROMOTION_RESERVE_001=SPENT` / `RESERVE_FAIL` /

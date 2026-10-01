@@ -1343,8 +1343,8 @@ def select_cell_balanced(
     targets = dict(targets or {})
     default_cap = {
         # Keep SHORT_ATOM NONE near PRESENT mass so length/surface balance holds.
-        "SHORT_ATOM/NO_EVIDENCE": 230,
-        "SHORT_ATOM/EVIDENCE_PRESENT": 230,
+        "SHORT_ATOM/NO_EVIDENCE": 250,
+        "SHORT_ATOM/EVIDENCE_PRESENT": 250,
         "PROSE/NO_EVIDENCE": 400,
         "PROSE/EVIDENCE_PRESENT": 340,
         "DEFINITION_STYLE/NO_EVIDENCE": 340,
