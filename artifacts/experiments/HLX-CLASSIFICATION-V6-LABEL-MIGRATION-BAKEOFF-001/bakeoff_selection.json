@@ -1,0 +1,40 @@
+{
+  "advance": false,
+  "ranking": [
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "dev_macro_f1": 0.019444444444444445,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.023839137645107797,
+      "selection_score": -0.1761608623548922,
+      "track": "A_BASELINE_MULTIHEAD"
+    },
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "dev_macro_f1": 0.023148148148148147,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.0220125786163522,
+      "selection_score": -0.17798742138364781,
+      "track": "C_REPRESENTATION_AWARE"
+    },
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "dev_macro_f1": 0.02100840336134454,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.015902366863905327,
+      "selection_score": -0.18409763313609467,
+      "track": "B_HIERARCHY_AWARE"
+    }
+  ],
+  "selected": null,
+  "selection_rule": "maximize REP macro-F1 with hierarchy penalty; require GENERALIZATION_GAP_ACCEPTABLE + min REP macro-F1 + hierarchy floor"
+}

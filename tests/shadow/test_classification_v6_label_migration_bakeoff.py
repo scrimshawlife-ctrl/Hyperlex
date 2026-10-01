@@ -79,3 +79,33 @@ def test_migration_hierarchy_and_bakeoff_gates():
         }
     )
     assert sel["advance"] is True
+    assert sel["selected"] == "A_BASELINE_MULTIHEAD"
+    assert sel["ranking"][0]["hierarchy_violation_rate_rep"] == 0.0
+    assert sel["ranking"][0]["HIERARCHY_OK"] is True
+
+    # Zero hierarchy violations must not be coerced to 1.0 via `0.0 or 1`.
+    # Absolute REP floor must block near-chance macro-F1 from advancing.
+    weak = select_candidate(
+        {
+            "A_BASELINE_MULTIHEAD": {
+                "DEV": {"system": {"macro_f1": 0.019}},
+                "REP": {
+                    "system": {"macro_f1": 0.024},
+                    "hierarchy": {"hierarchy_violation_rate": 0.0},
+                },
+            },
+            "B_HIERARCHY_AWARE": {
+                "DEV": {"system": {"macro_f1": 0.021}},
+                "REP": {
+                    "system": {"macro_f1": 0.016},
+                    "hierarchy": {"hierarchy_violation_rate": 0.0},
+                },
+            },
+        }
+    )
+    assert weak["advance"] is False
+    assert weak["selected"] is None
+    assert all(row["hierarchy_violation_rate_rep"] == 0.0 for row in weak["ranking"])
+    assert all(row["ABS_REP_FLOOR_OK"] is False for row in weak["ranking"])
+    assert GENERALIZATION_GAP_GATE["min_rep_system_macro_f1"] == 0.20
+    assert GENERALIZATION_GAP_GATE["max_hierarchy_violation_rate_rep"] == 0.05

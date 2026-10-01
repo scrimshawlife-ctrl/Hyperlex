@@ -1,0 +1,83 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-LABEL-MIGRATION-BAKEOFF-001",
+  "PHASE_RULE": "REBUILD_V6_LABELS_AND_RUN_ARCHITECTURE_BAKEOFF",
+  "constraints": {
+    "ai_discourse_requires_technology": true,
+    "violation_example": "ai_discourse=true && technology=false \u2192 structural error"
+  },
+  "control_encoder_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "control_role": "CONTROL_NOT_ASSUMED_BACKBONE",
+  "generalization_gap_gate": {
+    "max_hierarchy_violation_rate_rep": 0.05,
+    "max_macro_f1_dev_minus_rep": 0.15,
+    "min_rep_system_macro_f1": 0.2,
+    "name": "GENERALIZATION_GAP_ACCEPTABLE",
+    "rule": "Candidate may not advance on DEV improvement alone. Material REP degradation vs DEV is a first-class failure."
+  },
+  "heads": {
+    "domain": [
+      "domain.gaming",
+      "domain.gambling",
+      "domain.crypto",
+      "domain.sports",
+      "domain.entertainment",
+      "domain.fashion",
+      "domain.workplace",
+      "domain.politics",
+      "domain.spiritual",
+      "domain.technology",
+      "domain.technology.ai_discourse"
+    ],
+    "function": [
+      "function.evaluative_stance",
+      "function.relational_intimacy",
+      "function.conflictive_force",
+      "function.memetic_form"
+    ],
+    "mediation": [
+      "mediation.internet_register"
+    ]
+  },
+  "identical_budget_note": "Tracks share splits, optimizer family, epoch budget, and thresholding policy; encoder swaps are controlled separately.",
+  "llm_as_gold_ontology_authority": false,
+  "metrics": {
+    "DOMAIN": [
+      "micro_f1",
+      "macro_f1",
+      "per_label_precision_recall"
+    ],
+    "FUNCTION": [
+      "micro_f1",
+      "macro_f1"
+    ],
+    "GENERALIZATION": [
+      "DEV_metrics",
+      "REP_metrics",
+      "DEV_to_REP_delta"
+    ],
+    "HIERARCHY": [
+      "parent_child_consistency",
+      "hierarchical_precision_recall_f1",
+      "hierarchy_violation_rate"
+    ],
+    "MEDIATION": [
+      "per_label_precision_recall"
+    ],
+    "SYSTEM": [
+      "exact_label_set_match",
+      "jaccard",
+      "sample_f1",
+      "abstention",
+      "Stage_A_induced_errors",
+      "Stage_B_induced_errors",
+      "compound_errors"
+    ]
+  },
+  "retrieval_first_core": false,
+  "schema": "hyperlex.classification.v6.architecture_bakeoff.v1",
+  "tracks": [
+    "A_BASELINE_MULTIHEAD",
+    "B_HIERARCHY_AWARE",
+    "C_REPRESENTATION_AWARE"
+  ]
+}

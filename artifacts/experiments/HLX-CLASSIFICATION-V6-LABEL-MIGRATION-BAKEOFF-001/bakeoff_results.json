@@ -1,0 +1,230 @@
+{
+  "A_BASELINE_MULTIHEAD": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.26153846153846155,
+        "jaccard": 0.28974358974358977,
+        "macro_f1": 0.028282828282828285,
+        "micro_f1": 0.17796610169491525,
+        "sample_f1": 0.29914529914529914
+      },
+      "function": {
+        "exact_match": 0.6615384615384615,
+        "jaccard": 0.6615384615384615,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.6615384615384615
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9179487179487179,
+        "jaccard": 0.9179487179487179,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.9179487179487179
+      },
+      "n": 195,
+      "system": {
+        "exact_match": 0.05128205128205128,
+        "jaccard": 0.07948717948717948,
+        "macro_f1": 0.019444444444444445,
+        "micro_f1": 0.1320754716981132,
+        "sample_f1": 0.08888888888888888
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.24436090225563908,
+        "jaccard": 0.27130325814536344,
+        "macro_f1": 0.026594301221166895,
+        "micro_f1": 0.15146831530139104,
+        "sample_f1": 0.28038847117794485
+      },
+      "function": {
+        "exact_match": 0.7293233082706767,
+        "jaccard": 0.7293233082706767,
+        "macro_f1": 0.022222222222222223,
+        "micro_f1": 0.02702702702702703,
+        "sample_f1": 0.7293233082706767
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9191729323308271,
+        "jaccard": 0.9191729323308271,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.9191729323308271
+      },
+      "n": 532,
+      "system": {
+        "exact_match": 0.03759398496240601,
+        "jaccard": 0.06641604010025064,
+        "macro_f1": 0.023839137645107797,
+        "micro_f1": 0.12171837708830549,
+        "sample_f1": 0.07612781954887218
+      }
+    },
+    "encoder": "MODEL_WIDE_BEST_CONTROL",
+    "n_train": 1209
+  },
+  "B_HIERARCHY_AWARE": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.27692307692307694,
+        "jaccard": 0.30512820512820515,
+        "macro_f1": 0.030557677616501147,
+        "micro_f1": 0.18181818181818182,
+        "sample_f1": 0.3145299145299145
+      },
+      "function": {
+        "exact_match": 0.6615384615384615,
+        "jaccard": 0.6615384615384615,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.6615384615384615
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9179487179487179,
+        "jaccard": 0.9179487179487179,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.9179487179487179
+      },
+      "n": 195,
+      "system": {
+        "exact_match": 0.046153846153846156,
+        "jaccard": 0.07435897435897436,
+        "macro_f1": 0.02100840336134454,
+        "micro_f1": 0.13245033112582782,
+        "sample_f1": 0.08376068376068375
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.18609022556390978,
+        "jaccard": 0.2111528822055138,
+        "macro_f1": 0.023130715438407747,
+        "micro_f1": 0.13210445468509985,
+        "sample_f1": 0.21961152882205512
+      },
+      "function": {
+        "exact_match": 0.7274436090225563,
+        "jaccard": 0.7274436090225563,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.7274436090225563
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9191729323308271,
+        "jaccard": 0.9191729323308271,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.9191729323308271
+      },
+      "n": 532,
+      "system": {
+        "exact_match": 0.03007518796992481,
+        "jaccard": 0.05513784461152882,
+        "macro_f1": 0.015902366863905327,
+        "micro_f1": 0.10250297973778308,
+        "sample_f1": 0.06359649122807018
+      }
+    },
+    "encoder": "MODEL_WIDE_BEST_CONTROL",
+    "n_train": 1209
+  },
+  "C_REPRESENTATION_AWARE": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.28717948717948716,
+        "jaccard": 0.31794871794871793,
+        "macro_f1": 0.03367003367003367,
+        "micro_f1": 0.19138755980861244,
+        "sample_f1": 0.3282051282051282
+      },
+      "function": {
+        "exact_match": 0.6615384615384615,
+        "jaccard": 0.6615384615384615,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.6615384615384615
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9179487179487179,
+        "jaccard": 0.9179487179487179,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.9179487179487179
+      },
+      "n": 195,
+      "system": {
+        "exact_match": 0.041025641025641026,
+        "jaccard": 0.07179487179487179,
+        "macro_f1": 0.023148148148148147,
+        "micro_f1": 0.13745704467353953,
+        "sample_f1": 0.08205128205128205
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.24060150375939848,
+        "jaccard": 0.27036340852130325,
+        "macro_f1": 0.03201829616923956,
+        "micro_f1": 0.17721518987341772,
+        "sample_f1": 0.28038847117794485
+      },
+      "function": {
+        "exact_match": 0.7274436090225563,
+        "jaccard": 0.7274436090225563,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.7274436090225563
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9191729323308271,
+        "jaccard": 0.9191729323308271,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.9191729323308271
+      },
+      "n": 532,
+      "system": {
+        "exact_match": 0.045112781954887216,
+        "jaccard": 0.07487468671679198,
+        "macro_f1": 0.0220125786163522,
+        "micro_f1": 0.13658536585365855,
+        "sample_f1": 0.08489974937343359
+      }
+    },
+    "encoder": "MODEL_WIDE_BEST_CONTROL",
+    "n_train": 1209
+  }
+}

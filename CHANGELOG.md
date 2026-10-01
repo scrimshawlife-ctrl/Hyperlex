@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- **Rebuild V6 labels and run architecture bake-off (Spec 007):**
+  Amended settlement protocol with three-level multi-label agreement
+  (per-label / per-example Jaccard·set-F1 / boundary matrices + Wilson CIs);
+  boundary-stratified top-up only for inconclusive strata. Deterministic
+  TRAIN/DEV/REP migration to `domain_labels[]` / `function_labels[]` /
+  `mediation_labels[]` / `ontology_uncertainty` (DIRECT 3707 / MULTI_LABEL
+  307 / RULE_DERIVED 30 / HUMAN_RESETTLEMENT 386). QUAL remains sealed
+  historical secondary. Controlled A/B/C bake-off under MODEL_WIDE_BEST as
+  **control** (not assumed backbone). Selection repair: `0.0 or 1` falsely
+  treated zero hierarchy violations as 1.0 and absolute REP macro-F1 (~0.02)
+  was allowed to advance — now require min REP system macro-F1 0.20 +
+  hierarchy violation ≤0.05. Disposition **`V6_BAKEOFF_NO_ADVANCE`**.
+  Receipt `classification-v6-label-migration-bakeoff-receipt-20261001.json`
+  (`b936b49b…`). Next: `CONTINUE_V6_ARCHITECTURE_BAKEOFF`.
+
 - **Complete V6 human ontology settlement (Spec 007):**
   Dual independent text-only operator protocols on the 120-row sample
   (acquisition gold / model scores withheld). Structure remains

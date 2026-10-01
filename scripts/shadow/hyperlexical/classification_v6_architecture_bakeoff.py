@@ -59,6 +59,8 @@ GENERALIZATION_GAP_GATE = {
         "Material REP degradation vs DEV is a first-class failure."
     ),
     "max_macro_f1_dev_minus_rep": 0.15,
+    "min_rep_system_macro_f1": 0.20,
+    "max_hierarchy_violation_rate_rep": 0.05,
 }
 
 
@@ -166,15 +168,29 @@ def generalization_gap_pass(dev_macro: float, rep_macro: float) -> bool:
     return (dev_macro - rep_macro) <= GENERALIZATION_GAP_GATE["max_macro_f1_dev_minus_rep"]
 
 
+def _metric(mapping: Mapping[str, Any] | None, *keys: str, default: float = 0.0) -> float:
+    cur: Any = mapping or {}
+    for key in keys:
+        if not isinstance(cur, Mapping) or key not in cur:
+            return default
+        cur = cur[key]
+    if cur is None:
+        return default
+    return float(cur)
+
+
 def select_candidate(results: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
     """Select among tracks using DEV+REP; reject DEV-only winners."""
     ranked = []
     for track, r in results.items():
-        dev = float(r.get("DEV", {}).get("system", {}).get("macro_f1") or 0)
-        rep = float(r.get("REP", {}).get("system", {}).get("macro_f1") or 0)
-        viol = float(r.get("REP", {}).get("hierarchy", {}).get("hierarchy_violation_rate") or 1)
+        dev = _metric(r, "DEV", "system", "macro_f1")
+        rep = _metric(r, "REP", "system", "macro_f1")
+        viol = _metric(r, "REP", "hierarchy", "hierarchy_violation_rate", default=1.0)
         gap_ok = generalization_gap_pass(dev, rep)
-        score = rep - 0.5 * max(0.0, viol) + (0.05 if gap_ok else -0.20)
+        abs_ok = rep >= GENERALIZATION_GAP_GATE["min_rep_system_macro_f1"]
+        hier_ok = viol <= GENERALIZATION_GAP_GATE["max_hierarchy_violation_rate_rep"]
+        eligible = gap_ok and abs_ok and hier_ok
+        score = rep - 0.5 * max(0.0, viol) + (0.05 if eligible else -0.20)
         ranked.append(
             {
                 "track": track,
@@ -182,14 +198,21 @@ def select_candidate(results: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]
                 "rep_macro_f1": rep,
                 "hierarchy_violation_rate_rep": viol,
                 "GENERALIZATION_GAP_ACCEPTABLE": gap_ok,
+                "ABS_REP_FLOOR_OK": abs_ok,
+                "HIERARCHY_OK": hier_ok,
+                "eligible": eligible,
                 "selection_score": score,
             }
         )
     ranked.sort(key=lambda x: -x["selection_score"])
-    winner = ranked[0] if ranked else None
+    eligible = [x for x in ranked if x["eligible"]]
+    winner = eligible[0] if eligible else None
     return {
         "ranking": ranked,
-        "selected": winner["track"] if winner and winner["GENERALIZATION_GAP_ACCEPTABLE"] else None,
-        "selection_rule": "maximize REP macro-F1 with hierarchy penalty; require GENERALIZATION_GAP_ACCEPTABLE",
-        "advance": bool(winner and winner["GENERALIZATION_GAP_ACCEPTABLE"]),
+        "selected": winner["track"] if winner else None,
+        "selection_rule": (
+            "maximize REP macro-F1 with hierarchy penalty; require "
+            "GENERALIZATION_GAP_ACCEPTABLE + min REP macro-F1 + hierarchy floor"
+        ),
+        "advance": winner is not None,
     }

@@ -1,0 +1,17 @@
+{
+  "HYPERLEX_V6_QUALIFICATION_001": {
+    "inspected": false,
+    "not_primary_v6_qualification": true,
+    "status": "REMAIN_SEALED_HISTORICAL_SECONDARY"
+  },
+  "new_primary_qualification": {
+    "axes": [
+      "domain_labels",
+      "function_labels",
+      "mediation_labels"
+    ],
+    "id": "HYPERLEX_V6_QUALIFICATION_002_PLANNED",
+    "labels_defined_before_acquisition": true,
+    "ontology": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL"
+  }
+}

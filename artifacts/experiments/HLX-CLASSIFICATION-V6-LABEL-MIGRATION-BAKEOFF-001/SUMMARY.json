@@ -1,0 +1,24 @@
+{
+  "ABS_REP_FLOOR_OK": false,
+  "BAKEOFF_STATE": "V6_BAKEOFF_NO_ADVANCE",
+  "GENERALIZATION_GAP_ACCEPTABLE": true,
+  "HIERARCHY_OK": true,
+  "NEXT_ACTION": "CONTINUE_V6_ARCHITECTURE_BAKEOFF",
+  "QUAL_ROWS_INSPECTED": false,
+  "RECEIPT": "b936b49bbf0e3925a03f2c1bb6eb46bf7458c7a2f1e215f83cc6536266d2d453",
+  "advance": false,
+  "best_hierarchy_violation_rate_rep": 0.0,
+  "best_rep_macro_f1": 0.023839137645107797,
+  "mean_set_jaccard": 0.9686520376175548,
+  "migration_counts": {
+    "DEPRECATED": 122,
+    "DIRECT": 3707,
+    "HUMAN_REQUIRED": 386,
+    "HUMAN_RESETTLEMENT_REQUIRED": 386,
+    "MULTI_LABEL": 307,
+    "RULE_DERIVED": 30
+  },
+  "sample_n": 319,
+  "selected": null,
+  "selection_note": "advance requires GENERALIZATION_GAP_ACCEPTABLE + min_rep_system_macro_f1 + max_hierarchy_violation_rate_rep; zero hierarchy_violation_rate is valid (not coerced via or-default)"
+}

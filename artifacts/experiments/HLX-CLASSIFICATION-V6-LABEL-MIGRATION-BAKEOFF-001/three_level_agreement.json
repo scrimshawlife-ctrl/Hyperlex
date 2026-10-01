@@ -1,0 +1,223 @@
+{
+  "acceptance_policy": {
+    "cohen_kappa_sole_metric": false,
+    "do_not_force_all_disagreements_to_single_gold": true,
+    "levels": [
+      "per_label_axis",
+      "per_example_set",
+      "boundary_matrices"
+    ],
+    "preserve_outcomes": [
+      "ONTOLOGY_BOUNDARY_UNCLEAR",
+      "INSUFFICIENT_CONTEXT",
+      "MULTI_LABEL_POSITIVE",
+      "ANNOTATOR_DISAGREEMENT"
+    ]
+  },
+  "inconclusive_strata": [
+    {
+      "action": "TOP_UP_BOUNDARY_STRATUM",
+      "n_pos_either": 4,
+      "reason": "INSUFFICIENT_POSITIVE_SUPPORT",
+      "stratum": "domain:crypto_markets"
+    },
+    {
+      "action": "TOP_UP_BOUNDARY_STRATUM",
+      "n_pos_either": 2,
+      "reason": "INSUFFICIENT_POSITIVE_SUPPORT",
+      "stratum": "function:evaluative_stance"
+    },
+    {
+      "action": "TOP_UP_BOUNDARY_STRATUM",
+      "n_pos_either": 3,
+      "reason": "INSUFFICIENT_POSITIVE_SUPPORT",
+      "stratum": "mediation:internet_register"
+    },
+    {
+      "action": "TOP_UP_OR_REVISE_BOUNDARY",
+      "cohen_kappa": 0.8062640985597777,
+      "positive_agreement": 0.0,
+      "raw_agreement": 0.9780564263322884,
+      "reason": "LOW_PRACTICAL_AGREEMENT",
+      "stratum": "identity_relevance"
+    }
+  ],
+  "level1_per_label": {
+    "domain:crypto_markets": {
+      "cohen_kappa": 1.0,
+      "n": 319,
+      "n_pos_either": 4,
+      "negative_agreement": 1.0,
+      "positive_agreement": 1.0,
+      "positive_ci": {
+        "hi": 1.0,
+        "lo": 0.5100999795960008,
+        "n": 4,
+        "p": 1.0
+      },
+      "raw_agreement": 1.0,
+      "raw_ci": {
+        "hi": 1.0,
+        "lo": 0.9881006660851637,
+        "n": 319,
+        "p": 1.0
+      }
+    },
+    "domain:gambling_betting": {
+      "cohen_kappa": 0.7646914187361673,
+      "n": 319,
+      "n_pos_either": 8,
+      "negative_agreement": 0.9904458598726115,
+      "positive_agreement": 0.625,
+      "positive_ci": {
+        "hi": 0.863158240538479,
+        "lo": 0.30573785458380187,
+        "n": 8,
+        "p": 0.625
+      },
+      "raw_agreement": 0.9905956112852664,
+      "raw_ci": {
+        "hi": 0.9967966628498045,
+        "lo": 0.9727190377290552,
+        "n": 319,
+        "p": 0.9905956112852664
+      }
+    },
+    "function:evaluative_stance": {
+      "cohen_kappa": 1.0,
+      "n": 319,
+      "n_pos_either": 2,
+      "negative_agreement": 1.0,
+      "positive_agreement": 1.0,
+      "positive_ci": {
+        "hi": 1.0,
+        "lo": 0.34237195288961925,
+        "n": 2,
+        "p": 1.0
+      },
+      "raw_agreement": 1.0,
+      "raw_ci": {
+        "hi": 1.0,
+        "lo": 0.9881006660851637,
+        "n": 319,
+        "p": 1.0
+      }
+    },
+    "function:relational_intimacy": {
+      "cohen_kappa": 0.9395718886152679,
+      "n": 319,
+      "n_pos_either": 9,
+      "negative_agreement": 0.9967845659163987,
+      "positive_agreement": 0.8888888888888888,
+      "positive_ci": {
+        "hi": 0.9801096286728695,
+        "lo": 0.5649937852319399,
+        "n": 9,
+        "p": 0.8888888888888888
+      },
+      "raw_agreement": 0.9968652037617555,
+      "raw_ci": {
+        "hi": 0.9994464312355942,
+        "lo": 0.982459246347468,
+        "n": 319,
+        "p": 0.9968652037617555
+      }
+    },
+    "identity_relevance": {
+      "cohen_kappa": 0.8062640985597777,
+      "confusion": {
+        "CLEAR_NEGATIVE|CLEAR_NEGATIVE": 298,
+        "CLEAR_POSITIVE|CLEAR_NEGATIVE": 1,
+        "CLEAR_POSITIVE|CLEAR_POSITIVE": 2,
+        "CLEAR_POSITIVE|INSUFFICIENT_CONTEXT": 2,
+        "INSUFFICIENT_CONTEXT|CLEAR_NEGATIVE": 3,
+        "INSUFFICIENT_CONTEXT|CLEAR_POSITIVE": 1,
+        "INSUFFICIENT_CONTEXT|INSUFFICIENT_CONTEXT": 12
+      },
+      "n": 319,
+      "raw_agreement": 0.9780564263322884,
+      "raw_ci": {
+        "hi": 0.9893308852170322,
+        "lo": 0.9554048613534223,
+        "n": 319,
+        "p": 0.9780564263322884
+      }
+    },
+    "mediation:internet_register": {
+      "cohen_kappa": 1.0,
+      "n": 319,
+      "n_pos_either": 3,
+      "negative_agreement": 1.0,
+      "positive_agreement": 1.0,
+      "positive_ci": {
+        "hi": 1.0,
+        "lo": 0.43849391955098227,
+        "n": 3,
+        "p": 1.0
+      },
+      "raw_agreement": 1.0,
+      "raw_ci": {
+        "hi": 1.0,
+        "lo": 0.9881006660851637,
+        "n": 319,
+        "p": 1.0
+      }
+    }
+  },
+  "level2_per_example": {
+    "exact_set_match_ci": {
+      "hi": 0.9806384183853891,
+      "lo": 0.9393173741766601,
+      "n": 319,
+      "p": 0.9655172413793104
+    },
+    "exact_set_match_rate": 0.9655172413793104,
+    "jaccard_histogram": {
+      "0.0": 9,
+      "0.5-0.99": 2,
+      "1.0": 308
+    },
+    "mean_jaccard": 0.9686520376175548,
+    "mean_set_f1": 0.9696969696969696
+  },
+  "level3_boundaries": {
+    "evaluative_vs_relational": {
+      "cells": {
+        "NEGxNEG": 309,
+        "NEGxPOS": 8,
+        "POSxNEG": 2
+      },
+      "n": 319
+    },
+    "gambling_vs_crypto": {
+      "cells": {
+        "NEGxNEG": 309,
+        "NEGxPOS": 4,
+        "POSxNEG": 6
+      },
+      "n": 319
+    },
+    "identity_vs_evaluative": {
+      "cells": {
+        "NEGxNEG": 315,
+        "NEGxPOS": 2,
+        "POSxNEG": 2
+      },
+      "n": 319
+    }
+  },
+  "mean_example_jaccard": 0.9686520376175548,
+  "mean_example_set_f1": 0.9696969696969696,
+  "n_rows": 319,
+  "uncertainty_outcome_counts": {
+    "CLEAR_NEGATIVE": 490,
+    "CLEAR_POSITIVE": 81,
+    "INSUFFICIENT_CONTEXT": 50,
+    "MULTI_LABEL_POSITIVE": 17,
+    "adj:ANNOTATOR_DISAGREEMENT": 10,
+    "adj:CLEAR_NEGATIVE": 236,
+    "adj:CLEAR_POSITIVE": 39,
+    "adj:INSUFFICIENT_CONTEXT": 25,
+    "adj:MULTI_LABEL_POSITIVE": 9
+  }
+}

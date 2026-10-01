@@ -553,20 +553,29 @@ def inner() -> int:
         SPEC / "classification-v6-label-migration-bakeoff-receipt-20261001.json",
         receipt,
     )
+    top = selection["ranking"][0] if selection.get("ranking") else {}
     summary = {
         "BAKEOFF_STATE": receipt["BAKEOFF_STATE"],
         "NEXT_ACTION": receipt["NEXT_ACTION"],
         "RECEIPT": receipt["V6_LABEL_MIGRATION_BAKEOFF_RECEIPT_SHA256"],
         "selected": selection.get("selected"),
-        "GENERALIZATION_GAP_ACCEPTABLE": (
-            selection["ranking"][0]["GENERALIZATION_GAP_ACCEPTABLE"]
-            if selection.get("ranking")
-            else None
+        "advance": bool(selection.get("advance")),
+        "GENERALIZATION_GAP_ACCEPTABLE": top.get("GENERALIZATION_GAP_ACCEPTABLE"),
+        "ABS_REP_FLOOR_OK": top.get("ABS_REP_FLOOR_OK"),
+        "HIERARCHY_OK": top.get("HIERARCHY_OK"),
+        "best_rep_macro_f1": top.get("rep_macro_f1"),
+        "best_hierarchy_violation_rate_rep": top.get(
+            "hierarchy_violation_rate_rep"
         ),
         "migration_counts": mig_summary["counts"],
         "mean_set_jaccard": agreement["mean_example_jaccard"],
         "sample_n": len(sample),
         "QUAL_ROWS_INSPECTED": False,
+        "selection_note": (
+            "advance requires GENERALIZATION_GAP_ACCEPTABLE + "
+            "min_rep_system_macro_f1 + max_hierarchy_violation_rate_rep; "
+            "zero hierarchy_violation_rate is valid (not coerced via or-default)"
+        ),
     }
     write_private(PRIVATE / "SUMMARY.json", summary)
     write_repo(REPO_ART / "SUMMARY.json", summary)

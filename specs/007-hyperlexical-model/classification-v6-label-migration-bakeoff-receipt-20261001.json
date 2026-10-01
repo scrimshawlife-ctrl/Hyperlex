@@ -1,0 +1,134 @@
+{
+  "BAKEOFF_STATE": "V6_BAKEOFF_NO_ADVANCE",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-LABEL-MIGRATION-BAKEOFF-001",
+  "MODEL_WIDE_BEST_ROLE": "CONTROL",
+  "NEXT_ACTION": "CONTINUE_V6_ARCHITECTURE_BAKEOFF",
+  "PHASE_RULE": "REBUILD_V6_LABELS_AND_RUN_ARCHITECTURE_BAKEOFF",
+  "QUAL_ROWS_INSPECTED": false,
+  "TRAIN": true,
+  "V6_LABEL_MIGRATION_BAKEOFF_RECEIPT_SHA256": "b936b49bbf0e3925a03f2c1bb6eb46bf7458c7a2f1e215f83cc6536266d2d453",
+  "agreement_mean_jaccard": 0.9686520376175548,
+  "agreement_mean_set_f1": 0.9696969696969696,
+  "architecture_bakeoff": true,
+  "bakeoff_selection": {
+    "advance": false,
+    "ranking": [
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "dev_macro_f1": 0.019444444444444445,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.023839137645107797,
+        "selection_score": -0.1761608623548922,
+        "track": "A_BASELINE_MULTIHEAD"
+      },
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "dev_macro_f1": 0.023148148148148147,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.0220125786163522,
+        "selection_score": -0.17798742138364781,
+        "track": "C_REPRESENTATION_AWARE"
+      },
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "dev_macro_f1": 0.02100840336134454,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.015902366863905327,
+        "selection_score": -0.18409763313609467,
+        "track": "B_HIERARCHY_AWARE"
+      }
+    ],
+    "selected": null,
+    "selection_rule": "maximize REP macro-F1 with hierarchy penalty; require GENERALIZATION_GAP_ACCEPTABLE + min REP macro-F1 + hierarchy floor"
+  },
+  "code_revision": "6192bf15aa2eceaf399ff8ef19f27105f652daea",
+  "inconclusive_strata_after_topup": [
+    {
+      "action": "TOP_UP_BOUNDARY_STRATUM",
+      "n_pos_either": 4,
+      "reason": "INSUFFICIENT_POSITIVE_SUPPORT",
+      "stratum": "domain:crypto_markets"
+    },
+    {
+      "action": "TOP_UP_BOUNDARY_STRATUM",
+      "n_pos_either": 2,
+      "reason": "INSUFFICIENT_POSITIVE_SUPPORT",
+      "stratum": "function:evaluative_stance"
+    },
+    {
+      "action": "TOP_UP_BOUNDARY_STRATUM",
+      "n_pos_either": 3,
+      "reason": "INSUFFICIENT_POSITIVE_SUPPORT",
+      "stratum": "mediation:internet_register"
+    },
+    {
+      "action": "TOP_UP_OR_REVISE_BOUNDARY",
+      "cohen_kappa": 0.8062640985597777,
+      "positive_agreement": 0.0,
+      "raw_agreement": 0.9780564263322884,
+      "reason": "LOW_PRACTICAL_AGREEMENT",
+      "stratum": "identity_relevance"
+    }
+  ],
+  "migration_summary": {
+    "QUAL_TOUCHED": false,
+    "counts": {
+      "DEPRECATED": 122,
+      "DIRECT": 3707,
+      "HUMAN_REQUIRED": 386,
+      "HUMAN_RESETTLEMENT_REQUIRED": 386,
+      "MULTI_LABEL": 307,
+      "RULE_DERIVED": 30
+    },
+    "label_schema": {
+      "domain_labels": "multi-hot",
+      "function_labels": "multi-hot",
+      "mediation_labels": "multi-hot",
+      "ontology_uncertainty": true
+    },
+    "n": {
+      "DEVELOPMENT_VALIDATION": 506,
+      "REPRESENTATIVE_VALIDATION": 1250,
+      "TRAIN": 2796
+    }
+  },
+  "qualification_plan": {
+    "HYPERLEX_V6_QUALIFICATION_001": {
+      "inspected": false,
+      "not_primary_v6_qualification": true,
+      "status": "REMAIN_SEALED_HISTORICAL_SECONDARY"
+    },
+    "new_primary_qualification": {
+      "axes": [
+        "domain_labels",
+        "function_labels",
+        "mediation_labels"
+      ],
+      "id": "HYPERLEX_V6_QUALIFICATION_002_PLANNED",
+      "labels_defined_before_acquisition": true,
+      "ontology": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL"
+    }
+  },
+  "selection_repair": {
+    "corrected_hierarchy_violation_rate": 0.0,
+    "max_hierarchy_violation_rate_rep": 0.05,
+    "min_rep_system_macro_f1": 0.2,
+    "prior_advance": true,
+    "prior_hierarchy_violation_rate_bug": 1.0,
+    "prior_receipt_sha256": "90d8973673b6d02cedb743cf7543438793e3ec107e165cfef11dddb3a50fb169",
+    "prior_selected": "A_BASELINE_MULTIHEAD",
+    "reason": "BUGFIX_ZERO_VIOLATION_OR_DEFAULT_AND_ABS_REP_FLOOR"
+  },
+  "settled_at": "2026-10-01T22:03:07Z",
+  "settlement_amended_three_level_agreement": true,
+  "settlement_ok": true
+}

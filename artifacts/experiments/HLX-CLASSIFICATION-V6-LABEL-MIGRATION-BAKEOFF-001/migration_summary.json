@@ -1,0 +1,22 @@
+{
+  "QUAL_TOUCHED": false,
+  "counts": {
+    "DEPRECATED": 122,
+    "DIRECT": 3707,
+    "HUMAN_REQUIRED": 386,
+    "HUMAN_RESETTLEMENT_REQUIRED": 386,
+    "MULTI_LABEL": 307,
+    "RULE_DERIVED": 30
+  },
+  "label_schema": {
+    "domain_labels": "multi-hot",
+    "function_labels": "multi-hot",
+    "mediation_labels": "multi-hot",
+    "ontology_uncertainty": true
+  },
+  "n": {
+    "DEVELOPMENT_VALIDATION": 506,
+    "REPRESENTATIVE_VALIDATION": 1250,
+    "TRAIN": 2796
+  }
+}
