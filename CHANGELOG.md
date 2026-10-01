@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- **Train V1R1 two-stage Stage-A generalization once (Spec 007):**
+  `TRAIN_V5_STAGE_A_TWO_STAGE_GENERALIZATION_ONCE` executes the single
+  authorized fresh retrain
+  (`HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-GENERALIZATION-001`) from
+  MODEL_WIDE_BEST `9fba0f66…` on V1R1 (`4095036e…`); sealed weights
+  `80b7f899…` / config `1527ae18…`. 12 epochs × 317 steps = 3804; selected
+  epoch 12 / checkpoint `26841d5f…` / selection score 0.8976. Threshold grid
+  100 pairs → **0 passing** → **`SETTLED_FAIL`** (false_entry 0.201 /
+  NONE recall 0.784 @ fail-display 0.50/0.50; PRESENT recall 0.891 passes).
+  SHORT_ATOM NONE false-entry remains ~0.546 while SHORT_ATOM PRESENT recall
+  is 0.75 — matched-boundary repair did not jointly clear the observed
+  failure mode. STAGE_A_BEST `cd2829c1…` / MODEL_WIDE_BEST unchanged; spent
+  reserve unused; run limit exhausted. Receipt
+  `classification-v5-stage-a-two-stage-generalization-train-once-receipt-20261001.json`
+  (`35d9a706…`). Next:
+  `DIAGNOSE_V5_STAGE_A_GENERALIZATION_RETRAIN_SETTLED_FAIL`.
+
 - **Authorize V1R1 two-stage Stage-A generalization retrain (Spec 007):**
   `AUTHORIZE_V5_STAGE_A_TWO_STAGE_RETRAIN_ON_GENERALIZATION_SURFACE` seals
   new experiment `HLX-CLASSIFICATION-V5-STAGE-A-TWO-STAGE-GENERALIZATION-001`
