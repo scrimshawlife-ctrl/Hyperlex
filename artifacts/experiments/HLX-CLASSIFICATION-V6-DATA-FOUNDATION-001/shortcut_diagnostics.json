@@ -2,51 +2,51 @@
   "DEVELOPMENT_VALIDATION": {
     "flags": [
       {
-        "label": "NO_EVIDENCE",
-        "label_share": 0.8404255319148937,
-        "n": 79,
-        "pmi": 1.3647881558991826,
-        "source_root": "v6_wp_ordinary"
+        "label": "EVIDENCE_PRESENT",
+        "label_share": 1.0,
+        "n": 255,
+        "pmi": 0.6852731241295433,
+        "source_root": "v6_wikt_present"
       }
     ],
-    "n": 368
+    "n": 506
   },
   "REPRESENTATIVE_VALIDATION": {
     "flags": [
       {
-        "label": "NO_EVIDENCE",
-        "label_share": 0.8387096774193549,
-        "n": 208,
-        "pmi": 1.3607697492885686,
-        "source_root": "v6_wp_ordinary"
+        "label": "EVIDENCE_PRESENT",
+        "label_share": 1.0,
+        "n": 668,
+        "pmi": 0.6266106567602354,
+        "source_root": "v6_wikt_present"
       },
       {
         "label": "UNCERTAIN",
         "label_share": 1.0,
         "n": 51,
-        "pmi": 2.9423728627290213,
+        "pmi": 3.1990731975720617,
         "source_root": "v6_wikt_uncertain"
       }
     ],
-    "n": 967
+    "n": 1250
   },
   "TRAIN": {
     "flags": [
       {
-        "label": "NO_EVIDENCE",
-        "label_share": 0.8316831683168316,
-        "n": 420,
-        "pmi": 1.4383794211864125,
-        "source_root": "v6_wp_ordinary"
+        "label": "EVIDENCE_PRESENT",
+        "label_share": 1.0,
+        "n": 1521,
+        "pmi": 0.6088218110949523,
+        "source_root": "v6_wikt_present"
       },
       {
         "label": "UNCERTAIN",
         "label_share": 1.0,
         "n": 102,
-        "pmi": 3.0379650371773117,
+        "pmi": 3.3109722900694663,
         "source_root": "v6_wikt_uncertain"
       }
     ],
-    "n": 2128
+    "n": 2796
   }
 }

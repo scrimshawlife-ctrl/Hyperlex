@@ -4,7 +4,7 @@
   "FOUNDATION_ID": "HYPERLEX_V6_DATA_FOUNDATION_V1",
   "GOLD_CONTRACT": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
   "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
-  "NEXT_ACTION": "CONTINUE_V6_REPRESENTATIVE_DATA_ACQUISITION",
+  "NEXT_ACTION": "REVISE_HYPERLEX_V6_ONTOLOGY_BEFORE_MODELING",
   "OPERATING_DISTRIBUTION_ID": "HYPERLEX_V6_OPERATING_DISTRIBUTION_V1",
   "PHASE_RULE": "BUILD_REPRESENTATIVE_V6_DATA_FOUNDATION",
   "QUALIFICATION_HOLD_ID": "HYPERLEX_V6_QUALIFICATION_001",
@@ -13,7 +13,7 @@
   "V5_CANONICAL_MUTATED": false,
   "V5_RESEARCH_BASELINE": "HYPERLEX_V5_RESEARCH_BASELINE",
   "V5_RETUNED": false,
-  "V6_DATA_FOUNDATION_RECEIPT_SHA256": "fb4441ef33a4b5499887cb939e320a3b421bbef76b6329355201642676cd9303",
+  "V6_DATA_FOUNDATION_RECEIPT_SHA256": "8ea02186f28afd517c25fef2782e6e5930523ac403ecd01087734c4616383357",
   "V6_DATA_FOUNDATION_STATE": "V6_DATA_FOUNDATION_PARTIAL",
   "audit": {
     "disjointness": {
@@ -59,12 +59,12 @@
     },
     "gates": {
       "BASE_REPRESENTATION_AUDITED": true,
-      "DEV_VALIDATION_READY": false,
+      "DEV_VALIDATION_READY": true,
       "GOLD_CONTRACT_VALID": true,
       "ONTOLOGY_AUDITED": true,
       "OPERATING_DISTRIBUTION_DEFINED": true,
-      "QUALIFICATION_SEALED": false,
-      "REPRESENTATIVE_VALIDATION_READY": false,
+      "QUALIFICATION_SEALED": true,
+      "REPRESENTATIVE_VALIDATION_READY": true,
       "TRAIN_READY": true
     },
     "human_agreement": {
@@ -394,20 +394,18 @@
       "QUALIFICATION_SEALED",
       "BASE_REPRESENTATION_AUDITED"
     ],
-    "rejected": {
-      "filtered": 154
-    },
+    "rejected": {},
     "representation": {
       "between_family_sim_mean": 0.9795487488445065,
       "nearest_family_purity": 0.25,
-      "present_none_centroid_cosine": 0.992544949054718,
+      "present_none_centroid_cosine": 0.9879913330078125,
       "viability": "BASE_REPRESENTATION_INADEQUATE",
       "within_family_sim_mean": 0.8215769519244093
     },
     "retrieval": {
       "coverage": 0.0718562874251497,
       "family_precision": 0.2708333333333333,
-      "n_rep_none": 248,
+      "n_rep_none": 531,
       "n_rep_present": 668,
       "n_rep_unc": 51,
       "n_train_present": 1521,
@@ -418,58 +416,58 @@
       "DEVELOPMENT_VALIDATION": {
         "flags": [
           {
-            "label": "NO_EVIDENCE",
-            "label_share": 0.8404255319148937,
-            "n": 79,
-            "pmi": 1.3647881558991826,
-            "source_root": "v6_wp_ordinary"
+            "label": "EVIDENCE_PRESENT",
+            "label_share": 1.0,
+            "n": 255,
+            "pmi": 0.6852731241295433,
+            "source_root": "v6_wikt_present"
           }
         ],
-        "n": 368
+        "n": 506
       },
       "REPRESENTATIVE_VALIDATION": {
         "flags": [
           {
-            "label": "NO_EVIDENCE",
-            "label_share": 0.8387096774193549,
-            "n": 208,
-            "pmi": 1.3607697492885686,
-            "source_root": "v6_wp_ordinary"
+            "label": "EVIDENCE_PRESENT",
+            "label_share": 1.0,
+            "n": 668,
+            "pmi": 0.6266106567602354,
+            "source_root": "v6_wikt_present"
           },
           {
             "label": "UNCERTAIN",
             "label_share": 1.0,
             "n": 51,
-            "pmi": 2.9423728627290213,
+            "pmi": 3.1990731975720617,
             "source_root": "v6_wikt_uncertain"
           }
         ],
-        "n": 967
+        "n": 1250
       },
       "TRAIN": {
         "flags": [
           {
-            "label": "NO_EVIDENCE",
-            "label_share": 0.8316831683168316,
-            "n": 420,
-            "pmi": 1.4383794211864125,
-            "source_root": "v6_wp_ordinary"
+            "label": "EVIDENCE_PRESENT",
+            "label_share": 1.0,
+            "n": 1521,
+            "pmi": 0.6088218110949523,
+            "source_root": "v6_wikt_present"
           },
           {
             "label": "UNCERTAIN",
             "label_share": 1.0,
             "n": 102,
-            "pmi": 3.0379650371773117,
+            "pmi": 3.3109722900694663,
             "source_root": "v6_wikt_uncertain"
           }
         ],
-        "n": 2128
+        "n": 2796
       }
     },
     "summaries": {
       "DEVELOPMENT_VALIDATION": {
         "construction": {
-          "NATURAL": 368
+          "NATURAL": 506
         },
         "family_counts": {
           "ai-native": 13,
@@ -493,22 +491,22 @@
         },
         "labels": {
           "EVIDENCE_PRESENT": 255,
-          "NO_EVIDENCE": 94,
+          "NO_EVIDENCE": 232,
           "UNCERTAIN": 19
         },
         "length": {
-          "long": 130,
-          "mean": 156.32608695652175,
-          "med": 187,
-          "short": 51
+          "long": 199,
+          "mean": 164.94268774703556,
+          "med": 215,
+          "short": 92
         },
         "max_family_share_among_present": 0.0784313725490196,
-        "n": 368,
+        "n": 506,
         "n_families_present": 18,
         "natural_share": 1.0,
         "observed_share": 1.0,
         "provenance": {
-          "OBSERVED": 368
+          "OBSERVED": 506
         },
         "source_family_top": [
           [
@@ -544,26 +542,26 @@
             16
           ],
           [
+            "v6_wp_ordinary_topup:hydrology",
+            16
+          ],
+          [
+            "v6_wp_ordinary_topup:cartography",
+            15
+          ],
+          [
             "v6_wikt_present:memetic",
             14
           ],
           [
-            "v6_wikt_present:internet-slang",
-            13
-          ],
-          [
-            "v6_wikt_present:spiritual-mystic",
-            13
-          ],
-          [
-            "v6_wikt_present:sports-competition",
-            13
+            "v6_wp_ordinary_topup:mineralogy",
+            14
           ]
         ]
       },
       "QUALIFICATION": {
         "construction": {
-          "NATURAL": 375
+          "NATURAL": 486
         },
         "family_counts": {
           "ai-native": 15,
@@ -587,22 +585,22 @@
         },
         "labels": {
           "EVIDENCE_PRESENT": 282,
-          "NO_EVIDENCE": 77,
+          "NO_EVIDENCE": 188,
           "UNCERTAIN": 16
         },
         "length": {
-          "long": 130,
-          "mean": 162.89333333333335,
-          "med": 203,
-          "short": 42
+          "long": 191,
+          "mean": 169.8395061728395,
+          "med": 226,
+          "short": 69
         },
         "max_family_share_among_present": 0.0851063829787234,
-        "n": 375,
+        "n": 486,
         "n_families_present": 18,
         "natural_share": 1.0,
         "observed_share": 1.0,
         "provenance": {
-          "OBSERVED": 375
+          "OBSERVED": 486
         },
         "source_family_top": [
           [
@@ -657,7 +655,7 @@
       },
       "REPRESENTATIVE_VALIDATION": {
         "construction": {
-          "NATURAL": 967
+          "NATURAL": 1250
         },
         "family_counts": {
           "ai-native": 39,
@@ -681,22 +679,22 @@
         },
         "labels": {
           "EVIDENCE_PRESENT": 668,
-          "NO_EVIDENCE": 248,
+          "NO_EVIDENCE": 531,
           "UNCERTAIN": 51
         },
         "length": {
-          "long": 346,
-          "mean": 156.85418821096172,
-          "med": 467,
-          "short": 154
+          "long": 506,
+          "mean": 166.3376,
+          "med": 511,
+          "short": 233
         },
         "max_family_share_among_present": 0.07035928143712575,
-        "n": 967,
+        "n": 1250,
         "n_families_present": 18,
         "natural_share": 1.0,
         "observed_share": 1.0,
         "provenance": {
-          "OBSERVED": 967
+          "OBSERVED": 1250
         },
         "source_family_top": [
           [
@@ -751,7 +749,7 @@
       },
       "TRAIN": {
         "construction": {
-          "NATURAL": 2128
+          "NATURAL": 2796
         },
         "family_counts": {
           "ai-native": 89,
@@ -775,22 +773,22 @@
         },
         "labels": {
           "EVIDENCE_PRESENT": 1521,
-          "NO_EVIDENCE": 505,
+          "NO_EVIDENCE": 1173,
           "UNCERTAIN": 102
         },
         "length": {
-          "long": 739,
-          "mean": 156.90366541353384,
-          "med": 1038,
-          "short": 351
+          "long": 1083,
+          "mean": 163.92024320457796,
+          "med": 1166,
+          "short": 547
         },
         "max_family_share_among_present": 0.060486522024983565,
-        "n": 2128,
+        "n": 2796,
         "n_families_present": 18,
         "natural_share": 1.0,
         "observed_share": 1.0,
         "provenance": {
-          "OBSERVED": 2128
+          "OBSERVED": 2796
         },
         "source_family_top": [
           [
@@ -845,7 +843,7 @@
       }
     }
   },
-  "code_revision": "513dd51151a862031ecd6fadac4c29ac1d7e7118",
+  "code_revision": "c2f53ebd1dc643b0672d127c31a891fac444e7cd",
   "dataset_roles": {
     "DEVELOPMENT_VALIDATION": {
       "optimizable": "checkpoint_selection_and_ordinary_debugging_only",
@@ -927,12 +925,12 @@
   },
   "gates": {
     "BASE_REPRESENTATION_AUDITED": true,
-    "DEV_VALIDATION_READY": false,
+    "DEV_VALIDATION_READY": true,
     "GOLD_CONTRACT_VALID": true,
     "ONTOLOGY_AUDITED": true,
     "OPERATING_DISTRIBUTION_DEFINED": true,
-    "QUALIFICATION_SEALED": false,
-    "REPRESENTATIVE_VALIDATION_READY": false,
+    "QUALIFICATION_SEALED": true,
+    "REPRESENTATIVE_VALIDATION_READY": true,
     "TRAIN_READY": true
   },
   "gold_contract": {
@@ -1099,5 +1097,5 @@
     }
   },
   "schema": "hyperlex.classification.v6.data_foundation.v1",
-  "settled_at": "2026-10-01T20:28:29Z"
+  "settled_at": "2026-10-01T21:20:02Z"
 }

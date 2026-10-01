@@ -1,9 +1,9 @@
 {
   "QUALIFICATION_HOLD_ID": "HYPERLEX_V6_QUALIFICATION_001",
   "immutable": true,
-  "n_rows": 375,
-  "qualification_rows_sha256": "21622a228042163835e4cf3273eaff342290d52f9e09c214ce2750a7923ab60b",
-  "qualification_seal_sha256": "a9d386add65dd9b24d54191953a1e56ecb79ccf26a64ecd05e39bed21b720ac4",
-  "sealed_at": "2026-10-01T20:28:04Z",
+  "n_rows": 486,
+  "qualification_rows_sha256": "2ffb24b5addebc89cd7fc7c65a543b5d7c4d4f793553a2768b53c9cbc8df1879",
+  "qualification_seal_sha256": "9417c219f49216d5dbdadfefcf500521f8feae5491966ad3809f89ce15b7fdc6",
+  "sealed_at": "2026-10-01T21:20:02Z",
   "unavailable_during_model_development": true
 }

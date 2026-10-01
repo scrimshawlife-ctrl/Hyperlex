@@ -6,7 +6,7 @@
   "PRIMARY_SYSTEM_DIAGNOSIS": "MIXED_SYSTEM_GENERALIZATION_FAILURE",
   "RELEASE_QUALIFIED": false,
   "V5_DISPOSITION": "V5_RESEARCH_PROTOTYPE",
-  "V5_RESEARCH_BASELINE_RECEIPT_SHA256": "864ade8268aa101e13456296b21250d8ef9670abf51e9a4c089910bff7137b30",
+  "V5_RESEARCH_BASELINE_RECEIPT_SHA256": "77aa0756042aad95f0d8e43ae1ef3324ecf3e646f295e24e36b66b3c6bf0ce11",
   "allowed_uses": [
     "historical_comparison",
     "failure_taxonomy",
@@ -14,7 +14,7 @@
     "regression_baselines"
   ],
   "artifacts_mutable": false,
-  "code_revision": "513dd51151a862031ecd6fadac4c29ac1d7e7118",
+  "code_revision": "c2f53ebd1dc643b0672d127c31a891fac444e7cd",
   "forbidden_uses": [
     "production_release",
     "threshold_retune",
@@ -22,7 +22,7 @@
     "optimization_on_spent_qualification_rows",
     "automatic_weight_transfer_into_v6"
   ],
-  "frozen_at": "2026-10-01T18:51:36Z",
+  "frozen_at": "2026-10-01T21:20:02Z",
   "pins": {
     "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
     "PIPELINE_DEPENDENCY_MANIFEST_SHA256": "c2d19befb17be2337bc5f4ef97ebaf8ef20ea71ab5dd467830325654088f242a",

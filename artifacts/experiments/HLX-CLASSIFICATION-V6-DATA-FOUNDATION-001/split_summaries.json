@@ -1,7 +1,7 @@
 {
   "DEVELOPMENT_VALIDATION": {
     "construction": {
-      "NATURAL": 368
+      "NATURAL": 506
     },
     "family_counts": {
       "ai-native": 13,
@@ -25,22 +25,22 @@
     },
     "labels": {
       "EVIDENCE_PRESENT": 255,
-      "NO_EVIDENCE": 94,
+      "NO_EVIDENCE": 232,
       "UNCERTAIN": 19
     },
     "length": {
-      "long": 130,
-      "mean": 156.32608695652175,
-      "med": 187,
-      "short": 51
+      "long": 199,
+      "mean": 164.94268774703556,
+      "med": 215,
+      "short": 92
     },
     "max_family_share_among_present": 0.0784313725490196,
-    "n": 368,
+    "n": 506,
     "n_families_present": 18,
     "natural_share": 1.0,
     "observed_share": 1.0,
     "provenance": {
-      "OBSERVED": 368
+      "OBSERVED": 506
     },
     "source_family_top": [
       [
@@ -76,26 +76,26 @@
         16
       ],
       [
+        "v6_wp_ordinary_topup:hydrology",
+        16
+      ],
+      [
+        "v6_wp_ordinary_topup:cartography",
+        15
+      ],
+      [
         "v6_wikt_present:memetic",
         14
       ],
       [
-        "v6_wikt_present:internet-slang",
-        13
-      ],
-      [
-        "v6_wikt_present:spiritual-mystic",
-        13
-      ],
-      [
-        "v6_wikt_present:sports-competition",
-        13
+        "v6_wp_ordinary_topup:mineralogy",
+        14
       ]
     ]
   },
   "QUALIFICATION": {
     "construction": {
-      "NATURAL": 375
+      "NATURAL": 486
     },
     "family_counts": {
       "ai-native": 15,
@@ -119,22 +119,22 @@
     },
     "labels": {
       "EVIDENCE_PRESENT": 282,
-      "NO_EVIDENCE": 77,
+      "NO_EVIDENCE": 188,
       "UNCERTAIN": 16
     },
     "length": {
-      "long": 130,
-      "mean": 162.89333333333335,
-      "med": 203,
-      "short": 42
+      "long": 191,
+      "mean": 169.8395061728395,
+      "med": 226,
+      "short": 69
     },
     "max_family_share_among_present": 0.0851063829787234,
-    "n": 375,
+    "n": 486,
     "n_families_present": 18,
     "natural_share": 1.0,
     "observed_share": 1.0,
     "provenance": {
-      "OBSERVED": 375
+      "OBSERVED": 486
     },
     "source_family_top": [
       [
@@ -189,7 +189,7 @@
   },
   "REPRESENTATIVE_VALIDATION": {
     "construction": {
-      "NATURAL": 967
+      "NATURAL": 1250
     },
     "family_counts": {
       "ai-native": 39,
@@ -213,22 +213,22 @@
     },
     "labels": {
       "EVIDENCE_PRESENT": 668,
-      "NO_EVIDENCE": 248,
+      "NO_EVIDENCE": 531,
       "UNCERTAIN": 51
     },
     "length": {
-      "long": 346,
-      "mean": 156.85418821096172,
-      "med": 467,
-      "short": 154
+      "long": 506,
+      "mean": 166.3376,
+      "med": 511,
+      "short": 233
     },
     "max_family_share_among_present": 0.07035928143712575,
-    "n": 967,
+    "n": 1250,
     "n_families_present": 18,
     "natural_share": 1.0,
     "observed_share": 1.0,
     "provenance": {
-      "OBSERVED": 967
+      "OBSERVED": 1250
     },
     "source_family_top": [
       [
@@ -283,7 +283,7 @@
   },
   "TRAIN": {
     "construction": {
-      "NATURAL": 2128
+      "NATURAL": 2796
     },
     "family_counts": {
       "ai-native": 89,
@@ -307,22 +307,22 @@
     },
     "labels": {
       "EVIDENCE_PRESENT": 1521,
-      "NO_EVIDENCE": 505,
+      "NO_EVIDENCE": 1173,
       "UNCERTAIN": 102
     },
     "length": {
-      "long": 739,
-      "mean": 156.90366541353384,
-      "med": 1038,
-      "short": 351
+      "long": 1083,
+      "mean": 163.92024320457796,
+      "med": 1166,
+      "short": 547
     },
     "max_family_share_among_present": 0.060486522024983565,
-    "n": 2128,
+    "n": 2796,
     "n_families_present": 18,
     "natural_share": 1.0,
     "observed_share": 1.0,
     "provenance": {
-      "OBSERVED": 2128
+      "OBSERVED": 2796
     },
     "source_family_top": [
       [

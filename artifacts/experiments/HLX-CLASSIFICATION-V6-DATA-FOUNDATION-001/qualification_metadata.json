@@ -1,12 +1,12 @@
 {
   "QUALIFICATION_HOLD_ID": "HYPERLEX_V6_QUALIFICATION_001",
-  "n_rows": 375,
-  "qualification_rows_sha256": "21622a228042163835e4cf3273eaff342290d52f9e09c214ce2750a7923ab60b",
+  "n_rows": 486,
+  "qualification_rows_sha256": "2ffb24b5addebc89cd7fc7c65a543b5d7c4d4f793553a2768b53c9cbc8df1879",
   "rows_exposed_in_repo": false,
   "rows_path_private": "/home/morpheus/hlx-private/classification-v6-data-foundation-20261001/qualification_holdout/QUALIFICATION_ROWS.jsonl",
   "summary": {
     "construction": {
-      "NATURAL": 375
+      "NATURAL": 486
     },
     "family_counts": {
       "ai-native": 15,
@@ -30,22 +30,22 @@
     },
     "labels": {
       "EVIDENCE_PRESENT": 282,
-      "NO_EVIDENCE": 77,
+      "NO_EVIDENCE": 188,
       "UNCERTAIN": 16
     },
     "length": {
-      "long": 130,
-      "mean": 162.89333333333335,
-      "med": 203,
-      "short": 42
+      "long": 191,
+      "mean": 169.8395061728395,
+      "med": 226,
+      "short": 69
     },
     "max_family_share_among_present": 0.0851063829787234,
-    "n": 375,
+    "n": 486,
     "n_families_present": 18,
     "natural_share": 1.0,
     "observed_share": 1.0,
     "provenance": {
-      "OBSERVED": 375
+      "OBSERVED": 486
     },
     "source_family_top": [
       [
