@@ -1,0 +1,14 @@
+{
+  "decision_mismatch_count": 0,
+  "logit_abs_tol": 1e-06,
+  "logit_max_abs_delta": 0.0,
+  "logit_parity_pass": true,
+  "pass": true,
+  "pre_vs_post_pointer": {
+    "decision_mismatch_count": 0,
+    "logit_abs_tol": 1e-06,
+    "logit_max_abs_delta": 0.0,
+    "logit_parity_pass": true,
+    "pass": true
+  }
+}

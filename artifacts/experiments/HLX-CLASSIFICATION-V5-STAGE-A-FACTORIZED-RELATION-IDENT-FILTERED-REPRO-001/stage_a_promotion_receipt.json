@@ -1,0 +1,504 @@
+{
+  "ANNOTATION_SHA256": "95d5436555da33ef7aaccf4c32194c29f00caced9a17adf2d2f65f12db7dc1fc",
+  "AUTHORIZATION_RECEIPT_SHA256": "09f3d456961aaa9027ff35ac653f3d6aeee627ceee1eb705fcd83dc9b9c3205b",
+  "BEST_MUTATED": false,
+  "CHECKPOINT_REPAIR_RECEIPT_SHA256": "6b04194718f7cbe9645816c7cf9064419f5759d2080bf4bad9c2093281b4d15b",
+  "CLASS_WEIGHT_ARTIFACT_SHA256": "13e8d0ca250839500b71b4b9e23d8238a90488987b9a49cd2c6d2fc336f77fc6",
+  "CONTRACT_ID": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+  "CONTRACT_RECEIPT_SHA256": "4ce0e5faccef3772bbefdfc42f878446602ffa59f4d7ae9933652b687a41e3e4",
+  "DATASET_SHA256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+  "EXCLUSION_MANIFEST_SHA256": "661c9edb095f7f7dc28a24256b42e0a2796f9ab78fbabc24b23cf9bd57b06d69",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001",
+  "FILTER_RECEIPT_SHA256": "e8e2ab7f6773717ea94743a36084eae3f775d907936fadbe07d1c457bdd82ca3",
+  "HISTORICAL_INCOMPLETE_ARTIFACT": {
+    "checkpoint_sha256": "8b2de4472dc0ebd65a6b4b7577dc3272d63db2490a1b6f6dbbcc54db50077e41",
+    "may_become_STAGE_A_BEST": false,
+    "roles": [
+      "SCIENTIFIC_SELECTED_STATE_REFERENCE",
+      "NON_PROMOTABLE_PACKAGING_ARTIFACT",
+      "SUPERSEDED_BY_REPRODUCTION_CHECKPOINT"
+    ],
+    "superseded_by": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa"
+  },
+  "LINEAGE": [
+    "original scientific experiment",
+    "original SETTLED_PASS",
+    "packaging failure",
+    "repair impossible",
+    "authorized reproduction",
+    "scientifically equivalent SETTLED_PASS",
+    "complete promotion-loadable checkpoint"
+  ],
+  "MODEL_INPUT": [
+    "text"
+  ],
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "FREEZE_V5_STAGE_A_CANONICAL_AND_UPDATE_DOWNSTREAM_PROVENANCE",
+  "OBJECTIVE_ID": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "OBJECTIVE_RECEIPT_SHA256": "45746d706d819da41eb56e788f13f4a873f8dc136c0057c9fa238a53b5bacfdc",
+  "ORIGINAL_EXPERIMENT_ID": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-001",
+  "ORIGINAL_RESULT_RECEIPT": "4a7d565ca607234c604bcec40acab33e3cbecc4da6e4adc86a0b2b79bb091a4b",
+  "ORIGINAL_SETTLED_RESULT_RECEIPT_SHA256": "4a7d565ca607234c604bcec40acab33e3cbecc4da6e4adc86a0b2b79bb091a4b",
+  "PARENT_ENCODER_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "PARENT_EXPERIMENT": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-001",
+  "POSSIBLE_EVIDENCE": "DEPRECATED_AS_CANONICAL_STAGE_A_TRAINING_TARGET",
+  "PROMOTE_RULE": "RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE",
+  "PROMOTION_INVALID": false,
+  "PROMOTION_LOADABLE": true,
+  "REPAIR_FAILURE_RECEIPT_SHA256": "6b04194718f7cbe9645816c7cf9064419f5759d2080bf4bad9c2093281b4d15b",
+  "REPRODUCTION_CLASSIFICATION": "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION",
+  "REPRODUCTION_REASON": "SELECTED_FACTORIZED_HEADS_NOT_SERIALIZED",
+  "REPRO_RESULT_RECEIPT": "8b8585a8637176a64adf9ce6cff2a076fd4bf938070aef02203fa46978e20ed1",
+  "RESERVE_CONSUMED": false,
+  "RUN_RECEIPT_SHA256": "8b8585a8637176a64adf9ce6cff2a076fd4bf938070aef02203fa46978e20ed1",
+  "SELECTED_CHECKPOINT_SHA256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "SELECTED_COMPLETE_CHECKPOINT_SHA256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "SELECTED_EPOCH": 11,
+  "SELECTION_SCORE": 0.9672661029515868,
+  "SPENT_RESERVE": "HYPERLEX_V5_PROMOTION_RESERVE_001",
+  "SPENT_RESERVE_STATUS": "SPENT",
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_A_PROMOTION": "APPLIED",
+  "STAGE_A_PROMOTION_RECEIPT_SHA256": "9541664c87b27e56d25171579f2ef0b5810a1ebcbbc023298ce2919749f9b370",
+  "SURFACE_ID": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+  "TRAIN": false,
+  "TRAINING_CONFIG_SHA256": "731c0b260fb5f6966c47d1700d522c42aad8126b6be2f482b078eb6c8ab8325e",
+  "V1R2_MUTATED": false,
+  "auto_relabel": false,
+  "canonical_forward_schema": "hyperlex.classification.v5.stage_a_factorized_forward.v1",
+  "canonical_inference_policy": "if P(RESOLVABLE) < 0.75 -> UNCERTAIN; else if P(EVIDENCE_RELATION_PRESENT) >= 0.60 -> EVIDENCE_PRESENT; else NO_EVIDENCE",
+  "canonical_load_path": {
+    "architecture": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+    "fail_closed_if": [
+      "parent_BEST_sha_mismatch",
+      "stage_a_overlay_name_or_shape_mismatch",
+      "missing_relation_or_resolvability_head",
+      "gate1_or_gate2_head_loaded_as_canonical",
+      "flat_evidence_head_loaded_as_canonical",
+      "incomplete_historical_8b2de447_promoted"
+    ],
+    "forward_schema": "hyperlex.classification.v5.stage_a_factorized_forward.v1",
+    "parent_encoder_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "relation_threshold": 0.6,
+    "resolvability_threshold": 0.75,
+    "runtime_threshold_search": false,
+    "sequence": [
+      "modernbert_trunk",
+      "model_wide_BEST_encoder_overlay",
+      "STAGE_A_BEST_adapted_layers_20_21",
+      "relation_head",
+      "resolvability_head"
+    ],
+    "stage_a_best": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "stage_a_parent_model_wide_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6"
+  },
+  "canonical_thresholds": {
+    "relation_threshold": 0.6,
+    "resolvability_threshold": 0.75
+  },
+  "central_scientific_conclusion": "Gold/input identifiability repair, not architecture escalation, resolved the dominant Stage-A failure.",
+  "checkpoint_tensor_manifest_hash": "8014568739d428a967abcb8b97f71e21d82483760baf83cbb44c9a07b37d3cf8",
+  "code_revision": "a2a4273ece2e02456d024762d91c67bac2be586b",
+  "context_dependent_definitive_gold_excluded": true,
+  "deprecated_paths": {
+    "POSSIBLE_EVIDENCE": "DEPRECATED_AS_CANONICAL_STAGE_A_TRAINING_TARGET",
+    "flat_3_class_stage_a": {
+      "allowed_uses": [
+        "historical_replay",
+        "scientific_comparison",
+        "compatibility_diagnostics"
+      ],
+      "runtime_status": "DEPRECATED_FOR_CANONICAL_STAGE_A",
+      "status": "HISTORICAL"
+    },
+    "historical_artifacts_deleted": false,
+    "previous_STAGE_A_BEST": {
+      "checkpoint_sha256": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+      "retained_for": [
+        "historical_replay",
+        "scientific_comparison",
+        "compatibility_diagnostics"
+      ],
+      "status": "SUPERSEDED_STAGE_A_BEST"
+    },
+    "two_stage_possible_evidence_architecture": {
+      "allowed_uses": [
+        "historical_replay",
+        "scientific_comparison",
+        "compatibility_diagnostics"
+      ],
+      "checkpoint": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+      "runtime_status": "HISTORICAL",
+      "status": "HISTORICAL"
+    }
+  },
+  "display_metrics": {
+    "NONE_recall": 0.965,
+    "PRESENT_recall": 0.951,
+    "false_entry": 0.034
+  },
+  "explicit_limitations": {
+    "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+    "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT",
+    "SHORT_ATOM_PRESENT_SUPPORT": 11,
+    "note": "Passing aggregate gates must not be described as establishing broad short-atom positive generalization."
+  },
+  "factorized_head_manifest_hashes": {
+    "relation_head.bias": "0d3234af814ee7406660d018eab8a24abacfb749088ace6b54b8ceeafb22c9f8",
+    "relation_head.weight": "ce3cbe57afafc79ea7324868e59ada9eb9ecbe891982aa3d1b78df1d1c6ee2ac",
+    "resolvability_head.bias": "b0ec3b92c93085f692266d644b089dd8e9245e23e97f56597d8919c197791fb7",
+    "resolvability_head.weight": "c9a487137e5c190679e117036dccbacafb8463d37018a5d47b82e654ee6bc8b4"
+  },
+  "head_completeness": {
+    "architecture": {
+      "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+      "checks": {
+        "has_encoder_overlay": true,
+        "has_relation_head": true,
+        "has_resolvability_head": true,
+        "no_flat_evidence_head": true,
+        "no_gate1_head": true,
+        "no_gate2_head": true
+      },
+      "n_keys": 16,
+      "pass": true
+    },
+    "expected_n_keys": 16,
+    "factorized_head_names": [
+      "relation_head",
+      "resolvability_head"
+    ],
+    "factorized_heads_cold_loadable": true,
+    "n_keys": 16,
+    "pass": true,
+    "required_keys_present": {
+      "relation_head.bias": true,
+      "relation_head.weight": true,
+      "resolvability_head.bias": true,
+      "resolvability_head.weight": true
+    }
+  },
+  "known_limitations": {
+    "CONTEXT_DEPENDENT_GOLD": "OUTSIDE_CURRENT_TEXT_ONLY_STAGE_A_CONTRACT",
+    "DOMAIN_IRRELEVANT_GENERALIZATION": "NOT_ESTABLISHED",
+    "SHORT_ATOM_POSITIVE_GENERALIZATION": "LOW_SUPPORT",
+    "central_scientific_conclusion": "Gold/input identifiability repair, not architecture escalation, resolved the dominant Stage-A failure.",
+    "provenance_note": "Promotion validates Stage A on the identifiability-filtered text-only contract. It does not establish performance for context-dependent gold excluded from V1R2."
+  },
+  "overlay_verification": {
+    "architecture": {
+      "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+      "checks": {
+        "has_encoder_overlay": true,
+        "has_relation_head": true,
+        "has_resolvability_head": true,
+        "no_flat_evidence_head": true,
+        "no_gate1_head": true,
+        "no_gate2_head": true
+      },
+      "n_keys": 16,
+      "pass": true
+    },
+    "checks": {
+      "architecture_identity": true,
+      "has_factorized_heads": true,
+      "no_flat_evidence_head_canonical": true,
+      "no_legacy_possible_evidence_heads": true,
+      "parent_best_matches": true
+    },
+    "pass": true
+  },
+  "pointer": {
+    "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "STAGE_A_BEST_EPOCH": 11,
+    "architecture": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+    "auto_relabel": false,
+    "checkpoint_sha256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "code_revision": "a2a4273ece2e02456d024762d91c67bac2be586b",
+    "component": "STAGE_A",
+    "context_dependent_definitive_gold_excluded": true,
+    "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001",
+    "factorized_heads_cold_loadable": true,
+    "forward_schema": "hyperlex.classification.v5.stage_a_factorized_forward.v1",
+    "gold_identifiability_contract_id": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+    "gold_identifiability_contract_receipt_sha256": "4ce0e5faccef3772bbefdfc42f878446602ffa59f4d7ae9933652b687a41e3e4",
+    "identifiability_filter_receipt_sha256": "e8e2ab7f6773717ea94743a36084eae3f775d907936fadbe07d1c457bdd82ca3",
+    "load_sequence": [
+      "modernbert_trunk",
+      "model_wide_BEST_encoder_overlay",
+      "STAGE_A_BEST_adapted_layers_20_21",
+      "relation_head",
+      "resolvability_head"
+    ],
+    "model_input": [
+      "text"
+    ],
+    "model_wide_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "model_wide_BEST_mutated": false,
+    "n_keys": 16,
+    "objective_id": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+    "objective_receipt_sha256": "45746d706d819da41eb56e788f13f4a873f8dc136c0057c9fa238a53b5bacfdc",
+    "original_experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-001",
+    "parent_encoder_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "parent_model_wide_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "previous_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+    "promoted_at": "2026-10-01T06:43:21Z",
+    "promotion_rule": "RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE",
+    "relation_threshold": 0.6,
+    "reproduction_classification": "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION",
+    "resolvability_threshold": 0.75,
+    "schema": "hyperlex.classification.v5.stage_a_best_pointer.v1",
+    "selection_score": 0.9672661029515868,
+    "semantic_outputs": [
+      "NO_EVIDENCE",
+      "EVIDENCE_PRESENT",
+      "UNCERTAIN"
+    ],
+    "stage_a_parent_model_wide_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "surface_dataset_sha256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+    "surface_id": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+    "weights_path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v5-stage-a-ident-filtered-factorized-repro-001/model.safetensors"
+  },
+  "post_promotion_replay": {
+    "display_targets": {
+      "NONE_recall": 0.965,
+      "PRESENT_recall": 0.951,
+      "false_entry": 0.034
+    },
+    "exact_parity": {
+      "abs_tol": 1e-09,
+      "diffs": {
+        "EVIDENCE_PRESENT_recall": {
+          "abs_delta": 0.0,
+          "expected": 0.951310861423221,
+          "observed": 0.951310861423221
+        },
+        "NO_EVIDENCE_recall": {
+          "abs_delta": 0.0,
+          "expected": 0.9646643109540636,
+          "observed": 0.9646643109540636
+        },
+        "false_evidence_entry_rate_on_none": {
+          "abs_delta": 0.0,
+          "expected": 0.03356890459363958,
+          "observed": 0.03356890459363958
+        },
+        "stage_a_macro_f1": {
+          "abs_delta": 0.0,
+          "expected": 0.9597164476304262,
+          "observed": 0.9597164476304262
+        }
+      },
+      "pass": true
+    },
+    "metrics": {
+      "EVIDENCE_PRESENT_recall": 0.951310861423221,
+      "NO_EVIDENCE_recall": 0.9646643109540636,
+      "false_evidence_entry_rate_on_none": 0.03356890459363958,
+      "stage_a_macro_f1": 0.9597164476304262
+    },
+    "metrics_full": {
+      "acceptance_pass": true,
+      "by_label": {
+        "EVIDENCE_PRESENT": {
+          "f1": 0.9407407407407409,
+          "fn": 13,
+          "fp": 19,
+          "precision": 0.9304029304029304,
+          "recall": 0.951310861423221,
+          "support": 267,
+          "tp": 254
+        },
+        "NO_EVIDENCE": {
+          "f1": 0.9706666666666667,
+          "fn": 20,
+          "fp": 13,
+          "precision": 0.9767441860465116,
+          "recall": 0.9646643109540636,
+          "support": 566,
+          "tp": 546
+        },
+        "UNCERTAIN": {
+          "f1": 0.967741935483871,
+          "fn": 0,
+          "fp": 1,
+          "precision": 0.9375,
+          "recall": 1.0,
+          "support": 15,
+          "tp": 15
+        }
+      },
+      "false_evidence_entry_rate_on_none": 0.03356890459363958,
+      "stage_a_macro_f1": 0.9597164476304262
+    },
+    "n_validation": 848,
+    "pass": true,
+    "replay_hash": "ce26435e50a34602fbafd7e0504ce9b9931b986ff3b6a1ec8612fab244da4a48",
+    "short_atom_diagnostics": {
+      "SHORT_ATOM_NONE": {
+        "NONE_recall": 0.9802631578947368,
+        "n": 152,
+        "relation_false_positive_rate": 0.013157894736842105,
+        "support": 152
+      },
+      "SHORT_ATOM_PRESENT": {
+        "low_support_warning": true,
+        "n": 4,
+        "relation_recall": 0.75,
+        "stable_subgroup_guarantee": false,
+        "status": "LOW_SUPPORT",
+        "support": 4
+      },
+      "parity": {
+        "SHORT_ATOM_NONE_fpr": true,
+        "SHORT_ATOM_NONE_n": true,
+        "SHORT_ATOM_NONE_recall": true,
+        "SHORT_ATOM_PRESENT_n": true,
+        "SHORT_ATOM_PRESENT_recall": true
+      },
+      "parity_pass": true
+    },
+    "stage_a_best_sha256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+    "thresholds": {
+      "relation_threshold": 0.6,
+      "resolvability_threshold": 0.75
+    },
+    "thresholds_match": true
+  },
+  "preflight": {
+    "checks": {
+      "annotation_sha": true,
+      "authorization_receipt": true,
+      "class_weight_artifact_sha": true,
+      "current_stage_a_best": true,
+      "exclusion_manifest_sha": true,
+      "experiment": true,
+      "factorized_heads_present": true,
+      "false_entry_gate": true,
+      "model_wide_best": true,
+      "none_recall_gate": true,
+      "not_incomplete_historical": true,
+      "objective": true,
+      "parent_experiment": true,
+      "present_recall_gate": true,
+      "relation_threshold": true,
+      "reproduction_classification": true,
+      "resolvability_threshold": true,
+      "run_receipt": true,
+      "scientific_settled_pass": true,
+      "selected_complete_checkpoint": true,
+      "selected_epoch": true,
+      "selection_score": true,
+      "spent_reserve_status": true,
+      "surface_sha": true,
+      "training_config_sha": true,
+      "v1r2_unchanged": true
+    },
+    "head_completeness": {
+      "architecture": {
+        "architecture": "shared ModernBERT + CLS + relation_head(2) + resolvability_head(2); last 2 encoder layers adapted",
+        "checks": {
+          "has_encoder_overlay": true,
+          "has_relation_head": true,
+          "has_resolvability_head": true,
+          "no_flat_evidence_head": true,
+          "no_gate1_head": true,
+          "no_gate2_head": true
+        },
+        "n_keys": 16,
+        "pass": true
+      },
+      "expected_n_keys": 16,
+      "factorized_head_names": [
+        "relation_head",
+        "resolvability_head"
+      ],
+      "factorized_heads_cold_loadable": true,
+      "n_keys": 16,
+      "pass": true,
+      "required_keys_present": {
+        "relation_head.bias": true,
+        "relation_head.weight": true,
+        "resolvability_head.bias": true,
+        "resolvability_head.weight": true
+      }
+    },
+    "pass": true,
+    "result": "PASS",
+    "selection_score_observed": 0.9672661029515868
+  },
+  "previous_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "promoted_at": "2026-10-01T06:43:21Z",
+  "provenance_note": "Promotion validates Stage A on the identifiability-filtered text-only contract. It does not establish performance for context-dependent gold excluded from V1R2.",
+  "round_trip_logit_parity": {
+    "decision_mismatch_count": 0,
+    "logit_abs_tol": 1e-06,
+    "logit_max_abs_delta": 0.0,
+    "logit_parity_pass": true,
+    "pass": true,
+    "pre_vs_post_pointer": {
+      "decision_mismatch_count": 0,
+      "logit_abs_tol": 1e-06,
+      "logit_max_abs_delta": 0.0,
+      "logit_parity_pass": true,
+      "pass": true
+    }
+  },
+  "runtime_adapter": {
+    "decide_canonical_stage_a": "decide_stage_a(p_relation,p_resolvable;thr=0.60/0.75)",
+    "internal_fields": [
+      "p_relation",
+      "p_resolvable",
+      "relation_threshold",
+      "resolvability_threshold"
+    ],
+    "semantic_outputs": [
+      "NO_EVIDENCE",
+      "EVIDENCE_PRESENT",
+      "UNCERTAIN"
+    ],
+    "stage_b_entry": {
+      "EVIDENCE_PRESENT": "PERMIT_STAGE_B",
+      "NO_EVIDENCE": "STOP",
+      "UNCERTAIN": "ABSTAIN"
+    },
+    "stage_b_family_ontology_mutated": false,
+    "stage_b_index_mutated": false,
+    "stage_b_margin_floor_mutated": false,
+    "stage_b_parent_pin_update": "DEFERRED_TO_DOWNSTREAM_PROVENANCE",
+    "stage_b_score_floor_mutated": false
+  },
+  "schema": "hyperlex.classification.v5.stage_a_ident_filtered_factorized_repro_promotion.v1",
+  "short_atom_diagnostics": {
+    "SHORT_ATOM_NONE": {
+      "NONE_recall": 0.9802631578947368,
+      "n": 152,
+      "relation_false_positive_rate": 0.013157894736842105,
+      "support": 152
+    },
+    "SHORT_ATOM_PRESENT": {
+      "low_support_warning": true,
+      "n": 4,
+      "relation_recall": 0.75,
+      "stable_subgroup_guarantee": false,
+      "status": "LOW_SUPPORT",
+      "support": 4
+    },
+    "parity": {
+      "SHORT_ATOM_NONE_fpr": true,
+      "SHORT_ATOM_NONE_n": true,
+      "SHORT_ATOM_NONE_recall": true,
+      "SHORT_ATOM_PRESENT_n": true,
+      "SHORT_ATOM_PRESENT_recall": true
+    },
+    "parity_pass": true
+  },
+  "stage_a_parent_model_wide_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "state": {
+    "PROMOTION_INVALID": false,
+    "STAGE_A_PROMOTION": "APPLIED",
+    "applied": true,
+    "reason": "ok"
+  }
+}

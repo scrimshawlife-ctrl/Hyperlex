@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- **Retry promote ident-filtered factorized Stage-A candidate (Spec 007):**
+  `RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE` promotes the
+  complete REPRO-001 checkpoint `f2b00c5d…` (epoch 11, score 0.9673) to
+  `STAGE_A_BEST`. Historical incomplete `8b2de447…` remains non-promotable.
+  Preflight, cold-load (`n_keys=16`), V1R2 replay (false_entry 0.03357;
+  PRESENT 0.951; NONE 0.965; SHORT_ATOM NONE FPR 0.01316), and round-trip
+  logit parity (`decision_mismatch_count=0`) all pass. Thresholds stay
+  0.60 / 0.75. `MODEL_WIDE_BEST` unchanged (`9fba0f66…`). Previous
+  `STAGE_A_BEST` retained as `cd2829c1…` (`SUPERSEDED_STAGE_A_BEST`).
+  Reserve remains `SPENT` / unscored. Receipt
+  `classification-v5-stage-a-ident-filtered-factorized-repro-promotion-receipt-20261001.json`
+  (`9541664c…`). Next:
+  `FREEZE_V5_STAGE_A_CANONICAL_AND_UPDATE_DOWNSTREAM_PROVENANCE`.
+
 - **Reproduce ident-filtered factorized train once (Spec 007):**
   `REPRODUCE_IDENT_FILTERED_FACTORIZED_TRAIN_ONCE` executes the single
   authorized REPRO-001 run from MODEL_WIDE_BEST on unchanged V1R2 under the

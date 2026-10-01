@@ -1,0 +1,21 @@
+{
+  "BEST_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "FREEZE_V5_STAGE_A_CANONICAL_AND_UPDATE_DOWNSTREAM_PROVENANCE",
+  "PREVIOUS_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "PROMOTION_LOADABLE": true,
+  "RESERVE_CONSUMED": false,
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_A_PROMOTION": "APPLIED",
+  "STAGE_A_PROMOTION_RECEIPT_SHA256": "9541664c87b27e56d25171579f2ef0b5810a1ebcbbc023298ce2919749f9b370",
+  "TRAIN": false,
+  "decision_mismatch_count": 0,
+  "factorized_heads_cold_loadable": true,
+  "n_keys": 16,
+  "post_replay_hash": "ce26435e50a34602fbafd7e0504ce9b9931b986ff3b6a1ec8612fab244da4a48",
+  "post_replay_pass": true,
+  "relation_threshold": 0.6,
+  "resolvability_threshold": 0.75,
+  "round_trip_pass": true
+}

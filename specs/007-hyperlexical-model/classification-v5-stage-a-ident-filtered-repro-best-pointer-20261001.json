@@ -1,0 +1,51 @@
+{
+  "STAGE_A_BEST": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "STAGE_A_BEST_EPOCH": 11,
+  "architecture": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "auto_relabel": false,
+  "checkpoint_sha256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "code_revision": "a2a4273ece2e02456d024762d91c67bac2be586b",
+  "component": "STAGE_A",
+  "context_dependent_definitive_gold_excluded": true,
+  "experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-REPRO-001",
+  "factorized_heads_cold_loadable": true,
+  "forward_schema": "hyperlex.classification.v5.stage_a_factorized_forward.v1",
+  "gold_identifiability_contract_id": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+  "gold_identifiability_contract_receipt_sha256": "4ce0e5faccef3772bbefdfc42f878446602ffa59f4d7ae9933652b687a41e3e4",
+  "identifiability_filter_receipt_sha256": "e8e2ab7f6773717ea94743a36084eae3f775d907936fadbe07d1c457bdd82ca3",
+  "load_sequence": [
+    "modernbert_trunk",
+    "model_wide_BEST_encoder_overlay",
+    "STAGE_A_BEST_adapted_layers_20_21",
+    "relation_head",
+    "resolvability_head"
+  ],
+  "model_input": [
+    "text"
+  ],
+  "model_wide_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "model_wide_BEST_mutated": false,
+  "n_keys": 16,
+  "objective_id": "HYPERLEX_V5_STAGE_A_FACTORIZED_RELATION_OBJECTIVE_V1",
+  "objective_receipt_sha256": "45746d706d819da41eb56e788f13f4a873f8dc136c0057c9fa238a53b5bacfdc",
+  "original_experiment_id": "HLX-CLASSIFICATION-V5-STAGE-A-FACTORIZED-RELATION-IDENT-FILTERED-001",
+  "parent_encoder_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "parent_model_wide_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "previous_STAGE_A_BEST": "cd2829c1b5fb823fc03f18efe66a7387124ef44be2545b9e385a17eb6237bf5c",
+  "promoted_at": "2026-10-01T06:43:21Z",
+  "promotion_rule": "RETRY_PROMOTE_STAGE_A_IDENT_FILTERED_FACTORIZED_CANDIDATE",
+  "relation_threshold": 0.6,
+  "reproduction_classification": "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION",
+  "resolvability_threshold": 0.75,
+  "schema": "hyperlex.classification.v5.stage_a_best_pointer.v1",
+  "selection_score": 0.9672661029515868,
+  "semantic_outputs": [
+    "NO_EVIDENCE",
+    "EVIDENCE_PRESENT",
+    "UNCERTAIN"
+  ],
+  "stage_a_parent_model_wide_best": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "surface_dataset_sha256": "492ed36751c7fdc40fe10bcdfabb69fa8783f8680259c31b3a64ee6903326d73",
+  "surface_id": "HYPERLEX_V5_STAGE_A_IDENTIFIABILITY_FILTERED_SURFACE_V1R2",
+  "weights_path": "/home/morpheus/.hyperlex/models/hyperlex-encoder-modernbert-base-seed-classification-v5-stage-a-ident-filtered-factorized-repro-001/model.safetensors"
+}

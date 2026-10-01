@@ -1,0 +1,106 @@
+{
+  "display_targets": {
+    "NONE_recall": 0.965,
+    "PRESENT_recall": 0.951,
+    "false_entry": 0.034
+  },
+  "exact_parity": {
+    "abs_tol": 1e-09,
+    "diffs": {
+      "EVIDENCE_PRESENT_recall": {
+        "abs_delta": 0.0,
+        "expected": 0.951310861423221,
+        "observed": 0.951310861423221
+      },
+      "NO_EVIDENCE_recall": {
+        "abs_delta": 0.0,
+        "expected": 0.9646643109540636,
+        "observed": 0.9646643109540636
+      },
+      "false_evidence_entry_rate_on_none": {
+        "abs_delta": 0.0,
+        "expected": 0.03356890459363958,
+        "observed": 0.03356890459363958
+      },
+      "stage_a_macro_f1": {
+        "abs_delta": 0.0,
+        "expected": 0.9597164476304262,
+        "observed": 0.9597164476304262
+      }
+    },
+    "pass": true
+  },
+  "metrics": {
+    "EVIDENCE_PRESENT_recall": 0.951310861423221,
+    "NO_EVIDENCE_recall": 0.9646643109540636,
+    "false_evidence_entry_rate_on_none": 0.03356890459363958,
+    "stage_a_macro_f1": 0.9597164476304262
+  },
+  "metrics_full": {
+    "acceptance_pass": true,
+    "by_label": {
+      "EVIDENCE_PRESENT": {
+        "f1": 0.9407407407407409,
+        "fn": 13,
+        "fp": 19,
+        "precision": 0.9304029304029304,
+        "recall": 0.951310861423221,
+        "support": 267,
+        "tp": 254
+      },
+      "NO_EVIDENCE": {
+        "f1": 0.9706666666666667,
+        "fn": 20,
+        "fp": 13,
+        "precision": 0.9767441860465116,
+        "recall": 0.9646643109540636,
+        "support": 566,
+        "tp": 546
+      },
+      "UNCERTAIN": {
+        "f1": 0.967741935483871,
+        "fn": 0,
+        "fp": 1,
+        "precision": 0.9375,
+        "recall": 1.0,
+        "support": 15,
+        "tp": 15
+      }
+    },
+    "false_evidence_entry_rate_on_none": 0.03356890459363958,
+    "stage_a_macro_f1": 0.9597164476304262
+  },
+  "n_validation": 848,
+  "pass": true,
+  "replay_hash": "ce26435e50a34602fbafd7e0504ce9b9931b986ff3b6a1ec8612fab244da4a48",
+  "short_atom_diagnostics": {
+    "SHORT_ATOM_NONE": {
+      "NONE_recall": 0.9802631578947368,
+      "n": 152,
+      "relation_false_positive_rate": 0.013157894736842105,
+      "support": 152
+    },
+    "SHORT_ATOM_PRESENT": {
+      "low_support_warning": true,
+      "n": 4,
+      "relation_recall": 0.75,
+      "stable_subgroup_guarantee": false,
+      "status": "LOW_SUPPORT",
+      "support": 4
+    },
+    "parity": {
+      "SHORT_ATOM_NONE_fpr": true,
+      "SHORT_ATOM_NONE_n": true,
+      "SHORT_ATOM_NONE_recall": true,
+      "SHORT_ATOM_PRESENT_n": true,
+      "SHORT_ATOM_PRESENT_recall": true
+    },
+    "parity_pass": true
+  },
+  "stage_a_best_sha256": "f2b00c5dfeb087288fc1686c901fbc8b52a8ba7a7b51cb83ff038656f93617fa",
+  "thresholds": {
+    "relation_threshold": 0.6,
+    "resolvability_threshold": 0.75
+  },
+  "thresholds_match": true
+}
