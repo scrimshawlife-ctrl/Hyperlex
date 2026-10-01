@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Preserve RESERVE_FAIL + diagnose V5 generalization (Spec 007):**
+  `PRESERVE_RESERVE_FAIL_AND_DIAGNOSE_V5_GENERALIZATION` freezes
+  `HYPERLEX_V5_PROMOTION_RESERVE_001=SPENT` / `RESERVE_FAIL` /
+  production promotion REJECTED. Read-only val↔reserve decomposition under
+  frozen STAGE_A_BEST `cd2829c1…` + Stage-B index `3fd6c87a…`. Stage-A
+  false_entry +0.056 / PRESENT recall −0.334 / NONE recall −0.335; Stage-B
+  emission precision on correctly admitted PRESENT remains ≥0.90.
+  Diagnosis **`STAGE_A_GENERALIZATION_FAILURE`**; remediation
+  **`NEW_STAGE_A_TRAINING_SURFACE`**. No retune, no index rebuild, no BEST
+  moves, no reserve reuse. Receipt
+  `classification-v5-reserve-fail-diagnose-receipt-20261001.json`
+  (`823c985b…`).
+
 - **Authorize/seal/score V5 promotion reserve (Spec 007):**
   `AUTHORIZE_SEAL_NEW_V5_RESERVE_THEN_ONE_SHOT_SCORE` creates
   **`HYPERLEX_V5_PROMOTION_RESERVE_001`** (n=250; NONE 61 / PRESENT 159 /

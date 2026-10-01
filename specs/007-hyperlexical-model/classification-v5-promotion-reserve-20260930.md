@@ -83,6 +83,7 @@ present). Do not retune against this reserve. Do not promote.
 ## Next action
 
 ```text
-PRESERVE_RESERVE_FAIL — diagnose offline without retuning on the spent reserve;
-do not rebuild index; do not move BEST / STAGE_A_BEST; no automatic promotion.
+NEW_STAGE_A_TRAINING_SURFACE — diagnosis STAGE_A_GENERALIZATION_FAILURE
+(see classification-v5-reserve-fail-diagnose-20261001.md); preserve spent
+reserve; do not retune thresholds; do not train on reserve mistakes.
 ```
