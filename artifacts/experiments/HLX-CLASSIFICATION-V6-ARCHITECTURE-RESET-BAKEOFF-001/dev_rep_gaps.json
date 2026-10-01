@@ -1,0 +1,42 @@
+{
+  "D_LABEL_DESCRIPTION_NLI__CONTROL": {
+    "domain": 0.027322489922027682,
+    "function": 0.05555852482486148,
+    "system": 0.03271224548536672
+  },
+  "D_LABEL_DESCRIPTION_NLI__EXTERNAL": {
+    "domain": 0.05669366138959232,
+    "function": 0.03096615232747968,
+    "system": 0.049746191116988914
+  },
+  "E_LABEL_EMBEDDING_JOINT__CONTROL": {
+    "domain": -0.0049694365290927495,
+    "function": 0.0,
+    "system": -0.0034164876137512644
+  },
+  "E_LABEL_EMBEDDING_JOINT__EXTERNAL": {
+    "domain": 0.0,
+    "function": 0.0,
+    "system": 0.0
+  },
+  "F_HIERARCHY_AWARE_CONTRASTIVE__CONTROL": {
+    "domain": -0.01101095703859667,
+    "function": 0.029407536035927773,
+    "system": 0.0007698037766840082
+  },
+  "F_HIERARCHY_AWARE_CONTRASTIVE__EXTERNAL": {
+    "domain": -0.01101095703859667,
+    "function": 0.02948803603281011,
+    "system": -0.0018249678368333633
+  },
+  "ZERO_SHOT_SEMANTIC_MATCH__CONTROL": {
+    "domain": 0.07533805916825762,
+    "function": 0.07922323141655761,
+    "system": 0.07666024734184032
+  },
+  "ZERO_SHOT_SEMANTIC_MATCH__EXTERNAL": {
+    "domain": -0.00937390563989049,
+    "function": 0.04563077590846726,
+    "system": 0.00513911728654512
+  }
+}

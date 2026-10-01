@@ -1,0 +1,16 @@
+{
+  "BAKEOFF_STATE": "V6_ARCHITECTURE_BAKEOFF_EXHAUSTED",
+  "NEXT_ACTION": "REASSESS_V6_TASK_SIGNAL_AND_PRETRAINED_REPRESENTATION",
+  "QUAL_ROWS_INSPECTED": false,
+  "RECEIPT": "e7264a0f140dee6536b4ca9d4de69a0ae2139c29a5c3a4572214fa1ae52b58eb",
+  "abc_best_rep_system_macro_f1": 0.023839137645107797,
+  "advance": false,
+  "best_rep_system_macro_f1": 0.1337787816195405,
+  "floors_locked": true,
+  "n_dev": 195,
+  "n_rep": 532,
+  "n_train": 1209,
+  "primary_failure_diagnosis": "LABEL_SEMANTICS_PRIOR_STRONGER_THAN_CURRENT_TRAINED_REPRESENTATION",
+  "selected": null,
+  "zero_shot_best_rep_system_macro_f1": 0.1622371780444463
+}

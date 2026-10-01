@@ -1,0 +1,304 @@
+{
+  "BAKEOFF_STATE": "V6_ARCHITECTURE_BAKEOFF_EXHAUSTED",
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-ARCHITECTURE-RESET-BAKEOFF-001",
+  "MODEL_WIDE_BEST_ROLE": "CONTROL",
+  "NEXT_ACTION": "REASSESS_V6_TASK_SIGNAL_AND_PRETRAINED_REPRESENTATION",
+  "PHASE_RULE": "CONTINUE_V6_ARCHITECTURE_BAKEOFF",
+  "QUAL_ROWS_INSPECTED": false,
+  "TRAIN": true,
+  "V6_ARCHITECTURE_RESET_BAKEOFF_RECEIPT_SHA256": "e7264a0f140dee6536b4ca9d4de69a0ae2139c29a5c3a4572214fa1ae52b58eb",
+  "abc_comparison": {
+    "abc_best_rep_system_macro_f1": 0.023839137645107797,
+    "available": true,
+    "delta_vs_abc": 0.10993964397443269,
+    "reset_best_rep_system_macro_f1": 0.1337787816195405
+  },
+  "advancement_gate": {
+    "floors_locked": true,
+    "material_axes": [
+      "domain",
+      "function",
+      "mediation"
+    ],
+    "max_hierarchy_violation_rate_rep": 0.05,
+    "max_macro_f1_dev_minus_rep": 0.15,
+    "min_axis_macro_f1": 0.1,
+    "min_rep_system_macro_f1": 0.2,
+    "name": "V6_ARCHITECTURE_RESET_ADVANCEMENT",
+    "note": "Do not lower floors after results. QUAL sealed."
+  },
+  "architecture_reset_bakeoff": true,
+  "bakeoff_selection": {
+    "BAKEOFF_STATE": "V6_ARCHITECTURE_BAKEOFF_EXHAUSTED",
+    "NEXT_ACTION": "REASSESS_V6_TASK_SIGNAL_AND_PRETRAINED_REPRESENTATION",
+    "advance": false,
+    "ranking": [
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "AXIS_FLOOR_OK": true,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "axis_gate": {
+          "axes": {
+            "domain": {
+              "floor": 0.1,
+              "macro_f1": 0.13283658341233598,
+              "material": true,
+              "ok": true
+            },
+            "function": {
+              "floor": 0.1,
+              "macro_f1": 0.1269573792370952,
+              "material": true,
+              "ok": true
+            },
+            "mediation": {
+              "floor": 0.1,
+              "macro_f1": 0.17142857142857143,
+              "material": true,
+              "ok": true
+            }
+          },
+          "ok": true
+        },
+        "dev_macro_f1": 0.1664910271049072,
+        "dev_rep_gap": 0.03271224548536672,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.1337787816195405,
+        "selection_score": -0.04662283936137501,
+        "track": "D_LABEL_DESCRIPTION_NLI__CONTROL"
+      },
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "AXIS_FLOOR_OK": true,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "axis_gate": {
+          "axes": {
+            "domain": {
+              "floor": 0.1,
+              "macro_f1": 0.12307433041845685,
+              "material": true,
+              "ok": true
+            },
+            "function": {
+              "floor": 0.1,
+              "macro_f1": 0.12674665766834178,
+              "material": true,
+              "ok": true
+            },
+            "mediation": {
+              "floor": 0.1,
+              "macro_f1": 0.21568627450980393,
+              "material": true,
+              "ok": true
+            }
+          },
+          "ok": true
+        },
+        "dev_macro_f1": 0.1279556908998039,
+        "dev_rep_gap": 0.0,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.12978065873663727,
+        "selection_score": -0.06484993846793008,
+        "track": "F_HIERARCHY_AWARE_CONTRASTIVE__EXTERNAL"
+      },
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "AXIS_FLOOR_OK": true,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "axis_gate": {
+          "axes": {
+            "domain": {
+              "floor": 0.1,
+              "macro_f1": 0.1113530589113677,
+              "material": true,
+              "ok": true
+            },
+            "function": {
+              "floor": 0.1,
+              "macro_f1": 0.13132357663607663,
+              "material": true,
+              "ok": true
+            },
+            "mediation": {
+              "floor": 0.1,
+              "macro_f1": 0.18791946308724833,
+              "material": true,
+              "ok": true
+            }
+          },
+          "ok": true
+        },
+        "dev_macro_f1": 0.17087727972052638,
+        "dev_rep_gap": 0.049746191116988914,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.12113108860353747,
+        "selection_score": -0.06513377938450379,
+        "track": "D_LABEL_DESCRIPTION_NLI__EXTERNAL"
+      },
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "AXIS_FLOOR_OK": true,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "axis_gate": {
+          "axes": {
+            "domain": {
+              "floor": 0.1,
+              "macro_f1": 0.12307433041845685,
+              "material": true,
+              "ok": true
+            },
+            "function": {
+              "floor": 0.1,
+              "macro_f1": 0.12893314767998149,
+              "material": true,
+              "ok": true
+            },
+            "mediation": {
+              "floor": 0.1,
+              "macro_f1": 0.1388888888888889,
+              "material": true,
+              "ok": true
+            }
+          },
+          "ok": true
+        },
+        "dev_macro_f1": 0.126297248414924,
+        "dev_rep_gap": 0.0007698037766840082,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.12552744463824,
+        "selection_score": -0.06545573422945258,
+        "track": "F_HIERARCHY_AWARE_CONTRASTIVE__CONTROL"
+      },
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "AXIS_FLOOR_OK": false,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "axis_gate": {
+          "axes": {
+            "domain": {
+              "floor": 0.1,
+              "macro_f1": 0.022014891074547294,
+              "material": true,
+              "ok": false
+            },
+            "function": {
+              "floor": 0.1,
+              "macro_f1": 0.0,
+              "material": true,
+              "ok": false
+            },
+            "mediation": {
+              "floor": 0.1,
+              "macro_f1": 0.0,
+              "material": true,
+              "ok": false
+            }
+          },
+          "ok": false
+        },
+        "dev_macro_f1": 0.01171875,
+        "dev_rep_gap": 0.0,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.015135237613751264,
+        "selection_score": -0.16596550693997608,
+        "track": "E_LABEL_EMBEDDING_JOINT__CONTROL"
+      },
+      {
+        "ABS_REP_FLOOR_OK": false,
+        "AXIS_FLOOR_OK": false,
+        "GENERALIZATION_GAP_ACCEPTABLE": true,
+        "HIERARCHY_OK": true,
+        "axis_gate": {
+          "axes": {
+            "domain": {
+              "floor": 0.1,
+              "macro_f1": 0.0,
+              "material": true,
+              "ok": false
+            },
+            "function": {
+              "floor": 0.1,
+              "macro_f1": 0.0,
+              "material": true,
+              "ok": false
+            },
+            "mediation": {
+              "floor": 0.1,
+              "macro_f1": 0.0,
+              "material": true,
+              "ok": false
+            }
+          },
+          "ok": false
+        },
+        "dev_macro_f1": 0.0,
+        "dev_rep_gap": 0.0,
+        "eligible": false,
+        "hierarchy_violation_rate_rep": 0.0,
+        "rep_macro_f1": 0.0,
+        "selection_score": -0.18,
+        "track": "E_LABEL_EMBEDDING_JOINT__EXTERNAL"
+      }
+    ],
+    "selected": null,
+    "selection_rule": "prefer REP system, then DEV\u2192REP gap, hierarchy, axis balance, simplicity; require locked floors including axis macro-F1>=0.10"
+  },
+  "best_rep_system_macro_f1": 0.1337787816195405,
+  "code_revision": "da76948f58eb9cbda208a7342ba146b0619fbda7",
+  "diagnosis": {
+    "best_axis_macro_f1": {
+      "domain": 0.13283658341233598,
+      "function": 0.13132357663607663,
+      "mediation": 0.21568627450980393
+    },
+    "best_rep_system_macro_f1": 0.1337787816195405,
+    "best_track": "D_LABEL_DESCRIPTION_NLI__CONTROL",
+    "candidate_hypotheses": [
+      "ENCODER_REPRESENTATION_FAILURE",
+      "ATOMIC_LABEL_HEAD_FAILURE",
+      "LABEL_SEMANTICS_MISSING",
+      "HIERARCHY_OBJECTIVE_FAILURE",
+      "TASK_NOT_LEARNABLE_AT_CURRENT_DATA_SCALE",
+      "DATA_SCALE_INSUFFICIENT",
+      "LABEL_BOUNDARIES_STILL_NOT_MODEL_LEARNABLE",
+      "TEXT_ONLY_SIGNAL_INSUFFICIENT",
+      "PRETRAINED_REPRESENTATION_MISMATCH",
+      "TASK_REDEFINITION_REQUIRED",
+      "LABEL_SEMANTICS_PRIOR_STRONGER_THAN_CURRENT_TRAINED_REPRESENTATION"
+    ],
+    "evidence": [
+      "zero-shot REP macro-F1=0.1622 > trained/ABC (~0.1338)",
+      "best REP system macro-F1=0.1338 < 0.2"
+    ],
+    "primary_failure_diagnosis": "LABEL_SEMANTICS_PRIOR_STRONGER_THAN_CURRENT_TRAINED_REPRESENTATION",
+    "secondary": [],
+    "zero_shot_rep_system_macro_f1": 0.1622371780444463,
+    "zero_shot_stronger_than_trained": true
+  },
+  "encoder_controls": [
+    "CONTROL",
+    "EXTERNAL"
+  ],
+  "floors_lowered": false,
+  "migration_gold_altered": false,
+  "ontology_modified": false,
+  "selected": null,
+  "settled_at": "2026-10-01T22:39:27Z",
+  "tracks": [
+    "D_LABEL_DESCRIPTION_NLI",
+    "E_LABEL_EMBEDDING_JOINT",
+    "F_HIERARCHY_AWARE_CONTRASTIVE"
+  ],
+  "zero_shot_best_rep_system_macro_f1": 0.1622371780444463,
+  "zero_shot_diagnostic": true
+}

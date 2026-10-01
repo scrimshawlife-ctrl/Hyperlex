@@ -9,6 +9,13 @@
   EXTERNAL encoder controls and a read-only zero-shot text↔label-description
   diagnostic. Floors locked (REP system ≥0.20, hierarchy viol ≤0.05, axis
   macro-F1 ≥0.10). QUAL sealed. Ontology/migration gold unchanged.
+  Results: zero-shot best REP system macro-F1 **0.162** > trained D **0.134**
+  > ABC **0.024**; no candidate advanced. Disposition
+  **`V6_ARCHITECTURE_BAKEOFF_EXHAUSTED`**. Primary diagnosis
+  **`LABEL_SEMANTICS_PRIOR_STRONGER_THAN_CURRENT_TRAINED_REPRESENTATION`**.
+  Receipt `classification-v6-architecture-reset-bakeoff-receipt-20261001.json`
+  (`e7264a0f…`). Next:
+  `REASSESS_V6_TASK_SIGNAL_AND_PRETRAINED_REPRESENTATION`.
 
 - **Rebuild V6 labels and run architecture bake-off (Spec 007):**
   Amended settlement protocol with three-level multi-label agreement

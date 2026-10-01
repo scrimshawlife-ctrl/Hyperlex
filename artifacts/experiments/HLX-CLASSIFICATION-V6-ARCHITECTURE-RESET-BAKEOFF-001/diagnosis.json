@@ -1,0 +1,30 @@
+{
+  "best_axis_macro_f1": {
+    "domain": 0.13283658341233598,
+    "function": 0.13132357663607663,
+    "mediation": 0.21568627450980393
+  },
+  "best_rep_system_macro_f1": 0.1337787816195405,
+  "best_track": "D_LABEL_DESCRIPTION_NLI__CONTROL",
+  "candidate_hypotheses": [
+    "ENCODER_REPRESENTATION_FAILURE",
+    "ATOMIC_LABEL_HEAD_FAILURE",
+    "LABEL_SEMANTICS_MISSING",
+    "HIERARCHY_OBJECTIVE_FAILURE",
+    "TASK_NOT_LEARNABLE_AT_CURRENT_DATA_SCALE",
+    "DATA_SCALE_INSUFFICIENT",
+    "LABEL_BOUNDARIES_STILL_NOT_MODEL_LEARNABLE",
+    "TEXT_ONLY_SIGNAL_INSUFFICIENT",
+    "PRETRAINED_REPRESENTATION_MISMATCH",
+    "TASK_REDEFINITION_REQUIRED",
+    "LABEL_SEMANTICS_PRIOR_STRONGER_THAN_CURRENT_TRAINED_REPRESENTATION"
+  ],
+  "evidence": [
+    "zero-shot REP macro-F1=0.1622 > trained/ABC (~0.1338)",
+    "best REP system macro-F1=0.1338 < 0.2"
+  ],
+  "primary_failure_diagnosis": "LABEL_SEMANTICS_PRIOR_STRONGER_THAN_CURRENT_TRAINED_REPRESENTATION",
+  "secondary": [],
+  "zero_shot_rep_system_macro_f1": 0.1622371780444463,
+  "zero_shot_stronger_than_trained": true
+}

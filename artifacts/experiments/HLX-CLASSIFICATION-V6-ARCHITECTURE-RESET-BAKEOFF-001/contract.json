@@ -1,0 +1,113 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-ARCHITECTURE-RESET-BAKEOFF-001",
+  "PHASE_RULE": "CONTINUE_V6_ARCHITECTURE_BAKEOFF",
+  "advancement_gate": {
+    "floors_locked": true,
+    "material_axes": [
+      "domain",
+      "function",
+      "mediation"
+    ],
+    "max_hierarchy_violation_rate_rep": 0.05,
+    "max_macro_f1_dev_minus_rep": 0.15,
+    "min_axis_macro_f1": 0.1,
+    "min_rep_system_macro_f1": 0.2,
+    "name": "V6_ARCHITECTURE_RESET_ADVANCEMENT",
+    "note": "Do not lower floors after results. QUAL sealed."
+  },
+  "encoder_controls": {
+    "CONTROL": {
+      "id": "MODEL_WIDE_BEST_CONTROL",
+      "role": "CONTROL_NOT_ASSUMED_BACKBONE",
+      "sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6"
+    },
+    "EXTERNAL_ENCODER_CONTROL": {
+      "id": "MODERNBERT_TRUNK_NO_HYPERLEX_ADAPTATION",
+      "note": "Same ModernBERT trunk weights; no MODEL_WIDE_BEST adaptation.",
+      "role": "GENERAL_PRETRAINED_NO_HYPERLEX_FINETUNE"
+    }
+  },
+  "error_classes": [
+    "ENCODER_SEPARATION_FAILURE",
+    "LABEL_DESCRIPTION_CONFUSION",
+    "PARENT_CHILD_CONSISTENCY_FAILURE",
+    "FALSE_POSITIVE_LABEL",
+    "FALSE_NEGATIVE_LABEL",
+    "CO_LABEL_FAILURE",
+    "AXIS_CONFUSION",
+    "ANNOTATION_BOUNDARY_CASE"
+  ],
+  "failure_diagnoses": [
+    "ENCODER_REPRESENTATION_FAILURE",
+    "ATOMIC_LABEL_HEAD_FAILURE",
+    "LABEL_SEMANTICS_MISSING",
+    "HIERARCHY_OBJECTIVE_FAILURE",
+    "TASK_NOT_LEARNABLE_AT_CURRENT_DATA_SCALE",
+    "DATA_SCALE_INSUFFICIENT",
+    "LABEL_BOUNDARIES_STILL_NOT_MODEL_LEARNABLE",
+    "TEXT_ONLY_SIGNAL_INSUFFICIENT",
+    "PRETRAINED_REPRESENTATION_MISMATCH",
+    "TASK_REDEFINITION_REQUIRED",
+    "LABEL_SEMANTICS_PRIOR_STRONGER_THAN_CURRENT_TRAINED_REPRESENTATION"
+  ],
+  "forbidden": [
+    "incremental_ABC_tuning",
+    "inspect_QUAL",
+    "modify_ontology",
+    "alter_migration_gold",
+    "tune_REP_row_by_row",
+    "lower_advancement_floors",
+    "llm_generated_label_reinterpretation",
+    "legacy_stage_b_exemplar_index"
+  ],
+  "identical_budget_note": "Tracks share TRAIN/DEV/REP, ontology, label definitions, metric code, advancement gates, seed policy, and training budget class.",
+  "label_descriptions": {
+    "domain.crypto": "DOMAIN crypto_markets: crypto-asset / blockchain / DeFi / NFT market evidence. Exclusions: ordinary finance, generic 'token' without crypto sense.",
+    "domain.entertainment": "DOMAIN entertainment_media: music / film / TV entertainment evidence. Exclusions: generic 'performance' in computing; fashion runway alone.",
+    "domain.fashion": "DOMAIN fashion_style: clothing / aesthetic-style evidence. Exclusions: abstract 'aesthetic' philosophy without style sense.",
+    "domain.gambling": "DOMAIN gambling_betting: actual betting/wagering/casino/bookmaking semantics. Exclusions: metaphorical 'bet', speculative-market talk without wagering, ordinary coin minting, storage 'bit' units.",
+    "domain.gaming": "DOMAIN gaming: gameplay / gamer-community evidence. Exclusions: generic 'player' without game sense; sports athletes; AI agents.",
+    "domain.politics": "DOMAIN politics_civic: political / civic institutional evidence. Exclusions: generic conflict/war without civic framing; sports 'left wing'.",
+    "domain.spiritual": "DOMAIN spiritual_esoteric: occult / astrology / spiritual practice evidence. Exclusions: metaphorical 'magic' in tech/gaming without spiritual sense.",
+    "domain.sports": "DOMAIN sports: athletic sports evidence. Exclusions: gaming esports; figurative competition alone.",
+    "domain.technology": "DOMAIN technology: computing / software / systems evidence. Exclusions: AI-community slang that is specifically model/agent discourse.",
+    "domain.technology.ai_discourse": "DOMAIN ai_discourse (child of technology): AI-agent / LLM / prompt community evidence. Requires technology parent. Exclusions: generic computing without AI-community evidence.",
+    "domain.workplace": "DOMAIN workplace: workplace / career / org evidence. Exclusions: generic 'service'/'channel' without workplace sense.",
+    "function.conflictive_force": "FUNCTION conflictive_force: hostility / violence / combat framing. Exclusions: metaphorical 'fight' for sports/competition without hostility sense.",
+    "function.evaluative_stance": "FUNCTION evaluative_stance: praise / insult / pejoration / prestige judgment. Exclusions: neutral description without stance; pure demonym without evaluation.",
+    "function.memetic_form": "FUNCTION memetic_form: meme format / macro / copypasta / template virality. Exclusions: any viral topic without memetic form; political content alone.",
+    "function.relational_intimacy": "FUNCTION relational_intimacy: romantic / dating / intimate partnership evidence. Exclusions: platonic affiliation; workplace 'partner'; evaluative insult alone.",
+    "mediation.internet_register": "MEDIATION internet_register: internet-mediated informal register / netspeak. Optional co-label; must not be sole exclusive Stage-B decision."
+  },
+  "label_descriptions_source": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+  "prior_bakeoff_receipt": "b936b49bbf0e3925a03f2c1bb6eb46bf7458c7a2f1e215f83cc6536266d2d453",
+  "prior_state": "V6_BAKEOFF_NO_ADVANCE",
+  "qual_policy": {
+    "HYPERLEX_V6_QUALIFICATION_001": "REMAIN_SEALED_HISTORICAL_SECONDARY",
+    "forbidden_uses": [
+      "selection",
+      "thresholding",
+      "early_stopping",
+      "architecture_choice",
+      "diagnosis"
+    ],
+    "inspected": false
+  },
+  "retrieval_first_core": false,
+  "schema": "hyperlex.classification.v6.architecture_reset_bakeoff.v1",
+  "track_purposes": {
+    "D_LABEL_DESCRIPTION_NLI": "text-label entailment / compatibility using frozen label definitions",
+    "E_LABEL_EMBEDDING_JOINT": "shared space for text and label definitions + multi-label objective",
+    "F_HIERARCHY_AWARE_CONTRASTIVE": "instance/label/hierarchy-structured contrastive representation"
+  },
+  "tracks": [
+    "D_LABEL_DESCRIPTION_NLI",
+    "E_LABEL_EMBEDDING_JOINT",
+    "F_HIERARCHY_AWARE_CONTRASTIVE"
+  ],
+  "zero_shot_diagnostic": {
+    "name": "TEXT_LABEL_DESCRIPTION_SEMANTIC_MATCHING",
+    "purpose": "read-only prior before expensive D/E/F training",
+    "trainable": false
+  }
+}

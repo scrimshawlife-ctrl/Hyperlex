@@ -1,0 +1,2938 @@
+{
+  "D_LABEL_DESCRIPTION_NLI__CONTROL": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.020512820512820513,
+        "jaccard": 0.10878954378954378,
+        "macro_f1": 0.16015907333436366,
+        "micro_f1": 0.15283842794759825,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.05660377358490566,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.10638297872340426,
+            "recall": 0.5,
+            "support": 10
+          },
+          "domain.fashion": {
+            "precision": 0.5,
+            "recall": 0.125,
+            "support": 8
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "precision": 0.09333333333333334,
+            "recall": 0.5833333333333334,
+            "support": 12
+          },
+          "domain.politics": {
+            "precision": 0.058394160583941604,
+            "recall": 0.7272727272727273,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "precision": 0.08396946564885496,
+            "recall": 0.8461538461538461,
+            "support": 13
+          },
+          "domain.sports": {
+            "precision": 0.2,
+            "recall": 0.15384615384615385,
+            "support": 13
+          },
+          "domain.technology": {
+            "precision": 0.19672131147540983,
+            "recall": 0.41379310344827586,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.21052631578947367,
+            "recall": 0.2857142857142857,
+            "support": 14
+          },
+          "domain.workplace": {
+            "precision": 0.09550561797752809,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.15374033374033375,
+        "support_positives": 10
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 47,
+            "CO_LABEL_FAILURE": 178,
+            "ENCODER_SEPARATION_FAILURE": 139,
+            "FALSE_NEGATIVE_LABEL": 52,
+            "FALSE_POSITIVE_LABEL": 186,
+            "LABEL_DESCRIPTION_CONFUSION": 47,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 24,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 152,
+            "FALSE_NEGATIVE_LABEL": 25,
+            "FALSE_POSITIVE_LABEL": 176,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 69,
+            "FALSE_NEGATIVE_LABEL": 8,
+            "FALSE_POSITIVE_LABEL": 69,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        }
+      },
+      "function": {
+        "exact_match": 0.09230769230769231,
+        "jaccard": 0.17264957264957265,
+        "macro_f1": 0.1825159040619567,
+        "micro_f1": 0.17118997912317327,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.09523809523809523,
+            "recall": 0.9411764705882353,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "precision": 0.14814814814814814,
+            "recall": 0.4444444444444444,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "precision": 0.07954545454545454,
+            "recall": 1.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "precision": 0.2,
+            "recall": 0.17647058823529413,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.20547008547008544,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.24242424242424243,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.6051282051282051,
+        "jaccard": 0.6051282051282051,
+        "macro_f1": 0.17204301075268819,
+        "micro_f1": 0.17204301075268819,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.1038961038961039,
+            "recall": 0.5,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.6051282051282051,
+        "support_positives": 1
+      },
+      "n": 195,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": 0.1882012650781174,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.04010480538403299,
+        "positive_text_label_similarity": 0.2283060704621504,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.010256410256410256,
+        "jaccard": 0.11236090120705504,
+        "macro_f1": 0.1664910271049072,
+        "micro_f1": 0.15994623655913978,
+        "sample_f1": 0.17756110823984125
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.016917293233082706,
+        "jaccard": 0.09508308107932167,
+        "macro_f1": 0.13283658341233598,
+        "micro_f1": 0.13456362937331795,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.006289308176100629,
+            "recall": 0.3333333333333333,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.08396946564885496,
+            "recall": 0.3142857142857143,
+            "support": 35
+          },
+          "domain.fashion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 40
+          },
+          "domain.gambling": {
+            "precision": 0.005128205128205128,
+            "recall": 0.2,
+            "support": 5
+          },
+          "domain.gaming": {
+            "precision": 0.11261261261261261,
+            "recall": 0.5319148936170213,
+            "support": 47
+          },
+          "domain.politics": {
+            "precision": 0.04878048780487805,
+            "recall": 0.6428571428571429,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "precision": 0.07038123167155426,
+            "recall": 0.5853658536585366,
+            "support": 41
+          },
+          "domain.sports": {
+            "precision": 0.21875,
+            "recall": 0.1891891891891892,
+            "support": 37
+          },
+          "domain.technology": {
+            "precision": 0.18461538461538463,
+            "recall": 0.45569620253164556,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.23943661971830985,
+            "recall": 0.4146341463414634,
+            "support": 41
+          },
+          "domain.workplace": {
+            "precision": 0.07231404958677685,
+            "recall": 1.0,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.13390944894704296,
+        "support_positives": 11
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 191,
+            "CO_LABEL_FAILURE": 485,
+            "ENCODER_SEPARATION_FAILURE": 323,
+            "FALSE_NEGATIVE_LABEL": 200,
+            "FALSE_POSITIVE_LABEL": 514,
+            "LABEL_DESCRIPTION_CONFUSION": 191,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 57,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 436,
+            "FALSE_NEGATIVE_LABEL": 59,
+            "FALSE_POSITIVE_LABEL": 493,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 213,
+            "FALSE_NEGATIVE_LABEL": 19,
+            "FALSE_POSITIVE_LABEL": 213,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        }
+      },
+      "function": {
+        "exact_match": 0.06954887218045112,
+        "jaccard": 0.1287593984962406,
+        "macro_f1": 0.1269573792370952,
+        "micro_f1": 0.12703101920236337,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.06391752577319587,
+            "recall": 1.0,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "precision": 0.06557377049180328,
+            "recall": 0.35294117647058826,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "precision": 0.07468879668049792,
+            "recall": 0.9473684210526315,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "precision": 0.11864406779661017,
+            "recall": 0.16666666666666666,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.1548872180451128,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.30357142857142855,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.5639097744360902,
+        "jaccard": 0.5639097744360902,
+        "macro_f1": 0.17142857142857143,
+        "micro_f1": 0.17142857142857143,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.10126582278481013,
+            "recall": 0.5581395348837209,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.5639097744360902,
+        "support_positives": 1
+      },
+      "n": 532,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": 0.1913667734281275,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.042117295373676006,
+        "positive_text_label_similarity": 0.2334840688018035,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0037593984962406013,
+        "jaccard": 0.08597632526203955,
+        "macro_f1": 0.1337787816195405,
+        "micro_f1": 0.1345926800472255,
+        "sample_f1": 0.1388415917219544
+      }
+    },
+    "encoder": "CONTROL",
+    "n_train": 1209,
+    "track": "D"
+  },
+  "D_LABEL_DESCRIPTION_NLI__EXTERNAL": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.07922669922669923,
+        "macro_f1": 0.16804672030096002,
+        "micro_f1": 0.14265734265734265,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.3333333333333333,
+            "recall": 0.3333333333333333,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.05154639175257732,
+            "recall": 1.0,
+            "support": 10
+          },
+          "domain.fashion": {
+            "precision": 1.0,
+            "recall": 0.125,
+            "support": 8
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "precision": 0.06153846153846154,
+            "recall": 1.0,
+            "support": 12
+          },
+          "domain.politics": {
+            "precision": 0.08,
+            "recall": 0.7272727272727273,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "precision": 0.125,
+            "recall": 0.38461538461538464,
+            "support": 13
+          },
+          "domain.sports": {
+            "precision": 0.06806282722513089,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "precision": 0.1590909090909091,
+            "recall": 0.9655172413793104,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.1076923076923077,
+            "recall": 0.5,
+            "support": 14
+          },
+          "domain.workplace": {
+            "precision": 0.0918918918918919,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.1351100751100751,
+        "support_positives": 10
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 28,
+            "CO_LABEL_FAILURE": 195,
+            "ENCODER_SEPARATION_FAILURE": 167,
+            "FALSE_NEGATIVE_LABEL": 28,
+            "FALSE_POSITIVE_LABEL": 195,
+            "LABEL_DESCRIPTION_CONFUSION": 28,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 19,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 153,
+            "FALSE_NEGATIVE_LABEL": 26,
+            "FALSE_POSITIVE_LABEL": 172,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 81,
+            "FALSE_NEGATIVE_LABEL": 3,
+            "FALSE_POSITIVE_LABEL": 81,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        }
+      },
+      "function": {
+        "exact_match": 0.08205128205128205,
+        "jaccard": 0.14188034188034188,
+        "macro_f1": 0.1622897289635563,
+        "micro_f1": 0.16096579476861167,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.10483870967741936,
+            "recall": 0.7647058823529411,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "precision": 0.07692307692307693,
+            "recall": 0.7222222222222222,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "precision": 0.09433962264150944,
+            "recall": 0.35714285714285715,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "precision": 0.10588235294117647,
+            "recall": 0.5294117647058824,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.1705982905982906,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.17721518987341772,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.5692307692307692,
+        "jaccard": 0.5692307692307692,
+        "macro_f1": 0.23636363636363636,
+        "micro_f1": 0.23636363636363636,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.13829787234042554,
+            "recall": 0.8125,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.5692307692307692,
+        "support_positives": 1
+      },
+      "n": 195,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": 0.19078714612863723,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.03126842816174688,
+        "positive_text_label_similarity": 0.2220555742903841,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.08676676599753523,
+        "macro_f1": 0.17087727972052638,
+        "micro_f1": 0.15218458517427588,
+        "sample_f1": 0.15399136476059552
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.0793115092927123,
+        "macro_f1": 0.1113530589113677,
+        "micro_f1": 0.1391170431211499,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.06641366223908918,
+            "recall": 1.0,
+            "support": 35
+          },
+          "domain.fashion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 40
+          },
+          "domain.gambling": {
+            "precision": 0.01020408163265306,
+            "recall": 0.8,
+            "support": 5
+          },
+          "domain.gaming": {
+            "precision": 0.08834586466165413,
+            "recall": 1.0,
+            "support": 47
+          },
+          "domain.politics": {
+            "precision": 0.05514705882352941,
+            "recall": 0.5357142857142857,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "precision": 0.10638297872340426,
+            "recall": 0.24390243902439024,
+            "support": 41
+          },
+          "domain.sports": {
+            "precision": 0.07058823529411765,
+            "recall": 0.972972972972973,
+            "support": 37
+          },
+          "domain.technology": {
+            "precision": 0.15182186234817813,
+            "recall": 0.9493670886075949,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.0972972972972973,
+            "recall": 0.43902439024390244,
+            "support": 41
+          },
+          "domain.workplace": {
+            "precision": 0.06262626262626263,
+            "recall": 0.8857142857142857,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.13416232889917099,
+        "support_positives": 11
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 118,
+            "CO_LABEL_FAILURE": 531,
+            "ENCODER_SEPARATION_FAILURE": 414,
+            "FALSE_NEGATIVE_LABEL": 118,
+            "FALSE_POSITIVE_LABEL": 532,
+            "LABEL_DESCRIPTION_CONFUSION": 118,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 42,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 404,
+            "FALSE_NEGATIVE_LABEL": 62,
+            "FALSE_POSITIVE_LABEL": 446,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 227,
+            "FALSE_NEGATIVE_LABEL": 15,
+            "FALSE_POSITIVE_LABEL": 227,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        }
+      },
+      "function": {
+        "exact_match": 0.12406015037593984,
+        "jaccard": 0.16760651629072681,
+        "macro_f1": 0.13132357663607663,
+        "micro_f1": 0.12888198757763975,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.06875,
+            "recall": 0.7096774193548387,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "precision": 0.06487695749440715,
+            "recall": 0.8529411764705882,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "precision": 0.08441558441558442,
+            "recall": 0.34210526315789475,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "precision": 0.08558558558558559,
+            "recall": 0.4523809523809524,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.1887218045112782,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.1592920353982301,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.5451127819548872,
+        "jaccard": 0.5451127819548872,
+        "macro_f1": 0.18791946308724833,
+        "micro_f1": 0.18791946308724833,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.10980392156862745,
+            "recall": 0.6511627906976745,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.5451127819548872,
+        "support_positives": 1
+      },
+      "n": 532,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": 0.1903477929297496,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.034999216112145515,
+        "positive_text_label_similarity": 0.2253470090418951,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.08117901313390036,
+        "macro_f1": 0.12113108860353747,
+        "micro_f1": 0.13936519518423932,
+        "sample_f1": 0.14250555730818887
+      }
+    },
+    "encoder": "EXTERNAL",
+    "n_train": 1209,
+    "track": "D"
+  },
+  "E_LABEL_EMBEDDING_JOINT__CONTROL": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.41025641025641024,
+        "jaccard": 0.4153846153846154,
+        "macro_f1": 0.017045454545454544,
+        "micro_f1": 0.045112781954887216,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 10
+          },
+          "domain.fashion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 8
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 12
+          },
+          "domain.politics": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 13
+          },
+          "domain.sports": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "precision": 1.0,
+            "recall": 0.10344827586206896,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 14
+          },
+          "domain.workplace": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.41709401709401706,
+        "support_positives": 10
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 12,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 115,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 66,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 16,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        }
+      },
+      "function": {
+        "exact_match": 0.6615384615384615,
+        "jaccard": 0.6615384615384615,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.6615384615384615,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9179487179487179,
+        "jaccard": 0.9179487179487179,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.9179487179487179,
+        "support_positives": 1
+      },
+      "n": 195,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": -0.19213743704166827,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.034634896506190255,
+        "positive_text_label_similarity": -0.15750254053547802,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.005128205128205128,
+        "jaccard": 0.010256410256410256,
+        "macro_f1": 0.01171875,
+        "micro_f1": 0.027906976744186046,
+        "sample_f1": 0.011965811965811965
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.3458646616541353,
+        "jaccard": 0.35307017543859653,
+        "macro_f1": 0.022014891074547294,
+        "micro_f1": 0.04926108374384237,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 35
+          },
+          "domain.fashion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 40
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 5
+          },
+          "domain.gaming": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 47
+          },
+          "domain.politics": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 41
+          },
+          "domain.sports": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 37
+          },
+          "domain.technology": {
+            "precision": 0.6923076923076923,
+            "recall": 0.11392405063291139,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.5,
+            "recall": 0.024390243902439025,
+            "support": 41
+          },
+          "domain.workplace": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.3555764411027569,
+        "support_positives": 11
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 4,
+            "CO_LABEL_FAILURE": 37,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 348,
+            "FALSE_POSITIVE_LABEL": 4,
+            "LABEL_DESCRIPTION_CONFUSION": 4,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 145,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 43,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        }
+      },
+      "function": {
+        "exact_match": 0.7274436090225563,
+        "jaccard": 0.7274436090225563,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.7274436090225563,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.046511627906976744,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9191729323308271,
+        "jaccard": 0.9191729323308271,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.9191729323308271,
+        "support_positives": 1
+      },
+      "n": 532,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": -0.18849035188709276,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.0361521869233164,
+        "positive_text_label_similarity": -0.15233816496377636,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0018796992481203006,
+        "jaccard": 0.009085213032581453,
+        "macro_f1": 0.015135237613751264,
+        "micro_f1": 0.03367003367003367,
+        "sample_f1": 0.011591478696741854
+      }
+    },
+    "encoder": "CONTROL",
+    "n_train": 1209,
+    "track": "E"
+  },
+  "E_LABEL_EMBEDDING_JOINT__EXTERNAL": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.40512820512820513,
+        "jaccard": 0.40512820512820513,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 10
+          },
+          "domain.fashion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 8
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 12
+          },
+          "domain.politics": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 13
+          },
+          "domain.sports": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 14
+          },
+          "domain.workplace": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.40512820512820513,
+        "support_positives": 10
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 14,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 116,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 66,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 16,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        }
+      },
+      "function": {
+        "exact_match": 0.6615384615384615,
+        "jaccard": 0.6615384615384615,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.6615384615384615,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9179487179487179,
+        "jaccard": 0.9179487179487179,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.9179487179487179,
+        "support_positives": 1
+      },
+      "n": 195,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": -0.18592985708937768,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.009703623096160047,
+        "positive_text_label_similarity": -0.17622623399321763,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.0,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.0
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.34398496240601506,
+        "jaccard": 0.34398496240601506,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 35
+          },
+          "domain.fashion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 40
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 5
+          },
+          "domain.gaming": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 47
+          },
+          "domain.politics": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 41
+          },
+          "domain.sports": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 37
+          },
+          "domain.technology": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 41
+          },
+          "domain.workplace": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.34398496240601506,
+        "support_positives": 11
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 41,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 349,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 145,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 0,
+            "FALSE_NEGATIVE_LABEL": 43,
+            "FALSE_POSITIVE_LABEL": 0,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        }
+      },
+      "function": {
+        "exact_match": 0.7274436090225563,
+        "jaccard": 0.7274436090225563,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.7274436090225563,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.0,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.9191729323308271,
+        "jaccard": 0.9191729323308271,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.9191729323308271,
+        "support_positives": 1
+      },
+      "n": 532,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": -0.18323085191765875,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.009103105100297243,
+        "positive_text_label_similarity": -0.1741277468173615,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.0,
+        "macro_f1": 0.0,
+        "micro_f1": 0.0,
+        "sample_f1": 0.0
+      }
+    },
+    "encoder": "EXTERNAL",
+    "n_train": 1209,
+    "track": "E"
+  },
+  "F_HIERARCHY_AWARE_CONTRASTIVE__CONTROL": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.06060606060606061,
+        "macro_f1": 0.11206337337986018,
+        "micro_f1": 0.11428571428571428,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.015384615384615385,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.05128205128205128,
+            "recall": 1.0,
+            "support": 10
+          },
+          "domain.fashion": {
+            "precision": 0.041025641025641026,
+            "recall": 1.0,
+            "support": 8
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "precision": 0.06153846153846154,
+            "recall": 1.0,
+            "support": 12
+          },
+          "domain.politics": {
+            "precision": 0.05641025641025641,
+            "recall": 1.0,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "precision": 0.06666666666666667,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.sports": {
+            "precision": 0.06666666666666667,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "precision": 0.14871794871794872,
+            "recall": 1.0,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.07179487179487179,
+            "recall": 1.0,
+            "support": 14
+          },
+          "domain.workplace": {
+            "precision": 0.08717948717948718,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.10927021696252466,
+        "support_positives": 10
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 195,
+            "ENCODER_SEPARATION_FAILURE": 195,
+            "FALSE_NEGATIVE_LABEL": 0,
+            "FALSE_POSITIVE_LABEL": 195,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 195,
+            "FALSE_NEGATIVE_LABEL": 0,
+            "FALSE_POSITIVE_LABEL": 195,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 151,
+            "FALSE_NEGATIVE_LABEL": 2,
+            "FALSE_POSITIVE_LABEL": 151,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        }
+      },
+      "function": {
+        "exact_match": 0.0,
+        "jaccard": 0.08717948717948718,
+        "macro_f1": 0.15834068371590926,
+        "micro_f1": 0.15827338129496402,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.08717948717948718,
+            "recall": 1.0,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "precision": 0.09230769230769231,
+            "recall": 1.0,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "precision": 0.07179487179487179,
+            "recall": 1.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "precision": 0.09289617486338798,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.13846153846153847,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.1339712918660287,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.2153846153846154,
+        "jaccard": 0.2153846153846154,
+        "macro_f1": 0.15469613259668508,
+        "micro_f1": 0.15469613259668508,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.08484848484848485,
+            "recall": 0.875,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.2153846153846154,
+        "support_positives": 1
+      },
+      "n": 195,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": -0.14993910388339302,
+        "hierarchy_distance_order_ok_rate": 0.7142857142857143,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.08876296457367724,
+        "positive_text_label_similarity": -0.061176139309715764,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.06822649572649572,
+        "macro_f1": 0.126297248414924,
+        "micro_f1": 0.1276595744680851,
+        "sample_f1": 0.12722641193229428
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.06681476418318524,
+        "macro_f1": 0.12307433041845685,
+        "micro_f1": 0.1252602915265097,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.005639097744360902,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.06578947368421052,
+            "recall": 1.0,
+            "support": 35
+          },
+          "domain.fashion": {
+            "precision": 0.07518796992481203,
+            "recall": 1.0,
+            "support": 40
+          },
+          "domain.gambling": {
+            "precision": 0.009398496240601503,
+            "recall": 1.0,
+            "support": 5
+          },
+          "domain.gaming": {
+            "precision": 0.08834586466165413,
+            "recall": 1.0,
+            "support": 47
+          },
+          "domain.politics": {
+            "precision": 0.05263157894736842,
+            "recall": 1.0,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "precision": 0.07706766917293233,
+            "recall": 1.0,
+            "support": 41
+          },
+          "domain.sports": {
+            "precision": 0.06954887218045112,
+            "recall": 1.0,
+            "support": 37
+          },
+          "domain.technology": {
+            "precision": 0.14849624060150377,
+            "recall": 1.0,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.07706766917293233,
+            "recall": 1.0,
+            "support": 41
+          },
+          "domain.workplace": {
+            "precision": 0.06578947368421052,
+            "recall": 1.0,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.12043157343909225,
+        "support_positives": 11
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 532,
+            "ENCODER_SEPARATION_FAILURE": 532,
+            "FALSE_NEGATIVE_LABEL": 0,
+            "FALSE_POSITIVE_LABEL": 532,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 1,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 531,
+            "FALSE_NEGATIVE_LABEL": 1,
+            "FALSE_POSITIVE_LABEL": 532,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 426,
+            "FALSE_NEGATIVE_LABEL": 8,
+            "FALSE_POSITIVE_LABEL": 426,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        }
+      },
+      "function": {
+        "exact_match": 0.0,
+        "jaccard": 0.06845238095238095,
+        "macro_f1": 0.12893314767998149,
+        "micro_f1": 0.128686327077748,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.05827067669172932,
+            "recall": 1.0,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "precision": 0.06390977443609022,
+            "recall": 1.0,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "precision": 0.07142857142857142,
+            "recall": 1.0,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "precision": 0.08249496981891348,
+            "recall": 0.9761904761904762,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.10921052631578948,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.1431064572425829,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.18421052631578946,
+        "jaccard": 0.18421052631578946,
+        "macro_f1": 0.1388888888888889,
+        "micro_f1": 0.1388888888888889,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.07592190889370933,
+            "recall": 0.813953488372093,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.18421052631578946,
+        "support_positives": 1
+      },
+      "n": 532,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": -0.14109040017819716,
+        "hierarchy_distance_order_ok_rate": 0.926829268292683,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.08879935334897467,
+        "positive_text_label_similarity": -0.05229104682922249,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.06784147869674186,
+        "macro_f1": 0.12552744463824,
+        "micro_f1": 0.12687813021702837,
+        "sample_f1": 0.12639522568029982
+      }
+    },
+    "encoder": "CONTROL",
+    "n_train": 1209,
+    "track": "F"
+  },
+  "F_HIERARCHY_AWARE_CONTRASTIVE__EXTERNAL": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.06060606060606061,
+        "macro_f1": 0.11206337337986018,
+        "micro_f1": 0.11428571428571428,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.015384615384615385,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.05128205128205128,
+            "recall": 1.0,
+            "support": 10
+          },
+          "domain.fashion": {
+            "precision": 0.041025641025641026,
+            "recall": 1.0,
+            "support": 8
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "precision": 0.06153846153846154,
+            "recall": 1.0,
+            "support": 12
+          },
+          "domain.politics": {
+            "precision": 0.05641025641025641,
+            "recall": 1.0,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "precision": 0.06666666666666667,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.sports": {
+            "precision": 0.06666666666666667,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "precision": 0.14871794871794872,
+            "recall": 1.0,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.07179487179487179,
+            "recall": 1.0,
+            "support": 14
+          },
+          "domain.workplace": {
+            "precision": 0.08717948717948718,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.10927021696252466,
+        "support_positives": 10
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 195,
+            "ENCODER_SEPARATION_FAILURE": 195,
+            "FALSE_NEGATIVE_LABEL": 0,
+            "FALSE_POSITIVE_LABEL": 195,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 2,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 193,
+            "FALSE_NEGATIVE_LABEL": 2,
+            "FALSE_POSITIVE_LABEL": 195,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 89,
+            "FALSE_NEGATIVE_LABEL": 5,
+            "FALSE_POSITIVE_LABEL": 89,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        }
+      },
+      "function": {
+        "exact_match": 0.0,
+        "jaccard": 0.0858974358974359,
+        "macro_f1": 0.1562346937011519,
+        "micro_f1": 0.1559074299634592,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.08717948717948718,
+            "recall": 1.0,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "precision": 0.09411764705882353,
+            "recall": 0.8888888888888888,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "precision": 0.07179487179487179,
+            "recall": 1.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "precision": 0.08717948717948718,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.1358974358974359,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.1339712918660287,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.517948717948718,
+        "jaccard": 0.517948717948718,
+        "macro_f1": 0.1896551724137931,
+        "micro_f1": 0.1896551724137931,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.11,
+            "recall": 0.6875,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.517948717948718,
+        "support_positives": 1
+      },
+      "n": 195,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": -0.15449084473476876,
+        "hierarchy_distance_order_ok_rate": 0.5,
+        "nearest_label_purity": null,
+        "positive_negative_margin": -0.0007539040037539413,
+        "positive_text_label_similarity": -0.1552447487385227,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.06828449328449328,
+        "macro_f1": 0.1279556908998039,
+        "micro_f1": 0.12764632627646327,
+        "sample_f1": 0.12721216691804926
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.06681476418318524,
+        "macro_f1": 0.12307433041845685,
+        "micro_f1": 0.1252602915265097,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.005639097744360902,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.06578947368421052,
+            "recall": 1.0,
+            "support": 35
+          },
+          "domain.fashion": {
+            "precision": 0.07518796992481203,
+            "recall": 1.0,
+            "support": 40
+          },
+          "domain.gambling": {
+            "precision": 0.009398496240601503,
+            "recall": 1.0,
+            "support": 5
+          },
+          "domain.gaming": {
+            "precision": 0.08834586466165413,
+            "recall": 1.0,
+            "support": 47
+          },
+          "domain.politics": {
+            "precision": 0.05263157894736842,
+            "recall": 1.0,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "precision": 0.07706766917293233,
+            "recall": 1.0,
+            "support": 41
+          },
+          "domain.sports": {
+            "precision": 0.06954887218045112,
+            "recall": 1.0,
+            "support": 37
+          },
+          "domain.technology": {
+            "precision": 0.14849624060150377,
+            "recall": 1.0,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.07706766917293233,
+            "recall": 1.0,
+            "support": 41
+          },
+          "domain.workplace": {
+            "precision": 0.06578947368421052,
+            "recall": 1.0,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.12043157343909225,
+        "support_positives": 11
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 532,
+            "ENCODER_SEPARATION_FAILURE": 532,
+            "FALSE_NEGATIVE_LABEL": 0,
+            "FALSE_POSITIVE_LABEL": 532,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 4,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 528,
+            "FALSE_NEGATIVE_LABEL": 4,
+            "FALSE_POSITIVE_LABEL": 532,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 230,
+            "FALSE_NEGATIVE_LABEL": 10,
+            "FALSE_POSITIVE_LABEL": 230,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        }
+      },
+      "function": {
+        "exact_match": 0.0,
+        "jaccard": 0.06782581453634086,
+        "macro_f1": 0.12674665766834178,
+        "micro_f1": 0.1270842721946823,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.05827067669172932,
+            "recall": 1.0,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "precision": 0.06276150627615062,
+            "recall": 0.8823529411764706,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "precision": 0.07142857142857142,
+            "recall": 1.0,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "precision": 0.07894736842105263,
+            "recall": 1.0,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.10789473684210528,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.1431064572425829,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.5488721804511278,
+        "jaccard": 0.5488721804511278,
+        "macro_f1": 0.21568627450980393,
+        "micro_f1": 0.21568627450980393,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.12547528517110265,
+            "recall": 0.7674418604651163,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.5488721804511278,
+        "support_positives": 1
+      },
+      "n": 532,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": -0.16422722978238408,
+        "hierarchy_distance_order_ok_rate": 0.7804878048780488,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.009240644145491722,
+        "positive_text_label_similarity": -0.15498658563689235,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.06906999641962047,
+        "macro_f1": 0.12978065873663727,
+        "micro_f1": 0.12887773722627738,
+        "sample_f1": 0.12847805788982258
+      }
+    },
+    "encoder": "EXTERNAL",
+    "n_train": 1209,
+    "track": "F"
+  },
+  "ZERO_SHOT_SEMANTIC_MATCH__CONTROL": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.08476393976393977,
+        "macro_f1": 0.2624733501018086,
+        "micro_f1": 0.14628297362110312,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.6,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.125,
+            "recall": 0.1,
+            "support": 10
+          },
+          "domain.fashion": {
+            "precision": 0.2857142857142857,
+            "recall": 0.25,
+            "support": 8
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "precision": 1.0,
+            "recall": 0.16666666666666666,
+            "support": 12
+          },
+          "domain.politics": {
+            "precision": 0.17647058823529413,
+            "recall": 0.2727272727272727,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "precision": 0.0759493670886076,
+            "recall": 0.9230769230769231,
+            "support": 13
+          },
+          "domain.sports": {
+            "precision": 0.07027027027027027,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.technology": {
+            "precision": 0.42857142857142855,
+            "recall": 0.3103448275862069,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.5555555555555556,
+            "recall": 0.35714285714285715,
+            "support": 14
+          },
+          "domain.workplace": {
+            "precision": 0.1134020618556701,
+            "recall": 0.6470588235294118,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.1262067562067562,
+        "support_positives": 10
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 61,
+            "CO_LABEL_FAILURE": 182,
+            "ENCODER_SEPARATION_FAILURE": 134,
+            "FALSE_NEGATIVE_LABEL": 61,
+            "FALSE_POSITIVE_LABEL": 195,
+            "LABEL_DESCRIPTION_CONFUSION": 61,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 18,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 163,
+            "FALSE_NEGATIVE_LABEL": 19,
+            "FALSE_POSITIVE_LABEL": 181,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 34,
+            "FALSE_NEGATIVE_LABEL": 10,
+            "FALSE_POSITIVE_LABEL": 34,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        }
+      },
+      "function": {
+        "exact_match": 0.06666666666666667,
+        "jaccard": 0.13205128205128205,
+        "macro_f1": 0.18021656019374427,
+        "micro_f1": 0.17636022514071295,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.13333333333333333,
+            "recall": 0.35294117647058826,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "precision": 0.09523809523809523,
+            "recall": 1.0,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "precision": 0.08396946564885496,
+            "recall": 0.7857142857142857,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "precision": 0.11764705882352941,
+            "recall": 0.7058823529411765,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.1641025641025641,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.43478260869565216,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.7743589743589744,
+        "jaccard": 0.7743589743589744,
+        "macro_f1": 0.21428571428571427,
+        "micro_f1": 0.21428571428571427,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.15,
+            "recall": 0.375,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.7743589743589744,
+        "support_positives": 1
+      },
+      "n": 195,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": 0.5098891030257873,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.03198961367806852,
+        "positive_text_label_similarity": 0.5418787167038558,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.10300260992568684,
+        "macro_f1": 0.2388974253862866,
+        "micro_f1": 0.1602248770203795,
+        "sample_f1": 0.1656498771883387
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.07692221625492301,
+        "macro_f1": 0.187135290933551,
+        "micro_f1": 0.12940651494868363,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.25,
+            "recall": 0.6666666666666666,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.09090909090909091,
+            "recall": 0.05714285714285714,
+            "support": 35
+          },
+          "domain.fashion": {
+            "precision": 0.2631578947368421,
+            "recall": 0.125,
+            "support": 40
+          },
+          "domain.gambling": {
+            "precision": 0.009416195856873822,
+            "recall": 1.0,
+            "support": 5
+          },
+          "domain.gaming": {
+            "precision": 0.5,
+            "recall": 0.0425531914893617,
+            "support": 47
+          },
+          "domain.politics": {
+            "precision": 0.1,
+            "recall": 0.17857142857142858,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "precision": 0.08728179551122195,
+            "recall": 0.8536585365853658,
+            "support": 41
+          },
+          "domain.sports": {
+            "precision": 0.072,
+            "recall": 0.972972972972973,
+            "support": 37
+          },
+          "domain.technology": {
+            "precision": 0.4406779661016949,
+            "recall": 0.3291139240506329,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.6153846153846154,
+            "recall": 0.3902439024390244,
+            "support": 41
+          },
+          "domain.workplace": {
+            "precision": 0.04782608695652174,
+            "recall": 0.3142857142857143,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.11278344671201815,
+        "support_positives": 11
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 225,
+            "CO_LABEL_FAILURE": 506,
+            "ENCODER_SEPARATION_FAILURE": 307,
+            "FALSE_NEGATIVE_LABEL": 225,
+            "FALSE_POSITIVE_LABEL": 532,
+            "LABEL_DESCRIPTION_CONFUSION": 225,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 66,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 439,
+            "FALSE_NEGATIVE_LABEL": 66,
+            "FALSE_POSITIVE_LABEL": 505,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 97,
+            "FALSE_NEGATIVE_LABEL": 33,
+            "FALSE_POSITIVE_LABEL": 97,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        }
+      },
+      "function": {
+        "exact_match": 0.05075187969924812,
+        "jaccard": 0.09445488721804511,
+        "macro_f1": 0.10099332877718666,
+        "micro_f1": 0.11703703703703704,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.009615384615384616,
+            "recall": 0.03225806451612903,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "precision": 0.06576402321083172,
+            "recall": 1.0,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "precision": 0.071875,
+            "recall": 0.6052631578947368,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "precision": 0.07954545454545454,
+            "recall": 0.5,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.11478696741854637,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.47761194029850745,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.7556390977443609,
+        "jaccard": 0.7556390977443609,
+        "macro_f1": 0.13333333333333333,
+        "micro_f1": 0.13333333333333333,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.09345794392523364,
+            "recall": 0.23255813953488372,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.7556390977443609,
+        "support_positives": 1
+      },
+      "n": 532,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": 0.5021704813702416,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.035819263124889256,
+        "positive_text_label_similarity": 0.5379897444951308,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.07935167380656102,
+        "macro_f1": 0.1622371780444463,
+        "micro_f1": 0.12510024057738572,
+        "sample_f1": 0.1260516634576785
+      }
+    },
+    "encoder": "CONTROL",
+    "n_train": 0,
+    "trainable": false
+  },
+  "ZERO_SHOT_SEMANTIC_MATCH__EXTERNAL": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.07088356088356089,
+        "macro_f1": 0.12664422945015966,
+        "micro_f1": 0.12951167728237792,
+        "n_positive_labels": 130,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.03,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.05291005291005291,
+            "recall": 1.0,
+            "support": 10
+          },
+          "domain.fashion": {
+            "precision": 0.07777777777777778,
+            "recall": 0.875,
+            "support": 8
+          },
+          "domain.gambling": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 0
+          },
+          "domain.gaming": {
+            "precision": 0.06349206349206349,
+            "recall": 1.0,
+            "support": 12
+          },
+          "domain.politics": {
+            "precision": 0.09259259259259259,
+            "recall": 0.45454545454545453,
+            "support": 11
+          },
+          "domain.spiritual": {
+            "precision": 0.07103825136612021,
+            "recall": 1.0,
+            "support": 13
+          },
+          "domain.sports": {
+            "precision": 0.06976744186046512,
+            "recall": 0.9230769230769231,
+            "support": 13
+          },
+          "domain.technology": {
+            "precision": 0.14948453608247422,
+            "recall": 1.0,
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.07216494845360824,
+            "recall": 1.0,
+            "support": 14
+          },
+          "domain.workplace": {
+            "precision": 0.08762886597938144,
+            "recall": 1.0,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.12428611274765122,
+        "support_positives": 10
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 8,
+            "CO_LABEL_FAILURE": 194,
+            "ENCODER_SEPARATION_FAILURE": 187,
+            "FALSE_NEGATIVE_LABEL": 8,
+            "FALSE_POSITIVE_LABEL": 195,
+            "LABEL_DESCRIPTION_CONFUSION": 8,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 10,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 183,
+            "FALSE_NEGATIVE_LABEL": 10,
+            "FALSE_POSITIVE_LABEL": 193,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 178,
+            "FALSE_NEGATIVE_LABEL": 0,
+            "FALSE_POSITIVE_LABEL": 178,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 195
+        }
+      },
+      "function": {
+        "exact_match": 0.010256410256410256,
+        "jaccard": 0.09572649572649573,
+        "macro_f1": 0.16829703147617636,
+        "micro_f1": 0.16470588235294117,
+        "n_positive_labels": 66,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.08717948717948718,
+            "recall": 1.0,
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "precision": 0.09326424870466321,
+            "recall": 1.0,
+            "support": 18
+          },
+          "function.memetic_form": {
+            "precision": 0.08284023668639054,
+            "recall": 1.0,
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "precision": 0.12280701754385964,
+            "recall": 0.4117647058823529,
+            "support": 17
+          }
+        },
+        "sample_f1": 0.14,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.1346153846153846,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.08717948717948718,
+        "jaccard": 0.08717948717948718,
+        "macro_f1": 0.1523809523809524,
+        "micro_f1": 0.1523809523809524,
+        "n_positive_labels": 16,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.08247422680412371,
+            "recall": 1.0,
+            "support": 16
+          }
+        },
+        "sample_f1": 0.08717948717948718,
+        "support_positives": 1
+      },
+      "n": 195,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": 0.8881899396974742,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.0016332527167736144,
+        "positive_text_label_similarity": 0.8898231924142478,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.07925516079362233,
+        "macro_f1": 0.1386659751398384,
+        "micro_f1": 0.13987022350396539,
+        "sample_f1": 0.14378644901269336
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.07625136976640737,
+        "macro_f1": 0.13601813509005015,
+        "micro_f1": 0.13870159892120978,
+        "n_positive_labels": 391,
+        "per_label": {
+          "domain.crypto": {
+            "precision": 0.010452961672473868,
+            "recall": 1.0,
+            "support": 3
+          },
+          "domain.entertainment": {
+            "precision": 0.068359375,
+            "recall": 1.0,
+            "support": 35
+          },
+          "domain.fashion": {
+            "precision": 0.09126984126984126,
+            "recall": 0.575,
+            "support": 40
+          },
+          "domain.gambling": {
+            "precision": 0.009398496240601503,
+            "recall": 1.0,
+            "support": 5
+          },
+          "domain.gaming": {
+            "precision": 0.09251968503937008,
+            "recall": 1.0,
+            "support": 47
+          },
+          "domain.politics": {
+            "precision": 0.11188811188811189,
+            "recall": 0.5714285714285714,
+            "support": 28
+          },
+          "domain.spiritual": {
+            "precision": 0.08299595141700405,
+            "recall": 1.0,
+            "support": 41
+          },
+          "domain.sports": {
+            "precision": 0.07352941176470588,
+            "recall": 0.9459459459459459,
+            "support": 37
+          },
+          "domain.technology": {
+            "precision": 0.14849624060150377,
+            "recall": 1.0,
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "precision": 0.07706766917293233,
+            "recall": 1.0,
+            "support": 41
+          },
+          "domain.workplace": {
+            "precision": 0.06578947368421052,
+            "recall": 1.0,
+            "support": 35
+          }
+        },
+        "sample_f1": 0.13331969826330728,
+        "support_positives": 11
+      },
+      "errors": {
+        "domain": {
+          "axis": "domain",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 31,
+            "CO_LABEL_FAILURE": 532,
+            "ENCODER_SEPARATION_FAILURE": 501,
+            "FALSE_NEGATIVE_LABEL": 31,
+            "FALSE_POSITIVE_LABEL": 532,
+            "LABEL_DESCRIPTION_CONFUSION": 31,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "function": {
+          "axis": "function",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 34,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 497,
+            "FALSE_NEGATIVE_LABEL": 34,
+            "FALSE_POSITIVE_LABEL": 531,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        },
+        "mediation": {
+          "axis": "mediation",
+          "counts": {
+            "ANNOTATION_BOUNDARY_CASE": 0,
+            "AXIS_CONFUSION": 0,
+            "CO_LABEL_FAILURE": 0,
+            "ENCODER_SEPARATION_FAILURE": 489,
+            "FALSE_NEGATIVE_LABEL": 0,
+            "FALSE_POSITIVE_LABEL": 489,
+            "LABEL_DESCRIPTION_CONFUSION": 0,
+            "PARENT_CHILD_CONSISTENCY_FAILURE": 0
+          },
+          "n": 532
+        }
+      },
+      "function": {
+        "exact_match": 0.0018796992481203006,
+        "jaccard": 0.06406641604010026,
+        "macro_f1": 0.1226662555677091,
+        "micro_f1": 0.12026002166847237,
+        "n_positive_labels": 145,
+        "per_label": {
+          "function.conflictive_force": {
+            "precision": 0.05827067669172932,
+            "recall": 1.0,
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "precision": 0.06072106261859583,
+            "recall": 0.9411764705882353,
+            "support": 34
+          },
+          "function.memetic_form": {
+            "precision": 0.07173913043478261,
+            "recall": 0.868421052631579,
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "precision": 0.08241758241758242,
+            "recall": 0.35714285714285715,
+            "support": 42
+          }
+        },
+        "sample_f1": 0.09661654135338346,
+        "support_positives": 4
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.1431064572425829,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.08082706766917293,
+        "jaccard": 0.08082706766917293,
+        "macro_f1": 0.14956521739130435,
+        "micro_f1": 0.14956521739130435,
+        "n_positive_labels": 43,
+        "per_label": {
+          "mediation.internet_register": {
+            "precision": 0.08082706766917293,
+            "recall": 1.0,
+            "support": 43
+          }
+        },
+        "sample_f1": 0.08082706766917293,
+        "support_positives": 1
+      },
+      "n": 532,
+      "representation": {
+        "cross_label_overlap": null,
+        "hard_negative_text_label_similarity": 0.888879184973551,
+        "hierarchy_distance_order_ok_rate": null,
+        "nearest_label_purity": null,
+        "positive_negative_margin": 0.003596778282968671,
+        "positive_text_label_similarity": 0.8924759632565197,
+        "within_label_spread": null
+      },
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.07373724594119331,
+        "macro_f1": 0.13352685785329327,
+        "micro_f1": 0.1350499211770888,
+        "sample_f1": 0.1349651362201119
+      }
+    },
+    "encoder": "EXTERNAL",
+    "n_train": 0,
+    "trainable": false
+  }
+}

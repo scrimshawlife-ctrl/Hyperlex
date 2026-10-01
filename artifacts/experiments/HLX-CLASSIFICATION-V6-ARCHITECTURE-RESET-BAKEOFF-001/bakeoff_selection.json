@@ -1,0 +1,225 @@
+{
+  "BAKEOFF_STATE": "V6_ARCHITECTURE_BAKEOFF_EXHAUSTED",
+  "NEXT_ACTION": "REASSESS_V6_TASK_SIGNAL_AND_PRETRAINED_REPRESENTATION",
+  "advance": false,
+  "ranking": [
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "AXIS_FLOOR_OK": true,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "axis_gate": {
+        "axes": {
+          "domain": {
+            "floor": 0.1,
+            "macro_f1": 0.13283658341233598,
+            "material": true,
+            "ok": true
+          },
+          "function": {
+            "floor": 0.1,
+            "macro_f1": 0.1269573792370952,
+            "material": true,
+            "ok": true
+          },
+          "mediation": {
+            "floor": 0.1,
+            "macro_f1": 0.17142857142857143,
+            "material": true,
+            "ok": true
+          }
+        },
+        "ok": true
+      },
+      "dev_macro_f1": 0.1664910271049072,
+      "dev_rep_gap": 0.03271224548536672,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.1337787816195405,
+      "selection_score": -0.04662283936137501,
+      "track": "D_LABEL_DESCRIPTION_NLI__CONTROL"
+    },
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "AXIS_FLOOR_OK": true,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "axis_gate": {
+        "axes": {
+          "domain": {
+            "floor": 0.1,
+            "macro_f1": 0.12307433041845685,
+            "material": true,
+            "ok": true
+          },
+          "function": {
+            "floor": 0.1,
+            "macro_f1": 0.12674665766834178,
+            "material": true,
+            "ok": true
+          },
+          "mediation": {
+            "floor": 0.1,
+            "macro_f1": 0.21568627450980393,
+            "material": true,
+            "ok": true
+          }
+        },
+        "ok": true
+      },
+      "dev_macro_f1": 0.1279556908998039,
+      "dev_rep_gap": 0.0,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.12978065873663727,
+      "selection_score": -0.06484993846793008,
+      "track": "F_HIERARCHY_AWARE_CONTRASTIVE__EXTERNAL"
+    },
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "AXIS_FLOOR_OK": true,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "axis_gate": {
+        "axes": {
+          "domain": {
+            "floor": 0.1,
+            "macro_f1": 0.1113530589113677,
+            "material": true,
+            "ok": true
+          },
+          "function": {
+            "floor": 0.1,
+            "macro_f1": 0.13132357663607663,
+            "material": true,
+            "ok": true
+          },
+          "mediation": {
+            "floor": 0.1,
+            "macro_f1": 0.18791946308724833,
+            "material": true,
+            "ok": true
+          }
+        },
+        "ok": true
+      },
+      "dev_macro_f1": 0.17087727972052638,
+      "dev_rep_gap": 0.049746191116988914,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.12113108860353747,
+      "selection_score": -0.06513377938450379,
+      "track": "D_LABEL_DESCRIPTION_NLI__EXTERNAL"
+    },
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "AXIS_FLOOR_OK": true,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "axis_gate": {
+        "axes": {
+          "domain": {
+            "floor": 0.1,
+            "macro_f1": 0.12307433041845685,
+            "material": true,
+            "ok": true
+          },
+          "function": {
+            "floor": 0.1,
+            "macro_f1": 0.12893314767998149,
+            "material": true,
+            "ok": true
+          },
+          "mediation": {
+            "floor": 0.1,
+            "macro_f1": 0.1388888888888889,
+            "material": true,
+            "ok": true
+          }
+        },
+        "ok": true
+      },
+      "dev_macro_f1": 0.126297248414924,
+      "dev_rep_gap": 0.0007698037766840082,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.12552744463824,
+      "selection_score": -0.06545573422945258,
+      "track": "F_HIERARCHY_AWARE_CONTRASTIVE__CONTROL"
+    },
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "AXIS_FLOOR_OK": false,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "axis_gate": {
+        "axes": {
+          "domain": {
+            "floor": 0.1,
+            "macro_f1": 0.022014891074547294,
+            "material": true,
+            "ok": false
+          },
+          "function": {
+            "floor": 0.1,
+            "macro_f1": 0.0,
+            "material": true,
+            "ok": false
+          },
+          "mediation": {
+            "floor": 0.1,
+            "macro_f1": 0.0,
+            "material": true,
+            "ok": false
+          }
+        },
+        "ok": false
+      },
+      "dev_macro_f1": 0.01171875,
+      "dev_rep_gap": 0.0,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.015135237613751264,
+      "selection_score": -0.16596550693997608,
+      "track": "E_LABEL_EMBEDDING_JOINT__CONTROL"
+    },
+    {
+      "ABS_REP_FLOOR_OK": false,
+      "AXIS_FLOOR_OK": false,
+      "GENERALIZATION_GAP_ACCEPTABLE": true,
+      "HIERARCHY_OK": true,
+      "axis_gate": {
+        "axes": {
+          "domain": {
+            "floor": 0.1,
+            "macro_f1": 0.0,
+            "material": true,
+            "ok": false
+          },
+          "function": {
+            "floor": 0.1,
+            "macro_f1": 0.0,
+            "material": true,
+            "ok": false
+          },
+          "mediation": {
+            "floor": 0.1,
+            "macro_f1": 0.0,
+            "material": true,
+            "ok": false
+          }
+        },
+        "ok": false
+      },
+      "dev_macro_f1": 0.0,
+      "dev_rep_gap": 0.0,
+      "eligible": false,
+      "hierarchy_violation_rate_rep": 0.0,
+      "rep_macro_f1": 0.0,
+      "selection_score": -0.18,
+      "track": "E_LABEL_EMBEDDING_JOINT__EXTERNAL"
+    }
+  ],
+  "selected": null,
+  "selection_rule": "prefer REP system, then DEV\u2192REP gap, hierarchy, axis balance, simplicity; require locked floors including axis macro-F1>=0.10"
+}
