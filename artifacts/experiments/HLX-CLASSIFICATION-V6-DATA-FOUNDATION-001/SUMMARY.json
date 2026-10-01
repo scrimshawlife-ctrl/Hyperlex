@@ -1,0 +1,28 @@
+{
+  "ARCHITECTURE_CHOSEN": false,
+  "NEXT_ACTION": "CONTINUE_V6_REPRESENTATIVE_DATA_ACQUISITION",
+  "TRAIN": false,
+  "V5_RETUNED": false,
+  "V6_DATA_FOUNDATION_RECEIPT_SHA256": "58d660229709171058726e2d992ae2ecbfbe9722e810c4705645465e2aee2b6a",
+  "V6_DATA_FOUNDATION_STATE": "V6_DATA_FOUNDATION_PARTIAL",
+  "disjointness_pass": true,
+  "gates": {
+    "BASE_REPRESENTATION_AUDITED": true,
+    "DEV_VALIDATION_READY": false,
+    "GOLD_CONTRACT_VALID": true,
+    "ONTOLOGY_AUDITED": true,
+    "OPERATING_DISTRIBUTION_DEFINED": true,
+    "QUALIFICATION_SEALED": false,
+    "REPRESENTATIVE_VALIDATION_READY": false,
+    "TRAIN_READY": false
+  },
+  "ontology_structurally_broken": true,
+  "representation_viability": "BASE_REPRESENTATION_INADEQUATE",
+  "retrieval_viability": "RETRIEVAL_PARTIAL",
+  "split_counts": {
+    "DEVELOPMENT_VALIDATION": 123,
+    "QUALIFICATION": 90,
+    "REPRESENTATIVE_VALIDATION": 266,
+    "TRAIN": 590
+  }
+}

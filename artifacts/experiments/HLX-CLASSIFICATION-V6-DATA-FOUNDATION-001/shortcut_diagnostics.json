@@ -1,0 +1,45 @@
+{
+  "DEVELOPMENT_VALIDATION": {
+    "flags": [
+      {
+        "label": "EVIDENCE_PRESENT",
+        "label_share": 1.0,
+        "n": 37,
+        "pmi": 1.2012664427284938,
+        "source_root": "v6_wikt_present"
+      }
+    ],
+    "n": 123
+  },
+  "REPRESENTATIVE_VALIDATION": {
+    "flags": [
+      {
+        "label": "EVIDENCE_PRESENT",
+        "label_share": 1.0,
+        "n": 83,
+        "pmi": 1.1646557009854133,
+        "source_root": "v6_wikt_present"
+      }
+    ],
+    "n": 266
+  },
+  "TRAIN": {
+    "flags": [
+      {
+        "label": "EVIDENCE_PRESENT",
+        "label_share": 1.0,
+        "n": 180,
+        "pmi": 1.1871656860098598,
+        "source_root": "v6_wikt_present"
+      },
+      {
+        "label": "UNCERTAIN",
+        "label_share": 1.0,
+        "n": 20,
+        "pmi": 3.384390263345808,
+        "source_root": "v6_wikt_uncertain"
+      }
+    ],
+    "n": 590
+  }
+}

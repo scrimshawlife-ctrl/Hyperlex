@@ -247,6 +247,7 @@ def acquire_raw(blocked: dict[str, set[str]]) -> list[dict]:
         FAMILY_LABELS,
         ORDINARY_NONE_LABELS,
         WIKI_ORDINARY_CATEGORIES,
+        WIKT_FAMILY_CATEGORIES,
         clean_wikitext,
         sense_labels,
     )
@@ -273,86 +274,105 @@ def acquire_raw(blocked: dict[str, set[str]]) -> list[dict]:
         raw.append(row)
         return True
 
-    # PRESENT via Wiktionary labels
-    per_family_target = 90
+    # PRESENT via Wiktionary category members + label search
+    per_family_target = 160
     for family in ACTIVE_FAMILY_VOCABULARY:
         labels = FAMILY_LABELS.get(family, ())
         got = 0
+        titles: list[str] = []
+        for cat in WIKT_FAMILY_CATEGORIES.get(family, ()):
+            titles.extend(category_titles(WIKT_API, cat, limit=180))
         for label in labels:
-            if got >= per_family_target:
-                break
-            # search titles by category-like label pages via allpages prefix is weak;
-            # use category if available else opensearch
             payload = _api(
                 WIKT_API,
                 {
                     "action": "opensearch",
                     "search": label,
-                    "limit": "30",
+                    "limit": "40",
                 },
             )
-            # opensearch returns list; handle both
-            titles = []
             if isinstance(payload, list) and len(payload) >= 2:
-                titles = list(payload[1])
-            else:
-                # fallback generator search
-                q = _api(
-                    WIKT_API,
-                    {
-                        "action": "query",
-                        "list": "search",
-                        "srsearch": label,
-                        "srnamespace": "0",
-                        "srlimit": "30",
-                    },
-                )
-                titles = [h["title"] for h in q.get("query", {}).get("search", [])]
-            pages = fetch_wikitext(WIKT_API, titles)
-            for title, content in pages.items():
+                titles.extend(list(payload[1]))
+            q = _api(
+                WIKT_API,
+                {
+                    "action": "query",
+                    "list": "search",
+                    "srsearch": label,
+                    "srnamespace": "0",
+                    "srlimit": "40",
+                },
+            )
+            titles.extend(h["title"] for h in q.get("query", {}).get("search", []))
+        # de-dupe titles preserving order
+        seen_t: set[str] = set()
+        uniq_titles = []
+        for t in titles:
+            if t not in seen_t:
+                seen_t.add(t)
+                uniq_titles.append(t)
+        pages = fetch_wikitext(WIKT_API, uniq_titles[:220])
+        for title, content in pages.items():
+            if got >= per_family_target:
+                break
+            # category-sourced pages: take English definitional senses
+            for line in content.splitlines():
                 if got >= per_family_target:
                     break
-                for line in content.splitlines():
-                    if not line.startswith("#"):
+                if not line.startswith("#"):
+                    continue
+                labs = sense_labels(line)
+                lab_blob = " ".join(labs).lower()
+                line_l = line.lower()
+                # Category membership already family-aligned; still prefer labeled senses when present.
+                labeled = any(
+                    lbl.lower() in lab_blob or lbl.lower() in line_l for lbl in labels
+                )
+                if not labeled and not any(
+                    tok in lab_blob
+                    for tok in (
+                        "slang",
+                        "informal",
+                        "internet",
+                        "gaming",
+                        "computing",
+                        "derogatory",
+                        "vulgar",
+                        "dialectal",
+                    )
+                ):
+                    # allow unlabeled definitional sense from category page if prose-like
+                    if len(clean_wikitext(re.sub(r"^[#*:]+", "", line))) < 24:
                         continue
-                    labs = sense_labels(line)
-                    lab_l = [x.lower() for x in labs]
-                    if not any(lbl.lower() in " ".join(lab_l) or lbl.lower() in line.lower() for lbl in labels):
-                        # require label cue in sense line or lb template
-                        if label.lower() not in line.lower() and not any(
-                            label.lower() in x for x in lab_l
-                        ):
-                            continue
-                    text = clean_wikitext(re.sub(r"^[#*:]+", "", line))
-                    if len(text) < 12:
-                        continue
-                    # skip if clearly multi-competing without resolution for PRESENT gold
-                    if admit(
-                        {
-                            "text": text,
-                            "evidence_label": "EVIDENCE_PRESENT",
-                            "evidence_subtype": "POSITIVE_EVIDENCE",
-                            "gold_family": family,
-                            "topic_domain": family,
-                            "source_family": f"v6_wikt_present:{family}:{label}",
-                            "source_url": f"https://en.wiktionary.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
-                            "provenance": "OBSERVED",
-                            "construction_tag": "NATURAL",
-                            "construction_role": "PRODUCT_EXPECTED",
-                            "notes": f"wikt_sense:{title}",
-                        }
-                    ):
-                        got += 1
-            print(f"present {family}={got}", flush=True)
+                text = clean_wikitext(re.sub(r"^[#*:]+", "", line))
+                if len(text) < 12:
+                    continue
+                if admit(
+                    {
+                        "text": text,
+                        "evidence_label": "EVIDENCE_PRESENT",
+                        "evidence_subtype": "POSITIVE_EVIDENCE",
+                        "gold_family": family,
+                        "topic_domain": family,
+                        "source_family": f"v6_wikt_present:{family}",
+                        "source_url": f"https://en.wiktionary.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
+                        "provenance": "OBSERVED",
+                        "construction_tag": "NATURAL",
+                        "construction_role": "PRODUCT_EXPECTED",
+                        "notes": f"wikt_sense:{title}",
+                    }
+                ):
+                    got += 1
+        print(f"present {family}={got}", flush=True)
 
     # Ordinary NONE via Wikipedia categories + Wiktionary labels
     for domain, labels in ORDINARY_NONE_LABELS.items():
         got = 0
         cat = WIKI_ORDINARY_CATEGORIES.get(domain)
-        titles = category_titles(WIKI_API, cat, limit=80) if cat else []
+        titles = category_titles(WIKI_API, cat, limit=160) if cat else []
         pages = fetch_wikitext(WIKI_API, titles)
         for title, content in pages.items():
-            if got >= 40:
+            if got >= 90:
                 break
             # first prose paragraph
             paras = [
@@ -409,6 +429,8 @@ def acquire_raw(blocked: dict[str, set[str]]) -> list[dict]:
                     }
                 ):
                     got += 1
+            if got >= 140:
+                break
         print(f"none {domain}={got}", flush=True)
 
     # Lookalike NONE: ordinary lemma with slang-looking surface from non-family pages
@@ -440,12 +462,12 @@ def acquire_raw(blocked: dict[str, set[str]]) -> list[dict]:
 
     # UNCERTAIN: competing sense lines
     unc = 0
-    for family in ("gaming-meta", "internet-slang", "betting-sharp", "memetic"):
+    for family in ACTIVE_FAMILY_VOCABULARY:
         labels = FAMILY_LABELS.get(family, ())
-        for label in labels:
+        for label in labels[:2]:
             q = _api(
                 WIKT_API,
-                {"action": "query", "list": "search", "srsearch": label, "srlimit": "25"},
+                {"action": "query", "list": "search", "srsearch": label, "srlimit": "30"},
             )
             titles = [h["title"] for h in q.get("query", {}).get("search", [])]
             pages = fetch_wikitext(WIKT_API, titles)
@@ -458,7 +480,6 @@ def acquire_raw(blocked: dict[str, set[str]]) -> list[dict]:
                             senses.append(t)
                 if len(senses) < 2:
                     continue
-                # concatenate two competing senses as unresolved ambiguity
                 text = senses[0] + " / " + senses[1]
                 if admit(
                     {
@@ -477,17 +498,17 @@ def acquire_raw(blocked: dict[str, set[str]]) -> list[dict]:
                     }
                 ):
                     unc += 1
-                if unc >= 120:
+                if unc >= 280:
                     break
-            if unc >= 120:
+            if unc >= 280:
                 break
-        if unc >= 120:
+        if unc >= 280:
             break
     print(f"uncertain={unc}", flush=True)
 
     # Domain-irrelevant
     for key, cat in DOMAIN_IRRELEVANT_CATEGORIES.items():
-        titles = category_titles(WIKI_API, cat, limit=40)
+        titles = category_titles(WIKI_API, cat, limit=100)
         pages = fetch_wikitext(WIKI_API, titles)
         got = 0
         for title, content in pages.items():

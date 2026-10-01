@@ -28,24 +28,55 @@ from .holdout_guard import normalized_text_sha256
 from .classification_v5_surface_readiness_gates import near_duplicate_key
 
 FAMILY_LABELS: dict[str, tuple[str, ...]] = {
-    "gaming-meta": ("gaming", "video games", "esports"),
-    "crypto-degen": ("cryptocurrency", "blockchain"),
-    "betting-sharp": ("gambling", "poker"),
-    "internet-slang": ("internet slang", "chat slang"),
-    "technology-ai": ("computing", "software engineering"),
-    "sports-competition": ("sports", "athletics"),
-    "music-entertainment": ("music", "popular music"),
-    "fashion-aesthetic": ("fashion", "cosmetics"),
-    "workplace-career": ("business jargon", "management"),
-    "politics-civic": ("politics", "government"),
-    "spiritual-mystic": ("astrology", "occult"),
-    "social-evaluation": ("slang", "pejoratives"),
-    "conflict-aggression": ("military slang", "warfare"),
-    "regional-cultural": ("british slang", "australian slang"),
-    "identity-affiliation": ("demonyms", "ethnic slurs"),
-    "relationship-dating": ("dating", "sexuality"),
-    "memetic": ("internet memes", "meme"),
-    "ai-native": ("artificial intelligence", "machine learning"),
+    "gaming-meta": ("gaming", "video games", "esports", "online gaming"),
+    "crypto-degen": ("cryptocurrency", "blockchain", "bitcoin"),
+    "betting-sharp": ("gambling", "poker", "betting"),
+    "internet-slang": ("internet slang", "chat slang", "text messaging", "leet"),
+    "technology-ai": ("computing", "software", "programming", "artificial intelligence"),
+    "sports-competition": ("sports", "athletics", "football", "baseball"),
+    "music-entertainment": ("music", "popular music", "hip-hop", "rap"),
+    "fashion-aesthetic": ("fashion", "cosmetics", "clothing"),
+    "workplace-career": ("business", "management", "corporate"),
+    "politics-civic": ("politics", "government", "political slang"),
+    "spiritual-mystic": ("astrology", "occult", "new age"),
+    "social-evaluation": ("slang", "pejoratives", "derogatory"),
+    "conflict-aggression": ("military slang", "warfare", "violence"),
+    "regional-cultural": ("british slang", "australian slang", "american slang", "dialectal"),
+    "identity-affiliation": ("demonyms", "ethnic", "identity"),
+    "relationship-dating": ("dating", "sexuality", "romance"),
+    "memetic": ("internet memes", "meme", "imageboard"),
+    "ai-native": ("artificial intelligence", "machine learning", "neural network"),
+}
+
+# Wiktionary categories used as high-volume NATURAL PRESENT sources.
+WIKT_FAMILY_CATEGORIES: dict[str, tuple[str, ...]] = {
+    "gaming-meta": ("Category:en:Video games", "Category:en:Gaming"),
+    "crypto-degen": ("Category:en:Cryptocurrency", "Category:en:Cryptocurrencies"),
+    "betting-sharp": ("Category:en:Gambling", "Category:en:Poker"),
+    "internet-slang": (
+        "Category:English internet slang",
+        "Category:English text messaging slang",
+    ),
+    "technology-ai": ("Category:en:Computing", "Category:en:Artificial intelligence"),
+    "sports-competition": ("Category:en:Sports", "Category:en:Baseball"),
+    "music-entertainment": ("Category:en:Music", "Category:en:Hip-hop"),
+    "fashion-aesthetic": ("Category:en:Fashion", "Category:en:Clothing"),
+    "workplace-career": ("Category:en:Business", "Category:English business slang"),
+    "politics-civic": ("Category:en:Politics", "Category:English political slang"),
+    "spiritual-mystic": ("Category:en:Astrology", "Category:en:Occult"),
+    "social-evaluation": (
+        "Category:English pejoratives",
+        "Category:English slang",
+    ),
+    "conflict-aggression": ("Category:en:Military", "Category:English military slang"),
+    "regional-cultural": (
+        "Category:British English slang",
+        "Category:Australian English slang",
+    ),
+    "identity-affiliation": ("Category:en:Demonyms", "Category:English ethnic slurs"),
+    "relationship-dating": ("Category:en:Sex", "Category:English sexual slang"),
+    "memetic": ("Category:English internet slang", "Category:en:Internet"),
+    "ai-native": ("Category:en:Artificial intelligence", "Category:en:Machine learning"),
 }
 
 ORDINARY_NONE_LABELS: dict[str, tuple[str, ...]] = {

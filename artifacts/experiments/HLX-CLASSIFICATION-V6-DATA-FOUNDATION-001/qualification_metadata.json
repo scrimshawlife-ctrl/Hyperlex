@@ -1,0 +1,95 @@
+{
+  "QUALIFICATION_HOLD_ID": "HYPERLEX_V6_QUALIFICATION_001",
+  "n_rows": 90,
+  "qualification_rows_sha256": "c12b900d8d1b235a4ade8c29ddad6a08c028a610e9e5eece3afcefc104bae61c",
+  "rows_exposed_in_repo": false,
+  "rows_path_private": "/home/morpheus/hlx-private/classification-v6-data-foundation-20261001/qualification_holdout/QUALIFICATION_ROWS.jsonl",
+  "summary": {
+    "construction": {
+      "NATURAL": 90
+    },
+    "family_counts": {
+      "betting-sharp": 2,
+      "conflict-aggression": 1,
+      "fashion-aesthetic": 3,
+      "gaming-meta": 3,
+      "memetic": 6,
+      "music-entertainment": 1,
+      "politics-civic": 1,
+      "relationship-dating": 1,
+      "social-evaluation": 4,
+      "spiritual-mystic": 5,
+      "sports-competition": 3,
+      "workplace-career": 1
+    },
+    "labels": {
+      "EVIDENCE_PRESENT": 31,
+      "NO_EVIDENCE": 55,
+      "UNCERTAIN": 4
+    },
+    "length": {
+      "long": 39,
+      "mean": 169.45555555555555,
+      "med": 25,
+      "short": 26
+    },
+    "max_family_share_among_present": 0.1935483870967742,
+    "n": 90,
+    "n_families_present": 12,
+    "natural_share": 1.0,
+    "observed_share": 1.0,
+    "provenance": {
+      "OBSERVED": 90
+    },
+    "source_family_top": [
+      [
+        "v6_wp_ordinary:archaeology",
+        7
+      ],
+      [
+        "v6_wikt_present:memetic:meme",
+        6
+      ],
+      [
+        "v6_wp_ordinary:chemistry",
+        5
+      ],
+      [
+        "v6_wp_ordinary:oceanography",
+        4
+      ],
+      [
+        "v6_wikt_present:social-evaluation:slang",
+        4
+      ],
+      [
+        "v6_wikt_present:spiritual-mystic:occult",
+        4
+      ],
+      [
+        "v6_wp_ordinary:botany",
+        4
+      ],
+      [
+        "v6_wp_ordinary:entomology",
+        3
+      ],
+      [
+        "v6_wp_ordinary:cartography",
+        3
+      ],
+      [
+        "v6_wp_ordinary:hydrology",
+        3
+      ],
+      [
+        "v6_wikt_present:fashion-aesthetic:fashion",
+        3
+      ],
+      [
+        "v6_wikt_atom_none:philately",
+        3
+      ]
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "blocked_overlap": {
+    "identity": 0,
+    "near": 0,
+    "source": 0,
+    "text": 0
+  },
+  "pairwise": {
+    "DEVELOPMENT_VALIDATION__QUALIFICATION": {
+      "identity_overlap": 0,
+      "near_overlap": 0,
+      "source_overlap": 0
+    },
+    "DEVELOPMENT_VALIDATION__REPRESENTATIVE_VALIDATION": {
+      "identity_overlap": 0,
+      "near_overlap": 0,
+      "source_overlap": 0
+    },
+    "REPRESENTATIVE_VALIDATION__QUALIFICATION": {
+      "identity_overlap": 0,
+      "near_overlap": 0,
+      "source_overlap": 0
+    },
+    "TRAIN__DEVELOPMENT_VALIDATION": {
+      "identity_overlap": 0,
+      "near_overlap": 0,
+      "source_overlap": 0
+    },
+    "TRAIN__QUALIFICATION": {
+      "identity_overlap": 0,
+      "near_overlap": 0,
+      "source_overlap": 0
+    },
+    "TRAIN__REPRESENTATIVE_VALIDATION": {
+      "identity_overlap": 0,
+      "near_overlap": 0,
+      "source_overlap": 0
+    }
+  },
+  "pass": true
+}

@@ -1,0 +1,355 @@
+{
+  "DEVELOPMENT_VALIDATION": {
+    "construction": {
+      "NATURAL": 123
+    },
+    "family_counts": {
+      "betting-sharp": 1,
+      "crypto-degen": 1,
+      "fashion-aesthetic": 2,
+      "gaming-meta": 4,
+      "memetic": 1,
+      "music-entertainment": 7,
+      "politics-civic": 5,
+      "relationship-dating": 2,
+      "social-evaluation": 4,
+      "spiritual-mystic": 7,
+      "workplace-career": 3
+    },
+    "labels": {
+      "EVIDENCE_PRESENT": 37,
+      "NO_EVIDENCE": 83,
+      "UNCERTAIN": 3
+    },
+    "length": {
+      "long": 40,
+      "mean": 132.3739837398374,
+      "med": 41,
+      "short": 42
+    },
+    "max_family_share_among_present": 0.1891891891891892,
+    "n": 123,
+    "n_families_present": 11,
+    "natural_share": 1.0,
+    "observed_share": 1.0,
+    "provenance": {
+      "OBSERVED": 123
+    },
+    "source_family_top": [
+      [
+        "v6_wikt_present:music-entertainment:music",
+        7
+      ],
+      [
+        "v6_wp_ordinary:oceanography",
+        5
+      ],
+      [
+        "v6_wikt_atom_none:paleontology",
+        5
+      ],
+      [
+        "v6_wikt_present:spiritual-mystic:occult",
+        5
+      ],
+      [
+        "v6_wikt_atom_none:oceanography",
+        5
+      ],
+      [
+        "v6_wp_ordinary:numismatics",
+        5
+      ],
+      [
+        "v6_wikt_atom_none:botany",
+        5
+      ],
+      [
+        "v6_wikt_atom_none:numismatics",
+        4
+      ],
+      [
+        "v6_wp_ordinary:mineralogy",
+        4
+      ],
+      [
+        "v6_wp_ordinary:hydrology",
+        4
+      ],
+      [
+        "v6_wp_ordinary:botany",
+        4
+      ],
+      [
+        "v6_wp_ordinary:cartography",
+        4
+      ]
+    ]
+  },
+  "QUALIFICATION": {
+    "construction": {
+      "NATURAL": 90
+    },
+    "family_counts": {
+      "betting-sharp": 2,
+      "conflict-aggression": 1,
+      "fashion-aesthetic": 3,
+      "gaming-meta": 3,
+      "memetic": 6,
+      "music-entertainment": 1,
+      "politics-civic": 1,
+      "relationship-dating": 1,
+      "social-evaluation": 4,
+      "spiritual-mystic": 5,
+      "sports-competition": 3,
+      "workplace-career": 1
+    },
+    "labels": {
+      "EVIDENCE_PRESENT": 31,
+      "NO_EVIDENCE": 55,
+      "UNCERTAIN": 4
+    },
+    "length": {
+      "long": 39,
+      "mean": 169.45555555555555,
+      "med": 25,
+      "short": 26
+    },
+    "max_family_share_among_present": 0.1935483870967742,
+    "n": 90,
+    "n_families_present": 12,
+    "natural_share": 1.0,
+    "observed_share": 1.0,
+    "provenance": {
+      "OBSERVED": 90
+    },
+    "source_family_top": [
+      [
+        "v6_wp_ordinary:archaeology",
+        7
+      ],
+      [
+        "v6_wikt_present:memetic:meme",
+        6
+      ],
+      [
+        "v6_wp_ordinary:chemistry",
+        5
+      ],
+      [
+        "v6_wp_ordinary:oceanography",
+        4
+      ],
+      [
+        "v6_wikt_present:social-evaluation:slang",
+        4
+      ],
+      [
+        "v6_wikt_present:spiritual-mystic:occult",
+        4
+      ],
+      [
+        "v6_wp_ordinary:botany",
+        4
+      ],
+      [
+        "v6_wp_ordinary:entomology",
+        3
+      ],
+      [
+        "v6_wp_ordinary:cartography",
+        3
+      ],
+      [
+        "v6_wp_ordinary:hydrology",
+        3
+      ],
+      [
+        "v6_wikt_present:fashion-aesthetic:fashion",
+        3
+      ],
+      [
+        "v6_wikt_atom_none:philately",
+        3
+      ]
+    ]
+  },
+  "REPRESENTATIVE_VALIDATION": {
+    "construction": {
+      "NATURAL": 266
+    },
+    "family_counts": {
+      "betting-sharp": 7,
+      "conflict-aggression": 2,
+      "fashion-aesthetic": 11,
+      "gaming-meta": 5,
+      "memetic": 6,
+      "music-entertainment": 7,
+      "politics-civic": 11,
+      "relationship-dating": 6,
+      "social-evaluation": 5,
+      "spiritual-mystic": 11,
+      "sports-competition": 11,
+      "workplace-career": 1
+    },
+    "labels": {
+      "EVIDENCE_PRESENT": 83,
+      "NO_EVIDENCE": 171,
+      "UNCERTAIN": 12
+    },
+    "length": {
+      "long": 112,
+      "mean": 171.203007518797,
+      "med": 75,
+      "short": 79
+    },
+    "max_family_share_among_present": 0.13253012048192772,
+    "n": 266,
+    "n_families_present": 12,
+    "natural_share": 1.0,
+    "observed_share": 1.0,
+    "provenance": {
+      "OBSERVED": 266
+    },
+    "source_family_top": [
+      [
+        "v6_wp_ordinary:mineralogy",
+        13
+      ],
+      [
+        "v6_wp_ordinary:chemistry",
+        12
+      ],
+      [
+        "v6_wp_ordinary:cartography",
+        12
+      ],
+      [
+        "v6_wikt_present:sports-competition:sports",
+        10
+      ],
+      [
+        "v6_wp_ordinary:numismatics",
+        10
+      ],
+      [
+        "v6_wp_ordinary:mycology",
+        10
+      ],
+      [
+        "v6_wikt_present:fashion-aesthetic:fashion",
+        10
+      ],
+      [
+        "v6_wp_ordinary:hydrology",
+        10
+      ],
+      [
+        "v6_wp_ordinary:botany",
+        9
+      ],
+      [
+        "v6_wikt_present:spiritual-mystic:occult",
+        9
+      ],
+      [
+        "v6_wp_ordinary:archaeology",
+        9
+      ],
+      [
+        "v6_wikt_present:betting-sharp:poker",
+        7
+      ]
+    ]
+  },
+  "TRAIN": {
+    "construction": {
+      "NATURAL": 590
+    },
+    "family_counts": {
+      "ai-native": 3,
+      "betting-sharp": 15,
+      "crypto-degen": 1,
+      "fashion-aesthetic": 22,
+      "gaming-meta": 7,
+      "memetic": 22,
+      "music-entertainment": 23,
+      "politics-civic": 27,
+      "relationship-dating": 11,
+      "social-evaluation": 8,
+      "spiritual-mystic": 16,
+      "sports-competition": 15,
+      "technology-ai": 1,
+      "workplace-career": 9
+    },
+    "labels": {
+      "EVIDENCE_PRESENT": 180,
+      "NO_EVIDENCE": 390,
+      "UNCERTAIN": 20
+    },
+    "length": {
+      "long": 235,
+      "mean": 149.39830508474577,
+      "med": 172,
+      "short": 183
+    },
+    "max_family_share_among_present": 0.15,
+    "n": 590,
+    "n_families_present": 14,
+    "natural_share": 1.0,
+    "observed_share": 1.0,
+    "provenance": {
+      "OBSERVED": 590
+    },
+    "source_family_top": [
+      [
+        "v6_wp_ordinary:oceanography",
+        26
+      ],
+      [
+        "v6_wp_ordinary:mycology",
+        25
+      ],
+      [
+        "v6_wp_ordinary:hydrology",
+        23
+      ],
+      [
+        "v6_wp_ordinary:numismatics",
+        23
+      ],
+      [
+        "v6_wp_ordinary:botany",
+        23
+      ],
+      [
+        "v6_wikt_present:music-entertainment:music",
+        22
+      ],
+      [
+        "v6_wikt_present:memetic:meme",
+        22
+      ],
+      [
+        "v6_wp_ordinary:cartography",
+        21
+      ],
+      [
+        "v6_wp_ordinary:mineralogy",
+        21
+      ],
+      [
+        "v6_wp_ordinary:chemistry",
+        19
+      ],
+      [
+        "v6_wikt_atom_none:oceanography",
+        18
+      ],
+      [
+        "v6_wikt_present:fashion-aesthetic:fashion",
+        18
+      ]
+    ]
+  }
+}
