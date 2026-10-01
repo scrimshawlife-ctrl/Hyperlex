@@ -1302,6 +1302,8 @@ def main() -> int:
         "HLX_V6_FOUNDATION_INNER=1",
         "-e",
         f"HLX_V5_STAGE_A_CODE_REVISION={revision}",
+        "-e",
+        f"HLX_V6_FOUNDATION_TOPUP={os.environ.get('HLX_V6_FOUNDATION_TOPUP', '0')}",
         "--entrypoint",
         "python3",
         IMAGE,
