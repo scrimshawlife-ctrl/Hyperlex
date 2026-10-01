@@ -98,9 +98,26 @@ def load_jsonl(path: Path) -> list[dict]:
     return [json.loads(line) for line in text.splitlines() if line.strip()]
 
 
+def _jsonable(obj: Any) -> Any:
+    if isinstance(obj, dict):
+        out = {}
+        for key, value in obj.items():
+            out["null" if key is None else str(key)] = _jsonable(value)
+        return out
+    if isinstance(obj, (list, tuple)):
+        return [_jsonable(x) for x in obj]
+    if isinstance(obj, Path):
+        return str(obj)
+    return obj
+
+
 def write_private(path: Path, payload: dict | str) -> None:
     path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
-    text = payload if isinstance(payload, str) else json.dumps(payload, indent=2, sort_keys=True) + "\n"
+    text = (
+        payload
+        if isinstance(payload, str)
+        else json.dumps(_jsonable(payload), indent=2, sort_keys=True) + "\n"
+    )
     path.write_text(text, encoding="utf-8")
     os.chmod(path, 0o600)
 
@@ -110,7 +127,10 @@ def write_repo(path: Path, payload: dict | str) -> None:
     if isinstance(payload, str):
         path.write_text(payload, encoding="utf-8")
     else:
-        path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        path.write_text(
+            json.dumps(_jsonable(payload), indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
 
 
 def fail(msg: str) -> None:
