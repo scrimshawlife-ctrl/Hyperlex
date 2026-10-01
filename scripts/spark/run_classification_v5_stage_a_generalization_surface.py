@@ -532,49 +532,67 @@ def acquire_wiktionary_definitions(
                     blocked_src.add(src)
                     none_n += 1
 
-    # Short ATOM PRESENT from lemma titles with slang labels (1-3 tokens)
-    if present_n < need_present:
-        for family, labels in FAMILY_LABELS.items():
-            if present_n >= need_present:
-                break
-            for label in labels[:1]:
-                titles = search_titles(label, scan_cap=40)
-                for title in titles:
-                    if present_n >= need_present:
-                        break
-                    text = title.strip()
-                    if not (1 <= len(text.split()) <= 3):
-                        continue
-                    if any(ch in text for ch in ".,;:?!"):
-                        continue
-                    identity = normalized_text_sha256(text)
-                    src = source_sha256(text)
-                    if identity in blocked_ids or src in blocked_src:
-                        continue
-                    rows.append(
-                        {
-                            "class": "OBSERVED",
-                            "evidence_subtype": "POSITIVE_EVIDENCE",
-                            "jev": "OFF",
-                            "lineage": family,
-                            "notes": f"v5_gen_wikt_atom_present:{family}",
-                            "rights": "CC-BY-SA",
-                            "source_url": f"https://en.wiktionary.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
-                            "split": "train",
-                            "surface": "train",
-                            "task": "classify",
-                            "text": text,
-                            "topic_domain": family,
-                        }
-                    )
-                    blocked_ids.add(identity)
-                    blocked_src.add(src)
-                    present_n += 1
-
     print(
         f"acquire_wikt present={present_n} none={none_n} rows={len(rows)}",
         flush=True,
     )
+    return rows
+
+
+def acquire_wiktionary_short_atoms(
+    *,
+    blocked_ids: set[str],
+    blocked_src: set[str],
+    need: int,
+) -> list[dict[str, Any]]:
+    """OBSERVED SHORT_ATOM PRESENT lemmas for critical-cell provenance floors."""
+    from hyperlexical.classification_v5_stage_a_generalization_surface import (
+        assign_primary_cell,
+        source_sha256,
+    )
+    from hyperlexical.holdout_guard import normalized_text_sha256
+
+    rows: list[dict[str, Any]] = []
+    for family, labels in FAMILY_LABELS.items():
+        if len(rows) >= need:
+            break
+        for label in labels:
+            if len(rows) >= need:
+                break
+            titles = search_titles(label, scan_cap=50)
+            for title in titles:
+                if len(rows) >= need:
+                    break
+                text = title.strip()
+                if not (1 <= len(text.split()) <= 3):
+                    continue
+                if any(ch in text for ch in ".,;:?!"):
+                    continue
+                if assign_primary_cell(text=text, evidence_label="EVIDENCE_PRESENT") != "SHORT_ATOM/EVIDENCE_PRESENT":
+                    continue
+                identity = normalized_text_sha256(text)
+                src = source_sha256(text)
+                if identity in blocked_ids or src in blocked_src:
+                    continue
+                rows.append(
+                    {
+                        "class": "OBSERVED",
+                        "evidence_subtype": "POSITIVE_EVIDENCE",
+                        "jev": "OFF",
+                        "lineage": family,
+                        "notes": f"v5_gen_wikt_atom_present:{family}",
+                        "rights": "CC-BY-SA",
+                        "source_url": f"https://en.wiktionary.org/wiki/{urllib.parse.quote(title.replace(' ', '_'))}",
+                        "split": "train",
+                        "surface": "train",
+                        "task": "classify",
+                        "text": text,
+                        "topic_domain": family,
+                    }
+                )
+                blocked_ids.add(identity)
+                blocked_src.add(src)
+    print(f"acquire_wikt_atoms n={len(rows)}", flush=True)
     return rows
 
 
@@ -1017,33 +1035,6 @@ def synthesize_matched_fills(
             }
         )
 
-    # Extra SHORT_ATOM PRESENT (OBSERVED-shaped inferred ok) to meet train floor.
-    need_sa_pres = need_by_cell.get("SHORT_ATOM/EVIDENCE_PRESENT", 0)
-    i = 0
-    while need_sa_pres > 0 and i < need_sa_pres * 30:
-        fam = families[i % len(families)]
-        # 1-3 token atoms without punctuation.
-        atom = f"{fam.split('-')[0][:4]}{i}"
-        text = atom if i % 2 == 0 else f"{atom} x"
-        i += 1
-        if assign_primary_cell(text=text, evidence_label="EVIDENCE_PRESENT") != "SHORT_ATOM/EVIDENCE_PRESENT":
-            continue
-        if admit(
-            {
-                "class": "INFERRED",
-                "evidence_subtype": "POSITIVE_EVIDENCE",
-                "jev": "OFF",
-                "lineage": fam,
-                "notes": f"v5_gen_short_atom_present_fill:{fam}",
-                "split": "train",
-                "surface": "train",
-                "task": "classify",
-                "text": text,
-                "topic_domain": fam,
-            }
-        ):
-            need_sa_pres -= 1
-
     # Extra ORDINARY_PROSE NONE to hit train floor.
     need_op_none2 = need_by_cell.get("ORDINARY_PROSE/NO_EVIDENCE", 0)
     i = 0
@@ -1366,7 +1357,31 @@ def main() -> int:
             "\n".join(canonical_json(r) for r in wp) + ("\n" if wp else ""),
         )
 
-    source_rows = source_rows + wikt + wp
+    atoms_path = DEST / "OBSERVED_ACQUIRE_WIKT_ATOMS.jsonl"
+    if atoms_path.exists() and atoms_path.stat().st_size > 0:
+        atoms = load_jsonl(atoms_path)
+        print(f"resume_wikt_atoms n={len(atoms)}", flush=True)
+        for row in atoms:
+            text = str(row.get("text") or "")
+            if text:
+                acq_block_ids.add(normalized_text_sha256(text))
+                from hyperlexical.classification_v5_stage_a_generalization_surface import (
+                    source_sha256 as _ssh,
+                )
+
+                acq_block_src.add(_ssh(text))
+    else:
+        atoms = acquire_wiktionary_short_atoms(
+            blocked_ids=acq_block_ids,
+            blocked_src=acq_block_src,
+            need=220,
+        )
+        write_private(
+            atoms_path,
+            "\n".join(canonical_json(r) for r in atoms) + ("\n" if atoms else ""),
+        )
+
+    source_rows = source_rows + wikt + wp + atoms
     provisional2 = collect_examples(
         source_rows, blocked_ids=set(blocked_ids), blocked_source_hashes=set(blocked_src)
     )

@@ -578,7 +578,13 @@ def build_matched_contrast_pairs(
             if wc_delta > 12:
                 continue
             # Allow cue-light short-atom pairs when lengths match closely.
-            min_overlap = 0.08 if pos_surf != "SHORT_ATOM" else 0.0
+            # Definition-style matched NONE often share only a few content tokens.
+            if pos_surf == "SHORT_ATOM":
+                min_overlap = 0.0
+            elif pos_surf == "DEFINITION_STYLE":
+                min_overlap = 0.04
+            else:
+                min_overlap = 0.08
             if overlap < min_overlap and not (
                 pos_surf == "SHORT_ATOM" and wc_delta <= 2 and pos_wc <= 4
             ):
@@ -1322,8 +1328,11 @@ def select_cell_balanced(
             by_cell[str(cell)].append(item)
 
     def pref(row: Mapping[str, Any]) -> tuple:
+        note = str(row.get("notes") or "")
+        matched = 0 if ("lookalike" in note or "def_matched" in note or "ordinary_present_fill" in note) else 1
         return (
             0 if row.get("provenance") == "OBSERVED" else 1,
+            matched,
             0 if row.get("pair_group_id") else 1,
             word_count(str(row["text"])),
             row["identity"],
@@ -1338,7 +1347,27 @@ def select_cell_balanced(
             CRITICAL_VAL_FLOOR if cell in CRITICAL_CELLS else CELL_VAL_FLOOR
         )
         keep_n = min(len(pool), max(floor, min(len(pool), cap)))
-        kept = pool[:keep_n]
+        # Reserve matched/lookalike NONE slots so OBSERVED mass cannot eject them.
+        matched_pool = [
+            r
+            for r in pool
+            if ("lookalike" in str(r.get("notes") or "") or "def_matched" in str(r.get("notes") or ""))
+        ]
+        matched_ids = {r["identity"] for r in matched_pool}
+        other_pool = [r for r in pool if r["identity"] not in matched_ids]
+        reserve_matched = min(len(matched_pool), max(120, keep_n // 3)) if cell.endswith("/NO_EVIDENCE") else 0
+        kept: list[dict[str, Any]] = []
+        kept.extend(sorted(matched_pool, key=pref)[:reserve_matched])
+        for row in sorted(other_pool, key=pref):
+            if len(kept) >= keep_n:
+                break
+            kept.append(row)
+        if len(kept) < keep_n:
+            for row in sorted(matched_pool, key=pref)[reserve_matched:]:
+                if len(kept) >= keep_n:
+                    break
+                if row["identity"] not in {k["identity"] for k in kept}:
+                    kept.append(row)
         # Critical cells: ensure OBSERVED mass can support 40% validation.
         if cell in CRITICAL_CELLS:
             obs = [r for r in pool if r.get("provenance") == "OBSERVED"]
@@ -1348,14 +1377,15 @@ def select_cell_balanced(
             )
             have_obs_ids = {r["identity"] for r in kept if r.get("provenance") == "OBSERVED"}
             for row in obs:
-                if len(have_obs_ids) >= need_obs:
+                if len(have_obs_ids) >= min(need_obs, len(obs)):
                     break
                 if row["identity"] in have_obs_ids:
                     continue
-                # Replace lowest-preference INFERRED if at cap.
                 if len(kept) >= keep_n:
                     for j in range(len(kept) - 1, -1, -1):
-                        if kept[j].get("provenance") != "OBSERVED":
+                        if kept[j].get("provenance") != "OBSERVED" and "def_matched" not in str(
+                            kept[j].get("notes") or ""
+                        ):
                             have_obs_ids.discard(kept[j]["identity"])
                             kept[j] = row
                             have_obs_ids.add(row["identity"])
@@ -1363,7 +1393,7 @@ def select_cell_balanced(
                 else:
                     kept.append(row)
                     have_obs_ids.add(row["identity"])
-        selected.extend(kept)
+        selected.extend(kept[:keep_n])
     # Cap uncertain retention (not primary remediation target).
     uncertain_sorted = sorted(uncertain, key=pref)[:200]
     selected.extend(uncertain_sorted)
@@ -1493,6 +1523,75 @@ def assemble_surface_artifacts(payload: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def _force_definition_matched_pairs(
+    rows: Sequence[Mapping[str, Any]],
+    pair_records: Sequence[Mapping[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Force pairs for def_matched_none rows that share enough cues."""
+    by_id = {row["identity"]: dict(row) for row in rows}
+    existing = {
+        (p.get("positive_identity"), p.get("negative_identity")) for p in pair_records
+    }
+    used_pos = {p.get("positive_identity") for p in pair_records}
+    used_neg = {p.get("negative_identity") for p in pair_records}
+    out_pairs = list(pair_records)
+    def_pos = [
+        by_id[i]
+        for i in by_id
+        if by_id[i].get("primary_cell") == "DEFINITION_STYLE/EVIDENCE_PRESENT"
+        and i not in used_pos
+    ]
+    def_neg = [
+        by_id[i]
+        for i in by_id
+        if by_id[i].get("primary_cell") == "DEFINITION_STYLE/NO_EVIDENCE"
+        and i not in used_neg
+        and ("def_matched" in str(by_id[i].get("notes") or "") or "lookalike" in str(by_id[i].get("notes") or ""))
+    ]
+    for pos in sorted(def_pos, key=lambda item: item["identity"]):
+        pos_tok = tokens(pos["text"])
+        best = None
+        best_score = -1.0
+        for neg in def_neg:
+            if neg["identity"] in used_neg:
+                continue
+            overlap = jaccard(pos_tok, tokens(neg["text"]))
+            if overlap < 0.03:
+                continue
+            score = overlap - 0.01 * abs(word_count(pos["text"]) - word_count(neg["text"]))
+            if score > best_score:
+                best_score = score
+                best = neg
+        if best is None:
+            continue
+        shared = sorted(pos_tok & tokens(best["text"]))[:16] or ["definition_style", "shared_domain"]
+        group = sha256_text(f"gpair:{pos['identity']}:{best['identity']}")[:16]
+        pos["pair_group_id"] = group
+        pos["shared_cues"] = shared
+        best["pair_group_id"] = group
+        best["paired_positive_identity"] = pos["identity"]
+        best["shared_cues"] = shared
+        used_neg.add(best["identity"])
+        used_pos.add(pos["identity"])
+        by_id[pos["identity"]] = pos
+        by_id[best["identity"]] = best
+        key = (pos["identity"], best["identity"])
+        if key not in existing:
+            out_pairs.append(
+                {
+                    "negative_identity": best["identity"],
+                    "negative_missing_core": list(best.get("missing_required_semantics") or []),
+                    "pair_group_id": group,
+                    "positive_identity": pos["identity"],
+                    "positive_required_core": list(pos.get("active_family_support") or [])[:8],
+                    "shared_cues": shared,
+                    "shared_domain": f"{domain_key(pos)}|{domain_key(best)}",
+                    "shared_surface": "DEFINITION_STYLE",
+                }
+            )
+    return sorted(by_id.values(), key=lambda item: item["identity"]), out_pairs
+
+
 def build_generalization_surface(
     source_rows: Sequence[Mapping[str, Any]],
     *,
@@ -1514,6 +1613,7 @@ def build_generalization_surface(
     examples = stamp_source_buckets(examples)
     examples = select_cell_balanced(examples, targets=cell_caps)
     paired_rows, pair_records = build_matched_contrast_pairs(examples)
+    paired_rows, pair_records = _force_definition_matched_pairs(paired_rows, pair_records)
     paired_rows = stamp_source_buckets(paired_rows)
     split_result = assign_splits_by_component(paired_rows)
     rows = split_result["rows"]
