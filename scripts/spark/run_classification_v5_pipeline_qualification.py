@@ -1534,6 +1534,21 @@ def main() -> int:
 
     PRIVATE.mkdir(mode=0o700, parents=True, exist_ok=True)
     revision = code_revision()
+    env_flags = [
+        "-e",
+        "PYTHONPATH=/home/morpheus/Hyperlex/scripts/shadow",
+        "-e",
+        "HLX_V2_FORWARD_ONTOLOGY=1",
+        "-e",
+        "HLX_V5_QUALIFICATION_INNER=1",
+        "-e",
+        f"HLX_V5_STAGE_A_CODE_REVISION={revision}",
+    ]
+    if score_sealed:
+        env_flags.extend(["-e", "HLX_V5_QUALIFICATION_SCORE_SEALED=1"])
+    script_args = [str(REPO / "scripts/spark/run_classification_v5_pipeline_qualification.py")]
+    if score_sealed:
+        script_args.append("--score-sealed")
     cmd = [
         "docker",
         "run",
@@ -1550,24 +1565,12 @@ def main() -> int:
         "/home/morpheus/.hyperlex:/home/morpheus/.hyperlex",
         "-w",
         str(REPO),
-        "-e",
-        "PYTHONPATH=/home/morpheus/Hyperlex/scripts/shadow",
-        "-e",
-        "HLX_V2_FORWARD_ONTOLOGY=1",
-        "-e",
-        "HLX_V5_QUALIFICATION_INNER=1",
-        "-e",
-        f"HLX_V5_STAGE_A_CODE_REVISION={revision}",
+        *env_flags,
         "--entrypoint",
         "python3",
         IMAGE,
-        str(REPO / "scripts/spark/run_classification_v5_pipeline_qualification.py"),
+        *script_args,
     ]
-    if score_sealed:
-        idx = cmd.index("HLX_V5_QUALIFICATION_INNER=1")
-        cmd.insert(idx, "HLX_V5_QUALIFICATION_SCORE_SEALED=1")
-        cmd.insert(idx, "-e")
-        cmd.append("--score-sealed")
     log_name = (
         "qualification_score_sealed_console.log"
         if score_sealed
