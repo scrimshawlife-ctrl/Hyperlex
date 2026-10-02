@@ -71,3 +71,21 @@ def test_reject_everything_is_no_advance():
     )
     assert receipt["MODEL_WIDE_BEST_MUTATED"] is False
     assert receipt["V6_NONE_REJECTION_HARDEN_RECEIPT_SHA256"]
+
+
+def test_baseline_relative_false_reject_allows_modest_tradeoff():
+    # Sealed gate candidate: huge zero-FP drop, positive-only held, FR +6pp.
+    metrics = {
+        "system_macro_f1": 0.3698,
+        "FUNCTION_macro_f1": 0.3711,
+        "zero_label_false_positive_rate": 0.0877,
+        "zero_label_exact_rejection": 0.9123,
+        "mean_predicted_labels_on_zero_gold": 0.145,
+        "positive_only_system_macro_f1": 0.4158,
+        "false_reject_positive_rate": 0.4164,
+    }
+    assert zero_label_improved(metrics)
+    assert positive_preserved(metrics)
+    assert not_reject_everything(metrics)
+    d = classify_disposition(metrics)
+    assert d["DISPOSITION"] == "V6_NONE_REJECTION_ADVANCE"

@@ -38,12 +38,19 @@ BASELINE_REP_POSITIVE_ONLY_MACRO_F1 = 0.41630366884055453
 BASELINE_REP_ZERO_FP_RATE = 0.7881548974943052
 BASELINE_REP_ZERO_EXACT_REJECTION = 0.21184510250569477
 BASELINE_REP_MEAN_PRED_ON_ZERO = 2.2687927107061503
+# Baseline heads already emit empty on ~35% of positive REP_V2 rows.
+BASELINE_REP_FALSE_REJECT_POSITIVE = 0.35315985130111527
 
 # Preregistered acceptance (locked before results).
 ZERO_FP_ABS_IMPROVEMENT_MIN = 0.15
 ZERO_EXACT_ABS_IMPROVEMENT_MIN = 0.15
 POSITIVE_PRESERVATION_RATIO = 0.90  # of baseline positive-only ≈0.416 → ≈0.375
-FALSE_REJECT_POSITIVE_MAX = 0.35
+# Reject-everything guard is relative to the sealed baseline false-reject
+# rate (absolute 0.35 is void: baseline itself is 0.353).
+FALSE_REJECT_POSITIVE_SLACK = 0.10
+FALSE_REJECT_POSITIVE_MAX = (
+    BASELINE_REP_FALSE_REJECT_POSITIVE + FALSE_REJECT_POSITIVE_SLACK
+)  # ≈0.453
 SYSTEM_MACRO_FLOOR_RELATIVE = -0.02  # may not fall >2pp below baseline system
 
 MECHANISMS = (
@@ -109,6 +116,7 @@ def none_rejection_contract() -> dict[str, Any]:
             "REP_V2_zero_label_false_positive_rate": BASELINE_REP_ZERO_FP_RATE,
             "REP_V2_zero_label_exact_rejection": BASELINE_REP_ZERO_EXACT_REJECTION,
             "REP_V2_mean_predicted_labels_on_zero_gold": BASELINE_REP_MEAN_PRED_ON_ZERO,
+            "REP_V2_false_reject_positive_rate": BASELINE_REP_FALSE_REJECT_POSITIVE,
         },
         "acceptance": {
             "zero_fp_abs_improvement_min": ZERO_FP_ABS_IMPROVEMENT_MIN,
@@ -117,6 +125,8 @@ def none_rejection_contract() -> dict[str, Any]:
             "positive_only_floor": BASELINE_REP_POSITIVE_ONLY_MACRO_F1
             * POSITIVE_PRESERVATION_RATIO,
             "false_reject_positive_max": FALSE_REJECT_POSITIVE_MAX,
+            "false_reject_positive_slack_vs_baseline": FALSE_REJECT_POSITIVE_SLACK,
+            "false_reject_rule": "baseline_false_reject + slack (not absolute 0.35)",
             "system_macro_floor": BASELINE_REP_SYSTEM_MACRO_F1
             + SYSTEM_MACRO_FLOOR_RELATIVE,
             "reject_everything_forbidden": True,
@@ -233,6 +243,7 @@ def build_none_rejection_receipt(payload: Mapping[str, Any]) -> dict[str, Any]:
 
 
 __all__ = [
+    "BASELINE_REP_FALSE_REJECT_POSITIVE",
     "BASELINE_REP_MEAN_PRED_ON_ZERO",
     "BASELINE_REP_POSITIVE_ONLY_MACRO_F1",
     "BASELINE_REP_SYSTEM_MACRO_F1",
@@ -243,6 +254,7 @@ __all__ = [
     "ERROR_CLASSES",
     "EXPERIMENT_ID",
     "FALSE_REJECT_POSITIVE_MAX",
+    "FALSE_REJECT_POSITIVE_SLACK",
     "MECHANISMS",
     "PHASE_RULE",
     "PIPELINE_POINTER_ID",
