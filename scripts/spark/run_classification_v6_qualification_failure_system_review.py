@@ -886,7 +886,6 @@ def inner() -> int:
     )
 
     # Label similarity on QUAL
-    sim_ql = Xq @ Xlab.T  # (n_qual, n_labels)
     lab_index = {lab: i for i, lab in enumerate(all_labs)}
 
     def geom_for(rows, X, gold_fn):

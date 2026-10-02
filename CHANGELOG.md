@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Review V6 QUAL-002 failure at system level (Spec 007):** Read-only
+  forensic review after decisive QUAL FAIL (macro-F1 0.1885). Finds
+  hardened REP (~0.432) was scored on `usable()` positive-only rows
+  (n=532), excluding ZERO/NONE; QUAL is 74.5% `NO_EVIDENCE` and includes
+  domain+function compositions absent from usable REP (n=0). Primary
+  diagnosis **`REPRESENTATIVE_VALIDATION_OVERFIT`**. Disposition
+  **`V6_REQUIRES_DATA_DISTRIBUTION_REDESIGN`**. Micro-fixes rejected.
+  QUAL remains EVALUATION_SPENT; pointers unchanged. Next:
+  `REDESIGN_V6_REPRESENTATIVE_VALIDATION_AND_DATA_DIVERSITY`.
+
 - **Execute V6 QUAL-002 one-shot (Spec 007):** Cold-loaded hardened
   package `a8827583…` against sealed QUAL-002 (`n=1004`, seal
   `62ed3827…`). Preflight repaired for sealed-zero witnesses
