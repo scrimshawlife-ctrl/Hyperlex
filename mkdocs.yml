@@ -97,6 +97,7 @@ nav:
       - Naming lock: NAMING.md
       - Spec kit: specs/index.md
       - Technical spec (v0.3 spine): spec.md
+      - Instrument V1 (Abraxas): instrument-v1.md
       - SHADOW encoder (007): shadow-hyperlexical.md
       - Status: status.md
       - Roadmap: ROADMAP.md

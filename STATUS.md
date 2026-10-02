@@ -3,11 +3,11 @@
 **Naming:** repo **Hyperlex** is the transitional monorepo shell. Public products: **Hyperlexical** (Spec 007 model / train / eval / E2 / `name_gate` claim) and **ne0l0gist** (slang ingest — operator-named 2026-09-24, repo spelling). `name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6).
 
 **Version:** 0.4.0  
-**Observed:** 2026-09-24  
-**Posture:** Hermes skill = current operator surface. Spec 007 = model path (SHADOW). Spark BEST = `seed-morph78` (soft_ceiling PROMOTE_BEST 2026-09-24; broad **0.9883** n=256). Ingest product named **ne0l0gist** (as in repo). Naming lock: `docs/NAMING.md` + Notion Naming lock. **#101** merged to main. Org naming graft **#14** merged. morph78 settled `have fun staying poor` + `fr fr no cap`; force **236**/hard **277**. `name_gate` **true** for `seed-morph78` (Danny `flip name_gate`, 2026-09-24, amendment A6). Hub card `hyperlex-structure-149m`; Hub and T13 not authorized.
+**Observed:** 2026-10-02  
+**Posture:** Hermes skill = current operator surface. **`HYPERLEX_INSTRUMENT_V1`** = Abraxas-facing representation/measurement layer (`SHADOW_INSTRUMENT_ONLY`, `READY_FOR_ABRAXAS_SHADOW_USE`). Spec 007 structure pin = model path (SHADOW). V6 final-label classifier = **REJECTED**. Spark BEST = `seed-morph78` (soft_ceiling PROMOTE_BEST 2026-09-24; broad **0.9883** n=256). Ingest product named **ne0l0gist**. Naming lock: `docs/NAMING.md` + Notion Naming lock. `name_gate` **true** for `seed-morph78` (A6). Hub card `hyperlex-structure-149m`; Hub and T13 not authorized. Abraxas shadow adapter merged ([PR #261](https://github.com/scrimshawlife-ctrl/Abraxas/pull/261)).
 **Install:** `bash install.sh` → `~/.hermes/skills/hyperlex`  
 **Claude (optional):** `bash install.sh --claude` → `~/.claude/skills/hyperlex`  
-**Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Spec 007 SHADOW encoder on main
+**Track:** Phases 0–4 complete · Phase 5.0–5.3 · Pages static run history · Instrument V1 on main · Spec 007 SHADOW structure path on main
 
 This file is the operator snapshot. The docs site copies it to [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/). Do not treat it as a Hub card or a Brier score.
 
@@ -16,6 +16,8 @@ This file is the operator snapshot. The docs site copies it to [status](https://
 | Layer | Role | State |
 |-------|------|--------|
 | Hermes skill | What you run today (`SKILL.md`, CLI, `src/hyperlex/`) | Ready (v0.4.0) |
+| Instrument V1 | Abraxas semantic instrumentation (`observe()`) | **READY_FOR_ABRAXAS_SHADOW_USE** · not semantic truth |
+| V6 classifier | Final DOMAIN/MEDIATION/FUNCTION labels | **REJECTED** (CORE QUAL FAIL) |
 | T0 | Encoder baseline; card `hyperlex-encoder-*` | Specified. Not named Hyperlexical. |
 | T1 | First artifact that *may* be called Hyperlexical | `seed-morph78`: trained E2 PASS + Danny `name_gate` yes (2026-09-24) — **named Hyperlexical** |
 | `name_gate` | Name wall | **true** (`seed-morph78`, A6) · publish wall (Hub) still closed |
@@ -30,12 +32,34 @@ python3 scripts/hyperlex.py doctor
 python3 scripts/release_preflight.py
 python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 python -m hyperlex inbox list
+PYTHONPATH=src python3 -m hyperlex.instrument observe "ethereum defi"
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
 ```
 
+## Instrument V1 — Abraxas dependency
+
+```text
+HYPERLEX_PRODUCT_ROLE       = REPRESENTATION_AND_MEASUREMENT_LAYER
+HYPERLEX_OPERATION_MODE     = SHADOW_INSTRUMENT_ONLY
+HYPERLEX_CLASSIFIER_RELEASE = REJECTED
+HYPERLEX_INSTRUMENT_V1      = READY_FOR_ABRAXAS_SHADOW_USE
+HYPERLEX_OUTPUT            != SEMANTIC_TRUTH
+```
+
+| Piece | Location |
+|-------|----------|
+| Contract | `schemas/hyperlex.instrument.v1.schema.json` |
+| Runtime | `src/hyperlex/instrument/` |
+| Docs | [`docs/instrument-v1.md`](docs/instrument-v1.md) |
+| Program settlement | [`specs/007-hyperlexical-model/classification-v6-program-settlement-20261002.md`](specs/007-hyperlexical-model/classification-v6-program-settlement-20261002.md) |
+| Abraxas adapter | `abraxas.evidence.hyperlex_instrument` (flag `ABX_HYPERLEX_INSTRUMENT`, default off) |
+| Abraxas integration doc | [Abraxas `docs/integration/hyperlex_instrument_v1.md`](https://github.com/scrimshawlife-ctrl/Abraxas/blob/main/docs/integration/hyperlex_instrument_v1.md) |
+
+Primary operation is `observe()`, not `classify()`. DOMAIN/MEDIATION appear only as advisory candidates. FUNCTION is experimental/advisory; `memetic_form` is research-only and not emitted.
+
 ## Spec 007 — honest gates
 
-SHADOW / advisory. Not on `API_V1`. Pin `seed-morph78` may be called **Hyperlexical** (A6). Do not call any other checkpoint, stub, or seed smoke Hyperlexical.
+SHADOW / advisory. Not on `API_V1`. Pin `seed-morph78` may be called **Hyperlexical** (A6). Do not call any other checkpoint, stub, or seed smoke Hyperlexical. V6 multi-label classifier release remains **REJECTED**.
 
 Operator scoreboard **2026-09-10 PT evening** (Danny-locked; matches [Notion Operator Hub](https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83)):
 
@@ -104,9 +128,11 @@ Pages overview: [SHADOW encoder (007)](docs/shadow-hyperlexical.md)
 | Local attractor store (`~/.hyperlex/signals/`) | Ready (`inbox list|push|clear`) |
 | Attractor candidate rune (`RUNE.HLX.ATTRACTOR_CANDIDATE`) | Ready (advisory only) |
 | Spec 007 model path (T0→T1) | SHADOW · Spark BEST morph78 · broad 0.988 n=256 · force fair 1.0 n=164 · E2 PASS · LAST=8 · upsample freeze 11+ · morph69–78 closed · next climb needs new named-phrase card · `name_gate` **true** (morph78, A6) · named Hyperlexical · no Hub · T13 not authorized |
+| Instrument V1 | SHADOW · `READY_FOR_ABRAXAS_SHADOW_USE` · observe()/API/SDK · Abraxas PR #261 merged · not semantic truth |
+| V6 classifier program | REJECTED · CORE QUAL FAIL · research artifacts preserved · no further QUAL without task reformulation |
 | 007 live ingest tap | SHADOW · pipeline/analyze/scan fail-open → `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` · INFERRED only |
 | Public PyPI | Not planned |
-| External system hard import | Never |
+| External system hard import | Never (Abraxas consumes Hyperlex; Hyperlex does not import Abraxas) |
 
 ## Operator loop
 
@@ -142,9 +168,9 @@ data/backfill/2026/
 
 ## Recommended next
 
-1. Spark BEST = **morph78**. Default **HOLD**. Operator review `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md`; a new climb needs a new named-phrase acquire card (compare vs morph78 broad 0.9883 n=256). `name_gate` yes recorded (A6); next are separate card-rename / Hub / T13 decisions. Plan: `specs/007-hyperlexical-model/NAME-GATE-AND-NAMED-PHRASES.md`.
-2. Burn-in offline runs + settle path (this is how Brier becomes real).
-3. Do not Hub-upload — publish audit recommends local-only until blockers clear (`specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`). Do not promote `scripts/shadow/hyperlexical/` into `src/hyperlex/` (T13) without a separate sentence. Do not extend `name_gate` to any checkpoint other than `seed-morph78`.
+1. Instrument V1: use Abraxas shadow path with `ABX_HYPERLEX_INSTRUMENT=1` when ready; keep influence_policy `NONE`. Do not promote candidates to gold/canonical.
+2. Spark BEST = **morph78**. Default **HOLD**. Operator review `specs/007-hyperlexical-model/HYPERLEXICAL-PRODUCT-PLAN.md`; a new climb needs a new named-phrase acquire card. Hub / T13 remain separate decisions.
+3. Do not Hub-upload — publish audit recommends local-only (`specs/007-hyperlexical-model/PUBLISH-AUDIT-20260924.md`). Do not reopen V6 classifier QUAL. Do not extend `name_gate` beyond `seed-morph78`.
 
 ## README
 

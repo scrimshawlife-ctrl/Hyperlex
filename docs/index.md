@@ -9,30 +9,35 @@ hide:
 <span><span class="hlx-dot"></span><strong>v0.4.0</strong></span>
 <span>Hermes skill surface · Python package</span>
 <span>Settled Brier only</span>
-<span>007 model path SHADOW · T0→T1 after E2</span>
+<span>Instrument V1 SHADOW · 007 structure SHADOW</span>
 </div>
 
 <p class="hlx-lead hlx-purpose">
 <strong>Hyperlex detects emerging slang and cultural signals, traces their lineage,
 scores virality and hyperstition potential, and emits integrity-hashed receipts.</strong>
 Brier calibration is computed <em>only</em> after outcomes are settled — never invented on open analysis.
-The Hermes skill is the <em>current operator surface</em>. Spec 007 is the
-<em>model path</em> (T0, then T1 after E2) — still SHADOW, not named Hyperlexical.
+The Hermes skill is the <em>current operator surface</em>.
+<strong>Instrument V1</strong> is the Abraxas-facing representation/measurement layer
+(<code>observe()</code> → advisory evidence; not semantic truth).
+Spec 007 structure pin is the <em>model path</em> (T0, then T1 after E2) — still SHADOW.
+V6 final-label classifier release is <strong>REJECTED</strong>.
 Repo <strong>Hyperlex</strong> is the transitional monorepo shell. Public products:
-<strong>Hyperlexical</strong> (model / train / eval) and <strong>ne0l0gist</strong> (slang ingest).
+<strong>Hyperlexical</strong> (structure model / train / eval) and <strong>ne0l0gist</strong> (slang ingest).
 <code>name_gate</code> is true for pin <code>seed-morph78</code> (2026-09-24).
 </p>
 
-## Skill now, model next
+## Skill now, instrument + model next
 
 | Layer | State |
 |-------|--------|
 | **Hermes skill** | Shipping v0.4.0 — ingest, 8-family lineage, receipts, settle → Brier |
+| **Instrument V1** | `READY_FOR_ABRAXAS_SHADOW_USE` — [instrument-v1.md](instrument-v1.md) |
 | **T0 encoder** | Specified baseline (`hyperlex-encoder-*`). Not a Hyperlexical name. |
 | **T1 encoder** | Hyperlexical name needs trained E2 **and** Danny's `name_gate` yes. Both met for `seed-morph78` (2026-09-24) — **named Hyperlexical**. |
 | **`name_gate` / Hub** | **true** (`seed-morph78`) / not published |
 
-Classify volume is ready. Spark BEST `seed-morph78` passes trained E2; the name is still gated. [SHADOW encoder (007)](shadow-hyperlexical.md) · [Status](status.md).
+Classify volume is ready. Spark BEST `seed-morph78` passes trained E2.
+[Instrument V1](instrument-v1.md) · [SHADOW encoder (007)](shadow-hyperlexical.md) · [Status](status.md).
 
 ## What happens on a run
 

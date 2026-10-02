@@ -2,10 +2,12 @@
 
 > **Snapshot.** This file is the **0.2.x spine**. The shipping skill is **0.4.0**
 > (automatic pipeline, Phase 5 research, mutation detect, local vector DB).
-> Spec 007 Hyperlexical encoder is **SHADOW / advisory** under
+> Spec 007 Hyperlexical structure path is **SHADOW / advisory** under
 > `scripts/shadow/hyperlexical/` — see
-> [docs/shadow-hyperlexical.md](shadow-hyperlexical.md).
-> Prefer [STATUS.md](status.md) for what is ready today.
+> [shadow-hyperlexical.md](shadow-hyperlexical.md).
+> Abraxas instrumentation is **Instrument V1** — see
+> [instrument-v1.md](instrument-v1.md).
+> Prefer [status.md](status.md) for what is ready today.
 
 **Version:** 0.4.0 (spine drafted in 0.2.x) · **Mode:** Hermes skill (Python package repo)
 

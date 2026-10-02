@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+- **HYPERLEX_INSTRUMENT_V1 (Abraxas shadow packaging):** Ship
+  `hyperlex.instrument.v1` contract, `observe()` runtime, manifest /
+  capabilities, minimal HTTP+SDK, and Abraxas advisory evidence adapter.
+  Product role **REPRESENTATION_AND_MEASUREMENT_LAYER**; mode
+  **SHADOW_INSTRUMENT_ONLY**; classifier release remains **REJECTED**.
+  Abraxas adapter merged ([PR #261](https://github.com/scrimshawlife-ctrl/Abraxas/pull/261));
+  feature flag `ABX_HYPERLEX_INSTRUMENT` default off. Docs:
+  `docs/instrument-v1.md`,
+  `specs/007-hyperlexical-model/hyperlex-instrument-v1-settlement-20261002.md`.
+  Tests: `tests/test_instrument_v1.py`.
+
+- **Program settlement (Spec 007):** Disposition
+  **HYPERLEX_REPRESENTATION_AND_MEASUREMENT_LAYER** after V6 CORE QUAL FAIL.
+  Receipt `4ae7cddf…`. Settlement
+  `classification-v6-program-settlement-20261002.md`.
+
 - **V6 core qualification + release decision (Spec 007):** Fresh
   `HYPERLEX_V6_CORE_QUALIFICATION_001` sealed (n=761, zero-share 0.623,
   core agreement 1.0, overlap 0) then scored once on hardened package

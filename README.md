@@ -4,18 +4,19 @@
   <img src="assets/hyperlex-imagine-hero.jpg" alt="Hyperlex hero — memetic emergence atlas" width="100%" />
 </p>
 
-**Memetic emergence** skill + SHADOW encoder path for the Abraxas model stack.
+**Memetic emergence** skill + SHADOW instrumentation for the Abraxas model stack.
 Catch language while it’s still becoming culture — slang lineage, receipts, settled Brier only.
 
-Hermes skill is what you **run today**. Spec 007 Hyperlexical encoder is **SHADOW / advisory**.
+Hermes skill is what you **run today**. Spec 007 Hyperlexical structure pin is **SHADOW / advisory**.
+`HYPERLEX_INSTRUMENT_V1` is the Abraxas-facing **representation and measurement** dependency (not a classifier).
 
 | | |
 |---|---|
-| **Owns** | memetic ingest · classify · receipts · virality / hyperstition signals · Spec 007 encoder specify |
+| **Owns** | memetic ingest · classify · receipts · virality / hyperstition signals · Spec 007 structure pin · Instrument V1 observe() |
 | **Honesty** | `OBSERVED` / `INFERRED` / `SPECULATIVE` (+ provenance; settled Brier only where calibrated) |
-| **Shape** | Hermes skill **live** (v0.4.0). Spec 007 T0→T1 **gated**. Not a chatbot mind. |
-| **Anti** | Efficacy theater · inventing Brier · naming any artifact other than the gated pin **Hyperlexical** · Hub without `ALLOW_HUB` |
-| **Lane** | Skill ready · encoder SHADOW · `name_gate` **true** (`seed-morph78`) · Hub not published |
+| **Shape** | Hermes skill **live** (v0.4.0). Instrument V1 **shadow**. Spec 007 T0→T1 **gated**. Not a chatbot mind. |
+| **Anti** | Efficacy theater · inventing Brier · treating Hyperlex as semantic truth · naming any artifact other than the gated pin **Hyperlexical** · Hub without `ALLOW_HUB` |
+| **Lane** | Skill ready · Instrument V1 SHADOW · `name_gate` **true** (`seed-morph78`) · V6 classifier **REJECTED** · Hub not published |
 | **Version** | `0.4.0` — prefer [`STATUS.md`](STATUS.md) |
 
 Docs site: [scrimshawlife-ctrl.github.io/Hyperlex](https://scrimshawlife-ctrl.github.io/Hyperlex/) · status mirror: [status](https://scrimshawlife-ctrl.github.io/Hyperlex/status/).
@@ -38,7 +39,8 @@ Repo **Hyperlex** is the transitional monorepo shell. Do not use bare public **H
 
 | Name | Role |
 |------|------|
-| **Hyperlexical** | Spec 007 model / train / eval / E2 / `name_gate` product claim |
+| **Hyperlexical** | Spec 007 structure model / train / eval / E2 / `name_gate` product claim (`seed-morph78`) |
+| **HYPERLEX_INSTRUMENT_V1** | Representation + measurement layer for Abraxas (`observe()` → advisory evidence) |
 | **ne0l0gist** | Slang ingest tool (zeros spelling): Crawl4AI harvest, `ingest_tap`, export/settle — **operator-named 2026-09-24** |
 | **Hyperlex** (repo) | Transitional monorepo shell. GitHub repo name, `~/.hyperlex` paths, `HYPERLEX_*` env vars, and the `hyperlexical` Python package stay as-is |
 
@@ -48,21 +50,25 @@ Repo **Hyperlex** is the transitional monorepo shell. Do not use bare public **H
 
 | Ships now | Does **not** ship |
 |-----------|-------------------|
-| Hermes skill install + CLI (`install.sh`, `scripts/hyperlex.py`) | Artifact named **Hyperlexical** |
-| Spec 007 SHADOW encoder code path · `seed-morph78` named Hyperlexical | Hub publish · T13 promote |
+| Hermes skill install + CLI (`install.sh`, `scripts/hyperlex.py`) | Production semantic classifier / gold authority |
+| `HYPERLEX_INSTRUMENT_V1` (`observe()`, `/v1/*`, Abraxas shadow adapter) | Hub publish · T13 promote |
+| Spec 007 SHADOW structure path · `seed-morph78` named Hyperlexical | V6 final-label classifier release (REJECTED) |
 | Local SoT classify volume (operator machine) | Full SoT in git |
 | Pages static run history / Phase 5 research hooks | Paid Firecrawl by default (Crawl4AI is default) |
 
-## Current state (harvest rows OBSERVED 2026-09-10/11 PT · Spec 007 row 2026-09-24)
+## Current state (harvest rows OBSERVED 2026-09-10/11 PT · Spec 007 / Instrument 2026-10-02)
 
 Snapshot — full scoreboard in [`STATUS.md`](STATUS.md).
 
 | Area | State |
 |------|-------|
 | Hermes skill | Ready **v0.4.0** |
-| Spec 007 | SHADOW · BEST `seed-morph78` (PROMOTE_BEST 2026-09-24) · trained E2 **PASS** · named **Hyperlexical** (`name_gate` yes, A6) |
+| Instrument V1 | **READY_FOR_ABRAXAS_SHADOW_USE** · `SHADOW_INSTRUMENT_ONLY` · contract `hyperlex.instrument.v1` |
+| V6 classifier | **REJECTED** (CORE QUAL FAIL) — not a release product |
+| Spec 007 structure | SHADOW · BEST `seed-morph78` · trained E2 **PASS** · named **Hyperlexical** (`name_gate` yes, A6) |
 | `name_gate` | **true** for `seed-morph78` (Danny 2026-09-24) |
 | Hub | Not published |
+| Abraxas | Shadow adapter on `main` ([PR #261](https://github.com/scrimshawlife-ctrl/Abraxas/pull/261)) · flag `ABX_HYPERLEX_INSTRUMENT` default off |
 | Local SoT | `~/.hyperlex/hyperlexical/ingest_candidates.jsonl` — **4333** (**not in git**) |
 | Export classify (include-live) | **2437** family-labeled (harvest gate) |
 | Tracked seed export | `specs/007-…/exports/civilian.v0.1.jsonl` — seed/snapshot only |
@@ -73,21 +79,30 @@ Snapshot — full scoreboard in [`STATUS.md`](STATUS.md).
 ```
 query + source → intake → analyze → receipt / score log
                               ↓
-                    Spec 007 shadow infer (advisory)
+              Instrument V1 observe() → Abraxas SHADOW_SIGNAL (advisory)
+                              ↓
+                    Spec 007 structure infer (advisory)
                               ↓
               T0 card → T1 only after Spark E2 + name_gate
 ```
 
-No hard Abraxas import. Compat shapes live under `hyperlex.compat.abraxas` when needed.
-See [`ARCHITECTURE.md`](ARCHITECTURE.md) (spine note) and [`docs/shadow-hyperlexical.md`](docs/shadow-hyperlexical.md).
+```text
+HYPERLEX_OUTPUT != SEMANTIC_TRUTH
+```
+
+No hard Abraxas import from Hyperlex. Wire shapes live under `hyperlex.compat.abraxas`.
+Abraxas consumes Hyperlex via `abraxas.evidence.hyperlex_instrument` (shadow lane).
+See [`docs/instrument-v1.md`](docs/instrument-v1.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), and [`docs/shadow-hyperlexical.md`](docs/shadow-hyperlexical.md).
 
 ## Specs / model path
 
 | Path | Role |
 |------|------|
 | Hermes `SKILL.md` | Operator surface |
+| Instrument V1 | `src/hyperlex/instrument/` · contract `schemas/hyperlex.instrument.v1.schema.json` |
 | Spec 007 | [`specs/007-hyperlexical-model/`](specs/007-hyperlexical-model/) |
-| Shadow encoder | `scripts/shadow/hyperlexical/` |
+| Program settlement | [`classification-v6-program-settlement-20261002.md`](specs/007-hyperlexical-model/classification-v6-program-settlement-20261002.md) |
+| Shadow encoder research | `scripts/shadow/hyperlexical/` (not required for Instrument V1) |
 | Aaron Spark handoff | look under `specs/007-…` / STATUS links (train on Spark) |
 
 ## Quick links
@@ -95,6 +110,7 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) (spine note) and [`docs/shadow-hyperlex
 | Doc | Path |
 |-----|------|
 | Status | [`STATUS.md`](STATUS.md) |
+| Instrument V1 (Abraxas dependency) | [`docs/instrument-v1.md`](docs/instrument-v1.md) |
 | Canonical remotes and claims | [`docs/CANONICAL.md`](docs/CANONICAL.md) |
 | Architecture | [`ARCHITECTURE.md`](ARCHITECTURE.md) |
 | Shadow Hyperlexical | [`docs/shadow-hyperlexical.md`](docs/shadow-hyperlexical.md) |
@@ -121,7 +137,15 @@ python3 scripts/hyperlex.py simulate --term rizz --mode scenario
 pytest -q
 ```
 
-SHADOW infer (advisory):
+Instrument V1 (Abraxas shadow instrumentation):
+
+```bash
+PYTHONPATH=src python3 -m hyperlex.instrument observe "ethereum defi"
+PYTHONPATH=src python3 -m hyperlex.instrument serve --port 8741
+PYTHONPATH=src python3 -m pytest tests/test_instrument_v1.py -q
+```
+
+SHADOW structure infer (advisory; separate from Instrument V1):
 
 ```bash
 PYTHONPATH=scripts/shadow python3 -m hyperlexical.infer --text rizz --offline
@@ -142,6 +166,8 @@ Spark trains from **local SoT** / `export --include-live`, not from the tracked 
 Do **not** without Danny/operator yes:
 
 - Call any artifact other than `seed-morph78` **Hyperlexical**, or extend `name_gate` to another checkpoint
+- Treat Instrument V1 / Hyperlex candidates as semantic truth, gold, or Abraxas canonical state
+- Reopen V6 classifier QUAL / release without a material task reformulation
 - Publish to Hub (`ALLOW_HUB`)
 - Commit the 4333 SoT into git
 - Invent Brier scores (settled calibration only)
@@ -149,7 +175,7 @@ Do **not** without Danny/operator yes:
 
 ## Peers
 
-**Hyperlex (form / lexical)** · Athanor (tradition structure) · Semion (sign relation) · Yggdrasil (route classifier) · VIRAL / VERNACULAR (collective seats)
+**Hyperlex (form / lexical / Instrument V1)** · Abraxas (governing authority; consumes Hyperlex as shadow evidence) · Athanor (tradition structure) · Semion (sign relation) · Yggdrasil (route classifier) · VIRAL / VERNACULAR (collective seats)
 
 ## License
 

@@ -1,8 +1,10 @@
 # SHADOW — Spec 007 model path
 
-**Naming:** this page is **Hyperlexical** (model / train / eval / E2 / `name_gate` claim). Harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional shell. Trained E2 passed on `seed-morph78` (2026-09-24). Danny approved the name on 2026-09-24: `seed-morph78` is **Hyperlexical** (`name_gate` **true**).
+**Naming:** this page is **Hyperlexical** (structure model / train / eval / E2 / `name_gate` claim). Harvest and live ingest are **ne0l0gist**. Repo **Hyperlex** is the transitional shell. Trained E2 passed on `seed-morph78` (2026-09-24). Danny approved the name on 2026-09-24: `seed-morph78` is **Hyperlexical** (`name_gate` **true**).
 
-The Hermes skill is the **current operator surface**. This page is the **model path**: a learned encoder that starts as T0 and may become T1 after E2.
+The Hermes skill is the **current operator surface**. For Abraxas shadow instrumentation use **[Instrument V1](instrument-v1.md)** (`observe()`), not this structure-encoder path. V6 final-label classification is **REJECTED** — settlement [`classification-v6-program-settlement-20261002.md`](https://github.com/scrimshawlife-ctrl/Hyperlex/blob/main/specs/007-hyperlexical-model/classification-v6-program-settlement-20261002.md).
+
+This page is the **structure model path**: a learned encoder that starts as T0 and may become T1 after E2.
 
 Not on Hyperlex `API_V1`. Not a Hugging Face model. Pin `seed-morph78` is named **Hyperlexical** (trained E2 PASS + Danny `name_gate` yes). No other checkpoint is.
 

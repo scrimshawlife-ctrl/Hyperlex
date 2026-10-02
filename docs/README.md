@@ -12,7 +12,11 @@ mkdocs serve
 
 CI copies `ARCHITECTURE.md`, `DESIGN.md`, `SPEC.md`, `STATUS.md`, `ROADMAP.md`, and `CONTRIBUTING.md` into `docs/`, then runs `mkdocs build --strict`.
 
-Hyperlex **ships as a Hermes skill** (Python package repo). Spec 007 is the model path (T0 → T1 after E2), still SHADOW. Relevant Abraxas wire shapes live in `hyperlex.compat.abraxas` (no Abraxas import).
+Hyperlex **ships as a Hermes skill** (Python package repo).
+`HYPERLEX_INSTRUMENT_V1` is the Abraxas-facing representation/measurement dependency (`observe()`, shadow only — not semantic truth).
+Spec 007 structure pin is the model path (T0 → T1 after E2), still SHADOW.
+V6 final-label classifier release is **REJECTED**.
+Relevant Abraxas wire shapes live in `hyperlex.compat.abraxas` (no Abraxas import).
 
 ## Information architecture
 
@@ -20,6 +24,7 @@ Hyperlex **ships as a Hermes skill** (Python package repo). Spec 007 is the mode
 |---------|---------|
 | [Start](start/index.md) | First success, glossary, contribute |
 | [Concepts](architecture.md) | Architecture, lineages, Phase 5, modules |
+| [Instrument V1](instrument-v1.md) | Abraxas shadow instrumentation contract + runtime |
 | [Operator](commands.md) | Daily commands, Hermes, Claude |
 | [Specs](specs/index.md) | Spec kit + SHADOW 007 + status/roadmap |
 | [Archive](archive/index.md) | Run history and historical pages |
