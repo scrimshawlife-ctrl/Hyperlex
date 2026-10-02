@@ -1,0 +1,46 @@
+{
+  "gates": {
+    "hierarchy_violation": {
+      "pass": true,
+      "threshold": 0.05,
+      "value": 0.0
+    },
+    "mean_predicted_labels_on_zero_gold": {
+      "advisory": true,
+      "pass": true,
+      "threshold": 1.0,
+      "value": 0.4490644490644491
+    },
+    "no_material_axis_collapse": {
+      "axis_macros": {
+        "domain": 0.19519688333529242,
+        "function": 0.02492401215805471,
+        "mediation": 0.2916666666666667
+      },
+      "pass": false,
+      "threshold": 0.1,
+      "value": false
+    },
+    "positive_only_system_macro_f1": {
+      "pass": false,
+      "threshold": 0.3,
+      "value": 0.29428335606496525
+    },
+    "system_macro_f1": {
+      "pass": false,
+      "threshold": 0.3,
+      "value": 0.17059585405333796
+    },
+    "zero_label_exact_rejection": {
+      "pass": true,
+      "threshold": 0.5,
+      "value": 0.7214137214137214
+    },
+    "zero_label_false_positive_rate": {
+      "pass": true,
+      "threshold": 0.35,
+      "value": 0.2785862785862786
+    }
+  },
+  "pass": false
+}

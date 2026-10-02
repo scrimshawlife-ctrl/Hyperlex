@@ -1,0 +1,16 @@
+{
+  "DOMAIN_macro_f1": 0.19519688333529242,
+  "FUNCTION_macro_f1": 0.02492401215805471,
+  "MEDIATION_macro_f1": 0.2916666666666667,
+  "false_reject_positive_rate": 0.5026455026455027,
+  "hierarchy_violation_rate": 0.0,
+  "jaccard": 0.6362148856067188,
+  "mean_predicted_labels_on_zero_gold": 0.4490644490644491,
+  "n_gated_zero": 582,
+  "positive_only_system_macro_f1": 0.29428335606496525,
+  "raw_hierarchy_violation_rate": 0.0034752389226759338,
+  "sample_f1": 0.6408340573414423,
+  "system_macro_f1": 0.17059585405333796,
+  "zero_label_exact_rejection": 0.7214137214137214,
+  "zero_label_false_positive_rate": 0.2785862785862786
+}

@@ -1,0 +1,23 @@
+{
+  "absolute_drop": 0.19921307077362368,
+  "band": "SEVERE_GENERALIZATION_DROP",
+  "hard_gate": false,
+  "positive_only": {
+    "delta": -0.12151419006874276,
+    "qual": 0.29428335606496525,
+    "rep": 0.415797546133708,
+    "retention_ratio": 0.7077563559510103
+  },
+  "qual_system_macro_f1": 0.17059585405333796,
+  "rep_system_macro_f1": 0.36980892482696165,
+  "retention_ratio": 0.4613081042680675,
+  "zero_exact": {
+    "qual": 0.7214137214137214,
+    "rep": 0.9123006833712984
+  },
+  "zero_fp": {
+    "delta": 0.190886961957577,
+    "qual": 0.2785862785862786,
+    "rep": 0.08769931662870159
+  }
+}
