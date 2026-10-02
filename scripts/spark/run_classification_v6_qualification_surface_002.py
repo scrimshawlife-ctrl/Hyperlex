@@ -387,8 +387,50 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
         except Exception as exc:  # noqa: BLE001
             print(f"partial_resume_skip={exc}", flush=True)
 
+    # Firecrawl NATURAL OBSERVED feed (MediaWiki 429 bypass)
+    firecrawl_feed = Path(
+        os.environ.get("HLX_QUAL002_FIRECRAWL_FEED")
+        or (PRIVATE / "RAW_ACQUIRE_QUAL002.firecrawl.jsonl")
+    )
+    if firecrawl_feed.exists():
+        try:
+            n_before = len(raw)
+            for r in load_jsonl(firecrawl_feed):
+                if r.get("construction_tag") not in (None, "NATURAL"):
+                    continue
+                if r.get("provenance") not in (None, "OBSERVED"):
+                    continue
+                admit(
+                    {
+                        "text": r["text"],
+                        "source_url": r["source_url"],
+                        "provenance": "OBSERVED",
+                        "construction_tag": "NATURAL",
+                        "construction_role": r.get("construction_role")
+                        or "PRODUCT_EXPECTED",
+                        "source_family": r.get("source_family")
+                        or "v6_qual002_firecrawl",
+                        "topic_domain": r.get("topic_domain"),
+                        "acquisition_cue_family": r.get("acquisition_cue_family"),
+                        "notes": r.get("notes") or "firecrawl_feed",
+                    }
+                )
+            print(
+                f"firecrawl_feed={firecrawl_feed} added={len(raw) - n_before} "
+                f"total={len(raw)}",
+                flush=True,
+            )
+        except Exception as exc:  # noqa: BLE001
+            print(f"firecrawl_feed_skip={exc}", flush=True)
+
     def checkpoint() -> None:
         write_jsonl(partial_path, raw)
+
+    if len(raw) >= target:
+        print(f"acquire_target_met_pre_mediawiki n={len(raw)}", flush=True)
+        checkpoint()
+        rng.shuffle(raw)
+        return raw[:target]
 
     per_family = 55
     families = list(ACTIVE_FAMILY_VOCABULARY)
