@@ -7,6 +7,8 @@ HYPERLEX_CLASSIFIER_RELEASE = REJECTED
 HYPERLEX_INSTRUMENT_V1    = READY_FOR_ABRAXAS_SHADOW_USE
 ```
 
+**Notion mirror (operator index):** [Instrument V1 — settlement + Abraxas shadow | 2026-10-02](https://app.notion.com/p/3ed3e8ba2f5c81ea854de3dcb6a10958) · hub gate on [007 Operator Hub](https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83). Repo remains SoT for code/schemas.
+
 ## What it is
 
 A **versioned semantic instrumentation dependency** for Abraxas.

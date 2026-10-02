@@ -9,6 +9,8 @@ HYPERLEX_INSTRUMENT_V1      = READY_FOR_ABRAXAS_SHADOW_USE
 
 Parent settlement: `classification-v6-program-settlement-20261002.md` (receipt `4ae7cddf…`).
 
+**Notion mirror:** [Instrument V1 — settlement + Abraxas shadow | 2026-10-02](https://app.notion.com/p/3ed3e8ba2f5c81ea854de3dcb6a10958) (under Hyperlex — Spine Owner; linked from Operator Hub Current gate 2026-10-02).
+
 No classifier research reopened. No QUAL cycle. DOMAIN/MEDIATION/FUNCTION remain non-authoritative.
 
 ## Package / module layout

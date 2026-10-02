@@ -14,6 +14,8 @@ PHASE_RULE          = SETTLE_HYPERLEX_PROGRAM_END_STATE
 This document is the consolidated Hyperlex program settlement. It answers
 what Hyperlex can defensibly be, not which head to try next.
 
+**Notion mirror (Instrument V1 packaging follow-on):** [Instrument V1 — settlement + Abraxas shadow | 2026-10-02](https://app.notion.com/p/3ed3e8ba2f5c81ea854de3dcb6a10958).
+
 ---
 
 ## 1. Canonical V5/V6 scientific findings

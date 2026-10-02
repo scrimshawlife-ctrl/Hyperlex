@@ -110,7 +110,7 @@ See [`docs/instrument-v1.md`](docs/instrument-v1.md), [`ARCHITECTURE.md`](ARCHIT
 | Doc | Path |
 |-----|------|
 | Status | [`STATUS.md`](STATUS.md) |
-| Instrument V1 (Abraxas dependency) | [`docs/instrument-v1.md`](docs/instrument-v1.md) |
+| Instrument V1 (Abraxas dependency) | [`docs/instrument-v1.md`](docs/instrument-v1.md) · [Notion settlement](https://app.notion.com/p/3ed3e8ba2f5c81ea854de3dcb6a10958) |
 | Canonical remotes and claims | [`docs/CANONICAL.md`](docs/CANONICAL.md) |
 | Architecture | [`ARCHITECTURE.md`](ARCHITECTURE.md) |
 | Shadow Hyperlexical | [`docs/shadow-hyperlexical.md`](docs/shadow-hyperlexical.md) |

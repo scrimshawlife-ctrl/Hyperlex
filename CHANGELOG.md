@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Notion ↔ repo parity (Instrument V1):** Operator mirror under Hyperlex —
+  Spine Owner:
+  [Instrument V1 — settlement + Abraxas shadow | 2026-10-02](https://app.notion.com/p/3ed3e8ba2f5c81ea854de3dcb6a10958).
+  Current gate 2026-10-02 on
+  [007 Operator Hub](https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83)
+  and Spine Owner. Cross-links in `STATUS.md`, `docs/instrument-v1.md`,
+  settlement receipt docs, and `README.md`.
+
 - **HYPERLEX_INSTRUMENT_V1 (Abraxas shadow packaging):** Ship
   `hyperlex.instrument.v1` contract, `observe()` runtime, manifest /
   capabilities, minimal HTTP+SDK, and Abraxas advisory evidence adapter.

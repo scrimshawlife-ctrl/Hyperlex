@@ -52,6 +52,9 @@ HYPERLEX_OUTPUT            != SEMANTIC_TRUTH
 | Runtime | `src/hyperlex/instrument/` |
 | Docs | [`docs/instrument-v1.md`](docs/instrument-v1.md) |
 | Program settlement | [`specs/007-hyperlexical-model/classification-v6-program-settlement-20261002.md`](specs/007-hyperlexical-model/classification-v6-program-settlement-20261002.md) |
+| Instrument settlement | [`specs/007-hyperlexical-model/hyperlex-instrument-v1-settlement-20261002.md`](specs/007-hyperlexical-model/hyperlex-instrument-v1-settlement-20261002.md) |
+| Notion mirror | [Instrument V1 — settlement + Abraxas shadow \| 2026-10-02](https://app.notion.com/p/3ed3e8ba2f5c81ea854de3dcb6a10958) |
+| Operator Hub gate | [007 Hyperlexical — Operator Hub](https://app.notion.com/p/3d73e8ba2f5c81ad89d7c2df8e931a83) (Current gate 2026-10-02) |
 | Abraxas adapter | `abraxas.evidence.hyperlex_instrument` (flag `ABX_HYPERLEX_INSTRUMENT`, default off) |
 | Abraxas integration doc | [Abraxas `docs/integration/hyperlex_instrument_v1.md`](https://github.com/scrimshawlife-ctrl/Abraxas/blob/main/docs/integration/hyperlex_instrument_v1.md) |
 
