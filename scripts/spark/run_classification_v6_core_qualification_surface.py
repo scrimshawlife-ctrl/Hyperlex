@@ -242,7 +242,7 @@ def build_blocked() -> dict[str, set[str]]:
         if url:
             blocked_urls.add(url)
 
-    # V2/V3 + foundation/migration + QUAL-001/002/003 (all spent / unreused)
+    # Spent evaluation / train-dev-rep surfaces only (not every historical raw crawl).
     for path in [
         PRIVATE_V2 / "TRAIN_V2.jsonl",
         PRIVATE_V2 / "DEV_SELECTION_V2.jsonl",
@@ -251,7 +251,6 @@ def build_blocked() -> dict[str, set[str]]:
         PRIVATE_V3 / "DEV_SELECTION_V3.jsonl",
         PRIVATE_V3 / "REPRESENTATIVE_VALIDATION_V3.jsonl",
         PRIVATE_V3 / "NEW_ANNOTATED_POSITIVES.jsonl",
-        PRIVATE_V3 / "RAW_ACQUIRE_EXPAND.jsonl",
         PRIVATE_V3 / "BLOCK_TEXTS.jsonl",
         FOUNDATION / "TRAIN.jsonl",
         FOUNDATION / "DEVELOPMENT_VALIDATION.jsonl",
@@ -261,18 +260,11 @@ def build_blocked() -> dict[str, set[str]]:
         MIGRATION / "DEVELOPMENT_VALIDATION_V6_LABELS.jsonl",
         MIGRATION / "REPRESENTATIVE_VALIDATION_V6_LABELS.jsonl",
         PRIVATE_QUAL002 / "QUALIFICATION_ROWS.jsonl",
-        PRIVATE_QUAL002 / "RAW_ACQUIRE_QUAL002.jsonl",
-        PRIVATE_QUAL002 / "RAW_ACQUIRE_QUAL002.partial.jsonl",
-        PRIVATE_QUAL002 / "RAW_ACQUIRE_QUAL002.firecrawl.jsonl",
         PRIVATE_QUAL002 / "EVALUATION_SPENT_IDENTITIES.json",
-        PRIVATE_COREQUAL001 / "QUALIFICATION_ROWS.jsonl",
-        PRIVATE_COREQUAL001 / "RAW_ACQUIRE_COREQUAL001.jsonl",
-        PRIVATE_COREQUAL001 / "RAW_ACQUIRE_COREQUAL001.partial.jsonl",
-        PRIVATE_COREQUAL001 / "RAW_ACQUIRE_COREQUAL001.firecrawl.jsonl",
-        PRIVATE_COREQUAL001 / "RAW_ACQUIRE_COREQUAL001.merged_feed.jsonl",
-        PRIVATE_COREQUAL001 / "RAW_ACQUIRE_COREQUAL001.wiki_html_none.jsonl",
-        PRIVATE_COREQUAL001 / "RAW_ACQUIRE_COREQUAL001.wikt_html.jsonl",
-        PRIVATE_COREQUAL001 / "EVALUATION_SPENT_IDENTITIES.json",
+        PRIVATE_QUAL003 / "QUALIFICATION_ROWS.jsonl",
+        PRIVATE_QUAL003 / "EVALUATION_SPENT_IDENTITIES.json",
+        PRIVATE / "QUALIFICATION_ROWS.jsonl",
+        PRIVATE / "EVALUATION_SPENT_IDENTITIES.json",
     ]:
         try:
             if path.suffix == ".json" and "IDENTITIES" in path.name:
@@ -286,31 +278,28 @@ def build_blocked() -> dict[str, set[str]]:
             n_paths += 1
             for r in rows:
                 ingest_row(r)
-        except Exception:
+        except Exception as exc:  # noqa: BLE001
+            print(f"block_path_skip={path}: {exc}", flush=True)
             continue
 
     import glob
 
     root = Path("/home/morpheus/hlx-private")
+    # Spent reserves + diagnostic evaluation surfaces (not raw acquire leftovers).
     patterns = [
-        "classification-v5-pipeline-qualification-001-20261001/**/*.jsonl",
-        "classification-v*-reserve*/**/*.jsonl",
-        "classification-v5-reserve*/**/*.jsonl",
+        "classification-v5-pipeline-qualification-001-20261001/QUALIFICATION_SURFACE*.jsonl",
+        "classification-v*-reserve*/**/reserve*.jsonl",
+        "classification-v*-reserve*/**/RESERVE*.jsonl",
+        "classification-v5-reserve*/**/RESERVE*.jsonl",
         "classification-v5-stage-a-*/**/*SURFACE*.jsonl",
-        "classification-v5-stage-a-*/**/OBSERVED_*.jsonl",
-        "classification-v4-*/**/*.jsonl",
-        "classification-v3-*/**/*.jsonl",
-        "classification-v6-*/**/*LABELS*.jsonl",
-        "classification-v6-human-ontology-settlement-20261001/**/*.jsonl",
-        "classification-v6-none-rejection-harden-20261001/**/*.jsonl",
-        "classification-v6-operating-pipeline-harden-20261001/**/*.jsonl",
+        "classification-v4-*/**/reserve*.jsonl",
+        "classification-v3-*/**/EVIDENCE_SURFACE.jsonl",
+        "classification-v3-reserve*/**/*.jsonl",
     ]
     for pattern in patterns:
         for path_str in glob.glob(str(root / pattern), recursive=True):
             path = Path(path_str)
             if "core-qualification-001" in str(path):
-                continue
-            if "qualification-surface-003" in str(path):
                 continue
             try:
                 text = sudo_read_text(path)
@@ -381,6 +370,7 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
         return True
 
     # Prefer unused foundation RAW leftovers first (already NATURAL OBSERVED)
+    n_foundation = 0
     for name in ("RAW_ACQUIRE.jsonl", "RAW_TOPUP.jsonl"):
         path = FOUNDATION / name
         try:
@@ -393,7 +383,7 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
                 url = str(r.get("source_url") or "unknown")
                 if not text:
                     continue
-                admit(
+                if admit(
                     {
                         "text": text,
                         "source_url": url,
@@ -406,9 +396,12 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
                         "acquisition_cue_family": r.get("gold_family"),
                         "notes": "foundation_raw_unused_reclaimed_corequal001",
                     }
-                )
-        except Exception:
+                ):
+                    n_foundation += 1
+        except Exception as exc:  # noqa: BLE001
+            print(f"foundation_reclaim_skip={name}: {exc}", flush=True)
             continue
+    print(f"foundation_reclaimed={n_foundation} total={len(raw)}", flush=True)
 
     # Resume partial acquire if present
     partial_path = PRIVATE / "RAW_ACQUIRE_COREQUAL001.partial.jsonl"
