@@ -361,6 +361,7 @@ def preflight() -> dict[str, Any]:
         EXPECTED_PACKAGE_SHA256,
         EXPECTED_SEAL_SHA256,
         QUALIFICATION_ID,
+        exact_int_equals,
         execute_contract,
     )
     from hyperlexical.classification_v6_semantic_pipeline_harden import (
@@ -402,7 +403,9 @@ def preflight() -> dict[str, Any]:
     if n_lines != EXPECTED_N_ROWS:
         issues.append(f"n_rows_file={n_lines}")
 
-    if int(disjoint.get("forbidden_overlap") or -1) != 0 or not disjoint.get("pass"):
+    if (not exact_int_equals(disjoint.get("forbidden_overlap"), 0)) or not disjoint.get(
+        "pass"
+    ):
         issues.append("forbidden_overlap")
 
     if package.get("PACKAGE_SHA256") != EXPECTED_PACKAGE_SHA256:
@@ -419,7 +422,7 @@ def preflight() -> dict[str, Any]:
     enc = package.get("encoder") or {}
     if enc.get("state_hash") != EXPECTED_ENCODER_STATE_HASH:
         issues.append("encoder_state_hash_mismatch")
-    if int(enc.get("trainable_parameters") or -1) != 0:
+    if not exact_int_equals(enc.get("trainable_parameters"), 0):
         issues.append("encoder_trainable_nonzero")
     if enc.get("model_id") != SELECTED_ENCODER_MODEL_ID:
         issues.append("encoder_model_id_mismatch")

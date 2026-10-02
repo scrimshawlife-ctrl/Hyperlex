@@ -234,6 +234,20 @@ def decide_disposition(
     }
 
 
+def exact_int_equals(value: Any, expected: int) -> bool:
+    """True iff value is present and equals expected.
+
+    Must not use ``value or default`` — zero is a valid witness
+    (forbidden_overlap=0, trainable_parameters=0).
+    """
+    if value is None:
+        return False
+    try:
+        return int(value) == int(expected)
+    except (TypeError, ValueError):
+        return False
+
+
 def classify_source_slice(
     family_macros: Mapping[str, float],
     *,
@@ -268,5 +282,6 @@ __all__ = [
     "classify_source_slice",
     "decide_disposition",
     "evaluate_gates",
+    "exact_int_equals",
     "execute_contract",
 ]

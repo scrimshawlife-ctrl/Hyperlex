@@ -14,6 +14,7 @@ from hyperlexical.classification_v6_qualification_execute_002 import (
     classify_retention,
     decide_disposition,
     evaluate_gates,
+    exact_int_equals,
     execute_contract,
 )
 
@@ -79,3 +80,12 @@ def test_label_classes():
     assert classify_qual_label(qual_f1=0.15, support=20) == "DEGRADED"
     assert classify_qual_label(qual_f1=0.4, support=20, rep_f1=0.7) == "DEGRADED"
     assert classify_qual_label(qual_f1=0.5, support=20, rep_f1=0.55) == "STABLE"
+
+
+def test_exact_int_equals_accepts_zero():
+    # Regression: `int(value or -1) != 0` falsely rejects sealed zeros.
+    assert exact_int_equals(0, 0) is True
+    assert exact_int_equals("0", 0) is True
+    assert exact_int_equals(None, 0) is False
+    assert exact_int_equals(1, 0) is False
+    assert (0 or -1) != 0  # documents the anti-pattern this helper replaces
