@@ -44,6 +44,8 @@ Repository = "https://github.com/scrimshawlife/hyperlex"
 
 [project.scripts]
 hyperlex = "hyperlex.__main__:main"
+hyperlex-instrument = "hyperlex.instrument.__main__:main"
+hyperlex-instrument-api = "hyperlex.instrument.api:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -17,4 +17,6 @@ rescore spent QUAL surfaces.
 Separate track: Hyperlexical structure pin `seed-morph78` remains under
 `HYPERLEXICAL-PRODUCT-PLAN.md` / `status.md` (not this disposition).
 
-Next: `EXECUTE_REPRESENTATION_MEASUREMENT_ROADMAP`.
+Instrument packaging: `HYPERLEX_INSTRUMENT_V1` =
+`READY_FOR_ABRAXAS_SHADOW_USE` (see `hyperlex-instrument-v1-settlement-20261002.md`,
+`docs/instrument-v1.md`). Classifier QUAL remains spent/FAIL.

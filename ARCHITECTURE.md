@@ -40,7 +40,8 @@ src/hyperlex/
   relay/            # RUNE.HLX.* envelopes
   connectors/       # market-signal + forecast pipeline packets (generic)
   diagrams/         # Mermaid from receipts / ledger
-  compat/abraxas/   # BrierLedger/Score/operator review/claims/runes (no Abraxas import)
+  instrument/       # HYPERLEX_INSTRUMENT_V1 observe() shadow instrumentation
+  compat/abraxas/   # BrierLedger/Score/operator review/claims/runes + instrument evidence adapter
   provenance.py     # source fingerprints
   cli.py            # python -m hyperlex
   schemas/          # package-local JSON schemas

@@ -10,6 +10,7 @@ brier_ledger      BrierLedgerEntry.v1
 brier_score       BrierScorePacket.v1
 operator_review   OperatorBrierReviewPacket.v1 (advisory only)
 runes             RUNE.HLX.* catalog + envelope builders
+instrument_evidence  HyperlexObservation → Abraxas advisory evidence
 """
 
 from .claims import CLAIM_LABELS, label_claim, NOT_COMPUTABLE
@@ -17,6 +18,12 @@ from .brier_ledger import to_brier_ledger_entry, compute_ledger_hash
 from .brier_score import to_brier_score_packet, compute_atomic_brier
 from .operator_review import to_operator_brier_review
 from .runes import list_hlx_runes, envelopes_from_result, envelope_from_series
+from .instrument_evidence import (
+    AuthorityBoundaryError,
+    assert_not_authoritative,
+    promote_to_canonical_state,
+    to_abraxas_evidence,
+)
 
 __all__ = [
     "CLAIM_LABELS",
@@ -30,4 +37,8 @@ __all__ = [
     "list_hlx_runes",
     "envelopes_from_result",
     "envelope_from_series",
+    "to_abraxas_evidence",
+    "assert_not_authoritative",
+    "promote_to_canonical_state",
+    "AuthorityBoundaryError",
 ]

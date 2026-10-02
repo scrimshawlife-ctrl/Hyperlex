@@ -1,0 +1,18 @@
+{
+  "PHASE_RULE": "PACKAGE_HYPERLEX_INSTRUMENT_V1_FOR_ABRAXAS_SHADOW",
+  "INSTRUMENT_VERSION": "HYPERLEX_INSTRUMENT_V1",
+  "CONTRACT_VERSION": "hyperlex.instrument.v1",
+  "HYPERLEX_PRODUCT_ROLE": "REPRESENTATION_AND_MEASUREMENT_LAYER",
+  "HYPERLEX_OPERATION_MODE": "SHADOW_INSTRUMENT_ONLY",
+  "HYPERLEX_CLASSIFIER_RELEASE": "REJECTED",
+  "HYPERLEX_INSTRUMENT_V1": "READY_FOR_ABRAXAS_SHADOW_USE",
+  "schema_sha256": "a210f274a423a26fb5fd850f17931c06e6c79a2de4de0678327c49291f474601",
+  "manifest_sha256": "2c746ac75d4df97373c3a078d87466c0519d7fafca4c4389706bbfd6502d0167",
+  "parent_settlement_receipt": "4ae7cddffcf72330adad8eb3dfd453025aa02c8cb12c5e6f5499a4e6cad06ca2",
+  "classifier_research_reopened": false,
+  "qual_cycle_created": false,
+  "tests": {
+    "hyperlex": "tests/test_instrument_v1.py",
+    "abraxas": "tests/test_hyperlex_instrument_evidence.py"
+  }
+}

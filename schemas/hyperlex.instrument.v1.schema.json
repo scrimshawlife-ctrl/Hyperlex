@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyperlex.instrument.v1",
+  "title": "Hyperlex Instrument Observation v1",
+  "description": "Versioned semantic instrumentation observation. Advisory evidence only — never semantic truth, gold, canonical state, or authorization.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "observation_id",
+    "input_hash",
+    "authority",
+    "evidence",
+    "representation",
+    "candidates",
+    "neighborhood",
+    "diagnostics",
+    "provenance",
+    "capabilities_ref"
+  ],
+  "properties": {
+    "schema": { "const": "hyperlex.instrument.v1" },
+    "version": { "type": "string", "const": "HYPERLEX_INSTRUMENT_V1" },
+    "observation_id": { "type": "string", "minLength": 8 },
+    "input_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "source", "semantic_truth", "may_authorize", "may_mutate_governing_state"],
+      "properties": {
+        "kind": { "const": "advisory" },
+        "source": { "const": "hyperlex" },
+        "semantic_truth": { "const": false },
+        "may_authorize": { "const": false },
+        "may_mutate_governing_state": { "const": false },
+        "role": {
+          "type": "string",
+          "enum": ["OBSERVATION", "EVIDENCE", "SHADOW_SIGNAL"]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["present", "score", "abstain"],
+      "properties": {
+        "present": { "type": "boolean" },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "abstain": { "type": "boolean" },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "representation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["encoder_id", "encoder_hash", "embed_mode"],
+      "properties": {
+        "encoder_id": { "type": "string" },
+        "encoder_hash": { "type": "string" },
+        "encoder_revision": { "type": ["string", "null"] },
+        "embed_mode": {
+          "type": "string",
+          "enum": ["STATIC_HASH_EMBEDDING", "MODEL_EMBEDDING", "UNAVAILABLE"]
+        },
+        "embedding": {
+          "type": ["array", "null"],
+          "items": { "type": "number" }
+        },
+        "embedding_ref": { "type": ["string", "null"] },
+        "dims": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["concept_id", "score", "axis", "advisory"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "score": { "type": "number", "minimum": 0, "maximum": 1 },
+          "axis": {
+            "type": "string",
+            "enum": ["domain", "mediation", "function"]
+          },
+          "advisory": { "const": true },
+          "status": {
+            "type": "string",
+            "enum": ["advisory", "experimental_or_advisory", "research_only"]
+          }
+        }
+      }
+    },
+    "neighborhood": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["concept_id", "similarity"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "similarity": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["margin", "ambiguity", "distribution_distance", "representation_drift"],
+      "properties": {
+        "margin": { "type": ["number", "null"] },
+        "ambiguity": { "type": ["number", "null"] },
+        "distribution_distance": { "type": ["number", "null"] },
+        "representation_drift": { "type": ["number", "null"] },
+        "unavailable": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "instrument_version",
+        "contract_version",
+        "ontology_version",
+        "runtime_commit",
+        "schema_sha256",
+        "manifest_sha256",
+        "settlement_ref"
+      ],
+      "properties": {
+        "instrument_version": { "type": "string" },
+        "contract_version": { "type": "string" },
+        "ontology_version": { "type": "string" },
+        "ontology_sha256": { "type": ["string", "null"] },
+        "runtime_commit": { "type": "string" },
+        "package_version": { "type": "string" },
+        "schema_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "manifest_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "settlement_ref": { "type": "string" },
+        "settlement_receipt": { "type": "string" },
+        "artifact_hashes": { "type": "object" }
+      }
+    },
+    "capabilities_ref": { "type": "string" },
+    "requested": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["evidence", "representation", "candidates", "neighborhood", "diagnostics"]
+      }
+    },
+    "final_classification": {
+      "description": "Must remain unsupported / absent. Never emit authoritative labels.",
+      "type": "null"
+    }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["domain_labels"] },
+      { "required": ["mediation_labels"] },
+      { "required": ["function_labels"] },
+      { "required": ["gold"] },
+      { "required": ["canonical_state"] },
+      { "required": ["authorized_action"] }
+    ]
+  }
+}
