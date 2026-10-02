@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **Reassess V6 FUNCTION task signal (Spec 007):** Read-only diagnostic on
+  TRAIN/DEV/REP V3 after formulation convergence ~0.30. All four functions
+  **`CONTEXT_SENSITIVE`**. Cross-formulation consensus-fail share **0.640**
+  → `TASK_SIGNAL_LIMIT`. Ceiling **`TEXT_SIGNAL_CEILING`**. Axis
+  `latent_pragmatic_attributes`. Dual-cue recovery 0.14 (true IAA still
+  awaiting operator). Outcome **`FUNCTION_TASK_SIGNAL_PARTIAL`**. Next:
+  `REDESIGN_V6_FUNCTION_OBJECTIVE_AROUND_PRAGMATIC_SIGNAL`. Receipt
+  `bf5e25f1…`.
+
 - **Redesign V6 FUNCTION prediction (Spec 007):** FUNCTION-only bakeoff under
   frozen encoder/ANY_LABEL/DOMAIN/MEDIATION on TRAIN/DEV/REP V3. Tested
   independent binary verifiers, semantic matching, hybrid verifier.

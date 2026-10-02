@@ -1,0 +1,109 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-FUNCTION-TASK-SIGNAL-REASSESS-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PHASE_RULE": "REASSESS_V6_FUNCTION_TASK_SIGNAL",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "RELEASE_ELIGIBLE": false,
+  "axis_structures": [
+    "independent_binary_predicates",
+    "soft_overlapping_dimensions",
+    "ordinal_intensity_like_dimensions",
+    "latent_pragmatic_attributes"
+  ],
+  "ceiling_classes": [
+    "NO_CLEAR_CEILING",
+    "DATA_LIMITED_CEILING",
+    "TEXT_SIGNAL_CEILING",
+    "ANNOTATION_BOUNDARY_CEILING",
+    "MIXED_CEILING"
+  ],
+  "cue_types": [
+    "explicit_lexical_cue",
+    "compositional_cue",
+    "pragmatic_inference",
+    "world_background_knowledge",
+    "discourse_context_dependence"
+  ],
+  "diagnoses": [
+    "FUNCTION_TASK_SIGNAL_SUPPORTED",
+    "FUNCTION_TASK_SIGNAL_PARTIAL",
+    "FUNCTION_TASK_SIGNAL_INSUFFICIENT"
+  ],
+  "forbidden": [
+    "design_another_function_head",
+    "tune_thresholds",
+    "modify_ontology",
+    "add_function_data_by_default",
+    "use_QUAL_003_for_optimization",
+    "reopen_encoder_selection"
+  ],
+  "formulations_compared": [
+    "OLD_SHARED_HEAD",
+    "INDEPENDENT_BINARY_VERIFIERS",
+    "FUNCTION_SEMANTIC_MATCHING",
+    "HYBRID_VERIFIER"
+  ],
+  "frozen": {
+    "ANY_LABEL_threshold": 0.22499999999999998,
+    "encoder_model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+    "encoder_revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+    "ontology_changed": false,
+    "operating_package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a"
+  },
+  "function_definitions": {
+    "function.conflictive_force": "FUNCTION conflictive_force: hostility / violence / combat framing. Exclusions: metaphorical 'fight' for sports/competition without hostility sense.",
+    "function.evaluative_stance": "FUNCTION evaluative_stance: praise / insult / pejoration / prestige judgment. Exclusions: neutral description without stance; pure demonym without evaluation.",
+    "function.memetic_form": "FUNCTION memetic_form: meme format / macro / copypasta / template virality. Exclusions: any viral topic without memetic form; political content alone.",
+    "function.relational_intimacy": "FUNCTION relational_intimacy: romantic / dating / intimate partnership evidence. Exclusions: platonic affiliation; workplace 'partner'; evaluative insult alone."
+  },
+  "function_vocab": [
+    "function.evaluative_stance",
+    "function.relational_intimacy",
+    "function.conflictive_force",
+    "function.memetic_form"
+  ],
+  "historical_qual": {
+    "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+    "result_sha256": "b560dac2a8f80f45c6213dcd2ba25acdb2e0b7dde786da3ee0a5d6e3231ae724",
+    "role": "BLOCKED_SPENT_SURFACE",
+    "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b"
+  },
+  "next_actions": [
+    "REDESIGN_V6_FUNCTION_OBJECTIVE_AROUND_PRAGMATIC_SIGNAL",
+    "SPLIT_V6_FUNCTIONS_BY_SIGNAL_REGIME",
+    "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT",
+    "TARGETED_FUNCTION_SUPPORT_EXPANSION"
+  ],
+  "parent": {
+    "baseline_FUNCTION": 0.2963761484570071,
+    "independent_FUNCTION": 0.29381283709203987,
+    "outcome": "V6_FUNCTION_PREDICTION_PARTIAL",
+    "phase": "REDESIGN_V6_FUNCTION_PREDICTION",
+    "selected": "INDEPENDENT_BINARY_VERIFIERS"
+  },
+  "rejected_micro_fixes_default": {
+    "add_function_data_by_default": false,
+    "another_function_head": false,
+    "modify_NONE_gate": false,
+    "modify_ontology": false,
+    "reopen_encoder_selection": false,
+    "retrain_DOMAIN_or_MEDIATION": false,
+    "tune_thresholds": false,
+    "use_QUAL_003_for_optimization": false
+  },
+  "schema": "hyperlex.classification.v6.function_task_signal_reassess.v1",
+  "signal_classes": [
+    "STRONG_TEXT_SIGNAL",
+    "WEAK_BUT_LEARNABLE",
+    "CONTEXT_SENSITIVE",
+    "SEMANTICALLY_OVERLAPPING",
+    "INSUFFICIENT_SUPPORT"
+  ],
+  "surfaces": {
+    "DEV_SELECTION": "HYPERLEX_V6_DEV_SELECTION_V3",
+    "REPRESENTATIVE_VALIDATION": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V3",
+    "TRAIN": "HYPERLEX_V6_TRAIN_V3"
+  }
+}

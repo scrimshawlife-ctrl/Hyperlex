@@ -1,0 +1,27 @@
+{
+  "AXIS_STRUCTURE": "latent_pragmatic_attributes",
+  "CEILING_CLASS": "TEXT_SIGNAL_CEILING",
+  "NEXT_ACTION": "REDESIGN_V6_FUNCTION_OBJECTIVE_AROUND_PRAGMATIC_SIGNAL",
+  "PRIMARY_DIAGNOSIS": "FUNCTION_TASK_SIGNAL_PARTIAL",
+  "cue_failure_rates": {
+    "compositional_cue": 0.7142857142857143,
+    "discourse_context_dependence": 0.5365853658536586,
+    "explicit_lexical_cue": 0.6428571428571429,
+    "pragmatic_inference": 0.6379310344827587,
+    "world_background_knowledge": 0.5405405405405406
+  },
+  "formulation_function_macros": {
+    "FUNCTION_SEMANTIC_MATCHING": 0.17211287690011096,
+    "HYBRID_VERIFIER": 0.30579399645778493,
+    "INDEPENDENT_BINARY_VERIFIERS": 0.29381283709203987,
+    "OLD_SHARED_HEAD": 0.2963761484570071
+  },
+  "mean_consensus_fail_share": 0.6397930139797855,
+  "per_function_signal": {
+    "function.conflictive_force": "CONTEXT_SENSITIVE",
+    "function.evaluative_stance": "CONTEXT_SENSITIVE",
+    "function.memetic_form": "CONTEXT_SENSITIVE",
+    "function.relational_intimacy": "CONTEXT_SENSITIVE"
+  },
+  "task_signal_limit": true
+}
