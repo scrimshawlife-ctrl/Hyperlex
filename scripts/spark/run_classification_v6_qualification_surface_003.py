@@ -417,6 +417,7 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
     for name in (
         "RAW_ACQUIRE_QUAL003.firecrawl.jsonl",
         "RAW_ACQUIRE_QUAL003.wiki_html_none.jsonl",
+        "RAW_ACQUIRE_QUAL003.wikt_html.jsonl",
         "RAW_ACQUIRE_QUAL003.merged_feed.jsonl",
     ):
         cand = PRIVATE / name
@@ -469,28 +470,36 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
 
     # Always continue to MediaWiki NONE acquisition unless we already have
     # abundant wiki_none candidates (operating distribution needs zero-label mass).
-    n_none_cue = sum(
-        1
-        for r in raw
-        if "wiki_none" in str(r.get("source_family") or "")
-        or "ordinary" in str(r.get("source_family") or "")
-        or "irrelevant" in str(r.get("source_family") or "")
-    )
-    if len(raw) >= target and n_none_cue >= int(0.45 * target):
+    def _is_none_cue(row: dict) -> bool:
+        sf = str(row.get("source_family") or "")
+        return (
+            "wiki_none" in sf
+            or "wiki_html_none" in sf
+            or "ordinary" in sf
+            or "irrelevant" in sf
+            or sf.endswith(":none")
+            or "none:" in sf
+        )
+
+    n_none_cue = sum(1 for r in raw if _is_none_cue(r))
+    skip_mediawiki = os.environ.get("HLX_QUAL003_SKIP_MEDIAWIKI", "").strip() in {
+        "1",
+        "true",
+        "yes",
+    }
+    if skip_mediawiki or (
+        len(raw) >= target and n_none_cue >= int(0.45 * target)
+    ):
         print(
-            f"acquire_target_met_pre_mediawiki n={len(raw)} none_cue={n_none_cue}",
+            f"acquire_target_met_pre_mediawiki n={len(raw)} none_cue={n_none_cue} "
+            f"skip_mediawiki={skip_mediawiki}",
             flush=True,
         )
         checkpoint()
 
         def _prio(row: dict) -> tuple:
             sf = str(row.get("source_family") or "")
-            none = int(
-                "wiki_none" in sf
-                or "ordinary" in sf
-                or "irrelevant" in sf
-                or "none" in sf
-            )
+            none = int(_is_none_cue(row) or "none" in sf)
             multi = int("multicue" in str(row.get("notes") or "").lower())
             return (-none, -multi, row.get("identity") or row.get("text") or "")
 
