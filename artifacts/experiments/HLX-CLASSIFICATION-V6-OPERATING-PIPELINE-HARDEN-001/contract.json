@@ -1,0 +1,275 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-OPERATING-PIPELINE-HARDEN-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PACKAGE_ID": "HYPERLEX_V6_OPERATING_PIPELINE_PACKAGE_CANDIDATE_V1",
+  "PHASE_RULE": "HARDEN_V6_FULL_OPERATING_PIPELINE_AND_PREPARE_NEW_QUALIFICATION",
+  "PIPELINE_CANDIDATE_ID": "HYPERLEX_V6_OPERATING_PIPELINE_CANDIDATE_V1",
+  "POINTER_ID": "V6_OPERATING_PIPELINE_CANDIDATE",
+  "RELEASE_ELIGIBLE": false,
+  "architecture": {
+    "encoder": {
+      "model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+      "mutable": false,
+      "revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+      "state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+      "trainable": 0
+    },
+    "flow": [
+      "text",
+      "frozen_semantic_encoder",
+      "frozen_semantic_vector",
+      "ANY_LABEL_ZERO_LABEL_gate",
+      "if_ZERO_LABEL_emit_empty",
+      "else_axis_specific_nonlinear_heads",
+      "hierarchy_compatibility_constraints",
+      "final_hierarchical_multi_label_output"
+    ],
+    "gate": {
+      "bundle_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+      "kind": "ANY_SEMANTIC_EVIDENCE_GATE",
+      "threshold": 0.22499999999999998
+    },
+    "heads": "parent_frozen_axis_nonlinear_heads",
+    "thresholds": {
+      "domain": [
+        0.25,
+        0.05,
+        0.1,
+        0.1,
+        0.3,
+        0.45,
+        0.2,
+        0.25,
+        0.3,
+        0.45,
+        0.25
+      ],
+      "function": [
+        0.3,
+        0.4,
+        0.2,
+        0.4
+      ],
+      "mediation": [
+        0.35
+      ]
+    }
+  },
+  "forbidden": [
+    "score_QUAL_002",
+    "score_QUAL_003",
+    "open_QUAL_rows_for_optimization",
+    "retrain_encoder",
+    "reopen_ontology",
+    "mutate_TRAIN_DEV_REP_V2_definitions",
+    "mutate_MODEL_WIDE_BEST",
+    "global_promotion",
+    "lower_gates_after_results"
+  ],
+  "ontology": {
+    "constraint_manifest_hash": "2e51ed0865bc5431b92b94ba0e99ff3c9e4803ffb72e1fb80c5ead8ab839bc1c",
+    "constraints": {
+      "CONSTRAINT_MANIFEST_ID": "HYPERLEX_V6_HIERARCHY_CONSTRAINTS_V1",
+      "apply_stage": "after_raw_head_inference",
+      "incompatibility_rules": [],
+      "report_both": [
+        "raw_predictions",
+        "constrained_predictions"
+      ],
+      "rules": [
+        {
+          "action": "force_parent_positive",
+          "axis": "domain",
+          "child": "domain.technology.ai_discourse",
+          "example": "ai_discourse => technology",
+          "id": "ai_discourse_requires_technology",
+          "parent": "domain.technology",
+          "type": "required_parent"
+        }
+      ],
+      "version": 1
+    },
+    "label_schema": {
+      "axes": {
+        "domain_labels": [
+          "domain.gaming",
+          "domain.gambling",
+          "domain.crypto",
+          "domain.sports",
+          "domain.entertainment",
+          "domain.fashion",
+          "domain.workplace",
+          "domain.politics",
+          "domain.spiritual",
+          "domain.technology",
+          "domain.technology.ai_discourse"
+        ],
+        "function_labels": [
+          "function.evaluative_stance",
+          "function.relational_intimacy",
+          "function.conflictive_force",
+          "function.memetic_form"
+        ],
+        "mediation_labels": [
+          "mediation.internet_register"
+        ]
+      },
+      "axis_vocabs": {
+        "domain": [
+          "domain.gaming",
+          "domain.gambling",
+          "domain.crypto",
+          "domain.sports",
+          "domain.entertainment",
+          "domain.fashion",
+          "domain.workplace",
+          "domain.politics",
+          "domain.spiritual",
+          "domain.technology",
+          "domain.technology.ai_discourse"
+        ],
+        "function": [
+          "function.evaluative_stance",
+          "function.relational_intimacy",
+          "function.conflictive_force",
+          "function.memetic_form"
+        ],
+        "mediation": [
+          "mediation.internet_register"
+        ]
+      },
+      "ontology_version": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+      "semantics": "label_id_stable_no_display_string_lookup",
+      "structure": "HIERARCHICAL_MULTI_LABEL"
+    },
+    "label_schema_hash": "d4e76b88d9ff859c62cf0f38c26dbda2a17e04ea81070c5061a20b37e674efbb",
+    "threshold_manifest_hash": "bb2a490165273a71aa6545bc37ea48bd5c3bd4282b9be6e94dbd93f25c442781"
+  },
+  "parent": {
+    "NONE_POINTER": "V6_NONE_REJECTION_CANDIDATE",
+    "NONE_REJECTION_CANDIDATE": "HYPERLEX_V6_NONE_REJECTION_PACKAGE_CANDIDATE_V1",
+    "PACKAGE_ID": "HYPERLEX_V6_SEMANTIC_PIPELINE_PACKAGE_CANDIDATE_V1",
+    "PACKAGE_SHA256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4",
+    "mechanism": "LEARNED_ANY_EVIDENCE_GATE"
+  },
+  "qualification_003_preparation": {
+    "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+    "QUAL_002": {
+      "id": "HYPERLEX_V6_QUALIFICATION_002",
+      "reuse_forbidden": true,
+      "row_access_this_phase": false,
+      "status": "EVALUATION_SPENT"
+    },
+    "annotation": {
+      "model_blind": true,
+      "n_annotators_min": 2,
+      "protocols": [
+        "A_DOMAIN_FIRST_INDEPENDENT_TEXT_ONLY",
+        "B_FUNCTION_FIRST_INDEPENDENT_TEXT_ONLY"
+      ]
+    },
+    "distribution_targets": {
+      "include": [
+        "NO_EVIDENCE_zero_label_traffic",
+        "positive_traffic",
+        "function_labels",
+        "multi_label_compositions",
+        "source_style_diversity",
+        "length_diversity"
+      ],
+      "min_n": 750,
+      "no_evidence_share": [
+        0.45,
+        0.7
+      ],
+      "preferred_n": 1000,
+      "zero_label_share": [
+        0.55,
+        0.75
+      ]
+    },
+    "error_taxonomy": [
+      "DOMAIN_FP",
+      "DOMAIN_FN",
+      "FUNCTION_FP",
+      "FUNCTION_FN",
+      "MEDIATION_FP",
+      "MEDIATION_FN",
+      "PARENT_CHILD_VIOLATION",
+      "CO_LABEL_OMISSION",
+      "OVERPREDICTION",
+      "ONTOLOGY_BOUNDARY_CASE",
+      "FALSE_ACCEPT_ZERO",
+      "FALSE_REJECT_POSITIVE",
+      "GATE_OVER_REJECT",
+      "GATE_UNDER_REJECT"
+    ],
+    "executions": 0,
+    "gates": {
+      "QUAL_002_status": "EVALUATION_SPENT",
+      "QUAL_003_id": "HYPERLEX_V6_QUALIFICATION_003",
+      "chosen_before_qual_open": true,
+      "hierarchy_violation_max": 0.05,
+      "mean_predicted_labels_on_zero_gold_max": 1.0,
+      "min_axis_macro_f1": 0.1,
+      "no_complete_axis_collapse": true,
+      "positive_only_system_macro_f1_min": 0.3,
+      "retention_rule": "QUAL_system_macro_f1 >= 0.30 preregistered from gated REP\u22480.370",
+      "system_macro_f1_min": 0.3,
+      "zero_label_exact_rejection_min": 0.5,
+      "zero_label_false_positive_rate_max": 0.35
+    },
+    "metrics": [
+      "DOMAIN_macro_f1",
+      "DOMAIN_micro_f1",
+      "FUNCTION_macro_f1",
+      "FUNCTION_micro_f1",
+      "MEDIATION_macro_f1",
+      "MEDIATION_micro_f1",
+      "system_macro_f1",
+      "sample_f1",
+      "jaccard",
+      "hierarchy_violations",
+      "per_label_precision_recall_f1",
+      "single_label_vs_multi_label",
+      "source_slices",
+      "cardinality_slices",
+      "zero_label_false_positive_rate",
+      "zero_label_exact_rejection",
+      "mean_predicted_labels_on_zero_gold",
+      "positive_only_system_macro_f1",
+      "false_reject_positive_rate"
+    ],
+    "must_be": [
+      "natural",
+      "OBSERVED",
+      "disjoint_from_TRAIN_V2_DEV_V2_REP_V2_QUAL_002",
+      "operating_distribution_aware"
+    ],
+    "scoring_authorized": false,
+    "status": "PREPARED_NOT_SEALED"
+  },
+  "reproduction_tolerance": {
+    "positive_only_abs": 0.02,
+    "pred_mismatch_max": 0,
+    "system_abs": 0.015,
+    "zero_fp_abs": 0.05
+  },
+  "runtime_schema": "hyperlex.classification.v6.operating_gated_hierarchical_forward.v1",
+  "schema": "hyperlex.classification.v6.operating_pipeline_harden.v1",
+  "surfaces_frozen": {
+    "DEV_SELECTION": "HYPERLEX_V6_DEV_SELECTION_V2",
+    "REPRESENTATIVE_VALIDATION": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V2",
+    "TRAIN": "HYPERLEX_V6_TRAIN_V2"
+  },
+  "witness": {
+    "REP_V2_mean_predicted_labels_on_zero_gold": 0.14464692482915717,
+    "REP_V2_positive_only_system_macro_f1": 0.415797546133708,
+    "REP_V2_system_macro_f1": 0.36980892482696165,
+    "REP_V2_zero_label_exact_rejection": 0.9123006833712984,
+    "REP_V2_zero_label_false_positive_rate": 0.08769931662870159,
+    "positive_only_baseline_pre_gate": 0.41630366884055453
+  }
+}

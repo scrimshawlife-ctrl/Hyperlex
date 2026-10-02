@@ -1,0 +1,14 @@
+{
+  "QUAL_002_status": "EVALUATION_SPENT",
+  "QUAL_003_id": "HYPERLEX_V6_QUALIFICATION_003",
+  "chosen_before_qual_open": true,
+  "hierarchy_violation_max": 0.05,
+  "mean_predicted_labels_on_zero_gold_max": 1.0,
+  "min_axis_macro_f1": 0.1,
+  "no_complete_axis_collapse": true,
+  "positive_only_system_macro_f1_min": 0.3,
+  "retention_rule": "QUAL_system_macro_f1 >= 0.30 preregistered from gated REP\u22480.370",
+  "system_macro_f1_min": 0.3,
+  "zero_label_exact_rejection_min": 0.5,
+  "zero_label_false_positive_rate_max": 0.35
+}

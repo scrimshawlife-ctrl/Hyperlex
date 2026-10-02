@@ -1,0 +1,21 @@
+# HARDEN_V6_FULL_OPERATING_PIPELINE_AND_PREPARE_NEW_QUALIFICATION
+
+```text
+HARDENING_STATE = V6_OPERATING_PIPELINE_HARDENED
+QUALIFICATION_READINESS = V6_QUALIFICATION_PREP_COMPLETE_SURFACE_REQUIRED
+NEXT_ACTION = BUILD_AND_SEAL_FRESH_V6_QUALIFICATION_SURFACE_003
+PACKAGE_SHA256 = 8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a
+REP_V2 system macro-F1 = 0.3698
+REP_V2 zero-label FP = 0.088
+REP_V2 positive-only = 0.4158
+reproduction = WITNESS_REPRODUCTION
+encoder_immutable = True
+cold_load_ok = True
+round_trip_ok = True
+QUAL_002 = EVALUATION_SPENT
+QUAL_003 = PREPARED_NOT_SEALED
+RECEIPT = 14a02bdea9d1752977a305283eb3d7d4e1d2fe25c7c02b5c7211cc0e5115407b
+```
+
+Operating pipeline: frozen embedding → ANY_LABEL gate → frozen axis heads →
+hierarchy. QUAL-003 construction plan + operating gates preregistered; no QUAL scoring.

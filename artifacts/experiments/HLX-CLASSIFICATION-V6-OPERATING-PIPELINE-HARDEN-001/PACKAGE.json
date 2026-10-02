@@ -1,0 +1,208 @@
+{
+  "PACKAGE_ID": "HYPERLEX_V6_OPERATING_PIPELINE_PACKAGE_CANDIDATE_V1",
+  "PACKAGE_SHA256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+  "PIPELINE_CANDIDATE_ID": "HYPERLEX_V6_OPERATING_PIPELINE_CANDIDATE_V1",
+  "constraint_manifest_sha": "2e51ed0865bc5431b92b94ba0e99ff3c9e4803ffb72e1fb80c5ead8ab839bc1c",
+  "encoder": {
+    "immutability": {
+      "equal": true,
+      "post": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+      "pre": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53"
+    },
+    "model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+    "revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+    "state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+    "trainable_parameters": 0
+  },
+  "flow": [
+    "text",
+    "frozen_semantic_encoder",
+    "frozen_semantic_vector",
+    "ANY_LABEL_ZERO_LABEL_gate",
+    "if_ZERO_LABEL_emit_empty",
+    "else_axis_specific_nonlinear_heads",
+    "hierarchy_compatibility_constraints",
+    "final_hierarchical_multi_label_output"
+  ],
+  "gate": {
+    "bundle_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+    "kind": "ANY_SEMANTIC_EVIDENCE_GATE",
+    "path": "heads/any_evidence_gate.pt",
+    "threshold": 0.22499999999999998
+  },
+  "global_promotion": false,
+  "heads": {
+    "bundle_sha256": "2a0724b5a22b67523d56b8a0117533e4d4d63bf2f775f78097735f9518b64942",
+    "kind": "axis_nonlinear_heads",
+    "path": "heads/axis_nonlinear_heads.pt",
+    "source": "parent_frozen_package"
+  },
+  "hierarchy_constraints": {
+    "CONSTRAINT_MANIFEST_ID": "HYPERLEX_V6_HIERARCHY_CONSTRAINTS_V1",
+    "apply_stage": "after_raw_head_inference",
+    "incompatibility_rules": [],
+    "report_both": [
+      "raw_predictions",
+      "constrained_predictions"
+    ],
+    "rules": [
+      {
+        "action": "force_parent_positive",
+        "axis": "domain",
+        "child": "domain.technology.ai_discourse",
+        "example": "ai_discourse => technology",
+        "id": "ai_discourse_requires_technology",
+        "parent": "domain.technology",
+        "type": "required_parent"
+      }
+    ],
+    "version": 1
+  },
+  "limitations": [
+    "QUAL-002 EVALUATION_SPENT \u2014 new QUAL-003 required before qualification.",
+    "Gate adds modest false-reject on positives (+~6pp vs ungated).",
+    "Candidate only \u2014 not MODEL_WIDE_BEST; no global promotion."
+  ],
+  "load_validator": {
+    "fail_closed_on_mismatch": true,
+    "require_encoder_state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+    "require_gate_bundle_sha": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+    "require_head_bundle_sha": "2a0724b5a22b67523d56b8a0117533e4d4d63bf2f775f78097735f9518b64942"
+  },
+  "ontology": {
+    "constraint_manifest_hash": "2e51ed0865bc5431b92b94ba0e99ff3c9e4803ffb72e1fb80c5ead8ab839bc1c",
+    "constraints": {
+      "CONSTRAINT_MANIFEST_ID": "HYPERLEX_V6_HIERARCHY_CONSTRAINTS_V1",
+      "apply_stage": "after_raw_head_inference",
+      "incompatibility_rules": [],
+      "report_both": [
+        "raw_predictions",
+        "constrained_predictions"
+      ],
+      "rules": [
+        {
+          "action": "force_parent_positive",
+          "axis": "domain",
+          "child": "domain.technology.ai_discourse",
+          "example": "ai_discourse => technology",
+          "id": "ai_discourse_requires_technology",
+          "parent": "domain.technology",
+          "type": "required_parent"
+        }
+      ],
+      "version": 1
+    },
+    "label_schema": {
+      "axes": {
+        "domain_labels": [
+          "domain.gaming",
+          "domain.gambling",
+          "domain.crypto",
+          "domain.sports",
+          "domain.entertainment",
+          "domain.fashion",
+          "domain.workplace",
+          "domain.politics",
+          "domain.spiritual",
+          "domain.technology",
+          "domain.technology.ai_discourse"
+        ],
+        "function_labels": [
+          "function.evaluative_stance",
+          "function.relational_intimacy",
+          "function.conflictive_force",
+          "function.memetic_form"
+        ],
+        "mediation_labels": [
+          "mediation.internet_register"
+        ]
+      },
+      "axis_vocabs": {
+        "domain": [
+          "domain.gaming",
+          "domain.gambling",
+          "domain.crypto",
+          "domain.sports",
+          "domain.entertainment",
+          "domain.fashion",
+          "domain.workplace",
+          "domain.politics",
+          "domain.spiritual",
+          "domain.technology",
+          "domain.technology.ai_discourse"
+        ],
+        "function": [
+          "function.evaluative_stance",
+          "function.relational_intimacy",
+          "function.conflictive_force",
+          "function.memetic_form"
+        ],
+        "mediation": [
+          "mediation.internet_register"
+        ]
+      },
+      "ontology_version": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+      "semantics": "label_id_stable_no_display_string_lookup",
+      "structure": "HIERARCHICAL_MULTI_LABEL"
+    },
+    "label_schema_hash": "d4e76b88d9ff859c62cf0f38c26dbda2a17e04ea81070c5061a20b37e674efbb",
+    "threshold_manifest_hash": "bb2a490165273a71aa6545bc37ea48bd5c3bd4282b9be6e94dbd93f25c442781"
+  },
+  "parent_package_sha256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4",
+  "provenance": {
+    "code_revision": "e9e49044fbb39a44e00ef732b16fb7e343648f5e",
+    "n_dev": 505,
+    "n_rep": 1416,
+    "n_train": 2819,
+    "none_rejection_candidate": {
+      "CANDIDATE_PACKAGE_ID": "HYPERLEX_V6_NONE_REJECTION_PACKAGE_CANDIDATE_V1",
+      "PIPELINE_POINTER_ID": "V6_NONE_REJECTION_CANDIDATE",
+      "REP_V2_positive_only": 0.415797546133708,
+      "REP_V2_system_macro_f1": 0.36980892482696165,
+      "REP_V2_zero_fp": 0.08769931662870159,
+      "encoder_state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+      "global_promotion": false,
+      "mechanism": "LEARNED_ANY_EVIDENCE_GATE",
+      "params": {
+        "architecture": "frozen_embedding\u2192ANY_LABEL_gate\u2192frozen_axis_heads\u2192hierarchy",
+        "gate_bundle_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+        "gate_threshold": 0.22499999999999998
+      },
+      "parent_package_sha256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4"
+    }
+  },
+  "runtime_schema": "hyperlex.classification.v6.operating_gated_hierarchical_forward.v1",
+  "threshold_manifest_sha": "bb2a490165273a71aa6545bc37ea48bd5c3bd4282b9be6e94dbd93f25c442781",
+  "thresholds": {
+    "domain": [
+      0.25,
+      0.05,
+      0.1,
+      0.1,
+      0.3,
+      0.45,
+      0.2,
+      0.25,
+      0.3,
+      0.45,
+      0.25
+    ],
+    "function": [
+      0.3,
+      0.4,
+      0.2,
+      0.4
+    ],
+    "mediation": [
+      0.35
+    ]
+  },
+  "witness": {
+    "REP_V2_mean_predicted_labels_on_zero_gold": 0.14464692482915717,
+    "REP_V2_positive_only_system_macro_f1": 0.415797546133708,
+    "REP_V2_system_macro_f1": 0.36980892482696165,
+    "REP_V2_zero_label_exact_rejection": 0.9123006833712984,
+    "REP_V2_zero_label_false_positive_rate": 0.08769931662870159,
+    "positive_only_baseline_pre_gate": 0.41630366884055453
+  }
+}
