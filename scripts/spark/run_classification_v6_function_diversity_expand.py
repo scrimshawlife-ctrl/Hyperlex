@@ -559,8 +559,8 @@ def build_v3(
                 break
         return out
 
-    # Prefer non-wikt / long function rows into REP for representativeness;
-    # still put the majority of new function supervision into TRAIN.
+    # Majority of new function supervision → TRAIN. Hold out a stratified
+    # non-wikt/long slice for REP representativeness and a smaller DEV slice.
     non_wikt_fun = [
         r
         for r in new_fun
@@ -571,20 +571,23 @@ def build_v3(
         for r in new_fun
         if source_style(r.get("source_family") or "") == "wiktionary_sense"
     ]
-    rep_fun_new = take_new(non_wikt_fun, 90)
-    if len(rep_fun_new) < 60:
-        rep_fun_new += take_new(
-            [r for r in wikt_fun if length_bucket(len(r.get("text") or "")) != "short"],
-            60 - len(rep_fun_new),
-        )
+    long_wikt_fun = [
+        r for r in wikt_fun if length_bucket(len(r.get("text") or "")) != "short"
+    ]
+    # REP: enough non-wikt to clear ≥20% share among ~150–250 function rows
+    rep_fun_new = take_new(non_wikt_fun, 55)
+    if len(rep_fun_new) < 40:
+        rep_fun_new += take_new(long_wikt_fun, 40 - len(rep_fun_new))
     taken = {r["identity"] for r in rep_fun_new}
-    rest_fun = [r for r in new_fun if r["identity"] not in taken]
-    # long/medium first for DEV
-    rest_fun = sorted(rest_fun, key=diversify_score, reverse=True)
-    dev_fun_new = take_new(rest_fun, 50)
+    rest_fun = sorted(
+        [r for r in new_fun if r["identity"] not in taken],
+        key=diversify_score,
+        reverse=True,
+    )
+    dev_fun_new = take_new(rest_fun, 35)
     taken |= {r["identity"] for r in dev_fun_new}
     rest_fun = [r for r in new_fun if r["identity"] not in taken]
-    train_fun_new = take_new(rest_fun, 400)
+    train_fun_new = take_new(rest_fun, 500)
 
     # Extra domain/mediation positives for length/style diversity
     rep_pos_new = take_new(new_pos, 40)
