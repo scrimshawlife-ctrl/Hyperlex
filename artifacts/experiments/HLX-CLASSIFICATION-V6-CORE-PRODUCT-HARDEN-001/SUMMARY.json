@@ -1,0 +1,108 @@
+{
+  "CORE_QUALIFICATION_GATES": {
+    "DOMAIN_macro_f1_min": 0.28,
+    "FUNCTION_in_pass_fail": false,
+    "FUNCTION_role": "ADVISORY_ONLY_NON_BLOCKING",
+    "MEDIATION_macro_f1_min": 0.28,
+    "QUAL_002_status": "EVALUATION_SPENT",
+    "QUAL_003_status": "EVALUATION_SPENT",
+    "QUAL_CORE_id": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+    "chosen_before_qual_open": true,
+    "core_system_macro_f1_min": 0.3,
+    "hierarchy_violation_max": 0.02,
+    "mean_predicted_labels_on_zero_gold_max": 1.0,
+    "retention_rule": "QUAL core_system_macro_f1(DOMAIN,MEDIATION) >= 0.30; FUNCTION does not affect pass/fail",
+    "zero_label_exact_rejection_min": 0.8,
+    "zero_label_false_positive_rate_max": 0.2
+  },
+  "DEV_V3": {
+    "DOMAIN_macro_f1": 0.25574007049416886,
+    "DOMAIN_micro_f1": 0.272108843537415,
+    "FUNCTION_advisory_macro_f1": 0.2739764910171642,
+    "MEDIATION_macro_f1": 0.15686274509803924,
+    "MEDIATION_micro_f1": 0.15686274509803924,
+    "core_system_macro_f1": 0.20630140779610406,
+    "hierarchy_violation_rate": 0.0,
+    "jaccard": 0.6635802469135802,
+    "mean_predicted_labels_on_zero_gold": 0.12218649517684887,
+    "sample_f1": 0.669074074074074,
+    "zero_label_exact_rejection": 0.9163987138263665,
+    "zero_label_false_positive_rate": 0.08360128617363344
+  },
+  "NEXT_ACTION": "BUILD_AND_SEAL_FRESH_V6_CORE_QUALIFICATION_SURFACE",
+  "OUTCOME": "V6_CORE_PRODUCT_HARDENED",
+  "PACKAGE_ID": "HYPERLEX_V6_CORE_PRODUCT_PACKAGE_V1",
+  "PACKAGE_SHA256": "035e1b7e21e97ed36f79750f1f643262540fba1546f488af2a0af04e8a7c1605",
+  "PHASE_RULE": "HARDEN_V6_CORE_PRODUCT_WITHOUT_REQUIRED_FUNCTION",
+  "POINTER_ID": "V6_CORE_PRODUCT_CANDIDATE",
+  "QUALIFICATION_READINESS": "V6_CORE_QUALIFICATION_PREP_COMPLETE_SURFACE_REQUIRED",
+  "QUAL_002_RESCORED": false,
+  "QUAL_003_RESCORED": false,
+  "QUAL_CORE_ID": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+  "RECEIPT": "2c84712af4008a1c9e8ba0cd1ebca2b1337699df2f1cb683633a6f0a06bf98f4",
+  "REJECTED_MICRO_FIXES": {
+    "change_ontology": false,
+    "modify_NONE_gate": false,
+    "require_FUNCTION_for_release": false,
+    "retrain_DOMAIN": false,
+    "retrain_MEDIATION": false,
+    "retrain_encoder": false,
+    "reuse_QUAL_002": false,
+    "reuse_QUAL_003": false
+  },
+  "RELEASE_ELIGIBLE": true,
+  "REP_V3": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "DOMAIN_micro_f1": 0.3740157480314961,
+    "FUNCTION_advisory_macro_f1": 0.29637614845700705,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "MEDIATION_micro_f1": 0.3421052631578948,
+    "core_system_macro_f1": 0.34844035319433936,
+    "hierarchy_violation_rate": 0.0,
+    "jaccard": 0.6912420030884624,
+    "mean_predicted_labels_on_zero_gold": 0.12186788154897495,
+    "sample_f1": 0.6991837635120229,
+    "zero_label_exact_rejection": 0.9225512528473804,
+    "zero_label_false_positive_rate": 0.0774487471526196
+  },
+  "cold_load_ok": true,
+  "dev_gates_pass": false,
+  "encoder_immutable": true,
+  "function_advisory": {
+    "DEV_FUNCTION_macro_f1": 0.2739764910171642,
+    "REP_FUNCTION_macro_f1": 0.29637614845700705,
+    "blocking": false,
+    "excluded_from_core_system_macro": true,
+    "excluded_from_qualification_pass_fail": true,
+    "excluded_from_zero_label_core_accounting": true,
+    "memetic_form": "RESEARCH_ONLY",
+    "role": "ADVISORY_ONLY"
+  },
+  "output_contract": {
+    "FUNCTION_blocks_release": false,
+    "FUNCTION_in_qualification_pass_fail": false,
+    "FUNCTION_reporting": "ADVISORY_ONLY_NON_BLOCKING",
+    "ontology_labels_preserved": true,
+    "optional_outputs": [
+      "function_best_effort"
+    ],
+    "parallel_research_tracks": [
+      "function_contextual_enrichment_track"
+    ],
+    "required_outputs": [
+      "evidence_gate",
+      "domain",
+      "mediation"
+    ],
+    "research_only": [
+      "function.memetic_form"
+    ],
+    "system_macro_axes": [
+      "domain",
+      "mediation"
+    ]
+  },
+  "reason": "core_package_cold_load_roundtrip_and_REP_gates_pass",
+  "rep_gates_pass": true,
+  "round_trip_ok": true
+}

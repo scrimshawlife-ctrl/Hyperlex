@@ -1,0 +1,45 @@
+{
+  "CORE_QUALIFICATION_GATES": {
+    "DOMAIN_macro_f1_min": 0.28,
+    "FUNCTION_in_pass_fail": false,
+    "FUNCTION_role": "ADVISORY_ONLY_NON_BLOCKING",
+    "MEDIATION_macro_f1_min": 0.28,
+    "QUAL_002_status": "EVALUATION_SPENT",
+    "QUAL_003_status": "EVALUATION_SPENT",
+    "QUAL_CORE_id": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+    "chosen_before_qual_open": true,
+    "core_system_macro_f1_min": 0.3,
+    "hierarchy_violation_max": 0.02,
+    "mean_predicted_labels_on_zero_gold_max": 1.0,
+    "retention_rule": "QUAL core_system_macro_f1(DOMAIN,MEDIATION) >= 0.30; FUNCTION does not affect pass/fail",
+    "zero_label_exact_rejection_min": 0.8,
+    "zero_label_false_positive_rate_max": 0.2
+  },
+  "PACKAGE_ID": "HYPERLEX_V6_CORE_PRODUCT_PACKAGE_V1",
+  "PACKAGE_SHA256": "035e1b7e21e97ed36f79750f1f643262540fba1546f488af2a0af04e8a7c1605",
+  "POINTER_ID": "V6_CORE_PRODUCT_CANDIDATE",
+  "output_contract": {
+    "FUNCTION_blocks_release": false,
+    "FUNCTION_in_qualification_pass_fail": false,
+    "FUNCTION_reporting": "ADVISORY_ONLY_NON_BLOCKING",
+    "ontology_labels_preserved": true,
+    "optional_outputs": [
+      "function_best_effort"
+    ],
+    "parallel_research_tracks": [
+      "function_contextual_enrichment_track"
+    ],
+    "required_outputs": [
+      "evidence_gate",
+      "domain",
+      "mediation"
+    ],
+    "research_only": [
+      "function.memetic_form"
+    ],
+    "system_macro_axes": [
+      "domain",
+      "mediation"
+    ]
+  }
+}

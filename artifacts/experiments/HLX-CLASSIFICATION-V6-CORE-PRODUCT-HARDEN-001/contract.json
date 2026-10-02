@@ -1,0 +1,307 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-CORE-PRODUCT-HARDEN-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PACKAGE_ID": "HYPERLEX_V6_CORE_PRODUCT_PACKAGE_V1",
+  "PHASE_RULE": "HARDEN_V6_CORE_PRODUCT_WITHOUT_REQUIRED_FUNCTION",
+  "POINTER_ID": "V6_CORE_PRODUCT_CANDIDATE",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "QUAL_002_RESCORED": false,
+  "QUAL_003_RESCORED": false,
+  "RELEASE_ELIGIBLE": false,
+  "architecture": {
+    "advisory_heads": [
+      "function"
+    ],
+    "advisory_thresholds": {
+      "function": [
+        0.3,
+        0.4,
+        0.2,
+        0.4
+      ]
+    },
+    "core_thresholds": {
+      "domain": [
+        0.25,
+        0.05,
+        0.1,
+        0.1,
+        0.3,
+        0.45,
+        0.2,
+        0.25,
+        0.3,
+        0.45,
+        0.25
+      ],
+      "mediation": [
+        0.35
+      ]
+    },
+    "encoder": {
+      "model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+      "mutable": false,
+      "revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+      "state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+      "trainable": 0
+    },
+    "flow": [
+      "text",
+      "frozen_semantic_encoder",
+      "frozen_semantic_vector",
+      "ANY_LABEL_ZERO_LABEL_gate",
+      "if_ZERO_LABEL_emit_empty",
+      "else_DOMAIN_and_MEDIATION_heads",
+      "hierarchy_compatibility_constraints",
+      "core_multi_label_output",
+      "optional_FUNCTION_advisory_non_blocking"
+    ],
+    "gate": {
+      "bundle_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+      "kind": "ANY_SEMANTIC_EVIDENCE_GATE",
+      "threshold": 0.22499999999999998
+    },
+    "required_heads": [
+      "domain",
+      "mediation"
+    ]
+  },
+  "core_witness_REP_V3": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "core_system_macro_f1": 0.34844035319433936,
+    "hierarchy_violation_rate": 0.001985,
+    "parent_product_receipt_prefix": "c488a39d",
+    "zero_label_exact_rejection": 0.9123006833712984,
+    "zero_label_false_positive_rate": 0.08769931662870159
+  },
+  "forbidden": [
+    "score_QUAL_002",
+    "score_QUAL_003",
+    "include_FUNCTION_in_core_pass_fail",
+    "retrain_encoder",
+    "retrain_DOMAIN",
+    "retrain_MEDIATION",
+    "modify_NONE_gate",
+    "change_ontology",
+    "lower_gates_after_results"
+  ],
+  "next_actions": [
+    "BUILD_AND_SEAL_FRESH_V6_CORE_QUALIFICATION_SURFACE",
+    "REVIEW_V6_CORE_PRODUCT_FAILURE"
+  ],
+  "ontology": {
+    "changed": false,
+    "constraint_manifest_hash": "2e51ed0865bc5431b92b94ba0e99ff3c9e4803ffb72e1fb80c5ead8ab839bc1c",
+    "constraints": {
+      "CONSTRAINT_MANIFEST_ID": "HYPERLEX_V6_HIERARCHY_CONSTRAINTS_V1",
+      "apply_stage": "after_raw_head_inference",
+      "incompatibility_rules": [],
+      "report_both": [
+        "raw_predictions",
+        "constrained_predictions"
+      ],
+      "rules": [
+        {
+          "action": "force_parent_positive",
+          "axis": "domain",
+          "child": "domain.technology.ai_discourse",
+          "example": "ai_discourse => technology",
+          "id": "ai_discourse_requires_technology",
+          "parent": "domain.technology",
+          "type": "required_parent"
+        }
+      ],
+      "version": 1
+    },
+    "label_schema": {
+      "axes": {
+        "domain_labels": [
+          "domain.gaming",
+          "domain.gambling",
+          "domain.crypto",
+          "domain.sports",
+          "domain.entertainment",
+          "domain.fashion",
+          "domain.workplace",
+          "domain.politics",
+          "domain.spiritual",
+          "domain.technology",
+          "domain.technology.ai_discourse"
+        ],
+        "function_labels": [
+          "function.evaluative_stance",
+          "function.relational_intimacy",
+          "function.conflictive_force",
+          "function.memetic_form"
+        ],
+        "mediation_labels": [
+          "mediation.internet_register"
+        ]
+      },
+      "axis_vocabs": {
+        "domain": [
+          "domain.gaming",
+          "domain.gambling",
+          "domain.crypto",
+          "domain.sports",
+          "domain.entertainment",
+          "domain.fashion",
+          "domain.workplace",
+          "domain.politics",
+          "domain.spiritual",
+          "domain.technology",
+          "domain.technology.ai_discourse"
+        ],
+        "function": [
+          "function.evaluative_stance",
+          "function.relational_intimacy",
+          "function.conflictive_force",
+          "function.memetic_form"
+        ],
+        "mediation": [
+          "mediation.internet_register"
+        ]
+      },
+      "ontology_version": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+      "semantics": "label_id_stable_no_display_string_lookup",
+      "structure": "HIERARCHICAL_MULTI_LABEL"
+    },
+    "label_schema_hash": "d4e76b88d9ff859c62cf0f38c26dbda2a17e04ea81070c5061a20b37e674efbb",
+    "threshold_manifest_hash": "bb2a490165273a71aa6545bc37ea48bd5c3bd4282b9be6e94dbd93f25c442781"
+  },
+  "outcomes": [
+    "V6_CORE_PRODUCT_HARDENED",
+    "V6_CORE_PRODUCT_PARTIAL",
+    "V6_CORE_PRODUCT_BLOCKED"
+  ],
+  "output_contract": {
+    "FUNCTION_blocks_release": false,
+    "FUNCTION_in_qualification_pass_fail": false,
+    "FUNCTION_reporting": "ADVISORY_ONLY_NON_BLOCKING",
+    "ontology_labels_preserved": true,
+    "optional_outputs": [
+      "function_best_effort"
+    ],
+    "parallel_research_tracks": [
+      "function_contextual_enrichment_track"
+    ],
+    "required_outputs": [
+      "evidence_gate",
+      "domain",
+      "mediation"
+    ],
+    "research_only": [
+      "function.memetic_form"
+    ],
+    "system_macro_axes": [
+      "domain",
+      "mediation"
+    ]
+  },
+  "parent": {
+    "operating_package_id": "HYPERLEX_V6_OPERATING_PIPELINE_PACKAGE_CANDIDATE_V1",
+    "operating_package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+    "product_disposition": "FUNCTION_RETAIN_OPTIONAL",
+    "product_receipt_prefix": "c488a39d",
+    "product_requirement_experiment": "HLX-CLASSIFICATION-V6-FUNCTION-PRODUCT-REQUIREMENT-001"
+  },
+  "qualification_core_preparation": {
+    "QUALIFICATION_ID": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+    "QUAL_002": {
+      "id": "HYPERLEX_V6_QUALIFICATION_002",
+      "reuse_forbidden": true,
+      "row_access_this_phase": false,
+      "status": "EVALUATION_SPENT"
+    },
+    "QUAL_003": {
+      "id": "HYPERLEX_V6_QUALIFICATION_003",
+      "result_sha256": "b560dac2a8f80f45c6213dcd2ba25acdb2e0b7dde786da3ee0a5d6e3231ae724",
+      "reuse_forbidden": true,
+      "row_access_this_phase": false,
+      "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b",
+      "status": "EVALUATION_SPENT"
+    },
+    "distribution_targets": {
+      "function_labels": "optional_annotation_only_not_scored_for_pass_fail",
+      "include": [
+        "NO_EVIDENCE_zero_label_traffic",
+        "domain_positive_traffic",
+        "mediation_traffic",
+        "source_style_diversity",
+        "length_diversity"
+      ],
+      "min_n": 750,
+      "preferred_n": 1000,
+      "zero_label_share": [
+        0.55,
+        0.75
+      ]
+    },
+    "executions": 0,
+    "gates": {
+      "DOMAIN_macro_f1_min": 0.28,
+      "FUNCTION_in_pass_fail": false,
+      "FUNCTION_role": "ADVISORY_ONLY_NON_BLOCKING",
+      "MEDIATION_macro_f1_min": 0.28,
+      "QUAL_002_status": "EVALUATION_SPENT",
+      "QUAL_003_status": "EVALUATION_SPENT",
+      "QUAL_CORE_id": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+      "chosen_before_qual_open": true,
+      "core_system_macro_f1_min": 0.3,
+      "hierarchy_violation_max": 0.02,
+      "mean_predicted_labels_on_zero_gold_max": 1.0,
+      "retention_rule": "QUAL core_system_macro_f1(DOMAIN,MEDIATION) >= 0.30; FUNCTION does not affect pass/fail",
+      "zero_label_exact_rejection_min": 0.8,
+      "zero_label_false_positive_rate_max": 0.2
+    },
+    "metrics": [
+      "core_system_macro_f1",
+      "DOMAIN_macro_f1",
+      "DOMAIN_micro_f1",
+      "MEDIATION_macro_f1",
+      "MEDIATION_micro_f1",
+      "zero_label_false_positive_rate",
+      "zero_label_exact_rejection",
+      "mean_predicted_labels_on_zero_gold",
+      "sample_f1",
+      "jaccard",
+      "hierarchy_violation_rate",
+      "FUNCTION_advisory_macro_f1_non_blocking"
+    ],
+    "must_be": [
+      "natural",
+      "OBSERVED",
+      "disjoint_from_TRAIN_DEV_REP_V3_and_spent_QUAL",
+      "core_operating_distribution_aware"
+    ],
+    "scoring_authorized": false,
+    "status": "PREPARED_NOT_SEALED"
+  },
+  "rejected_micro_fixes_default": {
+    "change_ontology": false,
+    "modify_NONE_gate": false,
+    "require_FUNCTION_for_release": false,
+    "retrain_DOMAIN": false,
+    "retrain_MEDIATION": false,
+    "retrain_encoder": false,
+    "reuse_QUAL_002": false,
+    "reuse_QUAL_003": false
+  },
+  "reproduction_tolerance": {
+    "core_system_abs": 0.02,
+    "domain_abs": 0.02,
+    "mediation_abs": 0.02,
+    "zero_exact_abs": 0.05,
+    "zero_fp_abs": 0.05
+  },
+  "runtime_schema": "hyperlex.classification.v6.core_gated_domain_mediation.v1",
+  "schema": "hyperlex.classification.v6.core_product_harden.v1",
+  "surfaces": {
+    "DEV_SELECTION": "HYPERLEX_V6_DEV_SELECTION_V3",
+    "REPRESENTATIVE_VALIDATION": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V3",
+    "TRAIN": "HYPERLEX_V6_TRAIN_V3"
+  }
+}

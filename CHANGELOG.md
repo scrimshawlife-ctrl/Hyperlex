@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- **Harden V6 core product without required FUNCTION (Spec 007):** Freeze
+  core package as evidence_gate + DOMAIN + MEDIATION. FUNCTION advisory /
+  non-blocking only; memetic_form research-only. Cold-load + round-trip
+  frozen encoder/NONE/DOMAIN/MEDIATION. REP_V3 core system **0.348**,
+  DOMAIN **0.355**, MEDIATION **0.342**, zero-FP **0.077**, exact-reject
+  **0.923**, hierarchy post-corr **0**. Preregister
+  `HYPERLEX_V6_CORE_QUALIFICATION_001` gates (FUNCTION excluded). Outcome
+  **`V6_CORE_PRODUCT_HARDENED`**. Package `035e1b7e…`. Next:
+  `BUILD_AND_SEAL_FRESH_V6_CORE_QUALIFICATION_SURFACE`. Receipt
+  `2c84712a…`.
+
 - **Reassess V6 FUNCTION product requirement (Spec 007):** Read-only
   product decision after text-signal ceiling + pragmatic NOT_SUPPORTED.
   Disposition **`FUNCTION_RETAIN_OPTIONAL`**: core outputs = evidence gate
