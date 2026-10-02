@@ -426,11 +426,21 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
     def checkpoint() -> None:
         write_jsonl(partial_path, raw)
 
-    if len(raw) >= target:
-        print(f"acquire_target_met_pre_mediawiki n={len(raw)}", flush=True)
+    # Prefer Firecrawl / partial NATURAL OBSERVED over MediaWiki API (429-prone).
+    # Seal gate is n_min=750 / preferred=1000 — do not burn API once preferred met.
+    from hyperlexical.classification_v6_qualification_surface_002 import (
+        TARGET_N_PREFERRED,
+    )
+
+    if len(raw) >= target or len(raw) >= TARGET_N_PREFERRED:
+        print(
+            f"acquire_target_met_pre_mediawiki n={len(raw)} "
+            f"target={target} preferred={TARGET_N_PREFERRED}",
+            flush=True,
+        )
         checkpoint()
         rng.shuffle(raw)
-        return raw[:target]
+        return raw[: max(target, len(raw))][:target]
 
     per_family = 55
     families = list(ACTIVE_FAMILY_VOCABULARY)
