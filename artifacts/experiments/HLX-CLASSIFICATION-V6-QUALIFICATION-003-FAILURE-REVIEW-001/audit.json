@@ -1,0 +1,384 @@
+{
+  "function_failure": {
+    "admitted_mean_recall": 0.09821428571428571,
+    "gate_reject_rate_on_function_gold": 0.48484848484848486,
+    "length_shift_severe": true,
+    "mode": "MIXED",
+    "per_label": {
+      "function.conflictive_force": {
+        "admitted_head_would_fire_rate": 0.0,
+        "admitted_n": 4,
+        "admitted_recall": 0.25,
+        "domain_mix": {
+          "__NONE__": 6,
+          "domain.gaming": 1,
+          "domain.politics": 1
+        },
+        "final_tp": 1,
+        "gate_reject_n": 4,
+        "gate_reject_rate": 0.5,
+        "qual_f1": 0.0425531914893617,
+        "qual_length_p50": 441,
+        "qual_precision": 0.02564102564102564,
+        "qual_recall": 0.125,
+        "qual_support": 8,
+        "rep_length_p50": 77,
+        "rep_support": 33,
+        "style_mix": {
+          "encyclopedic_none_cue": 3,
+          "wiktionary_sense": 5
+        }
+      },
+      "function.evaluative_stance": {
+        "admitted_head_would_fire_rate": 0.0,
+        "admitted_n": 4,
+        "admitted_recall": 0.0,
+        "domain_mix": {
+          "__NONE__": 5
+        },
+        "final_tp": 0,
+        "gate_reject_n": 1,
+        "gate_reject_rate": 0.2,
+        "qual_f1": 0.0,
+        "qual_length_p50": 248,
+        "qual_precision": 0.0,
+        "qual_recall": 0.0,
+        "qual_support": 5,
+        "rep_length_p50": 74,
+        "rep_support": 35,
+        "style_mix": {
+          "wiktionary_sense": 5
+        }
+      },
+      "function.memetic_form": {
+        "admitted_head_would_fire_rate": 0.0,
+        "admitted_n": 2,
+        "admitted_recall": 0.0,
+        "domain_mix": {
+          "__NONE__": 3
+        },
+        "final_tp": 0,
+        "gate_reject_n": 1,
+        "gate_reject_rate": 0.3333333333333333,
+        "qual_f1": 0.0,
+        "qual_length_p50": 238,
+        "qual_precision": 0.0,
+        "qual_recall": 0.0,
+        "qual_support": 3,
+        "rep_length_p50": 80,
+        "rep_support": 38,
+        "style_mix": {
+          "wiktionary_sense": 3
+        }
+      },
+      "function.relational_intimacy": {
+        "admitted_head_would_fire_rate": 0.14285714285714285,
+        "admitted_n": 7,
+        "admitted_recall": 0.14285714285714285,
+        "domain_mix": {
+          "__NONE__": 15,
+          "domain.entertainment": 1,
+          "domain.technology": 1,
+          "domain.technology.ai_discourse": 1
+        },
+        "final_tp": 1,
+        "gate_reject_n": 10,
+        "gate_reject_rate": 0.5882352941176471,
+        "qual_f1": 0.05714285714285714,
+        "qual_length_p50": 500,
+        "qual_precision": 0.05555555555555555,
+        "qual_recall": 0.058823529411764705,
+        "qual_support": 17,
+        "rep_length_p50": 100,
+        "rep_support": 45,
+        "style_mix": {
+          "encyclopedic_none_cue": 10,
+          "wiktionary_sense": 7
+        }
+      }
+    },
+    "qual_function_length_p50": 415,
+    "qual_function_n": 33,
+    "qual_function_style": {
+      "encyclopedic_none_cue": 13,
+      "wiktionary_sense": 20
+    },
+    "qual_function_wiki_none_share": 0.3939393939393939,
+    "qual_to_rep_support_ratio": 0.2185430463576159,
+    "rep_function_length_p50": 82,
+    "rep_function_n": 151,
+    "rep_function_style": {
+      "wiktionary_sense": 151
+    }
+  },
+  "function_learnability": {
+    "class": "UNDERREPRESENTED",
+    "human_mean_set_jaccard": 0.999302649930265,
+    "labels_with_qual_support_lt_10": 3,
+    "note": "Uses QUAL dual-annotation stability + support/style; does not reopen ontology.",
+    "qual_function_n": 33,
+    "qual_function_wiki_none_share": 0.3939393939393939,
+    "rep_function_n": 151
+  },
+  "gate_table": {
+    "hierarchy_violation": {
+      "pass": true,
+      "threshold": 0.05,
+      "value": 0.0
+    },
+    "mean_predicted_labels_on_zero_gold": {
+      "advisory": true,
+      "pass": true,
+      "threshold": 1.0,
+      "value": 0.4490644490644491
+    },
+    "no_material_axis_collapse": {
+      "axis_macros": {
+        "domain": 0.19519688333529242,
+        "function": 0.02492401215805471,
+        "mediation": 0.2916666666666667
+      },
+      "pass": false,
+      "threshold": 0.1,
+      "value": false
+    },
+    "positive_only_system_macro_f1": {
+      "pass": false,
+      "threshold": 0.3,
+      "value": 0.29428335606496525
+    },
+    "system_macro_f1": {
+      "pass": false,
+      "threshold": 0.3,
+      "value": 0.17059585405333796
+    },
+    "zero_label_exact_rejection": {
+      "pass": true,
+      "threshold": 0.5,
+      "value": 0.7214137214137214
+    },
+    "zero_label_false_positive_rate": {
+      "pass": true,
+      "threshold": 0.35,
+      "value": 0.2785862785862786
+    }
+  },
+  "none_gate": {
+    "function_gate_reject_rate": 0.48484848484848486,
+    "note": "NONE operating gates passed on QUAL-003; freeze unless function loss is predominantly gate-induced with intact post-admission recall.",
+    "operating_gates_pass": true,
+    "recommendation_default": "NONE_GATE_FROZEN_RETAIN",
+    "zero_label_FP": 0.2785862785862786,
+    "zero_label_exact": 0.7214137214137214
+  },
+  "positive_false_reject": {
+    "class": "MOSTLY_POST_ADMISSION_POSITIVE_ERRORS",
+    "final_empty_rate_on_positives": 0.5026455026455027,
+    "final_empty_strata": {
+      "gate_score": {
+        "mean": 0.3462907224820421,
+        "p50": 0.15742702782154083
+      },
+      "has_domain": {
+        "rate": 0.4657534246575342,
+        "subset": 68,
+        "universe": 146
+      },
+      "has_function": {
+        "rate": 0.6666666666666666,
+        "subset": 22,
+        "universe": 33
+      },
+      "has_mediation": {
+        "rate": 0.4,
+        "subset": 8,
+        "universe": 20
+      },
+      "length_long": {
+        "rate": 0.5655737704918032,
+        "subset": 69,
+        "universe": 122
+      },
+      "length_medium": {
+        "rate": 0.41509433962264153,
+        "subset": 22,
+        "universe": 53
+      },
+      "length_short": {
+        "rate": 0.2857142857142857,
+        "subset": 4,
+        "universe": 14
+      },
+      "multi_label": {
+        "rate": 0.2,
+        "subset": 6,
+        "universe": 30
+      },
+      "single_label": {
+        "rate": 0.559748427672956,
+        "subset": 89,
+        "universe": 159
+      },
+      "style_encyclopedic_none_cue": {
+        "rate": 0.9714285714285714,
+        "subset": 34,
+        "universe": 35
+      },
+      "style_firecrawl_observed": {
+        "rate": 0.0,
+        "subset": 0,
+        "universe": 0
+      },
+      "style_other": {
+        "rate": 0.0,
+        "subset": 0,
+        "universe": 0
+      },
+      "style_wiktionary_sense": {
+        "rate": 0.3961038961038961,
+        "subset": 61,
+        "universe": 154
+      }
+    },
+    "gate_reject_rate_on_positives": 0.31216931216931215,
+    "gate_reject_strata": {
+      "gate_score": {
+        "mean": 0.05768355397687255,
+        "p50": 0.018674250692129135
+      },
+      "has_domain": {
+        "rate": 0.2876712328767123,
+        "subset": 42,
+        "universe": 146
+      },
+      "has_function": {
+        "rate": 0.48484848484848486,
+        "subset": 16,
+        "universe": 33
+      },
+      "has_mediation": {
+        "rate": 0.15,
+        "subset": 3,
+        "universe": 20
+      },
+      "length_long": {
+        "rate": 0.4098360655737705,
+        "subset": 50,
+        "universe": 122
+      },
+      "length_medium": {
+        "rate": 0.1320754716981132,
+        "subset": 7,
+        "universe": 53
+      },
+      "length_short": {
+        "rate": 0.14285714285714285,
+        "subset": 2,
+        "universe": 14
+      },
+      "multi_label": {
+        "rate": 0.06666666666666667,
+        "subset": 2,
+        "universe": 30
+      },
+      "single_label": {
+        "rate": 0.3584905660377358,
+        "subset": 57,
+        "universe": 159
+      },
+      "style_encyclopedic_none_cue": {
+        "rate": 0.9714285714285714,
+        "subset": 34,
+        "universe": 35
+      },
+      "style_firecrawl_observed": {
+        "rate": 0.0,
+        "subset": 0,
+        "universe": 0
+      },
+      "style_other": {
+        "rate": 0.0,
+        "subset": 0,
+        "universe": 0
+      },
+      "style_wiktionary_sense": {
+        "rate": 0.16233766233766234,
+        "subset": 25,
+        "universe": 154
+      }
+    },
+    "gate_share_of_final_empty": 0.6210526315789474,
+    "head_score_max_mean_admitted": 0.4158184363864935,
+    "head_score_max_mean_gate_rejected": 0.39956136931807307,
+    "n_admitted": 130,
+    "n_empty_after_admit": 36,
+    "n_final_empty": 95,
+    "n_gate_reject": 59,
+    "n_positive": 189,
+    "note": "PRIMARY_METRICS.false_reject_positive_rate counts final-empty positives; gate_reject_rate is ANY_LABEL rejects only.",
+    "post_admission_empty_share_of_final_empty": 0.37894736842105264
+  },
+  "positive_representativeness": {
+    "class": "POSITIVE_REPRESENTATIVENESS_PARTIAL",
+    "length_bucket_l1": 0.455911567435731,
+    "qual_domain_function_pairs_n": 9,
+    "qual_function_prevalence_among_positives": 0.1746031746031746,
+    "qual_length": {
+      "mean": 297.18518518518516,
+      "n": 189,
+      "p50": 283
+    },
+    "qual_positive_n": 189,
+    "qual_style": {
+      "encyclopedic_none_cue": 35,
+      "wiktionary_sense": 154
+    },
+    "qual_wikt_share_among_positives": 0.8148148148148148,
+    "rep_domain_function_pairs_n": 11,
+    "rep_function_prevalence_among_positives": 0.28066914498141265,
+    "rep_length": {
+      "mean": 138.12453531598513,
+      "n": 538,
+      "p50": 83
+    },
+    "rep_positive_n": 538,
+    "rep_style": {
+      "wiktionary_sense": 538
+    },
+    "rep_wikt_share_among_positives": 1.0,
+    "style_l1": 0.1851851851851852,
+    "train_positive_n": 1204
+  },
+  "qual_metrics": {
+    "DOMAIN": 0.19519688333529242,
+    "FUNCTION": 0.02492401215805471,
+    "MEDIATION": 0.2916666666666667,
+    "false_reject_positive_rate_final_empty": 0.5026455026455027,
+    "positive_only": 0.29428335606496525,
+    "system_macro_f1": 0.17059585405333796
+  },
+  "rep_witness": {
+    "FUNCTION": 0.22272324177813058,
+    "positive_only": 0.415797546133708,
+    "system": 0.36980892482696165,
+    "zero_fp": 0.08769931662870159
+  },
+  "representation_vs_head": {
+    "admitted_function_mean_sim": 0.21459892830427954,
+    "class": "MIXED_GEOMETRY_AND_HEAD",
+    "device": "cuda",
+    "gate_rejected_function_mean_sim": 0.030230600852519274,
+    "geometry_drop_qual_vs_rep": 0.1164780015861509,
+    "intact_geometry_admitted_n": 14,
+    "intact_geometry_miss_n": 12,
+    "intact_geometry_miss_rate": 0.8571428571428571,
+    "mean_sim_qual_function_to_train_centroid": 0.12520822408524426,
+    "mean_sim_rep_function_to_train_centroid": 0.24168622567139517,
+    "qual_function_n": 33,
+    "qual_pos_mean_sim_to_rep_pos_centroid": 0.12414219160933816,
+    "rep_function_sample_n": 151,
+    "rep_function_sim_p20_threshold": 0.12088032811880112,
+    "rep_pos_mean_sim_to_rep_pos_centroid": 0.24535573387518525,
+    "train_function_sample_n": 300
+  }
+}

@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Review V6 QUAL-003 FAIL (Spec 007):** Forensic read-only review after
+  QUAL-003 FAIL. Primary diagnosis
+  **`MIXED_POSITIVE_SEMANTIC_GENERALIZATION_FAILURE`** (FUNCTION dominant).
+  Positive gate-reject 0.312 vs final-empty 0.503 (38% empty post-admit).
+  FUNCTION: REP 0.223 → QUAL 0.025; qual_n=33 vs rep_n=151; admitted
+  mean recall 0.098; length/style shift severe. Geometry
+  `MIXED_GEOMETRY_AND_HEAD`. Learnability `UNDERREPRESENTED`.
+  **`NONE_GATE_FROZEN_RETAIN`**. Receipt `cf36ef3a…`. Next:
+  `EXPAND_V6_FUNCTION_DIVERSITY_AND_POSITIVE_REPRESENTATION`.
+
 - **Execute V6 QUAL-003 once (Spec 007):** Cold-loaded operating package
   `8ed1a4d4…` (ANY_LABEL gate th≈0.225) on sealed QUAL-003 (n=1151).
   Preflight OK; `model_executions=1`; `EVALUATION_SPENT`. Metrics:

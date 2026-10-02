@@ -1,0 +1,66 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-QUALIFICATION-003-FAILURE-REVIEW-001",
+  "FUNCTION_FAILURE_MODE": "MIXED",
+  "FUNCTION_LEARNABILITY": "UNDERREPRESENTED",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "EXPAND_V6_FUNCTION_DIVERSITY_AND_POSITIVE_REPRESENTATION",
+  "NONE_GATE_STATUS": "NONE_GATE_FROZEN_RETAIN",
+  "PACKAGE_SHA256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+  "POSITIVE_REPRESENTATIVENESS": "POSITIVE_REPRESENTATIVENESS_PARTIAL",
+  "PRIMARY_DIAGNOSIS": "MIXED_POSITIVE_SEMANTIC_GENERALIZATION_FAILURE",
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "QUAL_RESULT_ID": "HYPERLEX_V6_QUALIFICATION_003_RESULT",
+  "QUAL_RESULT_SHA256": "b560dac2a8f80f45c6213dcd2ba25acdb2e0b7dde786da3ee0a5d6e3231ae724",
+  "QUAL_SEAL_SHA256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b",
+  "REJECTED_MICRO_FIXES": {
+    "another_QUAL_surface_now": false,
+    "architecture_bakeoff": false,
+    "change_ontology": false,
+    "modify_NONE_rejection": false,
+    "retrain_encoder": false,
+    "retune_ANY_LABEL_threshold": false,
+    "seed_sweep": false,
+    "use_QUAL_003_for_optimization": false
+  },
+  "RELEASE_ELIGIBLE": false,
+  "REPRESENTATION_VS_HEAD": "MIXED_GEOMETRY_AND_HEAD",
+  "REVIEW_ID": "HYPERLEX_V6_QUALIFICATION_003_FAILURE_REVIEW_001",
+  "REVIEW_RULE": "REVIEW_V6_QUALIFICATION_003_FAILURE",
+  "SYSTEM_REVIEW_RECEIPT_SHA256": "cf36ef3acb22094bec39bf046083aeb0a9e5efed880be0e9a95fff10abc2b274",
+  "V6_OPERATING_PIPELINE_CANDIDATE_MUTATED": false,
+  "audit_summary": {
+    "FUNCTION_FAILURE_MODE": "MIXED",
+    "FUNCTION_LEARNABILITY": "UNDERREPRESENTED",
+    "NONE_GATE_STATUS": "NONE_GATE_FROZEN_RETAIN",
+    "POSITIVE_REPRESENTATIVENESS": "POSITIVE_REPRESENTATIVENESS_PARTIAL",
+    "PRIMARY_DIAGNOSIS": "MIXED_POSITIVE_SEMANTIC_GENERALIZATION_FAILURE",
+    "REPRESENTATION_VS_HEAD": "MIXED_GEOMETRY_AND_HEAD",
+    "evidence_summary": {
+      "final_empty_rate_on_positives": 0.5026455026455027,
+      "function_admitted_mean_recall": 0.09821428571428571,
+      "function_gate_reject_rate": 0.48484848484848486,
+      "gate_reject_rate_on_positives": 0.31216931216931215,
+      "post_admission_empty_share_of_final_empty": 0.37894736842105264,
+      "qual_to_rep_function_support_ratio": 0.2185430463576159
+    },
+    "function_support": {
+      "qual": 33,
+      "ratio": 0.2185430463576159,
+      "rep": 151
+    },
+    "positive_false_reject_class": "MOSTLY_POST_ADMISSION_POSITIVE_ERRORS"
+  },
+  "evidence_summary": {
+    "final_empty_rate_on_positives": 0.5026455026455027,
+    "function_admitted_mean_recall": 0.09821428571428571,
+    "function_gate_reject_rate": 0.48484848484848486,
+    "gate_reject_rate_on_positives": 0.31216931216931215,
+    "post_admission_empty_share_of_final_empty": 0.37894736842105264,
+    "qual_to_rep_function_support_ratio": 0.2185430463576159
+  },
+  "reviewed_at": "2026-10-02T05:45:05Z",
+  "schema": "hyperlex.classification.v6.qualification_003_failure_review.v1"
+}

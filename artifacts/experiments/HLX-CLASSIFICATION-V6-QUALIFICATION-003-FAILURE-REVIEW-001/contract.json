@@ -1,0 +1,60 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-QUALIFICATION-003-FAILURE-REVIEW-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PACKAGE_ID": "HYPERLEX_V6_OPERATING_PIPELINE_PACKAGE_CANDIDATE_V1",
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "QUAL_RESULT_ID": "HYPERLEX_V6_QUALIFICATION_003_RESULT",
+  "RELEASE_ELIGIBLE": false,
+  "REVIEW_ID": "HYPERLEX_V6_QUALIFICATION_003_FAILURE_REVIEW_001",
+  "REVIEW_RULE": "REVIEW_V6_QUALIFICATION_003_FAILURE",
+  "expected": {
+    "evaluation_spent": "EVALUATION_SPENT",
+    "n_rows": 1151,
+    "package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+    "qual_result_sha256": "b560dac2a8f80f45c6213dcd2ba25acdb2e0b7dde786da3ee0a5d6e3231ae724",
+    "qualification_model_executions": 1,
+    "rep_positive_only": 0.415797546133708,
+    "rep_system_macro_f1": 0.36980892482696165,
+    "rep_zero_exact": 0.9123006833712984,
+    "rep_zero_fp": 0.08769931662870159,
+    "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b"
+  },
+  "forbidden": [
+    "retune_ANY_LABEL_threshold",
+    "modify_NONE_rejection",
+    "retrain",
+    "change_ontology",
+    "create_new_qualification_surface",
+    "use_QUAL_003_for_optimization",
+    "architecture_bakeoff",
+    "move_pointers"
+  ],
+  "next_phases": [
+    "HARDEN_V6_POSITIVE_ADMISSION_AND_FUNCTION_GENERALIZATION",
+    "EXPAND_V6_FUNCTION_DIVERSITY_AND_POSITIVE_REPRESENTATION",
+    "REDESIGN_V6_FUNCTION_PREDICTION",
+    "REASSESS_V6_FUNCTION_TASK_DEFINITION"
+  ],
+  "primary_diagnoses": [
+    "POSITIVE_GATE_GENERALIZATION_FAILURE",
+    "FUNCTION_HEAD_GENERALIZATION_FAILURE",
+    "FUNCTION_DATA_DIVERSITY_FAILURE",
+    "POSITIVE_REPRESENTATIVE_VALIDATION_OVERFIT",
+    "FUNCTION_TASK_SIGNAL_LIMITATION",
+    "MIXED_POSITIVE_SEMANTIC_GENERALIZATION_FAILURE"
+  ],
+  "rejected_micro_fixes_default": {
+    "another_QUAL_surface_now": false,
+    "architecture_bakeoff": false,
+    "change_ontology": false,
+    "modify_NONE_rejection": false,
+    "retrain_encoder": false,
+    "retune_ANY_LABEL_threshold": false,
+    "seed_sweep": false,
+    "use_QUAL_003_for_optimization": false
+  },
+  "schema": "hyperlex.classification.v6.qualification_003_failure_review.v1"
+}
