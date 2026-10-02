@@ -334,56 +334,16 @@ def build_mlp(hidden: int, n_out: int, device):
     ).to(device)
 
 
-def calibrated_similarity_warmup(scores_tr, Ytr, device):
-    """Replay bakeoff calibrated-similarity torch ops to align RNG state."""
-    import torch
-    import torch.nn as nn
-
-    n = scores_tr.shape[1]
-    scale = nn.Parameter(torch.ones(n, device=device))
-    bias = nn.Parameter(torch.zeros(n, device=device))
-    opt = torch.optim.Adam([scale, bias], lr=0.05)
-    bce = nn.BCEWithLogitsLoss()
-    st = torch.tensor(scores_tr, device=device)
-    yt = torch.tensor(Ytr, device=device)
-    for _ in range(80):
-        opt.zero_grad()
-        loss = bce(st * scale + bias, yt)
-        loss.backward()
-        opt.step()
-
-
-def train_linear_warmup(Xtr, Ytr, n_out, device):
-    """Replay bakeoff frozen-linear head training to align RNG state."""
-    import torch
-    import torch.nn as nn
-
-    model = nn.Linear(Xtr.shape[1], n_out).to(device)
-    opt = torch.optim.AdamW(model.parameters(), lr=LR)
-    bce = nn.BCEWithLogitsLoss()
-    xt = torch.tensor(Xtr, device=device)
-    yt = torch.tensor(Ytr, device=device)
-    for _ in range(HEAD_EPOCHS):
-        opt.zero_grad()
-        loss = bce(model(xt), yt)
-        loss.backward()
-        opt.step()
-    del model
-
-
 def train_axis_heads(Xtr, Ytr_by_axis, vocabs, device, lab_embs=None):
     import torch
     import torch.nn as nn
 
-    # Match rebase bakeoff order for C_MSMARCO: calibrated sim → linear → nonlinear.
+    # Canonical seeded retrain of nonlinear axis heads only. Bakeoff thresholds
+    # remain frozen; RNG warm-up from prior bakeoff formulations is not part of
+    # the sealed candidate contract.
+    del lab_embs  # accepted for call-site compatibility; unused
     set_seeds(SEED)
     hidden = Xtr.shape[1]
-    if lab_embs is not None:
-        for axis, vocab in vocabs.items():
-            sc_tr = Xtr @ lab_embs[axis].T
-            calibrated_similarity_warmup(sc_tr, Ytr_by_axis[axis], device)
-        for axis, vocab in vocabs.items():
-            train_linear_warmup(Xtr, Ytr_by_axis[axis], len(vocab), device)
     heads = {}
     for axis, vocab in vocabs.items():
         model = build_mlp(hidden, len(vocab), device)

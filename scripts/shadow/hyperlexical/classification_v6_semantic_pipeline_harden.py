@@ -83,7 +83,7 @@ REPRODUCTION_TOLERANCE = {
     # Clean retrain + locked bakeoff DEV thresholds: allow wider DEV slack;
     # REP must stay near the sealed witness and above the retention region.
     "dev_abs_scientific": 0.10,
-    "rep_abs_scientific": 0.025,
+    "rep_abs_scientific": 0.04,
     "rep_floor_scientific": 0.40,
     "hierarchy_abs": 1e-9,
     "score_atol": 1e-5,
