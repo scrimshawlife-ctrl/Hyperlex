@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Execute V6 QUAL-003 once (Spec 007):** Cold-loaded operating package
+  `8ed1a4d4…` (ANY_LABEL gate th≈0.225) on sealed QUAL-003 (n=1151).
+  Preflight OK; `model_executions=1`; `EVALUATION_SPENT`. Metrics:
+  system **0.171**, DOMAIN 0.195, FUNCTION **0.025**, MEDIATION 0.292,
+  hierarchy 0.000, zero-FP **0.279** (pass ≤0.35), exact-reject **0.721**
+  (pass ≥0.50), positive-only **0.294** (fail ≥0.30). vs REP_V2
+  (0.370 / 0.088 / 0.416) → **SEVERE_GENERALIZATION_DROP**. Disposition
+  **`V6_QUALIFICATION_003_FAIL`**. `RELEASE_ELIGIBLE=false`. Receipt
+  `b560dac2…`. Next: `REVIEW_V6_QUALIFICATION_003_FAILURE`.
+
 - **Seal V6 QUAL-003 unscored surface (Spec 007):** Fresh NATURAL/OBSERVED
   HYPERLEX_V6_QUALIFICATION_003 sealed (`n=1151`, zero-label 0.836,
   positive 0.164, 11 domain / 4 function / mediation=20). Dual-annotate
