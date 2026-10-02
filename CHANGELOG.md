@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **Redesign V6 FUNCTION prediction (Spec 007):** FUNCTION-only bakeoff under
+  frozen encoder/ANY_LABEL/DOMAIN/MEDIATION on TRAIN/DEV/REP V3. Tested
+  independent binary verifiers, semantic matching, hybrid verifier.
+  DEV-selected **INDEPENDENT_BINARY_VERIFIERS** (DEV FUN 0.347). REP_V3:
+  FUNCTION **0.294** vs old-head **0.296**, system 0.330, NONE preserved
+  (FP 0.108). DOMAIN/MEDIATION unchanged. Outcome
+  **`V6_FUNCTION_PREDICTION_PARTIAL`**. Next:
+  `REASSESS_V6_FUNCTION_TASK_SIGNAL`.
+
 - **Expand V6 function diversity + positive representation (Spec 007):**
   Built TRAIN/DEV/REP **V3** with mixed-source longer positives
   (wiki-culture + multi-sense wikt; QUAL-003 blocked). Diversity audit
