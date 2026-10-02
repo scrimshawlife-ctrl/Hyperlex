@@ -213,9 +213,6 @@ def build_blocked() -> dict[str, set[str]]:
         MIGRATION / "DEVELOPMENT_VALIDATION_V6_LABELS.jsonl",
         MIGRATION / "REPRESENTATIVE_VALIDATION_V6_LABELS.jsonl",
     ]:
-        if not path.exists() and not os.access(path, os.R_OK):
-            # may still be readable via sudo
-            pass
         try:
             rows = load_jsonl(path)
             n_paths += 1
