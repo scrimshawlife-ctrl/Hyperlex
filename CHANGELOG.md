@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Rebase V6 on stronger pretrained semantic encoder (Spec 007):**
+  Representation rebase around MPNet-class sentence embeddings. Freeze
+  MPNet zero-shot witness REP≈0.206. MODEL_WIDE_BEST remains historical
+  control (not mutated). Small encoder family (MPNet / BGE-base /
+  MS MARCO), frozen heads, calibrated similarity, axis projections, PEFT
+  adapter. Floors locked; QUAL sealed; no A–F carousel.
+
 - **Reassess V6 task signal and pretrained representation (Spec 007):**
   Diagnostic phase after architecture bakeoff exhaustion. Freeze zero-shot
   CONTROL reference REP≈0.162. Axis/label audits, description
