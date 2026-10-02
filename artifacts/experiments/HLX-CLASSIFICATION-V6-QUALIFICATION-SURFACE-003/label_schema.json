@@ -1,0 +1,27 @@
+{
+  "domain_labels": [
+    "domain.gaming",
+    "domain.gambling",
+    "domain.crypto",
+    "domain.sports",
+    "domain.entertainment",
+    "domain.fashion",
+    "domain.workplace",
+    "domain.politics",
+    "domain.spiritual",
+    "domain.technology",
+    "domain.technology.ai_discourse"
+  ],
+  "function_labels": [
+    "function.evaluative_stance",
+    "function.relational_intimacy",
+    "function.conflictive_force",
+    "function.memetic_form"
+  ],
+  "mediation_labels": [
+    "mediation.internet_register"
+  ],
+  "ontology_version": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+  "semantics": "label_id_stable_no_display_string_lookup",
+  "structure": "HIERARCHICAL_MULTI_LABEL"
+}

@@ -1,0 +1,29 @@
+{
+  "annotators_must_not_see": [
+    "V6_model_predictions",
+    "semantic_scores",
+    "nearest_neighbors",
+    "DEV_labels",
+    "REP_labels",
+    "QUAL_001_rows",
+    "QUAL_002_rows",
+    "operating_package_scores"
+  ],
+  "capture": [
+    "stage_a",
+    "domain_labels[]",
+    "function_labels[]",
+    "mediation_labels[]",
+    "ontology_uncertainty",
+    "insufficient_context",
+    "annotator_disagreement"
+  ],
+  "disagreement": "third_pass_documented_adjudication_intersection_rules",
+  "force_definitive_when_unsupported": false,
+  "model_blind": true,
+  "n_annotators_min": 2,
+  "protocols": [
+    "A_DOMAIN_FIRST_INDEPENDENT_TEXT_ONLY",
+    "B_FUNCTION_FIRST_INDEPENDENT_TEXT_ONLY"
+  ]
+}

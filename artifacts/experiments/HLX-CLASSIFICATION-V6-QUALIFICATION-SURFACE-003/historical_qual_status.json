@@ -1,0 +1,13 @@
+{
+  "QUAL_001": {
+    "id": "HYPERLEX_V6_QUALIFICATION_001",
+    "reuse_forbidden": true,
+    "status": "HISTORICAL_SEALED_UNINSPECTED"
+  },
+  "QUAL_002": {
+    "id": "HYPERLEX_V6_QUALIFICATION_002",
+    "reuse_forbidden": true,
+    "row_access": false,
+    "status": "EVALUATION_SPENT"
+  }
+}

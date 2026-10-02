@@ -1,0 +1,24 @@
+{
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+  "QUALIFICATION_STATE": "SEALED_UNSCORED",
+  "evaluation_spent": "UNSPENT",
+  "expose_during_dev": [
+    "manifest_metadata",
+    "row_count",
+    "coverage_summaries",
+    "hashes"
+  ],
+  "gold_sha256": "8c792d7f900a67e9e69c7e64d683618723d282347b72b38e521c9fc53998987e",
+  "identity_sha256": "8b4a75eaa8f9a395615e059a4834c5cfb37f647d5cd7806926a3c7df0f8f8b85",
+  "immutable": true,
+  "manifest_sha256": "586ee90ffb653df9010430a8396b756ca928b1097653080a4b5e4e6ff91b0233",
+  "n_rows": 1151,
+  "ontology_binding_sha256": "dff89c74e1e99d827dd6e9016e7ca218c7fbc26cc7b07db18a080414e39f2da5",
+  "qualification_model_executions": 0,
+  "rows_sha256": "e3d58a3ed9040967e46c0634a5d9bfdb177da5746dea6c3a6ff929cd71399d60",
+  "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b",
+  "sealed_at": "2026-10-02T05:18:15Z",
+  "unavailable_during_model_development": true
+}

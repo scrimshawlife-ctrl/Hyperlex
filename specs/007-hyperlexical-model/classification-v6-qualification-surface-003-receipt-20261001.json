@@ -1,0 +1,191 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-QUALIFICATION-SURFACE-003",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "EXECUTE_V6_QUALIFICATION_003_ONCE",
+  "PHASE_RULE": "BUILD_AND_SEAL_FRESH_V6_QUALIFICATION_SURFACE_003",
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+  "QUALIFICATION_STATE": "SEALED_UNSCORED",
+  "QUAL_002_ROWS_REUSED": false,
+  "SURFACE_STATE": "V6_QUALIFICATION_003_SURFACE_SEALED",
+  "V6_OPERATING_PIPELINE_CANDIDATE_MUTATED": false,
+  "V6_QUALIFICATION_SURFACE_003_RECEIPT_SHA256": "1ba99fc1c7899b69b9e335b332e956b6637540f6467a02a52a1b95359b898f68",
+  "agreement": {
+    "mean_set_jaccard": 0.999302649930265,
+    "n_adjudicated": 5,
+    "stability": "QUALIFICATION_GOLD_STABLE",
+    "stage_kappa": 1.0,
+    "stage_raw_agreement": 1.0
+  },
+  "cardinality": {
+    "0": 962,
+    "1": 159,
+    "2": 26,
+    "3+": 4
+  },
+  "co_label": {
+    "domain+function": 4,
+    "domain+mediation": 5,
+    "function+mediation": 1
+  },
+  "code_revision": "46c96ad8d83b35ec5cd5ad429af4f815308e1dbb",
+  "coverage_sufficient": true,
+  "disjointness": {
+    "checks": [
+      "exact_identity",
+      "source_hash",
+      "normalized_text_hash",
+      "near_duplicate",
+      "blocked_surfaces_scanned"
+    ],
+    "forbidden_overlap": 0,
+    "n_blocked_paths": 63,
+    "pass": true
+  },
+  "domain_supports": {
+    "domain.crypto": 9,
+    "domain.entertainment": 27,
+    "domain.fashion": 7,
+    "domain.gambling": 5,
+    "domain.gaming": 18,
+    "domain.politics": 39,
+    "domain.spiritual": 1,
+    "domain.sports": 3,
+    "domain.technology": 31,
+    "domain.technology.ai_discourse": 15,
+    "domain.workplace": 16
+  },
+  "evaluation_spent": "UNSPENT",
+  "function_supports": {
+    "function.conflictive_force": 8,
+    "function.evaluative_stance": 5,
+    "function.memetic_form": 3,
+    "function.relational_intimacy": 17
+  },
+  "gate_binding": {
+    "QUAL_002_status": "EVALUATION_SPENT",
+    "chosen_before_qual_scoring": true,
+    "error_taxonomy": [
+      "DOMAIN_FP",
+      "DOMAIN_FN",
+      "FUNCTION_FP",
+      "FUNCTION_FN",
+      "MEDIATION_FP",
+      "MEDIATION_FN",
+      "PARENT_CHILD_VIOLATION",
+      "CO_LABEL_OMISSION",
+      "OVERPREDICTION",
+      "ONTOLOGY_BOUNDARY_CASE",
+      "FALSE_ACCEPT_ZERO",
+      "FALSE_REJECT_POSITIVE",
+      "GATE_OVER_REJECT",
+      "GATE_UNDER_REJECT"
+    ],
+    "gates": {
+      "QUAL_002_status": "EVALUATION_SPENT",
+      "QUAL_003_id": "HYPERLEX_V6_QUALIFICATION_003",
+      "chosen_before_qual_open": true,
+      "hierarchy_violation_max": 0.05,
+      "mean_predicted_labels_on_zero_gold_max": 1.0,
+      "min_axis_macro_f1": 0.1,
+      "no_complete_axis_collapse": true,
+      "positive_only_system_macro_f1_min": 0.3,
+      "retention_rule": "QUAL_system_macro_f1 >= 0.30 preregistered from gated REP\u22480.370",
+      "system_macro_f1_min": 0.3,
+      "zero_label_exact_rejection_min": 0.5,
+      "zero_label_false_positive_rate_max": 0.35
+    },
+    "metrics": [
+      "DOMAIN_macro_f1",
+      "DOMAIN_micro_f1",
+      "FUNCTION_macro_f1",
+      "FUNCTION_micro_f1",
+      "MEDIATION_macro_f1",
+      "MEDIATION_micro_f1",
+      "system_macro_f1",
+      "sample_f1",
+      "jaccard",
+      "hierarchy_violations",
+      "per_label_precision_recall_f1",
+      "single_label_vs_multi_label",
+      "source_slices",
+      "cardinality_slices",
+      "zero_label_false_positive_rate",
+      "zero_label_exact_rejection",
+      "mean_predicted_labels_on_zero_gold",
+      "positive_only_system_macro_f1",
+      "false_reject_positive_rate"
+    ],
+    "modified_in_this_phase": false,
+    "operating_package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+    "source": "HLX-CLASSIFICATION-V6-OPERATING-PIPELINE-HARDEN-001"
+  },
+  "hashes": {
+    "disjointness_sha256": "6c6527d35947a9ff0570bddfa06cdd0776c5b299a4ed8ce4796c2d0e60700664",
+    "gold_sha256": "8c792d7f900a67e9e69c7e64d683618723d282347b72b38e521c9fc53998987e",
+    "human_agreement_sha256": "d8cf6a3693472b675d097209025008ed50feba86c1deb863ea5b120eff83a87d",
+    "identifiability_sha256": "2963eb312b04277271cfc72535f7f4419c52d659b453c9d7bd654ad3e545f0e9",
+    "identity_sha256": "8b4a75eaa8f9a395615e059a4834c5cfb37f647d5cd7806926a3c7df0f8f8b85",
+    "manifest_sha256": "586ee90ffb653df9010430a8396b756ca928b1097653080a4b5e4e6ff91b0233",
+    "ontology_binding_sha256": "dff89c74e1e99d827dd6e9016e7ca218c7fbc26cc7b07db18a080414e39f2da5",
+    "rows_sha256": "e3d58a3ed9040967e46c0634a5d9bfdb177da5746dea6c3a6ff929cd71399d60",
+    "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b"
+  },
+  "historical": {
+    "QUAL_001": {
+      "id": "HYPERLEX_V6_QUALIFICATION_001",
+      "reuse_forbidden": true,
+      "status": "HISTORICAL_SEALED_UNINSPECTED"
+    },
+    "QUAL_002": {
+      "id": "HYPERLEX_V6_QUALIFICATION_002",
+      "reuse_forbidden": true,
+      "row_access": false,
+      "status": "EVALUATION_SPENT"
+    }
+  },
+  "identifiability_pass": true,
+  "length": {
+    "long": 687,
+    "max": 844,
+    "medium": 278,
+    "min": 17,
+    "p50": 273,
+    "p90": 693,
+    "short": 186
+  },
+  "low_qual_support": [
+    "domain.crypto",
+    "domain.fashion",
+    "domain.gambling",
+    "domain.gaming",
+    "domain.spiritual",
+    "domain.sports",
+    "domain.technology.ai_discourse",
+    "domain.workplace",
+    "function.conflictive_force",
+    "function.evaluative_stance",
+    "function.memetic_form",
+    "function.relational_intimacy",
+    "mediation.internet_register"
+  ],
+  "mediation_supports": {
+    "mediation.internet_register": 20
+  },
+  "n_acquired_raw": 1195,
+  "n_annotators": 2,
+  "n_rows": 1151,
+  "natural_share": 1.0,
+  "no_evidence_share": 0.8375325803649001,
+  "observed_share": 1.0,
+  "ontology_binding_sha256": "dff89c74e1e99d827dd6e9016e7ca218c7fbc26cc7b07db18a080414e39f2da5",
+  "qualification_model_executions": 0,
+  "settled_at": "2026-10-02T05:18:15Z",
+  "source_leakage_flags": 5,
+  "source_max_share": 0.04778453518679409,
+  "stage_a": {
+    "EVIDENCE_PRESENT": 187,
+    "NO_EVIDENCE": 964
+  },
+  "statistical_power_note": null,
+  "zero_label_share": 0.8357949609035621
+}

@@ -1,0 +1,111 @@
+{
+  "mean_domain_jaccard": 0.999581589958159,
+  "mean_function_jaccard": 0.998326359832636,
+  "mean_mediation_jaccard": 1.0,
+  "mean_set_jaccard": 0.999302649930265,
+  "n": 1195,
+  "n_adjudicated_disagreement": 5,
+  "n_annotators": 2,
+  "per_label_positive_agreement": {
+    "ai_discourse": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 15,
+      "positive_agreement": 1.0
+    },
+    "conflictive_force": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 8,
+      "positive_agreement": 1.0
+    },
+    "crypto_markets": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 9,
+      "positive_agreement": 1.0
+    },
+    "entertainment_media": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 28,
+      "positive_agreement": 1.0
+    },
+    "evaluative_stance": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 5,
+      "positive_agreement": 1.0
+    },
+    "fashion_style": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 7,
+      "positive_agreement": 1.0
+    },
+    "gambling_betting": {
+      "a_only": 0,
+      "b_only": 1,
+      "both": 4,
+      "positive_agreement": 0.8
+    },
+    "gaming": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 18,
+      "positive_agreement": 1.0
+    },
+    "internet_register": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 20,
+      "positive_agreement": 1.0
+    },
+    "memetic_form": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 3,
+      "positive_agreement": 1.0
+    },
+    "politics_civic": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 40,
+      "positive_agreement": 1.0
+    },
+    "relational_intimacy": {
+      "a_only": 0,
+      "b_only": 2,
+      "both": 17,
+      "positive_agreement": 0.8947368421052632
+    },
+    "spiritual_esoteric": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 1,
+      "positive_agreement": 1.0
+    },
+    "sports": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 3,
+      "positive_agreement": 1.0
+    },
+    "technology": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 31,
+      "positive_agreement": 1.0
+    },
+    "workplace": {
+      "a_only": 0,
+      "b_only": 0,
+      "both": 16,
+      "positive_agreement": 1.0
+    }
+  },
+  "prior_mean_set_jaccard_witness": 0.969,
+  "stability": "QUALIFICATION_GOLD_STABLE",
+  "stage_kappa": 1.0,
+  "stage_raw_agreement": 1.0
+}

@@ -1,0 +1,162 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-QUALIFICATION-SURFACE-003",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PHASE_RULE": "BUILD_AND_SEAL_FRESH_V6_QUALIFICATION_SURFACE_003",
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+  "V6_OPERATING_PIPELINE_CANDIDATE_MUTATED": false,
+  "agreement_stability": "QUALIFICATION_GOLD_STABLE",
+  "cardinality": {
+    "0": 962,
+    "1": 159,
+    "2": 26,
+    "3+": 4
+  },
+  "co_label": {
+    "domain+function": 4,
+    "domain+mediation": 5,
+    "function+mediation": 1
+  },
+  "code_revision": "46c96ad8d83b35ec5cd5ad429af4f815308e1dbb",
+  "coverage_sufficient": true,
+  "disjointness_pass": true,
+  "domain_supports": {
+    "domain.crypto": 9,
+    "domain.entertainment": 27,
+    "domain.fashion": 7,
+    "domain.gambling": 5,
+    "domain.gaming": 18,
+    "domain.politics": 39,
+    "domain.spiritual": 1,
+    "domain.sports": 3,
+    "domain.technology": 31,
+    "domain.technology.ai_discourse": 15,
+    "domain.workplace": 16
+  },
+  "evaluation_spent": "UNSPENT",
+  "forbidden_overlap": 0,
+  "function_supports": {
+    "function.conflictive_force": 8,
+    "function.evaluative_stance": 5,
+    "function.memetic_form": 3,
+    "function.relational_intimacy": 17
+  },
+  "gates": {
+    "QUAL_002_status": "EVALUATION_SPENT",
+    "chosen_before_qual_scoring": true,
+    "error_taxonomy": [
+      "DOMAIN_FP",
+      "DOMAIN_FN",
+      "FUNCTION_FP",
+      "FUNCTION_FN",
+      "MEDIATION_FP",
+      "MEDIATION_FN",
+      "PARENT_CHILD_VIOLATION",
+      "CO_LABEL_OMISSION",
+      "OVERPREDICTION",
+      "ONTOLOGY_BOUNDARY_CASE",
+      "FALSE_ACCEPT_ZERO",
+      "FALSE_REJECT_POSITIVE",
+      "GATE_OVER_REJECT",
+      "GATE_UNDER_REJECT"
+    ],
+    "gates": {
+      "QUAL_002_status": "EVALUATION_SPENT",
+      "QUAL_003_id": "HYPERLEX_V6_QUALIFICATION_003",
+      "chosen_before_qual_open": true,
+      "hierarchy_violation_max": 0.05,
+      "mean_predicted_labels_on_zero_gold_max": 1.0,
+      "min_axis_macro_f1": 0.1,
+      "no_complete_axis_collapse": true,
+      "positive_only_system_macro_f1_min": 0.3,
+      "retention_rule": "QUAL_system_macro_f1 >= 0.30 preregistered from gated REP\u22480.370",
+      "system_macro_f1_min": 0.3,
+      "zero_label_exact_rejection_min": 0.5,
+      "zero_label_false_positive_rate_max": 0.35
+    },
+    "metrics": [
+      "DOMAIN_macro_f1",
+      "DOMAIN_micro_f1",
+      "FUNCTION_macro_f1",
+      "FUNCTION_micro_f1",
+      "MEDIATION_macro_f1",
+      "MEDIATION_micro_f1",
+      "system_macro_f1",
+      "sample_f1",
+      "jaccard",
+      "hierarchy_violations",
+      "per_label_precision_recall_f1",
+      "single_label_vs_multi_label",
+      "source_slices",
+      "cardinality_slices",
+      "zero_label_false_positive_rate",
+      "zero_label_exact_rejection",
+      "mean_predicted_labels_on_zero_gold",
+      "positive_only_system_macro_f1",
+      "false_reject_positive_rate"
+    ],
+    "modified_in_this_phase": false,
+    "operating_package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+    "source": "HLX-CLASSIFICATION-V6-OPERATING-PIPELINE-HARDEN-001"
+  },
+  "gold_sha256": "8c792d7f900a67e9e69c7e64d683618723d282347b72b38e521c9fc53998987e",
+  "historical": {
+    "QUAL_001": {
+      "id": "HYPERLEX_V6_QUALIFICATION_001",
+      "reuse_forbidden": true,
+      "status": "HISTORICAL_SEALED_UNINSPECTED"
+    },
+    "QUAL_002": {
+      "id": "HYPERLEX_V6_QUALIFICATION_002",
+      "reuse_forbidden": true,
+      "row_access": false,
+      "status": "EVALUATION_SPENT"
+    }
+  },
+  "identifiability_pass": true,
+  "identity_sha256": "8b4a75eaa8f9a395615e059a4834c5cfb37f647d5cd7806926a3c7df0f8f8b85",
+  "length": {
+    "long": 687,
+    "max": 844,
+    "medium": 278,
+    "min": 17,
+    "p50": 273,
+    "p90": 693,
+    "short": 186
+  },
+  "low_qual_support": [
+    "domain.crypto",
+    "domain.fashion",
+    "domain.gambling",
+    "domain.gaming",
+    "domain.spiritual",
+    "domain.sports",
+    "domain.technology.ai_discourse",
+    "domain.workplace",
+    "function.conflictive_force",
+    "function.evaluative_stance",
+    "function.memetic_form",
+    "function.relational_intimacy",
+    "mediation.internet_register"
+  ],
+  "manifest_sha256": "586ee90ffb653df9010430a8396b756ca928b1097653080a4b5e4e6ff91b0233",
+  "max_source_family_share": 0.04778453518679409,
+  "mean_set_jaccard": 0.999302649930265,
+  "mediation_supports": {
+    "mediation.internet_register": 20
+  },
+  "n_adjudicated": 5,
+  "n_annotators": 2,
+  "n_rows": 1151,
+  "natural_share": 1.0,
+  "no_evidence_share": 0.8375325803649001,
+  "observed_share": 1.0,
+  "ontology_binding_sha256": "dff89c74e1e99d827dd6e9016e7ca218c7fbc26cc7b07db18a080414e39f2da5",
+  "qualification_model_executions": 0,
+  "rows_sha256": "e3d58a3ed9040967e46c0634a5d9bfdb177da5746dea6c3a6ff929cd71399d60",
+  "settled_at": "2026-10-02T05:18:15Z",
+  "stage_a": {
+    "EVIDENCE_PRESENT": 187,
+    "NO_EVIDENCE": 964
+  },
+  "zero_label_share": 0.8357949609035621
+}

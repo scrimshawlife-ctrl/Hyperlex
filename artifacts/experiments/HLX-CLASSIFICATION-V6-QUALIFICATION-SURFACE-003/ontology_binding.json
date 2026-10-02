@@ -1,0 +1,59 @@
+{
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+  "compatibility_rule_hash": "2e1f1425fd9e60dc02d1ff240922b2d104effebe9906bc69e5972b56dd5d2850",
+  "hierarchy": {
+    "rules": [
+      {
+        "child": "domain.technology.ai_discourse",
+        "constraint": "required_parent",
+        "parent": "domain.technology"
+      }
+    ]
+  },
+  "hierarchy_hash": "18c449b749aae03cd19da7e7d773357801925a55c896ae711a3375183053cf30",
+  "input_contract": {
+    "gold_identifiability_contract": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+    "model_input": [
+      "text"
+    ],
+    "operating_package_sha": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+    "parent_hardened_package_sha": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4",
+    "runtime_schema": "hyperlex.classification.v6.operating_gated_hierarchical_forward.v1",
+    "stage_a_text_only": true
+  },
+  "input_contract_hash": "ee177a5d4c6dcef5cea172a507f35502ad1df5a835fa63867b767d3bb529d33a",
+  "label_schema": {
+    "domain_labels": [
+      "domain.gaming",
+      "domain.gambling",
+      "domain.crypto",
+      "domain.sports",
+      "domain.entertainment",
+      "domain.fashion",
+      "domain.workplace",
+      "domain.politics",
+      "domain.spiritual",
+      "domain.technology",
+      "domain.technology.ai_discourse"
+    ],
+    "function_labels": [
+      "function.evaluative_stance",
+      "function.relational_intimacy",
+      "function.conflictive_force",
+      "function.memetic_form"
+    ],
+    "mediation_labels": [
+      "mediation.internet_register"
+    ],
+    "ontology_version": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+    "semantics": "label_id_stable_no_display_string_lookup",
+    "structure": "HIERARCHICAL_MULTI_LABEL"
+  },
+  "label_schema_hash": "d4e76b88d9ff859c62cf0f38c26dbda2a17e04ea81070c5061a20b37e674efbb",
+  "ontology_binding_sha256": "dff89c74e1e99d827dd6e9016e7ca218c7fbc26cc7b07db18a080414e39f2da5",
+  "ontology_hash": "ab717759a2ba93a8c91c776a084a497355e1879d2548746605bb0701ed79c2a4",
+  "ontology_version": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+  "pinned_before_acquisition": true,
+  "pipeline_candidate_ref": "HYPERLEX_V6_OPERATING_PIPELINE_PACKAGE_CANDIDATE_V1",
+  "structure": "HIERARCHICAL_MULTI_LABEL"
+}

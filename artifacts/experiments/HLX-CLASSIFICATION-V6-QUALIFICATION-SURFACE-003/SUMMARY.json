@@ -1,0 +1,20 @@
+{
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "EXECUTE_V6_QUALIFICATION_003_ONCE",
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+  "QUALIFICATION_STATE": "SEALED_UNSCORED",
+  "QUAL_002_STATUS": "EVALUATION_SPENT",
+  "RECEIPT": "1ba99fc1c7899b69b9e335b332e956b6637540f6467a02a52a1b95359b898f68",
+  "SURFACE_STATE": "V6_QUALIFICATION_003_SURFACE_SEALED",
+  "V6_OPERATING_PIPELINE_CANDIDATE_MUTATED": false,
+  "agreement_stability": "QUALIFICATION_GOLD_STABLE",
+  "coverage_sufficient": true,
+  "forbidden_overlap": 0,
+  "identifiability_pass": true,
+  "mean_set_jaccard": 0.999302649930265,
+  "n_rows": 1151,
+  "no_evidence_share": 0.8375325803649001,
+  "qualification_model_executions": 0,
+  "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b",
+  "zero_label_share": 0.8357949609035621
+}

@@ -1,0 +1,35 @@
+{
+  "flagged_shortcuts": [
+    {
+      "label": "domain.politics",
+      "n": 13,
+      "pmi": 3.629513307024199,
+      "source_family": "v6_qual003_wikt:politics-civic"
+    },
+    {
+      "label": "domain.entertainment",
+      "n": 10,
+      "pmi": 3.181123859178487,
+      "source_family": "v6_qual003_wikt_html:music-entertainment"
+    },
+    {
+      "label": "domain.gaming",
+      "n": 10,
+      "pmi": 4.191392194632314,
+      "source_family": "v6_qual003_firecrawl_wikt:gaming-meta"
+    },
+    {
+      "label": "domain.politics",
+      "n": 11,
+      "pmi": 2.950384095128519,
+      "source_family": "v6_qual003_wikt_html:politics-civic"
+    },
+    {
+      "label": "domain.technology",
+      "n": 16,
+      "pmi": 4.356494812617783,
+      "source_family": "v6_qual003_wikt_html:technology-ai"
+    }
+  ],
+  "note": "Descriptive only. Legitimate product association retained; flags mark strong source-label coupling."
+}

@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "exact_identity",
+    "source_hash",
+    "normalized_text_hash",
+    "near_duplicate",
+    "blocked_surfaces_scanned"
+  ],
+  "forbidden_overlap": 0,
+  "n_blocked_paths": 63,
+  "pass": true
+}
