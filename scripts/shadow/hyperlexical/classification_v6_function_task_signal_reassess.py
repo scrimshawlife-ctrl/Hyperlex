@@ -177,17 +177,24 @@ def classify_function_signal(audit: Mapping[str, Any]) -> str:
     best_f1 = max(f1_old, f1_ind, float(audit.get("hybrid_f1") or 0.0))
     margin = audit.get("pos_neg_margin")
     nn_purity = audit.get("nn_purity")
-    overlap = float(audit.get("adjacent_overlap_rate") or 0.0)
+    # Prefer true multi-label co-occurrence; fall back to adjacent_overlap_rate.
+    overlap = float(
+        audit.get("function_cooccurrence_rate")
+        if audit.get("function_cooccurrence_rate") is not None
+        else (audit.get("adjacent_overlap_rate") or 0.0)
+    )
     cue_prag = float(audit.get("pragmatic_or_context_share") or 0.0)
     consensus_fail = float(audit.get("consensus_fail_share_among_gold") or 0.0)
     agree = audit.get("human_function_jaccard")
 
     if support_train < MIN_SUPPORT_TRAIN or support_rep < MIN_SUPPORT_REP:
         return "INSUFFICIENT_SUPPORT"
-    if overlap >= OVERLAP_JACCARD and best_f1 < STRONG_F1:
-        return "SEMANTICALLY_OVERLAPPING"
+    # Pragmatic/consensus evidence outranks soft domain-adjacency overlap:
+    # slang positives share domains by construction and must not force OVERLAPPING.
     if cue_prag >= 0.45 or consensus_fail >= CONSENSUS_FAIL_SHARE:
         return "CONTEXT_SENSITIVE"
+    if overlap >= OVERLAP_JACCARD and best_f1 < STRONG_F1:
+        return "SEMANTICALLY_OVERLAPPING"
     if best_f1 >= STRONG_F1 and (
         margin is None or float(margin) >= MARGIN_WEAK
     ) and (nn_purity is None or float(nn_purity) >= 0.35):
@@ -214,7 +221,10 @@ def classify_ceiling(audit: Mapping[str, Any]) -> str:
     full_spread = max(vals) - min(vals)
     consensus = float(audit.get("mean_consensus_fail_share") or 0.0)
     prag = float(audit.get("mean_pragmatic_share") or 0.0)
-    agree = audit.get("mean_human_function_jaccard")
+    # True independent human IAA only — dual_annotate-vs-gold recovery is not IAA.
+    agree = None
+    if audit.get("true_human_iaa_available"):
+        agree = audit.get("mean_human_function_jaccard")
     support_ok = bool(audit.get("diversity_adequate", True))
 
     clustered_near_030 = top < 0.35 and spread < 0.08 and len(competitive) >= 2
@@ -259,12 +269,31 @@ def derive_diagnosis(audit: Mapping[str, Any]) -> dict[str, Any]:
     n_insuff = sum(1 for c in classes if c == "INSUFFICIENT_SUPPORT")
     distinct_regimes = len({c for c in classes if c})
 
+    # Best observed competitive FUNCTION macro (if present) for usability gate.
+    macros = dict(audit.get("formulation_function_macros") or {})
+    competitive_macros = [
+        float(v)
+        for k, v in macros.items()
+        if v is not None and k != "FUNCTION_SEMANTIC_MATCHING"
+    ]
+    best_macro = max(competitive_macros) if competitive_macros else None
+    usable_floor = best_macro is not None and best_macro >= 0.20
+
     if n_insuff >= 2 and not consensus_task_limit:
         diagnosis = "FUNCTION_TASK_SIGNAL_INSUFFICIENT"
         next_action = "TARGETED_FUNCTION_SUPPORT_EXPANSION"
     elif n_strong >= 3 and ceiling == "NO_CLEAR_CEILING":
         diagnosis = "FUNCTION_TASK_SIGNAL_SUPPORTED"
         next_action = "REDESIGN_V6_FUNCTION_OBJECTIVE_AROUND_PRAGMATIC_SIGNAL"
+    elif (
+        ceiling == "TEXT_SIGNAL_CEILING"
+        and n_strong == 0
+        and n_weak == 0
+        and not usable_floor
+    ):
+        # Text-only ceiling with no recoverable signal → product reassess.
+        diagnosis = "FUNCTION_TASK_SIGNAL_INSUFFICIENT"
+        next_action = "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT"
     elif n_ctx >= 2 or consensus_task_limit or ceiling in {
         "TEXT_SIGNAL_CEILING",
         "MIXED_CEILING",
@@ -273,9 +302,8 @@ def derive_diagnosis(audit: Mapping[str, Any]) -> dict[str, Any]:
         diagnosis = "FUNCTION_TASK_SIGNAL_PARTIAL"
         if distinct_regimes >= 3:
             next_action = "SPLIT_V6_FUNCTIONS_BY_SIGNAL_REGIME"
-        elif ceiling == "TEXT_SIGNAL_CEILING" and n_strong == 0 and n_weak <= 1:
-            next_action = "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT"
         else:
+            # Partial but usable: real ~0.3 signal dominated by pragmatic/context.
             next_action = "REDESIGN_V6_FUNCTION_OBJECTIVE_AROUND_PRAGMATIC_SIGNAL"
     elif n_insuff >= 1:
         diagnosis = "FUNCTION_TASK_SIGNAL_PARTIAL"

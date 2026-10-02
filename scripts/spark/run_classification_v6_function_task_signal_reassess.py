@@ -281,7 +281,7 @@ def nn_purity_and_margin(X, rows, lab, fun_vocab):
 
 
 def adjacent_overlap_rate(rows, lab):
-    """Share of other-function golds that co-occur / sit near this label's positives."""
+    """Legacy domain-adjacency proxy (diagnostic only; not primary overlap)."""
     pos = [r for r in rows if lab in (r.get("function_labels") or [])]
     other_fun = [
         r
@@ -290,7 +290,6 @@ def adjacent_overlap_rate(rows, lab):
     ]
     if not pos or not other_fun:
         return 0.0
-    # co-occurrence of any shared domain between pos and other-fun as proxy overlap
     pos_doms = Counter(d for r in pos for d in (r.get("domain_labels") or ["__NONE__"]))
     hit = 0
     for r in other_fun:
@@ -298,6 +297,15 @@ def adjacent_overlap_rate(rows, lab):
         if any(pos_doms[d] > 0 for d in doms):
             hit += 1
     return hit / len(other_fun)
+
+
+def function_cooccurrence_rate(rows, lab):
+    """Share of this label's positives that also carry another function label."""
+    pos = [r for r in rows if lab in (r.get("function_labels") or [])]
+    if not pos:
+        return 0.0
+    multi = sum(1 for r in pos if len(r.get("function_labels") or []) >= 2)
+    return multi / len(pos)
 
 
 def inner() -> int:
@@ -455,26 +463,36 @@ def inner() -> int:
         for name in preds
     }
 
-    # Human agreement on REP function golds (dual annotate blind)
+    # Dual-annotator gold recovery (cue-protocol raters) — NOT true human IAA.
+    # Foundation HUMAN_AGREEMENT remains PROTOCOL_DEFINED_AWAITING_OPERATOR_ANNOTATION.
     print("dual_annotate_rep_function", flush=True)
     fun_rep_idx = [i for i, r in enumerate(rep) if r.get("function_labels")]
     blind = [{"text": rep[i]["text"], "identity": rep[i]["identity"]} for i in fun_rep_idx]
     ann = dual_annotate_rows(blind)
-    # per-function positive agreement
-    human_by_lab = {}
+    dual_recovery_by_lab = {}
+    dual_ab_agree_by_lab = {}
     for j, lab in enumerate(fun_vocab):
         short = FUNCTION_SHORT[lab]
-        jac = []
+        recovery = []
+        ab_agree = []
         for a, src_i in zip(ann, fun_rep_idx):
             gold = lab in (rep[src_i].get("function_labels") or [])
             a_has = short in (a["rater_a"].get("functions") or [])
             b_has = short in (a["rater_b"].get("functions") or [])
-            # agreement on presence for gold-positive rows
+            ab_agree.append(1.0 if a_has == b_has else 0.0)
             if gold:
-                jac.append(1.0 if (a_has and b_has) else (0.5 if (a_has or b_has) else 0.0))
-        human_by_lab[lab] = mean(jac) if jac else None
+                recovery.append(
+                    1.0 if (a_has and b_has) else (0.5 if (a_has or b_has) else 0.0)
+                )
+        dual_recovery_by_lab[lab] = mean(recovery) if recovery else None
+        dual_ab_agree_by_lab[lab] = mean(ab_agree) if ab_agree else None
 
-    mean_human = mean([v for v in human_by_lab.values() if v is not None])
+    mean_dual_recovery = mean(
+        [v for v in dual_recovery_by_lab.values() if v is not None]
+    )
+    mean_dual_ab = mean([v for v in dual_ab_agree_by_lab.values() if v is not None])
+    true_human_iaa_available = False
+    mean_human = None  # reserved for operator second-rater kappa when available
 
     # Error consensus
     print("error_consensus", flush=True)
@@ -566,6 +584,7 @@ def inner() -> int:
             "nn_purity": geom["nn_purity"],
             "pos_neg_margin": geom["pos_neg_margin"],
             "adjacent_overlap_rate": adjacent_overlap_rate(rep, lab),
+            "function_cooccurrence_rate": function_cooccurrence_rate(rep, lab),
             "cue_type_mix": dict(cues),
             "pragmatic_or_context_share": prag_share,
             "explicit_lexical_share": cues.get("explicit_lexical_cue", 0)
@@ -574,7 +593,9 @@ def inner() -> int:
                 "consensus_fail_share_among_gold"
             ],
             "old_vs_independent_agree_on_gold": agree_old_ind / max(1, n_g),
-            "human_function_jaccard": human_by_lab[lab],
+            "dual_annotator_gold_recovery": dual_recovery_by_lab[lab],
+            "dual_annotator_ab_agree": dual_ab_agree_by_lab[lab],
+            "human_function_jaccard": None,
             "error_consensus": consensus[lab],
         }
         audit["signal_class"] = classify_function_signal(audit)
@@ -585,6 +606,7 @@ def inner() -> int:
         "mean_consensus_fail_share": mean_consensus,
         "mean_pragmatic_share": mean(prag_shares),
         "mean_human_function_jaccard": mean_human,
+        "true_human_iaa_available": true_human_iaa_available,
         "diversity_adequate": True,  # prior expand phase settled
     }
     ceiling_class = classify_ceiling(ceiling_audit)
@@ -625,7 +647,10 @@ def inner() -> int:
         "task_signal_limit": task_signal_limit,
         "mean_consensus_fail_share": mean_consensus,
         "mean_pragmatic_share": mean(prag_shares),
+        "mean_dual_annotator_gold_recovery": mean_dual_recovery,
+        "mean_dual_annotator_ab_agree": mean_dual_ab,
         "mean_human_function_jaccard": mean_human,
+        "true_human_iaa_available": true_human_iaa_available,
         "ceiling_class": ceiling_class,
         "axis_structure": axis_structure,
         "cue_failure_rates": cue_fail_rate,
@@ -664,7 +689,10 @@ def inner() -> int:
         "formulation_function_macros": form_macros,
         "mean_consensus_fail_share": mean_consensus,
         "mean_pragmatic_share": mean(prag_shares),
+        "mean_dual_annotator_gold_recovery": mean_dual_recovery,
+        "mean_dual_annotator_ab_agree": mean_dual_ab,
         "mean_human_function_jaccard": mean_human,
+        "true_human_iaa_available": true_human_iaa_available,
         "cue_failure_rates": cue_fail_rate,
         "REJECTED_MICRO_FIXES": dict(REJECTED_MICRO_FIXES),
         "QUALIFICATION_USED_FOR_OPTIMIZATION": False,
@@ -727,6 +755,9 @@ formulation FUNCTION macros (REP_V3, gated):
 
 mean consensus-fail share among gold = {mean_consensus:.3f}
 mean pragmatic/context cue share     = {mean(prag_shares):.3f}
+dual_annotator gold recovery         = {mean_dual_recovery:.3f}
+dual_annotator A/B agree             = {mean_dual_ab:.3f}
+true_human_iaa_available             = {true_human_iaa_available}
 """
     for lab in fun_vocab:
         md += f"\n{lab} = {per_function[lab]['signal_class']}"

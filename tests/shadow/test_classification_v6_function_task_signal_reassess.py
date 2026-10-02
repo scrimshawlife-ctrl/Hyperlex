@@ -42,7 +42,9 @@ def test_signal_and_ceiling_classifiers():
                 "rep_support": 40,
                 "old_head_f1": 0.25,
                 "independent_f1": 0.24,
-                "adjacent_overlap_rate": 0.5,
+                "function_cooccurrence_rate": 0.5,
+                "pragmatic_or_context_share": 0.1,
+                "consensus_fail_share_among_gold": 0.1,
             }
         )
         == "SEMANTICALLY_OVERLAPPING"
@@ -54,6 +56,7 @@ def test_signal_and_ceiling_classifiers():
                 "rep_support": 40,
                 "old_head_f1": 0.28,
                 "independent_f1": 0.27,
+                "function_cooccurrence_rate": 0.9,
                 "pragmatic_or_context_share": 0.55,
                 "consensus_fail_share_among_gold": 0.5,
             }
@@ -71,6 +74,8 @@ def test_signal_and_ceiling_classifiers():
             "mean_consensus_fail_share": 0.42,
             "mean_pragmatic_share": 0.48,
             "diversity_adequate": True,
+            "true_human_iaa_available": False,
+            "mean_human_function_jaccard": 0.14,
         }
     )
     assert ceiling == "TEXT_SIGNAL_CEILING"
