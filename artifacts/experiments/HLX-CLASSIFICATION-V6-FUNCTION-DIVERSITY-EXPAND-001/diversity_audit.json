@@ -1,0 +1,107 @@
+{
+  "dev": {
+    "domain_function_pairs_n": 19,
+    "function_length": {
+      "long": 46,
+      "medium": 32,
+      "short": 23
+    },
+    "function_length_p50": 172,
+    "function_medium_long_share": 0.7722772277227723,
+    "function_n": 101,
+    "function_non_wikt_share": 0.16831683168316833,
+    "function_style": {
+      "encyclopedic_positive": 17,
+      "wiktionary_sense": 84
+    },
+    "n": 540,
+    "per_function_support": {
+      "function.conflictive_force": 30,
+      "function.evaluative_stance": 31,
+      "function.memetic_form": 22,
+      "function.relational_intimacy": 22
+    },
+    "positive_n": 229,
+    "zero_label_share": 0.575925925925926
+  },
+  "disjointness_pass": true,
+  "diversity_gate": {
+    "checks": {
+      "disjointness": true,
+      "per_function_rep": true,
+      "per_function_train": true,
+      "qual003_blocked": true,
+      "rep_domain_function_pairs": true,
+      "rep_function_medium_long": true,
+      "rep_function_n": true,
+      "rep_function_non_wikt": true,
+      "rep_zero_label_in_range": true
+    },
+    "pass": true,
+    "values": {
+      "rep_domain_function_pairs_n": 27,
+      "rep_function_medium_long_share": 0.7572815533980582,
+      "rep_function_n": 206,
+      "rep_function_non_wikt_share": 0.2669902912621359,
+      "rep_zero_label_share": 0.5810721376571807
+    }
+  },
+  "inject_counts": {
+    "dev_fun_new": 35,
+    "rep_fun_new": 55,
+    "rep_pos_new": 40,
+    "train_fun_new": 96,
+    "train_pos_new": 120
+  },
+  "qual003_blocked": true,
+  "rep": {
+    "domain_function_pairs_n": 27,
+    "function_length": {
+      "long": 83,
+      "medium": 73,
+      "short": 50
+    },
+    "function_length_p50": 139,
+    "function_medium_long_share": 0.7572815533980582,
+    "function_n": 206,
+    "function_non_wikt_share": 0.2669902912621359,
+    "function_style": {
+      "encyclopedic_positive": 55,
+      "wiktionary_sense": 151
+    },
+    "n": 1511,
+    "per_function_support": {
+      "function.conflictive_force": 62,
+      "function.evaluative_stance": 51,
+      "function.memetic_form": 46,
+      "function.relational_intimacy": 49
+    },
+    "positive_n": 633,
+    "zero_label_share": 0.5810721376571807
+  },
+  "train": {
+    "domain_function_pairs_n": 22,
+    "function_length": {
+      "long": 148,
+      "medium": 136,
+      "short": 137
+    },
+    "function_length_p50": 109,
+    "function_medium_long_share": 0.6745843230403801,
+    "function_n": 421,
+    "function_non_wikt_share": 0.09026128266033254,
+    "function_style": {
+      "encyclopedic_positive": 38,
+      "wiktionary_sense": 383
+    },
+    "n": 3035,
+    "per_function_support": {
+      "function.conflictive_force": 111,
+      "function.evaluative_stance": 107,
+      "function.memetic_form": 123,
+      "function.relational_intimacy": 90
+    },
+    "positive_n": 1420,
+    "zero_label_share": 0.5321252059308073
+  }
+}

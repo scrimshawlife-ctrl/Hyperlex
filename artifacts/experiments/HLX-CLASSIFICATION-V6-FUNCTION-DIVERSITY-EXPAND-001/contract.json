@@ -1,0 +1,118 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-FUNCTION-DIVERSITY-EXPAND-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PHASE_RULE": "EXPAND_V6_FUNCTION_DIVERSITY_AND_POSITIVE_REPRESENTATION",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "RELEASE_ELIGIBLE": false,
+  "diversity_targets": {
+    "function_vocab": [
+      "function.relational_intimacy",
+      "function.conflictive_force",
+      "function.evaluative_stance",
+      "function.memetic_form"
+    ],
+    "per_function_min_rep": 12,
+    "per_function_min_train": 40,
+    "rep_min_domain_function_pairs": 8,
+    "rep_min_function_medium_long_share": 0.5,
+    "rep_min_function_n": 120,
+    "rep_min_function_non_wikt_share": 0.2,
+    "rep_zero_label_share": [
+      0.55,
+      0.75
+    ]
+  },
+  "encoder_use_allowed": [
+    "deduplication",
+    "coverage_analysis",
+    "semantic_diversity_measurement"
+  ],
+  "forbidden": [
+    "retune_ANY_LABEL_threshold",
+    "modify_NONE_rejection",
+    "retrain_encoder",
+    "change_ontology",
+    "use_QUAL_003_rows_for_training",
+    "use_QUAL_003_for_row_level_acquisition_targeting",
+    "select_by_model_misclassification",
+    "architecture_bakeoff",
+    "another_QUAL_surface"
+  ],
+  "frozen": {
+    "ANY_LABEL_threshold": 0.22499999999999998,
+    "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+    "axis_head_architecture": "768\u2192128\u2192ReLU\u2192n_labels",
+    "encoder_model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+    "encoder_revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+    "ontology_changed": false,
+    "operating_package_id": "HYPERLEX_V6_OPERATING_PIPELINE_PACKAGE_CANDIDATE_V1",
+    "operating_package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+    "thresholds": {
+      "domain": [
+        0.25,
+        0.05,
+        0.1,
+        0.1,
+        0.3,
+        0.45,
+        0.2,
+        0.25,
+        0.3,
+        0.45,
+        0.25
+      ],
+      "function": [
+        0.3,
+        0.4,
+        0.2,
+        0.4
+      ],
+      "mediation": [
+        0.35
+      ]
+    }
+  },
+  "historical_qual": {
+    "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+    "result_sha256": "b560dac2a8f80f45c6213dcd2ba25acdb2e0b7dde786da3ee0a5d6e3231ae724",
+    "role": "BLOCKED_SPENT_SURFACE",
+    "row_reuse_forbidden": true,
+    "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b"
+  },
+  "next_actions": [
+    "HARDEN_V6_POSITIVE_SEMANTIC_GENERALIZATION",
+    "REDESIGN_V6_FUNCTION_PREDICTION",
+    "CONTINUE_V6_FUNCTION_DATA_ACQUISITION"
+  ],
+  "outcomes": [
+    "V6_FUNCTION_DIVERSITY_ADVANCE",
+    "V6_FUNCTION_DIVERSITY_PARTIAL",
+    "V6_FUNCTION_DIVERSITY_NO_ADVANCE"
+  ],
+  "parent_diagnosis": "MIXED_POSITIVE_SEMANTIC_GENERALIZATION_FAILURE",
+  "parent_rep_v2_witness": {
+    "FUNCTION": 0.22272324177813058,
+    "positive_only": 0.415797546133708,
+    "system": 0.36980892482696165,
+    "zero_exact": 0.9123006833712984,
+    "zero_fp": 0.08769931662870159
+  },
+  "parent_review_receipt_sha256": "cf36ef3acb22094bec39bf046083aeb0a9e5efed880be0e9a95fff10abc2b274",
+  "schema": "hyperlex.classification.v6.function_diversity_expand.v1",
+  "surface_ids": {
+    "DEV_SELECTION": "HYPERLEX_V6_DEV_SELECTION_V3",
+    "REPRESENTATIVE_VALIDATION": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V3",
+    "TRAIN": "HYPERLEX_V6_TRAIN_V3",
+    "parent_DEV": "HYPERLEX_V6_DEV_SELECTION_V2",
+    "parent_REP": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V2",
+    "parent_TRAIN": "HYPERLEX_V6_TRAIN_V2"
+  },
+  "train_policy": {
+    "evaluate_on": "REP_V3",
+    "keep_NONE_gate_frozen": true,
+    "select_on": "DEV_V3",
+    "train_axis_heads_only": true
+  }
+}

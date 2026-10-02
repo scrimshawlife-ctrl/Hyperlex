@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Expand V6 function diversity + positive representation (Spec 007):**
+  Built TRAIN/DEV/REP **V3** with mixed-source longer positives
+  (wiki-culture + multi-sense wikt; QUAL-003 blocked). Diversity audit
+  **pass** (REP function non-wikt 0.373, med+long 0.793, n_fun=241).
+  Retrained axis heads under frozen encoder + frozen ANY_LABEL gate.
+  REP_V3: candidate FUNCTION **0.152** / pos-only **0.233** / zero-FP
+  **0.026** vs old-heads baseline 0.296 / 0.358 / 0.088 →
+  **`V6_FUNCTION_DIVERSITY_NO_ADVANCE`**. NONE preserved. Next:
+  `REDESIGN_V6_FUNCTION_PREDICTION`.
+
 - **Review V6 QUAL-003 FAIL (Spec 007):** Forensic read-only review after
   QUAL-003 FAIL. Primary diagnosis
   **`MIXED_POSITIVE_SEMANTIC_GENERALIZATION_FAILURE`** (FUNCTION dominant).

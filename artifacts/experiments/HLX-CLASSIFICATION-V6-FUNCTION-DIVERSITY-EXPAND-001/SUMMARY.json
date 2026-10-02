@@ -1,0 +1,134 @@
+{
+  "DEV_V3": {
+    "FUNCTION_macro_f1": 0.09595238095238096,
+    "positive_only_system_macro_f1": 0.19570458952811895,
+    "system_macro_f1": 0.18604524882007265,
+    "zero_label_exact_rejection": 0.9742765273311897,
+    "zero_label_false_positive_rate": 0.02572347266881029
+  },
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "REDESIGN_V6_FUNCTION_PREDICTION",
+  "NONE_GATE_MUTATED": false,
+  "OUTCOME": "V6_FUNCTION_DIVERSITY_NO_ADVANCE",
+  "PHASE_RULE": "EXPAND_V6_FUNCTION_DIVERSITY_AND_POSITIVE_REPRESENTATION",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "baseline_REP_V3_old_heads": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "FUNCTION_macro_f1": 0.2963761484570071,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "positive_only_system_macro_f1": 0.3581232215258432,
+    "system_macro_f1": 0.33108561828189526,
+    "zero_label_exact_rejection": 0.9123006833712984,
+    "zero_label_false_positive_rate": 0.08769931662870159
+  },
+  "candidate_REP_V3": {
+    "DOMAIN_macro_f1": 0.12565221438149288,
+    "FUNCTION_macro_f1": 0.1522589152620112,
+    "MEDIATION_macro_f1": 0.3975155279503106,
+    "function_by_length": {
+      "long": 0.13148479427549192,
+      "medium": 0.018518518518518517,
+      "short": 0.36994255744255744
+    },
+    "function_by_source": {
+      "encyclopedic_positive": 0.18333333333333332,
+      "wiktionary_sense": 0.1848385167464115
+    },
+    "per_label_function": {
+      "function.conflictive_force": {
+        "f1": 0.3157894736842105,
+        "fn": 47,
+        "fp": 18,
+        "precision": 0.45454545454545453,
+        "recall": 0.24193548387096775,
+        "support": 62,
+        "tp": 15
+      },
+      "function.evaluative_stance": {
+        "f1": 0.06666666666666667,
+        "fn": 49,
+        "fp": 7,
+        "precision": 0.2222222222222222,
+        "recall": 0.0392156862745098,
+        "support": 51,
+        "tp": 2
+      },
+      "function.memetic_form": {
+        "f1": 0.0784313725490196,
+        "fn": 44,
+        "fp": 3,
+        "precision": 0.4,
+        "recall": 0.043478260869565216,
+        "support": 46,
+        "tp": 2
+      },
+      "function.relational_intimacy": {
+        "f1": 0.1481481481481481,
+        "fn": 45,
+        "fp": 1,
+        "precision": 0.8,
+        "recall": 0.08163265306122448,
+        "support": 49,
+        "tp": 4
+      }
+    },
+    "positive_only_system_macro_f1": 0.2326308119914439,
+    "system_macro_f1": 0.22514221919793823,
+    "zero_label_exact_rejection": 0.9738041002277904,
+    "zero_label_false_positive_rate": 0.02619589977220957
+  },
+  "deltas": {
+    "function": -0.1441172331949959,
+    "positive_only": -0.1254924095343993,
+    "system": -0.10594339908395703
+  },
+  "diversity_checks": {
+    "disjointness": true,
+    "per_function_rep": true,
+    "per_function_train": true,
+    "qual003_blocked": true,
+    "rep_domain_function_pairs": true,
+    "rep_function_medium_long": true,
+    "rep_function_n": true,
+    "rep_function_non_wikt": true,
+    "rep_zero_label_in_range": true
+  },
+  "diversity_pass": true,
+  "frozen": {
+    "encoder": "sentence-transformers/msmarco-distilbert-base-v4",
+    "gate_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+    "gate_threshold": 0.22499999999999998,
+    "new_heads_sha256": "3df97ec9a1cd9276dd143a2a015b966e48452ca5bb3be4a739c6dc5eec19867a",
+    "old_heads_sha256": "2a0724b5a22b67523d56b8a0117533e4d4d63bf2f775f78097735f9518b64942",
+    "package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a"
+  },
+  "inject_counts": {
+    "dev_fun_new": 35,
+    "rep_fun_new": 55,
+    "rep_pos_new": 40,
+    "train_fun_new": 96,
+    "train_pos_new": 120
+  },
+  "none_preserved": {
+    "operating_gates_pass": true,
+    "pass": true,
+    "vs_witness_fp_ok": true,
+    "witness_zero_exact": 0.9123006833712984,
+    "witness_zero_fp": 0.08769931662870159,
+    "zero_label_exact_rejection": 0.9738041002277904,
+    "zero_label_false_positive_rate": 0.02619589977220957
+  },
+  "semantic_diversity": {
+    "frac_max_sim_lt_0_85": 1.0,
+    "mean_max_sim_to_train": 0.3006230592727661,
+    "n_new": 96,
+    "n_train_fun_ref": 300,
+    "p50_max_sim_to_train": 0.29394984245300293
+  },
+  "surface_sizes": {
+    "DEV_V3": 540,
+    "REP_V3": 1511,
+    "TRAIN_V3": 3035
+  }
+}
