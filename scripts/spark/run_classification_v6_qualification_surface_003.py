@@ -409,18 +409,33 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
         except Exception as exc:  # noqa: BLE001
             print(f"partial_resume_skip={exc}", flush=True)
 
-    # Fresh Firecrawl feed only (never QUAL-002 firecrawl — those identities blocked).
-    firecrawl_feed = Path(
-        os.environ.get("HLX_QUAL003_FIRECRAWL_FEED")
-        or (PRIVATE / "RAW_ACQUIRE_QUAL003.firecrawl.jsonl")
-    )
-    if firecrawl_feed.exists():
+    # Fresh OBSERVED feeds only (never QUAL-002 firecrawl — those identities blocked).
+    feed_paths: list[Path] = []
+    env_feed = os.environ.get("HLX_QUAL003_FIRECRAWL_FEED")
+    if env_feed:
+        feed_paths.append(Path(env_feed))
+    for name in (
+        "RAW_ACQUIRE_QUAL003.firecrawl.jsonl",
+        "RAW_ACQUIRE_QUAL003.wiki_html_none.jsonl",
+        "RAW_ACQUIRE_QUAL003.merged_feed.jsonl",
+    ):
+        cand = PRIVATE / name
+        if cand not in feed_paths:
+            feed_paths.append(cand)
+    for firecrawl_feed in feed_paths:
+        if not firecrawl_feed.exists():
+            continue
         try:
             n_before = len(raw)
             for r in load_jsonl(firecrawl_feed):
                 if r.get("construction_tag") not in (None, "NATURAL"):
                     continue
                 if r.get("provenance") not in (None, "OBSERVED"):
+                    continue
+                # Refuse QUAL-002 lineage tags if a feed is mis-copied.
+                sf = str(r.get("source_family") or "")
+                notes = str(r.get("notes") or "")
+                if "qual002" in sf.lower() or "qual-002" in notes.lower():
                     continue
                 admit(
                     {
@@ -434,16 +449,16 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
                         or "v6_qual003_firecrawl",
                         "topic_domain": r.get("topic_domain"),
                         "acquisition_cue_family": r.get("acquisition_cue_family"),
-                        "notes": r.get("notes") or "firecrawl_feed_qual003",
+                        "notes": r.get("notes") or "observed_feed_qual003",
                     }
                 )
             print(
-                f"firecrawl_feed={firecrawl_feed} added={len(raw) - n_before} "
+                f"observed_feed={firecrawl_feed} added={len(raw) - n_before} "
                 f"total={len(raw)}",
                 flush=True,
             )
         except Exception as exc:  # noqa: BLE001
-            print(f"firecrawl_feed_skip={exc}", flush=True)
+            print(f"observed_feed_skip={firecrawl_feed}: {exc}", flush=True)
 
     def checkpoint() -> None:
         write_jsonl(partial_path, raw)
