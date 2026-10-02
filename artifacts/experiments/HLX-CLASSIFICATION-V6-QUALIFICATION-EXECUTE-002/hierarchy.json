@@ -1,0 +1,6 @@
+{
+  "post_constraint_hierarchy_violation_rate": 0.0,
+  "predictions_corrected_by_constraints": 2,
+  "predictions_degraded_by_constraints": 2,
+  "raw_hierarchy_violation_rate": 0.00199203187250996
+}

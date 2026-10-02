@@ -1,0 +1,86 @@
+{
+  "length": {
+    "long": {
+      "domain_macro_f1": 0.16231082319802664,
+      "function_macro_f1": 0.06666666666666667,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.3015222482435597,
+      "mediation_macro_f1": 0.17647058823529413,
+      "n": 122,
+      "sample_f1": 0.30983606557377047,
+      "system_macro_f1": 0.13928476938001588
+    },
+    "medium": {
+      "domain_macro_f1": 0.26389567127869173,
+      "function_macro_f1": 0.050107758620689655,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.38287623066104076,
+      "mediation_macro_f1": 0.2641509433962264,
+      "n": 474,
+      "sample_f1": 0.3975487241310026,
+      "system_macro_f1": 0.21046464762153713
+    },
+    "short": {
+      "domain_macro_f1": 0.22671591035227398,
+      "function_macro_f1": 0.06172248803827751,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.29705882352941176,
+      "mediation_macro_f1": 0.14285714285714285,
+      "n": 408,
+      "sample_f1": 0.3050653594771242,
+      "system_macro_f1": 0.18022638180532916
+    }
+  },
+  "surface": {
+    "conversational": {
+      "domain_macro_f1": 0.09090909090909091,
+      "function_macro_f1": 0.125,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.19047619047619047,
+      "mediation_macro_f1": 0.0,
+      "n": 48,
+      "sample_f1": 0.19270833333333334,
+      "system_macro_f1": 0.09375
+    },
+    "declarative": {
+      "domain_macro_f1": 0.2617007200779017,
+      "function_macro_f1": 0.06825657894736842,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.3125896934116112,
+      "mediation_macro_f1": 0.0,
+      "n": 511,
+      "sample_f1": 0.3242102320380207,
+      "system_macro_f1": 0.1969833897903995
+    },
+    "definition-like": {
+      "domain_macro_f1": 0.22397955579773762,
+      "function_macro_f1": 0.0,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.40476190476190477,
+      "mediation_macro_f1": 0.0,
+      "n": 168,
+      "sample_f1": 0.4107142857142857,
+      "system_macro_f1": 0.15398594461094461
+    },
+    "internet-register": {
+      "domain_macro_f1": 0.16627917537008446,
+      "function_macro_f1": 0.0,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.2436046511627907,
+      "mediation_macro_f1": 0.35294117647058826,
+      "n": 86,
+      "sample_f1": 0.27945736434108526,
+      "system_macro_f1": 0.13637575659634482
+    },
+    "prose": {
+      "domain_macro_f1": 0.1712760071694241,
+      "function_macro_f1": 0.029411764705882353,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.42744951383694835,
+      "mediation_macro_f1": 0.0,
+      "n": 191,
+      "sample_f1": 0.43324607329842935,
+      "system_macro_f1": 0.12510519610544965
+    }
+  }
+}

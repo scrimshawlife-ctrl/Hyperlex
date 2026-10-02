@@ -1,0 +1,31 @@
+{
+  "classification": "SOURCE_SENSITIVE",
+  "families_with_n_ge_8": {
+    "v6_qual002_firecrawl_wiki_none:mycology": 0.0,
+    "v6_qual002_firecrawl_wikt:ai-native": 0.175,
+    "v6_qual002_firecrawl_wikt:conflict-aggression": 0.015625,
+    "v6_qual002_firecrawl_wikt:identity-affiliation": 0.041666666666666664,
+    "v6_qual002_firecrawl_wikt:internet-slang": 0.0,
+    "v6_qual002_firecrawl_wikt:memetic": 0.0,
+    "v6_qual002_firecrawl_wikt:multi_cue": 0.19223484848484848,
+    "v6_qual002_firecrawl_wikt:music-entertainment": 0.05,
+    "v6_qual002_firecrawl_wikt:regional-cultural": 0.05,
+    "v6_qual002_firecrawl_wikt:relationship-dating": 0.011363636363636364,
+    "v6_qual002_firecrawl_wikt:social-evaluation": 0.0625,
+    "v6_qual002_firecrawl_wikt:sports-competition": 0.041666666666666664,
+    "v6_qual002_firecrawl_wikt_topup:betting-sharp": 0.17708333333333334,
+    "v6_qual002_firecrawl_wikt_topup:identity-affiliation": 0.0625,
+    "v6_qual002_firecrawl_wikt_topup:memetic": 0.0625,
+    "v6_qual002_firecrawl_wikt_topup:music-entertainment": 0.041666666666666664,
+    "v6_qual002_firecrawl_wikt_topup:sports-competition": 0.041666666666666664,
+    "v6_qual002_wikt:crypto-degen": 0.0,
+    "v6_qual002_wikt:fashion-aesthetic": 0.0472972972972973,
+    "v6_qual002_wikt:gaming-meta": 0.14479166666666665,
+    "v6_qual002_wikt:internet-slang": 0.06666666666666667,
+    "v6_qual002_wikt:politics-civic": 0.03125,
+    "v6_qual002_wikt:spiritual-mystic": 0.08881578947368421,
+    "v6_qual002_wikt:technology-ai": 0.06666666666666667,
+    "v6_qual002_wikt:workplace-career": 0.0778657616892911,
+    "v6_qual002_wikt_multicue_search": 0.22826024227498323
+  }
+}

@@ -1,0 +1,515 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-QUALIFICATION-EXECUTE-002",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "REVIEW_V6_QUALIFICATION_FAILURE_AT_SYSTEM_LEVEL",
+  "PACKAGE_ID": "HYPERLEX_V6_SEMANTIC_PIPELINE_PACKAGE_CANDIDATE_V1",
+  "PHASE_RULE": "EXECUTE_V6_FRESH_QUALIFICATION_ONCE",
+  "PIPELINE_CANDIDATE_ID": "HYPERLEX_V6_SEMANTIC_PIPELINE_CANDIDATE_V1",
+  "QUALIFICATION_DISPOSITION": "V6_QUALIFICATION_FAIL",
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_002",
+  "QUAL_seal_sha256": "62ed3827fb751c52d3e679ec4e1e2df2b20ea674326fa1dd9ee9567fe4883874",
+  "RELEASE_ELIGIBLE": false,
+  "REP_retention": {
+    "DOMAIN_retention": 0.5237030141921828,
+    "FUNCTION_retention": 0.14690672740470406,
+    "MEDIATION_retention": 0.5333333333333333,
+    "absolute_drop": 0.2436938429373618,
+    "band": "SEVERE_GENERALIZATION_DROP",
+    "hard_gate": false,
+    "per_axis_drop": {
+      "domain": 0.21253995418395574,
+      "function": 0.34463832383052545,
+      "mediation": 0.18260869565217394
+    },
+    "qual_system_macro_f1": 0.1885452902206466,
+    "rep_system_macro_f1": 0.4322391331580084,
+    "retention_ratio": 0.43620596969808006
+  },
+  "RESULT_ID": "HYPERLEX_V6_QUALIFICATION_002_RESULT",
+  "V5_POINTERS_MUTATED": false,
+  "V6_QUALIFICATION_002_RESULT_SHA256": "73548c4331d7e471ba2251faef82fc38f64dde347999c0cf868a7b20b09f3fcd",
+  "V6_REPRESENTATION_CANDIDATE_STATUS": "QUALIFICATION_FAILED",
+  "axis_metrics": {
+    "domain": {
+      "jaccard": 0.4476688484158604,
+      "macro_f1": 0.23369414033478278,
+      "micro_f1": 0.20610687022900764,
+      "sample_f1": 0.4556986340352874
+    },
+    "function": {
+      "jaccard": 0.7788844621513944,
+      "macro_f1": 0.059348361918455377,
+      "micro_f1": 0.06374501992031872,
+      "sample_f1": 0.7792164674634795
+    },
+    "mediation": {
+      "jaccard": 0.9093625498007968,
+      "macro_f1": 0.20869565217391303,
+      "micro_f1": 0.20869565217391303,
+      "sample_f1": 0.9093625498007968
+    }
+  },
+  "baselines_historical_REP": {
+    "BGE_zero_shot_REP_historical": 0.243,
+    "MPNet_zero_shot_REP_historical": 0.206,
+    "ModernBERT_zero_shot_REP_historical": 0.162,
+    "QUAL_system_macro_f1": 0.1885452902206466,
+    "hardened_REP": 0.4322391331580084,
+    "note": "Zero-shot baselines are historical REP references; not re-scored on QUAL."
+  },
+  "cardinality_slices": {
+    "domain+function": {
+      "domain_macro_f1": 0.06666666666666667,
+      "function_macro_f1": 0.05555555555555555,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.06722689075630252,
+      "mediation_macro_f1": 0.0,
+      "n": 17,
+      "sample_f1": 0.09313725490196079,
+      "system_macro_f1": 0.05972222222222222
+    },
+    "domain_only": {
+      "domain_macro_f1": 0.4436568332914794,
+      "function_macro_f1": 0.0,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.3807726864330638,
+      "mediation_macro_f1": 0.0,
+      "n": 159,
+      "sample_f1": 0.42822701407607067,
+      "system_macro_f1": 0.3050140728878921
+    },
+    "function_only": {
+      "domain_macro_f1": 0.0,
+      "function_macro_f1": 0.20500000000000002,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.18333333333333332,
+      "mediation_macro_f1": 0.0,
+      "n": 30,
+      "sample_f1": 0.2,
+      "system_macro_f1": 0.051250000000000004
+    },
+    "mediation_positive": {
+      "domain_macro_f1": 0.183008658008658,
+      "function_macro_f1": 0.0,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.17191358024691358,
+      "mediation_macro_f1": 0.36363636363636365,
+      "n": 54,
+      "sample_f1": 0.2228395061728395,
+      "system_macro_f1": 0.1485457251082251
+    },
+    "single_label": {
+      "domain_macro_f1": 0.3992160817161773,
+      "function_macro_f1": 0.15896739130434784,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.32472423997847727,
+      "mediation_macro_f1": 0.2962962962962963,
+      "n": 177,
+      "sample_f1": 0.3628060263653484,
+      "system_macro_f1": 0.33272142252447734
+    },
+    "three_plus_label": {
+      "domain_macro_f1": 0.25757575757575757,
+      "function_macro_f1": 0.125,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.15119047619047618,
+      "mediation_macro_f1": 0.0,
+      "n": 8,
+      "sample_f1": 0.20267857142857143,
+      "system_macro_f1": 0.20833333333333331
+    },
+    "two_label": {
+      "domain_macro_f1": 0.3284269292894444,
+      "function_macro_f1": 0.041666666666666664,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.2504694835680751,
+      "mediation_macro_f1": 0.35555555555555557,
+      "n": 71,
+      "sample_f1": 0.307981220657277,
+      "system_macro_f1": 0.2584324027753819
+    },
+    "zero_label_gold": {
+      "domain_macro_f1": 0.0,
+      "function_macro_f1": 0.0,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.3516042780748663,
+      "mediation_macro_f1": 0.0,
+      "n": 748,
+      "sample_f1": 0.3516042780748663,
+      "system_macro_f1": 0.0
+    }
+  },
+  "code_revision": "693daf6426413430cccc664b8502e49962151d01",
+  "constraint_contribution": {
+    "post_constraint_hierarchy_violation_rate": 0.0,
+    "predictions_corrected_by_constraints": 2,
+    "predictions_degraded_by_constraints": 2,
+    "raw_hierarchy_violation_rate": 0.00199203187250996
+  },
+  "constraint_sha": "2e51ed0865bc5431b92b94ba0e99ff3c9e4803ffb72e1fb80c5ead8ab839bc1c",
+  "encoder_model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+  "encoder_revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+  "encoder_sha": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+  "encoder_trainable_parameters": 0,
+  "error_decomposition": {
+    "counts": {
+      "CO_LABEL_OMISSION": 41,
+      "DOMAIN_FN": 124,
+      "DOMAIN_FP": 708,
+      "FUNCTION_FN": 53,
+      "FUNCTION_FP": 182,
+      "MEDIATION_FN": 42,
+      "MEDIATION_FP": 49,
+      "ONTOLOGY_BOUNDARY_CASE": 2,
+      "OVERPREDICTION": 212,
+      "PARENT_CHILD_VIOLATION": 2
+    },
+    "patterns": {
+      "co_label_omission_multi_gold": 41
+    },
+    "taxonomy": [
+      "DOMAIN_FP",
+      "DOMAIN_FN",
+      "FUNCTION_FP",
+      "FUNCTION_FN",
+      "MEDIATION_FP",
+      "MEDIATION_FN",
+      "PARENT_CHILD_VIOLATION",
+      "CO_LABEL_OMISSION",
+      "OVERPREDICTION",
+      "ONTOLOGY_BOUNDARY_CASE"
+    ]
+  },
+  "evaluation_spent": "EVALUATION_SPENT",
+  "gate_results": {
+    "gates": {
+      "hierarchy_violation": {
+        "pass": true,
+        "threshold": 0.05,
+        "value": 0.0
+      },
+      "no_material_axis_collapse": {
+        "axis_macros": {
+          "domain": 0.23369414033478278,
+          "function": 0.059348361918455377,
+          "mediation": 0.20869565217391303
+        },
+        "pass": false,
+        "threshold": 0.1,
+        "value": false
+      },
+      "system_macro_f1": {
+        "pass": false,
+        "threshold": 0.3,
+        "value": 0.1885452902206466
+      }
+    },
+    "pass": false
+  },
+  "head_bundle_sha": "2a0724b5a22b67523d56b8a0117533e4d4d63bf2f775f78097735f9518b64942",
+  "hierarchy_analysis": {
+    "post_constraint_hierarchy_violation_rate": 0.0,
+    "predictions_corrected_by_constraints": 2,
+    "predictions_degraded_by_constraints": 2,
+    "raw_hierarchy_violation_rate": 0.00199203187250996
+  },
+  "length_slices": {
+    "long": {
+      "domain_macro_f1": 0.16231082319802664,
+      "function_macro_f1": 0.06666666666666667,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.3015222482435597,
+      "mediation_macro_f1": 0.17647058823529413,
+      "n": 122,
+      "sample_f1": 0.30983606557377047,
+      "system_macro_f1": 0.13928476938001588
+    },
+    "medium": {
+      "domain_macro_f1": 0.26389567127869173,
+      "function_macro_f1": 0.050107758620689655,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.38287623066104076,
+      "mediation_macro_f1": 0.2641509433962264,
+      "n": 474,
+      "sample_f1": 0.3975487241310026,
+      "system_macro_f1": 0.21046464762153713
+    },
+    "short": {
+      "domain_macro_f1": 0.22671591035227398,
+      "function_macro_f1": 0.06172248803827751,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.29705882352941176,
+      "mediation_macro_f1": 0.14285714285714285,
+      "n": 408,
+      "sample_f1": 0.3050653594771242,
+      "system_macro_f1": 0.18022638180532916
+    }
+  },
+  "n_rows": 1004,
+  "ontology_sha": "d4e76b88d9ff859c62cf0f38c26dbda2a17e04ea81070c5061a20b37e674efbb",
+  "package_sha256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4",
+  "per_label": {
+    "domain.crypto": {
+      "DEV_f1": 0.5,
+      "QUAL_f1": 0.0,
+      "QUAL_support": 3,
+      "REP_f1": 0.6666666666666666,
+      "axis": "domain",
+      "class": "LOW_SUPPORT",
+      "precision": 0.0,
+      "recall": 0.0
+    },
+    "domain.entertainment": {
+      "DEV_f1": 0.4,
+      "QUAL_f1": 0.10526315789473685,
+      "QUAL_support": 14,
+      "REP_f1": 0.34615384615384615,
+      "axis": "domain",
+      "class": "DEGRADED",
+      "precision": 0.08333333333333333,
+      "recall": 0.14285714285714285
+    },
+    "domain.fashion": {
+      "DEV_f1": 0.4,
+      "QUAL_f1": 0.5964912280701754,
+      "QUAL_support": 23,
+      "REP_f1": 0.3846153846153846,
+      "axis": "domain",
+      "class": "STABLE",
+      "precision": 0.5,
+      "recall": 0.7391304347826086
+    },
+    "domain.gambling": {
+      "DEV_f1": 0.0,
+      "QUAL_f1": 0.4313725490196078,
+      "QUAL_support": 34,
+      "REP_f1": 0.42857142857142855,
+      "axis": "domain",
+      "class": "STABLE",
+      "precision": 0.3235294117647059,
+      "recall": 0.6470588235294118
+    },
+    "domain.gaming": {
+      "DEV_f1": 0.3333333333333333,
+      "QUAL_f1": 0.4421052631578948,
+      "QUAL_support": 41,
+      "REP_f1": 0.24242424242424243,
+      "axis": "domain",
+      "class": "STABLE",
+      "precision": 0.3888888888888889,
+      "recall": 0.5121951219512195
+    },
+    "domain.politics": {
+      "DEV_f1": 0.380952380952381,
+      "QUAL_f1": 0.2588235294117647,
+      "QUAL_support": 29,
+      "REP_f1": 0.509090909090909,
+      "axis": "domain",
+      "class": "DEGRADED",
+      "precision": 0.19642857142857142,
+      "recall": 0.3793103448275862
+    },
+    "domain.spiritual": {
+      "DEV_f1": 0.3529411764705882,
+      "QUAL_f1": 0.25806451612903225,
+      "QUAL_support": 6,
+      "REP_f1": 0.36363636363636365,
+      "axis": "domain",
+      "class": "LOW_SUPPORT",
+      "precision": 0.16,
+      "recall": 0.6666666666666666
+    },
+    "domain.sports": {
+      "DEV_f1": 0.20408163265306123,
+      "QUAL_f1": 0.014134275618374558,
+      "QUAL_support": 9,
+      "REP_f1": 0.31343283582089554,
+      "axis": "domain",
+      "class": "LOW_SUPPORT",
+      "precision": 0.0072992700729927005,
+      "recall": 0.2222222222222222
+    },
+    "domain.technology": {
+      "DEV_f1": 0.576923076923077,
+      "QUAL_f1": 0.32167832167832167,
+      "QUAL_support": 52,
+      "REP_f1": 0.5408805031446542,
+      "axis": "domain",
+      "class": "STABLE",
+      "precision": 0.25274725274725274,
+      "recall": 0.4423076923076923
+    },
+    "domain.technology.ai_discourse": {
+      "DEV_f1": 0.42857142857142855,
+      "QUAL_f1": 0.10666666666666667,
+      "QUAL_support": 8,
+      "REP_f1": 0.606060606060606,
+      "axis": "domain",
+      "class": "LOW_SUPPORT",
+      "precision": 0.05970149253731343,
+      "recall": 0.5
+    },
+    "domain.workplace": {
+      "DEV_f1": 0.37037037037037035,
+      "QUAL_f1": 0.036036036036036036,
+      "QUAL_support": 13,
+      "REP_f1": 0.5070422535211268,
+      "axis": "domain",
+      "class": "FAILED",
+      "precision": 0.02040816326530612,
+      "recall": 0.15384615384615385
+    },
+    "function.conflictive_force": {
+      "DEV_f1": 0.5333333333333333,
+      "QUAL_f1": 0.056074766355140186,
+      "QUAL_support": 14,
+      "REP_f1": 0.4722222222222222,
+      "axis": "function",
+      "class": "DEGRADED",
+      "precision": 0.03225806451612903,
+      "recall": 0.21428571428571427
+    },
+    "function.evaluative_stance": {
+      "DEV_f1": 0.42857142857142855,
+      "QUAL_f1": 0.0,
+      "QUAL_support": 5,
+      "REP_f1": 0.41269841269841273,
+      "axis": "function",
+      "class": "LOW_SUPPORT",
+      "precision": 0.0,
+      "recall": 0.0
+    },
+    "function.memetic_form": {
+      "DEV_f1": 0.38095238095238093,
+      "QUAL_f1": 0.038461538461538464,
+      "QUAL_support": 10,
+      "REP_f1": 0.37037037037037035,
+      "axis": "function",
+      "class": "FAILED",
+      "precision": 0.023809523809523808,
+      "recall": 0.1
+    },
+    "function.relational_intimacy": {
+      "DEV_f1": 0.3636363636363636,
+      "QUAL_f1": 0.14285714285714288,
+      "QUAL_support": 32,
+      "REP_f1": 0.3606557377049181,
+      "axis": "function",
+      "class": "DEGRADED",
+      "precision": 0.16666666666666666,
+      "recall": 0.125
+    },
+    "mediation.internet_register": {
+      "DEV_f1": 0.2777777777777778,
+      "QUAL_f1": 0.20869565217391306,
+      "QUAL_support": 54,
+      "REP_f1": 0.391304347826087,
+      "axis": "mediation",
+      "class": "STABLE",
+      "precision": 0.19672131147540983,
+      "recall": 0.2222222222222222
+    }
+  },
+  "primary_metrics": {
+    "DOMAIN_macro_f1": 0.23369414033478278,
+    "DOMAIN_micro_f1": 0.20610687022900764,
+    "FUNCTION_macro_f1": 0.059348361918455377,
+    "FUNCTION_micro_f1": 0.06374501992031872,
+    "MEDIATION_macro_f1": 0.20869565217391303,
+    "MEDIATION_micro_f1": 0.20869565217391303,
+    "hierarchy_violation_rate": 0.0,
+    "jaccard": 0.3381165812938721,
+    "raw_hierarchy_violation_rate": 0.00199203187250996,
+    "sample_f1": 0.3493075317776513,
+    "system_macro_f1": 0.1885452902206466
+  },
+  "qualification_model_executions": 1,
+  "settled_at": "2026-10-02T03:36:52Z",
+  "source_slices": {
+    "classification": "SOURCE_SENSITIVE",
+    "families_with_n_ge_8": {
+      "v6_qual002_firecrawl_wiki_none:mycology": 0.0,
+      "v6_qual002_firecrawl_wikt:ai-native": 0.175,
+      "v6_qual002_firecrawl_wikt:conflict-aggression": 0.015625,
+      "v6_qual002_firecrawl_wikt:identity-affiliation": 0.041666666666666664,
+      "v6_qual002_firecrawl_wikt:internet-slang": 0.0,
+      "v6_qual002_firecrawl_wikt:memetic": 0.0,
+      "v6_qual002_firecrawl_wikt:multi_cue": 0.19223484848484848,
+      "v6_qual002_firecrawl_wikt:music-entertainment": 0.05,
+      "v6_qual002_firecrawl_wikt:regional-cultural": 0.05,
+      "v6_qual002_firecrawl_wikt:relationship-dating": 0.011363636363636364,
+      "v6_qual002_firecrawl_wikt:social-evaluation": 0.0625,
+      "v6_qual002_firecrawl_wikt:sports-competition": 0.041666666666666664,
+      "v6_qual002_firecrawl_wikt_topup:betting-sharp": 0.17708333333333334,
+      "v6_qual002_firecrawl_wikt_topup:identity-affiliation": 0.0625,
+      "v6_qual002_firecrawl_wikt_topup:memetic": 0.0625,
+      "v6_qual002_firecrawl_wikt_topup:music-entertainment": 0.041666666666666664,
+      "v6_qual002_firecrawl_wikt_topup:sports-competition": 0.041666666666666664,
+      "v6_qual002_wikt:crypto-degen": 0.0,
+      "v6_qual002_wikt:fashion-aesthetic": 0.0472972972972973,
+      "v6_qual002_wikt:gaming-meta": 0.14479166666666665,
+      "v6_qual002_wikt:internet-slang": 0.06666666666666667,
+      "v6_qual002_wikt:politics-civic": 0.03125,
+      "v6_qual002_wikt:spiritual-mystic": 0.08881578947368421,
+      "v6_qual002_wikt:technology-ai": 0.06666666666666667,
+      "v6_qual002_wikt:workplace-career": 0.0778657616892911,
+      "v6_qual002_wikt_multicue_search": 0.22826024227498323
+    },
+    "n_families": 41
+  },
+  "surface_slices": {
+    "conversational": {
+      "domain_macro_f1": 0.09090909090909091,
+      "function_macro_f1": 0.125,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.19047619047619047,
+      "mediation_macro_f1": 0.0,
+      "n": 48,
+      "sample_f1": 0.19270833333333334,
+      "system_macro_f1": 0.09375
+    },
+    "declarative": {
+      "domain_macro_f1": 0.2617007200779017,
+      "function_macro_f1": 0.06825657894736842,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.3125896934116112,
+      "mediation_macro_f1": 0.0,
+      "n": 511,
+      "sample_f1": 0.3242102320380207,
+      "system_macro_f1": 0.1969833897903995
+    },
+    "definition-like": {
+      "domain_macro_f1": 0.22397955579773762,
+      "function_macro_f1": 0.0,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.40476190476190477,
+      "mediation_macro_f1": 0.0,
+      "n": 168,
+      "sample_f1": 0.4107142857142857,
+      "system_macro_f1": 0.15398594461094461
+    },
+    "internet-register": {
+      "domain_macro_f1": 0.16627917537008446,
+      "function_macro_f1": 0.0,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.2436046511627907,
+      "mediation_macro_f1": 0.35294117647058826,
+      "n": 86,
+      "sample_f1": 0.27945736434108526,
+      "system_macro_f1": 0.13637575659634482
+    },
+    "prose": {
+      "domain_macro_f1": 0.1712760071694241,
+      "function_macro_f1": 0.029411764705882353,
+      "hierarchy_violation": 0.0,
+      "jaccard": 0.42744951383694835,
+      "mediation_macro_f1": 0.0,
+      "n": 191,
+      "sample_f1": 0.43324607329842935,
+      "system_macro_f1": 0.12510519610544965
+    }
+  },
+  "threshold_manifest_sha": "bb2a490165273a71aa6545bc37ea48bd5c3bd4282b9be6e94dbd93f25c442781"
+}

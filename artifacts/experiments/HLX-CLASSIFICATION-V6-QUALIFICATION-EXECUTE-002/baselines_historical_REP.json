@@ -1,0 +1,8 @@
+{
+  "BGE_zero_shot_REP_historical": 0.243,
+  "MPNet_zero_shot_REP_historical": 0.206,
+  "ModernBERT_zero_shot_REP_historical": 0.162,
+  "QUAL_system_macro_f1": 0.1885452902206466,
+  "hardened_REP": 0.4322391331580084,
+  "note": "Zero-shot baselines are historical REP references; not re-scored on QUAL."
+}

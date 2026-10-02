@@ -1,0 +1,82 @@
+{
+  "domain+function": {
+    "domain_macro_f1": 0.06666666666666667,
+    "function_macro_f1": 0.05555555555555555,
+    "hierarchy_violation": 0.0,
+    "jaccard": 0.06722689075630252,
+    "mediation_macro_f1": 0.0,
+    "n": 17,
+    "sample_f1": 0.09313725490196079,
+    "system_macro_f1": 0.05972222222222222
+  },
+  "domain_only": {
+    "domain_macro_f1": 0.4436568332914794,
+    "function_macro_f1": 0.0,
+    "hierarchy_violation": 0.0,
+    "jaccard": 0.3807726864330638,
+    "mediation_macro_f1": 0.0,
+    "n": 159,
+    "sample_f1": 0.42822701407607067,
+    "system_macro_f1": 0.3050140728878921
+  },
+  "function_only": {
+    "domain_macro_f1": 0.0,
+    "function_macro_f1": 0.20500000000000002,
+    "hierarchy_violation": 0.0,
+    "jaccard": 0.18333333333333332,
+    "mediation_macro_f1": 0.0,
+    "n": 30,
+    "sample_f1": 0.2,
+    "system_macro_f1": 0.051250000000000004
+  },
+  "mediation_positive": {
+    "domain_macro_f1": 0.183008658008658,
+    "function_macro_f1": 0.0,
+    "hierarchy_violation": 0.0,
+    "jaccard": 0.17191358024691358,
+    "mediation_macro_f1": 0.36363636363636365,
+    "n": 54,
+    "sample_f1": 0.2228395061728395,
+    "system_macro_f1": 0.1485457251082251
+  },
+  "single_label": {
+    "domain_macro_f1": 0.3992160817161773,
+    "function_macro_f1": 0.15896739130434784,
+    "hierarchy_violation": 0.0,
+    "jaccard": 0.32472423997847727,
+    "mediation_macro_f1": 0.2962962962962963,
+    "n": 177,
+    "sample_f1": 0.3628060263653484,
+    "system_macro_f1": 0.33272142252447734
+  },
+  "three_plus_label": {
+    "domain_macro_f1": 0.25757575757575757,
+    "function_macro_f1": 0.125,
+    "hierarchy_violation": 0.0,
+    "jaccard": 0.15119047619047618,
+    "mediation_macro_f1": 0.0,
+    "n": 8,
+    "sample_f1": 0.20267857142857143,
+    "system_macro_f1": 0.20833333333333331
+  },
+  "two_label": {
+    "domain_macro_f1": 0.3284269292894444,
+    "function_macro_f1": 0.041666666666666664,
+    "hierarchy_violation": 0.0,
+    "jaccard": 0.2504694835680751,
+    "mediation_macro_f1": 0.35555555555555557,
+    "n": 71,
+    "sample_f1": 0.307981220657277,
+    "system_macro_f1": 0.2584324027753819
+  },
+  "zero_label_gold": {
+    "domain_macro_f1": 0.0,
+    "function_macro_f1": 0.0,
+    "hierarchy_violation": 0.0,
+    "jaccard": 0.3516042780748663,
+    "mediation_macro_f1": 0.0,
+    "n": 748,
+    "sample_f1": 0.3516042780748663,
+    "system_macro_f1": 0.0
+  }
+}

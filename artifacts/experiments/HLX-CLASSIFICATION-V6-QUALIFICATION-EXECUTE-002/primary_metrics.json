@@ -1,0 +1,13 @@
+{
+  "DOMAIN_macro_f1": 0.23369414033478278,
+  "DOMAIN_micro_f1": 0.20610687022900764,
+  "FUNCTION_macro_f1": 0.059348361918455377,
+  "FUNCTION_micro_f1": 0.06374501992031872,
+  "MEDIATION_macro_f1": 0.20869565217391303,
+  "MEDIATION_micro_f1": 0.20869565217391303,
+  "hierarchy_violation_rate": 0.0,
+  "jaccard": 0.3381165812938721,
+  "raw_hierarchy_violation_rate": 0.00199203187250996,
+  "sample_f1": 0.3493075317776513,
+  "system_macro_f1": 0.1885452902206466
+}

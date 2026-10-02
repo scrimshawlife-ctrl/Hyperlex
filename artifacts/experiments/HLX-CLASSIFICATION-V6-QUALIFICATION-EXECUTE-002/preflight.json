@@ -1,0 +1,19 @@
+{
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_002",
+  "constraint_manifest_sha_live": "2e51ed0865bc5431b92b94ba0e99ff3c9e4803ffb72e1fb80c5ead8ab839bc1c",
+  "encoder_model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+  "encoder_revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+  "encoder_state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+  "encoder_trainable_parameters": 0,
+  "forbidden_overlap": 0,
+  "head_bundle_sha256": "2a0724b5a22b67523d56b8a0117533e4d4d63bf2f775f78097735f9518b64942",
+  "issues": [],
+  "n_rows": 1004,
+  "ok": true,
+  "ontology_label_schema_hash": "d4e76b88d9ff859c62cf0f38c26dbda2a17e04ea81070c5061a20b37e674efbb",
+  "package_sha256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4",
+  "qualification_model_executions": 0,
+  "qualification_state": "SEALED_UNSCORED",
+  "seal_sha256": "62ed3827fb751c52d3e679ec4e1e2df2b20ea674326fa1dd9ee9567fe4883874",
+  "threshold_manifest_sha_live": "bb2a490165273a71aa6545bc37ea48bd5c3bd4282b9be6e94dbd93f25c442781"
+}

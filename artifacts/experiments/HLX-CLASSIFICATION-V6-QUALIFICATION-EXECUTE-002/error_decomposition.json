@@ -1,0 +1,29 @@
+{
+  "counts": {
+    "CO_LABEL_OMISSION": 41,
+    "DOMAIN_FN": 124,
+    "DOMAIN_FP": 708,
+    "FUNCTION_FN": 53,
+    "FUNCTION_FP": 182,
+    "MEDIATION_FN": 42,
+    "MEDIATION_FP": 49,
+    "ONTOLOGY_BOUNDARY_CASE": 2,
+    "OVERPREDICTION": 212,
+    "PARENT_CHILD_VIOLATION": 2
+  },
+  "patterns": {
+    "co_label_omission_multi_gold": 41
+  },
+  "taxonomy": [
+    "DOMAIN_FP",
+    "DOMAIN_FN",
+    "FUNCTION_FP",
+    "FUNCTION_FN",
+    "MEDIATION_FP",
+    "MEDIATION_FN",
+    "PARENT_CHILD_VIOLATION",
+    "CO_LABEL_OMISSION",
+    "OVERPREDICTION",
+    "ONTOLOGY_BOUNDARY_CASE"
+  ]
+}

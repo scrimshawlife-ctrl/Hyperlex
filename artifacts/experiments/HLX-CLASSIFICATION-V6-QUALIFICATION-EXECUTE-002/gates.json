@@ -1,0 +1,25 @@
+{
+  "gates": {
+    "hierarchy_violation": {
+      "pass": true,
+      "threshold": 0.05,
+      "value": 0.0
+    },
+    "no_material_axis_collapse": {
+      "axis_macros": {
+        "domain": 0.23369414033478278,
+        "function": 0.059348361918455377,
+        "mediation": 0.20869565217391303
+      },
+      "pass": false,
+      "threshold": 0.1,
+      "value": false
+    },
+    "system_macro_f1": {
+      "pass": false,
+      "threshold": 0.3,
+      "value": 0.1885452902206466
+    }
+  },
+  "pass": false
+}

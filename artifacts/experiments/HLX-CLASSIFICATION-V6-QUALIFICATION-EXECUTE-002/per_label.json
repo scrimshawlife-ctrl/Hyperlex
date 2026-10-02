@@ -1,0 +1,162 @@
+{
+  "domain.crypto": {
+    "DEV_f1": 0.5,
+    "QUAL_f1": 0.0,
+    "QUAL_support": 3,
+    "REP_f1": 0.6666666666666666,
+    "axis": "domain",
+    "class": "LOW_SUPPORT",
+    "precision": 0.0,
+    "recall": 0.0
+  },
+  "domain.entertainment": {
+    "DEV_f1": 0.4,
+    "QUAL_f1": 0.10526315789473685,
+    "QUAL_support": 14,
+    "REP_f1": 0.34615384615384615,
+    "axis": "domain",
+    "class": "DEGRADED",
+    "precision": 0.08333333333333333,
+    "recall": 0.14285714285714285
+  },
+  "domain.fashion": {
+    "DEV_f1": 0.4,
+    "QUAL_f1": 0.5964912280701754,
+    "QUAL_support": 23,
+    "REP_f1": 0.3846153846153846,
+    "axis": "domain",
+    "class": "STABLE",
+    "precision": 0.5,
+    "recall": 0.7391304347826086
+  },
+  "domain.gambling": {
+    "DEV_f1": 0.0,
+    "QUAL_f1": 0.4313725490196078,
+    "QUAL_support": 34,
+    "REP_f1": 0.42857142857142855,
+    "axis": "domain",
+    "class": "STABLE",
+    "precision": 0.3235294117647059,
+    "recall": 0.6470588235294118
+  },
+  "domain.gaming": {
+    "DEV_f1": 0.3333333333333333,
+    "QUAL_f1": 0.4421052631578948,
+    "QUAL_support": 41,
+    "REP_f1": 0.24242424242424243,
+    "axis": "domain",
+    "class": "STABLE",
+    "precision": 0.3888888888888889,
+    "recall": 0.5121951219512195
+  },
+  "domain.politics": {
+    "DEV_f1": 0.380952380952381,
+    "QUAL_f1": 0.2588235294117647,
+    "QUAL_support": 29,
+    "REP_f1": 0.509090909090909,
+    "axis": "domain",
+    "class": "DEGRADED",
+    "precision": 0.19642857142857142,
+    "recall": 0.3793103448275862
+  },
+  "domain.spiritual": {
+    "DEV_f1": 0.3529411764705882,
+    "QUAL_f1": 0.25806451612903225,
+    "QUAL_support": 6,
+    "REP_f1": 0.36363636363636365,
+    "axis": "domain",
+    "class": "LOW_SUPPORT",
+    "precision": 0.16,
+    "recall": 0.6666666666666666
+  },
+  "domain.sports": {
+    "DEV_f1": 0.20408163265306123,
+    "QUAL_f1": 0.014134275618374558,
+    "QUAL_support": 9,
+    "REP_f1": 0.31343283582089554,
+    "axis": "domain",
+    "class": "LOW_SUPPORT",
+    "precision": 0.0072992700729927005,
+    "recall": 0.2222222222222222
+  },
+  "domain.technology": {
+    "DEV_f1": 0.576923076923077,
+    "QUAL_f1": 0.32167832167832167,
+    "QUAL_support": 52,
+    "REP_f1": 0.5408805031446542,
+    "axis": "domain",
+    "class": "STABLE",
+    "precision": 0.25274725274725274,
+    "recall": 0.4423076923076923
+  },
+  "domain.technology.ai_discourse": {
+    "DEV_f1": 0.42857142857142855,
+    "QUAL_f1": 0.10666666666666667,
+    "QUAL_support": 8,
+    "REP_f1": 0.606060606060606,
+    "axis": "domain",
+    "class": "LOW_SUPPORT",
+    "precision": 0.05970149253731343,
+    "recall": 0.5
+  },
+  "domain.workplace": {
+    "DEV_f1": 0.37037037037037035,
+    "QUAL_f1": 0.036036036036036036,
+    "QUAL_support": 13,
+    "REP_f1": 0.5070422535211268,
+    "axis": "domain",
+    "class": "FAILED",
+    "precision": 0.02040816326530612,
+    "recall": 0.15384615384615385
+  },
+  "function.conflictive_force": {
+    "DEV_f1": 0.5333333333333333,
+    "QUAL_f1": 0.056074766355140186,
+    "QUAL_support": 14,
+    "REP_f1": 0.4722222222222222,
+    "axis": "function",
+    "class": "DEGRADED",
+    "precision": 0.03225806451612903,
+    "recall": 0.21428571428571427
+  },
+  "function.evaluative_stance": {
+    "DEV_f1": 0.42857142857142855,
+    "QUAL_f1": 0.0,
+    "QUAL_support": 5,
+    "REP_f1": 0.41269841269841273,
+    "axis": "function",
+    "class": "LOW_SUPPORT",
+    "precision": 0.0,
+    "recall": 0.0
+  },
+  "function.memetic_form": {
+    "DEV_f1": 0.38095238095238093,
+    "QUAL_f1": 0.038461538461538464,
+    "QUAL_support": 10,
+    "REP_f1": 0.37037037037037035,
+    "axis": "function",
+    "class": "FAILED",
+    "precision": 0.023809523809523808,
+    "recall": 0.1
+  },
+  "function.relational_intimacy": {
+    "DEV_f1": 0.3636363636363636,
+    "QUAL_f1": 0.14285714285714288,
+    "QUAL_support": 32,
+    "REP_f1": 0.3606557377049181,
+    "axis": "function",
+    "class": "DEGRADED",
+    "precision": 0.16666666666666666,
+    "recall": 0.125
+  },
+  "mediation.internet_register": {
+    "DEV_f1": 0.2777777777777778,
+    "QUAL_f1": 0.20869565217391306,
+    "QUAL_support": 54,
+    "REP_f1": 0.391304347826087,
+    "axis": "mediation",
+    "class": "STABLE",
+    "precision": 0.19672131147540983,
+    "recall": 0.2222222222222222
+  }
+}

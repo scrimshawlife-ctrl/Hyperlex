@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Execute V6 QUAL-002 one-shot (Spec 007):** Cold-loaded hardened
+  package `a8827583…` against sealed QUAL-002 (`n=1004`, seal
+  `62ed3827…`). Preflight repaired for sealed-zero witnesses
+  (`forbidden_overlap=0`, `trainable_parameters=0`). Valid one-shot
+  score: system macro-F1 **0.1885** (gate ≥0.30 fail), hierarchy
+  violation **0.0** (pass), function axis collapse **0.059** (min 0.1
+  fail). REP→QUAL retention **0.436** (`SEVERE_GENERALIZATION_DROP`).
+  Disposition **`V6_QUALIFICATION_FAIL`**. `RELEASE_ELIGIBLE=false`.
+  `QUAL_002=EVALUATION_SPENT`. MODEL_WIDE_BEST / V5 pointers unchanged.
+  `HUB_PUBLISH_AUTHORIZED=false`. Result
+  `73548c4331d7e471ba2251faef82fc38f64dde347999c0cf868a7b20b09f3fcd`.
+  Next: `REVIEW_V6_QUALIFICATION_FAILURE_AT_SYSTEM_LEVEL`.
+
 - **Rebase V6 on stronger pretrained semantic encoder (Spec 007):**
   Representation rebase around MPNet-class sentence embeddings. Freeze
   MPNet zero-shot witness REP≈0.206. MODEL_WIDE_BEST remains historical

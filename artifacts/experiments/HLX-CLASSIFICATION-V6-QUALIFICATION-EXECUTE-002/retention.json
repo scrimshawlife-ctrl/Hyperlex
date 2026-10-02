@@ -1,0 +1,16 @@
+{
+  "DOMAIN_retention": 0.5237030141921828,
+  "FUNCTION_retention": 0.14690672740470406,
+  "MEDIATION_retention": 0.5333333333333333,
+  "absolute_drop": 0.2436938429373618,
+  "band": "SEVERE_GENERALIZATION_DROP",
+  "hard_gate": false,
+  "per_axis_drop": {
+    "domain": 0.21253995418395574,
+    "function": 0.34463832383052545,
+    "mediation": 0.18260869565217394
+  },
+  "qual_system_macro_f1": 0.1885452902206466,
+  "rep_system_macro_f1": 0.4322391331580084,
+  "retention_ratio": 0.43620596969808006
+}
