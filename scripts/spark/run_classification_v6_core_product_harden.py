@@ -418,9 +418,6 @@ def inner() -> int:
     heads, gate = heads_save, gate_save
     cold_mismatch = 0
     for a in core_axes:
-        cold_mismatch += int(
-            np.sum(dev_m["preds"][a] * 0)  # noqa: keep shape touch
-        )
         cold_mismatch += int(np.sum(rep_m["preds"][a] != rep_cold["preds"][a]))
     cold_load_ok = cold_mismatch == 0
 
