@@ -54,6 +54,7 @@ FIRECRAWL_WIKT_CATEGORIES: dict[str, tuple[str, ...]] = {
     "relationship-dating": (
         "Category:en:Love",
         "Category:en:Sex",
+        "Category:en:Marriage",
     ),
     "memetic": (
         "Category:English internet slang",
@@ -62,6 +63,192 @@ FIRECRAWL_WIKT_CATEGORIES: dict[str, tuple[str, ...]] = {
     "internet-slang": (
         "Category:English internet slang",
         "Category:English text messaging slang",
+    ),
+    "music-entertainment": (
+        "Category:en:Music",
+        "Category:en:Hip-hop",
+        "Category:en:Popular music",
+        "Category:en:Jazz",
+    ),
+    "ai-native": (
+        "Category:en:Artificial intelligence",
+        "Category:en:Machine learning",
+        "Category:en:Computing",
+    ),
+    "identity-affiliation": (
+        "Category:en:Demonyms",
+        "Category:English demonyms",
+        "Category:en:Nationalities",
+    ),
+}
+
+# Seed Wikipedia articles when category member lists are empty/JS-gated.
+WIKI_NONE_SEEDS: dict[str, tuple[str, ...]] = {
+    "mycology": (
+        "Mycology",
+        "Fungus",
+        "Mushroom",
+        "Basidiomycota",
+        "Ascomycota",
+        "Spore",
+        "Mycorrhiza",
+        "Lichen",
+        "Yeast",
+        "Truffle",
+    ),
+    "entomology": (
+        "Entomology",
+        "Insect",
+        "Beetle",
+        "Lepidoptera",
+        "Hymenoptera",
+        "Diptera",
+        "Antenna_(biology)",
+        "Metamorphosis",
+        "Butterfly",
+        "Ant",
+    ),
+    "oceanography": (
+        "Oceanography",
+        "Ocean",
+        "Thermohaline_circulation",
+        "Phytoplankton",
+        "Upwelling",
+        "Seamount",
+        "Abyssal_plain",
+        "Tide",
+        "Salinity",
+        "Gulf_Stream",
+    ),
+    "paleontology": (
+        "Paleontology",
+        "Fossil",
+        "Dinosaur",
+        "Trilobite",
+        "Amber",
+        "Extinction",
+        "Geologic_time_scale",
+        "Cambrian",
+        "Pterosaur",
+        "Ammonite",
+    ),
+    "cartography": (
+        "Cartography",
+        "Map",
+        "Mercator_projection",
+        "Topographic_map",
+        "Atlas",
+        "Geographic_information_system",
+        "Latitude",
+        "Longitude",
+        "Contour_line",
+        "Choropleth_map",
+    ),
+    "numismatics": (
+        "Numismatics",
+        "Coin",
+        "Currency",
+        "Mint_(facility)",
+        "Medal",
+        "Token_coin",
+        "Bullion",
+        "Die_(manufacturing)",
+        "Obverse_and_reverse",
+        "Seigniorage",
+    ),
+    "philately": (
+        "Philately",
+        "Postage_stamp",
+        "Stamp_collecting",
+        "Postal_history",
+        "Cancel_(mail)",
+        "Airmail",
+        "Penny_Black",
+        "Stamp_album",
+        "First_day_of_issue",
+        "Definitive_stamp",
+    ),
+    "archaeology": (
+        "Archaeology",
+        "Excavation_(archaeology)",
+        "Artifact_(archaeology)",
+        "Stratigraphy",
+        "Radiocarbon_dating",
+        "Pottery",
+        "Megalith",
+        "Taphonomy",
+        "Survey_(archaeology)",
+        "Zooarchaeology",
+    ),
+    "hydrology": (
+        "Hydrology",
+        "Water_cycle",
+        "Watershed",
+        "Aquifer",
+        "Groundwater",
+        "Flood",
+        "Streamflow",
+        "Evapotranspiration",
+        "Hydrograph",
+        "Drainage_basin",
+    ),
+    "mineralogy": (
+        "Mineralogy",
+        "Mineral",
+        "Crystal",
+        "Quartz",
+        "Feldspar",
+        "Mohs_scale",
+        "Silicate_mineral",
+        "Ore",
+        "Gemstone",
+        "Crystallography",
+    ),
+    "botany": (
+        "Botany",
+        "Plant",
+        "Photosynthesis",
+        "Xylem",
+        "Phloem",
+        "Angiosperm",
+        "Gymnosperm",
+        "Chloroplast",
+        "Root",
+        "Leaf",
+    ),
+    "chemistry": (
+        "Chemistry",
+        "Chemical_reaction",
+        "Molecule",
+        "Periodic_table",
+        "Acid",
+        "Base_(chemistry)",
+        "Organic_chemistry",
+        "Catalyst",
+        "Stoichiometry",
+        "Ion",
+    ),
+    "domain_irrelevant_lists": (
+        "List_of_lists_of_lists",
+        "List_of_countries_by_population",
+        "List_of_rivers_of_Europe",
+        "List_of_airports_by_IATA_code:_A",
+        "List_of_chemical_elements",
+    ),
+    "domain_irrelevant_years": (
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2020s",
+    ),
+    "domain_irrelevant_infra": (
+        "Gare_de_Lyon",
+        "Paris-Gare_de_l%27Est",
+        "Berlin_Hauptbahnhof",
+        "Railway_station",
+        "Railway_platform",
     ),
 }
 
@@ -374,12 +561,9 @@ def acquire(
             # pick claimant with lowest count among those under per_family
             under = [f for f in claimants if family_counts[f] < per_family]
             if not under:
-                # still keep NATURAL rows under a generic cue if global target unmet
-                if len(raw) >= target:
-                    break
-                fam = claimants[0]
-            else:
-                fam = min(under, key=lambda f: family_counts[f])
+                # Do not overfill a family — preserves source-family share.
+                continue
+            fam = min(under, key=lambda f: family_counts[f])
             if admit(
                 {
                     "text": text,
@@ -408,11 +592,22 @@ def acquire(
     need_scrape = [
         u for u in lemma_urls if not (lemma_path(u).exists() and lemma_path(u).stat().st_size > 40)
     ]
-    # Also scrape if family still short even when cache partially covered
-    if any(family_counts[f] < per_family for f in family_lemmas):
-        pass
-    else:
+    # Scrape only for families still below per_family; always continue to NONE wiki.
+    short_families = {f for f in family_lemmas if family_counts[f] < per_family}
+    if not short_families:
+        print(f"skip_lemma_scrape families_full n={len(raw)}", flush=True)
         need_scrape = []
+    else:
+        need_scrape = [
+            u
+            for u in need_scrape
+            if short_families.intersection(url_families.get(u) or [])
+        ]
+        print(
+            f"lemma_scrape_shortfall families={sorted(short_families)} "
+            f"urls={len(need_scrape)}",
+            flush=True,
+        )
 
     print(f"need_scrape={len(need_scrape)}", flush=True)
     with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
@@ -450,14 +645,26 @@ def acquire(
     rng.shuffle(none_targets)
     article_urls: list[tuple[str, str]] = []
     for key, cat in none_targets:
+        arts: list[str] = []
         out = OUT_DIR / "cats" / f"wiki_{cat_slug(cat)}.md"
-        if not scrape_to(wiki_category_url(cat), out, main=True):
-            continue
-        arts = filter_wiki_articles_from_md(out.read_text(encoding="utf-8"))
-        rng.shuffle(arts)
-        for u in arts[: max(none_per_cat * 2, 50)]:
+        if scrape_to(wiki_category_url(cat), out, main=True):
+            arts = filter_wiki_articles_from_md(out.read_text(encoding="utf-8"))
+        for title in WIKI_NONE_SEEDS.get(key, ()):
+            arts.append(
+                "https://en.wikipedia.org/wiki/"
+                + title  # already URL-shaped seeds
+            )
+        # dedupe
+        seen_a: set[str] = set()
+        uniq_a: list[str] = []
+        for u in arts:
+            if u not in seen_a:
+                seen_a.add(u)
+                uniq_a.append(u)
+        rng.shuffle(uniq_a)
+        for u in uniq_a[: max(none_per_cat * 2, 50)]:
             article_urls.append((key, u))
-        print(f"discover none={key} arts={len(arts)}", flush=True)
+        print(f"discover none={key} arts={len(uniq_a)}", flush=True)
         time.sleep(0.08)
 
     none_counts: dict[str, int] = defaultdict(int)
@@ -526,8 +733,47 @@ def acquire(
 
     print(f"none_counts={dict(none_counts)} total={len(raw)}", flush=True)
     checkpoint_write()
-    rng.shuffle(raw)
-    return raw[:target]
+
+    # Stratified downsample to target while capping source_family share.
+    max_share = 0.24
+    max_per_src = max(1, int(target * max_share))
+    by_src: dict[str, list[dict]] = defaultdict(list)
+    for r in raw:
+        by_src[str(r.get("source_family") or "UNKNOWN")].append(r)
+    selected: list[dict] = []
+    # Round-robin across source families for diversity
+    queues = {k: list(v) for k, v in by_src.items()}
+    for k in queues:
+        rng.shuffle(queues[k])
+    src_taken: dict[str, int] = defaultdict(int)
+    progressed = True
+    while len(selected) < target and progressed:
+        progressed = False
+        for k in sorted(queues.keys(), key=lambda x: (src_taken[x], -len(queues[x]))):
+            if len(selected) >= target:
+                break
+            if src_taken[k] >= max_per_src:
+                continue
+            if not queues[k]:
+                continue
+            selected.append(queues[k].pop())
+            src_taken[k] += 1
+            progressed = True
+    if len(selected) < target:
+        # fill remainder ignoring share cap (document natural prevalence)
+        rest = [r for q in queues.values() for r in q]
+        rng.shuffle(rest)
+        for r in rest:
+            if len(selected) >= target:
+                break
+            selected.append(r)
+    rng.shuffle(selected)
+    print(
+        f"stratified_selected={len(selected)} max_per_src={max_per_src} "
+        f"src_taken_top={sorted(src_taken.items(), key=lambda kv: -kv[1])[:8]}",
+        flush=True,
+    )
+    return selected[:target]
 
 
 def main() -> int:
