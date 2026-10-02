@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Redesign V6 representative validation + data diversity (Spec 007):**
+  Build TRAIN_V2 / DEV_SELECTION_V2 / REP_V2 without `usable()`
+  positive-only filtering; include NONE/NO_EVIDENCE mass, function and
+  multi-label strata, dual-discovered co-labels. Replay frozen hardened
+  package `a8827583…` unchanged. QUAL-002 aggregate comparison only.
+  Success = `REPRESENTATIVENESS_REPAIRED` (expose QUAL-like failure),
+  not recovering old REP ≈0.432.
+
 - **Review V6 QUAL-002 failure at system level (Spec 007):** Read-only
   forensic review after decisive QUAL FAIL (macro-F1 0.1885). Finds
   hardened REP (~0.432) was scored on `usable()` positive-only rows
