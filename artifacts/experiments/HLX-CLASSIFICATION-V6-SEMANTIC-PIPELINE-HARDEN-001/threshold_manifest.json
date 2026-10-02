@@ -1,0 +1,57 @@
+{
+  "THRESHOLD_MANIFEST_ID": "V6_THRESHOLD_MANIFEST",
+  "candidate_id": "FROZEN_NONLINEAR__C_MSMARCO",
+  "qual_touched_during_selection": false,
+  "rep_touched_during_selection": false,
+  "selection_surface": "DEV_ONLY",
+  "source": "HLX-CLASSIFICATION-V6-REPRESENTATION-REBASE-001",
+  "status": "FROZEN",
+  "thresholds": {
+    "domain": {
+      "domain.crypto": 0.1,
+      "domain.entertainment": 0.3,
+      "domain.fashion": 0.45,
+      "domain.gambling": 0.05,
+      "domain.gaming": 0.25,
+      "domain.politics": 0.25,
+      "domain.spiritual": 0.3,
+      "domain.sports": 0.1,
+      "domain.technology": 0.45,
+      "domain.technology.ai_discourse": 0.25,
+      "domain.workplace": 0.2
+    },
+    "function": {
+      "function.conflictive_force": 0.2,
+      "function.evaluative_stance": 0.3,
+      "function.memetic_form": 0.4,
+      "function.relational_intimacy": 0.4
+    },
+    "mediation": {
+      "mediation.internet_register": 0.35
+    }
+  },
+  "thresholds_ordered": {
+    "domain": [
+      0.25,
+      0.05,
+      0.1,
+      0.1,
+      0.3,
+      0.45,
+      0.2,
+      0.25,
+      0.3,
+      0.45,
+      0.25
+    ],
+    "function": [
+      0.3,
+      0.4,
+      0.2,
+      0.4
+    ],
+    "mediation": [
+      0.35
+    ]
+  }
+}

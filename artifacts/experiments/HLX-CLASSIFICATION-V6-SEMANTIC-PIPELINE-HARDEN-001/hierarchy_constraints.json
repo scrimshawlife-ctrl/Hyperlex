@@ -1,0 +1,21 @@
+{
+  "CONSTRAINT_MANIFEST_ID": "HYPERLEX_V6_HIERARCHY_CONSTRAINTS_V1",
+  "apply_stage": "after_raw_head_inference",
+  "incompatibility_rules": [],
+  "report_both": [
+    "raw_predictions",
+    "constrained_predictions"
+  ],
+  "rules": [
+    {
+      "action": "force_parent_positive",
+      "axis": "domain",
+      "child": "domain.technology.ai_discourse",
+      "example": "ai_discourse => technology",
+      "id": "ai_discourse_requires_technology",
+      "parent": "domain.technology",
+      "type": "required_parent"
+    }
+  ],
+  "version": 1
+}

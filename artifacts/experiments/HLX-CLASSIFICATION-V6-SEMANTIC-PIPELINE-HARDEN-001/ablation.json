@@ -1,0 +1,21 @@
+{
+  "BGE_ZERO_SHOT": {
+    "domain": 0.26396400628512157,
+    "function": 0.1903153963300417,
+    "mediation": 0.21875,
+    "rep_system_macro_f1": 0.2427259784035315
+  },
+  "MPNET_FROZEN_NONLINEAR": {
+    "domain": 0.3212740437576487,
+    "function": 0.41133325738588894,
+    "mediation": 0.4222222222222222,
+    "rep_system_macro_f1": 0.3500981083187446
+  },
+  "SELECTED_MSMARCO_FROZEN_NONLINEAR": {
+    "domain": 0.4462340945187385,
+    "function": 0.40398668574898083,
+    "mediation": 0.391304347826087,
+    "rep_system_macro_f1": 0.4322391331580084
+  },
+  "selected_remains_superior": true
+}

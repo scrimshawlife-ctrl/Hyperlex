@@ -1,0 +1,22 @@
+{
+  "pipeline_version": "HYPERLEX_V6_SEMANTIC_PIPELINE_CANDIDATE_V1",
+  "required_fields": [
+    "domain_scores",
+    "function_scores",
+    "mediation_scores",
+    "raw_domain_labels",
+    "raw_function_labels",
+    "raw_mediation_labels",
+    "final_domain_labels",
+    "final_function_labels",
+    "final_mediation_labels",
+    "hierarchy_adjustments",
+    "encoder_id",
+    "head_bundle_sha",
+    "ontology_version",
+    "threshold_manifest_sha",
+    "constraint_manifest_sha",
+    "pipeline_version"
+  ],
+  "schema": "hyperlex.classification.v6.semantic_hierarchical_forward.v1"
+}

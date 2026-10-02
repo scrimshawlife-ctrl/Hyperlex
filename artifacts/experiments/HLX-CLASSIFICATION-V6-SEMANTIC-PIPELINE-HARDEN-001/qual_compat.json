@@ -1,0 +1,16 @@
+{
+  "axes_compatible": false,
+  "compatible": false,
+  "expected_axes": [
+    "domain_labels",
+    "function_labels",
+    "mediation_labels"
+  ],
+  "expected_ontology": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+  "observed_axes": [],
+  "observed_family_counts": true,
+  "ontology_compatible": false,
+  "reason": "Sealed QUAL metadata uses legacy gold_family / family_counts without hierarchical domain/function/mediation label axes under HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL.",
+  "rows_inspected": false,
+  "status": "NEW_QUAL_REQUIRED"
+}
