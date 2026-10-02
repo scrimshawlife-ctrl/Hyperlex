@@ -1,0 +1,17 @@
+{
+  "NEXT_ACTION": "HARDEN_V6_CORE_PRODUCT_WITHOUT_REQUIRED_FUNCTION",
+  "PRODUCT_DISPOSITION": "FUNCTION_RETAIN_OPTIONAL",
+  "core_system_macro_f1": 0.34844035319433936,
+  "per_function_disposition": {
+    "function.conflictive_force": "KEEP_OPTIONAL",
+    "function.evaluative_stance": "KEEP_OPTIONAL",
+    "function.memetic_form": "KEEP_RESEARCH_ONLY",
+    "function.relational_intimacy": "KEEP_OPTIONAL"
+  },
+  "revised_required_outputs": [
+    "evidence_gate",
+    "domain",
+    "mediation"
+  ],
+  "selected_contract_alternative": "B_MAKE_FUNCTION_OPTIONAL_BEST_EFFORT"
+}

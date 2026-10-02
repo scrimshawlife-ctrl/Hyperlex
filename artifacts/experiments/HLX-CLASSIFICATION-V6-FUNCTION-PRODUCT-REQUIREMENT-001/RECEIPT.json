@@ -1,0 +1,218 @@
+{
+  "DOMAIN_HEAD_MUTATED": false,
+  "ENCODER_MUTATED": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-FUNCTION-PRODUCT-REQUIREMENT-001",
+  "FUNCTION_MODEL_TRAINED": false,
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MEDIATION_HEAD_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "HARDEN_V6_CORE_PRODUCT_WITHOUT_REQUIRED_FUNCTION",
+  "NONE_GATE_MUTATED": false,
+  "ONTOLOGY_MUTATED": false,
+  "PHASE_RULE": "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT",
+  "PRODUCT_DISPOSITION": "FUNCTION_RETAIN_OPTIONAL",
+  "QUALIFICATION_RESCORED": false,
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "REJECTED_MICRO_FIXES": {
+    "change_NONE_gate": false,
+    "change_encoder": false,
+    "change_ontology": false,
+    "rescore_QUAL": false,
+    "retrain_DOMAIN": false,
+    "retrain_MEDIATION": false,
+    "train_another_function_model": false
+  },
+  "RELEASE_ELIGIBLE": false,
+  "SYSTEM_FUNCTION_PRODUCT_REQUIREMENT_RECEIPT_SHA256": "c488a39dbc5208affbd5a2a1433f7ea01e3f88996abb8a16c84716fa57ad14f2",
+  "core_without_function": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "FUNCTION_excluded_from_system_macro": true,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "core_axes": [
+      "domain",
+      "mediation"
+    ],
+    "core_system_macro_f1": 0.34844035319433936,
+    "core_vs_three_axis_delta": 0.017354734912444103,
+    "hierarchy_violation_rate": 0.001985440105890139,
+    "positive_only_core_macro_f1": null,
+    "vs_three_axis_system_macro_f1": 0.33108561828189526,
+    "zero_label_exact_rejection": 0.9123006833712984,
+    "zero_label_false_positive_rate": 0.08769931662870159
+  },
+  "per_function_dispositions": {
+    "function.conflictive_force": {
+      "baseline_precision": 0.36,
+      "best_f1": 0.32592592592592595,
+      "best_precision": 0.36,
+      "consensus_fail_share": 0.6774193548387096,
+      "context_dependence": "high",
+      "cost_of_false_negative": "medium",
+      "cost_of_false_positive": "high",
+      "disposition": "KEEP_OPTIONAL",
+      "downstream_utility": "Useful for hostility/combat framing in memetic/conflict studies; not required for domain routing or NONE rejection.",
+      "explicit_lexical_share": 0.0967741935483871,
+      "human_stability": "coherent_but_not_text_grounded",
+      "hybrid_f1": 0.25225225225225223,
+      "independent_f1": 0.32592592592592595,
+      "independent_precision": 0.3013698630136986,
+      "model_ceiling_evidence": "~0.25\u20130.35 per-label F1 under frozen text encoder",
+      "old_head_f1": 0.3214285714285714,
+      "placement": [
+        "HUMAN_ANNOTATION_ONLY",
+        "CONTEXTUAL_ENRICHMENT"
+      ],
+      "pragmatic_or_context_share": 0.8225806451612904,
+      "rep_support": 62,
+      "signal_class": "CONTEXT_SENSITIVE",
+      "substitutable_by_domain_mediation": "Partially: conflict domains exist, but hostility force is not a domain.",
+      "text_only_recoverability": "low"
+    },
+    "function.evaluative_stance": {
+      "baseline_precision": 0.375,
+      "best_f1": 0.28915662650602403,
+      "best_precision": 0.375,
+      "consensus_fail_share": 0.6470588235294118,
+      "context_dependence": "very_high",
+      "cost_of_false_negative": "medium",
+      "cost_of_false_positive": "high",
+      "disposition": "KEEP_OPTIONAL",
+      "downstream_utility": "Core to pejoration/prestige analysis; often needs pragmatic inference beyond the isolated sentence.",
+      "explicit_lexical_share": 0.11764705882352941,
+      "human_stability": "coherent_but_not_text_grounded",
+      "hybrid_f1": 0.27972027972027974,
+      "independent_f1": 0.23880597014925375,
+      "independent_precision": 0.1927710843373494,
+      "model_ceiling_evidence": "~0.25\u20130.35 per-label F1 under frozen text encoder",
+      "old_head_f1": 0.28915662650602403,
+      "placement": [
+        "HUMAN_ANNOTATION_ONLY",
+        "CONTEXTUAL_ENRICHMENT",
+        "DOWNSTREAM_REASONING_ONLY"
+      ],
+      "pragmatic_or_context_share": 0.8823529411764706,
+      "rep_support": 51,
+      "signal_class": "CONTEXT_SENSITIVE",
+      "substitutable_by_domain_mediation": "No: stance is orthogonal to domain/mediation.",
+      "text_only_recoverability": "low"
+    },
+    "function.memetic_form": {
+      "baseline_precision": 0.2972972972972973,
+      "best_f1": 0.38532110091743116,
+      "best_precision": 0.2972972972972973,
+      "consensus_fail_share": 0.5,
+      "context_dependence": "very_high",
+      "cost_of_false_negative": "medium",
+      "cost_of_false_positive": "very_high",
+      "disposition": "KEEP_RESEARCH_ONLY",
+      "downstream_utility": "Central to Hyperlex memetics research, but format identity usually needs discourse/template/world context.",
+      "explicit_lexical_share": 0.13043478260869565,
+      "human_stability": "coherent_but_not_text_grounded",
+      "hybrid_f1": 0.38532110091743116,
+      "independent_f1": 0.26168224299065423,
+      "independent_precision": 0.16666666666666666,
+      "model_ceiling_evidence": "~0.25\u20130.35 per-label F1 under frozen text encoder",
+      "old_head_f1": 0.26506024096385544,
+      "placement": [
+        "HUMAN_ANNOTATION_ONLY",
+        "CONTEXTUAL_ENRICHMENT"
+      ],
+      "pragmatic_or_context_share": 0.8260869565217391,
+      "rep_support": 46,
+      "signal_class": "CONTEXT_SENSITIVE",
+      "substitutable_by_domain_mediation": "No: internet_register mediation \u2260 memetic form.",
+      "text_only_recoverability": "low"
+    },
+    "function.relational_intimacy": {
+      "baseline_precision": 0.5,
+      "best_f1": 0.3488372093023256,
+      "best_precision": 0.5,
+      "consensus_fail_share": 0.7346938775510204,
+      "context_dependence": "high",
+      "cost_of_false_negative": "medium",
+      "cost_of_false_positive": "high",
+      "disposition": "KEEP_OPTIONAL",
+      "downstream_utility": "Useful for intimacy/relationship lexicon slices; comparatively best precision among the four when cues are explicit.",
+      "explicit_lexical_share": 0.20408163265306123,
+      "human_stability": "coherent_but_not_text_grounded",
+      "hybrid_f1": 0.3058823529411765,
+      "independent_f1": 0.3488372093023256,
+      "independent_precision": 0.40540540540540543,
+      "model_ceiling_evidence": "~0.25\u20130.35 per-label F1 under frozen text encoder",
+      "old_head_f1": 0.30985915492957744,
+      "placement": [
+        "HUMAN_ANNOTATION_ONLY",
+        "CONTEXTUAL_ENRICHMENT"
+      ],
+      "pragmatic_or_context_share": 0.7959183673469388,
+      "rep_support": 49,
+      "signal_class": "CONTEXT_SENSITIVE",
+      "substitutable_by_domain_mediation": "No: intimacy is not encoded by domain/mediation alone.",
+      "text_only_recoverability": "low"
+    }
+  },
+  "preserved_research_findings": [
+    "FUNCTION_TASK_SIGNAL_PARTIAL",
+    "TEXT_SIGNAL_CEILING\u22480.30_macro_F1",
+    "V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED",
+    "direct_heads_and_independent_verifiers_converged",
+    "semantic_matching_underperformed",
+    "cue_primitive_decomposition_rejected",
+    "NONE_DOMAIN_MEDIATION_remain_viable",
+    "QUAL-003_EVALUATION_SPENT_not_rescored",
+    "ontology_function_labels_preserved_as_concepts"
+  ],
+  "rationale": "text_only_ceiling_insufficient_for_required_axis;concepts_retained_as_advisory_best_effort;core_product_is_gate_domain_mediation",
+  "release_gate_effects": {
+    "core_meets_legacy_system_floor_0_30": true,
+    "gates": {
+      "FUNCTION_axis_gate": "not_required",
+      "FUNCTION_reporting": "advisory_only",
+      "QUAL_002_status": "EVALUATION_SPENT",
+      "QUAL_003_id": "HYPERLEX_V6_QUALIFICATION_003",
+      "chosen_before_qual_open": true,
+      "hierarchy_violation_max": 0.05,
+      "mean_predicted_labels_on_zero_gold_max": 1.0,
+      "min_axis_macro_f1": 0.1,
+      "no_complete_axis_collapse": true,
+      "positive_only_system_macro_f1_min": 0.3,
+      "retention_rule": "QUAL core_system_macro_f1(DOMAIN,MEDIATION) >= 0.30; FUNCTION does not block release",
+      "system_macro_axes": [
+        "domain",
+        "mediation"
+      ],
+      "system_macro_f1_min": 0.3,
+      "zero_label_exact_rejection_min": 0.5,
+      "zero_label_false_positive_rate_max": 0.35
+    },
+    "min_axis_macro_applies_to_FUNCTION": false,
+    "observed_core_system_macro_f1": 0.34844035319433936,
+    "system_macro_includes_FUNCTION": false
+  },
+  "revised_v6_output_contract": {
+    "FUNCTION_blocks_release": false,
+    "FUNCTION_in_qualification_system_macro": false,
+    "excluded_from_core": [],
+    "note": "Ontology keeps the four function labels for annotation/research; product requiredness is what changes.",
+    "ontology_labels_preserved": true,
+    "optional_outputs": [
+      "function_best_effort"
+    ],
+    "required_outputs": [
+      "evidence_gate",
+      "domain",
+      "mediation"
+    ],
+    "research_tracks": [
+      "function_contextual_enrichment_track"
+    ],
+    "system_macro_axes": [
+      "domain",
+      "mediation"
+    ]
+  },
+  "schema": "hyperlex.classification.v6.function_product_requirement.v1",
+  "sealed_at": "2026-10-02T08:06:08Z",
+  "selected_contract_alternative": "B_MAKE_FUNCTION_OPTIONAL_BEST_EFFORT"
+}

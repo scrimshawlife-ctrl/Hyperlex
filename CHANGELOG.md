@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **Reassess V6 FUNCTION product requirement (Spec 007):** Read-only
+  product decision after text-signal ceiling + pragmatic NOT_SUPPORTED.
+  Disposition **`FUNCTION_RETAIN_OPTIONAL`**: core outputs = evidence gate
+  + DOMAIN + MEDIATION (core system macro **0.348**); FUNCTION advisory
+  best-effort only; memetic `KEEP_RESEARCH_ONLY`, others `KEEP_OPTIONAL`.
+  FUNCTION no longer blocks release/QUAL system macro. Ontology labels
+  preserved. Next: `HARDEN_V6_CORE_PRODUCT_WITHOUT_REQUIRED_FUNCTION`.
+  Receipt `c488a39d…`.
+
 - **Redesign V6 FUNCTION objective around pragmatic signal (Spec 007):**
   Five text-observable primitives
   (normative_judgment / intimate_partnership / hostile_force /

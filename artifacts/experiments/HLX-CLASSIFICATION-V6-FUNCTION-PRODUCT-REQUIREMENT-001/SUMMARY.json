@@ -1,0 +1,122 @@
+{
+  "FUNCTION_MODEL_TRAINED": false,
+  "NEXT_ACTION": "HARDEN_V6_CORE_PRODUCT_WITHOUT_REQUIRED_FUNCTION",
+  "PHASE_RULE": "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT",
+  "PRODUCT_DISPOSITION": "FUNCTION_RETAIN_OPTIONAL",
+  "QUALIFICATION_RESCORED": false,
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "RECEIPT": "c488a39dbc5208affbd5a2a1433f7ea01e3f88996abb8a16c84716fa57ad14f2",
+  "REJECTED_MICRO_FIXES": {
+    "change_NONE_gate": false,
+    "change_encoder": false,
+    "change_ontology": false,
+    "rescore_QUAL": false,
+    "retrain_DOMAIN": false,
+    "retrain_MEDIATION": false,
+    "train_another_function_model": false
+  },
+  "core_viable": true,
+  "core_without_function": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "FUNCTION_excluded_from_system_macro": true,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "core_axes": [
+      "domain",
+      "mediation"
+    ],
+    "core_system_macro_f1": 0.34844035319433936,
+    "core_vs_three_axis_delta": 0.017354734912444103,
+    "hierarchy_violation_rate": 0.001985440105890139,
+    "positive_only_core_macro_f1": null,
+    "vs_three_axis_system_macro_f1": 0.33108561828189526,
+    "zero_label_exact_rejection": 0.9123006833712984,
+    "zero_label_false_positive_rate": 0.08769931662870159
+  },
+  "none_preserved": true,
+  "per_function_disposition": {
+    "function.conflictive_force": "KEEP_OPTIONAL",
+    "function.evaluative_stance": "KEEP_OPTIONAL",
+    "function.memetic_form": "KEEP_RESEARCH_ONLY",
+    "function.relational_intimacy": "KEEP_OPTIONAL"
+  },
+  "per_function_placement": {
+    "function.conflictive_force": [
+      "HUMAN_ANNOTATION_ONLY",
+      "CONTEXTUAL_ENRICHMENT"
+    ],
+    "function.evaluative_stance": [
+      "HUMAN_ANNOTATION_ONLY",
+      "CONTEXTUAL_ENRICHMENT",
+      "DOWNSTREAM_REASONING_ONLY"
+    ],
+    "function.memetic_form": [
+      "HUMAN_ANNOTATION_ONLY",
+      "CONTEXTUAL_ENRICHMENT"
+    ],
+    "function.relational_intimacy": [
+      "HUMAN_ANNOTATION_ONLY",
+      "CONTEXTUAL_ENRICHMENT"
+    ]
+  },
+  "preserved_research_findings": [
+    "FUNCTION_TASK_SIGNAL_PARTIAL",
+    "TEXT_SIGNAL_CEILING\u22480.30_macro_F1",
+    "V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED",
+    "direct_heads_and_independent_verifiers_converged",
+    "semantic_matching_underperformed",
+    "cue_primitive_decomposition_rejected",
+    "NONE_DOMAIN_MEDIATION_remain_viable",
+    "QUAL-003_EVALUATION_SPENT_not_rescored",
+    "ontology_function_labels_preserved_as_concepts"
+  ],
+  "rationale": "text_only_ceiling_insufficient_for_required_axis;concepts_retained_as_advisory_best_effort;core_product_is_gate_domain_mediation",
+  "release_gate_effects": {
+    "core_meets_legacy_system_floor_0_30": true,
+    "gates": {
+      "FUNCTION_axis_gate": "not_required",
+      "FUNCTION_reporting": "advisory_only",
+      "QUAL_002_status": "EVALUATION_SPENT",
+      "QUAL_003_id": "HYPERLEX_V6_QUALIFICATION_003",
+      "chosen_before_qual_open": true,
+      "hierarchy_violation_max": 0.05,
+      "mean_predicted_labels_on_zero_gold_max": 1.0,
+      "min_axis_macro_f1": 0.1,
+      "no_complete_axis_collapse": true,
+      "positive_only_system_macro_f1_min": 0.3,
+      "retention_rule": "QUAL core_system_macro_f1(DOMAIN,MEDIATION) >= 0.30; FUNCTION does not block release",
+      "system_macro_axes": [
+        "domain",
+        "mediation"
+      ],
+      "system_macro_f1_min": 0.3,
+      "zero_label_exact_rejection_min": 0.5,
+      "zero_label_false_positive_rate_max": 0.35
+    },
+    "min_axis_macro_applies_to_FUNCTION": false,
+    "observed_core_system_macro_f1": 0.34844035319433936,
+    "system_macro_includes_FUNCTION": false
+  },
+  "revised_v6_output_contract": {
+    "FUNCTION_blocks_release": false,
+    "FUNCTION_in_qualification_system_macro": false,
+    "excluded_from_core": [],
+    "note": "Ontology keeps the four function labels for annotation/research; product requiredness is what changes.",
+    "ontology_labels_preserved": true,
+    "optional_outputs": [
+      "function_best_effort"
+    ],
+    "required_outputs": [
+      "evidence_gate",
+      "domain",
+      "mediation"
+    ],
+    "research_tracks": [
+      "function_contextual_enrichment_track"
+    ],
+    "system_macro_axes": [
+      "domain",
+      "mediation"
+    ]
+  },
+  "selected_contract_alternative": "B_MAKE_FUNCTION_OPTIONAL_BEST_EFFORT"
+}

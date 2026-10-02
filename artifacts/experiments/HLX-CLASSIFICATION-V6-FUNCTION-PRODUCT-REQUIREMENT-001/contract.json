@@ -1,0 +1,118 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-FUNCTION-PRODUCT-REQUIREMENT-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PHASE_RULE": "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT",
+  "QUALIFICATION_RESCORED": false,
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "RELEASE_ELIGIBLE": false,
+  "axis_dispositions": [
+    "KEEP_REQUIRED",
+    "KEEP_OPTIONAL",
+    "KEEP_RESEARCH_ONLY",
+    "DEPRECATE_FROM_PRODUCT"
+  ],
+  "contract_alternatives": [
+    "A_KEEP_FUNCTION_MANDATORY",
+    "B_MAKE_FUNCTION_OPTIONAL_BEST_EFFORT",
+    "C_MOVE_FUNCTION_TO_CONTEXTUAL_REASONING",
+    "D_REMOVE_FUNCTION_FROM_V6_PRODUCT_SCOPE"
+  ],
+  "forbidden": [
+    "train_another_function_model",
+    "change_encoder",
+    "change_NONE_gate",
+    "retrain_DOMAIN",
+    "retrain_MEDIATION",
+    "change_ontology",
+    "rescore_QUAL"
+  ],
+  "frozen": {
+    "ANY_LABEL_threshold": 0.22499999999999998,
+    "DOMAIN_head_mutated": false,
+    "MEDIATION_head_mutated": false,
+    "NONE_gate_mutated": false,
+    "encoder_model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+    "encoder_revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+    "ontology_changed": false,
+    "operating_package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a"
+  },
+  "function_vocab": [
+    "function.evaluative_stance",
+    "function.relational_intimacy",
+    "function.conflictive_force",
+    "function.memetic_form"
+  ],
+  "historical_qual": {
+    "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+    "result_sha256": "b560dac2a8f80f45c6213dcd2ba25acdb2e0b7dde786da3ee0a5d6e3231ae724",
+    "role": "BLOCKED_SPENT_SURFACE_READ_ONLY",
+    "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b"
+  },
+  "next_actions": [
+    "HARDEN_V6_CORE_PRODUCT_WITHOUT_REQUIRED_FUNCTION",
+    "DESIGN_CONTEXTUAL_FUNCTION_ENRICHMENT_TRACK",
+    "REDEFINE_FUNCTION_INPUT_CONTRACT"
+  ],
+  "parent": {
+    "CEILING_CLASS": "TEXT_SIGNAL_CEILING",
+    "FUNCTION_TASK_SIGNAL": "FUNCTION_TASK_SIGNAL_PARTIAL",
+    "PRAGMATIC_OBJECTIVE": "V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED",
+    "derived_FUNCTION": 0.19764682696097755,
+    "direct_FUNCTION_baseline": 0.2963761484570071,
+    "hybrid_FUNCTION": 0.30579399645778493,
+    "independent_verifier_FUNCTION": 0.29381283709203987,
+    "parent_pragmatic_experiment": "HLX-CLASSIFICATION-V6-PRAGMATIC-FUNCTION-OBJECTIVE-001",
+    "primitive_cue_recovery_lift": 0.012759170653907498,
+    "primitive_macro_f1": 0.1884559297606857
+  },
+  "per_function_evidence_seed": {
+    "function.conflictive_force": {
+      "old_head_f1": 0.3214285714285714,
+      "rep_support": 62,
+      "signal_class": "CONTEXT_SENSITIVE"
+    },
+    "function.evaluative_stance": {
+      "old_head_f1": 0.28915662650602403,
+      "rep_support": 51,
+      "signal_class": "CONTEXT_SENSITIVE"
+    },
+    "function.memetic_form": {
+      "old_head_f1": 0.26506024096385544,
+      "rep_support": 46,
+      "signal_class": "CONTEXT_SENSITIVE"
+    },
+    "function.relational_intimacy": {
+      "old_head_f1": 0.30985915492957744,
+      "rep_support": 49,
+      "signal_class": "CONTEXT_SENSITIVE"
+    }
+  },
+  "placement_options": [
+    "DOWNSTREAM_REASONING_ONLY",
+    "CONTEXTUAL_ENRICHMENT",
+    "HUMAN_ANNOTATION_ONLY"
+  ],
+  "product_dispositions": [
+    "FUNCTION_RETAIN_REQUIRED",
+    "FUNCTION_RETAIN_OPTIONAL",
+    "FUNCTION_MOVE_TO_CONTEXTUAL_LAYER",
+    "FUNCTION_DEPRECATE_FROM_V6_PRODUCT"
+  ],
+  "rejected_micro_fixes_default": {
+    "change_NONE_gate": false,
+    "change_encoder": false,
+    "change_ontology": false,
+    "rescore_QUAL": false,
+    "retrain_DOMAIN": false,
+    "retrain_MEDIATION": false,
+    "train_another_function_model": false
+  },
+  "schema": "hyperlex.classification.v6.function_product_requirement.v1",
+  "surfaces": {
+    "DEV_SELECTION": "HYPERLEX_V6_DEV_SELECTION_V3",
+    "REPRESENTATIVE_VALIDATION": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V3",
+    "TRAIN": "HYPERLEX_V6_TRAIN_V3"
+  }
+}
