@@ -13,6 +13,7 @@ import re
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
@@ -112,14 +113,37 @@ def load_jsonl(path: Path) -> list[dict]:
     return [json.loads(l) for l in sudo_read_text(path).splitlines() if l.strip()]
 
 
-def _api(api: str, params: dict) -> Any:
+def _api(api: str, params: dict, retries: int = 8) -> Any:
     q = dict(params)
     q["format"] = "json"
     q["formatversion"] = "2"
     url = api + "?" + urllib.parse.urlencode(q)
-    req = urllib.request.Request(url, headers={"User-Agent": "HyperlexV6QUAL002/1.0"})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    last_err: Exception | None = None
+    for attempt in range(retries):
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": (
+                    "HyperlexV6QUAL002/1.0 (research; contact: hyperlex-operator)"
+                )
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            last_err = exc
+            if exc.code in {429, 500, 502, 503, 504}:
+                sleep_s = min(120.0, (2**attempt) + random.random())
+                print(f"api_backoff code={exc.code} sleep={sleep_s:.1f}s", flush=True)
+                time.sleep(sleep_s)
+                continue
+            raise
+        except Exception as exc:  # noqa: BLE001
+            last_err = exc
+            time.sleep(min(60.0, (2**attempt)))
+    assert last_err is not None
+    raise last_err
 
 
 def category_titles(api: str, category: str, limit: int = 200) -> list[str]:
@@ -142,7 +166,7 @@ def category_titles(api: str, category: str, limit: int = 200) -> list[str]:
         cont = (payload.get("continue") or {}).get("cmcontinue")
         if not cont:
             break
-        time.sleep(0.05)
+        time.sleep(0.35)
     return titles[:limit]
 
 
@@ -168,7 +192,7 @@ def fetch_wikitext(api: str, titles: list[str]) -> dict[str, str]:
             slots = revs[0].get("slots") or {}
             main = slots.get("main") or {}
             out[title] = main.get("content") or ""
-        time.sleep(0.05)
+        time.sleep(0.35)
     return out
 
 
@@ -340,7 +364,33 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
         except Exception:
             continue
 
-    per_family = 70
+    # Resume partial acquire if present
+    partial_path = PRIVATE / "RAW_ACQUIRE_QUAL002.partial.jsonl"
+    if partial_path.exists():
+        try:
+            for r in load_jsonl(partial_path):
+                admit(
+                    {
+                        "text": r["text"],
+                        "source_url": r["source_url"],
+                        "provenance": r.get("provenance") or "OBSERVED",
+                        "construction_tag": r.get("construction_tag") or "NATURAL",
+                        "construction_role": r.get("construction_role")
+                        or "PRODUCT_EXPECTED",
+                        "source_family": r.get("source_family"),
+                        "topic_domain": r.get("topic_domain"),
+                        "acquisition_cue_family": r.get("acquisition_cue_family"),
+                        "notes": r.get("notes") or "resumed_partial",
+                    }
+                )
+            print(f"resumed_partial={len(raw)}", flush=True)
+        except Exception as exc:  # noqa: BLE001
+            print(f"partial_resume_skip={exc}", flush=True)
+
+    def checkpoint() -> None:
+        write_jsonl(partial_path, raw)
+
+    per_family = 55
     families = list(ACTIVE_FAMILY_VOCABULARY)
     rng.shuffle(families)
     for family in families:
@@ -349,34 +399,27 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
         labels = FAMILY_LABELS.get(family, ())
         got = 0
         titles: list[str] = []
-        for cat in WIKT_FAMILY_CATEGORIES.get(family, ()):
-            titles.extend(category_titles(WIKT_API, cat, limit=220))
-        for label in labels:
-            payload = _api(
-                WIKT_API, {"action": "opensearch", "search": label, "limit": "50"}
-            )
-            if isinstance(payload, list) and len(payload) >= 2:
-                titles.extend(list(payload[1]))
-            q = _api(
-                WIKT_API,
-                {
-                    "action": "query",
-                    "list": "search",
-                    "srsearch": label,
-                    "srnamespace": "0",
-                    "srlimit": "50",
-                },
-            )
-            titles.extend(h["title"] for h in q.get("query", {}).get("search", []))
+        for cat in WIKT_FAMILY_CATEGORIES.get(family, ())[:1]:
+            titles.extend(category_titles(WIKT_API, cat, limit=160))
+            time.sleep(0.5)
+        for label in labels[:2]:
+            try:
+                payload = _api(
+                    WIKT_API, {"action": "opensearch", "search": label, "limit": "40"}
+                )
+                if isinstance(payload, list) and len(payload) >= 2:
+                    titles.extend(list(payload[1]))
+            except Exception as exc:  # noqa: BLE001
+                print(f"opensearch_skip {label}: {exc}", flush=True)
+            time.sleep(0.5)
         rng.shuffle(titles)
         uniq, seen_t = [], set()
         for t in titles:
             if t not in seen_t:
                 seen_t.add(t)
                 uniq.append(t)
-        # offset into title list using seed so we don't replay foundation's first slice
         offset = (SEED + hash(family)) % max(1, min(40, len(uniq) // 3 or 1))
-        pages = fetch_wikitext(WIKT_API, uniq[offset : offset + 240])
+        pages = fetch_wikitext(WIKT_API, uniq[offset : offset + 160])
         for title, content in pages.items():
             if got >= per_family or len(raw) >= target:
                 break
@@ -405,6 +448,9 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
                     }
                 ):
                     got += 1
+        checkpoint()
+        print(f"family={family} got={got} total={len(raw)}", flush=True)
+        time.sleep(1.0)
 
     # Ordinary NONE / domain-irrelevant from Wikipedia
     none_targets = list(WIKI_ORDINARY_CATEGORIES.items()) + list(
@@ -414,14 +460,21 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
     for key, cat in none_targets:
         if len(raw) >= target:
             break
-        titles = category_titles(WIKI_API, cat, limit=120)
+        try:
+            titles = category_titles(WIKI_API, cat, limit=100)
+        except Exception as exc:  # noqa: BLE001
+            print(f"wiki_cat_skip {key}: {exc}", flush=True)
+            continue
         rng.shuffle(titles)
-        pages = fetch_wikitext(WIKI_API, titles[:80])
+        try:
+            pages = fetch_wikitext(WIKI_API, titles[:60])
+        except Exception as exc:  # noqa: BLE001
+            print(f"wiki_fetch_skip {key}: {exc}", flush=True)
+            continue
         got = 0
         for title, content in pages.items():
-            if got >= 40 or len(raw) >= target:
+            if got >= 35 or len(raw) >= target:
                 break
-            # first substantial prose paragraph
             paras = [p.strip() for p in re.split(r"\n\n+", content) if p.strip()]
             for para in paras[:3]:
                 text = clean_wikitext(para)
@@ -446,9 +499,12 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
                 ):
                     got += 1
                     break
-        time.sleep(0.05)
+        checkpoint()
+        print(f"none={key} got={got} total={len(raw)}", flush=True)
+        time.sleep(1.0)
 
     rng.shuffle(raw)
+    checkpoint()
     return raw[:target]
 
 
