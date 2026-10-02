@@ -1,0 +1,229 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-PRAGMATIC-FUNCTION-OBJECTIVE-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PHASE_RULE": "REDESIGN_V6_FUNCTION_OBJECTIVE_AROUND_PRAGMATIC_SIGNAL",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "RELEASE_ELIGIBLE": false,
+  "annotation_statuses": [
+    "DIRECTLY_DERIVED",
+    "RULE_DERIVABLE",
+    "HUMAN_RESETTLEMENT_REQUIRED",
+    "NOT_IDENTIFIABLE"
+  ],
+  "forbidden": [
+    "change_encoder",
+    "change_NONE_gate",
+    "retrain_DOMAIN",
+    "retrain_MEDIATION",
+    "change_ontology",
+    "tune_on_QUAL",
+    "another_direct_function_head",
+    "acquire_more_data_by_default"
+  ],
+  "frozen": {
+    "ANY_LABEL_threshold": 0.22499999999999998,
+    "encoder_model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+    "encoder_revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+    "ontology_changed": false,
+    "operating_package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a"
+  },
+  "function_modes": [
+    "DIRECT_PREDICTION",
+    "DERIVED_PREDICTION",
+    "PARTIALLY_DERIVED",
+    "UNRESOLVED_WHEN_CONTEXT_MISSING"
+  ],
+  "function_primitive_map": {
+    "function.conflictive_force": {
+      "expression": "one_primitive",
+      "mode": "DERIVED_PREDICTION",
+      "require_any": [
+        "prag.hostile_force"
+      ],
+      "supportive": [],
+      "unresolved_if_only": []
+    },
+    "function.evaluative_stance": {
+      "expression": "one_primitive",
+      "mode": "DERIVED_PREDICTION",
+      "require_any": [
+        "prag.normative_judgment"
+      ],
+      "supportive": [
+        "prag.mockery_framing"
+      ],
+      "unresolved_if_only": [
+        "prag.mockery_framing"
+      ]
+    },
+    "function.memetic_form": {
+      "expression": "primitive_plus_contextual_uncertainty",
+      "mode": "UNRESOLVED_WHEN_CONTEXT_MISSING",
+      "require_any": [
+        "prag.memetic_template"
+      ],
+      "supportive": [
+        "prag.mockery_framing"
+      ],
+      "unresolved_if_only": [
+        "prag.mockery_framing"
+      ]
+    },
+    "function.relational_intimacy": {
+      "expression": "one_primitive",
+      "mode": "DERIVED_PREDICTION",
+      "require_any": [
+        "prag.intimate_partnership"
+      ],
+      "supportive": [],
+      "unresolved_if_only": []
+    }
+  },
+  "function_to_primary_primitive": {
+    "function.conflictive_force": "prag.hostile_force",
+    "function.evaluative_stance": "prag.normative_judgment",
+    "function.memetic_form": "prag.memetic_template",
+    "function.relational_intimacy": "prag.intimate_partnership"
+  },
+  "function_vocab": [
+    "function.evaluative_stance",
+    "function.relational_intimacy",
+    "function.conflictive_force",
+    "function.memetic_form"
+  ],
+  "historical_qual": {
+    "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+    "result_sha256": "b560dac2a8f80f45c6213dcd2ba25acdb2e0b7dde786da3ee0a5d6e3231ae724",
+    "role": "BLOCKED_SPENT_SURFACE",
+    "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b"
+  },
+  "next_actions": [
+    "HARDEN_V6_PRAGMATIC_FUNCTION_PIPELINE",
+    "COMPLETE_V6_PRAGMATIC_PRIMITIVE_SETTLEMENT",
+    "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT"
+  ],
+  "objectives": [
+    "A_PRIMITIVE_MULTILABEL",
+    "B_PRIMITIVE_PLUS_DERIVATION",
+    "C_PRIMITIVE_PLUS_ABSTENTION"
+  ],
+  "outcomes": [
+    "V6_PRAGMATIC_OBJECTIVE_ADVANCE",
+    "V6_PRAGMATIC_OBJECTIVE_PARTIAL",
+    "V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED"
+  ],
+  "parent": {
+    "AXIS_STRUCTURE": "latent_pragmatic_attributes",
+    "CEILING_CLASS": "TEXT_SIGNAL_CEILING",
+    "PRIMARY_DIAGNOSIS": "FUNCTION_TASK_SIGNAL_PARTIAL",
+    "baseline_FUNCTION": 0.2963761484570071,
+    "experiment": "HLX-CLASSIFICATION-V6-FUNCTION-TASK-SIGNAL-REASSESS-001",
+    "phase": "REASSESS_V6_FUNCTION_TASK_SIGNAL"
+  },
+  "primitive_cues": {
+    "prag.hostile_force": [
+      "military",
+      "combat",
+      "weapon",
+      "violence",
+      "aggression",
+      "warfare",
+      "kill",
+      "hostile",
+      "assault",
+      "attack",
+      "brutality",
+      "threaten"
+    ],
+    "prag.intimate_partnership": [
+      "romantic",
+      "dating",
+      "boyfriend",
+      "girlfriend",
+      "spouse",
+      "marriage",
+      "courtship",
+      "asexual",
+      "sodomy",
+      "intimate",
+      "sexual partner",
+      "lover",
+      "hookup",
+      "flirt",
+      "erotica"
+    ],
+    "prag.memetic_template": [
+      "meme",
+      "memetic",
+      "copypasta",
+      "image macro",
+      "viral format",
+      "template",
+      "snowclone",
+      "reaction image",
+      "catchphrase format"
+    ],
+    "prag.mockery_framing": [
+      "mock",
+      "mockery",
+      "ridicule",
+      "satire",
+      "parody",
+      "lampoon",
+      "roast",
+      "joke about",
+      "sarcasm",
+      "ironic"
+    ],
+    "prag.normative_judgment": [
+      "derogatory",
+      "pejorative",
+      "insult",
+      "slur",
+      "praise",
+      "compliment",
+      "contempt",
+      "scorn",
+      "endearing",
+      "disapproval",
+      "approval",
+      "prestigious",
+      "stigmatiz",
+      "disparag",
+      "laudatory",
+      "belittl"
+    ]
+  },
+  "primitive_definitions": {
+    "prag.hostile_force": "Text marks hostility, violence, combat, or aggression framing. Narrower than conflictive_force: excludes metaphorical competition without hostility sense.",
+    "prag.intimate_partnership": "Text marks romantic, dating, sexual, or intimate partnership. Narrower than relational_intimacy: excludes platonic affiliation and workplace 'partner' without intimacy evidence.",
+    "prag.memetic_template": "Text marks meme format, copypasta, image macro, or viral template. Narrower than memetic_form: viral topic alone is insufficient.",
+    "prag.mockery_framing": "Text marks ridicule, satire, parody, or joke-about framing. Supports memetic/evaluative derivation but is not alone enough for memetic_form without template evidence.",
+    "prag.normative_judgment": "Text marks praise, insult, pejoration, prestige, approval, or disapproval. Narrower than evaluative_stance: requires observable judgment language, not inferred social status alone."
+  },
+  "primitive_vocab": [
+    "prag.normative_judgment",
+    "prag.intimate_partnership",
+    "prag.hostile_force",
+    "prag.memetic_template",
+    "prag.mockery_framing"
+  ],
+  "rejected_micro_fixes_default": {
+    "acquire_more_data_by_default": false,
+    "another_direct_function_head": false,
+    "change_NONE_gate": false,
+    "change_encoder": false,
+    "change_ontology": false,
+    "retrain_DOMAIN": false,
+    "retrain_MEDIATION": false,
+    "tune_on_QUAL": false
+  },
+  "schema": "hyperlex.classification.v6.pragmatic_function_objective.v1",
+  "surfaces": {
+    "DEV_SELECTION": "HYPERLEX_V6_DEV_SELECTION_V3",
+    "REPRESENTATIVE_VALIDATION": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V3",
+    "TRAIN": "HYPERLEX_V6_TRAIN_V3"
+  }
+}

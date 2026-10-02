@@ -1,0 +1,76 @@
+{
+  "DOMAIN_macro_f1": 0.3547754432307839,
+  "MEDIATION_macro_f1": 0.3421052631578948,
+  "NEXT_ACTION": "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT",
+  "OUTCOME": "V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED",
+  "PHASE_RULE": "REDESIGN_V6_FUNCTION_OBJECTIVE_AROUND_PRAGMATIC_SIGNAL",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "RECEIPT": "98cb72f1e2e8d922e3d261a34145cd0b38dfa1c057ee8b90d82dd6b33ada6b58",
+  "REJECTED_MICRO_FIXES": {
+    "acquire_more_data_by_default": false,
+    "another_direct_function_head": false,
+    "change_NONE_gate": false,
+    "change_encoder": false,
+    "change_ontology": false,
+    "retrain_DOMAIN": false,
+    "retrain_MEDIATION": false,
+    "tune_on_QUAL": false
+  },
+  "baseline_FUNCTION_macro_f1": 0.2963761484570071,
+  "baseline_false_function_emission": 0.052873563218390804,
+  "derived_FUNCTION_macro_f1": 0.19764682696097755,
+  "false_function_emission": 0.031417624521072794,
+  "function_dual_agreement": 1.0,
+  "function_modes": {
+    "function.conflictive_force": "DERIVED_PREDICTION",
+    "function.evaluative_stance": "DERIVED_PREDICTION",
+    "function.memetic_form": "UNRESOLVED_WHEN_CONTEXT_MISSING",
+    "function.relational_intimacy": "DERIVED_PREDICTION"
+  },
+  "function_omission": 0.7815533980582524,
+  "human_resettlement_share": 0.11403853716083366,
+  "identifiability_lift": 0.012759170653907498,
+  "none_preserved": true,
+  "objective_results": {
+    "A_PRIMITIVE_MULTILABEL": {
+      "FUNCTION_macro_f1": null,
+      "primitive_macro_f1_vs_cue": 0.1884559297606857,
+      "primitive_macro_f1_vs_rule": 0.18028705314897028,
+      "system_macro_f1": null
+    },
+    "B_PRIMITIVE_PLUS_DERIVATION": {
+      "DOMAIN_macro_f1": 0.3547754432307839,
+      "FUNCTION_macro_f1": 0.19764682696097755,
+      "MEDIATION_macro_f1": 0.3421052631578948,
+      "false_function_emission": 0.031417624521072794,
+      "function_omission": 0.7815533980582524,
+      "positive_only_system_macro_f1": 0.32194311720413643,
+      "system_macro_f1": 0.29817584444988543,
+      "unresolved_rate": 0.0,
+      "zero_label_exact_rejection": 0.9168564920273349,
+      "zero_label_false_positive_rate": 0.08314350797266515
+    },
+    "C_PRIMITIVE_PLUS_ABSTENTION": {
+      "DOMAIN_macro_f1": 0.3547754432307839,
+      "FUNCTION_macro_f1": 0.19764682696097755,
+      "MEDIATION_macro_f1": 0.3421052631578948,
+      "false_function_emission": 0.031417624521072794,
+      "function_omission": 0.7815533980582524,
+      "positive_only_system_macro_f1": 0.32194311720413643,
+      "resolved_FUNCTION_macro_f1": 0.17591334894613583,
+      "resolved_function_precision": 0.33346065699006877,
+      "system_macro_f1": 0.29817584444988543,
+      "unresolved_rate": 0.10125744540039709,
+      "zero_label_exact_rejection": 0.9168564920273349,
+      "zero_label_false_positive_rate": 0.08314350797266515
+    }
+  },
+  "primitive_dual_agreement": 1.0,
+  "primitive_macro_f1_vs_cue": 0.1884559297606857,
+  "reason": "primitives_not_more_reproducible_from_text",
+  "resolved_function_precision": 0.33346065699006877,
+  "selected_objective": null,
+  "selected_supervision": "CUE_ONLY",
+  "system_macro_f1": 0.29817584444988543,
+  "unresolved_rate": 0.10125744540039709
+}

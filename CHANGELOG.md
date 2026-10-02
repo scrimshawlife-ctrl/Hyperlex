@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Redesign V6 FUNCTION objective around pragmatic signal (Spec 007):**
+  Five text-observable primitives
+  (normative_judgment / intimate_partnership / hostile_force /
+  memetic_template / mockery_framing) with derivation + abstention
+  objectives under frozen encoder/NONE/DOMAIN/MEDIATION. Gold-function
+  resettlement 580/728; cue recovery lift only +0.013; primitive macro-F1
+  0.189; derived FUNCTION **0.198** vs baseline **0.296**. Outcome
+  **`V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED`**. Next:
+  `REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT`. Receipt `98cb72f1…`.
+
 - **Reassess V6 FUNCTION task signal (Spec 007):** Read-only diagnostic on
   TRAIN/DEV/REP V3 after formulation convergence ~0.30. All four functions
   **`CONTEXT_SENSITIVE`**. Cross-formulation consensus-fail share **0.640**

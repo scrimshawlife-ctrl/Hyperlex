@@ -1,0 +1,14 @@
+{
+  "NEXT_ACTION": "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT",
+  "OUTCOME": "V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED",
+  "baseline_FUNCTION_macro_f1": 0.2963761484570071,
+  "derived_FUNCTION_macro_f1": 0.19764682696097755,
+  "function_dual_agreement": 1.0,
+  "human_resettlement_share": 0.11403853716083366,
+  "identifiability_lift": 0.012759170653907498,
+  "primitive_dual_agreement": 1.0,
+  "primitive_macro_f1_vs_cue": 0.1884559297606857,
+  "reason": "primitives_not_more_reproducible_from_text",
+  "selected_objective": null,
+  "unresolved_rate": 0.10125744540039709
+}

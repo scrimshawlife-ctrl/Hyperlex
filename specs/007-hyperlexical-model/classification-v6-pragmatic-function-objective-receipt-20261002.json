@@ -1,0 +1,60 @@
+{
+  "DIRECT_FUNCTION_HEAD_ADDED": false,
+  "DOMAIN_HEAD_MUTATED": false,
+  "ENCODER_MUTATED": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-PRAGMATIC-FUNCTION-OBJECTIVE-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MEDIATION_HEAD_MUTATED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT",
+  "NONE_GATE_MUTATED": false,
+  "ONTOLOGY_MUTATED": false,
+  "OUTCOME": "V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED",
+  "PHASE_RULE": "REDESIGN_V6_FUNCTION_OBJECTIVE_AROUND_PRAGMATIC_SIGNAL",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "REJECTED_MICRO_FIXES": {
+    "acquire_more_data_by_default": false,
+    "another_direct_function_head": false,
+    "change_NONE_gate": false,
+    "change_encoder": false,
+    "change_ontology": false,
+    "retrain_DOMAIN": false,
+    "retrain_MEDIATION": false,
+    "tune_on_QUAL": false
+  },
+  "RELEASE_ELIGIBLE": false,
+  "SYSTEM_PRAGMATIC_OBJECTIVE_RECEIPT_SHA256": "98cb72f1e2e8d922e3d261a34145cd0b38dfa1c057ee8b90d82dd6b33ada6b58",
+  "audit_summary": {
+    "NEXT_ACTION": "REASSESS_V6_FUNCTION_PRODUCT_REQUIREMENT",
+    "OUTCOME": "V6_PRAGMATIC_OBJECTIVE_NOT_SUPPORTED",
+    "baseline_FUNCTION_macro_f1": 0.2963761484570071,
+    "derived_FUNCTION_macro_f1": 0.19764682696097755,
+    "function_dual_agreement": 1.0,
+    "human_resettlement_share": 0.11403853716083366,
+    "identifiability_lift": 0.012759170653907498,
+    "primitive_dual_agreement": 1.0,
+    "primitive_macro_f1_vs_cue": 0.1884559297606857,
+    "reason": "primitives_not_more_reproducible_from_text",
+    "selected_objective": null,
+    "unresolved_rate": 0.10125744540039709
+  },
+  "function_modes": {
+    "function.conflictive_force": "DERIVED_PREDICTION",
+    "function.evaluative_stance": "DERIVED_PREDICTION",
+    "function.memetic_form": "UNRESOLVED_WHEN_CONTEXT_MISSING",
+    "function.relational_intimacy": "DERIVED_PREDICTION"
+  },
+  "primitive_vocab": [
+    "prag.normative_judgment",
+    "prag.intimate_partnership",
+    "prag.hostile_force",
+    "prag.memetic_template",
+    "prag.mockery_framing"
+  ],
+  "primitives_more_reproducible": false,
+  "reliability_better": false,
+  "schema": "hyperlex.classification.v6.pragmatic_function_objective.v1",
+  "sealed_at": "2026-10-02T07:55:26Z",
+  "selected_objective": null
+}
