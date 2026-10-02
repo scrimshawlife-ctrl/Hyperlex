@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **Build and seal fresh V6 QUAL-003 surface (Spec 007):** Model-blind
+  NATURAL/OBSERVED acquisition + dual annotation under final ontology.
+  Operating gates bound (system≥0.30, zero-FP≤0.35). QUAL-002 spent /
+  unreused. TRAIN/DEV/REP V2 blocked. No model scoring. Package
+  `8ed1a4d4…` unchanged.
+
 - **Harden V6 full operating pipeline + prepare QUAL-003 (Spec 007):**
   Packaged gated operating candidate (encoder `586fe515…` + ANY_LABEL
   gate + frozen heads). Cold-load/round-trip OK; REP_V2 witness
