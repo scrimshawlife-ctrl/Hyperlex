@@ -107,42 +107,72 @@ WIKI_CULTURE_TITLES: dict[str, tuple[str, ...]] = {
     "memetic": (
         "Meme", "Internet_meme", "Copypasta", "Image_macro", "Rickrolling",
         "Pepe_the_Frog", "Wojak", "Shitposting", "Viral_phenomenon",
-        "Internet_culture", "Rage_comic", "Advice_animal",
+        "Internet_culture", "Rage_comic", "Advice_animal", "Lolcat",
+        "Doge_(meme)", "Distracted_boyfriend", "Surprised_Pikachu",
+        "This_is_fine", "Expanding_brain", "NPC_(meme)", "Sigma_male",
+        "Brain_rot", "Slender_Man", "Creepypasta", "Forced_meme",
+        "Memetics", "Internet_phenomenon",
     ),
     "relationship-dating": (
         "Ghosting_(behavior)", "Breadcrumbing", "Situationship",
         "Love_bombing", "Online_dating", "Orbiting_(behavior)",
         "Benching_(dating)", "Zombieing_(dating)", "Cuffing_season",
+        "Hookup_culture", "Friends_with_benefits", "Slow_dating",
+        "Catfishing", "Kittenfishing", "Love_bombing", "Soft_launch",
+        "Hard_launch_(relationship)", "Stashing_(dating)", "Cookie_jarring",
+        "Haunting_(dating)", "Orbiting", "Negging",
     ),
     "conflict-aggression": (
         "Flaming_(Internet)", "Cancel_culture", "Call-out_culture",
         "Internet_troll", "Doxing", "Brigading", "Flame_war",
-        "Cyberbullying", "Ratio_(Internet_slang)",
+        "Cyberbullying", "Ratio_(Internet_slang)", "Sealioning",
+        "Concern_troll", "Godwin's_law", "Flamebait", "Hatemail",
+        "Online_shaming", "Dogpiling", "Raid_(gaming)", "Griefing",
+        "Swatting", "Doxxing",
     ),
     "social-evaluation": (
         "Pejorative", "Insult", "Compliment", "Slang", "Praise",
-        "Internet_slang", "Snark", "Shade_(slang)",
+        "Internet_slang", "Snark", "Shade_(slang)", "Dysphemism",
+        "Euphemism", "Backhanded_compliment", "Sarcasm", "Irony",
+        "Cringe", "Based_(slang)", "Cap_(slang)", "Slay_(slang)",
+        "Mid_(slang)", "Sus_(slang)",
     ),
     "internet-slang": (
         "Internet_slang", "Text_messaging", "Leet", "Netspeak",
-        "Emoji", "Hashtag", "Subtweet",
+        "Emoji", "Hashtag", "Subtweet", "TL;DR", "LMAO", "FOMO",
+        "YOLO_(aphorism)", "Stan_(fan)", "Simp_(slang)", "Rizz",
+        "Gyatt", "Skibidi", "No_cap", "Touch_grass",
     ),
     "gaming-meta": (
         "Video_game_culture", "Nerf_(video_gaming)", "Camping_(gaming)",
-        "Smurf_(video_gaming)", "Griefing", "Esports",
+        "Smurf_(video_gaming)", "Griefing", "Esports", "Game_balance",
+        "Power_creep", "Meta_(gaming)", "Tryhard", "Noob", "GG_(gaming)",
+        "AFK", "Twitch_emote", "Speedrunning",
     ),
     "politics-civic": (
         "Dog_whistle_(politics)", "Astroturfing", "Whataboutism",
-        "Cancel_culture", "Culture_war",
+        "Cancel_culture", "Culture_war", "Bothsidesism", "Tankie",
+        "Political_correctness", "Virtue_signalling", "Flame_war",
     ),
     "technology-ai": (
         "Hallucination_(artificial_intelligence)", "Prompt_engineering",
         "Jailbreak_(large_language_models)", "AI_alignment",
+        "Artificial_intelligence_art", "Deepfake", "Chatbot",
+        "Generative_artificial_intelligence", "AI_slop",
     ),
     "ai-native": (
         "Prompt_engineering", "Reinforcement_learning_from_human_feedback",
-        "Large_language_model", "Synthetic_data",
+        "Large_language_model", "Synthetic_data", "Chain-of-thought_prompting",
+        "Retrieval-augmented_generation", "AI_agent",
     ),
+}
+
+WIKI_CATEGORY_SEEDS: dict[str, tuple[str, ...]] = {
+    "memetic": ("Category:Internet_memes", "Category:Internet_culture"),
+    "relationship-dating": ("Category:Online_dating", "Category:Interpersonal_relationships"),
+    "conflict-aggression": ("Category:Internet_trolling", "Category:Cyberbullying"),
+    "social-evaluation": ("Category:Pejorative_terms", "Category:Slang"),
+    "internet-slang": ("Category:Internet_slang", "Category:English_internet_slang"),
 }
 
 
@@ -233,6 +263,29 @@ def lemma_url(title: str) -> str:
     )
 
 
+def wiki_category_members(category: str, *, limit: int = 40) -> list[str]:
+    params = urllib.parse.urlencode(
+        {
+            "action": "query",
+            "list": "categorymembers",
+            "cmtitle": category,
+            "cmtype": "page",
+            "cmlimit": str(limit),
+            "format": "json",
+        }
+    )
+    url = "https://en.wikipedia.org/w/api.php?" + params
+    try:
+        data = json.loads(fetch(url))
+    except Exception:  # noqa: BLE001
+        return []
+    return [
+        m.get("title")
+        for m in (data.get("query") or {}).get("categorymembers") or []
+        if m.get("title")
+    ]
+
+
 def wiki_summary(title: str) -> dict | None:
     url = (
         "https://en.wikipedia.org/api/rest_v1/page/summary/"
@@ -262,7 +315,7 @@ def wiki_summary(title: str) -> dict | None:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--wikt-target", type=int, default=500)
-    ap.add_argument("--wiki-target", type=int, default=220)
+    ap.add_argument("--wiki-target", type=int, default=320)
     ap.add_argument("--per-family", type=int, default=28)
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument(
@@ -313,6 +366,21 @@ def main() -> int:
         rng.shuffle(titles_l)
         for title in titles_l:
             wiki_jobs.append((family, title))
+    for family, cats in WIKI_CATEGORY_SEEDS.items():
+        for cat in cats:
+            for title in wiki_category_members(cat, limit=35):
+                wiki_jobs.append((family, title.replace(" ", "_")))
+            time.sleep(0.05)
+    # dedupe jobs
+    seen_jobs: set[tuple[str, str]] = set()
+    uniq_jobs = []
+    for fam, title in wiki_jobs:
+        key = (fam, title.lower())
+        if key in seen_jobs:
+            continue
+        seen_jobs.add(key)
+        uniq_jobs.append((fam, title))
+    wiki_jobs = uniq_jobs
     rng.shuffle(wiki_jobs)
     print(f"wiki_jobs={len(wiki_jobs)}", flush=True)
     for family, title in wiki_jobs:

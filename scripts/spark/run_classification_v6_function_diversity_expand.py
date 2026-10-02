@@ -40,7 +40,9 @@ REPO_ART = (
 )
 SPEC = REPO / "specs" / "007-hyperlexical-model"
 IMAGE = "lmsysorg/sglang:dev-qwen38-27b-dflash2"
-SEED = 20261004
+ACQUIRE_SEED = 20261004
+# Canonical head-train seed (isolate data effect from RNG drift).
+SEED = 20261001
 MAX_LEN = 192
 BATCH = 32
 HEAD_EPOCHS = 40
@@ -362,7 +364,7 @@ def acquire_expand_rows(block_paths: list[Path]) -> list[dict]:
         "--wikt-target",
         "520",
         "--wiki-target",
-        "240",
+        "340",
         "--per-family",
         "30",
         "--workers",
@@ -380,6 +382,7 @@ def annotate_new_rows(raw: list[dict], blocked_ids: set[str], blocked_text: set[
         dual_annotate_rows,
     )
     from hyperlexical.classification_v6_function_diversity_expand import source_style
+    from hyperlexical.classification_v6_label_migration import _direct_map_old_family
 
     blind = []
     for r in raw:
@@ -410,13 +413,31 @@ def annotate_new_rows(raw: list[dict], blocked_ids: set[str], blocked_text: set[
         if mapped.get("adjudication_status") not in {"AGREED", "ADJUDICATED"}:
             continue
         if mapped["evidence_label"] != "EVIDENCE_PRESENT":
-            # keep some NONE-like NO_EVIDENCE from wiki culture? skip — we want positives
-            if mapped["evidence_label"] == "NO_EVIDENCE" and not (
-                mapped["domain_labels"] or mapped["function_labels"]
+            continue
+        # Settled ontology family→function map (foundation migration), not model errors.
+        fam = src.get("acquisition_cue_family")
+        fam_map = _direct_map_old_family(str(fam or "")) if fam else {}
+        if fam_map.get("type") in {"DIRECT", "MULTI_LABEL", "RULE_DERIVED"}:
+            mapped["function_labels"] = sorted(
+                set(mapped.get("function_labels") or [])
+                | set(fam_map.get("function") or [])
+            )
+            mapped["domain_labels"] = sorted(
+                set(mapped.get("domain_labels") or [])
+                | set(fam_map.get("domain") or [])
+            )
+            mapped["mediation_labels"] = sorted(
+                set(mapped.get("mediation_labels") or [])
+                | set(fam_map.get("mediation") or [])
+            )
+            if (
+                "domain.technology.ai_discourse" in mapped["domain_labels"]
+                and "domain.technology" not in mapped["domain_labels"]
             ):
-                continue
-            if mapped["evidence_label"] != "EVIDENCE_PRESENT":
-                continue
+                mapped["domain_labels"] = sorted(
+                    set(mapped["domain_labels"]) | {"domain.technology"}
+                )
+                mapped["hierarchy_repaired"] = True
         if not (
             mapped["domain_labels"]
             or mapped["function_labels"]
@@ -427,7 +448,7 @@ def annotate_new_rows(raw: list[dict], blocked_ids: set[str], blocked_text: set[
             **src,
             **mapped,
             "schema": "hyperlex.classification.v6.expand_row.v1",
-            "v3_origin": "expand_acquire_dual_annotate",
+            "v3_origin": "expand_acquire_dual_annotate+family_map",
             "source_style": source_style(src.get("source_family") or ""),
             "dual_annotation": {
                 "status": a["adjudicated"].get("status"),
@@ -538,15 +559,32 @@ def build_v3(
                 break
         return out
 
-    # Allocation: prefer putting diverse function into REP/DEV/TRAIN
-    rep_fun_new = take_new(new_fun, 80)
-    # remove taken from pool ordering
+    # Prefer non-wikt / long function rows into REP for representativeness;
+    # still put the majority of new function supervision into TRAIN.
+    non_wikt_fun = [
+        r
+        for r in new_fun
+        if source_style(r.get("source_family") or "") != "wiktionary_sense"
+    ]
+    wikt_fun = [
+        r
+        for r in new_fun
+        if source_style(r.get("source_family") or "") == "wiktionary_sense"
+    ]
+    rep_fun_new = take_new(non_wikt_fun, 90)
+    if len(rep_fun_new) < 60:
+        rep_fun_new += take_new(
+            [r for r in wikt_fun if length_bucket(len(r.get("text") or "")) != "short"],
+            60 - len(rep_fun_new),
+        )
     taken = {r["identity"] for r in rep_fun_new}
     rest_fun = [r for r in new_fun if r["identity"] not in taken]
-    dev_fun_new = take_new(rest_fun, 40)
+    # long/medium first for DEV
+    rest_fun = sorted(rest_fun, key=diversify_score, reverse=True)
+    dev_fun_new = take_new(rest_fun, 50)
     taken |= {r["identity"] for r in dev_fun_new}
     rest_fun = [r for r in new_fun if r["identity"] not in taken]
-    train_fun_new = take_new(rest_fun, 220)
+    train_fun_new = take_new(rest_fun, 400)
 
     # Extra domain/mediation positives for length/style diversity
     rep_pos_new = take_new(new_pos, 40)
@@ -1294,7 +1332,7 @@ for f in "$V2/TRAIN_V2.jsonl" "$V2/DEV_SELECTION_V2.jsonl" "$V2/REPRESENTATIVE_V
   sudo -n cat "$f" | python3 -c 'import sys,json; 
 [sys.stdout.write(json.dumps({{"text": json.loads(l).get("text")}})+"\\n") for l in sys.stdin if l.strip()]' >> "$PRIV/BLOCK_TEXTS.jsonl"
 done
-python3 {REPO}/scripts/spark/expand_v6_positive_acquire.py --out "$PRIV/RAW_ACQUIRE_EXPAND.jsonl" --block-texts "$PRIV/BLOCK_TEXTS.jsonl" --wikt-target 520 --wiki-target 240 --per-family 30 --workers 3
+python3 {REPO}/scripts/spark/expand_v6_positive_acquire.py --out "$PRIV/RAW_ACQUIRE_EXPAND.jsonl" --block-texts "$PRIV/BLOCK_TEXTS.jsonl" --wikt-target 520 --wiki-target 340 --per-family 30 --workers 3
 """,
             ],
             check=False,
