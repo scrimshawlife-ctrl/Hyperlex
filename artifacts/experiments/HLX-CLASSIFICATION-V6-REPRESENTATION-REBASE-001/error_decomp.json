@@ -1,0 +1,57 @@
+{
+  "AXIS_PROJ__A_MPNET": {
+    "axis_confusion_moved": 0,
+    "fixed_fn": 141,
+    "fixed_fp": 1543,
+    "fn_a": 355,
+    "fn_b": 292,
+    "fp_a": 2173,
+    "fp_b": 1368,
+    "new_fn": 78,
+    "new_fp": 738
+  },
+  "CALIBRATED_SIM__A_MPNET": {
+    "axis_confusion_moved": 0,
+    "fixed_fn": 325,
+    "fixed_fp": 465,
+    "fn_a": 355,
+    "fn_b": 63,
+    "fp_a": 2173,
+    "fp_b": 6972,
+    "new_fn": 33,
+    "new_fp": 5264
+  },
+  "FROZEN_LINEAR__A_MPNET": {
+    "axis_confusion_moved": 0,
+    "fixed_fn": 199,
+    "fixed_fp": 1555,
+    "fn_a": 355,
+    "fn_b": 259,
+    "fp_a": 2173,
+    "fp_b": 2424,
+    "new_fn": 103,
+    "new_fp": 1806
+  },
+  "FROZEN_NONLINEAR__A_MPNET": {
+    "axis_confusion_moved": 0,
+    "fixed_fn": 129,
+    "fixed_fp": 1974,
+    "fn_a": 355,
+    "fn_b": 311,
+    "fp_a": 2173,
+    "fp_b": 533,
+    "new_fn": 85,
+    "new_fp": 334
+  },
+  "PEFT_ADAPTER__A_MPNET": {
+    "axis_confusion_moved": 0,
+    "fixed_fn": 199,
+    "fixed_fp": 1551,
+    "fn_a": 355,
+    "fn_b": 260,
+    "fp_a": 2173,
+    "fp_b": 2409,
+    "new_fn": 104,
+    "new_fp": 1787
+  }
+}

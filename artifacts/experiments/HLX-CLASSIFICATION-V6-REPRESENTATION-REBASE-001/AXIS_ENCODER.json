@@ -1,0 +1,18 @@
+{
+  "axis_best": {
+    "domain": {
+      "encoder": "B_BGE_BASE",
+      "macro_f1": 0.26396400628512157
+    },
+    "function": {
+      "encoder": "C_MSMARCO",
+      "macro_f1": 0.2001344479247944
+    },
+    "mediation": {
+      "encoder": "B_BGE_BASE",
+      "macro_f1": 0.21875
+    }
+  },
+  "finding": "AXIS_SPECIFIC_ENCODERS_SUPPORTED",
+  "shared_best": "B_BGE_BASE"
+}

@@ -1,0 +1,66 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-REPRESENTATION-REBASE-001",
+  "PHASE_RULE": "REBASE_V6_ON_STRONGER_PRETRAINED_SEMANTIC_ENCODER",
+  "advancement": {
+    "floors_locked": true,
+    "max_hierarchy_violation_rate_rep": 0.05,
+    "max_macro_f1_dev_minus_rep": 0.15,
+    "min_axis_macro_f1": 0.1,
+    "min_rep_system_macro_f1": 0.2,
+    "mpnet_witness": 0.20555757451039375,
+    "trained_improvement_bar": 0.20555757451039375,
+    "trained_tolerance": 0.005
+  },
+  "encoder_family": {
+    "A_MPNET": "sentence-transformers/all-mpnet-base-v2",
+    "B_BGE_BASE": "BAAI/bge-base-en-v1.5",
+    "C_MSMARCO": "sentence-transformers/msmarco-distilbert-base-v4"
+  },
+  "forbidden": [
+    "reopen_ontology",
+    "inspect_QUAL",
+    "lower_advancement_floors",
+    "unconstrained_architecture_bakeoff",
+    "mutate_V5",
+    "mutate_MODEL_WIDE_BEST",
+    "full_finetune_unless_peft_justifies",
+    "tune_on_REP",
+    "expand_TRAIN"
+  ],
+  "formulations": [
+    "direct_text_label_similarity",
+    "learned_calibration_on_similarity",
+    "frozen_embedding_linear_heads",
+    "frozen_embedding_nonlinear_heads",
+    "axis_specific_projections",
+    "parameter_efficient_adapter"
+  ],
+  "historical_control": {
+    "do_not_initialize_from": true,
+    "do_not_mutate": true,
+    "role": "HISTORICAL_CONTROL_REPRESENTATION",
+    "sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+    "zero_shot_rep_system_macro_f1": 0.1622371780444463
+  },
+  "label_text_variants": [
+    "short_definition",
+    "full_boundary_contract"
+  ],
+  "mpnet_witness": {
+    "ZERO_SHOT_REP_SYSTEM_MACRO_F1": 0.20555757451039375,
+    "id": "ENCODER_CANDIDATE_1",
+    "model_id": "sentence-transformers/all-mpnet-base-v2",
+    "role": "REPRESENTATION_REBASE_BASELINE",
+    "source_receipt": "8703b73df6aca08ed5cfa6b847fe753997af537b4d15bcf0650a14113d5e2549"
+  },
+  "pointer_policy": {
+    "MODEL_WIDE_BEST": "UNCHANGED",
+    "STAGE_A_BEST": "UNCHANGED",
+    "V6_REPRESENTATION_CANDIDATE": "created_only_on_advance"
+  },
+  "qual_policy": {
+    "HYPERLEX_V6_QUALIFICATION_001": "REMAIN_SEALED",
+    "inspected": false
+  },
+  "schema": "hyperlex.classification.v6.representation_rebase.v1"
+}

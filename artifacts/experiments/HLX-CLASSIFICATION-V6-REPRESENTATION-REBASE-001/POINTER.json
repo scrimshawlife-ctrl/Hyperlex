@@ -1,0 +1,11 @@
+{
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "MODEL_WIDE_BEST_ROLE": "HISTORICAL_CONTROL_REPRESENTATION",
+  "V6_REPRESENTATION_CANDIDATE": {
+    "encoder": "C_MSMARCO",
+    "formulation": "frozen_embedding_nonlinear_heads",
+    "id": "FROZEN_NONLINEAR__C_MSMARCO",
+    "status": "CANDIDATE_NOT_PROMOTED"
+  }
+}

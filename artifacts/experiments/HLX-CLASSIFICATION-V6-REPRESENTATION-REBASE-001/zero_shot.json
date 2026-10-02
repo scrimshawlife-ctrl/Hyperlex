@@ -1,0 +1,2654 @@
+{
+  "ZERO_SHOT__A_MPNET__full": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.041025641025641026,
+        "jaccard": 0.1137037037037037,
+        "macro_f1": 0.1780350359641922,
+        "micro_f1": 0.13651315789473684,
+        "nearest_label_purity": 0.18461538461538463,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.03726708074534161,
+            "margin": 0.0021511688828468323,
+            "neg_mean": 0.10947614908218384,
+            "pos_mean": 0.11162731796503067,
+            "precision": 0.0189873417721519,
+            "recall": 1.0,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.125,
+            "margin": -0.006535395979881287,
+            "neg_mean": 0.12047608941793442,
+            "pos_mean": 0.11394069343805313,
+            "precision": 0.06779661016949153,
+            "recall": 0.8,
+            "strength": "WEAK_LABEL",
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.18181818181818182,
+            "margin": 0.015788570046424866,
+            "neg_mean": 0.13556982576847076,
+            "pos_mean": 0.15135839581489563,
+            "precision": 0.3333333333333333,
+            "recall": 0.125,
+            "strength": "STABLE_LABEL",
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "margin": -0.13118836283683777,
+            "neg_mean": 0.13118836283683777,
+            "pos_mean": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "LOW_SUPPORT",
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.16279069767441862,
+            "margin": 0.024336501955986023,
+            "neg_mean": 0.13180533051490784,
+            "pos_mean": 0.15614183247089386,
+            "precision": 0.0945945945945946,
+            "recall": 0.5833333333333334,
+            "strength": "STABLE_LABEL",
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.15384615384615383,
+            "margin": 0.022845908999443054,
+            "neg_mean": 0.1277080923318863,
+            "pos_mean": 0.15055400133132935,
+            "precision": 0.0875,
+            "recall": 0.6363636363636364,
+            "strength": "STABLE_LABEL",
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.17948717948717952,
+            "margin": 0.03889039158821106,
+            "neg_mean": 0.13076086342334747,
+            "pos_mean": 0.16965125501155853,
+            "precision": 0.1076923076923077,
+            "recall": 0.5384615384615384,
+            "strength": "STABLE_LABEL",
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.13259668508287292,
+            "margin": -0.028662487864494324,
+            "neg_mean": 0.12567490339279175,
+            "pos_mean": 0.09701241552829742,
+            "precision": 0.07142857142857142,
+            "recall": 0.9230769230769231,
+            "strength": "WEAK_LABEL",
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.345679012345679,
+            "margin": 0.05057355761528015,
+            "neg_mean": 0.1434117555618286,
+            "pos_mean": 0.19398531317710876,
+            "precision": 0.2692307692307692,
+            "recall": 0.4827586206896552,
+            "strength": "STABLE_LABEL",
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.47058823529411764,
+            "margin": 0.10472486913204193,
+            "neg_mean": 0.1357998549938202,
+            "pos_mean": 0.24052472412586212,
+            "precision": 0.4,
+            "recall": 0.5714285714285714,
+            "strength": "STRONG_LABEL",
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.16931216931216933,
+            "margin": 0.010153129696846008,
+            "neg_mean": 0.12320949137210846,
+            "pos_mean": 0.13336262106895447,
+            "precision": 0.09302325581395349,
+            "recall": 0.9411764705882353,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.16004995004995007
+      },
+      "function": {
+        "exact_match": 0.03076923076923077,
+        "jaccard": 0.12094017094017094,
+        "macro_f1": 0.2037931767878128,
+        "micro_f1": 0.17543859649122806,
+        "nearest_label_purity": 0.12307692307692308,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.1507537688442211,
+            "margin": -0.02496001124382019,
+            "neg_mean": 0.16892050206661224,
+            "pos_mean": 0.14396049082279205,
+            "precision": 0.08241758241758242,
+            "recall": 0.8823529411764706,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.16585365853658537,
+            "margin": -0.0002874135971069336,
+            "neg_mean": 0.16107846796512604,
+            "pos_mean": 0.1607910543680191,
+            "precision": 0.09090909090909091,
+            "recall": 0.9444444444444444,
+            "strength": "STABLE_LABEL",
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.20588235294117646,
+            "margin": 0.041284844279289246,
+            "neg_mean": 0.15158329904079437,
+            "pos_mean": 0.19286814332008362,
+            "precision": 0.12962962962962962,
+            "recall": 0.5,
+            "strength": "STABLE_LABEL",
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.2926829268292683,
+            "margin": 0.04257279634475708,
+            "neg_mean": 0.15811024606227875,
+            "pos_mean": 0.20068304240703583,
+            "precision": 0.25,
+            "recall": 0.35294117647058826,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.1570940170940171
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.47058823529411764,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.49230769230769234,
+        "jaccard": 0.49230769230769234,
+        "macro_f1": 0.2204724409448819,
+        "micro_f1": 0.2204724409448819,
+        "nearest_label_purity": 0.08205128205128205,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.22047244094488186,
+            "margin": 0.033258214592933655,
+            "neg_mean": 0.16032469272613525,
+            "pos_mean": 0.1935829073190689,
+            "precision": 0.12612612612612611,
+            "recall": 0.875,
+            "strength": "STABLE_LABEL",
+            "support": 16
+          }
+        },
+        "sample_f1": 0.49230769230769234
+      },
+      "n": 195,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.0,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.09108882570421033,
+        "macro_f1": 0.18712690898139045,
+        "micro_f1": 0.15301724137931033,
+        "sample_f1": 0.15462037627196
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.045112781954887216,
+        "jaccard": 0.10379784688995215,
+        "macro_f1": 0.1501250980046732,
+        "micro_f1": 0.12629652226967664,
+        "nearest_label_purity": 0.212406015037594,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.009638554216867469,
+            "margin": -0.025590695440769196,
+            "neg_mean": 0.10376103222370148,
+            "pos_mean": 0.07817033678293228,
+            "precision": 0.0048543689320388345,
+            "recall": 0.6666666666666666,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.09340659340659341,
+            "margin": -0.01631201058626175,
+            "neg_mean": 0.1174025684595108,
+            "pos_mean": 0.10109055787324905,
+            "precision": 0.05167173252279635,
+            "recall": 0.4857142857142857,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.0,
+            "margin": 0.018240466713905334,
+            "neg_mean": 0.12881608307361603,
+            "pos_mean": 0.14705654978752136,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "DEAD_LABEL",
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.022271714922048998,
+            "margin": 0.11162728816270828,
+            "neg_mean": 0.12194905430078506,
+            "pos_mean": 0.23357634246349335,
+            "precision": 0.01126126126126126,
+            "recall": 1.0,
+            "strength": "LOW_SUPPORT",
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.20769230769230768,
+            "margin": 0.02305266261100769,
+            "neg_mean": 0.12713702023029327,
+            "pos_mean": 0.15018968284130096,
+            "precision": 0.1267605633802817,
+            "recall": 0.574468085106383,
+            "strength": "STABLE_LABEL",
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.1727272727272727,
+            "margin": 0.06744392961263657,
+            "neg_mean": 0.11912473291158676,
+            "pos_mean": 0.18656866252422333,
+            "precision": 0.09895833333333333,
+            "recall": 0.6785714285714286,
+            "strength": "STABLE_LABEL",
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.18326693227091634,
+            "margin": 0.0316871702671051,
+            "neg_mean": 0.12427644431591034,
+            "pos_mean": 0.15596361458301544,
+            "precision": 0.10952380952380952,
+            "recall": 0.5609756097560976,
+            "strength": "STABLE_LABEL",
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.14137214137214138,
+            "margin": 0.019206687808036804,
+            "neg_mean": 0.1168060153722763,
+            "pos_mean": 0.1360127031803131,
+            "precision": 0.07657657657657657,
+            "recall": 0.918918918918919,
+            "strength": "WEAK_LABEL",
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.29906542056074764,
+            "margin": 0.0424293577671051,
+            "neg_mean": 0.13981464505195618,
+            "pos_mean": 0.18224400281906128,
+            "precision": 0.23703703703703705,
+            "recall": 0.4050632911392405,
+            "strength": "STABLE_LABEL",
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.40404040404040403,
+            "margin": 0.09697301685810089,
+            "neg_mean": 0.13608811795711517,
+            "pos_mean": 0.23306113481521606,
+            "precision": 0.3448275862068966,
+            "recall": 0.4878048780487805,
+            "strength": "STRONG_LABEL",
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.11789473684210525,
+            "margin": -0.006119340658187866,
+            "neg_mean": 0.12161359190940857,
+            "pos_mean": 0.1154942512512207,
+            "precision": 0.06363636363636363,
+            "recall": 0.8,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          }
+        },
+        "sample_f1": 0.1434062595716731
+      },
+      "function": {
+        "exact_match": 0.05263157894736842,
+        "jaccard": 0.11215538847117794,
+        "macro_f1": 0.14882733503071413,
+        "micro_f1": 0.12936802973977696,
+        "nearest_label_purity": 0.11654135338345864,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.10404624277456648,
+            "margin": -0.035453855991363525,
+            "neg_mean": 0.16545507311820984,
+            "pos_mean": 0.1300012171268463,
+            "precision": 0.055327868852459015,
+            "recall": 0.8709677419354839,
+            "strength": "WEAK_LABEL",
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.12260536398467432,
+            "margin": 0.03930342197418213,
+            "neg_mean": 0.15680350363254547,
+            "pos_mean": 0.1961069256067276,
+            "precision": 0.06557377049180328,
+            "recall": 0.9411764705882353,
+            "strength": "WEAK_LABEL",
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.1837837837837838,
+            "margin": 0.03918805718421936,
+            "neg_mean": 0.14973458647727966,
+            "pos_mean": 0.18892264366149902,
+            "precision": 0.11564625850340136,
+            "recall": 0.4473684210526316,
+            "strength": "STABLE_LABEL",
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.18487394957983194,
+            "margin": 0.028355911374092102,
+            "neg_mean": 0.15651534497737885,
+            "pos_mean": 0.18487125635147095,
+            "precision": 0.14285714285714285,
+            "recall": 0.2619047619047619,
+            "strength": "STABLE_LABEL",
+            "support": 42
+          }
+        },
+        "sample_f1": 0.13728070175438595
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.40404040404040403,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.4924812030075188,
+        "jaccard": 0.4924812030075188,
+        "macro_f1": 0.18674698795180722,
+        "micro_f1": 0.18674698795180722,
+        "nearest_label_purity": 0.08082706766917293,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.18674698795180725,
+            "margin": 0.01627698540687561,
+            "neg_mean": 0.16109459102153778,
+            "pos_mean": 0.1773715764284134,
+            "precision": 0.10726643598615918,
+            "recall": 0.7209302325581395,
+            "strength": "STABLE_LABEL",
+            "support": 43
+          }
+        },
+        "sample_f1": 0.4924812030075188
+      },
+      "n": 532,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.007518796992481203,
+      "system": {
+        "exact_match": 0.005639097744360902,
+        "jaccard": 0.07357614190320957,
+        "macro_f1": 0.1520895253828793,
+        "micro_f1": 0.1311806256306761,
+        "sample_f1": 0.12385553565064843
+      }
+    },
+    "label_variant": "full_boundary_contract",
+    "model_id": "sentence-transformers/all-mpnet-base-v2",
+    "thresholds": {
+      "domain": [
+        0.15,
+        0.05,
+        0.05,
+        0.05,
+        0.1,
+        0.3,
+        0.05,
+        0.15,
+        0.15,
+        0.2,
+        0.25
+      ],
+      "function": [
+        0.05,
+        0.25,
+        0.05,
+        0.2
+      ],
+      "mediation": [
+        0.15
+      ]
+    }
+  },
+  "ZERO_SHOT__A_MPNET__short": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.02564102564102564,
+        "jaccard": 0.10269841269841269,
+        "macro_f1": 0.32834888259735645,
+        "micro_f1": 0.1553672316384181,
+        "nearest_label_purity": 0.18974358974358974,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.5,
+            "margin": 0.1417284607887268,
+            "neg_mean": 0.09599322080612183,
+            "pos_mean": 0.23772168159484863,
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.10344827586206896,
+            "margin": -0.029757060110569,
+            "neg_mean": 0.1219448372721672,
+            "pos_mean": 0.0921877771615982,
+            "precision": 0.054878048780487805,
+            "recall": 0.9,
+            "strength": "WEAK_LABEL",
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.6666666666666666,
+            "margin": 0.15825983881950378,
+            "neg_mean": 0.12330970168113708,
+            "pos_mean": 0.28156954050064087,
+            "precision": 1.0,
+            "recall": 0.5,
+            "strength": "STRONG_LABEL",
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "margin": -0.1345480978488922,
+            "neg_mean": 0.1345480978488922,
+            "pos_mean": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "LOW_SUPPORT",
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.2727272727272727,
+            "margin": 0.0779448002576828,
+            "neg_mean": 0.11539104580879211,
+            "pos_mean": 0.19333584606647491,
+            "precision": 0.3,
+            "recall": 0.25,
+            "strength": "STABLE_LABEL",
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.39999999999999997,
+            "margin": 0.08458968251943588,
+            "neg_mean": 0.12392263859510422,
+            "pos_mean": 0.2085123211145401,
+            "precision": 0.75,
+            "recall": 0.2727272727272727,
+            "strength": "STRONG_LABEL",
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.2285714285714286,
+            "margin": 0.03928779065608978,
+            "neg_mean": 0.13733522593975067,
+            "pos_mean": 0.17662301659584045,
+            "precision": 0.18181818181818182,
+            "recall": 0.3076923076923077,
+            "strength": "STABLE_LABEL",
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.11494252873563217,
+            "margin": -0.03630971908569336,
+            "neg_mean": 0.11525866389274597,
+            "pos_mean": 0.07894894480705261,
+            "precision": 0.062111801242236024,
+            "recall": 0.7692307692307693,
+            "strength": "WEAK_LABEL",
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.42105263157894735,
+            "margin": 0.09617143869400024,
+            "neg_mean": 0.13396529853343964,
+            "pos_mean": 0.23013673722743988,
+            "precision": 0.8888888888888888,
+            "recall": 0.27586206896551724,
+            "strength": "STRONG_LABEL",
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.5454545454545454,
+            "margin": 0.1806304007768631,
+            "neg_mean": 0.10804758965969086,
+            "pos_mean": 0.28867799043655396,
+            "precision": 0.75,
+            "recall": 0.42857142857142855,
+            "strength": "STRONG_LABEL",
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.358974358974359,
+            "margin": 0.05183720588684082,
+            "neg_mean": 0.11871612071990967,
+            "pos_mean": 0.1705533266067505,
+            "precision": 0.3181818181818182,
+            "recall": 0.4117647058823529,
+            "strength": "STRONG_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.14108669108669109
+      },
+      "function": {
+        "exact_match": 0.11794871794871795,
+        "jaccard": 0.17564102564102563,
+        "macro_f1": 0.24210804976164682,
+        "micro_f1": 0.20168067226890757,
+        "nearest_label_purity": 0.1282051282051282,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.16666666666666669,
+            "margin": -0.02262943983078003,
+            "neg_mean": 0.15903747081756592,
+            "pos_mean": 0.1364080309867859,
+            "precision": 0.15789473684210525,
+            "recall": 0.17647058823529413,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.16243654822335027,
+            "margin": -0.011445581912994385,
+            "neg_mean": 0.14302018284797668,
+            "pos_mean": 0.1315746009349823,
+            "precision": 0.0893854748603352,
+            "recall": 0.8888888888888888,
+            "strength": "STABLE_LABEL",
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.20689655172413793,
+            "margin": 0.036610886454582214,
+            "neg_mean": 0.12300023436546326,
+            "pos_mean": 0.15961112082004547,
+            "precision": 0.1232876712328767,
+            "recall": 0.6428571428571429,
+            "strength": "STABLE_LABEL",
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.4324324324324324,
+            "margin": 0.08072751760482788,
+            "neg_mean": 0.1485004872083664,
+            "pos_mean": 0.22922800481319427,
+            "precision": 0.4,
+            "recall": 0.47058823529411764,
+            "strength": "STRONG_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.19692307692307692
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.5454545454545454,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.8307692307692308,
+        "jaccard": 0.8307692307692308,
+        "macro_f1": 0.26666666666666666,
+        "micro_f1": 0.26666666666666666,
+        "nearest_label_purity": 0.08205128205128205,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.26666666666666666,
+            "margin": 0.050502240657806396,
+            "neg_mean": 0.12418940663337708,
+            "pos_mean": 0.17469164729118347,
+            "precision": 0.20689655172413793,
+            "recall": 0.375,
+            "strength": "STABLE_LABEL",
+            "support": 16
+          }
+        },
+        "sample_f1": 0.8307692307692308
+      },
+      "n": 195,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.005128205128205128,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.0989133089133089,
+        "macro_f1": 0.3029335358927609,
+        "micro_f1": 0.17477477477477477,
+        "sample_f1": 0.1595004995004995
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.03007518796992481,
+        "jaccard": 0.1001297887576083,
+        "macro_f1": 0.2233436888659714,
+        "micro_f1": 0.15232133541992696,
+        "nearest_label_purity": 0.22180451127819548,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.0,
+            "margin": 0.0944242998957634,
+            "neg_mean": 0.09173601120710373,
+            "pos_mean": 0.18616031110286713,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.1079913606911447,
+            "margin": -0.03588190674781799,
+            "neg_mean": 0.12414982914924622,
+            "pos_mean": 0.08826792240142822,
+            "precision": 0.05841121495327103,
+            "recall": 0.7142857142857143,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.1777777777777778,
+            "margin": 0.07228276133537292,
+            "neg_mean": 0.12020412087440491,
+            "pos_mean": 0.19248688220977783,
+            "precision": 0.8,
+            "recall": 0.1,
+            "strength": "STABLE_LABEL",
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.022271714922048998,
+            "margin": 0.32029516994953156,
+            "neg_mean": 0.12434946000576019,
+            "pos_mean": 0.44464462995529175,
+            "precision": 0.01126126126126126,
+            "recall": 1.0,
+            "strength": "LOW_SUPPORT",
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.20588235294117646,
+            "margin": 0.06660999357700348,
+            "neg_mean": 0.11447712779045105,
+            "pos_mean": 0.18108712136745453,
+            "precision": 0.3333333333333333,
+            "recall": 0.14893617021276595,
+            "strength": "STABLE_LABEL",
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.38095238095238093,
+            "margin": 0.1366027519106865,
+            "neg_mean": 0.11268452554941177,
+            "pos_mean": 0.24928727746009827,
+            "precision": 0.5714285714285714,
+            "recall": 0.2857142857142857,
+            "strength": "STRONG_LABEL",
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.1590909090909091,
+            "margin": 0.0330716073513031,
+            "neg_mean": 0.13401591777801514,
+            "pos_mean": 0.16708752512931824,
+            "precision": 0.14893617021276595,
+            "recall": 0.17073170731707318,
+            "strength": "STABLE_LABEL",
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.12803532008830024,
+            "margin": 0.030757524073123932,
+            "neg_mean": 0.10439061373472214,
+            "pos_mean": 0.13514813780784607,
+            "precision": 0.06971153846153846,
+            "recall": 0.7837837837837838,
+            "strength": "WEAK_LABEL",
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.42477876106194695,
+            "margin": 0.09656405448913574,
+            "neg_mean": 0.13285990059375763,
+            "pos_mean": 0.22942395508289337,
+            "precision": 0.7058823529411765,
+            "recall": 0.3037974683544304,
+            "strength": "STRONG_LABEL",
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.5833333333333334,
+            "margin": 0.18575530499219894,
+            "neg_mean": 0.11113394051790237,
+            "pos_mean": 0.2968892455101013,
+            "precision": 0.6774193548387096,
+            "recall": 0.5121951219512195,
+            "strength": "STRONG_LABEL",
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.2666666666666667,
+            "margin": 0.05356977880001068,
+            "neg_mean": 0.12136372923851013,
+            "pos_mean": 0.1749335080385208,
+            "precision": 0.18823529411764706,
+            "recall": 0.45714285714285713,
+            "strength": "STABLE_LABEL",
+            "support": 35
+          }
+        },
+        "sample_f1": 0.13596342045590168
+      },
+      "function": {
+        "exact_match": 0.09022556390977443,
+        "jaccard": 0.13721804511278196,
+        "macro_f1": 0.17773212335712335,
+        "micro_f1": 0.15102481121898598,
+        "nearest_label_purity": 0.09774436090225563,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.06818181818181818,
+            "margin": -0.02891021966934204,
+            "neg_mean": 0.1564999520778656,
+            "pos_mean": 0.12758973240852356,
+            "precision": 0.05263157894736842,
+            "recall": 0.0967741935483871,
+            "strength": "WEAK_LABEL",
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.11969111969111969,
+            "margin": 0.026325061917304993,
+            "neg_mean": 0.1410120129585266,
+            "pos_mean": 0.1673370748758316,
+            "precision": 0.0640495867768595,
+            "recall": 0.9117647058823529,
+            "strength": "WEAK_LABEL",
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.1688888888888889,
+            "margin": 0.024581439793109894,
+            "neg_mean": 0.12339719384908676,
+            "pos_mean": 0.14797863364219666,
+            "precision": 0.10160427807486631,
+            "recall": 0.5,
+            "strength": "STABLE_LABEL",
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.3541666666666667,
+            "margin": 0.07216846942901611,
+            "neg_mean": 0.14693152904510498,
+            "pos_mean": 0.2190999984741211,
+            "precision": 0.3148148148148148,
+            "recall": 0.40476190476190477,
+            "strength": "STRONG_LABEL",
+            "support": 42
+          }
+        },
+        "sample_f1": 0.15469924812030075
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.5833333333333334,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.7819548872180451,
+        "jaccard": 0.7819548872180451,
+        "macro_f1": 0.12121212121212122,
+        "micro_f1": 0.12121212121212122,
+        "nearest_label_purity": 0.08082706766917293,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.1212121212121212,
+            "margin": 0.0058063119649887085,
+            "neg_mean": 0.1275363266468048,
+            "pos_mean": 0.13334263861179352,
+            "precision": 0.0898876404494382,
+            "recall": 0.18604651162790697,
+            "strength": "WEAK_LABEL",
+            "support": 43
+          }
+        },
+        "sample_f1": 0.7819548872180451
+      },
+      "n": 532,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.018796992481203006,
+      "system": {
+        "exact_match": 0.0037593984962406013,
+        "jaccard": 0.08232058772472307,
+        "macro_f1": 0.20555757451039375,
+        "micro_f1": 0.15053763440860216,
+        "sample_f1": 0.1310945946284292
+      }
+    },
+    "label_variant": "short_definition",
+    "model_id": "sentence-transformers/all-mpnet-base-v2",
+    "thresholds": {
+      "domain": [
+        0.3,
+        0.05,
+        0.3,
+        0.05,
+        0.05,
+        0.35,
+        0.2,
+        0.35,
+        0.25,
+        0.35,
+        0.3
+      ],
+      "function": [
+        0.05,
+        0.25,
+        0.25,
+        0.15
+      ],
+      "mediation": [
+        0.2
+      ]
+    }
+  },
+  "ZERO_SHOT__B_BGE_BASE__full": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.08437728937728937,
+        "macro_f1": 0.22612017643823298,
+        "micro_f1": 0.15083798882681565,
+        "nearest_label_purity": 0.19487179487179487,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.5714285714285715,
+            "margin": 0.11219942569732666,
+            "neg_mean": 0.5564032196998596,
+            "pos_mean": 0.6686026453971863,
+            "precision": 0.5,
+            "recall": 0.6666666666666666,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.11267605633802817,
+            "margin": 0.0050476789474487305,
+            "neg_mean": 0.5737370848655701,
+            "pos_mean": 0.5787847638130188,
+            "precision": 0.06557377049180328,
+            "recall": 0.4,
+            "strength": "WEAK_LABEL",
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.27586206896551724,
+            "margin": 0.05712944269180298,
+            "neg_mean": 0.5810622572898865,
+            "pos_mean": 0.6381916999816895,
+            "precision": 0.19047619047619047,
+            "recall": 0.5,
+            "strength": "STABLE_LABEL",
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "margin": -0.572462797164917,
+            "neg_mean": 0.572462797164917,
+            "pos_mean": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "LOW_SUPPORT",
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.15384615384615385,
+            "margin": 0.01157146692276001,
+            "neg_mean": 0.5673755407333374,
+            "pos_mean": 0.5789470076560974,
+            "precision": 0.09433962264150944,
+            "recall": 0.4166666666666667,
+            "strength": "STABLE_LABEL",
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.19999999999999998,
+            "margin": 0.015132248401641846,
+            "neg_mean": 0.5672850608825684,
+            "pos_mean": 0.5824173092842102,
+            "precision": 0.2222222222222222,
+            "recall": 0.18181818181818182,
+            "strength": "STABLE_LABEL",
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.17647058823529413,
+            "margin": 0.019780218601226807,
+            "neg_mean": 0.5869550704956055,
+            "pos_mean": 0.6067352890968323,
+            "precision": 0.10112359550561797,
+            "recall": 0.6923076923076923,
+            "strength": "STABLE_LABEL",
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.12560386473429952,
+            "margin": -0.013436198234558105,
+            "neg_mean": 0.5755764245986938,
+            "pos_mean": 0.5621402263641357,
+            "precision": 0.06701030927835051,
+            "recall": 1.0,
+            "strength": "WEAK_LABEL",
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.273972602739726,
+            "margin": 0.020553231239318848,
+            "neg_mean": 0.5559366345405579,
+            "pos_mean": 0.5764898657798767,
+            "precision": 0.17094017094017094,
+            "recall": 0.6896551724137931,
+            "strength": "STABLE_LABEL",
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.43478260869565216,
+            "margin": 0.04410433769226074,
+            "neg_mean": 0.568485677242279,
+            "pos_mean": 0.6125900149345398,
+            "precision": 0.5555555555555556,
+            "recall": 0.35714285714285715,
+            "strength": "STRONG_LABEL",
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.16267942583732056,
+            "margin": -0.0048392415046691895,
+            "neg_mean": 0.5686874389648438,
+            "pos_mean": 0.5638481974601746,
+            "precision": 0.08854166666666667,
+            "recall": 1.0,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.13552373552373553
+      },
+      "function": {
+        "exact_match": 0.005128205128205128,
+        "jaccard": 0.10811965811965811,
+        "macro_f1": 0.204548793341187,
+        "micro_f1": 0.18629173989455183,
+        "nearest_label_purity": 0.14358974358974358,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.16346153846153844,
+            "margin": -0.014425337314605713,
+            "neg_mean": 0.5659534335136414,
+            "pos_mean": 0.5515280961990356,
+            "precision": 0.08900523560209424,
+            "recall": 1.0,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.16901408450704225,
+            "margin": -0.012559771537780762,
+            "neg_mean": 0.5619628429412842,
+            "pos_mean": 0.5494030714035034,
+            "precision": 0.09230769230769231,
+            "recall": 1.0,
+            "strength": "STABLE_LABEL",
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.23880597014925373,
+            "margin": 0.036733269691467285,
+            "neg_mean": 0.5587735772132874,
+            "pos_mean": 0.5955068469047546,
+            "precision": 0.1509433962264151,
+            "recall": 0.5714285714285714,
+            "strength": "STABLE_LABEL",
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.2469135802469136,
+            "margin": 0.026878952980041504,
+            "neg_mean": 0.5691503286361694,
+            "pos_mean": 0.5960292816162109,
+            "precision": 0.15625,
+            "recall": 0.5882352941176471,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.15128205128205127
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.43478260869565216,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.7948717948717948,
+        "jaccard": 0.7948717948717948,
+        "macro_f1": 0.23076923076923078,
+        "micro_f1": 0.23076923076923078,
+        "nearest_label_purity": 0.08205128205128205,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.23076923076923078,
+            "margin": 0.028276383876800537,
+            "neg_mean": 0.5522682666778564,
+            "pos_mean": 0.580544650554657,
+            "precision": 0.16666666666666666,
+            "recall": 0.375,
+            "strength": "STABLE_LABEL",
+            "support": 16
+          }
+        },
+        "sample_f1": 0.7948717948717948
+      },
+      "n": 195,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.0,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.09634056114825347,
+        "macro_f1": 0.22101789655965887,
+        "micro_f1": 0.16519174041297935,
+        "sample_f1": 0.16665124719423363
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.07794716770280681,
+        "macro_f1": 0.15319552196441463,
+        "micro_f1": 0.13776559287183002,
+        "nearest_label_purity": 0.22180451127819548,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.1904761904761905,
+            "margin": 0.09556478261947632,
+            "neg_mean": 0.5575188994407654,
+            "pos_mean": 0.6530836820602417,
+            "precision": 0.1111111111111111,
+            "recall": 0.6666666666666666,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.08333333333333333,
+            "margin": -0.004438638687133789,
+            "neg_mean": 0.57691890001297,
+            "pos_mean": 0.5724802613258362,
+            "precision": 0.050955414012738856,
+            "recall": 0.22857142857142856,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.09638554216867469,
+            "margin": -0.004485607147216797,
+            "neg_mean": 0.5832169651985168,
+            "pos_mean": 0.5787313580513,
+            "precision": 0.09302325581395349,
+            "recall": 0.1,
+            "strength": "WEAK_LABEL",
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.018621973929236497,
+            "margin": 0.08714878559112549,
+            "neg_mean": 0.5716171264648438,
+            "pos_mean": 0.6587659120559692,
+            "precision": 0.009398496240601503,
+            "recall": 1.0,
+            "strength": "LOW_SUPPORT",
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.22950819672131148,
+            "margin": 0.024906694889068604,
+            "neg_mean": 0.5655619502067566,
+            "pos_mean": 0.5904686450958252,
+            "precision": 0.15441176470588236,
+            "recall": 0.44680851063829785,
+            "strength": "STABLE_LABEL",
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.15384615384615383,
+            "margin": 0.03728383779525757,
+            "neg_mean": 0.5642091035842896,
+            "pos_mean": 0.6014929413795471,
+            "precision": 0.16666666666666666,
+            "recall": 0.14285714285714285,
+            "strength": "STABLE_LABEL",
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.13438735177865613,
+            "margin": 0.010426223278045654,
+            "neg_mean": 0.5853747725486755,
+            "pos_mean": 0.5958009958267212,
+            "precision": 0.08018867924528301,
+            "recall": 0.4146341463414634,
+            "strength": "WEAK_LABEL",
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.13051146384479717,
+            "margin": 0.0077762603759765625,
+            "neg_mean": 0.573411226272583,
+            "pos_mean": 0.5811874866485596,
+            "precision": 0.06981132075471698,
+            "recall": 1.0,
+            "strength": "WEAK_LABEL",
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.30456852791878175,
+            "margin": 0.024260640144348145,
+            "neg_mean": 0.5554794669151306,
+            "pos_mean": 0.5797401070594788,
+            "precision": 0.19047619047619047,
+            "recall": 0.759493670886076,
+            "strength": "STABLE_LABEL",
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.21917808219178084,
+            "margin": 0.03274941444396973,
+            "neg_mean": 0.5700296759605408,
+            "pos_mean": 0.6027790904045105,
+            "precision": 0.25,
+            "recall": 0.1951219512195122,
+            "strength": "STABLE_LABEL",
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.12433392539964475,
+            "margin": -0.0050522685050964355,
+            "neg_mean": 0.5698202848434448,
+            "pos_mean": 0.5647680163383484,
+            "precision": 0.06628787878787878,
+            "recall": 1.0,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          }
+        },
+        "sample_f1": 0.12591679414987686
+      },
+      "function": {
+        "exact_match": 0.0018796992481203006,
+        "jaccard": 0.07581453634085214,
+        "macro_f1": 0.17935246144184103,
+        "micro_f1": 0.14354727398205658,
+        "nearest_label_purity": 0.12781954887218044,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.10830324909747292,
+            "margin": -0.010833740234375,
+            "neg_mean": 0.5629922747612,
+            "pos_mean": 0.552158534526825,
+            "precision": 0.05736137667304015,
+            "recall": 0.967741935483871,
+            "strength": "WEAK_LABEL",
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.12014134275618375,
+            "margin": 0.005834221839904785,
+            "neg_mean": 0.5578258633613586,
+            "pos_mean": 0.5636600852012634,
+            "precision": 0.06390977443609022,
+            "recall": 1.0,
+            "strength": "WEAK_LABEL",
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.2518518518518518,
+            "margin": 0.021549344062805176,
+            "neg_mean": 0.5568854808807373,
+            "pos_mean": 0.5784348249435425,
+            "precision": 0.17525773195876287,
+            "recall": 0.4473684210526316,
+            "strength": "STABLE_LABEL",
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.2371134020618557,
+            "margin": 0.02941662073135376,
+            "neg_mean": 0.5669945478439331,
+            "pos_mean": 0.5964111685752869,
+            "precision": 0.1513157894736842,
+            "recall": 0.5476190476190477,
+            "strength": "STABLE_LABEL",
+            "support": 42
+          }
+        },
+        "sample_f1": 0.10726817042606515
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.2191780821917808,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.8233082706766918,
+        "jaccard": 0.8233082706766918,
+        "macro_f1": 0.27692307692307694,
+        "micro_f1": 0.27692307692307694,
+        "nearest_label_purity": 0.08082706766917293,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.2769230769230769,
+            "margin": 0.03154420852661133,
+            "neg_mean": 0.5521272420883179,
+            "pos_mean": 0.5836714506149292,
+            "precision": 0.20689655172413793,
+            "recall": 0.4186046511627907,
+            "strength": "STABLE_LABEL",
+            "support": 43
+          }
+        },
+        "sample_f1": 0.8233082706766918
+      },
+      "n": 532,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.0,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.08112004432493154,
+        "macro_f1": 0.16746772901868762,
+        "micro_f1": 0.14365132310429174,
+        "sample_f1": 0.14046699314003602
+      }
+    },
+    "label_variant": "full_boundary_contract",
+    "model_id": "BAAI/bge-base-en-v1.5",
+    "thresholds": {
+      "domain": [
+        0.6,
+        0.05,
+        0.65,
+        0.45,
+        0.6,
+        0.65,
+        0.45,
+        0.65,
+        0.6,
+        0.55,
+        0.65
+      ],
+      "function": [
+        0.05,
+        0.6,
+        0.45,
+        0.6
+      ],
+      "mediation": [
+        0.6
+      ]
+    }
+  },
+  "ZERO_SHOT__B_BGE_BASE__short": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.07742368742368742,
+        "macro_f1": 0.2903994962919243,
+        "micro_f1": 0.14285714285714285,
+        "nearest_label_purity": 0.18974358974358974,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.8,
+            "margin": 0.11778289079666138,
+            "neg_mean": 0.5250320434570312,
+            "pos_mean": 0.6428149342536926,
+            "precision": 1.0,
+            "recall": 0.6666666666666666,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.10778443113772455,
+            "margin": 0.0015324950218200684,
+            "neg_mean": 0.5380234122276306,
+            "pos_mean": 0.5395559072494507,
+            "precision": 0.05732484076433121,
+            "recall": 0.9,
+            "strength": "WEAK_LABEL",
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.5333333333333333,
+            "margin": 0.0780029296875,
+            "neg_mean": 0.5506260395050049,
+            "pos_mean": 0.6286289691925049,
+            "precision": 0.5714285714285714,
+            "recall": 0.5,
+            "strength": "STRONG_LABEL",
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "margin": -0.554436445236206,
+            "neg_mean": 0.554436445236206,
+            "pos_mean": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "LOW_SUPPORT",
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.2702702702702703,
+            "margin": 0.025241494178771973,
+            "neg_mean": 0.5363146662712097,
+            "pos_mean": 0.5615561604499817,
+            "precision": 0.2,
+            "recall": 0.4166666666666667,
+            "strength": "STABLE_LABEL",
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.18181818181818182,
+            "margin": 0.031345248222351074,
+            "neg_mean": 0.5239425897598267,
+            "pos_mean": 0.5552878379821777,
+            "precision": 0.18181818181818182,
+            "recall": 0.18181818181818182,
+            "strength": "STABLE_LABEL",
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.2222222222222222,
+            "margin": 0.021393120288848877,
+            "neg_mean": 0.557461142539978,
+            "pos_mean": 0.5788542628288269,
+            "precision": 0.14634146341463414,
+            "recall": 0.46153846153846156,
+            "strength": "STABLE_LABEL",
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.12682926829268293,
+            "margin": -0.012552261352539062,
+            "neg_mean": 0.5570253133773804,
+            "pos_mean": 0.5444730520248413,
+            "precision": 0.06770833333333333,
+            "recall": 1.0,
+            "strength": "WEAK_LABEL",
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.3076923076923077,
+            "margin": 0.030581891536712646,
+            "neg_mean": 0.5377833247184753,
+            "pos_mean": 0.568365216255188,
+            "precision": 0.34782608695652173,
+            "recall": 0.27586206896551724,
+            "strength": "STABLE_LABEL",
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.4444444444444445,
+            "margin": 0.06196647882461548,
+            "neg_mean": 0.5453611016273499,
+            "pos_mean": 0.6073275804519653,
+            "precision": 1.0,
+            "recall": 0.2857142857142857,
+            "strength": "STRONG_LABEL",
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.2,
+            "margin": 0.003772139549255371,
+            "neg_mean": 0.5185215473175049,
+            "pos_mean": 0.5222936868667603,
+            "precision": 0.1320754716981132,
+            "recall": 0.4117647058823529,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.11932030932030933
+      },
+      "function": {
+        "exact_match": 0.005128205128205128,
+        "jaccard": 0.11025641025641025,
+        "macro_f1": 0.22337336805866045,
+        "micro_f1": 0.1889483065953654,
+        "nearest_label_purity": 0.14871794871794872,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.16037735849056603,
+            "margin": -0.008247673511505127,
+            "neg_mean": 0.5334584712982178,
+            "pos_mean": 0.5252107977867126,
+            "precision": 0.08717948717948718,
+            "recall": 1.0,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.17061611374407584,
+            "margin": -0.011092960834503174,
+            "neg_mean": 0.5370264649391174,
+            "pos_mean": 0.5259335041046143,
+            "precision": 0.09326424870466321,
+            "recall": 1.0,
+            "strength": "STABLE_LABEL",
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.22916666666666669,
+            "margin": 0.04592180252075195,
+            "neg_mean": 0.530322253704071,
+            "pos_mean": 0.576244056224823,
+            "precision": 0.13414634146341464,
+            "recall": 0.7857142857142857,
+            "strength": "STABLE_LABEL",
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.3333333333333333,
+            "margin": 0.04117769002914429,
+            "neg_mean": 0.5436400771141052,
+            "pos_mean": 0.5848177671432495,
+            "precision": 0.28,
+            "recall": 0.4117647058823529,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.15401709401709401
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.4444444444444444,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.6717948717948717,
+        "jaccard": 0.6717948717948717,
+        "macro_f1": 0.21951219512195122,
+        "micro_f1": 0.21951219512195122,
+        "nearest_label_purity": 0.08205128205128205,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.2195121951219512,
+            "margin": 0.028621196746826172,
+            "neg_mean": 0.5301591157913208,
+            "pos_mean": 0.558780312538147,
+            "precision": 0.13636363636363635,
+            "recall": 0.5625,
+            "strength": "STABLE_LABEL",
+            "support": 16
+          }
+        },
+        "sample_f1": 0.6717948717948717
+      },
+      "n": 195,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.0,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.0942690500382808,
+        "macro_f1": 0.269212507910485,
+        "micro_f1": 0.16453135536075522,
+        "sample_f1": 0.16075680143553447
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.0,
+        "jaccard": 0.0773265007757489,
+        "macro_f1": 0.26396400628512157,
+        "micro_f1": 0.14066496163682865,
+        "nearest_label_purity": 0.22180451127819548,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.8,
+            "margin": 0.1132088303565979,
+            "neg_mean": 0.5250897407531738,
+            "pos_mean": 0.6382985711097717,
+            "precision": 1.0,
+            "recall": 0.6666666666666666,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.11836734693877551,
+            "margin": -0.004345297813415527,
+            "neg_mean": 0.5429424047470093,
+            "pos_mean": 0.5385971069335938,
+            "precision": 0.06373626373626373,
+            "recall": 0.8285714285714286,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.15384615384615383,
+            "margin": 0.00432199239730835,
+            "neg_mean": 0.5523049235343933,
+            "pos_mean": 0.5566269159317017,
+            "precision": 0.3333333333333333,
+            "recall": 0.1,
+            "strength": "STABLE_LABEL",
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.018621973929236497,
+            "margin": 0.11606967449188232,
+            "neg_mean": 0.5526864528656006,
+            "pos_mean": 0.6687561273574829,
+            "precision": 0.009398496240601503,
+            "recall": 1.0,
+            "strength": "LOW_SUPPORT",
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.2352941176470588,
+            "margin": 0.03596007823944092,
+            "neg_mean": 0.5346391797065735,
+            "pos_mean": 0.5705992579460144,
+            "precision": 0.21818181818181817,
+            "recall": 0.2553191489361702,
+            "strength": "STABLE_LABEL",
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.2909090909090909,
+            "margin": 0.05544334650039673,
+            "neg_mean": 0.5207694172859192,
+            "pos_mean": 0.5762127637863159,
+            "precision": 0.2962962962962963,
+            "recall": 0.2857142857142857,
+            "strength": "STABLE_LABEL",
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.16666666666666666,
+            "margin": 0.014462888240814209,
+            "neg_mean": 0.5547372102737427,
+            "pos_mean": 0.5692000985145569,
+            "precision": 0.11650485436893204,
+            "recall": 0.2926829268292683,
+            "strength": "STABLE_LABEL",
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.12811387900355875,
+            "margin": 0.006540656089782715,
+            "neg_mean": 0.5555340051651001,
+            "pos_mean": 0.5620746612548828,
+            "precision": 0.06857142857142857,
+            "recall": 0.972972972972973,
+            "strength": "WEAK_LABEL",
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.37086092715231783,
+            "margin": 0.040827810764312744,
+            "neg_mean": 0.5372186303138733,
+            "pos_mean": 0.578046441078186,
+            "precision": 0.3888888888888889,
+            "recall": 0.35443037974683544,
+            "strength": "STRONG_LABEL",
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.46874999999999994,
+            "margin": 0.05897802114486694,
+            "neg_mean": 0.5478801727294922,
+            "pos_mean": 0.6068581938743591,
+            "precision": 0.6521739130434783,
+            "recall": 0.36585365853658536,
+            "strength": "STRONG_LABEL",
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.15217391304347827,
+            "margin": 0.008054971694946289,
+            "neg_mean": 0.5200248956680298,
+            "pos_mean": 0.5280798673629761,
+            "precision": 0.09395973154362416,
+            "recall": 0.4,
+            "strength": "STABLE_LABEL",
+            "support": 35
+          }
+        },
+        "sample_f1": 0.11905806182121971
+      },
+      "function": {
+        "exact_match": 0.0,
+        "jaccard": 0.0769110275689223,
+        "macro_f1": 0.1903153963300417,
+        "micro_f1": 0.1439342015078821,
+        "nearest_label_purity": 0.13909774436090225,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.11012433392539964,
+            "margin": -0.009739458560943604,
+            "neg_mean": 0.5325177907943726,
+            "pos_mean": 0.522778332233429,
+            "precision": 0.05827067669172932,
+            "recall": 1.0,
+            "strength": "WEAK_LABEL",
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.1140819964349376,
+            "margin": 0.008471548557281494,
+            "neg_mean": 0.5333516597747803,
+            "pos_mean": 0.5418232083320618,
+            "precision": 0.06072106261859583,
+            "recall": 0.9411764705882353,
+            "strength": "WEAK_LABEL",
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.2192982456140351,
+            "margin": 0.031873226165771484,
+            "neg_mean": 0.5285492539405823,
+            "pos_mean": 0.5604224801063538,
+            "precision": 0.13157894736842105,
+            "recall": 0.6578947368421053,
+            "strength": "STABLE_LABEL",
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.3177570093457944,
+            "margin": 0.04349923133850098,
+            "neg_mean": 0.5424156785011292,
+            "pos_mean": 0.5859149098396301,
+            "precision": 0.26153846153846155,
+            "recall": 0.40476190476190477,
+            "strength": "STABLE_LABEL",
+            "support": 42
+          }
+        },
+        "sample_f1": 0.1093984962406015
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.46875,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.6240601503759399,
+        "jaccard": 0.6240601503759399,
+        "macro_f1": 0.21875,
+        "micro_f1": 0.21875,
+        "nearest_label_purity": 0.08082706766917293,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.21875000000000003,
+            "margin": 0.02595078945159912,
+            "neg_mean": 0.5328694581985474,
+            "pos_mean": 0.5588202476501465,
+            "precision": 0.13145539906103287,
+            "recall": 0.6511627906976745,
+            "strength": "STABLE_LABEL",
+            "support": 43
+          }
+        },
+        "sample_f1": 0.6240601503759399
+      },
+      "n": 532,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.0018796992481203006,
+      "system": {
+        "exact_match": 0.0,
+        "jaccard": 0.08171338895023104,
+        "macro_f1": 0.2427259784035315,
+        "micro_f1": 0.14676188131002216,
+        "sample_f1": 0.1396300545736636
+      }
+    },
+    "label_variant": "short_definition",
+    "model_id": "BAAI/bge-base-en-v1.5",
+    "thresholds": {
+      "domain": [
+        0.6,
+        0.05,
+        0.65,
+        0.45,
+        0.5,
+        0.65,
+        0.55,
+        0.6,
+        0.6,
+        0.6,
+        0.65
+      ],
+      "function": [
+        0.4,
+        0.6,
+        0.05,
+        0.55
+      ],
+      "mediation": [
+        0.55
+      ]
+    }
+  },
+  "ZERO_SHOT__C_MSMARCO__full": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.07179487179487179,
+        "jaccard": 0.14647741147741147,
+        "macro_f1": 0.20992896856262167,
+        "micro_f1": 0.15501905972045743,
+        "nearest_label_purity": 0.16923076923076924,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.5,
+            "margin": 0.16260289773344994,
+            "neg_mean": 0.059768009930849075,
+            "pos_mean": 0.222370907664299,
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.10344827586206896,
+            "margin": -0.01645447313785553,
+            "neg_mean": 0.08532431721687317,
+            "pos_mean": 0.06886984407901764,
+            "precision": 0.0625,
+            "recall": 0.3,
+            "strength": "WEAK_LABEL",
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.2222222222222222,
+            "margin": 0.10350192338228226,
+            "neg_mean": 0.08671916276216507,
+            "pos_mean": 0.19022108614444733,
+            "precision": 1.0,
+            "recall": 0.125,
+            "strength": "STABLE_LABEL",
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "margin": -0.08474454283714294,
+            "neg_mean": 0.08474454283714294,
+            "pos_mean": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "LOW_SUPPORT",
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.2105263157894737,
+            "margin": 0.05355088412761688,
+            "neg_mean": 0.08649736642837524,
+            "pos_mean": 0.14004825055599213,
+            "precision": 0.2857142857142857,
+            "recall": 0.16666666666666666,
+            "strength": "STABLE_LABEL",
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.2631578947368421,
+            "margin": 0.08672551810741425,
+            "neg_mean": 0.08389979600906372,
+            "pos_mean": 0.17062531411647797,
+            "precision": 0.18518518518518517,
+            "recall": 0.45454545454545453,
+            "strength": "STABLE_LABEL",
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.16666666666666666,
+            "margin": 0.049215808510780334,
+            "neg_mean": 0.07510309666395187,
+            "pos_mean": 0.12431890517473221,
+            "precision": 0.11428571428571428,
+            "recall": 0.3076923076923077,
+            "strength": "STABLE_LABEL",
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.09999999999999999,
+            "margin": -0.027168020606040955,
+            "neg_mean": 0.08911564946174622,
+            "pos_mean": 0.06194762885570526,
+            "precision": 0.05511811023622047,
+            "recall": 0.5384615384615384,
+            "strength": "WEAK_LABEL",
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.27380952380952384,
+            "margin": 0.023657388985157013,
+            "neg_mean": 0.09214755147695541,
+            "pos_mean": 0.11580494046211243,
+            "precision": 0.16546762589928057,
+            "recall": 0.7931034482758621,
+            "strength": "STABLE_LABEL",
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.3333333333333333,
+            "margin": 0.06027373671531677,
+            "neg_mean": 0.08116757869720459,
+            "pos_mean": 0.14144131541252136,
+            "precision": 0.3125,
+            "recall": 0.35714285714285715,
+            "strength": "STABLE_LABEL",
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.1360544217687075,
+            "margin": -0.01571839302778244,
+            "neg_mean": 0.08772081881761551,
+            "pos_mean": 0.07200242578983307,
+            "precision": 0.07692307692307693,
+            "recall": 0.5882352941176471,
+            "strength": "WEAK_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.1870940170940171
+      },
+      "function": {
+        "exact_match": 0.4153846153846154,
+        "jaccard": 0.4354700854700855,
+        "macro_f1": 0.20520555750156297,
+        "micro_f1": 0.2079207920792079,
+        "nearest_label_purity": 0.14358974358974358,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.20689655172413793,
+            "margin": 0.006168581545352936,
+            "neg_mean": 0.0714053064584732,
+            "pos_mean": 0.07757388800382614,
+            "precision": 0.25,
+            "recall": 0.17647058823529413,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.21428571428571427,
+            "margin": 0.0024738460779190063,
+            "neg_mean": 0.06636162847280502,
+            "pos_mean": 0.06883547455072403,
+            "precision": 0.3,
+            "recall": 0.16666666666666666,
+            "strength": "STABLE_LABEL",
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.18181818181818182,
+            "margin": 0.04256248474121094,
+            "neg_mean": 0.057259880006313324,
+            "pos_mean": 0.09982236474752426,
+            "precision": 0.13333333333333333,
+            "recall": 0.2857142857142857,
+            "strength": "STABLE_LABEL",
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.21782178217821782,
+            "margin": 0.038144566118717194,
+            "neg_mean": 0.0780160054564476,
+            "pos_mean": 0.1161605715751648,
+            "precision": 0.13095238095238096,
+            "recall": 0.6470588235294118,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.4437606837606837
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.3333333333333333,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.8461538461538461,
+        "jaccard": 0.8461538461538461,
+        "macro_f1": 0.375,
+        "micro_f1": 0.375,
+        "nearest_label_purity": 0.08205128205128205,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.375,
+            "margin": 0.0868220143020153,
+            "neg_mean": 0.04580223932862282,
+            "pos_mean": 0.13262425363063812,
+            "precision": 0.28125,
+            "recall": 0.5625,
+            "strength": "STRONG_LABEL",
+            "support": 16
+          }
+        },
+        "sample_f1": 0.8461538461538461
+      },
+      "n": 195,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.0,
+      "system": {
+        "exact_match": 0.005128205128205128,
+        "jaccard": 0.09492174492174492,
+        "macro_f1": 0.21906505526219314,
+        "micro_f1": 0.1755062680810029,
+        "sample_f1": 0.14824064824064823
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.06203007518796992,
+        "jaccard": 0.1275950292397661,
+        "macro_f1": 0.1258454584907596,
+        "micro_f1": 0.1401151631477927,
+        "nearest_label_purity": 0.19736842105263158,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.0,
+            "margin": 0.11893093585968018,
+            "neg_mean": 0.05610768496990204,
+            "pos_mean": 0.17503862082958221,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.12030075187969923,
+            "margin": 0.012418016791343689,
+            "neg_mean": 0.0792490541934967,
+            "pos_mean": 0.0916670709848404,
+            "precision": 0.08163265306122448,
+            "recall": 0.22857142857142856,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.0,
+            "margin": 0.032920144498348236,
+            "neg_mean": 0.0746234804391861,
+            "pos_mean": 0.10754362493753433,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "DEAD_LABEL",
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.03076923076923077,
+            "margin": 0.17308245599269867,
+            "neg_mean": 0.07488375902175903,
+            "pos_mean": 0.2479662150144577,
+            "precision": 0.015625,
+            "recall": 1.0,
+            "strength": "LOW_SUPPORT",
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.1967213114754098,
+            "margin": 0.04805554449558258,
+            "neg_mean": 0.07880693674087524,
+            "pos_mean": 0.12686248123645782,
+            "precision": 0.42857142857142855,
+            "recall": 0.1276595744680851,
+            "strength": "STABLE_LABEL",
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.22727272727272724,
+            "margin": 0.08246336877346039,
+            "neg_mean": 0.07760804891586304,
+            "pos_mean": 0.16007141768932343,
+            "precision": 0.16666666666666666,
+            "recall": 0.35714285714285715,
+            "strength": "STABLE_LABEL",
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.2105263157894737,
+            "margin": 0.04339023679494858,
+            "neg_mean": 0.06660345196723938,
+            "pos_mean": 0.10999368876218796,
+            "precision": 0.15217391304347827,
+            "recall": 0.34146341463414637,
+            "strength": "STABLE_LABEL",
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.11398963730569948,
+            "margin": -0.0018633529543876648,
+            "neg_mean": 0.07984684407711029,
+            "pos_mean": 0.07798349112272263,
+            "precision": 0.06303724928366762,
+            "recall": 0.5945945945945946,
+            "strength": "WEAK_LABEL",
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.27111111111111114,
+            "margin": 0.03685130178928375,
+            "neg_mean": 0.08603940159082413,
+            "pos_mean": 0.12289070338010788,
+            "precision": 0.16442048517520216,
+            "recall": 0.7721518987341772,
+            "strength": "STABLE_LABEL",
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.13953488372093023,
+            "margin": 0.02882198989391327,
+            "neg_mean": 0.08064159750938416,
+            "pos_mean": 0.10946358740329742,
+            "precision": 0.13333333333333333,
+            "recall": 0.14634146341463414,
+            "strength": "WEAK_LABEL",
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.07407407407407406,
+            "margin": -0.037680380046367645,
+            "neg_mean": 0.08472755551338196,
+            "pos_mean": 0.04704717546701431,
+            "precision": 0.04081632653061224,
+            "recall": 0.4,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          }
+        },
+        "sample_f1": 0.16337122568325574
+      },
+      "function": {
+        "exact_match": 0.4906015037593985,
+        "jaccard": 0.5087719298245614,
+        "macro_f1": 0.15025413391162917,
+        "micro_f1": 0.18255578093306288,
+        "nearest_label_purity": 0.11090225563909774,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.03571428571428571,
+            "margin": -0.022465962916612625,
+            "neg_mean": 0.06752918660640717,
+            "pos_mean": 0.04506322368979454,
+            "precision": 0.04,
+            "recall": 0.03225806451612903,
+            "strength": "DEAD_LABEL",
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.17142857142857143,
+            "margin": 0.04532988369464874,
+            "neg_mean": 0.0630481094121933,
+            "pos_mean": 0.10837799310684204,
+            "precision": 0.16666666666666666,
+            "recall": 0.17647058823529413,
+            "strength": "STABLE_LABEL",
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.16806722689075632,
+            "margin": 0.04990169033408165,
+            "neg_mean": 0.052464958280324936,
+            "pos_mean": 0.10236664861440659,
+            "precision": 0.12345679012345678,
+            "recall": 0.2631578947368421,
+            "strength": "STABLE_LABEL",
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.2258064516129032,
+            "margin": 0.06127642095088959,
+            "neg_mean": 0.06788228452205658,
+            "pos_mean": 0.12915870547294617,
+            "precision": 0.13592233009708737,
+            "recall": 0.6666666666666666,
+            "strength": "STABLE_LABEL",
+            "support": 42
+          }
+        },
+        "sample_f1": 0.5156015037593985
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.13953488372093023,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.8289473684210527,
+        "jaccard": 0.8289473684210527,
+        "macro_f1": 0.19469026548672566,
+        "micro_f1": 0.19469026548672566,
+        "nearest_label_purity": 0.08082706766917293,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.19469026548672566,
+            "margin": 0.04360434412956238,
+            "neg_mean": 0.04782973229885101,
+            "pos_mean": 0.09143407642841339,
+            "precision": 0.15714285714285714,
+            "recall": 0.2558139534883721,
+            "strength": "STABLE_LABEL",
+            "support": 43
+          }
+        },
+        "sample_f1": 0.8289473684210527
+      },
+      "n": 532,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.0,
+      "system": {
+        "exact_match": 0.016917293233082706,
+        "jaccard": 0.09107522072747636,
+        "macro_f1": 0.13625042778322488,
+        "micro_f1": 0.15018587360594796,
+        "sample_f1": 0.13508111562622843
+      }
+    },
+    "label_variant": "full_boundary_contract",
+    "model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+    "thresholds": {
+      "domain": [
+        0.25,
+        0.05,
+        0.3,
+        0.05,
+        0.15,
+        0.35,
+        0.05,
+        0.2,
+        0.15,
+        0.05,
+        0.2
+      ],
+      "function": [
+        0.2,
+        0.1,
+        0.2,
+        0.15
+      ],
+      "mediation": [
+        0.15
+      ]
+    }
+  },
+  "ZERO_SHOT__C_MSMARCO__short": {
+    "DEV": {
+      "domain": {
+        "exact_match": 0.12307692307692308,
+        "jaccard": 0.1883190883190883,
+        "macro_f1": 0.20610263183688557,
+        "micro_f1": 0.14967741935483872,
+        "nearest_label_purity": 0.14358974358974358,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.4,
+            "margin": 0.1694561131298542,
+            "neg_mean": 0.03629101440310478,
+            "pos_mean": 0.20574712753295898,
+            "precision": 0.5,
+            "recall": 0.3333333333333333,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.06666666666666667,
+            "margin": -0.036217669025063515,
+            "neg_mean": 0.06400783360004425,
+            "pos_mean": 0.027790164574980736,
+            "precision": 0.03636363636363636,
+            "recall": 0.4,
+            "strength": "WEAK_LABEL",
+            "support": 10
+          },
+          "domain.fashion": {
+            "f1": 0.23076923076923078,
+            "margin": 0.07993277162313461,
+            "neg_mean": 0.06780561059713364,
+            "pos_mean": 0.14773838222026825,
+            "precision": 0.16666666666666666,
+            "recall": 0.375,
+            "strength": "STABLE_LABEL",
+            "support": 8
+          },
+          "domain.gambling": {
+            "f1": 0.0,
+            "margin": -0.07024160772562027,
+            "neg_mean": 0.07024160772562027,
+            "pos_mean": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "strength": "LOW_SUPPORT",
+            "support": 0
+          },
+          "domain.gaming": {
+            "f1": 0.18666666666666668,
+            "margin": 0.0464899018406868,
+            "neg_mean": 0.06250841915607452,
+            "pos_mean": 0.10899832099676132,
+            "precision": 0.1111111111111111,
+            "recall": 0.5833333333333334,
+            "strength": "STABLE_LABEL",
+            "support": 12
+          },
+          "domain.politics": {
+            "f1": 0.25000000000000006,
+            "margin": 0.08309157937765121,
+            "neg_mean": 0.06734868139028549,
+            "pos_mean": 0.1504402607679367,
+            "precision": 0.4,
+            "recall": 0.18181818181818182,
+            "strength": "STABLE_LABEL",
+            "support": 11
+          },
+          "domain.spiritual": {
+            "f1": 0.18181818181818182,
+            "margin": 0.041307903826236725,
+            "neg_mean": 0.06464432924985886,
+            "pos_mean": 0.10595223307609558,
+            "precision": 0.12903225806451613,
+            "recall": 0.3076923076923077,
+            "strength": "STABLE_LABEL",
+            "support": 13
+          },
+          "domain.sports": {
+            "f1": 0.07874015748031496,
+            "margin": -0.03213924914598465,
+            "neg_mean": 0.06715381890535355,
+            "pos_mean": 0.035014569759368896,
+            "precision": 0.043859649122807015,
+            "recall": 0.38461538461538464,
+            "strength": "WEAK_LABEL",
+            "support": 13
+          },
+          "domain.technology": {
+            "f1": 0.31683168316831684,
+            "margin": 0.04251639544963837,
+            "neg_mean": 0.07447239011526108,
+            "pos_mean": 0.11698878556489944,
+            "precision": 0.2222222222222222,
+            "recall": 0.5517241379310345,
+            "strength": "STABLE_LABEL",
+            "support": 29
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.36363636363636365,
+            "margin": 0.06362519413232803,
+            "neg_mean": 0.06528367847204208,
+            "pos_mean": 0.12890887260437012,
+            "precision": 0.5,
+            "recall": 0.2857142857142857,
+            "strength": "STRONG_LABEL",
+            "support": 14
+          },
+          "domain.workplace": {
+            "f1": 0.192,
+            "margin": 0.005311451852321625,
+            "neg_mean": 0.05461428686976433,
+            "pos_mean": 0.05992573872208595,
+            "precision": 0.1111111111111111,
+            "recall": 0.7058823529411765,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.2238054538054538
+      },
+      "function": {
+        "exact_match": 0.3641025641025641,
+        "jaccard": 0.39700854700854704,
+        "macro_f1": 0.2461029711029711,
+        "micro_f1": 0.21621621621621623,
+        "nearest_label_purity": 0.15897435897435896,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.22857142857142856,
+            "margin": 0.020201198756694794,
+            "neg_mean": 0.04970286041498184,
+            "pos_mean": 0.06990405917167664,
+            "precision": 0.2222222222222222,
+            "recall": 0.23529411764705882,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          },
+          "function.evaluative_stance": {
+            "f1": 0.14814814814814814,
+            "margin": -0.0009592771530151367,
+            "neg_mean": 0.04629061743617058,
+            "pos_mean": 0.04533134028315544,
+            "precision": 0.08888888888888889,
+            "recall": 0.4444444444444444,
+            "strength": "WEAK_LABEL",
+            "support": 18
+          },
+          "function.memetic_form": {
+            "f1": 0.30769230769230765,
+            "margin": 0.05482496693730354,
+            "neg_mean": 0.04146089777350426,
+            "pos_mean": 0.0962858647108078,
+            "precision": 0.24,
+            "recall": 0.42857142857142855,
+            "strength": "STABLE_LABEL",
+            "support": 14
+          },
+          "function.relational_intimacy": {
+            "f1": 0.3,
+            "margin": 0.049554698169231415,
+            "neg_mean": 0.05464567244052887,
+            "pos_mean": 0.10420037060976028,
+            "precision": 0.2608695652173913,
+            "recall": 0.35294117647058826,
+            "strength": "STABLE_LABEL",
+            "support": 17
+          }
+        },
+        "sample_f1": 0.4088888888888889
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.36363636363636365,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.8307692307692308,
+        "jaccard": 0.8307692307692308,
+        "macro_f1": 0.37735849056603776,
+        "micro_f1": 0.37735849056603776,
+        "nearest_label_purity": 0.08205128205128205,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.3773584905660377,
+            "margin": 0.07575520128011703,
+            "neg_mean": 0.029342353343963623,
+            "pos_mean": 0.10509755462408066,
+            "precision": 0.2702702702702703,
+            "recall": 0.625,
+            "strength": "STRONG_LABEL",
+            "support": 16
+          }
+        },
+        "sample_f1": 0.8307692307692308
+      },
+      "n": 195,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.010256410256410256,
+      "system": {
+        "exact_match": 0.020512820512820513,
+        "jaccard": 0.10548396048396048,
+        "macro_f1": 0.22680620782397898,
+        "micro_f1": 0.17523809523809525,
+        "sample_f1": 0.1561315892085123
+      }
+    },
+    "REP": {
+      "domain": {
+        "exact_match": 0.09962406015037593,
+        "jaccard": 0.15910535266738274,
+        "macro_f1": 0.1708291813334699,
+        "micro_f1": 0.14836223506743737,
+        "nearest_label_purity": 0.17669172932330826,
+        "per_label": {
+          "domain.crypto": {
+            "f1": 0.3333333333333333,
+            "margin": 0.1575937420129776,
+            "neg_mean": 0.0361635684967041,
+            "pos_mean": 0.1937573105096817,
+            "precision": 0.3333333333333333,
+            "recall": 0.3333333333333333,
+            "strength": "LOW_SUPPORT",
+            "support": 3
+          },
+          "domain.entertainment": {
+            "f1": 0.13538461538461538,
+            "margin": 0.01056027039885521,
+            "neg_mean": 0.059062521904706955,
+            "pos_mean": 0.06962279230356216,
+            "precision": 0.07586206896551724,
+            "recall": 0.6285714285714286,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          },
+          "domain.fashion": {
+            "f1": 0.2142857142857143,
+            "margin": 0.047940950840711594,
+            "neg_mean": 0.05541004613041878,
+            "pos_mean": 0.10335099697113037,
+            "precision": 0.20454545454545456,
+            "recall": 0.225,
+            "strength": "STABLE_LABEL",
+            "support": 40
+          },
+          "domain.gambling": {
+            "f1": 0.03355704697986577,
+            "margin": 0.14149697124958038,
+            "neg_mean": 0.06325174868106842,
+            "pos_mean": 0.2047487199306488,
+            "precision": 0.017064846416382253,
+            "recall": 1.0,
+            "strength": "LOW_SUPPORT",
+            "support": 5
+          },
+          "domain.gaming": {
+            "f1": 0.22110552763819094,
+            "margin": 0.03926514834165573,
+            "neg_mean": 0.05618853121995926,
+            "pos_mean": 0.09545367956161499,
+            "precision": 0.14473684210526316,
+            "recall": 0.46808510638297873,
+            "strength": "STABLE_LABEL",
+            "support": 47
+          },
+          "domain.politics": {
+            "f1": 0.0975609756097561,
+            "margin": 0.07830877974629402,
+            "neg_mean": 0.06207778677344322,
+            "pos_mean": 0.14038656651973724,
+            "precision": 0.15384615384615385,
+            "recall": 0.07142857142857142,
+            "strength": "WEAK_LABEL",
+            "support": 28
+          },
+          "domain.spiritual": {
+            "f1": 0.144,
+            "margin": 0.03425376117229462,
+            "neg_mean": 0.05689358711242676,
+            "pos_mean": 0.09114734828472137,
+            "precision": 0.10714285714285714,
+            "recall": 0.21951219512195122,
+            "strength": "WEAK_LABEL",
+            "support": 41
+          },
+          "domain.sports": {
+            "f1": 0.1033434650455927,
+            "margin": -0.017223134636878967,
+            "neg_mean": 0.061636749655008316,
+            "pos_mean": 0.04441361501812935,
+            "precision": 0.05821917808219178,
+            "recall": 0.4594594594594595,
+            "strength": "WEAK_LABEL",
+            "support": 37
+          },
+          "domain.technology": {
+            "f1": 0.3405797101449275,
+            "margin": 0.05147448927164078,
+            "neg_mean": 0.06969604641199112,
+            "pos_mean": 0.1211705356836319,
+            "precision": 0.23857868020304568,
+            "recall": 0.5949367088607594,
+            "strength": "STABLE_LABEL",
+            "support": 79
+          },
+          "domain.technology.ai_discourse": {
+            "f1": 0.16901408450704225,
+            "margin": 0.04238486289978027,
+            "neg_mean": 0.06580312550067902,
+            "pos_mean": 0.10818798840045929,
+            "precision": 0.2,
+            "recall": 0.14634146341463414,
+            "strength": "STABLE_LABEL",
+            "support": 41
+          },
+          "domain.workplace": {
+            "f1": 0.08695652173913045,
+            "margin": -0.013608671724796295,
+            "neg_mean": 0.055795181542634964,
+            "pos_mean": 0.04218650981783867,
+            "precision": 0.04878048780487805,
+            "recall": 0.4,
+            "strength": "WEAK_LABEL",
+            "support": 35
+          }
+        },
+        "sample_f1": 0.1929123403747464
+      },
+      "function": {
+        "exact_match": 0.41353383458646614,
+        "jaccard": 0.4334273182957394,
+        "macro_f1": 0.2001344479247944,
+        "micro_f1": 0.19065420560747665,
+        "nearest_label_purity": 0.11090225563909774,
+        "per_label": {
+          "function.conflictive_force": {
+            "f1": 0.17391304347826086,
+            "margin": -0.004528865218162537,
+            "neg_mean": 0.04743780940771103,
+            "pos_mean": 0.04290894418954849,
+            "precision": 0.15789473684210525,
+            "recall": 0.1935483870967742,
+            "strength": "STABLE_LABEL",
+            "support": 31
+          },
+          "function.evaluative_stance": {
+            "f1": 0.16236162361623618,
+            "margin": 0.041554540395736694,
+            "neg_mean": 0.04666220396757126,
+            "pos_mean": 0.08821674436330795,
+            "precision": 0.09282700421940929,
+            "recall": 0.6470588235294118,
+            "strength": "STABLE_LABEL",
+            "support": 34
+          },
+          "function.memetic_form": {
+            "f1": 0.15053763440860213,
+            "margin": 0.05210725963115692,
+            "neg_mean": 0.03843056410551071,
+            "pos_mean": 0.09053782373666763,
+            "precision": 0.12727272727272726,
+            "recall": 0.18421052631578946,
+            "strength": "STABLE_LABEL",
+            "support": 38
+          },
+          "function.relational_intimacy": {
+            "f1": 0.3137254901960784,
+            "margin": 0.05780208110809326,
+            "neg_mean": 0.047071777284145355,
+            "pos_mean": 0.10487385839223862,
+            "precision": 0.26666666666666666,
+            "recall": 0.38095238095238093,
+            "strength": "STABLE_LABEL",
+            "support": 42
+          }
+        },
+        "sample_f1": 0.44085213032581455
+      },
+      "hierarchy": {
+        "hierarchical_f1_ai_discourse": 0.16901408450704225,
+        "hierarchy_violation_rate": 0.0,
+        "parent_child_consistency": 1.0
+      },
+      "mediation": {
+        "exact_match": 0.7763157894736842,
+        "jaccard": 0.7763157894736842,
+        "macro_f1": 0.2119205298013245,
+        "micro_f1": 0.2119205298013245,
+        "nearest_label_purity": 0.08082706766917293,
+        "per_label": {
+          "mediation.internet_register": {
+            "f1": 0.21192052980132448,
+            "margin": 0.03196089714765549,
+            "neg_mean": 0.0334412083029747,
+            "pos_mean": 0.06540210545063019,
+            "precision": 0.14814814814814814,
+            "recall": 0.37209302325581395,
+            "strength": "STABLE_LABEL",
+            "support": 43
+          }
+        },
+        "sample_f1": 0.7763157894736842
+      },
+      "n": 532,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.0037593984962406013,
+      "system": {
+        "exact_match": 0.03007518796992481,
+        "jaccard": 0.10624226963512678,
+        "macro_f1": 0.18072370726054193,
+        "micro_f1": 0.16002896451846488,
+        "sample_f1": 0.15075728365202049
+      }
+    },
+    "label_variant": "short_definition",
+    "model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+    "thresholds": {
+      "domain": [
+        0.1,
+        0.05,
+        0.25,
+        0.05,
+        0.05,
+        0.2,
+        0.05,
+        0.25,
+        0.15,
+        0.1,
+        0.2
+      ],
+      "function": [
+        0.05,
+        0.15,
+        0.15,
+        0.15
+      ],
+      "mediation": [
+        0.1
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "MINIMUM_ADVANCE": true,
+  "NEXT_ACTION": "HARDEN_V6_SEMANTIC_REPRESENTATION_AND_PREPARE_QUALIFICATION",
+  "REBASE_STATE": "V6_REPRESENTATION_REBASE_ADVANCE",
+  "REPRESENTATION_IMPROVEMENT": true,
+  "improved_over_witness": [
+    "FROZEN_NONLINEAR__C_MSMARCO",
+    "FROZEN_NONLINEAR__A_MPNET",
+    "FROZEN_NONLINEAR__B_BGE_BASE",
+    "AXIS_PROJ__A_MPNET",
+    "AXIS_PROJ__C_MSMARCO",
+    "FROZEN_LINEAR__B_BGE_BASE",
+    "PEFT_ADAPTER__B_BGE_BASE"
+  ],
+  "mpnet_witness": 0.20555757451039375,
+  "selected": "FROZEN_NONLINEAR__C_MSMARCO",
+  "selected_row": {
+    "axis_collapse": false,
+    "dev_macro_f1": 0.4275164580181028,
+    "domain_macro": 0.45693819680993086,
+    "encoder": "C_MSMARCO",
+    "formulation": "frozen_embedding_nonlinear_heads",
+    "function_macro": 0.4304945054945055,
+    "gap": -0.015085511995684364,
+    "hierarchy_violation_rate_rep": 0.0,
+    "id": "FROZEN_NONLINEAR__C_MSMARCO",
+    "mediation_macro": 0.3333333333333333,
+    "raw_hierarchy_violation": 0.0037593984962406013,
+    "rep_system_macro_f1": 0.44260197001378715
+  },
+  "valid_ids": [
+    "FROZEN_NONLINEAR__C_MSMARCO",
+    "FROZEN_NONLINEAR__A_MPNET",
+    "FROZEN_NONLINEAR__B_BGE_BASE",
+    "AXIS_PROJ__A_MPNET",
+    "ZERO_SHOT__B_BGE_BASE__short",
+    "AXIS_PROJ__C_MSMARCO",
+    "FROZEN_LINEAR__B_BGE_BASE",
+    "PEFT_ADAPTER__B_BGE_BASE",
+    "ZERO_SHOT__A_MPNET__short"
+  ]
+}

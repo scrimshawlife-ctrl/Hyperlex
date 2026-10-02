@@ -8,6 +8,13 @@
   control (not mutated). Small encoder family (MPNet / BGE-base /
   MS MARCO), frozen heads, calibrated similarity, axis projections, PEFT
   adapter. Floors locked; QUAL sealed; no A–F carousel.
+  BGE short zero-shot REP **0.243**; selected
+  `FROZEN_NONLINEAR__C_MSMARCO` REP **0.443** (function recovered ≈0.43).
+  Disposition **`V6_REPRESENTATION_REBASE_ADVANCE`**. Pointer
+  `V6_REPRESENTATION_CANDIDATE` (not promoted). Receipt
+  `classification-v6-representation-rebase-receipt-20261001.json`
+  (`eb4851e5…`). Next:
+  `HARDEN_V6_SEMANTIC_REPRESENTATION_AND_PREPARE_QUALIFICATION`.
 
 - **Reassess V6 task signal and pretrained representation (Spec 007):**
   Diagnostic phase after architecture bakeoff exhaustion. Freeze zero-shot
