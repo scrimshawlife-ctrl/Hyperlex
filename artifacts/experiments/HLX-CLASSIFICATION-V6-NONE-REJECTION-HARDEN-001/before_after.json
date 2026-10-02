@@ -1,0 +1,32 @@
+{
+  "false_reject_positive_rate": {
+    "after": 0.4163568773234201,
+    "before": 0.35315985130111527,
+    "delta": 0.06319702602230481
+  },
+  "mean_predicted_labels_on_zero_gold": {
+    "after": 0.14464692482915717,
+    "before": 2.2687927107061503,
+    "delta": -2.124145785876993
+  },
+  "positive_only_system_macro_f1": {
+    "after": 0.415797546133708,
+    "before": 0.41630366884055453,
+    "delta": -0.0005061227068465235
+  },
+  "system_macro_f1": {
+    "after": 0.36980892482696165,
+    "before": 0.22031767868121946,
+    "delta": 0.1494912461457422
+  },
+  "zero_label_exact_rejection": {
+    "after": 0.9123006833712984,
+    "before": 0.21184510250569477,
+    "delta": 0.7004555808656037
+  },
+  "zero_label_false_positive_rate": {
+    "after": 0.08769931662870159,
+    "before": 0.7881548974943052,
+    "delta": -0.7004555808656037
+  }
+}

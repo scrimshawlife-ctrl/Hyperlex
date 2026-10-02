@@ -1,0 +1,16 @@
+{
+  "CANDIDATE_PACKAGE_ID": "HYPERLEX_V6_NONE_REJECTION_PACKAGE_CANDIDATE_V1",
+  "PIPELINE_POINTER_ID": "V6_NONE_REJECTION_CANDIDATE",
+  "REP_V2_positive_only": 0.415797546133708,
+  "REP_V2_system_macro_f1": 0.36980892482696165,
+  "REP_V2_zero_fp": 0.08769931662870159,
+  "encoder_state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+  "global_promotion": false,
+  "mechanism": "LEARNED_ANY_EVIDENCE_GATE",
+  "params": {
+    "architecture": "frozen_embedding\u2192ANY_LABEL_gate\u2192frozen_axis_heads\u2192hierarchy",
+    "gate_bundle_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+    "gate_threshold": 0.22499999999999998
+  },
+  "parent_package_sha256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4"
+}

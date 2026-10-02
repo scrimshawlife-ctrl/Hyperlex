@@ -1,0 +1,37 @@
+{
+  "DOMAIN_macro_f1": 0.2833044854630122,
+  "FUNCTION_macro_f1": 0.3644131881427707,
+  "MEDIATION_macro_f1": 0.21621621621621623,
+  "axis_macros": {
+    "domain": 0.2833044854630122,
+    "function": 0.3644131881427707,
+    "mediation": 0.21621621621621623
+  },
+  "co_label_performance": {
+    "domain_plus_function_system_macro": null,
+    "n": 0
+  },
+  "diagnostics": {
+    "CO_LABEL_FAILURE": false,
+    "FALSE_ACCEPT_ZERO": 0.10610932475884244,
+    "FALSE_REJECT_POSITIVE": 0.4639175257731959,
+    "FUNCTION_FAILURE": false,
+    "POSITIVE_LABEL_FN": 0.7,
+    "POSITIVE_LABEL_FP": 0.026417525773195876,
+    "n_false_accept_zero": 33,
+    "n_false_reject_positive": 90,
+    "n_positive_label_fn": 147,
+    "n_positive_label_fp": 82
+  },
+  "false_reject_positive_rate": 0.4639175257731959,
+  "mean_predicted_labels_on_zero_gold": 0.14469453376205788,
+  "multi_label_system_macro_f1": 0.11746411483253588,
+  "n": 505,
+  "n_domain_plus_function": 0,
+  "positive_only_system_macro_f1": 0.31742686855609387,
+  "single_label_system_macro_f1": 0.3099414227287868,
+  "system_macro_f1": 0.28797796327399966,
+  "zero_label_exact_rejection": 0.8938906752411575,
+  "zero_label_false_positive_rate": 0.10610932475884244,
+  "zero_label_n": 311
+}

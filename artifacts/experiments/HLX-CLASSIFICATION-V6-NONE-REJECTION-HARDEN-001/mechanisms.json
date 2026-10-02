@@ -1,0 +1,142 @@
+{
+  "BASELINE_DIRECT_EMISSION": {
+    "dev": {
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.38144329896907214,
+      "positive_only_system_macro_f1": 0.35251174802995533,
+      "system_macro_f1": 0.1972097384455372,
+      "zero_label_exact_rejection": 0.2508038585209003,
+      "zero_label_false_positive_rate": 0.7491961414790996
+    },
+    "params": {},
+    "rep": {
+      "DOMAIN_macro_f1": 0.1588180295596455,
+      "FUNCTION_macro_f1": 0.22272324177813058,
+      "MEDIATION_macro_f1": 0.27941176470588236,
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.35315985130111527,
+      "mean_predicted_labels_on_zero_gold": 2.2687927107061503,
+      "multi_label_system_macro_f1": 0.28272982725037515,
+      "positive_only_system_macro_f1": 0.41630366884055453,
+      "single_label_system_macro_f1": 0.3960652650140671,
+      "system_macro_f1": 0.22031767868121946,
+      "zero_label_exact_rejection": 0.21184510250569477,
+      "zero_label_false_positive_rate": 0.7881548974943052
+    }
+  },
+  "GATE_PLUS_NEGATIVE_AWARE_HEADS": {
+    "dev": {
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.7680412371134021,
+      "positive_only_system_macro_f1": 0.18429404565768204,
+      "system_macro_f1": 0.17623672623672623,
+      "zero_label_exact_rejection": 0.9807073954983923,
+      "zero_label_false_positive_rate": 0.01929260450160772
+    },
+    "params": {
+      "architecture": "frozen_embedding\u2192ANY_LABEL_gate\u2192neg_aware_heads\u2192hierarchy",
+      "gate_bundle_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+      "gate_threshold": 0.05,
+      "heads_sha256": "985a4dbae954724905b3699927063d9f52234547d9d2d547250f376d3003743c"
+    },
+    "rep": {
+      "DOMAIN_macro_f1": 0.12500430480646363,
+      "FUNCTION_macro_f1": 0.15500954480152715,
+      "MEDIATION_macro_f1": 0.2278481012658228,
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.7323420074349443,
+      "mean_predicted_labels_on_zero_gold": 0.03758542141230068,
+      "multi_label_system_macro_f1": 0.08785136432195256,
+      "positive_only_system_macro_f1": 0.17786271929129072,
+      "single_label_system_macro_f1": 0.16834661726302594,
+      "system_macro_f1": 0.16928731695793786,
+      "zero_label_exact_rejection": 0.9703872437357631,
+      "zero_label_false_positive_rate": 0.029612756264236904
+    }
+  },
+  "LEARNED_ANY_EVIDENCE_GATE": {
+    "dev": {
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.4639175257731959,
+      "positive_only_system_macro_f1": 0.31742686855609387,
+      "system_macro_f1": 0.28797796327399966,
+      "zero_label_exact_rejection": 0.8938906752411575,
+      "zero_label_false_positive_rate": 0.10610932475884244
+    },
+    "params": {
+      "architecture": "frozen_embedding\u2192ANY_LABEL_gate\u2192frozen_axis_heads\u2192hierarchy",
+      "gate_bundle_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+      "gate_threshold": 0.22499999999999998
+    },
+    "rep": {
+      "DOMAIN_macro_f1": 0.36720185209585704,
+      "FUNCTION_macro_f1": 0.3710909017664713,
+      "MEDIATION_macro_f1": 0.3711340206185567,
+      "disposition": "V6_NONE_REJECTION_ADVANCE",
+      "false_reject_positive_rate": 0.4163568773234201,
+      "mean_predicted_labels_on_zero_gold": 0.14464692482915717,
+      "multi_label_system_macro_f1": 0.28272982725037515,
+      "positive_only_system_macro_f1": 0.415797546133708,
+      "single_label_system_macro_f1": 0.393088605217733,
+      "system_macro_f1": 0.36980892482696165,
+      "zero_label_exact_rejection": 0.9123006833712984,
+      "zero_label_false_positive_rate": 0.08769931662870159
+    }
+  },
+  "NEGATIVE_AWARE_HEAD_RETRAIN": {
+    "dev": {
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.7628865979381443,
+      "positive_only_system_macro_f1": 0.18668954212432476,
+      "system_macro_f1": 0.17154943821610488,
+      "zero_label_exact_rejection": 0.9614147909967846,
+      "zero_label_false_positive_rate": 0.03858520900321544
+    },
+    "params": {
+      "architecture": "frozen_embedding\u2192neg_aware_axis_heads\u2192hierarchy",
+      "heads_sha256": "985a4dbae954724905b3699927063d9f52234547d9d2d547250f376d3003743c"
+    },
+    "rep": {
+      "DOMAIN_macro_f1": 0.12297201006878425,
+      "FUNCTION_macro_f1": 0.16086434573829528,
+      "MEDIATION_macro_f1": 0.2278481012658228,
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.7304832713754646,
+      "mean_predicted_labels_on_zero_gold": 0.04555808656036447,
+      "multi_label_system_macro_f1": 0.08785136432195256,
+      "positive_only_system_macro_f1": 0.18030720507715747,
+      "single_label_system_macro_f1": 0.17097697305878648,
+      "system_macro_f1": 0.17056148569096743,
+      "zero_label_exact_rejection": 0.9658314350797267,
+      "zero_label_false_positive_rate": 0.03416856492027335
+    }
+  },
+  "SHARED_MAX_SCORE_REJECT": {
+    "dev": {
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.6391752577319587,
+      "positive_only_system_macro_f1": 0.31448383741862,
+      "system_macro_f1": 0.21146883003482064,
+      "zero_label_exact_rejection": 0.7009646302250804,
+      "zero_label_false_positive_rate": 0.2990353697749196
+    },
+    "params": {
+      "architecture": "frozen_embedding\u2192frozen_axis_heads\u2192max_score_reject\u2192hierarchy",
+      "max_score_threshold": 0.44999999999999996
+    },
+    "rep": {
+      "DOMAIN_macro_f1": 0.1584495197167612,
+      "FUNCTION_macro_f1": 0.2688686858567644,
+      "MEDIATION_macro_f1": 0.27350427350427353,
+      "disposition": "V6_NONE_REJECTION_NO_ADVANCE",
+      "false_reject_positive_rate": 0.5929368029739777,
+      "mean_predicted_labels_on_zero_gold": 1.1640091116173121,
+      "multi_label_system_macro_f1": 0.2711136656342135,
+      "positive_only_system_macro_f1": 0.36888172440162736,
+      "single_label_system_macro_f1": 0.346679775990554,
+      "system_macro_f1": 0.233607493025933,
+      "zero_label_exact_rejection": 0.6571753986332574,
+      "zero_label_false_positive_rate": 0.3428246013667426
+    }
+  }
+}

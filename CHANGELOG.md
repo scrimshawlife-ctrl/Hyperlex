@@ -3,12 +3,14 @@
 ## Unreleased
 
 - **Harden V6 NONE rejection under frozen encoder (Spec 007):** Bounded
-  phase after `REPRESENTATIVENESS_REPAIRED`. Keep encoder `586fe515…` and
-  TRAIN/DEV/REP V2 sealed. Compare direct emission vs learned
-  ANY_LABEL gate, max-score reject, negative-aware head retrain, and
-  gate+heads. Select on DEV_V2; evaluate REP_V2. Preregistered: zero-FP
-  improvement ≥0.15 and positive-only ≥90% of ≈0.416. QUAL-002 unused.
-  MODEL_WIDE_BEST unchanged.
+  phase after `REPRESENTATIVENESS_REPAIRED`. Encoder `586fe515…` and
+  TRAIN/DEV/REP V2 sealed. Selected **`LEARNED_ANY_EVIDENCE_GATE`**
+  (two-stage: embedding→ANY_LABEL gate→frozen heads→hierarchy).
+  REP_V2: zero-FP **0.788→0.088**, exact reject **0.212→0.912**, mean
+  pred-on-zero **2.27→0.145**, positive-only **0.416→0.416**, system
+  **0.220→0.370**. Disposition **`V6_NONE_REJECTION_ADVANCE`**. New
+  candidate pointer only (no global promotion). Receipt `246fe842…`.
+  Next: `HARDEN_V6_FULL_OPERATING_PIPELINE_AND_PREPARE_NEW_QUALIFICATION`.
 
 - **Redesign V6 representative validation + data diversity (Spec 007):**
   Build TRAIN_V2 (n=2819) / DEV_SELECTION_V2 (n=505) / REP_V2 (n=1416)
