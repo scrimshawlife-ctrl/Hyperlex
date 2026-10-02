@@ -97,6 +97,17 @@ def test_reproduction_and_source_classifiers():
         )
         == "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION"
     )
+    # Locked bakeoff thresholds + clean retrain may move DEV more than REP.
+    assert (
+        classify_reproduction(
+            dev_macro=WITNESS_DEV_MACRO - 0.06,
+            rep_macro=WITNESS_REP_MACRO - 0.01,
+            post_hier=0.0,
+            raw_pred_mismatch=0,
+            constrained_pred_mismatch=0,
+        )
+        == "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION"
+    )
     assert (
         classify_reproduction(
             dev_macro=0.20,

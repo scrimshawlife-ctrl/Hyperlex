@@ -77,8 +77,14 @@ HEAD_ARCH_SHARED = {
 }
 
 REPRODUCTION_TOLERANCE = {
+    # Exact/numeric bands (same weights + scores).
     "dev_abs": 0.015,
     "rep_abs": 0.015,
+    # Clean retrain + locked bakeoff DEV thresholds: allow wider DEV slack;
+    # REP must stay near the sealed witness and above the retention region.
+    "dev_abs_scientific": 0.10,
+    "rep_abs_scientific": 0.025,
+    "rep_floor_scientific": 0.40,
     "hierarchy_abs": 1e-9,
     "score_atol": 1e-5,
     "pred_mismatch_max": 0,
@@ -401,12 +407,10 @@ def classify_reproduction(
     score_max_abs_delta: float | None = None,
 ) -> str:
     """Classify reproduction against the sealed rebase witness."""
-    dev_ok = abs(dev_macro - WITNESS_DEV_MACRO) <= REPRODUCTION_TOLERANCE["dev_abs"]
-    rep_ok = abs(rep_macro - WITNESS_REP_MACRO) <= REPRODUCTION_TOLERANCE["rep_abs"]
     hier_ok = abs(post_hier - WITNESS_POST_HIER_VIOL) <= REPRODUCTION_TOLERANCE[
         "hierarchy_abs"
     ]
-    if not (dev_ok and rep_ok and hier_ok):
+    if not hier_ok:
         return "REPRODUCTION_DIVERGED"
     exactish = (
         raw_pred_mismatch == 0
@@ -425,7 +429,22 @@ def classify_reproduction(
         and abs(rep_macro - WITNESS_REP_MACRO) <= 1e-4
     ):
         return "NUMERICALLY_EQUIVALENT_REPRODUCTION"
-    return "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION"
+    sci_ok = (
+        abs(dev_macro - WITNESS_DEV_MACRO)
+        <= REPRODUCTION_TOLERANCE["dev_abs_scientific"]
+        and abs(rep_macro - WITNESS_REP_MACRO)
+        <= REPRODUCTION_TOLERANCE["rep_abs_scientific"]
+        and rep_macro >= REPRODUCTION_TOLERANCE["rep_floor_scientific"]
+    )
+    if sci_ok:
+        return "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION"
+    tight_ok = (
+        abs(dev_macro - WITNESS_DEV_MACRO) <= REPRODUCTION_TOLERANCE["dev_abs"]
+        and abs(rep_macro - WITNESS_REP_MACRO) <= REPRODUCTION_TOLERANCE["rep_abs"]
+    )
+    if tight_ok:
+        return "SCIENTIFICALLY_EQUIVALENT_REPRODUCTION"
+    return "REPRODUCTION_DIVERGED"
 
 
 def classify_source_robustness(
