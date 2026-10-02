@@ -2,11 +2,15 @@
 
 ## Unreleased
 
-- **Build and seal fresh V6 QUAL-003 surface (Spec 007):** Model-blind
-  NATURAL/OBSERVED acquisition + dual annotation under final ontology.
-  Operating gates bound (system≥0.30, zero-FP≤0.35). QUAL-002 spent /
-  unreused. TRAIN/DEV/REP V2 blocked. No model scoring. Package
-  `8ed1a4d4…` unchanged.
+- **Seal V6 QUAL-003 unscored surface (Spec 007):** Fresh NATURAL/OBSERVED
+  HYPERLEX_V6_QUALIFICATION_003 sealed (`n=1151`, zero-label 0.836,
+  positive 0.164, 11 domain / 4 function / mediation=20). Dual-annotate
+  mean set-Jaccard **0.9993** (`QUALIFICATION_GOLD_STABLE`, 5 adjudicated).
+  Identifiability pass; forbidden overlap **0** vs TRAIN/DEV/REP V2 +
+  QUAL-001/002 + spent surfaces. `model_executions=0`,
+  `evaluation_spent=UNSPENT`. State **`SEALED_UNSCORED`**. Package
+  `8ed1a4d4…` unchanged. Seal `ae07e94f…`, receipt `1ba99fc1…`. Next:
+  `EXECUTE_V6_QUALIFICATION_003_ONCE`.
 
 - **Harden V6 full operating pipeline + prepare QUAL-003 (Spec 007):**
   Packaged gated operating candidate (encoder `586fe515…` + ANY_LABEL
