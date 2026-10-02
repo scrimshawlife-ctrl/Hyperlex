@@ -211,22 +211,24 @@ class _SenseExtractor(HTMLParser):
             self._buf.append(data)
 
 
-def fetch(url: str, retries: int = 5) -> str:
+def fetch(url: str, retries: int = 3) -> str:
     last: Exception | None = None
     for attempt in range(retries):
         req = urllib.request.Request(url, headers={"User-Agent": UA})
         try:
-            with urllib.request.urlopen(req, timeout=45) as resp:
+            with urllib.request.urlopen(req, timeout=20) as resp:
                 return resp.read().decode("utf-8", errors="replace")
         except urllib.error.HTTPError as exc:
             last = exc
+            if exc.code in {404, 400}:
+                raise
             if exc.code in {429, 500, 502, 503, 504}:
-                time.sleep(min(90.0, (2**attempt) + random.random()))
+                time.sleep(min(20.0, (1.5**attempt) + random.random()))
                 continue
             raise
         except Exception as exc:  # noqa: BLE001
             last = exc
-            time.sleep(min(30.0, (2**attempt)))
+            time.sleep(min(8.0, (1.5**attempt)))
     assert last is not None
     raise last
 
@@ -383,13 +385,14 @@ def main() -> int:
     wiki_jobs = uniq_jobs
     rng.shuffle(wiki_jobs)
     print(f"wiki_jobs={len(wiki_jobs)}", flush=True)
-    for family, title in wiki_jobs:
-        if sum(1 for r in raw if "wiki_culture" in (r.get("source_family") or "")) >= args.wiki_target:
+    wiki_admitted = 0
+    for i, (family, title) in enumerate(wiki_jobs):
+        if wiki_admitted >= args.wiki_target:
             break
         hit = wiki_summary(title)
         if not hit:
             continue
-        admit(
+        if admit(
             {
                 "text": hit["text"],
                 "source_url": hit["source_url"],
@@ -401,12 +404,18 @@ def main() -> int:
                 "acquisition_cue_family": family,
                 "notes": f"wiki_summary:{hit.get('title')}",
             }
-        )
-        time.sleep(0.05)
-    print(
-        f"wiki_admitted={sum(1 for r in raw if 'wiki_culture' in (r.get('source_family') or ''))}",
-        flush=True,
-    )
+        ):
+            wiki_admitted += 1
+            if wiki_admitted % 25 == 0:
+                print(f"wiki_admitted={wiki_admitted} scanned={i+1}", flush=True)
+        time.sleep(0.02)
+    print(f"wiki_admitted={wiki_admitted}", flush=True)
+    # checkpoint wiki portion
+    args.out.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    with args.out.open("w", encoding="utf-8") as h:
+        for r in raw:
+            h.write(json.dumps(r, sort_keys=True, ensure_ascii=False) + "\n")
+    print(f"checkpoint_n={len(raw)}", flush=True)
 
     # --- Wiktionary multi-sense (prefer longer concatenations) ---
     jobs: list[tuple[str, str]] = []
