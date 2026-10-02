@@ -33,7 +33,7 @@ PRIVATE = Path(
 PRIVATE_QUAL002 = Path(
     "/home/morpheus/hlx-private/classification-v6-qualification-surface-002-20261001"
 )
-PRIVATE_COREQUAL001 = Path(
+PRIVATE_QUAL003 = Path(
     "/home/morpheus/hlx-private/classification-v6-qualification-surface-003-20261001"
 )
 PRIVATE_V2 = Path(
