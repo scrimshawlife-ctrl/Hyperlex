@@ -38,6 +38,10 @@ def test_gates_and_harden_outcomes():
         "hierarchy_violation_rate": 0.002,
     }
     assert evaluate_core_gates(good)["pass"] is True
+    # Legitimate zero hierarchy must not trip the missing-default path.
+    perfect_hier = dict(good, hierarchy_violation_rate=0.0)
+    assert evaluate_core_gates(perfect_hier)["pass"] is True
+    assert evaluate_core_gates(perfect_hier)["checks"]["hierarchy"] is True
     bad = dict(good, DOMAIN_macro_f1=0.10)
     assert evaluate_core_gates(bad)["pass"] is False
 

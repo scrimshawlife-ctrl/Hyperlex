@@ -302,24 +302,31 @@ def core_product_contract() -> dict[str, Any]:
     }
 
 
+def _metric_float(metrics: Mapping[str, Any], key: str, default: float) -> float:
+    """Read a float metric; preserve legitimate zeros (do not use `or`)."""
+    if key not in metrics or metrics[key] is None:
+        return float(default)
+    return float(metrics[key])
+
+
 def evaluate_core_gates(metrics: Mapping[str, Any]) -> dict[str, Any]:
     gates = CORE_QUALIFICATION_GATES
     checks = {
-        "core_system": float(metrics.get("core_system_macro_f1") or 0.0)
+        "core_system": _metric_float(metrics, "core_system_macro_f1", 0.0)
         >= float(gates["core_system_macro_f1_min"]),
-        "DOMAIN": float(metrics.get("DOMAIN_macro_f1") or 0.0)
+        "DOMAIN": _metric_float(metrics, "DOMAIN_macro_f1", 0.0)
         >= float(gates["DOMAIN_macro_f1_min"]),
-        "MEDIATION": float(metrics.get("MEDIATION_macro_f1") or 0.0)
+        "MEDIATION": _metric_float(metrics, "MEDIATION_macro_f1", 0.0)
         >= float(gates["MEDIATION_macro_f1_min"]),
-        "zero_fp": float(metrics.get("zero_label_false_positive_rate") or 1.0)
+        "zero_fp": _metric_float(metrics, "zero_label_false_positive_rate", 1.0)
         <= float(gates["zero_label_false_positive_rate_max"]),
-        "zero_exact": float(metrics.get("zero_label_exact_rejection") or 0.0)
+        "zero_exact": _metric_float(metrics, "zero_label_exact_rejection", 0.0)
         >= float(gates["zero_label_exact_rejection_min"]),
-        "mean_pred_zero": float(
-            metrics.get("mean_predicted_labels_on_zero_gold") or 99.0
+        "mean_pred_zero": _metric_float(
+            metrics, "mean_predicted_labels_on_zero_gold", 99.0
         )
         <= float(gates["mean_predicted_labels_on_zero_gold_max"]),
-        "hierarchy": float(metrics.get("hierarchy_violation_rate") or 1.0)
+        "hierarchy": _metric_float(metrics, "hierarchy_violation_rate", 1.0)
         <= float(gates["hierarchy_violation_max"]),
     }
     return {
