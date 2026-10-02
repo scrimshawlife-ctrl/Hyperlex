@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Harden V6 full operating pipeline + prepare QUAL-003 (Spec 007):**
+  Package frozen encoder + ANY_LABEL gate + frozen axis heads + hierarchy
+  as cold-loadable operating candidate. Reproduce NONE-rejection REP_V2
+  witness. Preregister operating QUAL gates (incl. zero-label FP≤0.35).
+  QUAL-002 remains EVALUATION_SPENT; QUAL-003 prepared not sealed / not
+  scored. MODEL_WIDE_BEST unchanged.
+
 - **Harden V6 NONE rejection under frozen encoder (Spec 007):** Bounded
   phase after `REPRESENTATIVENESS_REPAIRED`. Encoder `586fe515…` and
   TRAIN/DEV/REP V2 sealed. Selected **`LEARNED_ANY_EVIDENCE_GATE`**
