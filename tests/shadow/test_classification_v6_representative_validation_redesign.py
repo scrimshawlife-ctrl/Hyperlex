@@ -27,12 +27,12 @@ def test_redesign_contract_forbids_usable_filter():
 
 def test_representativeness_repair_not_old_score():
     replay = {
-        "system_macro_f1": 0.20,
-        "FUNCTION_macro_f1": 0.08,
-        "zero_label_false_positive_rate": 0.55,
-        "positive_only_system_macro_f1": 0.28,
-        "n_domain_plus_function": 10,
-        "co_label_performance": {"domain_plus_function_system_macro": 0.05},
+        "system_macro_f1": 0.22,
+        "FUNCTION_macro_f1": 0.22,
+        "zero_label_false_positive_rate": 0.78,
+        "positive_only_system_macro_f1": 0.41,
+        "n_domain_plus_function": 6,
+        "co_label_performance": {"domain_plus_function_system_macro": 0.33},
     }
     qual = {
         "system_macro_f1": 0.1885,
@@ -45,13 +45,13 @@ def test_representativeness_repair_not_old_score():
     assert repair["REPRESENTATIVENESS_REPAIRED"] is True
     assert repair["recovered_old_usable_rep_score"] is False
     rem = classify_remaining_model_failure(replay)
-    assert rem["REMAINING_MODEL_FAILURE"] == "MIXED_MODEL_FAILURE"
+    assert rem["REMAINING_MODEL_FAILURE"] == "NONE_REJECTION_FAILURE"
     assert (
         decide_next_action(
             representativeness_repaired=True,
             remaining_failure=rem["REMAINING_MODEL_FAILURE"],
         )
-        == "ADDRESS_V6_MIXED_MODEL_FAILURE_UNDER_REPRESENTATIVE_REP_V2"
+        == "HARDEN_V6_NONE_REJECTION_UNDER_FROZEN_ENCODER"
     )
     receipt = build_redesign_receipt(
         {

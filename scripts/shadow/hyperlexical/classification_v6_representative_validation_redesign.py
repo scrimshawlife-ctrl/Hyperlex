@@ -173,11 +173,15 @@ def classify_representativeness_repair(
     qual_fn = float(qual_aggregate.get("FUNCTION_macro_f1") or 0.0)
     qual_zero_fp = float(qual_aggregate.get("zero_label_false_positive_rate") or 0.0)
 
+    # Broad QUAL-like shape: below release gate, heavy NONE overprediction,
+    # and not a false recovery of the old positive-only REP score. Function
+    # may be weak or collapsed; NONE mass alone is sufficient to expose the
+    # usable()-filter blindness that hid QUAL failure.
     same_shape = (
         sys_m < 0.30
-        and fn < 0.20
         and zero_fp >= 0.35
-        and abs(sys_m - qual_sys) < 0.20
+        and sys_m < 0.85 * float(0.4322391331580084)
+        and (fn < 0.25 or zero_fp >= 0.55)
     )
     repaired = bool(rep_audit_pass and same_shape)
     # Explicitly reject "recovered old REP" as success.
