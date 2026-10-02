@@ -1,0 +1,15 @@
+{
+  "classification_work_still_justified": false,
+  "contextual_qual_pass": false,
+  "core_package_sha256_pin": "035e1b7e21e97ed36f79750f1f643262540fba1546f488af2a0af04e8a7c1605",
+  "core_qual_pass": false,
+  "function_product_parent": "HLX-CLASSIFICATION-V6-FUNCTION-PRODUCT-REQUIREMENT-001",
+  "hybrid_qual_pass": false,
+  "none_vs_core_retention": {
+    "NONE_exact_relative_retention": 0.8625663068843271,
+    "core_relative_retention": 0.27083568666627783
+  },
+  "representation_more_stable_than_labels": true,
+  "scientific_value_remains": true,
+  "spent_qualification_count": 4
+}

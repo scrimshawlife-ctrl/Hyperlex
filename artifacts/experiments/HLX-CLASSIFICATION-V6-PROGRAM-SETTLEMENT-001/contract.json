@@ -1,0 +1,609 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-PROGRAM-SETTLEMENT-001",
+  "PHASE_RULE": "SETTLE_HYPERLEX_PROGRAM_END_STATE",
+  "SCHEMA": "hyperlex.classification.v6.program_settlement.v1",
+  "architecture_direction": {
+    "contextual_reasoning_strategy": {
+      "authorized_now": false,
+      "when_justified": "Downstream needs final FUNCTION/pragmatic judgments with document/conversation context; Hyperlex supplies candidates only."
+    },
+    "families_authorized": [
+      {
+        "components": [
+          "frozen_semantic_encoder",
+          "evidence_abstention_gate_as_signal",
+          "ontology_neighborhood_candidate_generator",
+          "ambiguity_margin_drift_diagnostics"
+        ],
+        "family": "representation_measurement_layer",
+        "status": "SELECTED_PRIMARY"
+      }
+    ],
+    "families_deferred": [
+      {
+        "blocker_for_this_settlement": "No GPU / no qualified contextual package in-session; final text-only judgments lack product value \u2192 D not required to settle primary disposition.",
+        "family": "contextual_semantic_reasoner",
+        "reason": "Justified for FUNCTION/pragmatics when context is available; not a substitute rescue of the text-only classifier. Requires separate product contract and fresh QUAL.",
+        "status": "DEFERRED_PARALLEL_RESEARCH"
+      },
+      {
+        "family": "hybrid_representation_plus_verifier",
+        "reason": "attractive follow-on once a verifier exists",
+        "status": "DEFERRED"
+      }
+    ],
+    "families_rejected": [
+      {
+        "family": "text_only_final_label_classifier",
+        "reason": "CORE QUAL FAIL + repeated V5/V6 QUAL failures",
+        "status": "REJECTED"
+      },
+      {
+        "family": "head_width_seed_threshold_optimizer_variants",
+        "reason": "not a material task-formulation change",
+        "status": "REJECTED"
+      },
+      {
+        "family": "hyperlex_modernbert_finetune",
+        "reason": "frozen semantic encoders dominate; FT not justified",
+        "status": "REJECTED"
+      }
+    ],
+    "representation_strategy": {
+      "encoder": "frozen sentence/retrieval embedding (MSMARCO/MPNet/BGE class)",
+      "heads": "optional shallow probes for candidates only \u2014 never release-binding hard labels",
+      "hierarchy": "ontology constraints for candidate legality, not forced emission"
+    }
+  },
+  "capability_baseline": {
+    "contextual_semantic_reasoning_as_final_judge": {
+      "era": "V6+",
+      "evidence": "FUNCTION and some mediation judgments require context; no fresh qualified contextual reasoner exists. Deferred as parallel research track \u2014 not a V6 core rescue.",
+      "grade": "UNRESOLVED"
+    },
+    "development_performance_predicts_operating_performance": {
+      "era": "V5+V6",
+      "evidence": "Repeated fresh QUAL failures across V5 and V6; REP\u2192QUAL relative retention 0.27 on core package.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    },
+    "distribution_shift_and_ontology_diagnostics": {
+      "era": "V5+V6",
+      "evidence": "Separability audits, source/length shift detection, and ontology diagnostics repeatedly explained QUAL failures; strongest research instrument role.",
+      "grade": "SUPPORTED_BUT_LIMITED"
+    },
+    "domain_text_only_final_labels": {
+      "era": "V6_CORE",
+      "evidence": "REP DOMAIN macro 0.355 \u2192 QUAL 0.142 (retention \u22480.40); fails release floors after hardening.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    },
+    "encoder_fine_tuning_justification": {
+      "era": "V6",
+      "evidence": "Full FT and PEFT failed to beat stronger frozen semantic priors; encoder_trainable_parameters=0 on core package.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    },
+    "explicit_none_rejection_gate": {
+      "era": "V6",
+      "evidence": "REP zero-FP 0.088 / exact 0.912 after learned ANY_LABEL gate; CORE QUAL NONE exact retention \u22480.86 (best axis retention) but still missed QUAL floors (exact 0.787 < 0.80; FP 0.213 > 0.20).",
+      "grade": "SUPPORTED_BUT_LIMITED"
+    },
+    "frozen_semantic_encoder_superiority_vs_hyperlex_modernbert": {
+      "era": "V6",
+      "evidence": "MPNet zero-shot 0.206 > ModernBERT control 0.162; MSMARCO frozen nonlinear REP 0.443; PEFT/full FT not justified.",
+      "grade": "PROVEN"
+    },
+    "function_as_advisory_or_contextual": {
+      "era": "V6",
+      "evidence": "Human-coherent labels; high context dependence; retained as advisory/research/contextual enrichment only.",
+      "grade": "SUPPORTED_BUT_LIMITED"
+    },
+    "function_as_required_text_only_output": {
+      "era": "V6",
+      "evidence": "TEXT_SIGNAL_CEILING \u22480.30; pragmatic objective NOT_SUPPORTED; product disposition FUNCTION_RETAIN_OPTIONAL / ADVISORY_ONLY.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    },
+    "gold_identifiability_requirement": {
+      "era": "V5+V6",
+      "evidence": "V5 SHORT_ATOM NONE local repair; CORE QUAL gold stable (mean_core_jaccard=1.0). Identifiability is necessary.",
+      "grade": "PROVEN"
+    },
+    "head_threshold_seed_optimizer_microcycles": {
+      "era": "V5+V6",
+      "evidence": "Local gains repeatedly failed global QUAL; program forbids further micro-cycles without a material task-formulation change.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    },
+    "hierarchical_multi_label_ontology": {
+      "era": "V6",
+      "evidence": "Human ontology settlement; flat family ontology structurally unsound; V6 hierarchical multi-label is the settled semantic direction.",
+      "grade": "PROVEN"
+    },
+    "hybrid_representation_plus_external_verifier": {
+      "era": "future",
+      "evidence": "Architecturally plausible (Hyperlex candidates \u2192 contextual verifier) but no verifier package has passed representative + fresh QUAL.",
+      "grade": "UNRESOLVED"
+    },
+    "mediation_text_only_final_labels": {
+      "era": "V6_CORE",
+      "evidence": "REP MEDIATION macro 0.342 \u2192 QUAL 0.047 (retention \u22480.14); collapse on fresh operating text.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    },
+    "memetic_form_product_output": {
+      "era": "V6",
+      "evidence": "Very high FP cost; RESEARCH_ONLY.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    },
+    "natural_observed_representative_data_requirement": {
+      "era": "V5+V6",
+      "evidence": "Positive-only / diagnostic surfaces produced misleading optimism (REP usable 0.43 vs QUAL 0.19); natural OBSERVED required.",
+      "grade": "PROVEN"
+    },
+    "representative_validation_role_when_unfiltered": {
+      "era": "V6",
+      "evidence": "Unfiltered REP repaired positive-only optimism and exposed NONE failure; still did not predict QUAL magnitude (shape yes, level no).",
+      "grade": "SUPPORTED_BUT_LIMITED"
+    },
+    "semantic_representation_and_neighborhood_signals": {
+      "era": "V6",
+      "evidence": "Frozen semantic embeddings recover axis signal above ModernBERT; geometry preserved; candidates/margins more stable than hard labels across redistribution; not release-qualified as final judgments.",
+      "grade": "SUPPORTED_BUT_LIMITED"
+    },
+    "v5_flat_family_classification_pipeline": {
+      "era": "V5",
+      "evidence": "V5 QUAL FAIL; ontology not reliably separable; V5_RESEARCH_PROTOTYPE disposition.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    },
+    "v6_core_production_classifier": {
+      "era": "V6_CORE",
+      "evidence": "CORE QUAL FAIL: core macro-F1 0.094 < 0.30; SEVERE_GENERALIZATION_DROP vs REP_V3; RC REJECTED.",
+      "grade": "DISPROVEN_FOR_CURRENT_FORMULATION"
+    }
+  },
+  "capability_grades": [
+    "PROVEN",
+    "SUPPORTED_BUT_LIMITED",
+    "UNRESOLVED",
+    "DISPROVEN_FOR_CURRENT_FORMULATION"
+  ],
+  "core_qual_metrics": {
+    "DOMAIN_macro_f1": 0.1422285367322818,
+    "FUNCTION_advisory_macro_f1": 0.0,
+    "MEDIATION_macro_f1": 0.046511627906976744,
+    "PACKAGE_ID": "HYPERLEX_V6_CORE_PRODUCT_PACKAGE_V1",
+    "PACKAGE_SHA256": "035e1b7e21e97ed36f79750f1f643262540fba1546f488af2a0af04e8a7c1605",
+    "QUALIFICATION_DISPOSITION": "V6_CORE_QUALIFICATION_FAIL",
+    "QUALIFICATION_ID": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+    "RELEASE_OUTCOME": "V6_CORE_RELEASE_CANDIDATE_REJECTED",
+    "core_system_macro_f1": 0.09437008231962928,
+    "evaluation_spent": true,
+    "failure_class": "MIXED_CORE_GENERALIZATION_FAILURE",
+    "gate_pass": false,
+    "hierarchy_violation_rate": 0.0,
+    "jaccard": 0.5426,
+    "mean_predicted_labels_on_zero_gold": 0.45569620253164556,
+    "n_rows": 761,
+    "qualification_model_executions": 1,
+    "sample_f1": 0.5558,
+    "seal_sha256": "1c36342ea3dcc68e6b70befebf678e378dd56655b8129fd7125f9c421f7c8c27",
+    "zero_label_exact_rejection": 0.7869198312236287,
+    "zero_label_false_positive_rate": 0.21308016877637131
+  },
+  "core_rep_to_qual_retention": {
+    "DOMAIN_relative_retention": 0.4008973547804467,
+    "MEDIATION_relative_retention": 0.1359570661896243,
+    "NONE_exact_relative_retention": 0.8625663068843271,
+    "absolute_degradation": 0.25407027087471007,
+    "band": "SEVERE_GENERALIZATION_DROP",
+    "qual_core_system_macro_f1": 0.09437008231962928,
+    "relative_retention": 0.27083568666627783,
+    "rep_core_system_macro_f1": 0.34844035319433936
+  },
+  "deprecated_paths": [
+    "V5 flat-family production classifier",
+    "V6 three-axis required FUNCTION release path",
+    "V6 core DOMAIN+MEDIATION hard-label release path",
+    "ModernBERT Hyperlex BEST as default semantic backbone",
+    "encoder fine-tuning for V6 classification",
+    "positive-only usable() representative validation",
+    "threshold/seed/optimizer/head-width micro-cycles without task reformulation",
+    "rescoring or training on spent QUAL-001/002/003/CORE surfaces",
+    "treating diagnostic contrast surfaces as operating validation",
+    "mandatory emission of every ontology concept as classifier output"
+  ],
+  "ecosystem_integration": {
+    "Abraxas": {
+      "role": "experiment coordination may reference Hyperlex diagnostics; no rune/forecast coupling"
+    },
+    "Hyperlexical_structure_pin_morph78": {
+      "note": "morph78 BEST remains independent of classification disposition",
+      "role": "separate structure-encoder product track; not the V6 classifier"
+    },
+    "Noesis": {
+      "pairwise_qualification": "unblocked_from_classifier_dependency; use representation contract",
+      "role": "consume embeddings + candidates; do not treat Hyperlex hard labels as truth"
+    },
+    "Semion": {
+      "role": "ontology-neighborhood and ambiguity observability"
+    },
+    "Trutina": {
+      "role": "consume distribution-distance / drift / separability signals"
+    },
+    "downstream_contextual_reasoners": {
+      "role": "may use Hyperlex candidates as search-space narrowing only"
+    }
+  },
+  "evaluation_architecture": {
+    "advancement_to_qualification_requires": [
+      "stable_representative_validation",
+      "no_major_source_or_distribution_collapse",
+      "acceptable_rejection_abstention_behavior",
+      "meaningful_improvement_over_best_evidence_backed_baseline",
+      "plausible_product_role",
+      "no_dependence_on_development_only_artifact"
+    ],
+    "classifier_fresh_qualification_status": {
+      "core_package": "EVALUATION_SPENT_FAIL",
+      "further_classifier_qual_without_task_reformulation": "FORBIDDEN"
+    },
+    "predictiveness_standard": "Representative validation must predict the *shape* of fresh qualification (axis ordering, NONE vs positive failure modes), even if absolute scores differ.",
+    "required_candidate_report": [
+      "development_performance",
+      "representative_performance",
+      "generalization_gap",
+      "source_sensitivity",
+      "zero_label_behavior",
+      "positive_semantic_behavior",
+      "relevant_subgroup_behavior"
+    ],
+    "spent_surfaces_permanently_excluded": [
+      "HYPERLEX_V5_PIPELINE_QUALIFICATION_001",
+      "HYPERLEX_V6_QUALIFICATION_002",
+      "HYPERLEX_V6_QUALIFICATION_003",
+      "HYPERLEX_V6_CORE_QUALIFICATION_001"
+    ],
+    "stages": {
+      "DEV_SELECTION": {
+        "may_tune": true,
+        "not_release_binding": true,
+        "role": "select thresholds and candidates among TRAIN-admitted variants"
+      },
+      "FRESH_QUALIFICATION": {
+        "may_tune": false,
+        "retries_without_material_hypothesis_change": false,
+        "role": "blind one-shot product question; seal before score; spend forever"
+      },
+      "REPRESENTATIVE_VALIDATION": {
+        "forbidden_filters": [
+          "usable_positive_only",
+          "drop_zero_label",
+          "diagnostic_contrast_pairing_as_operating_proxy"
+        ],
+        "may_tune": false,
+        "release_witness": true,
+        "role": "operating-traffic mirror; must include NONE/NO_EVIDENCE mass; never silently filter to easier positive-only subsets"
+      },
+      "TRAIN": {
+        "may_tune": true,
+        "role": "fit representation probes / gates / candidate scorers only"
+      }
+    }
+  },
+  "follow_on_roadmap": [
+    {
+      "action": "Ship frozen-encoder embedding + candidate API under SHADOW_INSTRUMENT_ONLY",
+      "blocks_on": "none",
+      "step": "1"
+    },
+    {
+      "action": "Instrument NONE/evidence, margin, ambiguity, drift on live OBSERVED traffic",
+      "blocks_on": "step_1",
+      "step": "2"
+    },
+    {
+      "action": "Define representation-signal stability QUAL (not label F1 floors)",
+      "blocks_on": "representative_traffic_mirror",
+      "step": "3"
+    },
+    {
+      "action": "Optional hybrid: Hyperlex candidates \u2192 external contextual verifier",
+      "blocks_on": "verifier_owner_and_fresh_surface",
+      "step": "4"
+    },
+    {
+      "action": "Keep FUNCTION/pragmatics as contextual research; never re-mandate text-only",
+      "blocks_on": "none",
+      "step": "5"
+    },
+    {
+      "action": "Do not open another classifier QUAL without material task reformulation",
+      "blocks_on": "n/a_forbidden",
+      "step": "6"
+    }
+  ],
+  "forbidden": [
+    "train_another_classifier_head",
+    "threshold_seed_optimizer_sweep",
+    "rescore_spent_QUAL",
+    "lower_QUAL_gates_post_hoc",
+    "reuse_spent_QUAL_rows_for_training_or_selection",
+    "promote_core_classifier_to_release",
+    "reopen_flat_family_ontology",
+    "mandate_FUNCTION_as_required_text_only_output"
+  ],
+  "grade_summary": {
+    "DISPROVEN_FOR_CURRENT_FORMULATION": [
+      "encoder_fine_tuning_justification",
+      "domain_text_only_final_labels",
+      "mediation_text_only_final_labels",
+      "function_as_required_text_only_output",
+      "memetic_form_product_output",
+      "v5_flat_family_classification_pipeline",
+      "v6_core_production_classifier",
+      "development_performance_predicts_operating_performance",
+      "head_threshold_seed_optimizer_microcycles"
+    ],
+    "PROVEN": [
+      "hierarchical_multi_label_ontology",
+      "gold_identifiability_requirement",
+      "natural_observed_representative_data_requirement",
+      "frozen_semantic_encoder_superiority_vs_hyperlex_modernbert"
+    ],
+    "SUPPORTED_BUT_LIMITED": [
+      "explicit_none_rejection_gate",
+      "function_as_advisory_or_contextual",
+      "representative_validation_role_when_unfiltered",
+      "semantic_representation_and_neighborhood_signals",
+      "distribution_shift_and_ontology_diagnostics"
+    ],
+    "UNRESOLVED": [
+      "contextual_semantic_reasoning_as_final_judge",
+      "hybrid_representation_plus_external_verifier"
+    ]
+  },
+  "minimum_viable_product_contract": {
+    "advisory_outputs": [
+      "final_domain_label",
+      "final_mediation_label",
+      "final_function_label"
+    ],
+    "deprecated_as_required_product_outputs": [
+      "final_domain_label",
+      "final_mediation_label",
+      "final_function_label"
+    ],
+    "determinism": {
+      "candidates": "deterministic_given_pin_and_thresholds",
+      "embedding": "deterministic_given_pin",
+      "final_labels": "not_a_product_guarantee"
+    },
+    "encoder_policy": {
+      "MODEL_WIDE_BEST_sha256": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+      "family": "frozen_sentence_or_retrieval_embedding",
+      "fine_tuning": "not_justified",
+      "hyperlex_modernbert_best_role": "HISTORICAL_CONTROL_ONLY",
+      "revision_reference": "b2f66c95aba1481a880479165582020c2b9b64d7",
+      "selected_reference": "sentence-transformers/msmarco-distilbert-base-v4"
+    },
+    "failure_policy": {
+      "hard_labels_must_not_block_downstream_without_human_or_verifier": true,
+      "prefer_abstention_over_false_emission": true
+    },
+    "interfaces": [
+      "embedding",
+      "semantic_candidates",
+      "nearest_semantic_concepts",
+      "confidence_margin",
+      "ambiguity_signal",
+      "distribution_distance_signal",
+      "representation_drift_signal",
+      "ontology_neighborhood_evidence",
+      "evidence_abstention_signal"
+    ],
+    "ontology_role": {
+      "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL": "canonical concept space for candidates and diagnostics",
+      "not_a_mandatory_classifier_output_checklist": true
+    },
+    "product_name": "Hyperlex Semantic Representation & Measurement Layer",
+    "product_role": "HYPERLEX_REPRESENTATION_AND_MEASUREMENT_LAYER",
+    "required_outputs": [
+      "evidence_abstention_none_signal",
+      "frozen_semantic_embedding",
+      "semantic_candidates_and_margins",
+      "ambiguity_distribution_drift_diagnostics"
+    ],
+    "research_only": [
+      "function.memetic_form",
+      "final_hard_multi_label_classifier_release",
+      "v5_flat_family_pipeline"
+    ],
+    "useful_and_evidence_supported_only": true
+  },
+  "primary_dispositions": [
+    "HYPERLEX_PRODUCTION_CLASSIFIER",
+    "HYPERLEX_CONTEXTUAL_SEMANTIC_REASONER",
+    "HYPERLEX_REPRESENTATION_AND_MEASUREMENT_LAYER",
+    "HYPERLEX_HYBRID_SYSTEM",
+    "HYPERLEX_RESEARCH_PLATFORM",
+    "HYPERLEX_CLASSIFICATION_PROGRAM_ARCHIVED"
+  ],
+  "product_requirement_table": [
+    {
+      "capability": "final_domain_label",
+      "consumer": "downstream routers / analysts expecting hard DOMAIN",
+      "context_required": "often document/entity",
+      "cost_if_wrong": "high \u2014 silent misrouting",
+      "downstream_decision": "route or filter by domain",
+      "evidence_supported_as_required": false,
+      "isolated_text_sufficient": false,
+      "omission_preferable": true,
+      "output_mode": "probabilistic_advisory_candidates",
+      "product_placement": "ADVISORY_CANDIDATES",
+      "useful": true
+    },
+    {
+      "capability": "final_mediation_label",
+      "consumer": "register / mediation analytics",
+      "context_required": "often conversational",
+      "cost_if_wrong": "high \u2014 QUAL collapse (retention \u22480.14)",
+      "downstream_decision": "tag internet-register mediation",
+      "evidence_supported_as_required": false,
+      "isolated_text_sufficient": false,
+      "omission_preferable": true,
+      "output_mode": "probabilistic_advisory_candidates",
+      "product_placement": "ADVISORY_CANDIDATES",
+      "useful": true
+    },
+    {
+      "capability": "final_function_label",
+      "consumer": "stance / intimacy / conflict studies",
+      "context_required": true,
+      "cost_if_wrong": "very high (esp. memetic FP)",
+      "downstream_decision": "pragmatic force labeling",
+      "evidence_supported_as_required": false,
+      "isolated_text_sufficient": false,
+      "omission_preferable": true,
+      "output_mode": "advisory_or_contextual_only",
+      "product_placement": "RESEARCH_OR_CONTEXTUAL",
+      "useful": true
+    },
+    {
+      "capability": "evidence_abstention_none_signal",
+      "consumer": "ingest gates / observability",
+      "context_required": false,
+      "cost_if_wrong": "medium \u2014 FP admits noise; FN drops recall",
+      "downstream_decision": "abstain vs admit for semantic labeling",
+      "evidence_supported_as_required": true,
+      "isolated_text_sufficient": "partial",
+      "note": "Most stable axis across CORE QUAL; still imperfect floors.",
+      "omission_preferable": false,
+      "output_mode": "probabilistic_with_margin",
+      "product_placement": "REQUIRED_SIGNAL",
+      "useful": true
+    },
+    {
+      "capability": "frozen_semantic_embedding",
+      "consumer": "Noesis / retrieval / neighborhood tools / drift monitors",
+      "context_required": false,
+      "cost_if_wrong": "low-medium \u2014 continuous space, no hard mislabel",
+      "downstream_decision": "similarity, clustering, candidate generation",
+      "evidence_supported_as_required": true,
+      "isolated_text_sufficient": true,
+      "omission_preferable": false,
+      "output_mode": "deterministic_given_encoder_pin",
+      "product_placement": "REQUIRED_OUTPUT",
+      "useful": true
+    },
+    {
+      "capability": "semantic_candidates_and_margins",
+      "consumer": "human review / contextual reasoners / hybrid verifiers",
+      "context_required": false,
+      "cost_if_wrong": "medium if treated as final; low if ranked candidates",
+      "downstream_decision": "narrow search space; never finalize alone",
+      "evidence_supported_as_required": true,
+      "isolated_text_sufficient": true,
+      "omission_preferable": false,
+      "output_mode": "ranked_probabilistic",
+      "product_placement": "REQUIRED_OUTPUT",
+      "useful": true
+    },
+    {
+      "capability": "ambiguity_distribution_drift_diagnostics",
+      "consumer": "Trutina / Semion / ops / ontology maintainers",
+      "context_required": false,
+      "cost_if_wrong": "low \u2014 diagnostic",
+      "downstream_decision": "detect shift, separability failure, OOD",
+      "evidence_supported_as_required": true,
+      "isolated_text_sufficient": true,
+      "omission_preferable": false,
+      "output_mode": "explanatory_measurement",
+      "product_placement": "REQUIRED_OUTPUT",
+      "useful": true
+    }
+  ],
+  "spent_qualification_surfaces": [
+    {
+      "diagnosis": "MIXED_SYSTEM_GENERALIZATION_FAILURE",
+      "disposition": "QUALIFICATION_FAIL",
+      "era": "V5",
+      "id": "HYPERLEX_V5_PIPELINE_QUALIFICATION_001",
+      "v5_role": "V5_RESEARCH_PROTOTYPE"
+    },
+    {
+      "diagnosis": "REPRESENTATIVE_VALIDATION_OVERFIT",
+      "disposition": "QUALIFICATION_FAIL",
+      "era": "V6",
+      "id": "HYPERLEX_V6_QUALIFICATION_002",
+      "system_macro_f1": 0.1885
+    },
+    {
+      "diagnosis": "MIXED_POSITIVE_SEMANTIC_GENERALIZATION_FAILURE",
+      "disposition": "QUALIFICATION_FAIL",
+      "era": "V6",
+      "id": "HYPERLEX_V6_QUALIFICATION_003"
+    },
+    {
+      "core_system_macro_f1": 0.09437008231962928,
+      "diagnosis": "MIXED_CORE_GENERALIZATION_FAILURE",
+      "disposition": "V6_CORE_QUALIFICATION_FAIL",
+      "era": "V6_CORE",
+      "id": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+      "retention_band": "SEVERE_GENERALIZATION_DROP"
+    }
+  ],
+  "stop_conditions_for_human": [
+    "data_integrity_violation",
+    "safety_or_dual_use_escalation",
+    "product_contract_owner_override",
+    "scientific_contradiction_of_settled_baseline"
+  ],
+  "task_formulation": {
+    "answer": "Hyperlex is failing as a production classifier because final semantic judgment is not the right job for a lightweight text-only classifier under the operating distribution \u2014 not because the latest head/threshold/seed was wrong. Frozen semantic representations, abstention signals, candidates, and diagnostics are the evidence-supported job.",
+    "central_question": "Is Hyperlex failing because we have not found the right classifier, or because final semantic judgment is not the right job for a lightweight text-only classifier?",
+    "comparison": [
+      {
+        "fit": "poor",
+        "formulation": "classification",
+        "reason": "four consecutive fresh QUAL failures; SEVERE_GENERALIZATION_DROP"
+      },
+      {
+        "fit": "partial",
+        "formulation": "semantic_matching",
+        "reason": "frozen embedding matching beats ModernBERT; still weak as hard labels"
+      },
+      {
+        "fit": "good",
+        "formulation": "candidate_generation",
+        "reason": "narrows space for humans/verifiers without claiming finality"
+      },
+      {
+        "fit": "good_for_evidence_gate",
+        "formulation": "abstaining_decision_system",
+        "reason": "NONE/evidence signal most stable across QUAL"
+      },
+      {
+        "fit": "best_primary",
+        "formulation": "representation_only_output",
+        "reason": "embeddings + diagnostics generalize better than final labels"
+      },
+      {
+        "fit": "deferred",
+        "formulation": "contextual_reasoning",
+        "reason": "needed for FUNCTION/pragmatics; not justified as V6 classifier rescue"
+      },
+      {
+        "fit": "deferred_hybrid",
+        "formulation": "retrieval_plus_verification",
+        "reason": "plausible future hybrid; no qualified verifier yet"
+      }
+    ],
+    "deferred_formulations": [
+      "contextual_reasoning",
+      "retrieval_plus_verification"
+    ],
+    "rejected_primary_formulation": "classification",
+    "secondary_formulations": [
+      "candidate_generation",
+      "abstaining_decision_system",
+      "semantic_matching"
+    ],
+    "selected_primary_formulation": "representation_only_output"
+  }
+}
