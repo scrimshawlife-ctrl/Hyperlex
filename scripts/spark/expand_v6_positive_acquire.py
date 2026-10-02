@@ -370,9 +370,9 @@ def main() -> int:
             wiki_jobs.append((family, title))
     for family, cats in WIKI_CATEGORY_SEEDS.items():
         for cat in cats:
-            for title in wiki_category_members(cat, limit=35):
+            for title in wiki_category_members(cat, limit=20):
                 wiki_jobs.append((family, title.replace(" ", "_")))
-            time.sleep(0.05)
+            time.sleep(0.02)
     # dedupe jobs
     seen_jobs: set[tuple[str, str]] = set()
     uniq_jobs = []
