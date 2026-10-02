@@ -1,0 +1,28 @@
+{
+  "DOMAIN": {
+    "absolute_degradation": 0.2125469064985021,
+    "qual": 0.1422285367322818,
+    "relative_retention": 0.4008973547804467,
+    "rep": 0.3547754432307839
+  },
+  "MEDIATION": {
+    "absolute_degradation": 0.2955936352509181,
+    "qual": 0.046511627906976744,
+    "relative_retention": 0.1359570661896243,
+    "rep": 0.3421052631578948
+  },
+  "NONE": {
+    "exact_relative_retention": 0.8625663068843271,
+    "fp_retention_note": "lower_fp_is_better",
+    "qual_exact": 0.7869198312236287,
+    "qual_zero_fp": 0.21308016877637131,
+    "rep_exact": 0.9123006833712984,
+    "rep_zero_fp": 0.08769931662870159
+  },
+  "absolute_degradation": 0.25407027087471007,
+  "band": "SEVERE_GENERALIZATION_DROP",
+  "hard_gate": false,
+  "qual_core_system_macro_f1": 0.09437008231962928,
+  "relative_retention": 0.27083568666627783,
+  "rep_core_system_macro_f1": 0.34844035319433936
+}

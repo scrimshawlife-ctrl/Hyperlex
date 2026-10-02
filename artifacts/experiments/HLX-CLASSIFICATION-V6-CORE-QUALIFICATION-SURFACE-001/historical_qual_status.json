@@ -1,0 +1,20 @@
+{
+  "QUAL_001": {
+    "id": "HYPERLEX_V6_QUALIFICATION_001",
+    "reuse_forbidden": true,
+    "status": "HISTORICAL_SEALED_UNINSPECTED"
+  },
+  "QUAL_002": {
+    "id": "HYPERLEX_V6_QUALIFICATION_002",
+    "reuse_forbidden": true,
+    "row_access": false,
+    "status": "EVALUATION_SPENT"
+  },
+  "QUAL_003": {
+    "id": "HYPERLEX_V6_QUALIFICATION_003",
+    "reuse_forbidden": true,
+    "row_access": false,
+    "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b",
+    "status": "EVALUATION_SPENT"
+  }
+}

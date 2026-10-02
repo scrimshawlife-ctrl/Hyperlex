@@ -1,0 +1,23 @@
+{
+  "FUNCTION_role": "ADVISORY_ONLY_NON_BLOCKING",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "EXECUTE_V6_CORE_QUALIFICATION_ONCE",
+  "QUALIFICATION_ID": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+  "QUALIFICATION_STATE": "SEALED_UNSCORED",
+  "QUAL_002_STATUS": "EVALUATION_SPENT",
+  "QUAL_003_STATUS": "EVALUATION_SPENT",
+  "RECEIPT": "43022090bf09a5a60a701fdba1496a1e974bcaaa04d012f6050b900d243b5cb9",
+  "SURFACE_STATE": "V6_CORE_QUALIFICATION_SURFACE_SEALED",
+  "V6_CORE_PRODUCT_CANDIDATE_MUTATED": false,
+  "agreement_stability": "QUALIFICATION_GOLD_STABLE",
+  "coverage_sufficient": true,
+  "forbidden_overlap": 0,
+  "identifiability_pass": true,
+  "mean_core_jaccard": 1.0,
+  "mean_set_jaccard": 0.9991624790619765,
+  "n_rows": 761,
+  "no_evidence_share": 0.6005256241787122,
+  "qualification_model_executions": 0,
+  "seal_sha256": "1c36342ea3dcc68e6b70befebf678e378dd56655b8129fd7125f9c421f7c8c27",
+  "zero_label_share": 0.6228646517739816
+}

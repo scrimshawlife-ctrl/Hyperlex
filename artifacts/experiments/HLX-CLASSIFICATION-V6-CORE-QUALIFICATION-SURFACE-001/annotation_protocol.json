@@ -1,0 +1,32 @@
+{
+  "annotators_must_not_see": [
+    "V6_model_predictions",
+    "semantic_scores",
+    "nearest_neighbors",
+    "TRAIN_DEV_REP_labels",
+    "QUAL_001_rows",
+    "QUAL_002_rows",
+    "QUAL_003_rows",
+    "core_package_scores"
+  ],
+  "capture": [
+    "evidence_disposition",
+    "domain_labels[]",
+    "mediation_labels[]",
+    "ontology_uncertainty",
+    "insufficient_context",
+    "annotator_disagreement",
+    "function_labels[]_optional_research_only"
+  ],
+  "disagreement": "third_pass_documented_adjudication_intersection_rules",
+  "force_definitive_when_unsupported": false,
+  "function_influences_balancing": false,
+  "function_influences_gates": false,
+  "function_influences_inclusion": false,
+  "model_blind": true,
+  "n_annotators_min": 2,
+  "protocols": [
+    "A_DOMAIN_FIRST_INDEPENDENT_TEXT_ONLY",
+    "B_MEDIATION_AWARE_INDEPENDENT_TEXT_ONLY"
+  ]
+}

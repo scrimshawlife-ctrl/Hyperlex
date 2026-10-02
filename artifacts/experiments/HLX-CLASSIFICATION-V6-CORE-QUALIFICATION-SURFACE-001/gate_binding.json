@@ -1,0 +1,22 @@
+{
+  "FUNCTION_in_pass_fail": false,
+  "chosen_before_qual_scoring": true,
+  "gates": {
+    "DOMAIN_macro_f1_min": 0.28,
+    "FUNCTION_in_pass_fail": false,
+    "FUNCTION_role": "ADVISORY_ONLY_NON_BLOCKING",
+    "MEDIATION_macro_f1_min": 0.28,
+    "QUAL_002_status": "EVALUATION_SPENT",
+    "QUAL_003_status": "EVALUATION_SPENT",
+    "QUAL_CORE_id": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+    "chosen_before_qual_open": true,
+    "core_system_macro_f1_min": 0.3,
+    "hierarchy_violation_max": 0.02,
+    "mean_predicted_labels_on_zero_gold_max": 1.0,
+    "retention_rule": "QUAL core_system_macro_f1(DOMAIN,MEDIATION) >= 0.30; FUNCTION does not affect pass/fail",
+    "zero_label_exact_rejection_min": 0.8,
+    "zero_label_false_positive_rate_max": 0.2
+  },
+  "modified_in_this_phase": false,
+  "source": "HLX-CLASSIFICATION-V6-CORE-PRODUCT-HARDEN-001"
+}

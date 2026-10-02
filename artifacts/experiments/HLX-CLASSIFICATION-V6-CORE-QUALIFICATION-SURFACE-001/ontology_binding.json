@@ -1,0 +1,68 @@
+{
+  "QUALIFICATION_ID": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+  "compatibility_rule_hash": "2e1f1425fd9e60dc02d1ff240922b2d104effebe9906bc69e5972b56dd5d2850",
+  "constraint_manifest_hash": "2e51ed0865bc5431b92b94ba0e99ff3c9e4803ffb72e1fb80c5ead8ab839bc1c",
+  "hierarchy": {
+    "rules": [
+      {
+        "child": "domain.technology.ai_discourse",
+        "constraint": "required_parent",
+        "parent": "domain.technology"
+      }
+    ]
+  },
+  "hierarchy_hash": "18c449b749aae03cd19da7e7d773357801925a55c896ae711a3375183053cf30",
+  "input_contract": {
+    "core_package_sha": "035e1b7e21e97ed36f79750f1f643262540fba1546f488af2a0af04e8a7c1605",
+    "gold_identifiability_contract": "HYPERLEX_STAGE_A_GOLD_IDENTIFIABILITY_CONTRACT_V1",
+    "model_input": [
+      "text"
+    ],
+    "optional_outputs": [
+      "function_best_effort"
+    ],
+    "required_outputs": [
+      "evidence_gate",
+      "domain",
+      "mediation"
+    ],
+    "runtime_schema": "hyperlex.classification.v6.core_gated_domain_mediation.v1",
+    "stage_a_text_only": true
+  },
+  "input_contract_hash": "a9d3016a5c6376890b6cb7eb3753c58553ad227da9f310d3b85ace0f0e437965",
+  "label_schema": {
+    "domain_labels": [
+      "domain.gaming",
+      "domain.gambling",
+      "domain.crypto",
+      "domain.sports",
+      "domain.entertainment",
+      "domain.fashion",
+      "domain.workplace",
+      "domain.politics",
+      "domain.spiritual",
+      "domain.technology",
+      "domain.technology.ai_discourse"
+    ],
+    "function_labels": [
+      "function.evaluative_stance",
+      "function.relational_intimacy",
+      "function.conflictive_force",
+      "function.memetic_form"
+    ],
+    "function_role": "OPTIONAL_ANNOTATION_ONLY_NOT_SCORED",
+    "mediation_labels": [
+      "mediation.internet_register"
+    ],
+    "ontology_version": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+    "semantics": "label_id_stable_no_display_string_lookup",
+    "structure": "HIERARCHICAL_MULTI_LABEL"
+  },
+  "label_schema_hash": "d4e76b88d9ff859c62cf0f38c26dbda2a17e04ea81070c5061a20b37e674efbb",
+  "ontology_binding_sha256": "d77a5794e5ed83d25497aeba80db7e3da2b91cfb61f4316d20af54d4e5f2afbb",
+  "ontology_hash": "ab717759a2ba93a8c91c776a084a497355e1879d2548746605bb0701ed79c2a4",
+  "ontology_version": "HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL",
+  "pinned_before_acquisition": true,
+  "pipeline_candidate_ref": "HYPERLEX_V6_CORE_PRODUCT_PACKAGE_V1",
+  "structure": "HIERARCHICAL_MULTI_LABEL"
+}

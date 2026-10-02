@@ -1,0 +1,130 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-CORE-QUALIFICATION-SURFACE-001",
+  "FUNCTION_role": "ADVISORY_ONLY_NON_BLOCKING",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "PHASE_RULE": "BUILD_AND_SEAL_FRESH_V6_CORE_QUALIFICATION_SURFACE",
+  "QUALIFICATION_ID": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+  "V6_CORE_PRODUCT_CANDIDATE_MUTATED": false,
+  "agreement_stability": "QUALIFICATION_GOLD_STABLE",
+  "cardinality": {
+    "0": 474,
+    "1": 197,
+    "2": 76,
+    "3+": 14
+  },
+  "co_label": {
+    "domain+function+mediation_advisory": 2,
+    "domain+function_advisory": 2,
+    "domain+mediation": 21
+  },
+  "code_revision": "5df29714e4c1086ae96d5ebf27367eec228d717a",
+  "coverage_sufficient": true,
+  "disjointness_pass": true,
+  "domain_supports": {
+    "domain.crypto": 4,
+    "domain.entertainment": 44,
+    "domain.fashion": 6,
+    "domain.gambling": 9,
+    "domain.gaming": 36,
+    "domain.politics": 65,
+    "domain.spiritual": 1,
+    "domain.sports": 112,
+    "domain.technology": 31,
+    "domain.technology.ai_discourse": 3,
+    "domain.workplace": 53
+  },
+  "evaluation_spent": "UNSPENT",
+  "forbidden_overlap": 0,
+  "function_supports": {
+    "function.conflictive_force": 14,
+    "function.evaluative_stance": 0,
+    "function.memetic_form": 0,
+    "function.relational_intimacy": 7
+  },
+  "gates": {
+    "FUNCTION_in_pass_fail": false,
+    "chosen_before_qual_scoring": true,
+    "gates": {
+      "DOMAIN_macro_f1_min": 0.28,
+      "FUNCTION_in_pass_fail": false,
+      "FUNCTION_role": "ADVISORY_ONLY_NON_BLOCKING",
+      "MEDIATION_macro_f1_min": 0.28,
+      "QUAL_002_status": "EVALUATION_SPENT",
+      "QUAL_003_status": "EVALUATION_SPENT",
+      "QUAL_CORE_id": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+      "chosen_before_qual_open": true,
+      "core_system_macro_f1_min": 0.3,
+      "hierarchy_violation_max": 0.02,
+      "mean_predicted_labels_on_zero_gold_max": 1.0,
+      "retention_rule": "QUAL core_system_macro_f1(DOMAIN,MEDIATION) >= 0.30; FUNCTION does not affect pass/fail",
+      "zero_label_exact_rejection_min": 0.8,
+      "zero_label_false_positive_rate_max": 0.2
+    },
+    "modified_in_this_phase": false,
+    "source": "HLX-CLASSIFICATION-V6-CORE-PRODUCT-HARDEN-001"
+  },
+  "gold_sha256": "edd767ade4a6fe81d1399fa16543808e2509ca2ef0b0ab58f50eb336f6fce881",
+  "historical": {
+    "QUAL_001": {
+      "id": "HYPERLEX_V6_QUALIFICATION_001",
+      "reuse_forbidden": true,
+      "status": "HISTORICAL_SEALED_UNINSPECTED"
+    },
+    "QUAL_002": {
+      "id": "HYPERLEX_V6_QUALIFICATION_002",
+      "reuse_forbidden": true,
+      "row_access": false,
+      "status": "EVALUATION_SPENT"
+    },
+    "QUAL_003": {
+      "id": "HYPERLEX_V6_QUALIFICATION_003",
+      "reuse_forbidden": true,
+      "row_access": false,
+      "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b",
+      "status": "EVALUATION_SPENT"
+    }
+  },
+  "identifiability_pass": true,
+  "identity_sha256": "6a3ecf5775ad3f40881fcdea4649ccaf6da36b123aef93a8f2645d5ef4f3dfff",
+  "length": {
+    "long": 711,
+    "max": 1280,
+    "medium": 50,
+    "min": 60,
+    "p50": 748,
+    "p90": 1204,
+    "short": 0
+  },
+  "low_qual_support": [
+    "domain.crypto",
+    "domain.fashion",
+    "domain.gambling",
+    "domain.spiritual",
+    "domain.technology.ai_discourse",
+    "function.conflictive_force",
+    "function.evaluative_stance",
+    "function.memetic_form",
+    "function.relational_intimacy"
+  ],
+  "manifest_sha256": "da967fc564c5b19f79715a78ab478d7882d80abc19947b1abaf260998c28f36f",
+  "max_source_family_share": 0.18922470433639949,
+  "mean_set_jaccard": 0.9991624790619765,
+  "mediation_supports": {
+    "mediation.internet_register": 27
+  },
+  "n_adjudicated": 21,
+  "n_annotators": 2,
+  "n_rows": 761,
+  "natural_share": 1.0,
+  "no_evidence_share": 0.6005256241787122,
+  "observed_share": 1.0,
+  "ontology_binding_sha256": "d77a5794e5ed83d25497aeba80db7e3da2b91cfb61f4316d20af54d4e5f2afbb",
+  "qualification_model_executions": 0,
+  "rows_sha256": "fefe8e4ed879487c5a690b45f9cb940fd5860186b0d75ce2977a615e12807f65",
+  "settled_at": "2026-10-02T09:07:35Z",
+  "stage_a": {
+    "EVIDENCE_PRESENT": 304,
+    "NO_EVIDENCE": 457
+  },
+  "zero_label_share": 0.6228646517739816
+}

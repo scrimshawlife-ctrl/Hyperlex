@@ -1,0 +1,10 @@
+{
+  "identifiable_or_unresolved_ok": 761,
+  "model_input": [
+    "text"
+  ],
+  "n": 761,
+  "pass": true,
+  "rejected_hidden_context": 0,
+  "rejected_identities_sample": []
+}

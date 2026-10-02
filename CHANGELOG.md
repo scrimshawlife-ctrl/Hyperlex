@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **V6 core qualification + release decision (Spec 007):** Fresh
+  `HYPERLEX_V6_CORE_QUALIFICATION_001` sealed (n=761, zero-share 0.623,
+  core agreement 1.0, overlap 0) then scored once on hardened package
+  `035e1b7e…`. QUAL core system **0.094** (DOMAIN 0.142 / MEDIATION 0.047),
+  zero-FP **0.213**, exact-reject **0.787**; REP retention
+  **SEVERE_GENERALIZATION_DROP**. Disposition
+  **`V6_CORE_QUALIFICATION_FAIL`**; release
+  **`V6_CORE_RELEASE_CANDIDATE_REJECTED`**; failure
+  `MIXED_CORE_GENERALIZATION_FAILURE`. FUNCTION advisory/non-blocking.
+  HUB publish still unauthorized. Next:
+  `REVIEW_V6_CORE_QUALIFICATION_FAILURE`. Receipt `20fcbda1…`.
+
 - **Harden V6 core product without required FUNCTION (Spec 007):** Freeze
   core package as evidence_gate + DOMAIN + MEDIATION. FUNCTION advisory /
   non-blocking only; memetic_form research-only. Cold-load + round-trip

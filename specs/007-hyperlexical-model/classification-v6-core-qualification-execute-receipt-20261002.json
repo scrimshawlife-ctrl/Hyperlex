@@ -1,0 +1,257 @@
+{
+  "CORE_QUALIFICATION_GATES": {
+    "DOMAIN_macro_f1_min": 0.28,
+    "FUNCTION_in_pass_fail": false,
+    "FUNCTION_role": "ADVISORY_ONLY_NON_BLOCKING",
+    "MEDIATION_macro_f1_min": 0.28,
+    "QUAL_002_status": "EVALUATION_SPENT",
+    "QUAL_003_status": "EVALUATION_SPENT",
+    "QUAL_CORE_id": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+    "chosen_before_qual_open": true,
+    "core_system_macro_f1_min": 0.3,
+    "hierarchy_violation_max": 0.02,
+    "mean_predicted_labels_on_zero_gold_max": 1.0,
+    "retention_rule": "QUAL core_system_macro_f1(DOMAIN,MEDIATION) >= 0.30; FUNCTION does not affect pass/fail",
+    "zero_label_exact_rejection_min": 0.8,
+    "zero_label_false_positive_rate_max": 0.2
+  },
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-CORE-QUALIFICATION-EXECUTE-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "REVIEW_V6_CORE_QUALIFICATION_FAILURE",
+  "PACKAGE_ID": "HYPERLEX_V6_CORE_PRODUCT_PACKAGE_V1",
+  "PACKAGE_SHA256": "035e1b7e21e97ed36f79750f1f643262540fba1546f488af2a0af04e8a7c1605",
+  "PHASE_RULE": "EXECUTE_V6_CORE_QUALIFICATION_ONCE",
+  "QUALIFICATION_DISPOSITION": "V6_CORE_QUALIFICATION_FAIL",
+  "QUALIFICATION_ID": "HYPERLEX_V6_CORE_QUALIFICATION_001",
+  "QUALIFICATION_STATE": "EVALUATION_SPENT",
+  "RELEASE_CANDIDATE_POINTER": null,
+  "RELEASE_ELIGIBLE": false,
+  "RELEASE_OUTCOME": "V6_CORE_RELEASE_CANDIDATE_REJECTED",
+  "RESULT_ID": "HYPERLEX_V6_CORE_QUALIFICATION_001_RESULT",
+  "SYSTEM_CORE_QUALIFICATION_RECEIPT_SHA256": "20fcbda1dd6e8794c7ab7ca61213b6995768f53c0857a4a19b83dc7aa1f220b1",
+  "code_revision": "5df29714e4c1086ae96d5ebf27367eec228d717a",
+  "cold_load_ok": true,
+  "encoder_state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+  "encoder_trainable": 0,
+  "evaluation_spent": true,
+  "failure_class": "MIXED_CORE_GENERALIZATION_FAILURE",
+  "function_advisory": {
+    "blocking": false,
+    "macro_f1": 0.0,
+    "micro_f1": 0.0,
+    "role": "ADVISORY_ONLY"
+  },
+  "gate_eval": {
+    "FUNCTION_affects_pass_fail": false,
+    "gates": {
+      "DOMAIN_macro_f1": {
+        "pass": false,
+        "threshold": 0.28,
+        "value": 0.1422285367322818
+      },
+      "MEDIATION_macro_f1": {
+        "pass": false,
+        "threshold": 0.28,
+        "value": 0.046511627906976744
+      },
+      "core_system_macro_f1": {
+        "pass": false,
+        "threshold": 0.3,
+        "value": 0.09437008231962928
+      },
+      "hierarchy_violation": {
+        "pass": true,
+        "threshold": 0.02,
+        "value": 0.0
+      },
+      "mean_predicted_labels_on_zero_gold": {
+        "advisory": false,
+        "pass": true,
+        "threshold": 1.0,
+        "value": 0.45569620253164556
+      },
+      "zero_label_exact_rejection": {
+        "pass": false,
+        "threshold": 0.8,
+        "value": 0.7869198312236287
+      },
+      "zero_label_false_positive_rate": {
+        "pass": false,
+        "threshold": 0.2,
+        "value": 0.21308016877637131
+      }
+    },
+    "pass": false
+  },
+  "limitations": [
+    "FUNCTION is not release-qualified as a required capability",
+    "memetic_form is research-only",
+    "contextual pragmatic inference is outside core text-only scope",
+    "qualification evidence applies to the final core contract only",
+    "not validation for prior V5/V6 experimental configurations",
+    "HUB_PUBLISH_AUTHORIZED remains false unless separately authorized"
+  ],
+  "metrics": {
+    "DOMAIN_macro_f1": 0.1422285367322818,
+    "DOMAIN_micro_f1": 0.20989143546441497,
+    "FUNCTION_advisory_macro_f1": 0.0,
+    "FUNCTION_advisory_micro_f1": 0.0,
+    "MEDIATION_macro_f1": 0.046511627906976744,
+    "MEDIATION_micro_f1": 0.046511627906976744,
+    "core_system_macro_f1": 0.09437008231962928,
+    "gate_reject_rate": 0.6373193166885677,
+    "hierarchy_corrections": 10,
+    "hierarchy_violation_rate": 0.0,
+    "jaccard": 0.5425552218259182,
+    "length_bands": {
+      "long": 730,
+      "medium": 31,
+      "short": 0
+    },
+    "mean_predicted_labels_on_zero_gold": 0.45569620253164556,
+    "multi_label_core_macro_f1": 0.14769961883423868,
+    "n": 761,
+    "raw_hierarchy_violation_rate": 0.013140604467805518,
+    "sample_f1": 0.5558048098783973,
+    "single_label_core_macro_f1": 0.07258681757114359,
+    "source_family_counts": {
+      "v6_corequal001_wiki_extract_none:algae": 1,
+      "v6_corequal001_wiki_extract_none:arachnology": 1,
+      "v6_corequal001_wiki_extract_none:archaeology": 1,
+      "v6_corequal001_wiki_extract_none:astronomy": 1,
+      "v6_corequal001_wiki_extract_none:bacteria": 5,
+      "v6_corequal001_wiki_extract_none:botany": 4,
+      "v6_corequal001_wiki_extract_none:bryology": 2,
+      "v6_corequal001_wiki_extract_none:cartography": 7,
+      "v6_corequal001_wiki_extract_none:chemistry": 2,
+      "v6_corequal001_wiki_extract_none:cnidaria": 1,
+      "v6_corequal001_wiki_extract_none:geography_lists": 40,
+      "v6_corequal001_wiki_extract_none:geology": 4,
+      "v6_corequal001_wiki_extract_none:glaciology": 2,
+      "v6_corequal001_wiki_extract_none:herpetology": 3,
+      "v6_corequal001_wiki_extract_none:hydrology": 2,
+      "v6_corequal001_wiki_extract_none:ichthyology": 3,
+      "v6_corequal001_wiki_extract_none:lichenology": 3,
+      "v6_corequal001_wiki_extract_none:malacology": 1,
+      "v6_corequal001_wiki_extract_none:mineralogy": 8,
+      "v6_corequal001_wiki_extract_none:minerals": 3,
+      "v6_corequal001_wiki_extract_none:mycology": 2,
+      "v6_corequal001_wiki_extract_none:numismatics": 2,
+      "v6_corequal001_wiki_extract_none:oceanography": 2,
+      "v6_corequal001_wiki_extract_none:optics": 5,
+      "v6_corequal001_wiki_extract_none:organic_chemistry": 5,
+      "v6_corequal001_wiki_extract_none:paleontology": 1,
+      "v6_corequal001_wiki_extract_none:philately": 1,
+      "v6_corequal001_wiki_extract_none:rivers": 5,
+      "v6_corequal001_wiki_extract_none:sedimentology": 3,
+      "v6_corequal001_wiki_extract_none:soil_science": 3,
+      "v6_corequal001_wiki_extract_none:speleology": 1,
+      "v6_corequal001_wiki_extract_none:thermodynamics": 5,
+      "v6_corequal001_wiki_extract_none:trees": 5,
+      "v6_corequal001_wiki_extract_none:years": 2,
+      "v6_corequal001_wiki_extract_pos:betting-sharp": 6,
+      "v6_corequal001_wiki_extract_pos:crypto-degen": 4,
+      "v6_corequal001_wiki_extract_pos:gaming-meta": 11,
+      "v6_corequal001_wiki_extract_pos:internet-slang": 12,
+      "v6_corequal001_wiki_extract_pos:mediation": 6,
+      "v6_corequal001_wiki_extract_pos:music-entertainment": 2,
+      "v6_corequal001_wiki_extract_pos:politics-civic": 9,
+      "v6_corequal001_wiki_extract_pos:sports-competition": 16,
+      "v6_corequal001_wiki_extract_pos:technology-ai": 17,
+      "v6_corequal001_wiki_extract_pos:workplace-career": 11,
+      "v6_corequal001_wiki_random": 40,
+      "v6_corequal001_wiki_random_final": 94,
+      "v6_corequal001_wiki_random_fresh": 100,
+      "v6_corequal001_wiki_random_more": 144,
+      "v6_expand_wiki_culture:ai-native": 2,
+      "v6_expand_wiki_culture:conflict-aggression": 11,
+      "v6_expand_wiki_culture:internet-slang": 8,
+      "v6_expand_wiki_culture:memetic": 1,
+      "v6_expand_wiki_culture:politics-civic": 3,
+      "v6_expand_wiki_culture:relationship-dating": 3,
+      "v6_expand_wiki_culture:social-evaluation": 34,
+      "v6_expand_wiki_culture:technology-ai": 3,
+      "v6_expand_wikt_html:crypto-degen": 3,
+      "v6_expand_wikt_html:gaming-meta": 2,
+      "v6_expand_wikt_html:identity-affiliation": 8,
+      "v6_expand_wikt_html:memetic": 13,
+      "v6_expand_wikt_html:relationship-dating": 4,
+      "v6_expand_wikt_html:social-evaluation": 7,
+      "v6_expand_wikt_html:sports-competition": 8,
+      "v6_expand_wikt_html_multi:crypto-degen": 1,
+      "v6_expand_wikt_html_multi:gaming-meta": 1,
+      "v6_expand_wikt_html_multi:identity-affiliation": 1,
+      "v6_expand_wikt_html_multi:memetic": 3,
+      "v6_expand_wikt_html_multi:relationship-dating": 3,
+      "v6_expand_wikt_html_multi:social-evaluation": 1,
+      "v6_expand_wikt_html_multi:sports-competition": 1,
+      "v6_qual003_wiki_html_none:botany": 4,
+      "v6_qual003_wiki_html_none:cartography": 6,
+      "v6_qual003_wiki_html_none:chemistry": 2,
+      "v6_qual003_wiki_html_none:domain_irrelevant_infra": 2,
+      "v6_qual003_wiki_html_none:entomology": 2,
+      "v6_qual003_wiki_html_none:numismatics": 2,
+      "v6_qual003_wiki_html_none:oceanography": 4,
+      "v6_qual003_wiki_html_none:paleontology": 6,
+      "v6_qual003_wiki_html_none:philately": 4
+    },
+    "zero_label_exact_rejection": 0.7869198312236287,
+    "zero_label_false_positive_rate": 0.21308016877637131,
+    "zero_label_n": 474
+  },
+  "n_rows": 761,
+  "qual_seal_sha256": "1c36342ea3dcc68e6b70befebf678e378dd56655b8129fd7125f9c421f7c8c27",
+  "qualification_model_executions": 1,
+  "retention": {
+    "DOMAIN": {
+      "absolute_degradation": 0.2125469064985021,
+      "qual": 0.1422285367322818,
+      "relative_retention": 0.4008973547804467,
+      "rep": 0.3547754432307839
+    },
+    "MEDIATION": {
+      "absolute_degradation": 0.2955936352509181,
+      "qual": 0.046511627906976744,
+      "relative_retention": 0.1359570661896243,
+      "rep": 0.3421052631578948
+    },
+    "NONE": {
+      "exact_relative_retention": 0.8625663068843271,
+      "fp_retention_note": "lower_fp_is_better",
+      "qual_exact": 0.7869198312236287,
+      "qual_zero_fp": 0.21308016877637131,
+      "rep_exact": 0.9123006833712984,
+      "rep_zero_fp": 0.08769931662870159
+    },
+    "absolute_degradation": 0.25407027087471007,
+    "band": "SEVERE_GENERALIZATION_DROP",
+    "hard_gate": false,
+    "qual_core_system_macro_f1": 0.09437008231962928,
+    "relative_retention": 0.27083568666627783,
+    "rep_core_system_macro_f1": 0.34844035319433936
+  },
+  "round_trip_ok": true,
+  "runtime_contract": {
+    "diagnostics": [
+      "raw_scores",
+      "constraint_adjustments",
+      "artifact_version_identities"
+    ],
+    "input": [
+      "text"
+    ],
+    "optional_outputs": [
+      "function_labels[]"
+    ],
+    "optional_outputs_role": "advisory_only",
+    "required_outputs": [
+      "evidence_decision",
+      "domain_labels[]",
+      "mediation_labels[]"
+    ],
+    "runtime_schema": "hyperlex.classification.v6.core_gated_domain_mediation.v1"
+  },
+  "sealed_at": "2026-10-02T09:08:50Z"
+}

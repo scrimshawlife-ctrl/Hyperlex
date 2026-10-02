@@ -1,0 +1,11 @@
+{
+  "flagged_shortcuts": [
+    {
+      "label": "domain.gaming",
+      "n": 11,
+      "pmi": 4.4018276420612334,
+      "source_family": "v6_corequal001_wiki_extract_pos:gaming-meta"
+    }
+  ],
+  "note": "Descriptive only. Legitimate product association retained; flags mark strong source-label coupling."
+}
