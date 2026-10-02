@@ -1,0 +1,334 @@
+{
+  "DEV_V3_by_formulation": {
+    "FUNCTION_SEMANTIC_MATCHING": {
+      "DOMAIN_macro_f1": 0.25574007049416886,
+      "FUNCTION_macro_f1": 0.20387389081227336,
+      "MEDIATION_macro_f1": 0.15686274509803924,
+      "fun_thresholds": [
+        0.6,
+        0.625,
+        0.5499999999999999,
+        0.6
+      ],
+      "per_label_function": {
+        "function.conflictive_force": {
+          "f1": 0.14814814814814814,
+          "fn": 26,
+          "fp": 20,
+          "precision": 0.16666666666666666,
+          "recall": 0.13333333333333333,
+          "support": 30,
+          "tp": 4
+        },
+        "function.evaluative_stance": {
+          "f1": 0.10526315789473684,
+          "fn": 28,
+          "fp": 23,
+          "precision": 0.11538461538461539,
+          "recall": 0.0967741935483871,
+          "support": 31,
+          "tp": 3
+        },
+        "function.memetic_form": {
+          "f1": 0.3181818181818182,
+          "fn": 15,
+          "fp": 15,
+          "precision": 0.3181818181818182,
+          "recall": 0.3181818181818182,
+          "support": 22,
+          "tp": 7
+        },
+        "function.relational_intimacy": {
+          "f1": 0.24390243902439024,
+          "fn": 17,
+          "fp": 14,
+          "precision": 0.2631578947368421,
+          "recall": 0.22727272727272727,
+          "support": 22,
+          "tp": 5
+        }
+      },
+      "positive_only_system_macro_f1": 0.2237284777646867,
+      "system_macro_f1": 0.2054922354681605,
+      "zero_label_false_positive_rate": 0.1157556270096463
+    },
+    "HYBRID_VERIFIER": {
+      "DOMAIN_macro_f1": 0.25574007049416886,
+      "FUNCTION_macro_f1": 0.3286292519517588,
+      "MEDIATION_macro_f1": 0.15686274509803924,
+      "fun_thresholds": [
+        0.675,
+        0.95,
+        0.9,
+        0.9249999999999999
+      ],
+      "per_label_function": {
+        "function.conflictive_force": {
+          "f1": 0.380952380952381,
+          "fn": 18,
+          "fp": 21,
+          "precision": 0.36363636363636365,
+          "recall": 0.4,
+          "support": 30,
+          "tp": 12
+        },
+        "function.evaluative_stance": {
+          "f1": 0.3225806451612903,
+          "fn": 21,
+          "fp": 21,
+          "precision": 0.3225806451612903,
+          "recall": 0.3225806451612903,
+          "support": 31,
+          "tp": 10
+        },
+        "function.memetic_form": {
+          "f1": 0.2631578947368421,
+          "fn": 17,
+          "fp": 11,
+          "precision": 0.3125,
+          "recall": 0.22727272727272727,
+          "support": 22,
+          "tp": 5
+        },
+        "function.relational_intimacy": {
+          "f1": 0.34782608695652173,
+          "fn": 14,
+          "fp": 16,
+          "precision": 0.3333333333333333,
+          "recall": 0.36363636363636365,
+          "support": 22,
+          "tp": 8
+        }
+      },
+      "positive_only_system_macro_f1": 0.27288441344801884,
+      "system_macro_f1": 0.24707735584798896,
+      "zero_label_false_positive_rate": 0.12540192926045016
+    },
+    "INDEPENDENT_BINARY_VERIFIERS": {
+      "DOMAIN_macro_f1": 0.25574007049416886,
+      "FUNCTION_macro_f1": 0.34677003578161675,
+      "MEDIATION_macro_f1": 0.15686274509803924,
+      "fun_thresholds": [
+        0.825,
+        0.95,
+        0.7999999999999999,
+        0.22499999999999998
+      ],
+      "per_label_function": {
+        "function.conflictive_force": {
+          "f1": 0.4571428571428572,
+          "fn": 14,
+          "fp": 24,
+          "precision": 0.4,
+          "recall": 0.5333333333333333,
+          "support": 30,
+          "tp": 16
+        },
+        "function.evaluative_stance": {
+          "f1": 0.28571428571428575,
+          "fn": 22,
+          "fp": 23,
+          "precision": 0.28125,
+          "recall": 0.2903225806451613,
+          "support": 31,
+          "tp": 9
+        },
+        "function.memetic_form": {
+          "f1": 0.3037974683544304,
+          "fn": 10,
+          "fp": 45,
+          "precision": 0.21052631578947367,
+          "recall": 0.5454545454545454,
+          "support": 22,
+          "tp": 12
+        },
+        "function.relational_intimacy": {
+          "f1": 0.3404255319148936,
+          "fn": 14,
+          "fp": 17,
+          "precision": 0.32,
+          "recall": 0.36363636363636365,
+          "support": 22,
+          "tp": 8
+        }
+      },
+      "positive_only_system_macro_f1": 0.28325599776387295,
+      "system_macro_f1": 0.25312428379127494,
+      "zero_label_false_positive_rate": 0.15755627009646303
+    }
+  },
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "REASSESS_V6_FUNCTION_TASK_SIGNAL",
+  "OUTCOME": "V6_FUNCTION_PREDICTION_PARTIAL",
+  "PHASE_RULE": "REDESIGN_V6_FUNCTION_PREDICTION",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "any_function_collapsed": false,
+  "baseline_REP_V3_live": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "FUNCTION_macro_f1": 0.2963761484570071,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "per_label_function": {
+      "function.conflictive_force": {
+        "f1": 0.3214285714285714,
+        "fn": 44,
+        "fp": 32,
+        "precision": 0.36,
+        "recall": 0.2903225806451613,
+        "support": 62,
+        "tp": 18
+      },
+      "function.evaluative_stance": {
+        "f1": 0.28915662650602403,
+        "fn": 39,
+        "fp": 20,
+        "precision": 0.375,
+        "recall": 0.23529411764705882,
+        "support": 51,
+        "tp": 12
+      },
+      "function.memetic_form": {
+        "f1": 0.26506024096385544,
+        "fn": 35,
+        "fp": 26,
+        "precision": 0.2972972972972973,
+        "recall": 0.2391304347826087,
+        "support": 46,
+        "tp": 11
+      },
+      "function.relational_intimacy": {
+        "f1": 0.30985915492957744,
+        "fn": 38,
+        "fp": 11,
+        "precision": 0.5,
+        "recall": 0.22448979591836735,
+        "support": 49,
+        "tp": 11
+      }
+    },
+    "positive_only_system_macro_f1": 0.3581232215258432,
+    "system_macro_f1": 0.33108561828189526,
+    "zero_label_exact_rejection": 0.9123006833712984,
+    "zero_label_false_positive_rate": 0.08769931662870159
+  },
+  "baseline_REP_V3_sealed": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "FUNCTION_macro_f1": 0.2963761484570071,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "positive_only_system_macro_f1": 0.3581232215258432,
+    "system_macro_f1": 0.33108561828189526,
+    "zero_label_exact_rejection": 0.9123006833712984,
+    "zero_label_false_positive_rate": 0.08769931662870159
+  },
+  "candidate_REP_V3": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "FUNCTION_macro_f1": 0.29381283709203987,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "formulation": "INDEPENDENT_BINARY_VERIFIERS",
+    "fun_thresholds": [
+      0.825,
+      0.95,
+      0.7999999999999999,
+      0.22499999999999998
+    ],
+    "function_by_domain": {
+      "__NONE__": 0.5324033445468286,
+      "domain.entertainment": 0.27976190476190477,
+      "domain.fashion": 0.0,
+      "domain.gaming": 0.575,
+      "domain.politics": 0.12698412698412698,
+      "domain.spiritual": 0.0,
+      "domain.sports": 0.16666666666666666,
+      "domain.technology": 0.18749999999999997,
+      "domain.technology.ai_discourse": 0.0,
+      "domain.workplace": 0.29166666666666663
+    },
+    "function_by_length": {
+      "long": 0.3642747015549976,
+      "medium": 0.5199277618632457,
+      "short": 0.558968808968809
+    },
+    "function_by_source": {
+      "encyclopedic_positive": 0.2278295376121463,
+      "wiktionary_sense": 0.5439083625808936
+    },
+    "per_label_function": {
+      "function.conflictive_force": {
+        "f1": 0.32592592592592595,
+        "fn": 40,
+        "fp": 51,
+        "precision": 0.3013698630136986,
+        "recall": 0.3548387096774194,
+        "support": 62,
+        "tp": 22
+      },
+      "function.evaluative_stance": {
+        "f1": 0.23880597014925375,
+        "fn": 35,
+        "fp": 67,
+        "precision": 0.1927710843373494,
+        "recall": 0.3137254901960784,
+        "support": 51,
+        "tp": 16
+      },
+      "function.memetic_form": {
+        "f1": 0.26168224299065423,
+        "fn": 18,
+        "fp": 140,
+        "precision": 0.16666666666666666,
+        "recall": 0.6086956521739131,
+        "support": 46,
+        "tp": 28
+      },
+      "function.relational_intimacy": {
+        "f1": 0.3488372093023256,
+        "fn": 34,
+        "fp": 22,
+        "precision": 0.40540540540540543,
+        "recall": 0.30612244897959184,
+        "support": 49,
+        "tp": 15
+      }
+    },
+    "positive_only_system_macro_f1": 0.36082310170056114,
+    "system_macro_f1": 0.33023118116023953,
+    "zero_label_exact_rejection": 0.8917995444191344,
+    "zero_label_false_positive_rate": 0.1082004555808656
+  },
+  "deltas_vs_live_baseline": {
+    "function": -0.0025633113649672357,
+    "positive_only": 0.00269988017471795,
+    "system": -0.0008544371216557267
+  },
+  "deltas_vs_sealed": {
+    "function": -0.0025633113649672357,
+    "positive_only": 0.00269988017471795,
+    "system": -0.0008544371216557267
+  },
+  "frozen": {
+    "DOMAIN_HEAD_MUTATED": false,
+    "MEDIATION_HEAD_MUTATED": false,
+    "NONE_GATE_MUTATED": false,
+    "encoder": "sentence-transformers/msmarco-distilbert-base-v4",
+    "function_bundle_sha256": "f60a3440b19e4d38e1a5b5233438199f30fe73c0f96024a8e341dd7d846d0702",
+    "gate_sha256": "b7d9381613452944082ba011b950cd74de681de3341fc379bc84a4037f9dc86a",
+    "gate_threshold": 0.22499999999999998,
+    "old_heads_sha256": "2a0724b5a22b67523d56b8a0117533e4d4d63bf2f775f78097735f9518b64942",
+    "package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a"
+  },
+  "none_preserved": true,
+  "selected_formulation": "INDEPENDENT_BINARY_VERIFIERS",
+  "selection": {
+    "dev_metrics": {
+      "FUNCTION_macro_f1": 0.34677003578161675,
+      "positive_only_system_macro_f1": 0.28325599776387295,
+      "system_macro_f1": 0.25312428379127494
+    },
+    "ranking": [
+      "INDEPENDENT_BINARY_VERIFIERS",
+      "HYBRID_VERIFIER",
+      "FUNCTION_SEMANTIC_MATCHING"
+    ],
+    "selected": "INDEPENDENT_BINARY_VERIFIERS"
+  }
+}

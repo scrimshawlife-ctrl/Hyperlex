@@ -1,0 +1,113 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-FUNCTION-PREDICTION-REDESIGN-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NO_FUNCTION_semantics": "absence_of_all_function_labels_not_fifth_class",
+  "PHASE_RULE": "REDESIGN_V6_FUNCTION_PREDICTION",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "RELEASE_ELIGIBLE": false,
+  "advancement": {
+    "function_macro_f1_min": 0.32637614845700713,
+    "none_zero_exact_min": 0.5,
+    "none_zero_fp_max": 0.35,
+    "per_function_collapse_max": 0.05,
+    "preserve_domain_mediation_heads": true,
+    "system_macro_f1_floor": 0.32108561828189525
+  },
+  "baseline_REP_V3": {
+    "DOMAIN_macro_f1": 0.3547754432307839,
+    "FUNCTION_macro_f1": 0.2963761484570071,
+    "MEDIATION_macro_f1": 0.3421052631578948,
+    "positive_only_system_macro_f1": 0.3581232215258432,
+    "system_macro_f1": 0.33108561828189526,
+    "zero_label_exact_rejection": 0.9123006833712984,
+    "zero_label_false_positive_rate": 0.08769931662870159
+  },
+  "evaluation": "REP_V3_once",
+  "forbidden": [
+    "retrain_encoder",
+    "modify_NONE_gate",
+    "retrain_DOMAIN",
+    "retrain_MEDIATION",
+    "change_ontology",
+    "tune_on_QUAL",
+    "use_QUAL_003_for_optimization",
+    "acquire_more_data_unless_support_deficiency_proven",
+    "head_width_optimizer_sweep"
+  ],
+  "formulations": [
+    "INDEPENDENT_BINARY_VERIFIERS",
+    "FUNCTION_SEMANTIC_MATCHING",
+    "HYBRID_VERIFIER"
+  ],
+  "frozen": {
+    "ANY_LABEL_threshold": 0.22499999999999998,
+    "domain_head": "old_axis_nonlinear_heads.pt",
+    "encoder_model_id": "sentence-transformers/msmarco-distilbert-base-v4",
+    "encoder_revision": "b2f66c95aba1481a880479165582020c2b9b64d7",
+    "mediation_head": "old_axis_nonlinear_heads.pt",
+    "ontology_changed": false,
+    "operating_package_id": "HYPERLEX_V6_OPERATING_PIPELINE_PACKAGE_CANDIDATE_V1",
+    "operating_package_sha256": "8ed1a4d45d37a4cfb1ad12c0c50fd37007daa772f3cdfee35cdc454055c3699a",
+    "thresholds_domain_mediation": {
+      "domain": [
+        0.25,
+        0.05,
+        0.1,
+        0.1,
+        0.3,
+        0.45,
+        0.2,
+        0.25,
+        0.3,
+        0.45,
+        0.25
+      ],
+      "mediation": [
+        0.35
+      ]
+    }
+  },
+  "function_definitions": {
+    "function.conflictive_force": "FUNCTION conflictive_force: hostility / violence / combat framing. Exclusions: metaphorical 'fight' for sports/competition without hostility sense.",
+    "function.evaluative_stance": "FUNCTION evaluative_stance: praise / insult / pejoration / prestige judgment. Exclusions: neutral description without stance; pure demonym without evaluation.",
+    "function.memetic_form": "FUNCTION memetic_form: meme format / macro / copypasta / template virality. Exclusions: any viral topic without memetic form; political content alone.",
+    "function.relational_intimacy": "FUNCTION relational_intimacy: romantic / dating / intimate partnership evidence. Exclusions: platonic affiliation; workplace 'partner'; evaluative insult alone."
+  },
+  "function_vocab": [
+    "function.evaluative_stance",
+    "function.relational_intimacy",
+    "function.conflictive_force",
+    "function.memetic_form"
+  ],
+  "historical_qual": {
+    "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_003",
+    "result_sha256": "b560dac2a8f80f45c6213dcd2ba25acdb2e0b7dde786da3ee0a5d6e3231ae724",
+    "role": "BLOCKED_SPENT_SURFACE",
+    "row_reuse_forbidden": true,
+    "seal_sha256": "ae07e94fd492b7ef6c53a2034428b921ff4ae371eadf4a5a2448c85aad1cd27b"
+  },
+  "negative_design": [
+    "other_function_positive",
+    "domain_positive_no_function",
+    "zero_label_NO_EVIDENCE",
+    "semantically_adjacent_function"
+  ],
+  "next_actions": [
+    "HARDEN_V6_FULL_OPERATING_PIPELINE_WITH_REDESIGNED_FUNCTION",
+    "REASSESS_V6_FUNCTION_TASK_SIGNAL"
+  ],
+  "outcomes": [
+    "V6_FUNCTION_PREDICTION_ADVANCE",
+    "V6_FUNCTION_PREDICTION_PARTIAL",
+    "V6_FUNCTION_PREDICTION_NO_ADVANCE"
+  ],
+  "schema": "hyperlex.classification.v6.function_prediction_redesign.v1",
+  "selection": "DEV_V3",
+  "surfaces": {
+    "DEV_SELECTION": "HYPERLEX_V6_DEV_SELECTION_V3",
+    "REPRESENTATIVE_VALIDATION": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V3",
+    "TRAIN": "HYPERLEX_V6_TRAIN_V3"
+  }
+}
