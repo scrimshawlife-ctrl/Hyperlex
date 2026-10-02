@@ -439,8 +439,20 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
             flush=True,
         )
         checkpoint()
-        rng.shuffle(raw)
-        return raw[: max(target, len(raw))][:target]
+        # Prefer multi-cue / mediation-bearing NATURAL rows when downsampling.
+        def _prio(row: dict) -> tuple[int, str]:
+            notes = str(row.get("notes") or "")
+            sf = str(row.get("source_family") or "")
+            multi = int(
+                "multicue" in notes.lower()
+                or "multi_cue" in notes.lower()
+                or "multicue" in sf.lower()
+            )
+            none = int("wiki_none" in sf or "mediawiki_wiki" in sf)
+            return (-multi, none, row.get("identity") or row.get("text") or "")
+
+        raw_sorted = sorted(raw, key=_prio)
+        return raw_sorted[:target]
 
     per_family = 55
     families = list(ACTIVE_FAMILY_VOCABULARY)

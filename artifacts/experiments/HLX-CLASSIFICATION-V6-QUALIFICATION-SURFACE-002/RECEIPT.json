@@ -1,0 +1,187 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-QUALIFICATION-SURFACE-002",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "EXECUTE_V6_FRESH_QUALIFICATION_ONCE",
+  "PHASE_RULE": "BUILD_AND_SEAL_FRESH_V6_QUALIFICATION_SURFACE",
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_002",
+  "QUALIFICATION_STATE": "SEALED_UNSCORED",
+  "QUAL_001_ROWS_INSPECTED": false,
+  "SURFACE_STATE": "V6_FRESH_QUALIFICATION_SURFACE_SEALED",
+  "V6_QUALIFICATION_SURFACE_002_RECEIPT_SHA256": "a63b22bbfd2eb3b707b43a0c86769c28bb7965ee560aaaec9899b3b96c6b59c2",
+  "V6_REPRESENTATION_CANDIDATE_MUTATED": false,
+  "agreement": {
+    "mean_set_jaccard": 0.99875,
+    "n_adjudicated": 4,
+    "stability": "QUALIFICATION_GOLD_STABLE",
+    "stage_kappa": 1.0,
+    "stage_raw_agreement": 1.0
+  },
+  "cardinality": {
+    "0": 748,
+    "1": 177,
+    "2": 71,
+    "3+": 8
+  },
+  "co_label": {
+    "domain+function": 13,
+    "domain+function+mediation": 4,
+    "domain+mediation": 24,
+    "function+mediation": 11
+  },
+  "code_revision": "e926d8420ef103595152169550709906a739f32c",
+  "coverage_sufficient": true,
+  "disjointness": {
+    "checks": [
+      "exact_identity",
+      "source_hash",
+      "normalized_text_hash",
+      "near_duplicate",
+      "blocked_surfaces_scanned"
+    ],
+    "forbidden_overlap": 0,
+    "n_blocked_paths": 55,
+    "pass": true
+  },
+  "domain_supports": {
+    "domain.crypto": 3,
+    "domain.entertainment": 14,
+    "domain.fashion": 23,
+    "domain.gambling": 34,
+    "domain.gaming": 41,
+    "domain.politics": 29,
+    "domain.spiritual": 6,
+    "domain.sports": 9,
+    "domain.technology": 52,
+    "domain.technology.ai_discourse": 8,
+    "domain.workplace": 13
+  },
+  "evaluation_spent": "UNSPENT",
+  "function_supports": {
+    "function.conflictive_force": 14,
+    "function.evaluative_stance": 5,
+    "function.memetic_form": 10,
+    "function.relational_intimacy": 32
+  },
+  "gate_binding": {
+    "axis_collapse": {
+      "derived_after_qual": false,
+      "min_axis_macro_f1": 0.1,
+      "no_complete_axis_collapse": true,
+      "source": "hardening_preregistration"
+    },
+    "error_taxonomy": [
+      "DOMAIN_FP",
+      "DOMAIN_FN",
+      "FUNCTION_FP",
+      "FUNCTION_FN",
+      "MEDIATION_FP",
+      "MEDIATION_FN",
+      "PARENT_CHILD_VIOLATION",
+      "CO_LABEL_OMISSION",
+      "OVERPREDICTION",
+      "ONTOLOGY_BOUNDARY_CASE"
+    ],
+    "gates": {
+      "chosen_before_qual_open": true,
+      "hierarchy_violation_max": 0.05,
+      "legacy_floor_system_macro_f1_min": 0.2,
+      "min_axis_macro_f1": 0.1,
+      "no_complete_axis_collapse": true,
+      "retention_rule": "QUAL_system_macro_f1 >= 0.30 (preregistered from REP\u22480.443)",
+      "system_macro_f1_min": 0.3
+    },
+    "metrics": [
+      "DOMAIN_macro_f1",
+      "DOMAIN_micro_f1",
+      "FUNCTION_macro_f1",
+      "FUNCTION_micro_f1",
+      "MEDIATION_macro_f1",
+      "MEDIATION_micro_f1",
+      "system_macro_f1",
+      "sample_f1",
+      "jaccard",
+      "hierarchy_violations",
+      "per_label_precision_recall_f1",
+      "single_label_vs_multi_label",
+      "source_slices",
+      "cardinality_slices"
+    ],
+    "modified_in_this_phase": false,
+    "retention_analysis_preregistration": {
+      "bands": {
+        "moderate_distribution_degradation": "0.70 <= retention_ratio < 0.85",
+        "release_quality_generalization": "retention_ratio >= 0.85",
+        "severe_qualification_collapse": "retention_ratio < 0.70"
+      },
+      "chosen_before_qual_scoring": true,
+      "hard_gate": false,
+      "rep_reference_system_macro_f1": 0.4322391331580084,
+      "report": [
+        "QUAL_over_REP_retention_ratio",
+        "absolute_drop",
+        "per_axis_drop",
+        "per_label_drop"
+      ]
+    },
+    "source": "HLX-CLASSIFICATION-V6-SEMANTIC-PIPELINE-HARDEN-001"
+  },
+  "hashes": {
+    "disjointness_sha256": "21e0bb46fbca77f7c249a8a6a659d1df564bdddc5b2e4e3f0129049ce23f2faf",
+    "gold_sha256": "6d1790e61e71c09222fa58e96bd41013fd70e53ec88f2af086c151648fca7f56",
+    "human_agreement_sha256": "e25e777e57c474c5fb279a8e58b5d7f44532627b0c073416a9698fe59c46786b",
+    "identifiability_sha256": "0783dde6059b9188a5ac3e5818d9c6bff095d0fbb9393896c9bc65d75f4d56fd",
+    "identity_sha256": "5ed8a2e00d08c9941bcfcd13a10af26ac1e05de7c55c7fb39942de353400b6b4",
+    "manifest_sha256": "294f2e6e3c67d04200c0ecec7c99abb1df4fc9950e09f35181e4428d73db6001",
+    "ontology_binding_sha256": "9148416df5858230db939cffcaceb80cc4b1d708ee2d7b312190b26481924eed",
+    "rows_sha256": "7ab221f2e9e076eedac881f6723c15b257cf68a0f0c4870893f601d0863989ae",
+    "seal_sha256": "62ed3827fb751c52d3e679ec4e1e2df2b20ea674326fa1dd9ee9567fe4883874"
+  },
+  "historical_qual": {
+    "id": "HYPERLEX_V6_QUALIFICATION_001",
+    "ontology_status": "ONTOLOGY_INCOMPATIBLE_FOR_FINAL_V6",
+    "role": "HISTORICAL_SECONDARY_ONLY",
+    "rows_inspected": false,
+    "status": "HISTORICAL_SEALED_UNINSPECTED",
+    "unsealed": false
+  },
+  "identifiability_pass": true,
+  "length": {
+    "long": 122,
+    "max": 1489,
+    "medium": 474,
+    "min": 13,
+    "p50": 73,
+    "p90": 231,
+    "short": 408
+  },
+  "low_qual_support": [
+    "domain.crypto",
+    "domain.entertainment",
+    "domain.fashion",
+    "domain.spiritual",
+    "domain.sports",
+    "domain.technology.ai_discourse",
+    "domain.workplace",
+    "function.conflictive_force",
+    "function.evaluative_stance",
+    "function.memetic_form"
+  ],
+  "mediation_supports": {
+    "mediation.internet_register": 54
+  },
+  "n_acquired_raw": 1200,
+  "n_annotators": 2,
+  "n_rows": 1004,
+  "natural_share": 1.0,
+  "observed_share": 1.0,
+  "ontology_binding_sha256": "9148416df5858230db939cffcaceb80cc4b1d708ee2d7b312190b26481924eed",
+  "qualification_model_executions": 0,
+  "settled_at": "2026-10-02T03:03:33Z",
+  "source_leakage_flags": 3,
+  "source_max_share": 0.0846613545816733,
+  "stage_a": {
+    "EVIDENCE_PRESENT": 256,
+    "NO_EVIDENCE": 748
+  },
+  "statistical_power_note": null
+}

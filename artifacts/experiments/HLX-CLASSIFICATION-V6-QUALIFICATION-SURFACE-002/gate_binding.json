@@ -1,0 +1,63 @@
+{
+  "axis_collapse": {
+    "derived_after_qual": false,
+    "min_axis_macro_f1": 0.1,
+    "no_complete_axis_collapse": true,
+    "source": "hardening_preregistration"
+  },
+  "error_taxonomy": [
+    "DOMAIN_FP",
+    "DOMAIN_FN",
+    "FUNCTION_FP",
+    "FUNCTION_FN",
+    "MEDIATION_FP",
+    "MEDIATION_FN",
+    "PARENT_CHILD_VIOLATION",
+    "CO_LABEL_OMISSION",
+    "OVERPREDICTION",
+    "ONTOLOGY_BOUNDARY_CASE"
+  ],
+  "gates": {
+    "chosen_before_qual_open": true,
+    "hierarchy_violation_max": 0.05,
+    "legacy_floor_system_macro_f1_min": 0.2,
+    "min_axis_macro_f1": 0.1,
+    "no_complete_axis_collapse": true,
+    "retention_rule": "QUAL_system_macro_f1 >= 0.30 (preregistered from REP\u22480.443)",
+    "system_macro_f1_min": 0.3
+  },
+  "metrics": [
+    "DOMAIN_macro_f1",
+    "DOMAIN_micro_f1",
+    "FUNCTION_macro_f1",
+    "FUNCTION_micro_f1",
+    "MEDIATION_macro_f1",
+    "MEDIATION_micro_f1",
+    "system_macro_f1",
+    "sample_f1",
+    "jaccard",
+    "hierarchy_violations",
+    "per_label_precision_recall_f1",
+    "single_label_vs_multi_label",
+    "source_slices",
+    "cardinality_slices"
+  ],
+  "modified_in_this_phase": false,
+  "retention_analysis_preregistration": {
+    "bands": {
+      "moderate_distribution_degradation": "0.70 <= retention_ratio < 0.85",
+      "release_quality_generalization": "retention_ratio >= 0.85",
+      "severe_qualification_collapse": "retention_ratio < 0.70"
+    },
+    "chosen_before_qual_scoring": true,
+    "hard_gate": false,
+    "rep_reference_system_macro_f1": 0.4322391331580084,
+    "report": [
+      "QUAL_over_REP_retention_ratio",
+      "absolute_drop",
+      "per_axis_drop",
+      "per_label_drop"
+    ]
+  },
+  "source": "HLX-CLASSIFICATION-V6-SEMANTIC-PIPELINE-HARDEN-001"
+}

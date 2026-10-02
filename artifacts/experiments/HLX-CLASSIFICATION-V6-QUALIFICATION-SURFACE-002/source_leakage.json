@@ -1,0 +1,23 @@
+{
+  "flagged_shortcuts": [
+    {
+      "label": "domain.gaming",
+      "n": 14,
+      "pmi": 2.56336547626272,
+      "source_family": "v6_qual002_wikt_multicue_search"
+    },
+    {
+      "label": "domain.politics",
+      "n": 13,
+      "pmi": 3.5660747635207066,
+      "source_family": "v6_qual002_wikt:politics-civic"
+    },
+    {
+      "label": "domain.fashion",
+      "n": 16,
+      "pmi": 4.021716843191661,
+      "source_family": "v6_qual002_wikt:fashion-aesthetic"
+    }
+  ],
+  "note": "Descriptive only. Legitimate product association retained; flags mark strong source-label coupling."
+}

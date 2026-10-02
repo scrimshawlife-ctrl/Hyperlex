@@ -1,0 +1,18 @@
+# BUILD_AND_SEAL_FRESH_V6_QUALIFICATION_SURFACE
+
+```text
+SURFACE_STATE = V6_FRESH_QUALIFICATION_SURFACE_SEALED
+QUALIFICATION_ID = HYPERLEX_V6_QUALIFICATION_002
+QUALIFICATION_STATE = SEALED_UNSCORED
+n_rows = 1004
+agreement_mean_set_jaccard = 0.9988
+stability = QUALIFICATION_GOLD_STABLE
+forbidden_overlap = 0
+model_executions = 0
+NEXT_ACTION = EXECUTE_V6_FRESH_QUALIFICATION_ONCE
+QUAL_001 = HISTORICAL_SEALED_UNINSPECTED / ONTOLOGY_INCOMPATIBLE_FOR_FINAL_V6
+```
+
+Model-blind dual annotation under `HYPERLEX_V6_FAMILY_ONTOLOGY_V1_FINAL`.
+Gates bound unchanged (system ≥ 0.30, hierarchy ≤ 0.05, no axis collapse).
+Rows private / metadata-only for development.
