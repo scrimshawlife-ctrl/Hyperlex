@@ -1,0 +1,2383 @@
+{
+  "BEST_MUTATED": false,
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-QUALIFICATION-FAILURE-SYSTEM-REVIEW-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "REDESIGN_V6_REPRESENTATIVE_VALIDATION_AND_DATA_DIVERSITY",
+  "PRIMARY_DIAGNOSIS": "REPRESENTATIVE_VALIDATION_OVERFIT",
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_002",
+  "QUALIFICATION_RESULT_SHA256": "73548c4331d7e471ba2251faef82fc38f64dde347999c0cf868a7b20b09f3fcd",
+  "QUALIFICATION_SURFACE_VALIDITY": "HARDER_BUT_VALID",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "REJECTED_MICRO_FIXES": {
+    "another_QUAL_surface": false,
+    "another_REP_tuned_encoder": false,
+    "another_nonlinear_head_variant": false,
+    "another_optimizer": false,
+    "another_seed_sweep": false,
+    "more_hidden_units": false,
+    "simple_TRAIN_expansion": false,
+    "threshold_retuning": false
+  },
+  "RELEASE_ELIGIBLE": false,
+  "REP_REPRESENTATIVENESS": "REPRESENTATIVE_VALIDATION_OVERFIT",
+  "REVIEW_ID": "HYPERLEX_V6_QUALIFICATION_FAILURE_SYSTEM_REVIEW_001",
+  "REVIEW_RULE": "REVIEW_V6_QUALIFICATION_FAILURE_AT_SYSTEM_LEVEL",
+  "SECONDARY_CONTRIBUTORS": [
+    "AXIS_SPECIFIC_GENERALIZATION_FAILURE",
+    "MULTI_LABEL_COMPOSITION_GENERALIZATION_FAILURE"
+  ],
+  "SYSTEM_REVIEW_RECEIPT_SHA256": "ed84ba874ca9382c96bb17d224a424c7ce51cc4f081dfaab46418a92c73119cd",
+  "THRESHOLDS_CHANGED": false,
+  "TRAIN": false,
+  "V6_DISPOSITION": "V6_REQUIRES_DATA_DISTRIBUTION_REDESIGN",
+  "audit": {
+    "axis_degradation": {
+      "domain": {
+        "QUAL": 0.23369414033478278,
+        "REP": 0.4462340945187385,
+        "absolute_delta": 0.21253995418395574,
+        "class": "SEVERE_DROP",
+        "retention": 0.5237030141921828
+      },
+      "failure_shape": "one_axis_collapse",
+      "function": {
+        "QUAL": 0.059348361918455377,
+        "REP": 0.40398668574898083,
+        "absolute_delta": 0.34463832383052545,
+        "class": "COLLAPSED",
+        "retention": 0.14690672740470406
+      },
+      "function_class": "COLLAPSED",
+      "mediation": {
+        "QUAL": 0.20869565217391303,
+        "REP": 0.391304347826087,
+        "absolute_delta": 0.18260869565217394,
+        "class": "SEVERE_DROP",
+        "retention": 0.5333333333333333
+      },
+      "system": {
+        "QUAL": 0.1885452902206466,
+        "REP": 0.4322391331580084,
+        "absolute_delta": 0.2436938429373618,
+        "class": "SEVERE_DROP",
+        "retention": 0.43620596969808006
+      }
+    },
+    "axis_encoder_hypothesis": {
+      "build_now": false,
+      "different_encoders_per_axis_justified_now": false,
+      "note": "Function collapse is real, but usable-REP excluded NONE and co-label compositions; fix representativeness before committing to per-axis encoders.",
+      "prior": "AXIS_SPECIFIC_REPRESENTATIONS_JUSTIFIED",
+      "shared_encoder_adequate": false
+    },
+    "axis_head_analysis": {
+      "domain": {
+        "class": "GEOMETRY_STABLE_CALIBRATION_SHIFTED",
+        "labels": [
+          {
+            "QUAL_margin": 0.17707812895293218,
+            "QUAL_neg_above_th": 0.03426791277258567,
+            "QUAL_neg_mean": 0.09834493205883577,
+            "QUAL_pos_above_th": 0.5121951219512195,
+            "QUAL_pos_mean": 0.27542306101176794,
+            "REP_margin": 0.07574081420898438,
+            "REP_neg_mean": 0.0843174010515213,
+            "REP_pos_mean": 0.16005821526050568,
+            "label": "domain.gaming",
+            "threshold": 0.25
+          },
+          {
+            "QUAL_margin": 0.13966565278653612,
+            "QUAL_neg_above_th": 0.04742268041237113,
+            "QUAL_neg_mean": 0.011071843956935631,
+            "QUAL_pos_above_th": 0.6470588235294118,
+            "QUAL_pos_mean": 0.15073749674347175,
+            "REP_margin": 0.12539079668931663,
+            "REP_neg_mean": 0.003469349117949605,
+            "REP_pos_mean": 0.12886014580726624,
+            "label": "domain.gambling",
+            "threshold": 0.05
+          },
+          {
+            "QUAL_margin": 0.034120665500968456,
+            "QUAL_neg_above_th": 0.024975024975024976,
+            "QUAL_neg_mean": 0.012743894372970108,
+            "QUAL_pos_above_th": 0.0,
+            "QUAL_pos_mean": 0.04686455987393856,
+            "REP_margin": 0.07276767957955599,
+            "REP_neg_mean": 0.005367654375731945,
+            "REP_pos_mean": 0.07813533395528793,
+            "label": "domain.crypto",
+            "threshold": 0.1
+          },
+          {
+            "QUAL_margin": -0.0025976429812221286,
+            "QUAL_neg_above_th": 0.2733668341708543,
+            "QUAL_neg_mean": 0.08223554028558484,
+            "QUAL_pos_above_th": 0.2222222222222222,
+            "QUAL_pos_mean": 0.07963789730436271,
+            "REP_margin": 0.1184249222278595,
+            "REP_neg_mean": 0.06352083384990692,
+            "REP_pos_mean": 0.18194575607776642,
+            "label": "domain.sports",
+            "threshold": 0.1
+          },
+          {
+            "QUAL_margin": 0.0784645601824451,
+            "QUAL_neg_above_th": 0.022222222222222223,
+            "QUAL_neg_mean": 0.06643424292393099,
+            "QUAL_pos_above_th": 0.14285714285714285,
+            "QUAL_pos_mean": 0.1448988031063761,
+            "REP_margin": 0.17425651848316193,
+            "REP_neg_mean": 0.06300024688243866,
+            "REP_pos_mean": 0.23725676536560059,
+            "label": "domain.entertainment",
+            "threshold": 0.3
+          },
+          {
+            "QUAL_margin": 0.5119871154412138,
+            "QUAL_neg_above_th": 0.017329255861365953,
+            "QUAL_neg_mean": 0.07191248669078532,
+            "QUAL_pos_above_th": 0.7391304347826086,
+            "QUAL_pos_mean": 0.5838996021319991,
+            "REP_margin": 0.22987529635429382,
+            "REP_neg_mean": 0.046056121587753296,
+            "REP_pos_mean": 0.2759314179420471,
+            "label": "domain.fashion",
+            "threshold": 0.45
+          },
+          {
+            "QUAL_margin": 0.02767207166969972,
+            "QUAL_neg_above_th": 0.09687184661957618,
+            "QUAL_neg_mean": 0.08183975831460298,
+            "QUAL_pos_above_th": 0.15384615384615385,
+            "QUAL_pos_mean": 0.1095118299843027,
+            "REP_margin": 0.22550414130091667,
+            "REP_neg_mean": 0.053243596106767654,
+            "REP_pos_mean": 0.2787477374076843,
+            "label": "domain.workplace",
+            "threshold": 0.2
+          },
+          {
+            "QUAL_margin": 0.17767056779865553,
+            "QUAL_neg_above_th": 0.046153846153846156,
+            "QUAL_neg_mean": 0.08881736486899451,
+            "QUAL_pos_above_th": 0.3793103448275862,
+            "QUAL_pos_mean": 0.26648793266765003,
+            "REP_margin": 0.18040498346090317,
+            "REP_neg_mean": 0.06961194425821304,
+            "REP_pos_mean": 0.2500169277191162,
+            "label": "domain.politics",
+            "threshold": 0.25
+          },
+          {
+            "QUAL_margin": 0.2542890518891951,
+            "QUAL_neg_above_th": 0.021042084168336674,
+            "QUAL_neg_mean": 0.06929575428484476,
+            "QUAL_pos_above_th": 0.6666666666666666,
+            "QUAL_pos_mean": 0.32358480617403984,
+            "REP_margin": 0.1633341684937477,
+            "REP_neg_mean": 0.053795404732227325,
+            "REP_pos_mean": 0.21712957322597504,
+            "label": "domain.spiritual",
+            "threshold": 0.3
+          },
+          {
+            "QUAL_margin": 0.3033788708563814,
+            "QUAL_neg_above_th": 0.06932773109243698,
+            "QUAL_neg_mean": 0.14901802880237536,
+            "QUAL_pos_above_th": 0.4423076923076923,
+            "QUAL_pos_mean": 0.45239689965875673,
+            "REP_margin": 0.34972047805786133,
+            "REP_neg_mean": 0.14685484766960144,
+            "REP_pos_mean": 0.49657532572746277,
+            "label": "domain.technology",
+            "threshold": 0.45
+          },
+          {
+            "QUAL_margin": 0.26968784538364404,
+            "QUAL_neg_above_th": 0.06325301204819277,
+            "QUAL_neg_mean": 0.069699077854991,
+            "QUAL_pos_above_th": 0.5,
+            "QUAL_pos_mean": 0.33938692323863506,
+            "REP_margin": 0.4242653138935566,
+            "REP_neg_mean": 0.061964791268110275,
+            "REP_pos_mean": 0.48623010516166687,
+            "label": "domain.technology.ai_discourse",
+            "threshold": 0.25
+          }
+        ],
+        "mean_score_all": 0.07737701231967588,
+        "none_row_any_positive_rate": 0.5334224598930482
+      },
+      "function": {
+        "class": "BOTH",
+        "labels": [
+          {
+            "QUAL_margin": -0.017134203076387314,
+            "QUAL_neg_above_th": 0.031031031031031032,
+            "QUAL_neg_mean": 0.06193520474622634,
+            "QUAL_pos_above_th": 0.0,
+            "QUAL_pos_mean": 0.044801001669839025,
+            "REP_margin": 0.23875384777784348,
+            "REP_neg_mean": 0.05474872142076492,
+            "REP_pos_mean": 0.2935025691986084,
+            "label": "function.evaluative_stance",
+            "threshold": 0.3
+          },
+          {
+            "QUAL_margin": 0.1988678261970241,
+            "QUAL_neg_above_th": 0.0205761316872428,
+            "QUAL_neg_mean": 0.05809037125603517,
+            "QUAL_pos_above_th": 0.125,
+            "QUAL_pos_mean": 0.25695819745305926,
+            "REP_margin": 0.23096272349357605,
+            "REP_neg_mean": 0.047856271266937256,
+            "REP_pos_mean": 0.2788189947605133,
+            "label": "function.relational_intimacy",
+            "threshold": 0.4
+          },
+          {
+            "QUAL_margin": 0.11262091666851086,
+            "QUAL_neg_above_th": 0.09090909090909091,
+            "QUAL_neg_mean": 0.06667043556201245,
+            "QUAL_pos_above_th": 0.21428571428571427,
+            "QUAL_pos_mean": 0.1792913522305233,
+            "REP_margin": 0.3074480667710304,
+            "REP_neg_mean": 0.040799252688884735,
+            "REP_pos_mean": 0.34824731945991516,
+            "label": "function.conflictive_force",
+            "threshold": 0.2
+          },
+          {
+            "QUAL_margin": 0.07954976434369199,
+            "QUAL_neg_above_th": 0.04124748490945674,
+            "QUAL_neg_mean": 0.0821888728857357,
+            "QUAL_pos_above_th": 0.1,
+            "QUAL_pos_mean": 0.1617386372294277,
+            "REP_margin": 0.2179103083908558,
+            "REP_neg_mean": 0.05969567224383354,
+            "REP_pos_mean": 0.27760598063468933,
+            "label": "function.memetic_form",
+            "threshold": 0.4
+          }
+        ],
+        "mean_score_all": 0.0693751777608388,
+        "none_row_any_positive_rate": 0.20320855614973263
+      },
+      "mediation": {
+        "class": "BOTH",
+        "labels": [
+          {
+            "QUAL_margin": 0.156711333236429,
+            "QUAL_neg_above_th": 0.05157894736842105,
+            "QUAL_neg_mean": 0.059839111833962066,
+            "QUAL_pos_above_th": 0.2222222222222222,
+            "QUAL_pos_mean": 0.21655044507039106,
+            "REP_margin": 0.22162166982889175,
+            "REP_neg_mean": 0.06428083032369614,
+            "REP_pos_mean": 0.2859025001525879,
+            "label": "mediation.internet_register",
+            "threshold": 0.35
+          }
+        ],
+        "mean_score_all": 0.06826780903990547,
+        "none_row_any_positive_rate": 0.04946524064171123
+      }
+    },
+    "calibration_counterfactual": {
+      "any_fixed_region_rescues_qual_while_retaining_rep": false,
+      "base_qual_system_macro": 0.16724605147571706,
+      "base_rep_system_macro": 0.4138417093646021,
+      "best_uniform_offset": {
+        "offset": -0.05,
+        "qual": 0.19210787539981078,
+        "qual_hier": 0.0099601593625498,
+        "rep": 0.38858062668508725,
+        "rep_hier": 0.005639097744360902,
+        "rescues_qual_and_keeps_rep": false
+      },
+      "classification": "STRUCTURAL_OVERLAP",
+      "hard_rule": "no discovered threshold becomes active",
+      "thresholds_adopted": false
+    },
+    "cardinality_shift": {
+      "QUAL_counts": {
+        "domain+function": 13,
+        "domain+function+mediation": 4,
+        "domain+mediation": 24,
+        "domain_only": 159,
+        "function+mediation": 11,
+        "function_only": 30,
+        "single": 177,
+        "three_plus": 8,
+        "two": 71,
+        "zero": 748
+      },
+      "QUAL_slice_metrics": {
+        "domain+function": {
+          "domain_macro_f1": 0.06666666666666667,
+          "function_macro_f1": 0.05555555555555555,
+          "hierarchy_violation": 0.0,
+          "jaccard": 0.06722689075630252,
+          "mediation_macro_f1": 0.0,
+          "n": 17,
+          "sample_f1": 0.09313725490196079,
+          "system_macro_f1": 0.05972222222222222
+        },
+        "domain_only": {
+          "domain_macro_f1": 0.4436568332914794,
+          "function_macro_f1": 0.0,
+          "hierarchy_violation": 0.0,
+          "jaccard": 0.3807726864330638,
+          "mediation_macro_f1": 0.0,
+          "n": 159,
+          "sample_f1": 0.42822701407607067,
+          "system_macro_f1": 0.3050140728878921
+        },
+        "function_only": {
+          "domain_macro_f1": 0.0,
+          "function_macro_f1": 0.20500000000000002,
+          "hierarchy_violation": 0.0,
+          "jaccard": 0.18333333333333332,
+          "mediation_macro_f1": 0.0,
+          "n": 30,
+          "sample_f1": 0.2,
+          "system_macro_f1": 0.051250000000000004
+        },
+        "mediation_positive": {
+          "domain_macro_f1": 0.183008658008658,
+          "function_macro_f1": 0.0,
+          "hierarchy_violation": 0.0,
+          "jaccard": 0.17191358024691358,
+          "mediation_macro_f1": 0.36363636363636365,
+          "n": 54,
+          "sample_f1": 0.2228395061728395,
+          "system_macro_f1": 0.1485457251082251
+        },
+        "single_label": {
+          "domain_macro_f1": 0.3992160817161773,
+          "function_macro_f1": 0.15896739130434784,
+          "hierarchy_violation": 0.0,
+          "jaccard": 0.32472423997847727,
+          "mediation_macro_f1": 0.2962962962962963,
+          "n": 177,
+          "sample_f1": 0.3628060263653484,
+          "system_macro_f1": 0.33272142252447734
+        },
+        "three_plus_label": {
+          "domain_macro_f1": 0.25757575757575757,
+          "function_macro_f1": 0.125,
+          "hierarchy_violation": 0.0,
+          "jaccard": 0.15119047619047618,
+          "mediation_macro_f1": 0.0,
+          "n": 8,
+          "sample_f1": 0.20267857142857143,
+          "system_macro_f1": 0.20833333333333331
+        },
+        "two_label": {
+          "domain_macro_f1": 0.3284269292894444,
+          "function_macro_f1": 0.041666666666666664,
+          "hierarchy_violation": 0.0,
+          "jaccard": 0.2504694835680751,
+          "mediation_macro_f1": 0.35555555555555557,
+          "n": 71,
+          "sample_f1": 0.307981220657277,
+          "system_macro_f1": 0.2584324027753819
+        },
+        "zero_label_gold": {
+          "domain_macro_f1": 0.0,
+          "function_macro_f1": 0.0,
+          "hierarchy_violation": 0.0,
+          "jaccard": 0.3516042780748663,
+          "mediation_macro_f1": 0.0,
+          "n": 748,
+          "sample_f1": 0.3516042780748663,
+          "system_macro_f1": 0.0
+        }
+      },
+      "REP_raw_counts": {
+        "domain+function": 0,
+        "domain+function+mediation": 0,
+        "domain+mediation": 1,
+        "domain_only": 348,
+        "function+mediation": 4,
+        "function_only": 141,
+        "single": 486,
+        "three_plus": 1,
+        "two": 45,
+        "zero": 718
+      },
+      "REP_robustness_domain_plus_function_n": 0,
+      "REP_robustness_slices": {
+        "domain_only": {
+          "domain_macro_f1": 0.47013652638531495,
+          "function_macro_f1": 0.0,
+          "hierarchy_violation": 0.0,
+          "mediation_macro_f1": 0.0,
+          "n": 348,
+          "system_macro_f1": 0.323218861889904
+        },
+        "domain_plus_function": {
+          "n": 0,
+          "system_macro_f1": null
+        },
+        "function_only": {
+          "domain_macro_f1": 0.0,
+          "function_macro_f1": 0.511151209868689,
+          "hierarchy_violation": 0.0,
+          "mediation_macro_f1": 0.0,
+          "n": 141,
+          "system_macro_f1": 0.12778780246717225
+        },
+        "mediation_positive": {
+          "domain_macro_f1": 0.0606060606060606,
+          "function_macro_f1": 0.125,
+          "hierarchy_violation": 0.0,
+          "mediation_macro_f1": 0.5901639344262295,
+          "n": 43,
+          "system_macro_f1": 0.10980191256830601
+        },
+        "multi_label_rows": {
+          "domain_macro_f1": 0.1998548868971404,
+          "function_macro_f1": 0.25,
+          "hierarchy_violation": 0.0,
+          "mediation_macro_f1": 0.2222222222222222,
+          "n": 46,
+          "system_macro_f1": 0.21378912363067293
+        },
+        "single_label_rows": {
+          "domain_macro_f1": 0.36943025669834967,
+          "function_macro_f1": 0.4091269841269841,
+          "hierarchy_violation": 0.0,
+          "mediation_macro_f1": 0.40963855421686746,
+          "n": 486,
+          "system_macro_f1": 0.38186745715041565
+        }
+      },
+      "REP_usable_counts": {
+        "domain+function": 0,
+        "domain+function+mediation": 0,
+        "domain+mediation": 1,
+        "domain_only": 348,
+        "function+mediation": 4,
+        "function_only": 141,
+        "single": 486,
+        "three_plus": 1,
+        "two": 45,
+        "zero": 0
+      },
+      "class": "SEVERE_SHIFT",
+      "qual_domain_plus_function_n": 13,
+      "rep_domain_plus_function_n": 0
+    },
+    "co_label_shift": {
+      "compositional_novelty_major": true,
+      "novel_pair_count_in_top40": 24,
+      "top_qual_pairs": [
+        {
+          "QUAL_support": 9,
+          "REP_support": 0,
+          "TRAIN_support": 1,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "domain.gaming",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 8,
+          "REP_support": 41,
+          "TRAIN_support": 91,
+          "class": "SEEN_BUT_FAILED",
+          "pair": [
+            "domain.technology",
+            "domain.technology.ai_discourse"
+          ]
+        },
+        {
+          "QUAL_support": 7,
+          "REP_support": 1,
+          "TRAIN_support": 0,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "function.relational_intimacy",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 7,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.gambling",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 7,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.gambling",
+            "domain.gaming"
+          ]
+        },
+        {
+          "QUAL_support": 5,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.gambling",
+            "domain.sports"
+          ]
+        },
+        {
+          "QUAL_support": 5,
+          "REP_support": 0,
+          "TRAIN_support": 4,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "domain.technology",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 4,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.politics",
+            "function.conflictive_force"
+          ]
+        },
+        {
+          "QUAL_support": 4,
+          "REP_support": 1,
+          "TRAIN_support": 2,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "domain.politics",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 4,
+          "REP_support": 2,
+          "TRAIN_support": 4,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "function.memetic_form",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 4,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.entertainment",
+            "function.memetic_form"
+          ]
+        },
+        {
+          "QUAL_support": 3,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.politics",
+            "domain.workplace"
+          ]
+        },
+        {
+          "QUAL_support": 3,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.workplace",
+            "function.conflictive_force"
+          ]
+        },
+        {
+          "QUAL_support": 3,
+          "REP_support": 0,
+          "TRAIN_support": 1,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "domain.workplace",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 3,
+          "REP_support": 0,
+          "TRAIN_support": 1,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "function.evaluative_stance",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 3,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.gaming",
+            "domain.sports"
+          ]
+        },
+        {
+          "QUAL_support": 2,
+          "REP_support": 1,
+          "TRAIN_support": 0,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "function.conflictive_force",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 2,
+          "REP_support": 0,
+          "TRAIN_support": 1,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "function.conflictive_force",
+            "function.memetic_form"
+          ]
+        },
+        {
+          "QUAL_support": 2,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.entertainment",
+            "domain.fashion"
+          ]
+        },
+        {
+          "QUAL_support": 2,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.gaming",
+            "function.relational_intimacy"
+          ]
+        },
+        {
+          "QUAL_support": 2,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.entertainment",
+            "function.conflictive_force"
+          ]
+        },
+        {
+          "QUAL_support": 2,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.technology",
+            "function.relational_intimacy"
+          ]
+        },
+        {
+          "QUAL_support": 2,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.gambling",
+            "domain.workplace"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.politics",
+            "function.memetic_form"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.entertainment",
+            "domain.technology"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 4,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "domain.technology.ai_discourse",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.entertainment",
+            "domain.gaming"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.entertainment",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.gaming",
+            "function.memetic_form"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.technology",
+            "function.memetic_form"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.entertainment",
+            "domain.gambling"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.entertainment",
+            "domain.workplace"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.gambling",
+            "function.conflictive_force"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 1,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "domain.fashion",
+            "mediation.internet_register"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 2,
+          "class": "LOW_SUPPORT",
+          "pair": [
+            "function.evaluative_stance",
+            "function.relational_intimacy"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.sports",
+            "function.relational_intimacy"
+          ]
+        },
+        {
+          "QUAL_support": 1,
+          "REP_support": 0,
+          "TRAIN_support": 0,
+          "class": "QUAL_NOVEL_COMBINATION",
+          "pair": [
+            "domain.fashion",
+            "function.memetic_form"
+          ]
+        }
+      ]
+    },
+    "constraint_contribution": {
+      "class": "COSMETIC",
+      "corrected": 2,
+      "degraded": 2,
+      "net_effect": 0,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.00199203187250996
+    },
+    "data_scale": {
+      "class": "DIVERSITY_EXPANSION_JUSTIFIED",
+      "evidence": [
+        "usable REP omitted NONE/NO_EVIDENCE mass that dominates QUAL",
+        "usable REP had 0 domain+function rows; QUAL has 17",
+        "error mass concentrated on zero-label overprediction"
+      ],
+      "recommend": "Rebuild representative validation to include NONE + co-label strata; do not merely enlarge positive-only TRAIN.",
+      "subclass": "MORE_OF_SAME_DATA_UNLIKELY_TO_HELP"
+    },
+    "distribution_shift": {
+      "cardinality": {
+        "QUAL": {
+          "0": 0.7450199203187251,
+          "1": 0.17629482071713148,
+          "2": 0.07071713147410359,
+          "3": 0.00796812749003984
+        },
+        "REP": {
+          "1": 0.9135338345864662,
+          "2": 0.08458646616541353,
+          "3": 0.0018796992481203006
+        },
+        "class": "SEVERE_SHIFT",
+        "l1": 0.7511083485606447
+      },
+      "composition": {
+        "QUAL": {
+          "domain": 0.15836653386454183,
+          "domain+function": 0.012948207171314742,
+          "domain+function+mediation": 0.00398406374501992,
+          "domain+mediation": 0.02390438247011952,
+          "function": 0.029880478087649404,
+          "function+mediation": 0.010956175298804782,
+          "mediation": 0.014940239043824702,
+          "none": 0.7450199203187251
+        },
+        "REP": {
+          "domain": 0.6541353383458647,
+          "domain+mediation": 0.0018796992481203006,
+          "function": 0.2650375939849624,
+          "function+mediation": 0.007518796992481203,
+          "mediation": 0.07142857142857142
+        },
+        "class": "SEVERE_SHIFT",
+        "l1": 0.7874142527633826
+      },
+      "label_prevalence": {
+        "class": "SEVERE_SHIFT",
+        "l1": 0.3958302129826558
+      },
+      "length": {
+        "QUAL": {
+          "long": 0.14442231075697212,
+          "medium": 0.449203187250996,
+          "short": 0.4063745019920319
+        },
+        "REP": {
+          "long": 0.2161654135338346,
+          "medium": 0.4548872180451128,
+          "short": 0.32894736842105265
+        },
+        "class": "REP_QUAL_DISTRIBUTION_MATCH",
+        "l1": 0.07742713357097925
+      },
+      "surface": {
+        "QUAL": {
+          "conversational": 0.21713147410358566,
+          "declarative": 0.3605577689243028,
+          "definition-like": 0.20219123505976094,
+          "internet-register": 0.08565737051792828,
+          "prose": 0.1344621513944223
+        },
+        "REP": {
+          "conversational": 0.14097744360902256,
+          "declarative": 0.31390977443609025,
+          "definition-like": 0.25,
+          "internet-register": 0.08082706766917293,
+          "prose": 0.21428571428571427
+        },
+        "class": "REP_QUAL_DISTRIBUTION_MATCH",
+        "l1": 0.127632327831531
+      },
+      "topic": {
+        "QUAL": {
+          "ai-native": 0.036852589641434265,
+          "betting-sharp": 0.036852589641434265,
+          "botany": 0.00199203187250996,
+          "cartography": 0.00199203187250996,
+          "chemistry": 0.00099601593625498,
+          "conflict-aggression": 0.035856573705179286,
+          "crypto-degen": 0.07370517928286853,
+          "fashion-aesthetic": 0.043824701195219126,
+          "gaming-meta": 0.08067729083665338,
+          "hydrology": 0.00298804780876494,
+          "identity-affiliation": 0.0398406374501992,
+          "internet-slang": 0.03386454183266932,
+          "memetic": 0.0398406374501992,
+          "mineralogy": 0.00398406374501992,
+          "multi_cue": 0.008964143426294821,
+          "music-entertainment": 0.04282868525896414,
+          "mycology": 0.030876494023904383,
+          "numismatics": 0.00298804780876494,
+          "oceanography": 0.00199203187250996,
+          "paleontology": 0.00298804780876494,
+          "politics-civic": 0.037848605577689244,
+          "regional-cultural": 0.029880478087649404,
+          "relationship-dating": 0.04282868525896414,
+          "social-evaluation": 0.03386454183266932,
+          "spiritual-mystic": 0.06274900398406374,
+          "sports-competition": 0.04183266932270916,
+          "technology-ai": 0.0846613545816733,
+          "v6_qual002_wikt_multicue_search": 0.05776892430278884,
+          "workplace-career": 0.0846613545816733
+        },
+        "REP": {
+          "ai-native": 0.07330827067669173,
+          "betting-sharp": 0.009398496240601503,
+          "conflict-aggression": 0.05827067669172932,
+          "crypto-degen": 0.005639097744360902,
+          "fashion-aesthetic": 0.07518796992481203,
+          "gaming-meta": 0.08834586466165413,
+          "internet-slang": 0.07142857142857142,
+          "memetic": 0.07142857142857142,
+          "music-entertainment": 0.06578947368421052,
+          "politics-civic": 0.05263157894736842,
+          "relationship-dating": 0.07894736842105263,
+          "social-evaluation": 0.06390977443609022,
+          "spiritual-mystic": 0.07706766917293233,
+          "sports-competition": 0.06954887218045112,
+          "technology-ai": 0.07330827067669173,
+          "workplace-career": 0.06578947368421052
+        },
+        "class": "MATERIAL_SHIFT",
+        "l1": 0.31299613575772095
+      },
+      "zero_label_share": {
+        "QUAL": 0.7450199203187251,
+        "REP_raw": 0.5744,
+        "REP_usable": 0.0,
+        "class": "SEVERE_SHIFT"
+      }
+    },
+    "encoder_state_hash": "586fe515fa74674a62563cedbf65262fbfe165f9edefed1928029865a12e0a53",
+    "error_concentration": {
+      "by_axis": {
+        "ranked": [
+          {
+            "key": [
+              "domain"
+            ],
+            "n": 832,
+            "share": 0.7184801381692574
+          },
+          {
+            "key": [
+              "function"
+            ],
+            "n": 235,
+            "share": 0.20293609671848015
+          },
+          {
+            "key": [
+              "mediation"
+            ],
+            "n": 91,
+            "share": 0.07858376511226252
+          }
+        ],
+        "smallest_set_for": {
+          "0.25": 1,
+          "0.5": 1,
+          "0.75": 2
+        },
+        "top": [
+          {
+            "key": [
+              "domain"
+            ],
+            "n": 832,
+            "share": 0.7184801381692574
+          },
+          {
+            "key": [
+              "function"
+            ],
+            "n": 235,
+            "share": 0.20293609671848015
+          },
+          {
+            "key": [
+              "mediation"
+            ],
+            "n": 91,
+            "share": 0.07858376511226252
+          }
+        ],
+        "total": 1158
+      },
+      "by_composition": {
+        "ranked": [
+          {
+            "key": [
+              "none"
+            ],
+            "n": 764,
+            "share": 0.6597582037996546
+          },
+          {
+            "key": [
+              "domain"
+            ],
+            "n": 199,
+            "share": 0.17184801381692574
+          },
+          {
+            "key": [
+              "domain+mediation"
+            ],
+            "n": 53,
+            "share": 0.045768566493955096
+          },
+          {
+            "key": [
+              "function"
+            ],
+            "n": 49,
+            "share": 0.04231433506044905
+          },
+          {
+            "key": [
+              "domain+function"
+            ],
+            "n": 36,
+            "share": 0.031088082901554404
+          },
+          {
+            "key": [
+              "function+mediation"
+            ],
+            "n": 21,
+            "share": 0.018134715025906734
+          },
+          {
+            "key": [
+              "mediation"
+            ],
+            "n": 20,
+            "share": 0.017271157167530225
+          },
+          {
+            "key": [
+              "domain+function+mediation"
+            ],
+            "n": 16,
+            "share": 0.013816925734024179
+          }
+        ],
+        "smallest_set_for": {
+          "0.25": 1,
+          "0.5": 1,
+          "0.75": 2
+        },
+        "top": [
+          {
+            "key": [
+              "none"
+            ],
+            "n": 764,
+            "share": 0.6597582037996546
+          },
+          {
+            "key": [
+              "domain"
+            ],
+            "n": 199,
+            "share": 0.17184801381692574
+          },
+          {
+            "key": [
+              "domain+mediation"
+            ],
+            "n": 53,
+            "share": 0.045768566493955096
+          },
+          {
+            "key": [
+              "function"
+            ],
+            "n": 49,
+            "share": 0.04231433506044905
+          },
+          {
+            "key": [
+              "domain+function"
+            ],
+            "n": 36,
+            "share": 0.031088082901554404
+          },
+          {
+            "key": [
+              "function+mediation"
+            ],
+            "n": 21,
+            "share": 0.018134715025906734
+          },
+          {
+            "key": [
+              "mediation"
+            ],
+            "n": 20,
+            "share": 0.017271157167530225
+          },
+          {
+            "key": [
+              "domain+function+mediation"
+            ],
+            "n": 16,
+            "share": 0.013816925734024179
+          }
+        ],
+        "total": 1158
+      },
+      "by_label_fp": {
+        "ranked": [
+          {
+            "key": [
+              "domain.sports"
+            ],
+            "n": 272,
+            "share": 0.2896698615548456
+          },
+          {
+            "key": [
+              "domain.workplace"
+            ],
+            "n": 96,
+            "share": 0.10223642172523961
+          },
+          {
+            "key": [
+              "function.conflictive_force"
+            ],
+            "n": 90,
+            "share": 0.09584664536741214
+          },
+          {
+            "key": [
+              "domain.technology"
+            ],
+            "n": 68,
+            "share": 0.0724174653887114
+          },
+          {
+            "key": [
+              "domain.technology.ai_discourse"
+            ],
+            "n": 63,
+            "share": 0.0670926517571885
+          },
+          {
+            "key": [
+              "mediation.internet_register"
+            ],
+            "n": 49,
+            "share": 0.05218317358892439
+          },
+          {
+            "key": [
+              "domain.gambling"
+            ],
+            "n": 46,
+            "share": 0.04898828541001065
+          },
+          {
+            "key": [
+              "domain.politics"
+            ],
+            "n": 45,
+            "share": 0.04792332268370607
+          },
+          {
+            "key": [
+              "function.memetic_form"
+            ],
+            "n": 41,
+            "share": 0.043663471778487756
+          },
+          {
+            "key": [
+              "domain.gaming"
+            ],
+            "n": 33,
+            "share": 0.03514376996805112
+          },
+          {
+            "key": [
+              "function.evaluative_stance"
+            ],
+            "n": 31,
+            "share": 0.03301384451544196
+          },
+          {
+            "key": [
+              "domain.crypto"
+            ],
+            "n": 25,
+            "share": 0.026624068157614485
+          },
+          {
+            "key": [
+              "domain.entertainment"
+            ],
+            "n": 22,
+            "share": 0.023429179978700747
+          },
+          {
+            "key": [
+              "domain.spiritual"
+            ],
+            "n": 21,
+            "share": 0.022364217252396165
+          },
+          {
+            "key": [
+              "function.relational_intimacy"
+            ],
+            "n": 20,
+            "share": 0.021299254526091587
+          },
+          {
+            "key": [
+              "domain.fashion"
+            ],
+            "n": 17,
+            "share": 0.01810436634717785
+          }
+        ],
+        "smallest_set_for": {
+          "0.25": 1,
+          "0.5": 4,
+          "0.75": 8
+        },
+        "top": [
+          {
+            "key": [
+              "domain.sports"
+            ],
+            "n": 272,
+            "share": 0.2896698615548456
+          },
+          {
+            "key": [
+              "domain.workplace"
+            ],
+            "n": 96,
+            "share": 0.10223642172523961
+          },
+          {
+            "key": [
+              "function.conflictive_force"
+            ],
+            "n": 90,
+            "share": 0.09584664536741214
+          },
+          {
+            "key": [
+              "domain.technology"
+            ],
+            "n": 68,
+            "share": 0.0724174653887114
+          },
+          {
+            "key": [
+              "domain.technology.ai_discourse"
+            ],
+            "n": 63,
+            "share": 0.0670926517571885
+          },
+          {
+            "key": [
+              "mediation.internet_register"
+            ],
+            "n": 49,
+            "share": 0.05218317358892439
+          },
+          {
+            "key": [
+              "domain.gambling"
+            ],
+            "n": 46,
+            "share": 0.04898828541001065
+          },
+          {
+            "key": [
+              "domain.politics"
+            ],
+            "n": 45,
+            "share": 0.04792332268370607
+          },
+          {
+            "key": [
+              "function.memetic_form"
+            ],
+            "n": 41,
+            "share": 0.043663471778487756
+          },
+          {
+            "key": [
+              "domain.gaming"
+            ],
+            "n": 33,
+            "share": 0.03514376996805112
+          },
+          {
+            "key": [
+              "function.evaluative_stance"
+            ],
+            "n": 31,
+            "share": 0.03301384451544196
+          },
+          {
+            "key": [
+              "domain.crypto"
+            ],
+            "n": 25,
+            "share": 0.026624068157614485
+          },
+          {
+            "key": [
+              "domain.entertainment"
+            ],
+            "n": 22,
+            "share": 0.023429179978700747
+          },
+          {
+            "key": [
+              "domain.spiritual"
+            ],
+            "n": 21,
+            "share": 0.022364217252396165
+          },
+          {
+            "key": [
+              "function.relational_intimacy"
+            ],
+            "n": 20,
+            "share": 0.021299254526091587
+          }
+        ],
+        "total": 939
+      },
+      "by_length": {
+        "ranked": [
+          {
+            "key": [
+              "medium"
+            ],
+            "n": 458,
+            "share": 0.3955094991364421
+          },
+          {
+            "key": [
+              "short"
+            ],
+            "n": 457,
+            "share": 0.3946459412780656
+          },
+          {
+            "key": [
+              "long"
+            ],
+            "n": 243,
+            "share": 0.20984455958549222
+          }
+        ],
+        "smallest_set_for": {
+          "0.25": 1,
+          "0.5": 2,
+          "0.75": 2
+        },
+        "top": [
+          {
+            "key": [
+              "medium"
+            ],
+            "n": 458,
+            "share": 0.3955094991364421
+          },
+          {
+            "key": [
+              "short"
+            ],
+            "n": 457,
+            "share": 0.3946459412780656
+          },
+          {
+            "key": [
+              "long"
+            ],
+            "n": 243,
+            "share": 0.20984455958549222
+          }
+        ],
+        "total": 1158
+      },
+      "by_topic": {
+        "ranked": [
+          {
+            "key": [
+              "v6_qual002_wikt_multicue_search"
+            ],
+            "n": 128,
+            "share": 0.11053540587219343
+          },
+          {
+            "key": [
+              "technology-ai"
+            ],
+            "n": 106,
+            "share": 0.09153713298791019
+          },
+          {
+            "key": [
+              "workplace-career"
+            ],
+            "n": 82,
+            "share": 0.07081174438687392
+          },
+          {
+            "key": [
+              "crypto-degen"
+            ],
+            "n": 66,
+            "share": 0.05699481865284974
+          },
+          {
+            "key": [
+              "relationship-dating"
+            ],
+            "n": 60,
+            "share": 0.05181347150259067
+          },
+          {
+            "key": [
+              "sports-competition"
+            ],
+            "n": 58,
+            "share": 0.05008635578583765
+          },
+          {
+            "key": [
+              "spiritual-mystic"
+            ],
+            "n": 53,
+            "share": 0.045768566493955096
+          },
+          {
+            "key": [
+              "gaming-meta"
+            ],
+            "n": 47,
+            "share": 0.04058721934369603
+          },
+          {
+            "key": [
+              "ai-native"
+            ],
+            "n": 46,
+            "share": 0.039723661485319514
+          },
+          {
+            "key": [
+              "music-entertainment"
+            ],
+            "n": 45,
+            "share": 0.038860103626943004
+          },
+          {
+            "key": [
+              "memetic"
+            ],
+            "n": 45,
+            "share": 0.038860103626943004
+          },
+          {
+            "key": [
+              "identity-affiliation"
+            ],
+            "n": 44,
+            "share": 0.037996545768566495
+          },
+          {
+            "key": [
+              "regional-cultural"
+            ],
+            "n": 44,
+            "share": 0.037996545768566495
+          },
+          {
+            "key": [
+              "conflict-aggression"
+            ],
+            "n": 44,
+            "share": 0.037996545768566495
+          },
+          {
+            "key": [
+              "social-evaluation"
+            ],
+            "n": 42,
+            "share": 0.03626943005181347
+          },
+          {
+            "key": [
+              "betting-sharp"
+            ],
+            "n": 39,
+            "share": 0.03367875647668394
+          },
+          {
+            "key": [
+              "internet-slang"
+            ],
+            "n": 31,
+            "share": 0.02677029360967185
+          },
+          {
+            "key": [
+              "mycology"
+            ],
+            "n": 30,
+            "share": 0.025906735751295335
+          },
+          {
+            "key": [
+              "politics-civic"
+            ],
+            "n": 29,
+            "share": 0.025043177892918825
+          },
+          {
+            "key": [
+              "fashion-aesthetic"
+            ],
+            "n": 19,
+            "share": 0.016407599309153715
+          },
+          {
+            "key": [
+              "multi_cue"
+            ],
+            "n": 18,
+            "share": 0.015544041450777202
+          },
+          {
+            "key": [
+              "mineralogy"
+            ],
+            "n": 16,
+            "share": 0.013816925734024179
+          },
+          {
+            "key": [
+              "paleontology"
+            ],
+            "n": 13,
+            "share": 0.011226252158894647
+          },
+          {
+            "key": [
+              "cartography"
+            ],
+            "n": 13,
+            "share": 0.011226252158894647
+          },
+          {
+            "key": [
+              "numismatics"
+            ],
+            "n": 11,
+            "share": 0.009499136442141624
+          },
+          {
+            "key": [
+              "hydrology"
+            ],
+            "n": 10,
+            "share": 0.008635578583765112
+          },
+          {
+            "key": [
+              "botany"
+            ],
+            "n": 9,
+            "share": 0.007772020725388601
+          },
+          {
+            "key": [
+              "oceanography"
+            ],
+            "n": 7,
+            "share": 0.006044905008635579
+          },
+          {
+            "key": [
+              "chemistry"
+            ],
+            "n": 3,
+            "share": 0.0025906735751295338
+          }
+        ],
+        "smallest_set_for": {
+          "0.25": 3,
+          "0.5": 8,
+          "0.75": 15
+        },
+        "top": [
+          {
+            "key": [
+              "v6_qual002_wikt_multicue_search"
+            ],
+            "n": 128,
+            "share": 0.11053540587219343
+          },
+          {
+            "key": [
+              "technology-ai"
+            ],
+            "n": 106,
+            "share": 0.09153713298791019
+          },
+          {
+            "key": [
+              "workplace-career"
+            ],
+            "n": 82,
+            "share": 0.07081174438687392
+          },
+          {
+            "key": [
+              "crypto-degen"
+            ],
+            "n": 66,
+            "share": 0.05699481865284974
+          },
+          {
+            "key": [
+              "relationship-dating"
+            ],
+            "n": 60,
+            "share": 0.05181347150259067
+          },
+          {
+            "key": [
+              "sports-competition"
+            ],
+            "n": 58,
+            "share": 0.05008635578583765
+          },
+          {
+            "key": [
+              "spiritual-mystic"
+            ],
+            "n": 53,
+            "share": 0.045768566493955096
+          },
+          {
+            "key": [
+              "gaming-meta"
+            ],
+            "n": 47,
+            "share": 0.04058721934369603
+          },
+          {
+            "key": [
+              "ai-native"
+            ],
+            "n": 46,
+            "share": 0.039723661485319514
+          },
+          {
+            "key": [
+              "music-entertainment"
+            ],
+            "n": 45,
+            "share": 0.038860103626943004
+          },
+          {
+            "key": [
+              "memetic"
+            ],
+            "n": 45,
+            "share": 0.038860103626943004
+          },
+          {
+            "key": [
+              "identity-affiliation"
+            ],
+            "n": 44,
+            "share": 0.037996545768566495
+          },
+          {
+            "key": [
+              "regional-cultural"
+            ],
+            "n": 44,
+            "share": 0.037996545768566495
+          },
+          {
+            "key": [
+              "conflict-aggression"
+            ],
+            "n": 44,
+            "share": 0.037996545768566495
+          },
+          {
+            "key": [
+              "social-evaluation"
+            ],
+            "n": 42,
+            "share": 0.03626943005181347
+          }
+        ],
+        "total": 1158
+      },
+      "by_zero_vs_positive": {
+        "positive_label_events": 394,
+        "zero_label_events": 764,
+        "zero_share": 0.6597582037996546
+      },
+      "diffuse_or_concentrated": "CONCENTRATED_ON_ZERO_LABEL_OVERPREDICTION",
+      "total_fp_fn_events": 1158
+    },
+    "error_decomposition": {
+      "counts": {
+        "CO_LABEL_OMISSION": 41,
+        "DOMAIN_FN": 124,
+        "DOMAIN_FP": 708,
+        "FUNCTION_FN": 53,
+        "FUNCTION_FP": 182,
+        "MEDIATION_FN": 42,
+        "MEDIATION_FP": 49,
+        "ONTOLOGY_BOUNDARY_CASE": 2,
+        "OVERPREDICTION": 212,
+        "PARENT_CHILD_VIOLATION": 2
+      },
+      "patterns": {
+        "co_label_omission_multi_gold": 41
+      },
+      "taxonomy": [
+        "DOMAIN_FP",
+        "DOMAIN_FN",
+        "FUNCTION_FP",
+        "FUNCTION_FN",
+        "MEDIATION_FP",
+        "MEDIATION_FN",
+        "PARENT_CHILD_VIOLATION",
+        "CO_LABEL_OMISSION",
+        "OVERPREDICTION",
+        "ONTOLOGY_BOUNDARY_CASE"
+      ]
+    },
+    "exact_metrics": {
+      "DOMAIN_macro_f1": 0.23369414033478278,
+      "DOMAIN_micro_f1": 0.20610687022900764,
+      "FUNCTION_macro_f1": 0.059348361918455377,
+      "FUNCTION_micro_f1": 0.06374501992031872,
+      "MEDIATION_macro_f1": 0.20869565217391303,
+      "MEDIATION_micro_f1": 0.20869565217391303,
+      "jaccard": 0.3381165812938721,
+      "post_constraint_hierarchy_violation": 0.0,
+      "raw_hierarchy_violation": 0.00199203187250996,
+      "sample_f1": 0.3493075317776513,
+      "system_macro_f1": 0.1885452902206466
+    },
+    "gate_failures": {
+      "failed_gates": [
+        "no_material_axis_collapse",
+        "system_macro_f1"
+      ],
+      "hierarchy_violation": {
+        "pass": true,
+        "threshold": 0.05,
+        "value": 0.0
+      },
+      "no_material_axis_collapse": {
+        "axis_macros": {
+          "domain": 0.23369414033478278,
+          "function": 0.059348361918455377,
+          "mediation": 0.20869565217391303
+        },
+        "pass": false,
+        "threshold": 0.1,
+        "value": false
+      },
+      "overall_pass": false,
+      "system_macro_f1": {
+        "pass": false,
+        "threshold": 0.3,
+        "value": 0.1885452902206466
+      }
+    },
+    "human_gold": {
+      "class": "MODEL_GENERALIZATION_FAILURE_NOT_ANNOTATION_INSTABILITY",
+      "mean_set_jaccard": 0.99875,
+      "note": "Settlement stability stands; do not blame label noise without row-level contradiction."
+    },
+    "label_prior_shift": {
+      "class": "MATERIAL",
+      "material_labels": [
+        {
+          "QUAL": 0.05179282868525897,
+          "QUAL_positive_only": 0.203125,
+          "REP": 0.14849624060150377,
+          "abs_delta": 0.09670341191624479,
+          "label": "domain.technology"
+        },
+        {
+          "QUAL": 0.00597609561752988,
+          "QUAL_positive_only": 0.0234375,
+          "REP": 0.07706766917293233,
+          "abs_delta": 0.07109157355540245,
+          "label": "domain.spiritual"
+        },
+        {
+          "QUAL": 0.00796812749003984,
+          "QUAL_positive_only": 0.03125,
+          "REP": 0.07706766917293233,
+          "abs_delta": 0.06909954168289248,
+          "label": "domain.technology.ai_discourse"
+        },
+        {
+          "QUAL": 0.0099601593625498,
+          "QUAL_positive_only": 0.0390625,
+          "REP": 0.07142857142857142,
+          "abs_delta": 0.061468412066021626,
+          "label": "function.memetic_form"
+        },
+        {
+          "QUAL": 0.008964143426294821,
+          "QUAL_positive_only": 0.03515625,
+          "REP": 0.06954887218045112,
+          "abs_delta": 0.060584728754156304,
+          "label": "domain.sports"
+        },
+        {
+          "QUAL": 0.0049800796812749,
+          "QUAL_positive_only": 0.01953125,
+          "REP": 0.06390977443609022,
+          "abs_delta": 0.05892969475481532,
+          "label": "function.evaluative_stance"
+        },
+        {
+          "QUAL": 0.012948207171314742,
+          "QUAL_positive_only": 0.05078125,
+          "REP": 0.06578947368421052,
+          "abs_delta": 0.05284126651289578,
+          "label": "domain.workplace"
+        },
+        {
+          "QUAL": 0.022908366533864542,
+          "QUAL_positive_only": 0.08984375,
+          "REP": 0.07518796992481203,
+          "abs_delta": 0.052279603390947484,
+          "label": "domain.fashion"
+        },
+        {
+          "QUAL": 0.013944223107569721,
+          "QUAL_positive_only": 0.0546875,
+          "REP": 0.06578947368421052,
+          "abs_delta": 0.0518452505766408,
+          "label": "domain.entertainment"
+        }
+      ],
+      "zero_label_delta": 0.7450199203187251
+    },
+    "label_semantic_stability": {
+      "QUAL_correct_sim": 0.15643751379411697,
+      "QUAL_incorrect_sim": 0.046364610808865336,
+      "REP_correct_sim": 0.08747250194743597,
+      "REP_incorrect_sim": 0.0533330864801476,
+      "note": "Frozen short LABEL_DESCRIPTIONS only; no new descriptions tried.",
+      "transfers": true
+    },
+    "none_overprediction": {
+      "n_with_any_prediction": 485,
+      "n_zero_gold": 748,
+      "rate": 0.6483957219251337,
+      "total_fp_labels_on_zero_gold": 764
+    },
+    "package_sha256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4",
+    "per_label_degradation": {
+      "domain.crypto": {
+        "QUAL_f1": 0.0,
+        "REP_f1": 0.6666666666666666,
+        "absolute_delta": 0.6666666666666666,
+        "class": "COLLAPSED",
+        "retention": 0.0,
+        "support_QUAL": 3,
+        "support_REP": 3
+      },
+      "domain.entertainment": {
+        "QUAL_f1": 0.10526315789473685,
+        "REP_f1": 0.34615384615384615,
+        "absolute_delta": 0.2408906882591093,
+        "class": "COLLAPSED",
+        "retention": 0.304093567251462,
+        "support_QUAL": 14,
+        "support_REP": 35
+      },
+      "domain.fashion": {
+        "QUAL_f1": 0.5964912280701754,
+        "REP_f1": 0.3846153846153846,
+        "absolute_delta": -0.21187584345479082,
+        "class": "STABLE",
+        "retention": 1.5508771929824563,
+        "support_QUAL": 23,
+        "support_REP": 40
+      },
+      "domain.gambling": {
+        "QUAL_f1": 0.4313725490196078,
+        "REP_f1": 0.42857142857142855,
+        "absolute_delta": -0.0028011204481792618,
+        "class": "STABLE",
+        "retention": 1.0065359477124183,
+        "support_QUAL": 34,
+        "support_REP": 5
+      },
+      "domain.gaming": {
+        "QUAL_f1": 0.4421052631578948,
+        "REP_f1": 0.24242424242424243,
+        "absolute_delta": -0.19968102073365235,
+        "class": "STABLE",
+        "retention": 1.823684210526316,
+        "support_QUAL": 41,
+        "support_REP": 47
+      },
+      "domain.politics": {
+        "QUAL_f1": 0.2588235294117647,
+        "REP_f1": 0.509090909090909,
+        "absolute_delta": 0.25026737967914436,
+        "class": "SEVERE_DROP",
+        "retention": 0.5084033613445378,
+        "support_QUAL": 29,
+        "support_REP": 28
+      },
+      "domain.spiritual": {
+        "QUAL_f1": 0.25806451612903225,
+        "REP_f1": 0.36363636363636365,
+        "absolute_delta": 0.1055718475073314,
+        "class": "MODERATE_DROP",
+        "retention": 0.7096774193548386,
+        "support_QUAL": 6,
+        "support_REP": 41
+      },
+      "domain.sports": {
+        "QUAL_f1": 0.014134275618374558,
+        "REP_f1": 0.31343283582089554,
+        "absolute_delta": 0.299298560202521,
+        "class": "COLLAPSED",
+        "retention": 0.04509506983005216,
+        "support_QUAL": 9,
+        "support_REP": 37
+      },
+      "domain.technology": {
+        "QUAL_f1": 0.32167832167832167,
+        "REP_f1": 0.5408805031446542,
+        "absolute_delta": 0.21920218146633252,
+        "class": "SEVERE_DROP",
+        "retention": 0.5947308505448039,
+        "support_QUAL": 52,
+        "support_REP": 79
+      },
+      "domain.technology.ai_discourse": {
+        "QUAL_f1": 0.10666666666666667,
+        "REP_f1": 0.606060606060606,
+        "absolute_delta": 0.4993939393939393,
+        "class": "COLLAPSED",
+        "retention": 0.17600000000000005,
+        "support_QUAL": 8,
+        "support_REP": 41
+      },
+      "domain.workplace": {
+        "QUAL_f1": 0.036036036036036036,
+        "REP_f1": 0.5070422535211268,
+        "absolute_delta": 0.4710062174850907,
+        "class": "COLLAPSED",
+        "retention": 0.07107107107107107,
+        "support_QUAL": 13,
+        "support_REP": 35
+      },
+      "function.conflictive_force": {
+        "QUAL_f1": 0.056074766355140186,
+        "REP_f1": 0.4722222222222222,
+        "absolute_delta": 0.416147455867082,
+        "class": "COLLAPSED",
+        "retention": 0.11874656404617923,
+        "support_QUAL": 14,
+        "support_REP": 31
+      },
+      "function.evaluative_stance": {
+        "QUAL_f1": 0.0,
+        "REP_f1": 0.41269841269841273,
+        "absolute_delta": 0.41269841269841273,
+        "class": "COLLAPSED",
+        "retention": 0.0,
+        "support_QUAL": 5,
+        "support_REP": 34
+      },
+      "function.memetic_form": {
+        "QUAL_f1": 0.038461538461538464,
+        "REP_f1": 0.37037037037037035,
+        "absolute_delta": 0.3319088319088319,
+        "class": "COLLAPSED",
+        "retention": 0.10384615384615385,
+        "support_QUAL": 10,
+        "support_REP": 38
+      },
+      "function.relational_intimacy": {
+        "QUAL_f1": 0.14285714285714288,
+        "REP_f1": 0.3606557377049181,
+        "absolute_delta": 0.21779859484777522,
+        "class": "SEVERE_DROP",
+        "retention": 0.39610389610389607,
+        "support_QUAL": 32,
+        "support_REP": 42
+      },
+      "mediation.internet_register": {
+        "QUAL_f1": 0.20869565217391306,
+        "REP_f1": 0.391304347826087,
+        "absolute_delta": 0.1826086956521739,
+        "class": "SEVERE_DROP",
+        "retention": 0.5333333333333333,
+        "support_QUAL": 54,
+        "support_REP": 43
+      }
+    },
+    "prevalence": {
+      "DEV": {
+        "domain.crypto": 0.015384615384615385,
+        "domain.entertainment": 0.05128205128205128,
+        "domain.fashion": 0.041025641025641026,
+        "domain.gambling": 0.0,
+        "domain.gaming": 0.06153846153846154,
+        "domain.politics": 0.05641025641025641,
+        "domain.spiritual": 0.06666666666666667,
+        "domain.sports": 0.06666666666666667,
+        "domain.technology": 0.14871794871794872,
+        "domain.technology.ai_discourse": 0.07179487179487179,
+        "domain.workplace": 0.08717948717948718,
+        "function.conflictive_force": 0.08717948717948718,
+        "function.evaluative_stance": 0.09230769230769231,
+        "function.memetic_form": 0.07179487179487179,
+        "function.relational_intimacy": 0.08717948717948718,
+        "mediation.internet_register": 0.08205128205128205
+      },
+      "QUAL": {
+        "domain.crypto": 0.00298804780876494,
+        "domain.entertainment": 0.013944223107569721,
+        "domain.fashion": 0.022908366533864542,
+        "domain.gambling": 0.03386454183266932,
+        "domain.gaming": 0.04083665338645418,
+        "domain.politics": 0.02888446215139442,
+        "domain.spiritual": 0.00597609561752988,
+        "domain.sports": 0.008964143426294821,
+        "domain.technology": 0.05179282868525897,
+        "domain.technology.ai_discourse": 0.00796812749003984,
+        "domain.workplace": 0.012948207171314742,
+        "function.conflictive_force": 0.013944223107569721,
+        "function.evaluative_stance": 0.0049800796812749,
+        "function.memetic_form": 0.0099601593625498,
+        "function.relational_intimacy": 0.03187250996015936,
+        "mediation.internet_register": 0.053784860557768925
+      },
+      "QUAL_positive_only": {
+        "domain.crypto": 0.01171875,
+        "domain.entertainment": 0.0546875,
+        "domain.fashion": 0.08984375,
+        "domain.gambling": 0.1328125,
+        "domain.gaming": 0.16015625,
+        "domain.politics": 0.11328125,
+        "domain.spiritual": 0.0234375,
+        "domain.sports": 0.03515625,
+        "domain.technology": 0.203125,
+        "domain.technology.ai_discourse": 0.03125,
+        "domain.workplace": 0.05078125,
+        "function.conflictive_force": 0.0546875,
+        "function.evaluative_stance": 0.01953125,
+        "function.memetic_form": 0.0390625,
+        "function.relational_intimacy": 0.125,
+        "mediation.internet_register": 0.2109375
+      },
+      "REP": {
+        "domain.crypto": 0.005639097744360902,
+        "domain.entertainment": 0.06578947368421052,
+        "domain.fashion": 0.07518796992481203,
+        "domain.gambling": 0.009398496240601503,
+        "domain.gaming": 0.08834586466165413,
+        "domain.politics": 0.05263157894736842,
+        "domain.spiritual": 0.07706766917293233,
+        "domain.sports": 0.06954887218045112,
+        "domain.technology": 0.14849624060150377,
+        "domain.technology.ai_discourse": 0.07706766917293233,
+        "domain.workplace": 0.06578947368421052,
+        "function.conflictive_force": 0.05827067669172932,
+        "function.evaluative_stance": 0.06390977443609022,
+        "function.memetic_form": 0.07142857142857142,
+        "function.relational_intimacy": 0.07894736842105263,
+        "mediation.internet_register": 0.08082706766917293
+      },
+      "TRAIN": {
+        "domain.crypto": 0.009925558312655087,
+        "domain.entertainment": 0.07278742762613731,
+        "domain.fashion": 0.07361455748552523,
+        "domain.gambling": 0.005789909015715467,
+        "domain.gaming": 0.07113316790736146,
+        "domain.politics": 0.076095947063689,
+        "domain.spiritual": 0.06451612903225806,
+        "domain.sports": 0.07196029776674938,
+        "domain.technology": 0.14392059553349876,
+        "domain.technology.ai_discourse": 0.07526881720430108,
+        "domain.workplace": 0.06782464846980976,
+        "function.conflictive_force": 0.07526881720430108,
+        "function.evaluative_stance": 0.06699751861042183,
+        "function.memetic_form": 0.07278742762613731,
+        "function.relational_intimacy": 0.05955334987593052,
+        "mediation.internet_register": 0.08519437551695616
+      }
+    },
+    "qual_result_sha256": "73548c4331d7e471ba2251faef82fc38f64dde347999c0cf868a7b20b09f3fcd",
+    "qual_validity": {
+      "class": "HARDER_BUT_VALID",
+      "disjointness_forbidden_overlap": 0,
+      "human_mean_set_jaccard": 0.99875,
+      "n_rows": 1004,
+      "not_outside_product_contract": true,
+      "operating_contract_note": "Final V6 operating distribution includes NO_EVIDENCE/NONE-dominant internet register text; QUAL matches that better than usable REP."
+    },
+    "qualification_immutable": {
+      "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_002",
+      "allowed": [
+        "forensic_analysis",
+        "error_attribution",
+        "system_diagnosis",
+        "historical_comparison"
+      ],
+      "evaluation_spent": "EVALUATION_SPENT",
+      "forbidden": [
+        "training",
+        "threshold_selection",
+        "model_selection",
+        "representation_learning",
+        "prompt_or_label_description_tuning",
+        "head_tuning",
+        "index_construction"
+      ],
+      "qualification_model_executions": 1
+    },
+    "rep_qual_retention": {
+      "DOMAIN_retention": 0.5237030141921828,
+      "FUNCTION_retention": 0.14690672740470406,
+      "MEDIATION_retention": 0.5333333333333333,
+      "absolute_drop": 0.2436938429373618,
+      "band": "SEVERE_GENERALIZATION_DROP",
+      "hard_gate": false,
+      "per_axis_drop": {
+        "domain": 0.21253995418395574,
+        "function": 0.34463832383052545,
+        "mediation": 0.18260869565217394
+      },
+      "qual_system_macro_f1": 0.1885452902206466,
+      "rep_system_macro_f1": 0.4322391331580084,
+      "retention_ratio": 0.43620596969808006
+    },
+    "rep_representativeness": {
+      "class": "REPRESENTATIVE_VALIDATION_OVERFIT",
+      "distribution_shift_summary": {
+        "cardinality": "SEVERE_SHIFT",
+        "composition": "SEVERE_SHIFT",
+        "label_prevalence": "SEVERE_SHIFT",
+        "length": "REP_QUAL_DISTRIBUTION_MATCH",
+        "surface": "REP_QUAL_DISTRIBUTION_MATCH",
+        "topic": "MATERIAL_SHIFT",
+        "zero_label_share": "SEVERE_SHIFT"
+      },
+      "qual_domain_plus_function_n": 13,
+      "qual_n": 1004,
+      "qual_no_evidence_share": 0.7450199203187251,
+      "qual_zero_label_share": 0.7450199203187251,
+      "rationale": "Hardened REP metric (~0.432) was computed on the usable() positive-only subset (n=532), excluding all ZERO/NONE rows. QUAL is 74.5% NO_EVIDENCE zero-label rows, and includes domain+function compositions absent from usable REP (n=0). REP was therefore another development surface, not an operating-distribution proxy.",
+      "rep_domain_plus_function_n": 0,
+      "rep_excluded_zero_label_rows": true,
+      "rep_raw_n": 1250,
+      "rep_raw_zero_label_share": 0.5744,
+      "rep_usable_n": 532,
+      "rep_usable_zero_label_share": 0.0,
+      "usable_filter": "evidence_label==EVIDENCE_PRESENT AND not human_resettlement_required AND >=1 label"
+    },
+    "representation_family": {
+      "QUAL_predictions_for_other_encoders": "NOT_COMPUTABLE",
+      "QUAL_vs_historical_zero_shot_REP": {
+        "BGE_zero_shot_REP": 0.243,
+        "MPNet_zero_shot_REP": 0.206,
+        "ModernBERT_zero_shot_REP": 0.162,
+        "hardened_MSMARCO_QUAL": 0.1885452902206466,
+        "hardened_MSMARCO_REP": 0.4322391331580084
+      },
+      "note": "No preregistered QUAL scores for MPNet/BGE/ModernBERT; do not generate."
+    },
+    "semantic_geometry": {
+      "QUAL_positive_only": {
+        "correct_label_similarity": 0.15643751379411697,
+        "hard_negative_similarity": 0.15608195260574576,
+        "incorrect_label_similarity": 0.046364610808865336,
+        "n_positive_rows": 256,
+        "nearest_label_purity": 0.57421875,
+        "positive_negative_margin": 0.11007290298525163
+      },
+      "REP_usable": {
+        "correct_label_similarity": 0.08747250194743597,
+        "hard_negative_similarity": 0.15471342598924875,
+        "incorrect_label_similarity": 0.0533330864801476,
+        "n_positive_rows": 532,
+        "nearest_label_purity": 0.20112781954887218,
+        "positive_negative_margin": 0.034139415467288374
+      },
+      "class": "GEOMETRY_STABLE_CALIBRATION_SHIFTED",
+      "harden_REP_witness": {},
+      "margin_retention": 3.2242175643200754,
+      "purity_QUAL": 0.57421875,
+      "purity_REP": 0.20112781954887218
+    },
+    "source_shift": {
+      "class": "SOURCE_SENSITIVE",
+      "note": "QUAL source_family strings are fresh (v6_qual002_*); compared at topic suffix.",
+      "qual_only_mean_exact": 0.18756395995550612,
+      "qual_only_topics_n": 13,
+      "qual_only_topics_sample": [
+        "botany",
+        "cartography",
+        "chemistry",
+        "hydrology",
+        "identity-affiliation",
+        "mineralogy",
+        "multi_cue",
+        "mycology",
+        "numismatics",
+        "oceanography",
+        "paleontology",
+        "regional-cultural",
+        "v6_qual002_wikt_multicue_search"
+      ],
+      "qual_topics_n": 29,
+      "rep_topics_n": 16,
+      "shared_mean_exact": 0.322911287115986,
+      "shared_topics_n": 16,
+      "shared_topics_sample": [
+        "ai-native",
+        "betting-sharp",
+        "conflict-aggression",
+        "crypto-degen",
+        "fashion-aesthetic",
+        "gaming-meta",
+        "internet-slang",
+        "memetic",
+        "music-entertainment",
+        "politics-civic",
+        "relationship-dating",
+        "social-evaluation",
+        "spiritual-mystic",
+        "sports-competition",
+        "technology-ai",
+        "workplace-career"
+      ]
+    },
+    "task_signal": {
+      "QUAL_full_system_macro": 0.1885452902206466,
+      "QUAL_positive_only_axis_macros": {
+        "domain": 0.405362277354256,
+        "function": 0.13324786324786325,
+        "mediation": 0.30769230769230765
+      },
+      "QUAL_positive_only_n": 256,
+      "QUAL_positive_only_system_macro": 0.28210081609814236,
+      "class": "TASK_SIGNAL_PARTIAL",
+      "human_agreement_high": true,
+      "note": "Human agreement proves labelability; positive-only QUAL still below 0.30 gate."
+    },
+    "train_distance": {
+      "corr_error_vs_nn_train": -0.20344979091556525,
+      "effect": "ERRORS_FARTHER_FROM_TRAIN",
+      "mean_nn_dev_correct": 0.37673818156603844,
+      "mean_nn_dev_incorrect": 0.31849949591140925,
+      "mean_nn_rep_correct": 0.41521655503780613,
+      "mean_nn_rep_incorrect": 0.3689604098626791,
+      "mean_nn_train_correct": 0.44658512905720743,
+      "mean_nn_train_incorrect": 0.40193425041626096
+    }
+  },
+  "derived": {
+    "NEXT_ACTION": "REDESIGN_V6_REPRESENTATIVE_VALIDATION_AND_DATA_DIVERSITY",
+    "PRIMARY_DIAGNOSIS": "REPRESENTATIVE_VALIDATION_OVERFIT",
+    "QUALIFICATION_SURFACE_VALIDITY": "HARDER_BUT_VALID",
+    "REP_REPRESENTATIVENESS": "REPRESENTATIVE_VALIDATION_OVERFIT",
+    "SECONDARY_CONTRIBUTORS": [
+      "AXIS_SPECIFIC_GENERALIZATION_FAILURE",
+      "MULTI_LABEL_COMPOSITION_GENERALIZATION_FAILURE"
+    ],
+    "V6_DISPOSITION": "V6_REQUIRES_DATA_DISTRIBUTION_REDESIGN",
+    "evidence_flags": {
+      "calibration_class": "STRUCTURAL_OVERLAP",
+      "function_collapsed": true,
+      "geometry_collapsed": false,
+      "qual_zero_label_share": 0.7450199203187251,
+      "rep_excluded_zero_label_rows": true,
+      "rep_missing_domain_plus_function": true,
+      "source_shift_dominant": false,
+      "task_insufficient": false
+    }
+  },
+  "reviewed_at": "2026-10-02T03:57:09Z",
+  "schema": "hyperlex.classification.v6.qualification_failure_system_review.v1"
+}

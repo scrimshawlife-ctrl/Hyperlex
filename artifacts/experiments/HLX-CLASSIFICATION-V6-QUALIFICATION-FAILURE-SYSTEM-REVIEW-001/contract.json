@@ -1,0 +1,67 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-QUALIFICATION-FAILURE-SYSTEM-REVIEW-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_002",
+  "QUALIFICATION_USED_FOR_OPTIMIZATION": false,
+  "QUAL_RESULT_ID": "HYPERLEX_V6_QUALIFICATION_002_RESULT",
+  "RELEASE_ELIGIBLE": false,
+  "REVIEW_ID": "HYPERLEX_V6_QUALIFICATION_FAILURE_SYSTEM_REVIEW_001",
+  "REVIEW_RULE": "REVIEW_V6_QUALIFICATION_FAILURE_AT_SYSTEM_LEVEL",
+  "expected": {
+    "evaluation_spent": "EVALUATION_SPENT",
+    "n_rows": 1004,
+    "package_sha256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4",
+    "qual_result_sha256": "73548c4331d7e471ba2251faef82fc38f64dde347999c0cf868a7b20b09f3fcd",
+    "qualification_model_executions": 1,
+    "rep_reference_system_macro_f1": 0.4322391331580084,
+    "seal_sha256": "62ed3827fb751c52d3e679ec4e1e2df2b20ea674326fa1dd9ee9567fe4883874"
+  },
+  "forbidden": [
+    "retrain",
+    "recalibrate",
+    "alter_thresholds",
+    "create_new_qualification_surface",
+    "inspect_QUAL_001",
+    "move_pointers",
+    "use_QUAL_002_for_optimization",
+    "automatic_architecture_bakeoff"
+  ],
+  "next_phases": [
+    "REDESIGN_V6_REPRESENTATIVE_VALIDATION_AND_DATA_DIVERSITY",
+    "TEST_AXIS_SPECIFIC_SEMANTIC_ENCODERS",
+    "REBASE_V6_ON_DIFFERENT_SEMANTIC_REPRESENTATION_FAMILY",
+    "EXPAND_V6_NATURAL_DIVERSITY_BY_FAILURE_STRATA",
+    "REASSESS_HYPERLEX_V6_TASK_DEFINITION",
+    "ARCHIVE_V6_AND_PRESERVE_RESEARCH_FINDINGS"
+  ],
+  "primary_diagnoses": [
+    "REPRESENTATIVE_VALIDATION_OVERFIT",
+    "SEMANTIC_ENCODER_DOMAIN_MISMATCH",
+    "AXIS_SPECIFIC_GENERALIZATION_FAILURE",
+    "MULTI_LABEL_COMPOSITION_GENERALIZATION_FAILURE",
+    "LABEL_PRIOR_CALIBRATION_FAILURE",
+    "DATA_DIVERSITY_FAILURE",
+    "TASK_SIGNAL_LIMITATION",
+    "MIXED_V6_SYSTEM_GENERALIZATION_FAILURE"
+  ],
+  "rejected_micro_fixes_default": {
+    "another_QUAL_surface": false,
+    "another_REP_tuned_encoder": false,
+    "another_nonlinear_head_variant": false,
+    "another_optimizer": false,
+    "another_seed_sweep": false,
+    "more_hidden_units": false,
+    "simple_TRAIN_expansion": false,
+    "threshold_retuning": false
+  },
+  "schema": "hyperlex.classification.v6.qualification_failure_system_review.v1",
+  "v6_dispositions": [
+    "V6_RESEARCH_PROTOTYPE_CONTINUE",
+    "V6_REQUIRES_REPRESENTATION_REDESIGN",
+    "V6_REQUIRES_DATA_DISTRIBUTION_REDESIGN",
+    "V6_REQUIRES_TASK_REDESIGN",
+    "V6_ARCHIVE"
+  ]
+}
