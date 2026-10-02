@@ -426,7 +426,8 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
         except Exception as exc:  # noqa: BLE001
             print(f"partial_resume_skip={exc}", flush=True)
 
-    # Fresh OBSERVED feeds only (never QUAL-002 firecrawl — those identities blocked).
+    # Fresh OBSERVED feeds. May reclaim unsealed prior raw crawls whose texts
+    # are not in any spent evaluation surface (sealed QUAL/TRAIN/DEV/REP blocked).
     feed_paths: list[Path] = []
     env_feed = os.environ.get("HLX_COREQUAL001_FIRECRAWL_FEED")
     if env_feed:
@@ -440,6 +441,20 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
         cand = PRIVATE / name
         if cand not in feed_paths:
             feed_paths.append(cand)
+    for name in (
+        "RAW_ACQUIRE_QUAL003.firecrawl.jsonl",
+        "RAW_ACQUIRE_QUAL003.wiki_html_none.jsonl",
+        "RAW_ACQUIRE_QUAL003.wikt_html.jsonl",
+        "RAW_ACQUIRE_QUAL003.merged_feed.jsonl",
+        "RAW_ACQUIRE_QUAL003.jsonl",
+    ):
+        cand = PRIVATE_QUAL003 / name
+        if cand not in feed_paths:
+            feed_paths.append(cand)
+    # Diversity-expand raw leftovers (not sealed into TRAIN/DEV/REP V3).
+    expand_raw = PRIVATE_V3 / "RAW_ACQUIRE_EXPAND.jsonl"
+    if expand_raw not in feed_paths:
+        feed_paths.append(expand_raw)
     for firecrawl_feed in feed_paths:
         if not firecrawl_feed.exists():
             continue
@@ -450,24 +465,38 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
                     continue
                 if r.get("provenance") not in (None, "OBSERVED"):
                     continue
-                # Refuse QUAL-002 lineage tags if a feed is mis-copied.
+                # Refuse QUAL-002 evaluation lineage tags.
                 sf = str(r.get("source_family") or "")
                 notes = str(r.get("notes") or "")
                 if "qual002" in sf.lower() or "qual-002" in notes.lower():
                     continue
+                if str(r.get("split") or "").upper() in {
+                    "TRAIN",
+                    "DEV",
+                    "DEV_SELECTION",
+                    "REP",
+                    "REPRESENTATIVE_VALIDATION",
+                    "QUALIFICATION",
+                }:
+                    continue
+                if r.get("evaluation_spent") in (True, "SPENT", "EVALUATION_SPENT"):
+                    continue
                 admit(
                     {
                         "text": r["text"],
-                        "source_url": r["source_url"],
+                        "source_url": r.get("source_url") or "unknown",
                         "provenance": "OBSERVED",
                         "construction_tag": "NATURAL",
                         "construction_role": r.get("construction_role")
                         or "PRODUCT_EXPECTED",
                         "source_family": r.get("source_family")
-                        or "v6_corequal001_firecrawl",
+                        or "v6_corequal001_observed_feed",
                         "topic_domain": r.get("topic_domain"),
                         "acquisition_cue_family": r.get("acquisition_cue_family"),
-                        "notes": r.get("notes") or "observed_feed_corequal001",
+                        "notes": (
+                            r.get("notes")
+                            or "unsealed_observed_feed_reclaim_corequal001"
+                        ),
                     }
                 )
             print(
@@ -504,8 +533,10 @@ def acquire_fresh(blocked: dict[str, set[str]], target: int = ACQUIRE_TARGET) ->
         "true",
         "yes",
     }
-    if skip_mediawiki or (
-        len(raw) >= target and n_none_cue >= int(0.45 * target)
+    # Prefer skipping live MediaWiki when unsealed OBSERVED feeds already fill
+    # the target (annotation still produces natural zero-label mass).
+    if skip_mediawiki or len(raw) >= target or (
+        len(raw) >= int(0.85 * target) and n_none_cue >= int(0.25 * target)
     ):
         print(
             f"acquire_target_met_pre_mediawiki n={len(raw)} none_cue={n_none_cue} "
