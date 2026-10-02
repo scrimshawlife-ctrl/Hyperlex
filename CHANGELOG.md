@@ -3,12 +3,15 @@
 ## Unreleased
 
 - **Redesign V6 representative validation + data diversity (Spec 007):**
-  Build TRAIN_V2 / DEV_SELECTION_V2 / REP_V2 without `usable()`
-  positive-only filtering; include NONE/NO_EVIDENCE mass, function and
-  multi-label strata, dual-discovered co-labels. Replay frozen hardened
-  package `a8827583…` unchanged. QUAL-002 aggregate comparison only.
-  Success = `REPRESENTATIVENESS_REPAIRED` (expose QUAL-like failure),
-  not recovering old REP ≈0.432.
+  Build TRAIN_V2 (n=2819) / DEV_SELECTION_V2 (n=505) / REP_V2 (n=1416)
+  without `usable()` positive-only filtering; REP_V2 zero-label share
+  0.620 / NO_EVIDENCE 0.488, function+multi-label+DF co-labels, natural
+  OBSERVED disjoint surfaces. Frozen hardened package `a8827583…`
+  replay: REP_V2 system macro-F1 **0.220** (vs old usable REP ≈0.432),
+  zero-label FP **0.788**, FUNCTION 0.223. Same broad failure shape as
+  QUAL-002 → **`REPRESENTATIVENESS_REPAIRED`**. Remaining
+  **`NONE_REJECTION_FAILURE`**. Receipt `7e3b6f01…`. Next:
+  `HARDEN_V6_NONE_REJECTION_UNDER_FROZEN_ENCODER`.
 
 - **Review V6 QUAL-002 failure at system level (Spec 007):** Read-only
   forensic review after decisive QUAL FAIL (macro-F1 0.1885). Finds

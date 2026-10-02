@@ -1,0 +1,111 @@
+{
+  "checks": {
+    "has_function_labels": true,
+    "has_multi_axis_or_df": true,
+    "has_multi_label": true,
+    "has_positive_traffic": true,
+    "includes_zero_label": true,
+    "length_diversity": true,
+    "min_n": true,
+    "natural_majority": true,
+    "no_evidence_in_range": true,
+    "no_usable_filter": true,
+    "not_positive_only": true,
+    "observed_majority": true,
+    "source_diversity": true,
+    "zero_label_in_range": true
+  },
+  "pass": true,
+  "summary": {
+    "cardinality": {
+      "0": 878,
+      "1": 486,
+      "2": 49,
+      "3": 3
+    },
+    "composition": {
+      "domain": 348,
+      "domain+function": 4,
+      "domain+function+mediation": 2,
+      "domain+mediation": 1,
+      "function": 141,
+      "function+mediation": 4,
+      "mediation": 38,
+      "none": 878
+    },
+    "evidence_label": {
+      "EVIDENCE_PRESENT": 673,
+      "NO_EVIDENCE": 691,
+      "UNCERTAIN": 52
+    },
+    "evidence_present_share": 0.4752824858757062,
+    "length": {
+      "long": 551,
+      "medium": 454,
+      "short": 411
+    },
+    "max_source_family_share": 0.033192090395480225,
+    "mean_len": 171.36793785310735,
+    "n": 1416,
+    "n_domain_plus_function": 6,
+    "n_domain_positive": 355,
+    "n_function_positive": 151,
+    "n_mediation_positive": 45,
+    "n_multi_label": 52,
+    "n_source_families": 81,
+    "natural_share": 1.0,
+    "no_evidence_share": 0.4879943502824859,
+    "observed_share": 1.0,
+    "source_family_top": [
+      [
+        "v6_wikt_present:gaming-meta",
+        47
+      ],
+      [
+        "v6_wp_ordinary_topup:hydrology",
+        47
+      ],
+      [
+        "v6_wikt_present:identity-affiliation",
+        46
+      ],
+      [
+        "v6_wikt_present:fashion-aesthetic",
+        43
+      ],
+      [
+        "v6_wikt_present:relationship-dating",
+        42
+      ],
+      [
+        "v6_wikt_present:spiritual-mystic",
+        41
+      ],
+      [
+        "v6_wikt_present:ai-native",
+        40
+      ],
+      [
+        "v6_wikt_present:technology-ai",
+        39
+      ],
+      [
+        "v6_wp_ordinary_topup:numismatics",
+        39
+      ],
+      [
+        "v6_wikt_present:memetic",
+        38
+      ],
+      [
+        "v6_wikt_present:internet-slang",
+        38
+      ],
+      [
+        "v6_wikt_present:sports-competition",
+        37
+      ]
+    ],
+    "zero_label_share": 0.6200564971751412
+  }
+}

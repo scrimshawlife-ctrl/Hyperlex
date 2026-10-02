@@ -1,0 +1,57 @@
+{
+  "EXPERIMENT_ID": "HLX-CLASSIFICATION-V6-REPRESENTATIVE-VALIDATION-REDESIGN-001",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "OPERATING_DISTRIBUTION_ID": "HYPERLEX_V6_OPERATING_DISTRIBUTION_V1",
+  "PHASE_RULE": "REDESIGN_V6_REPRESENTATIVE_VALIDATION_AND_DATA_DIVERSITY",
+  "RELEASE_ELIGIBLE": false,
+  "forbidden_filters": [
+    "EVIDENCE_PRESENT_required",
+    "positive_semantic_labels_required",
+    "usable()"
+  ],
+  "frozen_package": {
+    "PACKAGE_ID": "HYPERLEX_V6_SEMANTIC_PIPELINE_PACKAGE_CANDIDATE_V1",
+    "PACKAGE_SHA256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4",
+    "ontology_changed": false,
+    "retrain": false,
+    "retune": false
+  },
+  "historical_qual": {
+    "QUALIFICATION_ID": "HYPERLEX_V6_QUALIFICATION_002",
+    "new_qualification_surface": false,
+    "result_sha256": "73548c4331d7e471ba2251faef82fc38f64dde347999c0cf868a7b20b09f3fcd",
+    "role": "AGGREGATE_HISTORICAL_COMPARISON_ONLY",
+    "row_reuse_forbidden": true,
+    "seal_sha256": "62ed3827fb751c52d3e679ec4e1e2df2b20ea674326fa1dd9ee9567fe4883874"
+  },
+  "old_usable_rep_macro_f1": 0.4322391331580084,
+  "rep_v2_targets": {
+    "min_n": 900,
+    "must_include": [
+      "NO_EVIDENCE_zero_label_traffic",
+      "positive_traffic",
+      "function_labels",
+      "multi_label_compositions",
+      "domain_plus_function_when_naturally_available",
+      "source_style_diversity",
+      "length_diversity"
+    ],
+    "no_evidence_share": [
+      0.45,
+      0.7
+    ],
+    "zero_label_share": [
+      0.55,
+      0.75
+    ]
+  },
+  "schema": "hyperlex.classification.v6.representative_validation_redesign.v1",
+  "success_criterion": "Representativeness repaired if frozen-model REP_V2 exposes the QUAL-002 failure shape (NONE overprediction + function weakness). Not success to recover old usable-REP ~0.432.",
+  "surface_ids": {
+    "DEV_SELECTION": "HYPERLEX_V6_DEV_SELECTION_V2",
+    "REPRESENTATIVE_VALIDATION": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V2",
+    "TRAIN": "HYPERLEX_V6_TRAIN_V2"
+  }
+}

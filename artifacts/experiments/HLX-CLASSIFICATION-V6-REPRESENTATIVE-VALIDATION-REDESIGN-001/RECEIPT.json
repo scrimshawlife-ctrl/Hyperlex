@@ -1,0 +1,588 @@
+{
+  "DEV_V2_ID": "HYPERLEX_V6_DEV_SELECTION_V2",
+  "HUB_PUBLISH_AUTHORIZED": false,
+  "MODEL_WIDE_BEST": "9fba0f66b1d5de6492470f53577d1447bfac1d29b9ac03869268abb70bbd97f6",
+  "MODEL_WIDE_BEST_MUTATED": false,
+  "NEXT_ACTION": "HARDEN_V6_NONE_REJECTION_UNDER_FROZEN_ENCODER",
+  "PHASE_RULE": "REDESIGN_V6_REPRESENTATIVE_VALIDATION_AND_DATA_DIVERSITY",
+  "QUAL_002_ROWS_USED_FOR_OPTIMIZATION": false,
+  "RELEASE_ELIGIBLE": false,
+  "REMAINING_MODEL_FAILURE": "NONE_REJECTION_FAILURE",
+  "REPRESENTATIVENESS_REPAIRED": true,
+  "REP_V2_ID": "HYPERLEX_V6_REPRESENTATIVE_VALIDATION_V2",
+  "TRAIN_REPLAY_ONLY": true,
+  "TRAIN_V2_ID": "HYPERLEX_V6_TRAIN_V2",
+  "V6_REPRESENTATIVE_VALIDATION_REDESIGN_RECEIPT_SHA256": "7e3b6f01a223c4f612866314f799dfc98713fb74c616880d1d70748f7bb3e1cf",
+  "code_revision": "7bde98c4eb26bdeeaa4d380bd1bc49198a4e24f8",
+  "colabel_discovered_n": 6,
+  "disjointness": {
+    "counts": {
+      "DEV_V2": 505,
+      "REP_V2": 1416,
+      "TRAIN_V2": 2819
+    },
+    "issues": [],
+    "n_blocked": 1490,
+    "pass": true
+  },
+  "distributions": {
+    "DEV_V2": {
+      "cardinality": {
+        "0": 311,
+        "1": 178,
+        "2": 16
+      },
+      "composition": {
+        "domain": 115,
+        "function": 64,
+        "function+mediation": 2,
+        "mediation": 13,
+        "none": 311
+      },
+      "evidence_label": {
+        "EVIDENCE_PRESENT": 254,
+        "NO_EVIDENCE": 232,
+        "UNCERTAIN": 19
+      },
+      "evidence_present_share": 0.502970297029703,
+      "length": {
+        "long": 179,
+        "medium": 170,
+        "short": 156
+      },
+      "max_source_family_share": 0.039603960396039604,
+      "mean_len": 164.87920792079208,
+      "n": 505,
+      "n_domain_plus_function": 0,
+      "n_domain_positive": 115,
+      "n_function_positive": 66,
+      "n_mediation_positive": 15,
+      "n_multi_label": 16,
+      "n_source_families": 76,
+      "natural_share": 1.0,
+      "no_evidence_share": 0.4594059405940594,
+      "observed_share": 1.0,
+      "source_family_top": [
+        [
+          "v6_wikt_present:betting-sharp",
+          20
+        ],
+        [
+          "v6_wikt_present:social-evaluation",
+          18
+        ],
+        [
+          "v6_wikt_present:conflict-aggression",
+          17
+        ],
+        [
+          "v6_wikt_present:workplace-career",
+          17
+        ],
+        [
+          "v6_wikt_present:relationship-dating",
+          17
+        ],
+        [
+          "v6_wikt_present:crypto-degen",
+          17
+        ],
+        [
+          "v6_wikt_present:regional-cultural",
+          16
+        ],
+        [
+          "v6_wikt_present:technology-ai",
+          16
+        ],
+        [
+          "v6_wp_ordinary_topup:hydrology",
+          16
+        ],
+        [
+          "v6_wp_ordinary_topup:cartography",
+          15
+        ],
+        [
+          "v6_wikt_present:memetic",
+          14
+        ],
+        [
+          "v6_wp_ordinary_topup:mineralogy",
+          14
+        ]
+      ],
+      "zero_label_share": 0.6158415841584158
+    },
+    "REP_V2": {
+      "cardinality": {
+        "0": 878,
+        "1": 486,
+        "2": 49,
+        "3": 3
+      },
+      "composition": {
+        "domain": 348,
+        "domain+function": 4,
+        "domain+function+mediation": 2,
+        "domain+mediation": 1,
+        "function": 141,
+        "function+mediation": 4,
+        "mediation": 38,
+        "none": 878
+      },
+      "evidence_label": {
+        "EVIDENCE_PRESENT": 673,
+        "NO_EVIDENCE": 691,
+        "UNCERTAIN": 52
+      },
+      "evidence_present_share": 0.4752824858757062,
+      "length": {
+        "long": 551,
+        "medium": 454,
+        "short": 411
+      },
+      "max_source_family_share": 0.033192090395480225,
+      "mean_len": 171.36793785310735,
+      "n": 1416,
+      "n_domain_plus_function": 6,
+      "n_domain_positive": 355,
+      "n_function_positive": 151,
+      "n_mediation_positive": 45,
+      "n_multi_label": 52,
+      "n_source_families": 81,
+      "natural_share": 1.0,
+      "no_evidence_share": 0.4879943502824859,
+      "observed_share": 1.0,
+      "source_family_top": [
+        [
+          "v6_wikt_present:gaming-meta",
+          47
+        ],
+        [
+          "v6_wp_ordinary_topup:hydrology",
+          47
+        ],
+        [
+          "v6_wikt_present:identity-affiliation",
+          46
+        ],
+        [
+          "v6_wikt_present:fashion-aesthetic",
+          43
+        ],
+        [
+          "v6_wikt_present:relationship-dating",
+          42
+        ],
+        [
+          "v6_wikt_present:spiritual-mystic",
+          41
+        ],
+        [
+          "v6_wikt_present:ai-native",
+          40
+        ],
+        [
+          "v6_wikt_present:technology-ai",
+          39
+        ],
+        [
+          "v6_wp_ordinary_topup:numismatics",
+          39
+        ],
+        [
+          "v6_wikt_present:memetic",
+          38
+        ],
+        [
+          "v6_wikt_present:internet-slang",
+          38
+        ],
+        [
+          "v6_wikt_present:sports-competition",
+          37
+        ]
+      ],
+      "zero_label_share": 0.6200564971751412
+    },
+    "TRAIN_V2": {
+      "cardinality": {
+        "0": 1615,
+        "1": 1098,
+        "2": 103,
+        "3": 3
+      },
+      "composition": {
+        "domain": 782,
+        "domain+mediation": 10,
+        "function": 320,
+        "function+mediation": 5,
+        "mediation": 87,
+        "none": 1615
+      },
+      "evidence_label": {
+        "EVIDENCE_PRESENT": 1516,
+        "NO_EVIDENCE": 1201,
+        "UNCERTAIN": 102
+      },
+      "evidence_present_share": 0.5377793543809861,
+      "length": {
+        "long": 1009,
+        "medium": 944,
+        "short": 866
+      },
+      "max_source_family_share": 0.03263568641362185,
+      "mean_len": 164.135154310039,
+      "n": 2819,
+      "n_domain_plus_function": 0,
+      "n_domain_positive": 792,
+      "n_function_positive": 325,
+      "n_mediation_positive": 102,
+      "n_multi_label": 106,
+      "n_source_families": 80,
+      "natural_share": 1.0,
+      "no_evidence_share": 0.42603760198652,
+      "observed_share": 1.0,
+      "source_family_top": [
+        [
+          "v6_wikt_present:politics-civic",
+          92
+        ],
+        [
+          "v6_wikt_present:ai-native",
+          88
+        ],
+        [
+          "v6_wikt_present:memetic",
+          88
+        ],
+        [
+          "v6_wikt_present:music-entertainment",
+          88
+        ],
+        [
+          "v6_wikt_present:conflict-aggression",
+          87
+        ],
+        [
+          "v6_wikt_present:fashion-aesthetic",
+          87
+        ],
+        [
+          "v6_wikt_present:internet-slang",
+          87
+        ],
+        [
+          "v6_wikt_present:sports-competition",
+          87
+        ],
+        [
+          "v6_wikt_present:gaming-meta",
+          86
+        ],
+        [
+          "v6_wikt_present:betting-sharp",
+          85
+        ],
+        [
+          "v6_wikt_present:crypto-degen",
+          85
+        ],
+        [
+          "v6_wikt_present:technology-ai",
+          85
+        ]
+      ],
+      "zero_label_share": 0.5728981908478183
+    }
+  },
+  "frozen_model_replay": {
+    "DEV_V2": {
+      "DOMAIN_macro_f1": 0.1342304499638254,
+      "FUNCTION_macro_f1": 0.26871952008976735,
+      "MEDIATION_macro_f1": 0.18867924528301885,
+      "axis_macros": {
+        "domain": 0.1342304499638254,
+        "function": 0.26871952008976735,
+        "mediation": 0.18867924528301885
+      },
+      "co_label_performance": {
+        "domain_plus_function_system_macro": null,
+        "n": 0
+      },
+      "mean_predicted_labels_on_zero_gold": 1.9453376205787782,
+      "multi_label_system_macro_f1": 0.12171717171717171,
+      "n": 505,
+      "n_domain_plus_function": 0,
+      "positive_only_system_macro_f1": 0.35251174802995533,
+      "single_label_system_macro_f1": 0.34582109758493557,
+      "source_slices": {
+        "v6_wikt_present:ai-native": 0.03597377281587808,
+        "v6_wikt_present:betting-sharp": 0.0,
+        "v6_wikt_present:conflict-aggression": 0.05333333333333332,
+        "v6_wikt_present:crypto-degen": 0.015151515151515152,
+        "v6_wikt_present:gaming-meta": 0.012121212121212123,
+        "v6_wikt_present:identity-affiliation": 0.0,
+        "v6_wikt_present:internet-slang": 0.1851851851851852,
+        "v6_wikt_present:memetic": 0.03703703703703704,
+        "v6_wikt_present:music-entertainment": 0.013986013986013984,
+        "v6_wikt_present:politics-civic": 0.01616161616161616,
+        "v6_wikt_present:regional-cultural": 0.0,
+        "v6_wikt_present:relationship-dating": 0.031746031746031744,
+        "v6_wikt_present:social-evaluation": 0.041666666666666664,
+        "v6_wikt_present:spiritual-mystic": 0.011363636363636362,
+        "v6_wikt_present:sports-competition": 0.016835016835016835,
+        "v6_wikt_present:technology-ai": 0.029393939393939392,
+        "v6_wikt_present:workplace-career": 0.013774104683195593,
+        "v6_wp_ordinary:botany": 0.0,
+        "v6_wp_ordinary:cartography": 0.0,
+        "v6_wp_ordinary:hydrology": 0.0,
+        "v6_wp_ordinary:mineralogy": 0.0,
+        "v6_wp_ordinary:numismatics": 0.0,
+        "v6_wp_ordinary:oceanography": 0.0,
+        "v6_wp_ordinary_topup:botany": 0.0,
+        "v6_wp_ordinary_topup:cartography": 0.0,
+        "v6_wp_ordinary_topup:hydrology": 0.0,
+        "v6_wp_ordinary_topup:mineralogy": 0.0,
+        "v6_wp_ordinary_topup:numismatics": 0.0,
+        "v6_wp_ordinary_topup:oceanography": 0.0
+      },
+      "system_macro_f1": 0.1972097384455372,
+      "zero_label_exact_rejection": 0.2508038585209003,
+      "zero_label_false_positive_rate": 0.7491961414790996,
+      "zero_label_n": 311
+    },
+    "REP_V2": {
+      "DOMAIN_macro_f1": 0.1588180295596455,
+      "FUNCTION_macro_f1": 0.22272324177813058,
+      "MEDIATION_macro_f1": 0.27941176470588236,
+      "axis_macros": {
+        "domain": 0.1588180295596455,
+        "function": 0.22272324177813058,
+        "mediation": 0.27941176470588236
+      },
+      "co_label_performance": {
+        "domain_plus_function_system_macro": 0.33080808080808083,
+        "n": 6
+      },
+      "mean_predicted_labels_on_zero_gold": 2.2687927107061503,
+      "multi_label_system_macro_f1": 0.28272982725037515,
+      "n": 1416,
+      "n_domain_plus_function": 6,
+      "positive_only_system_macro_f1": 0.41630366884055453,
+      "single_label_system_macro_f1": 0.3960652650140671,
+      "source_slices": {
+        "v6_wikt_atom_none:philately": 0.0,
+        "v6_wikt_atom_none_topup:cartography": 0.0,
+        "v6_wikt_atom_none_topup:entomology": 0.0,
+        "v6_wikt_atom_none_topup:hydrology": 0.0,
+        "v6_wikt_atom_none_topup:mineralogy": 0.0,
+        "v6_wikt_atom_none_topup:mycology": 0.0,
+        "v6_wikt_atom_none_topup:numismatics": 0.0,
+        "v6_wikt_atom_none_topup:oceanography": 0.0,
+        "v6_wikt_atom_none_topup:paleontology": 0.0,
+        "v6_wikt_atom_none_topup:philately": 0.0,
+        "v6_wikt_present:ai-native": 0.18526724687165594,
+        "v6_wikt_present:betting-sharp": 0.015151515151515152,
+        "v6_wikt_present:conflict-aggression": 0.06,
+        "v6_wikt_present:crypto-degen": 0.015151515151515152,
+        "v6_wikt_present:fashion-aesthetic": 0.012820512820512822,
+        "v6_wikt_present:gaming-meta": 0.017653810835629016,
+        "v6_wikt_present:identity-affiliation": 0.0,
+        "v6_wikt_present:internet-slang": 0.20606060606060606,
+        "v6_wikt_present:memetic": 0.1087962962962963,
+        "v6_wikt_present:music-entertainment": 0.012396694214876032,
+        "v6_wikt_present:politics-civic": 0.0202020202020202,
+        "v6_wikt_present:regional-cultural": 0.0,
+        "v6_wikt_present:relationship-dating": 0.03459119496855346,
+        "v6_wikt_present:social-evaluation": 0.1016548463356974,
+        "v6_wikt_present:spiritual-mystic": 0.011883541295306001,
+        "v6_wikt_present:sports-competition": 0.0219435736677116,
+        "v6_wikt_present:technology-ai": 0.021836007130124777,
+        "v6_wikt_present:workplace-career": 0.020583190394511147,
+        "v6_wp_ordinary:archaeology": 0.0,
+        "v6_wp_ordinary:botany": 0.0,
+        "v6_wp_ordinary:cartography": 0.0,
+        "v6_wp_ordinary:chemistry": 0.0,
+        "v6_wp_ordinary:hydrology": 0.0,
+        "v6_wp_ordinary:mineralogy": 0.0,
+        "v6_wp_ordinary:mycology": 0.0,
+        "v6_wp_ordinary:numismatics": 0.0,
+        "v6_wp_ordinary:oceanography": 0.0,
+        "v6_wp_ordinary_topup:archaeology": 0.0,
+        "v6_wp_ordinary_topup:botany": 0.0,
+        "v6_wp_ordinary_topup:cartography": 0.0,
+        "v6_wp_ordinary_topup:chemistry": 0.0,
+        "v6_wp_ordinary_topup:hydrology": 0.0,
+        "v6_wp_ordinary_topup:mineralogy": 0.0,
+        "v6_wp_ordinary_topup:mycology": 0.0,
+        "v6_wp_ordinary_topup:numismatics": 0.0,
+        "v6_wp_ordinary_topup:oceanography": 0.0
+      },
+      "system_macro_f1": 0.22031767868121946,
+      "zero_label_exact_rejection": 0.21184510250569477,
+      "zero_label_false_positive_rate": 0.7881548974943052,
+      "zero_label_n": 878
+    },
+    "old_usable_REP_system_macro_f1": 0.4322391331580084,
+    "package_sha256": "a88275837b341b4c549a9c973f5c5190a8f3878be57dffd302e72269d2d560c4"
+  },
+  "qual_002_aggregate_comparison": {
+    "DOMAIN_macro_f1": 0.23369414033478278,
+    "FUNCTION_macro_f1": 0.059348361918455377,
+    "MEDIATION_macro_f1": 0.20869565217391303,
+    "n": 1004,
+    "role": "AGGREGATE_HISTORICAL_COMPARISON_ONLY",
+    "system_macro_f1": 0.1885452902206466,
+    "zero_label_false_positive_rate": 0.6483957219251337,
+    "zero_label_share": 0.7450199203187251
+  },
+  "remaining_failure_detail": {
+    "REMAINING_MODEL_FAILURE": "NONE_REJECTION_FAILURE",
+    "active": [
+      "NONE_REJECTION_FAILURE"
+    ],
+    "evidence": {
+      "FUNCTION_macro_f1": 0.22272324177813058,
+      "domain_plus_function_system_macro": 0.33080808080808083,
+      "positive_only_system_macro_f1": 0.41630366884055453,
+      "system_macro_f1": 0.22031767868121946,
+      "zero_label_false_positive_rate": 0.7881548974943052
+    },
+    "flags": {
+      "CO_LABEL_COMPOSITION_FAILURE": false,
+      "FUNCTION_GENERALIZATION_FAILURE": false,
+      "NONE_REJECTION_FAILURE": true,
+      "POSITIVE_SEMANTIC_DISCRIMINATION_FAILURE": false
+    }
+  },
+  "representativeness_audit": {
+    "checks": {
+      "has_function_labels": true,
+      "has_multi_axis_or_df": true,
+      "has_multi_label": true,
+      "has_positive_traffic": true,
+      "includes_zero_label": true,
+      "length_diversity": true,
+      "min_n": true,
+      "natural_majority": true,
+      "no_evidence_in_range": true,
+      "no_usable_filter": true,
+      "not_positive_only": true,
+      "observed_majority": true,
+      "source_diversity": true,
+      "zero_label_in_range": true
+    },
+    "pass": true,
+    "summary": {
+      "cardinality": {
+        "0": 878,
+        "1": 486,
+        "2": 49,
+        "3": 3
+      },
+      "composition": {
+        "domain": 348,
+        "domain+function": 4,
+        "domain+function+mediation": 2,
+        "domain+mediation": 1,
+        "function": 141,
+        "function+mediation": 4,
+        "mediation": 38,
+        "none": 878
+      },
+      "evidence_label": {
+        "EVIDENCE_PRESENT": 673,
+        "NO_EVIDENCE": 691,
+        "UNCERTAIN": 52
+      },
+      "evidence_present_share": 0.4752824858757062,
+      "length": {
+        "long": 551,
+        "medium": 454,
+        "short": 411
+      },
+      "max_source_family_share": 0.033192090395480225,
+      "mean_len": 171.36793785310735,
+      "n": 1416,
+      "n_domain_plus_function": 6,
+      "n_domain_positive": 355,
+      "n_function_positive": 151,
+      "n_mediation_positive": 45,
+      "n_multi_label": 52,
+      "n_source_families": 81,
+      "natural_share": 1.0,
+      "no_evidence_share": 0.4879943502824859,
+      "observed_share": 1.0,
+      "source_family_top": [
+        [
+          "v6_wikt_present:gaming-meta",
+          47
+        ],
+        [
+          "v6_wp_ordinary_topup:hydrology",
+          47
+        ],
+        [
+          "v6_wikt_present:identity-affiliation",
+          46
+        ],
+        [
+          "v6_wikt_present:fashion-aesthetic",
+          43
+        ],
+        [
+          "v6_wikt_present:relationship-dating",
+          42
+        ],
+        [
+          "v6_wikt_present:spiritual-mystic",
+          41
+        ],
+        [
+          "v6_wikt_present:ai-native",
+          40
+        ],
+        [
+          "v6_wikt_present:technology-ai",
+          39
+        ],
+        [
+          "v6_wp_ordinary_topup:numismatics",
+          39
+        ],
+        [
+          "v6_wikt_present:memetic",
+          38
+        ],
+        [
+          "v6_wikt_present:internet-slang",
+          38
+        ],
+        [
+          "v6_wikt_present:sports-competition",
+          37
+        ]
+      ],
+      "zero_label_share": 0.6200564971751412
+    }
+  },
+  "representativeness_repair_detail": {
+    "REPRESENTATIVENESS_REPAIRED": true,
+    "comparison": {
+      "QUAL_FUNCTION_macro_f1": 0.059348361918455377,
+      "QUAL_system_macro_f1": 0.1885452902206466,
+      "QUAL_zero_fp_rate": 0.6483957219251337,
+      "REP_V2_FUNCTION_macro_f1": 0.22272324177813058,
+      "REP_V2_system_macro_f1": 0.22031767868121946,
+      "REP_V2_zero_fp_rate": 0.7881548974943052
+    },
+    "recovered_old_usable_rep_score": false,
+    "same_broad_failure_shape_as_QUAL_002": true,
+    "success_definition": "expose_real_weaknesses_not_recover_0.432"
+  },
+  "resettle_from_frozen_replay": true,
+  "schema": "hyperlex.classification.v6.representative_validation_redesign.v1",
+  "surfaces_unchanged": true
+}
