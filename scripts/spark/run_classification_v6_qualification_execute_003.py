@@ -36,6 +36,7 @@ REPO_ART = (
     / "HLX-CLASSIFICATION-V6-QUALIFICATION-EXECUTE-003"
 )
 SPEC = REPO / "specs" / "007-hyperlexical-model"
+IMAGE = "lmsysorg/sglang:dev-qwen38-27b-dflash2"
 MAX_LEN = 192
 BATCH = 32
 
@@ -612,7 +613,7 @@ def error_decomposition(rows, result, vocabs):
     return {"counts": dict(counts)}
 
 
-def main() -> int:
+def inner() -> int:
     import numpy as np
     import torch
 
@@ -1097,6 +1098,54 @@ HUB_PUBLISH_AUTHORIZED = false.
 
     print(json.dumps(summary, indent=2, sort_keys=True))
     return 0 if disposition["QUALIFICATION_DISPOSITION"] != "V6_QUALIFICATION_003_INVALID" else 2
+
+
+def main() -> int:
+    if os.environ.get("HLX_V6_QUAL_EXEC_INNER") == "1":
+        return inner()
+    PRIVATE_EXEC.mkdir(mode=0o700, parents=True, exist_ok=True)
+    revision = code_revision()
+    cmd = [
+        "docker",
+        "run",
+        "--rm",
+        "--gpus",
+        "all",
+        "--network",
+        "host",
+        "-v",
+        f"{REPO}:{REPO}",
+        "-v",
+        "/home/morpheus/hlx-private:/home/morpheus/hlx-private",
+        "-v",
+        "/home/morpheus/.hyperlex:/home/morpheus/.hyperlex",
+        "-v",
+        "/home/morpheus/.cache/huggingface:/root/.cache/huggingface",
+        "-w",
+        str(REPO),
+        "-e",
+        "PYTHONPATH=/home/morpheus/Hyperlex/scripts/shadow",
+        "-e",
+        "HLX_V2_FORWARD_ONTOLOGY=1",
+        "-e",
+        "HLX_V6_QUAL_EXEC_INNER=1",
+        "-e",
+        f"HLX_V5_STAGE_A_CODE_REVISION={revision}",
+        "--entrypoint",
+        "python3",
+        IMAGE,
+        str(REPO / "scripts/spark/run_classification_v6_qualification_execute_003.py"),
+    ]
+    log = PRIVATE_EXEC / "qual_exec_console.log"
+    with log.open("w", encoding="utf-8") as handle:
+        completed = subprocess.run(
+            cmd, check=False, stdout=handle, stderr=subprocess.STDOUT
+        )
+    try:
+        print(log.read_text(encoding="utf-8")[-50000:])
+    except OSError:
+        pass
+    return int(completed.returncode)
 
 
 if __name__ == "__main__":
