@@ -149,14 +149,14 @@ def _api(api: str, params: dict, retries: int = 8) -> Any:
         except urllib.error.HTTPError as exc:
             last_err = exc
             if exc.code in {429, 500, 502, 503, 504}:
-                sleep_s = min(120.0, (2**attempt) + random.random())
+                sleep_s = min(180.0, (3**attempt) + random.random() * 2)
                 print(f"api_backoff code={exc.code} sleep={sleep_s:.1f}s", flush=True)
                 time.sleep(sleep_s)
                 continue
             raise
         except Exception as exc:  # noqa: BLE001
             last_err = exc
-            time.sleep(min(60.0, (2**attempt)))
+            time.sleep(min(90.0, (2**attempt) + 1.0))
     assert last_err is not None
     raise last_err
 
