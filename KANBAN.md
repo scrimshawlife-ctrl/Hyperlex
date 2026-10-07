@@ -4,7 +4,7 @@ Board state as measured, not as remembered. Every item below was true on the dat
 
 | | Backlog | In progress | Blocked | Done |
 |---|---|---|---|---|
-| **Count** | 1 | 0 | 1 | 2 |
+| **Count** | 1 | 0 | 2 | 2 |
 
 **Blocked** matters more than the other columns: an item sits there when it is waiting on something this
 repository cannot supply, and the blocker is named rather than implied.
@@ -24,15 +24,12 @@ _Last reviewed: 2026-10-07._
 
 | Item | Blocked on | Evidence |
 |---|---|---|
-| Failing tests in a full run (count varies: 22-23) | A decision about import-time env caching | CI run `37679298734` on `7de56bf`: **23 failed, 1653 passed, 18 skipped** in 55.6s. `test_classification_v2.py` alone: **21 passed**. Add `test_classification_v3_reserve.py` (sets `HLX_V2_FORWARD_ONTOLOGY=1` at import): **3 failed**. `classification_v2.py:75` reads the variable once at import into a module constant, so whichever file loads first fixes it for the session. The repository's own `test_classification_v2_forward_ontology.py` already demonstrates the reload-and-restore pattern. |
+| Failing tests in a full run — **class 1: env-cached mode** (22 on macOS, ~22 in CI) | A decision about import-time env caching | `scripts/shadow/hyperlexical/classification_v2.py:75` reads `HLX_V2_FORWARD_ONTOLOGY` **once at import** into a module constant. Twenty-five files under `tests/shadow/` set that variable at module level and rely on it; whichever file imports first fixes the value for the session. Measured directly: `pytest tests/shadow/test_classification_v2.py` alone → **21 passed**; add `tests/shadow/test_classification_v3_reserve.py` → **3 failed**. Neither file is wrong — the order is. **The count is stable per host** (three consecutive runs here: 26 / 26 / 26), because pytest's collection order is deterministic, so this is order-*dependent* and entirely reproducible. |
+| Failing tests in a full run — **class 2: host detection** (4, macOS only) | Platform assumptions in the host-detection tests | `tests/test_p1_fail_closed.py` (2), `tests/test_memetic_memory.py` (1), `tests/test_claude_host.py` (1). These never appear in CI because CI runs ubuntu; they are visible only on a developer macOS host and are a different problem from class 1 — not order, but platform. |
 
-Neither file is wrong in isolation — the order is. The fix is a call about caching, which belongs to this
-repository's author.
+Whole suite as measured: **26 failed, 1626 passed, 18 skipped** on macOS/Python 3.14; **23 failed, 1653 passed, 18 skipped** in CI (ubuntu). The 23-vs-26 gap is the four host-detection failures, not a difference in the class-1 count.
 
-The count moving between 22 and 23 across runs is itself evidence for the diagnosis: which tests fail depends
-on which file loads first, so the number is not stable and the failures are not independent. The same run also
-shows `test_hyperlexical_shadow.py` asserting `'torch' not in {...}` and failing — the module set differs for
-the same reason, since `pytest.importorskip("torch")` registers the name it tried to import.
+A blanket `tests/shadow/conftest.py` was written and **reverted**. It set the variable per test and reloaded the module, which is the right shape for class 1 — but an autouse fixture that *imports* `classification_v2` breaks `test_hyperlexical_shadow.py::test_no_hyperlex_or_abraxas_imports`, whose whole purpose is asserting that module is not imported. Measured: 26 failed / 1626 passed with the fixture, and the same 26 / 1626 without it on this host — so the fixture changed nothing, and the conflict is the reason it stays out. The class-1 fix belongs per-file (scope the variable to the file's own tests and reload), because the variable also affects tests outside `tests/shadow/` — confirmed the hard way when a conftest scoped to that directory moved failures in files outside it.
 
 ## Done
 
