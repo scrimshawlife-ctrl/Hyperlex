@@ -459,7 +459,15 @@ def _residualized_length(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
 def _mean_probability(rows: Sequence[Mapping[str, Any]]) -> float | None:
     if not rows:
         return None
-    return sum(row["probability"] for row in rows) / len(rows)
+    # math.fsum, not sum(). CPython 3.12 changed sum() to Neumaier compensated summation for floats. On
+    # 3.10/3.11 this mean is off by one ULP from a mean over a different number of the same value: the
+    # NONE/ATOM cell (12 rows) and the NONE/PROSE cell (4 rows) both hold 0.13, and their means landed on
+    # 0.12999999999999998 vs 0.13, so `none_surface_gap` came out as 2.7755575615628914e-17 instead of exactly
+    # 0.0 and failed `assert invariance["none_surface_gap"] == 0.0` on 3.10/3.11 only. Reproduced by
+    # simulating pre-3.12 summation: atom=0.12999999999999998 prose=0.13 gap=2.7755575615628914e-17 (== 0.0 is
+    # False); with fsum both are 0.13 and the gap is exactly 0.0. fsum is exact and version-independent, so the
+    # assertion holds everywhere and is never loosened.
+    return math.fsum(row["probability"] for row in rows) / len(rows)
 
 
 def applicability_invariance(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
