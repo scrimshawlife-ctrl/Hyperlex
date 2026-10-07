@@ -24,10 +24,15 @@ _Last reviewed: 2026-10-07._
 
 | Item | Blocked on | Evidence |
 |---|---|---|
-| 22 test failures in a full run | A decision about import-time env caching | `test_classification_v2.py` alone: **21 passed**. Add `test_classification_v3_reserve.py` (sets `HLX_V2_FORWARD_ONTOLOGY=1` at import): **3 failed**. `classification_v2.py:75` reads the variable once at import into a module constant, so whichever file loads first fixes it for the session. The repository's own `test_classification_v2_forward_ontology.py` already demonstrates the reload-and-restore pattern. |
+| Failing tests in a full run (count varies: 22-23) | A decision about import-time env caching | CI run `37679298734` on `7de56bf`: **23 failed, 1653 passed, 18 skipped** in 55.6s. `test_classification_v2.py` alone: **21 passed**. Add `test_classification_v3_reserve.py` (sets `HLX_V2_FORWARD_ONTOLOGY=1` at import): **3 failed**. `classification_v2.py:75` reads the variable once at import into a module constant, so whichever file loads first fixes it for the session. The repository's own `test_classification_v2_forward_ontology.py` already demonstrates the reload-and-restore pattern. |
 
 Neither file is wrong in isolation — the order is. The fix is a call about caching, which belongs to this
 repository's author.
+
+The count moving between 22 and 23 across runs is itself evidence for the diagnosis: which tests fail depends
+on which file loads first, so the number is not stable and the failures are not independent. The same run also
+shows `test_hyperlexical_shadow.py` asserting `'torch' not in {...}` and failing — the module set differs for
+the same reason, since `pytest.importorskip("torch")` registers the name it tried to import.
 
 ## Done
 
