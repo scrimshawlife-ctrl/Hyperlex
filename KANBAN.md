@@ -24,12 +24,38 @@ _Last reviewed: 2026-10-07._
 
 | Item | Blocked on | Evidence |
 |---|---|---|
-| Failing tests in a full run — **class 1: env-cached mode** (22 on macOS, ~22 in CI) | A decision about import-time env caching | `scripts/shadow/hyperlexical/classification_v2.py:75` reads `HLX_V2_FORWARD_ONTOLOGY` **once at import** into a module constant. Twenty-five files under `tests/shadow/` set that variable at module level and rely on it; whichever file imports first fixes the value for the session. Measured directly: `pytest tests/shadow/test_classification_v2.py` alone → **21 passed**; add `tests/shadow/test_classification_v3_reserve.py` → **3 failed**. Neither file is wrong — the order is. **The count is stable per host** (three consecutive runs here: 26 / 26 / 26), because pytest's collection order is deterministic, so this is order-*dependent* and entirely reproducible. |
-| Failing tests in a full run — **class 2: host detection** (4, macOS only) | Platform assumptions in the host-detection tests | `tests/test_p1_fail_closed.py` (2), `tests/test_memetic_memory.py` (1), `tests/test_claude_host.py` (1). These never appear in CI because CI runs ubuntu; they are visible only on a developer macOS host and are a different problem from class 1 — not order, but platform. |
+| Failing tests in a full run — **class 1: vocabulary mode** (21 in the `test_classification_v2*` family, +1 guard) | An unidentified import-order coupling | The suite is **deterministic**: `26 failed, 1626 passed, 18 skipped`, identical across six runs. `tests/shadow/test_classification_v2.py` alone passes **21**; `tests/shadow/` as a directory fails **22**. The failures are vocabulary-shaped — `unknown_lineage` contract errors and family sets missing `social-status` / `approval-disapproval`, i.e. some run is using the *historical* vocabulary where forward mode is expected. **The mechanism is NOT identified.** Six hypotheses were tested and every one was falsified; see the table below before spending time on any of them. |
+| Failing tests in a full run — **class 2: three real failures** | The Claude source-of-truth pin does not resolve in a plain checkout | `test_p1_fail_closed.py::test_claude_sot_pin_matches_this_tree` and `::test_doctor_emits_claude_sot_cleared` — `resolve_claude_sot_cleared(ROOT)` does not return `cleared is True` with `"pinned"` in the reason. Plus `test_claude_host.py::test_doctor_reports_claude_ok`. **A fourth, `test_memetic_memory.py`, is an install artifact**: it fails with `ModuleNotFoundError: No module named 'hyperlex'` and *passes* once `pip install -e ".[dev]"` has been run. In a scratch venv with the editable install: `3 failed, 55 passed`. |
 
-Whole suite as measured: **26 failed, 1626 passed, 18 skipped** on macOS/Python 3.14; **23 failed, 1653 passed, 18 skipped** in CI (ubuntu). The 23-vs-26 gap is the four host-detection failures, not a difference in the class-1 count.
+Whole suite as measured: **26 failed, 1626 passed, 18 skipped** on macOS/Python 3.14. CI (ubuntu) reports **23 failed, 1653 passed** — the difference is not the class-1 count but how the platforms and this host's missing install distribute the non-shadow failures.
 
-A blanket `tests/shadow/conftest.py` was written and **reverted**. It set the variable per test and reloaded the module, which is the right shape for class 1 — but an autouse fixture that *imports* `classification_v2` breaks `test_hyperlexical_shadow.py::test_no_hyperlex_or_abraxas_imports`, whose whole purpose is asserting that module is not imported. Measured: 26 failed / 1626 passed with the fixture, and the same 26 / 1626 without it on this host — so the fixture changed nothing, and the conflict is the reason it stays out. The class-1 fix belongs per-file (scope the variable to the file's own tests and reload), because the variable also affects tests outside `tests/shadow/` — confirmed the hard way when a conftest scoped to that directory moved failures in files outside it.
+### Hypotheses tested and falsified — do not repeat these
+
+Every one of these was falsified by measurement on one host, before and after, with the tree clean:
+
+| Hypothesis | Refuting measurement |
+|---|---|
+| A `tests/shadow/conftest.py` that imports `classification_v2` and reloads it | `26 failed / 1626 passed` — identical to baseline. Also conflicts with `test_no_hyperlex_or_abraxas_imports` in principle, though that test fails in the baseline too. |
+| The same fixture, reshaped to never import (reload only if already in `sys.modules`) | `26 / 26 / 26` — identical, three runs. |
+| "The env constant cached at import is the mechanism" | Both fixtures above are inert, so the constant is not what the failing tests depend on. |
+| "`test_classification_v2.py` + `test_classification_v3_reserve.py` → 3 failed" (recorded earlier in this board) | **Clean tree: `24 passed`.** The earlier reading was taken with one of the fixtures above present in the tree. The pair is fine. |
+| "`test_hyperlexical_shadow.py` triggers it" | In that pair (`test_classification_v2.py` + `test_hyperlexical_shadow.py`) the v2 tests **passed**; the single failure was the guard test. The trigger was misread. |
+| Adding `os.environ.setdefault("HLX_V2_FORWARD_ONTOLOGY", "1")` to `test_hyperlexical_shadow.py` — the idiom three source modules already use | `26 / 26 / 26` — identical. Reverted; the file is byte-identical to its committed state. |
+
+Pair probes, all on a clean tree, all **passing**: `+ v2_prototype` 29 passed · `+ v5_stage_a` 30 passed ·
+`+ v3_reserve` 24 passed · `+ hyperlexical_shadow` 33 passed, 1 failed (the guard). No pair reproduces the
+class, so it needs a larger combination or a file further along the collection order.
+
+### The method that works, and the next concrete step
+
+Reading failing test **names** and inferring a cause from them produced four wrong conclusions here. Holding the
+environment constant and **pairing one file against another** is what produced real information; that is how
+the four pairs above were measured.
+
+Unidentified mechanisms are best settled by data rather than hypothesis: print the frozen values at the end of
+collection — `classification_v2.FORWARD_ONTOLOGY` and `classification_v2.VOCABULARY_ID` after
+`pytest tests/shadow/ --collect-only` — which names the import that froze them, deterministically. That is the
+next step worth taking, and it does not require guessing.
 
 ## Done
 
