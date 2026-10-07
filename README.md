@@ -165,3 +165,9 @@ See repo `LICENSE` / package metadata. Corpus and scrape receipts carry their ow
 ## Shared research program (candidate)
 
 [Hyperlexical participation in persistent-agent research](specs/007-hyperlexical-model/PERSISTENT-AGENT-PROGRAM.md) maps this component into ABX-NOEMA-REP-001. Advisory specification only; existing contracts and gates remain authoritative.
+
+## Project status
+
+- [ROADMAP.md](ROADMAP.md) — what is shipped, what is in progress, and what is deliberately not planned, each with its reason.
+- [KANBAN.md](KANBAN.md) — the board, with every blocker named and evidenced.
+- [CONTRIBUTING.md](CONTRIBUTING.md) — the working rules for this repository.
