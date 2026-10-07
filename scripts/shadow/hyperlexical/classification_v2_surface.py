@@ -175,15 +175,20 @@ def pearson(xs: Sequence[float], ys: Sequence[float]) -> float | None:
     count = len(xs)
     if count < 2 or count != len(ys):
         return None
-    mean_x = sum(xs) / count
-    mean_y = sum(ys) / count
+    # math.fsum, not sum(). CPython 3.12 changed sum() to Neumaier compensated summation for floats, so a
+    # naive left-to-right accumulation gave a different correlation on 3.10/3.11 than on 3.12+: exactly
+    # collinear inputs returned 0.9999999999999999 instead of 1.0, failing an `== 1.0` assertion on the older
+    # versions only. fsum is exact and version-independent, so the assertion holds everywhere and is never
+    # loosened. Measured by simulating pre-3.12 sum(): 0.9999999999999999 (== 1.0 is False) vs fsum 1.0.
+    mean_x = math.fsum(xs) / count
+    mean_y = math.fsum(ys) / count
     diff_x = [value - mean_x for value in xs]
     diff_y = [value - mean_y for value in ys]
-    denom_x = math.sqrt(sum(value * value for value in diff_x))
-    denom_y = math.sqrt(sum(value * value for value in diff_y))
+    denom_x = math.sqrt(math.fsum(value * value for value in diff_x))
+    denom_y = math.sqrt(math.fsum(value * value for value in diff_y))
     if denom_x == 0.0 or denom_y == 0.0:
         return None
-    return sum(left * right for left, right in zip(diff_x, diff_y)) / (denom_x * denom_y)
+    return math.fsum(left * right for left, right in zip(diff_x, diff_y)) / (denom_x * denom_y)
 
 
 def calibrated_present_probability(logits: Sequence[float], temperature: float) -> float:
@@ -436,7 +441,7 @@ def _residualized_length(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     words = []
     for index, row in enumerate(rows):
         features = [1.0] + [column[index] for column in columns]
-        fitted = sum(weight * value for weight, value in zip(beta, features))
+        fitted = math.fsum(weight * value for weight, value in zip(beta, features))  # see pearson() on fsum
         residuals.append(row["probability"] - fitted)
         words.append(row["words"])
     energy = sum(value * value for value in residuals)
