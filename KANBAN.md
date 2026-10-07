@@ -41,10 +41,38 @@ Every one of these was falsified by measurement on one host, before and after, w
 | "`test_classification_v2.py` + `test_classification_v3_reserve.py` → 3 failed" (recorded earlier in this board) | **Clean tree: `24 passed`.** The earlier reading was taken with one of the fixtures above present in the tree. The pair is fine. |
 | "`test_hyperlexical_shadow.py` triggers it" | In that pair (`test_classification_v2.py` + `test_hyperlexical_shadow.py`) the v2 tests **passed**; the single failure was the guard test. The trigger was misread. |
 | Adding `os.environ.setdefault("HLX_V2_FORWARD_ONTOLOGY", "1")` to `test_hyperlexical_shadow.py` — the idiom three source modules already use | `26 / 26 / 26` — identical. Reverted; the file is byte-identical to its committed state. |
+| Restoring the env value in `test_classification_v2_forward_ontology.py`'s `finally` blocks instead of blindly popping (a real isolation defect, and module state *is* corrected by it) | Module state after a run becomes **forward** instead of historical — and the result is still **22 failed**. The state is not what these tests depend on. Reverted. |
 
 Pair probes, all on a clean tree, all **passing**: `+ v2_prototype` 29 passed · `+ v5_stage_a` 30 passed ·
 `+ v3_reserve` 24 passed · `+ hyperlexical_shadow` 33 passed, 1 failed (the guard). No pair reproduces the
 class, so it needs a larger combination or a file further along the collection order.
+
+### What the probe ruled out
+
+A probe that runs the shadow suite in-process and then reads the module state produced the single most useful
+fact in this investigation:
+
+| State | `FORWARD_ONTOLOGY` | `VOCABULARY_ID` | Result |
+|---|---|---|---|
+| After `--collect-only` | True | forward (19 families) | — |
+| After a real run, **before** any fix | **False** | `hyperlex.active_families.v1` | 22 failed |
+| After a real run, with the env-restore fix below | **True** | forward (18 families) | **22 failed — unchanged** |
+
+Twenty-one tests fail whether the module ends up forward or historical. **The failures do not depend on the
+vocabulary state**, which rules out the whole ontology family of explanations — import caching, `setdefault`
+ordering, reload behaviour, and the `finally`-block deregistration in
+`test_classification_v2_forward_ontology.py`. That file's cleanup *is* a genuine isolation defect (it pops a
+session variable and never restores it), and fixing it does move the module state — but it moves nothing that
+these tests depend on.
+
+That is a negative result and it is worth more than the seven wrong hypotheses above: a whole class of
+approaches is now known to be wasted effort.
+
+The remaining lead, not yet tested: the failing tests' own names describe **nineteen** families
+(`test_max_over_anchor_scoring_is_deterministic_and_covers_nineteen_families`), which is the *historical*
+size, while the forward vocabulary has 18 and the observed mismatches are family-set diffs. That points at
+stale fixture data rather than module state — the same shape as Trutina's stale contract test. It is a lead,
+not a finding, and it is the next thing worth measuring.
 
 ### The method that works, and the next concrete step
 
