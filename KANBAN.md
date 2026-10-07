@@ -29,6 +29,39 @@ _Last reviewed: 2026-10-07._
 
 Whole suite as measured: **26 failed, 1626 passed, 18 skipped** on macOS/Python 3.14. CI (ubuntu) reports **23 failed, 1653 passed** — the difference is not the class-1 count but how the platforms and this host's missing install distribute the non-shadow failures.
 
+### CORRECTION: the elimination below is unsound, and the cause is now identified
+
+An earlier version of this board claimed the failures do not depend on the vocabulary state. **That was
+wrong.** The probe behind it read `FORWARD_ONTOLOGY` at the **end of the session** — after every test had
+run — which is not the state the failing tests see when they execute. Measuring the wrong moment, then
+concluding about the mechanism, produced a confident and false elimination.
+
+**The identified cause, verified:**
+
+| Evidence | Result |
+|---|---|
+| The six failing files, run **without** the three reloading files | **48 passed** |
+| Those three reloading files | `test_classification_v2_family_retrieval.py:13-16`, `test_classification_v2_forward_hub_error_decomposition.py:13-16`, `test_classification_v2_family_retrieval_reserve_eval.py:13-16` — each sets `HLX_V2_FORWARD_ONTOLOGY=1` and calls `importlib.reload(v2)` **at module level during collection**, with no cleanup |
+| One reloader plus one victim | **6 passed** — a single reloader is *not* sufficient, contrary to an earlier claim |
+
+The three reloaders rebind `classification_v2.ACTIVE_FAMILY_VOCABULARY` in `sys.modules` from the historical
+19-family tuple to the forward 18-family tuple, before the older files' tests run. Those older files
+(`prototype`, `geometry_repair`, `max_anchor`, `separability_audit`, `mixed_remediation`, and part of
+`test_classification_v2.py`) were written for 19 families and mostly hard-code it —
+`assert len(...) == 19`, `loaded['anchors']['social-status']`, `n_anchors >= 19` — and were never updated when
+the forward ontology arrived in `a912ab3` (Sep 29), which touched `classification_v2.py` and added
+`test_classification_v2_forward_ontology.py` but none of them. `support_audit`
+(`classification_v2.py:451`) then raises `unknown_lineage` for the two families that forward mode merges away.
+
+**A per-module cleanup fixture does not fix this** — tried and measured: `23 failed` (one *worse*), because the
+reloaders need forward mode while they run and the victims need historical, and the two are interleaved in
+collection order. Restoring after one reloader breaks the next.
+
+**The fix is the victims becoming vocabulary-agnostic**: replace hard-coded 19 with
+`len(ACTIVE_FAMILY_VOCABULARY)`, look up `social-status` / `approval-disapproval` conditionally, and
+parameterise expectations on the active vocabulary. That is a content migration across six files, and it is
+this repository's work rather than a drive-by patch.
+
 ### Hypotheses tested and falsified — do not repeat these
 
 Every one of these was falsified by measurement on one host, before and after, with the tree clean:
