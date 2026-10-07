@@ -29,40 +29,36 @@ _Last reviewed: 2026-10-07._
 
 Whole suite as measured: **26 failed, 1626 passed, 18 skipped** on macOS/Python 3.14. CI (ubuntu) reports **23 failed, 1653 passed** — the difference is not the class-1 count but how the platforms and this host's missing install distribute the non-shadow failures.
 
-### The one failure, down to the assertion
+### Both failures, down to the assertion -- and a wrong revert corrected
 
-CI on `ad30a76` (the fsum attempt) still reports `1 failed, 1675 passed` on 3.10/3.11 -- the identical count to
-before, so **the fsum change fixed nothing and has been reverted** (`05f0711`). Its commit message claimed a fix
-the numbers do not support, and that claim is worse than no change at all.
+The test `test_corrected_shortcut_diagnostic_conditions_on_gold` had **two** float-precision defects, and the
+second was hidden behind the first: pytest stops at the first failing assertion, and this test asserts about
+ten things in sequence. Fixing one moved the failure rather than clearing it.
 
-The actual assertion, read from the CI log rather than inferred:
+**Defect 1 -- `none_surface_gap == 0.0` (line 625), fixed in `9e3b537`.** A difference of two means
+(`classification_v2_surface.py:510`, from `_mean_probability` at `:462`). Both cells hold 0.13: 12 rows (atom
+form) and 4 rows (prose form). On CPython <=3.11 `sum()` is a plain left-to-right accumulator, so a mean over
+12 copies and a mean over 4 land one ULP apart -- `0.12999999999999998` vs `0.13` -- and the gap came out as
+`2.7755575615628914e-17` instead of exactly `0.0`. Reproduced bit-for-bit before fixing:
 
-```
-tests/shadow/test_classification_v2.py:625
->   assert invariance["none_surface_gap"] == 0.0
-E   assert 2.7755575615628914e-17 == 0.0
-```
+    pre-3.12 naive sum()   atom=0.12999999999999998  prose=0.13  gap=2.7755575615628914e-17  (== 0.0 is False)
+    math.fsum()            atom=0.13                 prose=0.13  gap=0.0
 
-**What that tells us.** It is a float-precision residue in a difference of two means:
+**Defect 2 -- `conditional_length_correlation["FAMILY_PRESENT"]["correlation"] == 1.0` (line 628), fixed in
+`ad30a76`.** The same class in `pearson()`: naive `sum()` gives `0.9999999999999998` for perfectly collinear
+input instead of `1.0`. Reproduced with the test's real data (6 atom rows at 1 word, 12 prose rows at 10 words):
 
-    classification_v2_surface.py:495   means[name] = _mean_probability(chosen)
-    classification_v2_surface.py:510   none_gap = means["NONE/PROSE"] - means["NONE/ATOM"]
-    classification_v2_surface.py:462   return sum(row["probability"] for row in rows) / len(rows)
+    pre-3.12 naive sum()   correlation = 0.9999999999999998   == 1.0 ? False
+    math.fsum()            correlation = 1.0                  == 1.0 ? True
 
-On 3.10/3.11 two mathematically equal means are not bit-identical, so their difference lands on 2.78e-17 instead
-of exactly 0.0. On 3.12+ the same code returns 0.0, which is why the failure is version-specific.
+**The correction.** `ad30a76` was reverted in `b444a40` on the reasoning that CI's count was unchanged --
+"1 failed, 1675 passed, identical to before, so it fixed nothing". That inference was **wrong**. The count
+cannot distinguish *which* assertion failed inside a single test; defect 1 was still failing and masking defect
+2, so fixing defect 2 changed nothing visible. An unchanged pass/fail count is not evidence that a change was
+inert when several assertions can fail in the same test. Both fixes are now in place together.
 
-**What is NOT established.** That replacing `sum()` with `math.fsum()` in `_mean_probability` fixes it. That was
-attempted as a simulation and **did not reproduce the residue** -- a uniform list summed in either order gave a
-gap of exactly 0.0 under both naive and compensated summation. Without a reproduction there is no proof the fix
-works, so it was not applied. Nine hypotheses about this repository's failures have now been falsified; the one
-approach that ever worked was removing the suspect and measuring, and here the suspect cannot be removed without
-an interpreter this machine does not have.
-
-**Next step that would settle it:** run the 3.11 job with the two means printed at the point of the assertion
-(an f-string in a temporary local patch, not committed). The values will show whether the means differ at the
-last bit, which settles the mechanism in one run and needs no 3.10 interpreter -- only the CI runner that
-already reproduces it.
+Neither fix touches an assertion. `fsum` makes the 0.0 and 1.0 claims true on every Python version rather than
+widening them, which would have been loosening an assertion to make a version pass.
 
 ### Verified after the migration: no regression, and CI's one failure is pre-existing
 
