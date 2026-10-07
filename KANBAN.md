@@ -29,6 +29,41 @@ _Last reviewed: 2026-10-07._
 
 Whole suite as measured: **26 failed, 1626 passed, 18 skipped** on macOS/Python 3.14. CI (ubuntu) reports **23 failed, 1653 passed** — the difference is not the class-1 count but how the platforms and this host's missing install distribute the non-shadow failures.
 
+### The one failure, down to the assertion
+
+CI on `ad30a76` (the fsum attempt) still reports `1 failed, 1675 passed` on 3.10/3.11 -- the identical count to
+before, so **the fsum change fixed nothing and has been reverted** (`05f0711`). Its commit message claimed a fix
+the numbers do not support, and that claim is worse than no change at all.
+
+The actual assertion, read from the CI log rather than inferred:
+
+```
+tests/shadow/test_classification_v2.py:625
+>   assert invariance["none_surface_gap"] == 0.0
+E   assert 2.7755575615628914e-17 == 0.0
+```
+
+**What that tells us.** It is a float-precision residue in a difference of two means:
+
+    classification_v2_surface.py:495   means[name] = _mean_probability(chosen)
+    classification_v2_surface.py:510   none_gap = means["NONE/PROSE"] - means["NONE/ATOM"]
+    classification_v2_surface.py:462   return sum(row["probability"] for row in rows) / len(rows)
+
+On 3.10/3.11 two mathematically equal means are not bit-identical, so their difference lands on 2.78e-17 instead
+of exactly 0.0. On 3.12+ the same code returns 0.0, which is why the failure is version-specific.
+
+**What is NOT established.** That replacing `sum()` with `math.fsum()` in `_mean_probability` fixes it. That was
+attempted as a simulation and **did not reproduce the residue** -- a uniform list summed in either order gave a
+gap of exactly 0.0 under both naive and compensated summation. Without a reproduction there is no proof the fix
+works, so it was not applied. Nine hypotheses about this repository's failures have now been falsified; the one
+approach that ever worked was removing the suspect and measuring, and here the suspect cannot be removed without
+an interpreter this machine does not have.
+
+**Next step that would settle it:** run the 3.11 job with the two means printed at the point of the assertion
+(an f-string in a temporary local patch, not committed). The values will show whether the means differ at the
+last bit, which settles the mechanism in one run and needs no 3.10 interpreter -- only the CI runner that
+already reproduces it.
+
 ### Verified after the migration: no regression, and CI's one failure is pre-existing
 
 Measured after the vocabulary-agnostic migration landed (`a758a83`):
