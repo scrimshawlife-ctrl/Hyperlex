@@ -6,7 +6,9 @@ import os
 import sys
 from pathlib import Path
 
-import torch
+import pytest
+
+torch = pytest.importorskip("torch")  # optional: this shadow test needs torch; the repo skips when absent
 
 os.environ["HLX_V2_FORWARD_ONTOLOGY"] = "1"
 
