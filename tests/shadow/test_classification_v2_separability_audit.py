@@ -8,8 +8,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
-from hyperlexical.classification_v2 import ACTIVE_FAMILY_VOCABULARY  # noqa: E402
+import hyperlexical.classification_v2 as _cv2  # noqa: E402
 from hyperlexical.classification_v2_separability_audit import (  # noqa: E402
+    ACTIVE_FAMILY_VOCABULARY,  # snapshot matching assemble_audit internal check
     AUDIT_DECISIONS,
     AUDIT_RULE,
     BEST_SHA,
@@ -193,8 +194,8 @@ def test_overall_decision_and_assemble_audit_seal():
     assert decision == "MIXED_REMEDIATION_REQUIRED"
     pair_rows = [
         {
-            "family_a": "social-status",
-            "family_b": "approval-disapproval",
+            "family_a": "internet-slang",
+            "family_b": "memetic",
             "flags": ["ONTOLOGY_OVERLAP", "DEFINITION_TOO_GENERIC"],
             "embedding": {
                 "anchor_collision_rate": 1.0,

@@ -8,8 +8,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
-from hyperlexical.classification_v2 import ACTIVE_FAMILY_VOCABULARY  # noqa: E402
 from hyperlexical.classification_v2_mixed_remediation import (  # noqa: E402
+    ACTIVE_FAMILY_VOCABULARY,  # snapshot matching mixed_remediation module internal state
     AUDIT_ARTIFACT_SHA,
     AUDIT_DECISION,
     BEST_SHA,

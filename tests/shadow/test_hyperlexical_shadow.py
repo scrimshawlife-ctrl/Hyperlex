@@ -21,6 +21,7 @@ SCHEMA = ROOT / "specs" / "007-hyperlexical-model" / "schemas" / "hyperlexical_i
 CONTRACTS = ROOT / "specs" / "007-hyperlexical-model" / "contracts"
 TORCH_ALLOWED = {
     "classification_v2_runtime.py",
+    "classification_v5_stage_a_003_focal.py",
     "classify_error_audit.py",
     "eval_forward.py",
     "loop.py",

@@ -9,13 +9,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
-from hyperlexical.classification_v2 import ACTIVE_FAMILY_VOCABULARY, decision_seal  # noqa: E402
+from hyperlexical.classification_v2 import decision_seal  # noqa: E402
 from hyperlexical.classification_v2_boundaries import (  # noqa: E402
     BOUNDARY_SCHEMA,
     NEAREST_COMPETITORS,
     assemble_boundaries,
 )
 from hyperlexical.classification_v2_geometry_repair import (  # noqa: E402
+    ACTIVE_FAMILY_VOCABULARY,  # snapshot matching geometry_repair module internal state
     CANONICAL_LOGITS,
     GEOMETRY_TAU,
     HARD_NEGATIVE_MULTIPLIER,
@@ -60,7 +61,7 @@ def _toy_boundaries() -> dict:
                 _axis((index + 1) % 7, f"{family}-b", f"{family} facet beta"),
                 _axis(index % 7, f"{family}-c", f"{family} facet alpha two"),
             ]
-    return assemble_boundaries(members)
+    return assemble_boundaries(members, vocabulary=ACTIVE_FAMILY_VOCABULARY)
 
 
 def test_repair_contract_freezes_temperature_and_rejects_prototype_logits():

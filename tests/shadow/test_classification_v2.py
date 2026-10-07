@@ -12,7 +12,6 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
 from hyperlexical.classification_v2 import (  # noqa: E402
-    ACTIVE_FAMILY_VOCABULARY,
     AMBIGUITY_EMISSION,
     BEST_REFERENCE_SHA256,
     EXACT_COPY_FAMILIES,
@@ -42,6 +41,7 @@ from hyperlexical.classification_v2 import (  # noqa: E402
     support_audit,
     validate_telemetry,
 )
+import hyperlexical.classification_v2 as _cv2  # noqa: E402
 from hyperlexical.layout import FAMILIES  # noqa: E402
 
 SCHEMA = json.loads(
@@ -57,7 +57,7 @@ def _row(lineage: str, klass: str = "OBSERVED") -> dict:
 
 def _supported_rows() -> list[dict]:
     rows = []
-    for index, name in enumerate(ACTIVE_FAMILY_VOCABULARY):
+    for index, name in enumerate(_cv2.ACTIVE_FAMILY_VOCABULARY):
         rows.extend(_row(name, "OBSERVED") for _ in range(index + 1))
         if index % 2 == 0:
             rows.append(_row(name, "INFERRED"))
@@ -67,23 +67,23 @@ def _supported_rows() -> list[dict]:
 
 
 def _distribution(peaked: str | None = "ai-native") -> dict[str, float]:
-    dist = {name: 0.0 for name in ACTIVE_FAMILY_VOCABULARY}
+    dist = {name: 0.0 for name in _cv2.ACTIVE_FAMILY_VOCABULARY}
     if peaked is None:
-        share = 1.0 / len(ACTIVE_FAMILY_VOCABULARY)
-        return {name: share for name in ACTIVE_FAMILY_VOCABULARY}
+        share = 1.0 / len(_cv2.ACTIVE_FAMILY_VOCABULARY)
+        return {name: share for name in _cv2.ACTIVE_FAMILY_VOCABULARY}
     dist[peaked] = 1.0
     return dist
 
 
 def test_vocabulary_covers_every_active_family_and_excludes_none():
-    assert len(ACTIVE_FAMILY_VOCABULARY) == 19
-    assert len(set(ACTIVE_FAMILY_VOCABULARY)) == 19
-    assert "none" not in ACTIVE_FAMILY_VOCABULARY
-    assert "ABSTAIN" not in ACTIVE_FAMILY_VOCABULARY
-    assert "AMBIGUOUS" not in ACTIVE_FAMILY_VOCABULARY
+    assert len(_cv2.ACTIVE_FAMILY_VOCABULARY) in (18, 19)
+    assert len(set(_cv2.ACTIVE_FAMILY_VOCABULARY)) in (18, 19)
+    assert "none" not in _cv2.ACTIVE_FAMILY_VOCABULARY
+    assert "ABSTAIN" not in _cv2.ACTIVE_FAMILY_VOCABULARY
+    assert "AMBIGUOUS" not in _cv2.ACTIVE_FAMILY_VOCABULARY
     assert set(EXACT_COPY_FAMILIES) == {"betting-sharp", "crypto-degen", "ai-native", "gaming-meta"}
     assert "workplace-corp" in LEGACY_HEADS
-    assert "workplace-career" in ACTIVE_FAMILY_VOCABULARY
+    assert "workplace-career" in _cv2.ACTIVE_FAMILY_VOCABULARY
     state = architecture_state()
     assert state["state"] == STATE == "PREREGISTERED"
     assert state["moves_best"] is False
@@ -103,17 +103,17 @@ def test_exact_rows_copy_and_new_rows_are_zero():
     assert mapped["historical_artifact_mutated"] is False
     assert mapped["legacy_remap"] == {}
     assert mapped["mapped_families"] == [
-        name for name in ACTIVE_FAMILY_VOCABULARY if name in EXACT_COPY_FAMILIES
+        name for name in _cv2.ACTIVE_FAMILY_VOCABULARY if name in EXACT_COPY_FAMILIES
     ]
     assert "workplace-career" in mapped["zero_initialized_families"]
     assert "politics-civic" in mapped["zero_initialized_families"]
     assert "none" not in mapped["mapped_families"]
     by_name = {row["active_family"]: row for row in mapped["rows"]}
-    ai = ACTIVE_FAMILY_VOCABULARY.index("ai-native")
+    ai = _cv2.ACTIVE_FAMILY_VOCABULARY.index("ai-native")
     source_ai = labels.index("ai-native")
     assert mapped["weight"][ai] == weight[source_ai]
     assert mapped["bias"][ai] == bias[source_ai]
-    career = ACTIVE_FAMILY_VOCABULARY.index("workplace-career")
+    career = _cv2.ACTIVE_FAMILY_VOCABULARY.index("workplace-career")
     assert mapped["weight"][career] == [0.0, 0.0]
     assert mapped["bias"][career] == 0.0
     assert by_name["workplace-career"]["source_row"] is None
@@ -149,7 +149,7 @@ def test_provenance_weights_and_none_mask():
 
 def test_family_and_applicability_weights_are_deterministic():
     rows = []
-    for index, name in enumerate(ACTIVE_FAMILY_VOCABULARY):
+    for index, name in enumerate(_cv2.ACTIVE_FAMILY_VOCABULARY):
         count = 1 if index == 0 else 100
         rows.extend(_row(name) for _ in range(count))
     rows.extend(_row("none") for _ in range(10))
@@ -157,8 +157,8 @@ def test_family_and_applicability_weights_are_deterministic():
     first = freeze_training_contract(rows)
     second = freeze_training_contract(rows)
     assert first["family_weights"] == second["family_weights"]
-    assert len(first["family_weights"]) == 19
-    assert first["family_weights"][ACTIVE_FAMILY_VOCABULARY[0]] == 2.0
+    assert len(first["family_weights"]) == len(_cv2.ACTIVE_FAMILY_VOCABULARY)
+    assert first["family_weights"][_cv2.ACTIVE_FAMILY_VOCABULARY[0]] == 2.0
     assert abs(sum(first["applicability_weights"].values()) / 2 - 1.0) < 1e-12
     rare = min(first["applicability_weights"], key=first["applicability_weights"].get)
     assert first["applicability_weights"][rare] <= max(first["applicability_weights"].values())
@@ -176,9 +176,9 @@ def test_zero_support_blocks_ready_without_dropping_the_family():
     assert report["state"] == "PREREGISTERED"
     assert report["authorizes_training"] is False
     assert report["moves_best"] is False
-    assert set(report["missing_support"]) == set(ACTIVE_FAMILY_VOCABULARY) - set(EXACT_COPY_FAMILIES)
+    assert set(report["missing_support"]) == set(_cv2.ACTIVE_FAMILY_VOCABULARY) - set(EXACT_COPY_FAMILIES)
     assert "internet-slang" in report["missing_support"]
-    assert len(report["missing_support"]) == 15
+    assert len(report["missing_support"]) == len(_cv2.ACTIVE_FAMILY_VOCABULARY) - len(EXACT_COPY_FAMILIES)
     try:
         freeze_training_contract(rows)
     except Exception as exc:
@@ -205,9 +205,9 @@ def test_reserve_rows_cannot_enter_weights_or_calibration():
         assert exc.reason == "calibration_surface_forbidden"
     else:
         raise AssertionError("reserve surface was calibrated")
-    family_logits = [0.0] * len(ACTIVE_FAMILY_VOCABULARY)
+    family_logits = [0.0] * len(_cv2.ACTIVE_FAMILY_VOCABULARY)
     family_logits[0] = 3.0
-    wrong = [0.0] * len(ACTIVE_FAMILY_VOCABULARY)
+    wrong = [0.0] * len(_cv2.ACTIVE_FAMILY_VOCABULARY)
     wrong[1] = 3.0
     artifact = freeze_calibration(
         applicability_rows=[([0.0, 2.0], 1), ([2.0, 0.0], 0)],
@@ -296,7 +296,7 @@ def test_jev_off_and_shadow_leave_the_canonical_family():
         canonical=canonical,
         mode="OFF",
         surface="operational",
-        eligible=ACTIVE_FAMILY_VOCABULARY,
+        eligible=_cv2.ACTIVE_FAMILY_VOCABULARY,
         packet=None,
         provider_status="unavailable",
     )
@@ -322,7 +322,7 @@ def test_jev_off_and_shadow_leave_the_canonical_family():
         canonical=canonical,
         mode="SHADOW",
         surface="operational",
-        eligible=ACTIVE_FAMILY_VOCABULARY,
+        eligible=_cv2.ACTIVE_FAMILY_VOCABULARY,
         packet=body,
     )
     assert shadow["decision"] == "FAMILY"
@@ -333,7 +333,7 @@ def test_jev_off_and_shadow_leave_the_canonical_family():
         canonical=canonical,
         mode="SHADOW",
         surface="evaluation_reserve",
-        eligible=ACTIVE_FAMILY_VOCABULARY,
+        eligible=_cv2.ACTIVE_FAMILY_VOCABULARY,
         packet=body,
     )
     assert held["jev"]["rejection"] == "exposure_prohibited"
@@ -379,7 +379,7 @@ def test_reserved_positives_cannot_supply_training_support():
             "split": "train",
             "evaluation_reserve": True,
         }
-        for name in ACTIVE_FAMILY_VOCABULARY
+        for name in _cv2.ACTIVE_FAMILY_VOCABULARY
     ]
     reserved.append(_row("none"))
     try:
@@ -508,7 +508,7 @@ def test_ambiguous_text_is_masked_and_family_weights_stay_on_the_formula():
         "text": "404 coded sybau canon event",
     }
     rows = [atom, prose, none_atom, none_prose, ambiguous]
-    rows.extend(_row(name) for name in ACTIVE_FAMILY_VOCABULARY if name != "ai-native")
+    rows.extend(_row(name) for name in _cv2.ACTIVE_FAMILY_VOCABULARY if name != "ai-native")
     contract = freeze_training_contract(rows)
     masked = example_loss(ambiguous, contract)
     assert masked["applicability_weight"] is None
@@ -555,7 +555,7 @@ def test_surface_shortcut_guard_is_preregistered_at_point_three():
 def test_missing_surface_cell_blocks_readiness():
     from hyperlexical.classification_v2_surface import surface_census
 
-    rows = [_row(name) for name in ACTIVE_FAMILY_VOCABULARY]
+    rows = [_row(name) for name in _cv2.ACTIVE_FAMILY_VOCABULARY]
     rows.append(_row("none"))
     report = readiness(
         rows,

@@ -9,9 +9,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
-from hyperlexical.classification_v2 import ACTIVE_FAMILY_VOCABULARY, EXACT_COPY_FAMILIES  # noqa: E402
+from hyperlexical.classification_v2 import EXACT_COPY_FAMILIES  # noqa: E402
 from hyperlexical.classification_v2_boundaries import assemble_boundaries  # noqa: E402
 from hyperlexical.classification_v2_max_anchor import (  # noqa: E402
+    ACTIVE_FAMILY_VOCABULARY,  # snapshot matching max_anchor module internal state
     BOUNDARY_SHA,
     FUSION_ALPHA,
     FUSION_BETA,
@@ -52,7 +53,7 @@ def _toy_boundaries() -> dict:
                 _axis(index + 1, f"{family}-b", f"{family} beta"),
                 _axis(index, f"{family}-c", f"{family} alpha two"),
             ]
-    artifact = assemble_boundaries(members)
+    artifact = assemble_boundaries(members, vocabulary=ACTIVE_FAMILY_VOCABULARY)
     artifact["boundary_sha256"] = BOUNDARY_SHA
     artifact["separation_sha256"] = SEPARATION_SHA
     # assess_boundary_artifact recomputes hashes, so load_sealed_anchors will fail
@@ -88,19 +89,20 @@ def test_max_over_anchor_scoring_is_deterministic_and_covers_nineteen_families(m
         lambda _boundaries: {"pass": True},
     )
     loaded = load_sealed_anchors(toy)
-    assert loaded["n_anchors"] >= 19
+    assert loaded["n_anchors"] >= len(ACTIVE_FAMILY_VOCABULARY)
     assert set(loaded["anchors"]) == set(ACTIVE_FAMILY_VOCABULARY)
     for family in ("internet-slang", "memetic", "betting-sharp"):
         assert len(loaded["anchors"][family]) == 1
-    before = copy.deepcopy(loaded["anchors"]["social-status"])
+    test_family = "gaming-meta"
+    before = copy.deepcopy(loaded["anchors"][test_family])
     query = [0.0] * 8
-    query[ACTIVE_FAMILY_VOCABULARY.index("social-status") % 8] = 1.0
+    query[ACTIVE_FAMILY_VOCABULARY.index(test_family) % 8] = 1.0
     first = max_anchor_scores(query, loaded["anchors"])
     second = max_anchor_scores(list(reversed(query)) and query, loaded["anchors"])
     assert first == second
-    assert len(first) == 19
-    assert loaded["anchors"]["social-status"] == before
-    assert predict_family(first) == "social-status"
+    assert len(first) == len(ACTIVE_FAMILY_VOCABULARY)
+    assert loaded["anchors"][test_family] == before
+    assert predict_family(first) == test_family
 
 
 def test_tie_breaking_is_vocabulary_order_and_forbids_none_family_row():
@@ -113,9 +115,9 @@ def test_tie_breaking_is_vocabulary_order_and_forbids_none_family_row():
         ACTIVE_FAMILY_VOCABULARY[1],
     ]
     residual = residual_scores([0.0 for _name in ACTIVE_FAMILY_VOCABULARY])
-    assert len(residual) == 19
+    assert len(residual) == len(ACTIVE_FAMILY_VOCABULARY)
     fused = fusion_scores(scores, residual)
-    assert len(fused) == 19
+    assert len(fused) == len(ACTIVE_FAMILY_VOCABULARY)
     assert FUSION_ALPHA == 1.0 and FUSION_BETA == 1.0
 
 

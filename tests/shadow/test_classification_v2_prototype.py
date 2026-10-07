@@ -10,12 +10,10 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "shadow"))
 
-from hyperlexical.classification_v2 import (  # noqa: E402
-    ACTIVE_FAMILY_VOCABULARY,
-    ClassificationContractError,
-    map_family_rows,
-)
+from hyperlexical.classification_v2 import map_family_rows  # noqa: E402
 from hyperlexical.classification_v2_prototype import (  # noqa: E402
+    ACTIVE_FAMILY_VOCABULARY,  # snapshot matching prototype module internal state
+    ClassificationContractError,  # matching the class used by prototype functions
     assemble_initialization,
     definition_string_report,
     median_l2,
