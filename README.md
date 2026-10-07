@@ -1,3 +1,10 @@
+<p align="center">
+  <a href="https://github.com/scrimshawlife-ctrl/Hyperlex/actions/workflows/hermes-evals.yml"><img src="https://github.com/scrimshawlife-ctrl/Hyperlex/actions/workflows/hermes-evals.yml/badge.svg?branch=main" alt="CI"></a>
+  <img src="https://img.shields.io/badge/python-3.11%2B-3776ab?logo=python&logoColor=white" alt="Python 3.11+">
+  <img src="https://img.shields.io/badge/license-MIT-22c55e" alt="MIT">
+  <img src="https://img.shields.io/badge/status-live-be123c" alt="status">
+</p>
+
 # Hyperlex
 
 <p align="center">
