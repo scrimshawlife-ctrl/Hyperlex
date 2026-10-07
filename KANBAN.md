@@ -29,6 +29,42 @@ _Last reviewed: 2026-10-07._
 
 Whole suite as measured: **26 failed, 1626 passed, 18 skipped** on macOS/Python 3.14. CI (ubuntu) reports **23 failed, 1653 passed** — the difference is not the class-1 count but how the platforms and this host's missing install distribute the non-shadow failures.
 
+### Verified after the migration: no regression, and CI's one failure is pre-existing
+
+Measured after the vocabulary-agnostic migration landed (`a758a83`):
+
+| Environment | Result |
+|---|---|
+| Full clone + editable install, whole suite | **1652 passed, 18 skipped, 0 failed** |
+| CI (ubuntu, `fetch-depth: 0`, installs) — 3.12 | **success** |
+| CI — 3.10 and 3.11 | 1 failed, 1675 passed |
+| CI on the pre-migration commit (`3aee5b0`) | **22 failed**, 1654 passed |
+
+Three earlier claims about this repo were wrong and are corrected here:
+
+1. **"The three Claude-SoT failures are real in CI."** They are not. They were an artifact of a **shallow local
+   clone**: the pin commit `c9233c98` is not in a shallow object store, and `resolve_claude_sot_cleared` never
+   consults GitHub by design, so it correctly cannot prove descent. With `git fetch --unshallow`, `git
+   cat-file -e` finds the pin and `merge-base --is-ancestor` returns YES — the tests pass. CI already used
+   `fetch-depth: 0` for exactly this reason. The workflow's comment says so: *"Default depth=1 hides the pin
+   SHA."* The conclusion was drawn from a red badge rather than from the failing test names.
+2. **"`test_memetic_memory` is a real failure."** It is an install artifact: `ModuleNotFoundError: hyperlex`
+   without `pip install -e ".[dev]"`.
+3. **The remaining CI failure is not a regression from the migration.** `test_corrected_shortcut_diagnostic_conditions_on_gold`
+   appears **8 times in each of three earlier failing runs**, including the 2026-10-07T10:53 run taken before
+   any of these changes. It is pre-existing.
+
+**The one failure left, and the likely mechanism.** It fails on **3.10 and 3.11 only**, passing on 3.12 and on
+3.14. One of its assertions requires `abs(correlation) < 1e-9` and another `== 1.0` exactly. Python **3.12
+changed `sum()` to use Neumaier compensated summation for floats**, which changes the result of naive float
+accumulation on precisely this kind of correlation computation. That is the most probable cause and it is
+*inferred*, not measured — 3.10 and 3.11 are not available on this machine, so it cannot be confirmed here.
+
+**Two fixes exist and neither is a drive-by.** Either the computation uses `math.fsum` so its precision is
+version-independent and the 1e-9 claim survives, or the tolerance is widened — which would be *loosening an
+assertion to make a version pass*, the pattern this repository's rules forbid. The first is principled and
+unverifiable from here; the second is verifiable and wrong. That choice belongs to the author.
+
 ### CORRECTION: the elimination below is unsound, and the cause is now identified
 
 An earlier version of this board claimed the failures do not depend on the vocabulary state. **That was
